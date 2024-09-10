@@ -77,9 +77,14 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         if (!Errore) {
             if (immagine == null) {
+                String sNomeImmagine = NomeImmagine;
+                if (sNomeImmagine.toUpperCase().contains("HTTP:")) {
+                    String[] s = sNomeImmagine.split("/");
+                    sNomeImmagine = s[s.length - 2] + "/" + s[s.length - 1];
+                }
                 StrutturaImmagine si = new StrutturaImmagine();
                 si.setPathImmagine(PercorsoDIR + "/Download/Appoggio.jpg");
-                si.setImmagine(NomeImmagine);
+                si.setImmagine(sNomeImmagine);
                 si.setDataImmagine(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDataImmagine());
                 si.setDimensione(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDimensione());
 

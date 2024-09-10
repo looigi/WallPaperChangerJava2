@@ -101,10 +101,7 @@ public class InizializzaMaschera {
         if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
             immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
         }
-        GestioneNotifiche.getInstance().AggiornaNotifica(
-                immagine,
-                prossimo
-        );
+        GestioneNotifiche.getInstance().AggiornaNotifica();
 
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Prossimo cambio: " +
                 VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
@@ -136,10 +133,7 @@ public class InizializzaMaschera {
                 if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
                     immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
                 }
-                GestioneNotifiche.getInstance().AggiornaNotifica(
-                        immagine,
-                        prossimo
-                );
+                GestioneNotifiche.getInstance().AggiornaNotifica();
 
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
@@ -165,10 +159,7 @@ public class InizializzaMaschera {
                 if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
                     immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
                 }
-                GestioneNotifiche.getInstance().AggiornaNotifica(
-                        immagine,
-                        prossimo
-                );
+                GestioneNotifiche.getInstance().AggiornaNotifica();
 
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();

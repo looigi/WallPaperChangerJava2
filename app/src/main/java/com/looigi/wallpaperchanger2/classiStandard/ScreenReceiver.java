@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 public class ScreenReceiver extends BroadcastReceiver {
     private boolean screenOff;
@@ -18,6 +19,7 @@ public class ScreenReceiver extends BroadcastReceiver {
         else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
             screenOff = true;
         }
+        VariabiliStaticheServizio.getInstance().setScreenOn(screenOff);
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo: " + screenOff);
     }

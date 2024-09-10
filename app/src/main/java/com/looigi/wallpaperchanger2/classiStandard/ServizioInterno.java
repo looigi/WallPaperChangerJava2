@@ -70,7 +70,7 @@ public class ServizioInterno extends Service {
         // if (VariabiliStatiche.getInstance().getNotifica() != null) {
         startForeground(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notifica);
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
-        GestioneNotifiche.getInstance().AggiornaNotifica("","");
+        GestioneNotifiche.getInstance().AggiornaNotifica();
 
         Esecuzione e = new Esecuzione(context);
         e.startServizio1();

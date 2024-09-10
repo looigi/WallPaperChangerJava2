@@ -220,7 +220,7 @@ public class ChangeWallpaper {
 			// Notifica.getInstance().setTitolo(si.getImmagine());
 			// Notifica.getInstance().setImmagine(si.getPathImmagine());
 			// GestioneNotifiche.getInstance().RimuoviNotifica();
-			GestioneNotifiche.getInstance().AggiornaNotifica(si.getImmagine(), si.getPathImmagine());
+			GestioneNotifiche.getInstance().AggiornaNotifica();
 
 			Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
 			VariabiliStaticheServizio.getInstance().getImgImpostata().setImageBitmap(ultima);

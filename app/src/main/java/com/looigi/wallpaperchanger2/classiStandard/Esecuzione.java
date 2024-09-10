@@ -109,13 +109,7 @@ public class Esecuzione {
                 VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
                 quantiGiri);
 
-        String immagine = "";
-        if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-            immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
-        }
-        GestioneNotifiche.getInstance().AggiornaNotifica(
-                immagine,
-                prossimoCambio + " - Errori: " + Integer.toString(errori));
+        GestioneNotifiche.getInstance().AggiornaNotifica();
     }
 
     private void CambiaImmagine() {

@@ -61,9 +61,22 @@ public class GestioneNotifiche {
             setListenersTasti(contentView, context);
             setListeners(contentView);
 
-            contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.channelName);
-            contentView.setTextViewText(R.id.txtTitoloImmagine, "");
-            contentView.setTextViewText(R.id.txtTitoloImmagineSfondo, "");
+            if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
+                String path = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine();
+                Bitmap bmImg = BitmapFactory.decodeFile(path);
+                contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
+            } else {
+                contentView.setImageViewBitmap(R.id.imgCopertina, null);
+            }
+            contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+            contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+            int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
+            int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+            String prossimo = "Prossimo cambio: " +
+                    VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                    quantiGiri;
+            contentView.setTextViewText(R.id.txtDettaglio, prossimo);
+            contentView.setTextViewText(R.id.txtDettaglioSfondo, prossimo);
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheServizio.NOTIFICATION_CHANNEL_STRING);
 
@@ -119,13 +132,13 @@ public class GestioneNotifiche {
             apre.putExtra("DO", "apre");
             PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.layBarraNotifica, pApre);
+            view.setOnClickPendingIntent(R.id.txtTitoloNotifica, pApre);
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
         }
     }
 
-    public void AggiornaNotifica(String NomeImmagine, String Attesa) {
+    public void AggiornaNotifica() {
         if (context != null) {
             /* if (manager == null || contentView == null || notifica == null) {
                 RimuoviNotifica();
