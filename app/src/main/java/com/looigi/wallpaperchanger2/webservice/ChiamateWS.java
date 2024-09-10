@@ -1,9 +1,16 @@
 package com.looigi.wallpaperchanger2.webservice;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classiAttivita.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classiAttivita.db_dati;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChiamateWS implements TaskDelegate {
     private static final String NomeMaschera = "CHIAMATEWS";
@@ -18,6 +25,20 @@ public class ChiamateWS implements TaskDelegate {
 
     public ChiamateWS(Context context) {
         this.context = context;
+    }
+
+    public void TornaImmagini() {
+        String Urletto="TornaImmagini";
+        boolean ApriDialog = false;
+        TipoOperazione = "TornaImmagini";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                "TornaImmagini",
+                NS,
+                SA,
+                35000,
+                ApriDialog);
     }
 
     public void TornaProssimaImmagine() {
@@ -62,11 +83,41 @@ public class ChiamateWS implements TaskDelegate {
             case "TornaProssimaImmagine":
                 fTornaProssimaImmagine(result);
                 break;
+            case "TornaImmagini":
+                fTornaImmagini(result);
+                break;
         }
     }
 
     public void StoppaEsecuzione() {
         bckAsyncTask.cancel(true);
+    }
+
+    private void fTornaImmagini(String result) {
+        if (result.contains("ERROR:")) {
+            Utility.getInstance().VisualizzaErrore(context, result);
+        } else {
+            // ColtoEDiClasse.jpg;Sport/ColtoEDiClasse.jpg;130629;05/26/2015
+            List<StrutturaImmagine> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (int i = 0; i < righe.length; i++) {
+                String[] Campi = righe[i].split(";");
+                StrutturaImmagine s = new StrutturaImmagine();
+                s.setImmagine(Campi[0]);
+                s.setPathImmagine(VariabiliStaticheServizio.PercorsoImmagineSuURL + "/" + Campi[1]);
+                s.setDimensione(Campi[2]);
+                s.setDataImmagine(Campi[3]);
+                lista.add(s);
+            }
+            VariabiliStaticheServizio.getInstance().setListaImmagini(lista);
+            VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + lista.size());
+
+            VariabiliStaticheServizio.getInstance().setAdapterImmagini(new AdapterListenerImmagini(context,
+                    VariabiliStaticheServizio.getInstance().getListaImmagini()));
+            VariabiliStaticheServizio.getInstance().getLstImmagini().setAdapter(VariabiliStaticheServizio.getInstance().getAdapterImmagini());
+
+            VariabiliStaticheServizio.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
+        }
     }
 
     private void fTornaProssimaImmagine(String result) {
@@ -89,7 +140,7 @@ public class ChiamateWS implements TaskDelegate {
 
             VariabiliStaticheServizio.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
-            new DownloadImage(context, NomeImmagine).execute(Immagine);
+            new DownloadImage(context, NomeImmagine, null).execute(Immagine);
         }
     }
 }

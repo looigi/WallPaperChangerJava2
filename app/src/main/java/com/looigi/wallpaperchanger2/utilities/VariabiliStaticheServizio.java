@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classiAttivita.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiStandard.Log;
 import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
 
@@ -57,12 +60,18 @@ public class VariabiliStaticheServizio {
     private boolean blur = true;
     private boolean scriveTestoSuImmagine = true;
     private boolean onOff = true;
+    private boolean home = true;
+    private boolean lock = false;
     private boolean resize = true;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private TextView txtPath;
     private boolean ImmagineCambiataConSchermoSpento = false;
     private boolean ePartito = false;
     private int minutiAttesa = 1;
+    private ListView lstImmagini;
+    private RelativeLayout layScelta;
+    private String filtroRicerca = "";
+    private AdapterListenerImmagini adapterImmagini;
 
     // private int quantiGiri;
     // private int SecondiAlCambio = 10000;
@@ -70,6 +79,54 @@ public class VariabiliStaticheServizio {
     private int SecondiPassati;
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looWebPlayer/ImmaginiMusica";
     // private int tempoTimer = 30000;
+
+    public AdapterListenerImmagini getAdapterImmagini() {
+        return adapterImmagini;
+    }
+
+    public void setAdapterImmagini(AdapterListenerImmagini adapterImmagini) {
+        this.adapterImmagini = adapterImmagini;
+    }
+
+    public String getFiltroRicerca() {
+        return filtroRicerca;
+    }
+
+    public void setFiltroRicerca(String filtroRicerca) {
+        this.filtroRicerca = filtroRicerca;
+    }
+
+    public RelativeLayout getLayScelta() {
+        return layScelta;
+    }
+
+    public void setLayScelta(RelativeLayout layScelta) {
+        this.layScelta = layScelta;
+    }
+
+    public ListView getLstImmagini() {
+        return lstImmagini;
+    }
+
+    public void setLstImmagini(ListView lstImmagini) {
+        this.lstImmagini = lstImmagini;
+    }
+
+    public boolean isHome() {
+        return home;
+    }
+
+    public void setHome(boolean home) {
+        this.home = home;
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
 
     public int getMinutiAttesa() {
         return minutiAttesa;

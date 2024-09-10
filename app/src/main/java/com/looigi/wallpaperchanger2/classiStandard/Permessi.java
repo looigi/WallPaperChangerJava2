@@ -23,6 +23,7 @@ public class Permessi {
         String[] PERMISSIONS = new String[]{
                 // Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 // Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_MEDIA_IMAGES,
                 // Manifest.permission.MANAGE_EXTERNAL_STORAGE,
                 // android.Manifest.permission.ACCESS_FINE_LOCATION,
                 // android.Manifest.permission.ACCESS_COARSE_LOCATION,

@@ -121,14 +121,14 @@ public class Esecuzione {
     private void CambiaImmagine() {
         ChangeWallpaper c = new ChangeWallpaper(context);
         if (!VariabiliStaticheServizio.getInstance().isOffline()) {
-            boolean fatto = c.setWallpaper(null);
+            boolean fatto = c.setWallpaper(context, null);
             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
         } else {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
             int numeroRandom = Utility.getInstance().GeneraNumeroRandom(
                     VariabiliStaticheServizio.getInstance().getListaImmagini().size() - 1);
             if (numeroRandom > -1) {
-                boolean fatto = c.setWallpaper(VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
+                boolean fatto = c.setWallpaper(context, VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
             } else {
                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");

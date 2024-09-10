@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classiAttivita.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
@@ -22,10 +23,12 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     private String NomeImmagine;
     private String PercorsoDIR = "";
     private Context context;
+    private ImageView immagine;
 
-    public DownloadImage(Context context, String NomeImmagine) {
+    public DownloadImage(Context context, String NomeImmagine, ImageView immagine) {
         this.NomeImmagine = NomeImmagine;
         this.context = context;
+        this.immagine = immagine;
 
         PercorsoDIR = Environment.getExternalStorageDirectory() + "/" +
                 Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheServizio.channelName;
@@ -41,23 +44,27 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new java.net.URL(urldisplay).openStream();
             mIcon11 = BitmapFactory.decodeStream(in);
 
-            FileOutputStream outStream;
-            try {
-                outStream = new FileOutputStream(PercorsoDIR + "/Download/Appoggio.jpg"); // .getPathImmagine());
-                if (outStream != null & mIcon11 != null) {
-                    mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            if (immagine == null) {
+                FileOutputStream outStream;
+                try {
+                    outStream = new FileOutputStream(PercorsoDIR + "/Download/Appoggio.jpg"); // .getPathImmagine());
+                    if (outStream != null & mIcon11 != null) {
+                        mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                    }
+
+                    outStream.flush();
+                    outStream.close();
+
+                    Utility.getInstance().ScriveLog(context, NomeMaschera, "Immagine Scaricata");
+                } catch (FileNotFoundException e) {
+                    Utility.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                    Errore = true;
+                } catch (IOException e) {
+                    Utility.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                    Errore = true;
                 }
-
-                outStream.flush();
-                outStream.close();
-
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagine Scaricata");
-            } catch (FileNotFoundException e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
-                Errore = true;
-            } catch (IOException e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
-                Errore = true;
+            } else {
+                immagine.setImageBitmap(mIcon11);
             }
         } catch (Exception e) {
             // e.printStackTrace();
@@ -69,15 +76,17 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         if (!Errore) {
-            StrutturaImmagine si = new StrutturaImmagine();
-            si.setPathImmagine(PercorsoDIR + "/Download/Appoggio.jpg");
-            si.setImmagine(NomeImmagine);
-            si.setDataImmagine(VariabiliStaticheServizio.getInstance().getDataAppoggio());
-            si.setDimensione(VariabiliStaticheServizio.getInstance().getDimeAppoggio());
+            if (immagine == null) {
+                StrutturaImmagine si = new StrutturaImmagine();
+                si.setPathImmagine(PercorsoDIR + "/Download/Appoggio.jpg");
+                si.setImmagine(NomeImmagine);
+                si.setDataImmagine(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDataImmagine());
+                si.setDimensione(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDimensione());
 
-            ChangeWallpaper c = new ChangeWallpaper(context);
-            boolean fatto = c.setWallpaperLocale(si);
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine impostata online: " + fatto + "---");
+                ChangeWallpaper c = new ChangeWallpaper(context);
+                boolean fatto = c.setWallpaperLocale(context, si);
+                Utility.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
+            }
         } else {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
         }

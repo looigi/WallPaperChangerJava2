@@ -5,13 +5,19 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
+import com.looigi.wallpaperchanger2.classiAttivita.ConverteNomeUri;
+import com.looigi.wallpaperchanger2.classiAttivita.ScannaDiscoPerImmaginiLocali;
+import com.looigi.wallpaperchanger2.classiAttivita.db_dati;
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
@@ -124,6 +130,34 @@ public class MainActivity extends Activity {
         super.onStop();
 
         Utility.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 9999:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+                            DocumentsContract.getTreeDocumentId(uri));
+                    ConverteNomeUri c = new ConverteNomeUri();
+                    String path = c.getPath(this, docUri);
+
+                    VariabiliStaticheServizio.getInstance().getTxtPath().setText(path);
+                    VariabiliStaticheServizio.getInstance().setPercorsoIMMAGINI(path);
+
+                    db_dati db = new db_dati(this);
+                    db.ScriveImpostazioni();
+
+                    ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this);
+                    bckLeggeImmaginiLocali.execute();
+
+                    break;
+                }
+        }
     }
 
     @Override

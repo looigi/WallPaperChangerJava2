@@ -12,20 +12,27 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivita.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiAttivita.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivita.ScannaDiscoPerImmaginiLocali;
+import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiAttivita.db_dati;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -168,6 +175,69 @@ public class InizializzaMaschera {
             }
         });
 
+        Switch switchHome = (Switch) view.findViewById(R.id.switchHome);
+        switchHome.setChecked(VariabiliStaticheServizio.getInstance().isHome());
+        switchHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheServizio.getInstance().setHome(isChecked);
+
+                db_dati db = new db_dati(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        Switch switchLock = (Switch) view.findViewById(R.id.switchLock);
+        switchLock.setChecked(VariabiliStaticheServizio.getInstance().isLock());
+        switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheServizio.getInstance().setLock(isChecked);
+
+                db_dati db = new db_dati(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        VariabiliStaticheServizio.getInstance().setLstImmagini(view.findViewById(R.id.lstImmagini));
+
+        RelativeLayout laySceltaImm = view.findViewById(R.id.laySceltaImmagine);
+        laySceltaImm.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheServizio.getInstance().setLayScelta(laySceltaImm);
+        ImageView imgRicerca = (ImageView) view.findViewById(R.id.imgRicerca);
+        imgRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheServizio.getInstance().isOffline()) {
+                    AdapterListenerImmagini customAdapterT = new AdapterListenerImmagini(context,
+                            VariabiliStaticheServizio.getInstance().getListaImmagini());
+                    VariabiliStaticheServizio.getInstance().getLstImmagini().setAdapter(customAdapterT);
+                    VariabiliStaticheServizio.getInstance().setAdapterImmagini(customAdapterT);
+
+                    laySceltaImm.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    VariabiliStaticheServizio.getInstance().setAdapterImmagini(null);
+
+                    ChiamateWS c = new ChiamateWS(context);
+                    c.TornaImmagini();
+                }
+            }
+        });
+
+        EditText edtFiltro = view.findViewById(R.id.edtFiltro);
+
+        ImageView imgRicercaScelta = (ImageView) view.findViewById(R.id.imgRicercaScelta);
+        imgRicercaScelta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheServizio.getInstance().setFiltroRicerca(edtFiltro.getText().toString());
+                VariabiliStaticheServizio.getInstance().getAdapterImmagini().updateData(
+                        VariabiliStaticheServizio.getInstance().getFiltroRicerca());
+            }
+        });
+        ImageView imgChiudeRicerca = (ImageView) view.findViewById(R.id.imgChiudeScelta);
+        imgChiudeRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySceltaImm.setVisibility(LinearLayout.GONE);
+            }
+        });
+
         Button btnPulisceLog = (Button) view.findViewById(R.id.btnPulisceLog);
         btnPulisceLog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
@@ -215,7 +285,7 @@ public class InizializzaMaschera {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 i.addCategory(Intent.CATEGORY_DEFAULT);
-                view.startActivityForResult(Intent.createChooser(i, "Choose directory"), 9999);
+                view.startActivityForResult(Intent.createChooser(i, "Scelta directory"), 9999);
             }
         });
 
@@ -236,9 +306,9 @@ public class InizializzaMaschera {
                 } else {
                     layOffline.setVisibility(LinearLayout.VISIBLE);
                     if(VariabiliStaticheServizio.getInstance().isOffline()) {
-                        if (VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini() != null &&
-                                VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().length() > 0) {
-                            int q = VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().length();
+                        if (VariabiliStaticheServizio.getInstance().getListaImmagini() != null &&
+                                VariabiliStaticheServizio.getInstance().getListaImmagini().size() > 0) {
+                            int q = VariabiliStaticheServizio.getInstance().getListaImmagini().size();
                             VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
                         } else {
                             ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
@@ -304,6 +374,8 @@ public class InizializzaMaschera {
             swcBlur.setEnabled(true);
             swcOffline.setEnabled(true);
             switchScriveTesto.setEnabled(true);
+            switchHome.setEnabled(true);
+            switchLock.setEnabled(true);
         } else {
             btnMenoMinuti.setEnabled(false);
             btnPiuMinuti.setEnabled(false);
@@ -311,6 +383,8 @@ public class InizializzaMaschera {
             swcBlur.setEnabled(false);
             swcOffline.setEnabled(false);
             switchScriveTesto.setEnabled(false);
+            switchHome.setEnabled(false);
+            switchLock.setEnabled(false);
         }
         swcOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -323,6 +397,8 @@ public class InizializzaMaschera {
                     swcBlur.setEnabled(true);
                     swcOffline.setEnabled(true);
                     switchScriveTesto.setEnabled(true);
+                    switchHome.setEnabled(true);
+                    switchLock.setEnabled(true);
                 } else {
                     btnMenoMinuti.setEnabled(false);
                     btnPiuMinuti.setEnabled(false);
@@ -330,6 +406,8 @@ public class InizializzaMaschera {
                     swcBlur.setEnabled(false);
                     swcOffline.setEnabled(false);
                     switchScriveTesto.setEnabled(false);
+                    switchHome.setEnabled(false);
+                    switchLock.setEnabled(false);
                 }
 
                 db_dati db = new db_dati(context);
@@ -367,6 +445,8 @@ public class InizializzaMaschera {
                 imgRefresh.setVisibility(LinearLayout.GONE);
                 imgRefreshLocale.setVisibility(LinearLayout.GONE);
                 btnCambioPath.setEnabled(false);
+                switchHome.setEnabled(false);
+                switchLock.setEnabled(false);
 
                 Runnable runTimer;
                 Handler handlerTimer;
@@ -381,12 +461,12 @@ public class InizializzaMaschera {
                             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine Manuale---");
                             ChangeWallpaper c = new ChangeWallpaper(context);
                             if (!VariabiliStaticheServizio.getInstance().isOffline()) {
-                                boolean fatto = c.setWallpaper(null);
+                                boolean fatto = c.setWallpaper(context, null);
                                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                             } else {
                                 int numeroRandom = Utility.getInstance().GeneraNumeroRandom(VariabiliStaticheServizio.getInstance().getListaImmagini().size() - 1);
                                 if (numeroRandom > -1) {
-                                    boolean fatto = c.setWallpaper(VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
+                                    boolean fatto = c.setWallpaper(context, VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
                                     Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                                 } else {
                                     Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata manualmente: Caricamento immagini in corso---");
@@ -407,6 +487,8 @@ public class InizializzaMaschera {
                         imgRefreshLocale.setVisibility(LinearLayout.VISIBLE);
                         btnCambioPath.setEnabled(true);
                         imgCaricamento.setVisibility(LinearLayout.GONE);
+                        switchHome.setEnabled(true);
+                        switchLock.setEnabled(true);
                     }
                 }, 500);
             }

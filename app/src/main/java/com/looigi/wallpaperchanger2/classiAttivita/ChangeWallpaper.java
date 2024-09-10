@@ -34,11 +34,8 @@ public class ChangeWallpaper {
 	private final int BordoY = 10;
 	private int SchermoX;
 	private int SchermoY;
-	private Context context;
 
 	public ChangeWallpaper(Context context) {
-		this.context = context;
-
 		DisplayMetrics metrics = new DisplayMetrics();
 		if (VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
 			VariabiliStaticheServizio.getInstance().getMainActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -68,7 +65,7 @@ public class ChangeWallpaper {
 		}
 	}
 
-	public Boolean setWallpaper(StrutturaImmagine src) {
+	public Boolean setWallpaper(Context context, StrutturaImmagine src) {
 		if (SchermoX == -1) {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
 			return false;
@@ -79,13 +76,13 @@ public class ChangeWallpaper {
 				ChiamateWS c = new ChiamateWS(context);
 				c.TornaProssimaImmagine();
 			} else {
-				setWallpaperLocale(src);
+				setWallpaperLocale(context, src);
 			}
 		}
 		return true;
 	}
 
-	public Boolean setWallpaperLocale(StrutturaImmagine src) {
+	public Boolean setWallpaperLocale(Context context, StrutturaImmagine src) {
 		boolean Ritorno = true;
 
 		if (SchermoX == -1) {
@@ -94,7 +91,7 @@ public class ChangeWallpaper {
 		} else {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
 
-			Bitmap setWallToDevice = PrendeImmagineReale(src);
+			Bitmap setWallToDevice = PrendeImmagineReale(context, src);
 
 			if (setWallToDevice != null) {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
@@ -104,19 +101,23 @@ public class ChangeWallpaper {
 					Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Impostazione dimensioni " + setWallToDevice.getWidth() + "x" + setWallToDevice.getHeight());
 
 					// HOME SCREEN
-					wallpaperManager.setBitmap(
-							setWallToDevice,
-							null,
-							true,
-							WallpaperManager.FLAG_SYSTEM
-					);
+					if (VariabiliStaticheServizio.getInstance().isHome()) {
+						wallpaperManager.setBitmap(
+								setWallToDevice,
+								null,
+								true,
+								WallpaperManager.FLAG_SYSTEM
+						);
+					}
 
 					// LOCK SCREEN
-					/* wallpaperManager.setBitmap(
-							setWallToDevice,
-							null,
-							true,
-							WallpaperManager.FLAG_LOCK); */
+					if (VariabiliStaticheServizio.getInstance().isLock()) {
+						wallpaperManager.setBitmap(
+								setWallToDevice,
+								null,
+								true,
+								WallpaperManager.FLAG_LOCK);
+					}
 
 					// wallpaperManager.setWallpaperOffsetSteps(1, 1);
 					// if (VariabiliGlobali.getInstance().getStretch().equals("S")) {
@@ -146,7 +147,7 @@ public class ChangeWallpaper {
 		return Ritorno;
 	}
 
-	private Bitmap PrendeImmagineReale(StrutturaImmagine si) {
+	private Bitmap PrendeImmagineReale(Context context, StrutturaImmagine si) {
 		if (si == null) {
 			return null;
 		}
@@ -188,7 +189,7 @@ public class ChangeWallpaper {
 								// comboImage.drawBitmap(myBitmap, Larghezza, Altezza, null);
 								Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
 
-								myBitmap = MetteBordoAImmagine(myBitmap, si);
+								myBitmap = MetteBordoAImmagine(context, myBitmap, si);
 							} catch (Exception e) {
 								Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine. Errore: " + Utility.getInstance().PrendeErroreDaException(e));
 								myBitmap = null;
@@ -229,9 +230,13 @@ public class ChangeWallpaper {
 			int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
 			int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
 
-			VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText("Prossimo cambio: " +
-					VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
-					quantiGiri);
+			VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText("Prossimo cambio: " +
+							VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+							quantiGiri);
+				}
+			});
 
 			// Notifica.getInstance().AggiornaNotifica();
 			db_dati db = new db_dati(context);
@@ -247,7 +252,7 @@ public class ChangeWallpaper {
 		}
 	}
 	
-	private Bitmap getPreview(String uri) {
+	private Bitmap getPreview(Context context, String uri) {
 		Utility.getInstance().ScriveLog(context, NomeMaschera,"Get preview");
 
 		try {
@@ -273,7 +278,7 @@ public class ChangeWallpaper {
 		}
 	}
 
-	private Bitmap ConverteDimensioni(Bitmap b) {
+	private Bitmap ConverteDimensioni(Context context, Bitmap b) {
 		if (b!=null) {
 			try {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 1");
@@ -317,10 +322,10 @@ public class ChangeWallpaper {
 		}
 	}
 
-	private Bitmap MetteBordoAImmagine(Bitmap myBitmapPassata, StrutturaImmagine si) {
+	private Bitmap MetteBordoAImmagine(Context context, Bitmap myBitmapPassata, StrutturaImmagine si) {
 		Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo a immagine");
 
-		Bitmap myBitmap = ConverteDimensioni(myBitmapPassata);
+		Bitmap myBitmap = ConverteDimensioni(context, myBitmapPassata);
 
 		float dimeImmX = myBitmap.getWidth();
 		float dimeImmY = myBitmap.getHeight();
@@ -417,8 +422,13 @@ public class ChangeWallpaper {
 				Nome = Nome.replace("." + estensione, "");
 			}
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			Date date = new Date(si.getDataImmagine());
-			String dateTime = dateFormat.format(date);
+			String dateTime = "";
+			try {
+				Date date = new Date(si.getDataImmagine());
+				dateTime = dateFormat.format(date);
+			} catch (Exception e) {
+
+			}
 
 			int posizioneScrittaX = ((int) posX) + 85;
 			int posizioneScrittaY = ((int) posY) - 95;

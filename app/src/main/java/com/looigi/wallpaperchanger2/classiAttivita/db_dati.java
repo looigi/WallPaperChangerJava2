@@ -55,7 +55,7 @@ public class db_dati {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
-                        "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR);";
+                        "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
@@ -71,7 +71,7 @@ public class db_dati {
 
     public boolean EliminaImmaginiInLocale() {
         if (myDB != null) {
-            myDB.execSQL("Delete From Impostazioni");
+            myDB.execSQL("Delete From ListaImmaginiLocali");
         }
 
         return true;
@@ -162,7 +162,7 @@ public class db_dati {
                 myDB.execSQL("Delete From Impostazioni");
                 String sql = "INSERT INTO"
                         + " Impostazioni"
-                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, Resize, ScriveTesto, OnOff)"
+                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, Resize, ScriveTesto, OnOff, Home, Lock)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -172,7 +172,9 @@ public class db_dati {
                         + "'" + (VariabiliStaticheServizio.getInstance().isBlur() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isResize() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine()  ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isOnOff() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isOnOff() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isHome() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isLock() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -209,6 +211,8 @@ public class db_dati {
                     VariabiliStaticheServizio.getInstance().setResize(c.getString(6).equals("S"));
                     VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(c.getString(7).equals("S"));
                     VariabiliStaticheServizio.getInstance().setOnOff(c.getString(8).equals("S"));
+                    VariabiliStaticheServizio.getInstance().setHome(c.getString(9).equals("S"));
+                    VariabiliStaticheServizio.getInstance().setLock(c.getString(10).equals("S"));
 
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheServizio.getInstance().isOnOff());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa());
@@ -217,6 +221,8 @@ public class db_dati {
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheServizio.getInstance().isBlur());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheServizio.getInstance().isResize());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheServizio.getInstance().isHome());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheServizio.getInstance().isLock());
                 } else {
                     return false;
                 }
@@ -262,6 +268,19 @@ public class db_dati {
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table ListaImmaginiLocali");
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    public void PulisceDatiIW() {
+        // SQLiteDatabase myDB = ApreDB();
+        if (myDB != null) {
+            // myDB.execSQL("Delete From Utente");
+            // myDB.execSQL("Delete From Ultima");
+            try {
+                myDB.execSQL("Drop Table ListaImmaginiWeb");
             } catch (Exception ignored) {
 
             }
