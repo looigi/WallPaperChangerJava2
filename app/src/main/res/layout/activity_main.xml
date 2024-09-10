@@ -379,6 +379,7 @@
         </ImageView>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/laySceltaImmagine"
             android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
             android:layout_width="wrap_content"
@@ -395,50 +396,76 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:weightSum="11"
-                    android:gravity="center_vertical|right"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_marginStart="3dp"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_vertical"
-                        android:text="Ricerca"
-                        android:layout_height="match_parent" />
-
-                    <EditText
-                        android:id="@+id/edtFiltro"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:ems="10"
-                        android:inputType="text"
-                        android:text="" />
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:weightSum="5">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:weightSum="11"
+                        android:gravity="center_vertical|right">
 
-                        <ImageView
-                            android:id="@+id/imgRicercaScelta"
-                            android:src="@drawable/icona_cerca"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_marginStart="3dp"
+                            android:textColor="@color/colorPrimary"
+                            android:gravity="center_vertical"
+                            android:text="Ricerca"
+                            android:layout_height="match_parent" />
+
+                        <EditText
+                            android:id="@+id/edtFiltro"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:text="" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imgRicercaScelta"
+                                android:src="@drawable/icona_cerca"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imgChiudeScelta"
+                                android:src="@drawable/elimina_quadrato"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_weight="2"
-                        android:layout_height="wrap_content">
+                        android:layout_height="0dp">
 
-                        <ImageView
-                            android:id="@+id/imgChiudeScelta"
-                            android:src="@drawable/elimina_quadrato"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp" />
+                        <TextView
+                            android:id="@+id/txtQuanteRicerca"
+                            android:layout_width="match_parent"
+                            android:textColor="#aa0000"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:text="Pulisce file di log"
+                            android:layout_height="match_parent">
+
+                        </TextView>
+
                     </LinearLayout>
                 </LinearLayout>
 

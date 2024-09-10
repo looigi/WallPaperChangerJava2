@@ -107,6 +107,10 @@ public class InizializzaMaschera {
                 VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
                 quantiGiri);
 
+        TextView txtQuanteRicerca = (TextView) view.findViewById(R.id.txtQuanteRicerca);
+        txtQuanteRicerca.setText("");
+        VariabiliStaticheServizio.getInstance().setTxtQuanteRicerca(txtQuanteRicerca);
+
         Button btnMenoMinuti = (Button) view.findViewById(R.id.btnMenoMinuti);
         Button btnPiuMinuti = (Button) view.findViewById(R.id.btnPiuMinuti);
         TextView edtMinuti = (TextView) view.findViewById(R.id.txtMinuti);

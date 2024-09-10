@@ -82,7 +82,7 @@ public class GestioneNotifiche {
 
             Notification notifica = notificationBuilder
                 .setContentTitle(VariabiliStaticheServizio.channelName)                            // required
-                .setSmallIcon(R.drawable.logo)   // required android.R.drawable.ic_menu_slideshow
+                .setSmallIcon(R.drawable.eye)   // required android.R.drawable.ic_menu_slideshow
                 .setContentText(VariabiliStaticheServizio.channelName) // required
                 // .setDefaults(Notification.DEFAULT_ALL)
                 .setOnlyAlertOnce(false)

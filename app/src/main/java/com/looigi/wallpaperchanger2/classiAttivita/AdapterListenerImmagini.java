@@ -29,12 +29,13 @@ public class AdapterListenerImmagini extends BaseAdapter {
         this.context = applicationContext;
         this.listaImmaginiOrig = Immagini;
         this.listaImmagini = Immagini;
+        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size() - 1));
         inflater = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return listaImmaginiOrig.size();
+        return listaImmagini.size();
     }
 
     @Override
@@ -53,7 +54,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
         notifyDataSetChanged();
 
         for (int i = 0; i < listaImmaginiOrig.size(); i++) {
-            String NomeImmagine = listaImmaginiOrig.get(i).getImmagine();
+            String NomeImmagine = listaImmaginiOrig.get(i).getPathImmagine();
             boolean Ok = true;
             if (!Filtro.isEmpty()) {
                 if (!NomeImmagine.toUpperCase().contains(Filtro.toUpperCase())) {
@@ -64,6 +65,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 listaImmagini.add(listaImmaginiOrig.get(i));
             }
         }
+        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size() - 1));
 
         notifyDataSetChanged();
     }
@@ -74,6 +76,9 @@ public class AdapterListenerImmagini extends BaseAdapter {
 
         if (i < listaImmagini.size()) {
             String NomeImmagine = listaImmagini.get(i).getImmagine();
+            String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(VariabiliStaticheServizio.PercorsoImmagineSuURL + "/", "")
+                    .replace(NomeImmagine, "");
+
             ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
             imgVisualizza.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -96,12 +101,15 @@ public class AdapterListenerImmagini extends BaseAdapter {
                     imgImmagine.setImageBitmap(myBitmap);
                 }
             } else {
-                String PathImmagine = listaImmagini.get(i).getPathImmagine();
-                new DownloadImage(context, PathImmagine, imgImmagine).execute(PathImmagine);
+                String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
+                new DownloadImage(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
             }
 
             TextView Immagine = (TextView) view.findViewById(R.id.txtImmagine);
             Immagine.setText(NomeImmagine);
+
+            TextView Path = (TextView) view.findViewById(R.id.txtPath);
+            Path.setText(PathImmagine);
         }
 
         return view;

@@ -72,6 +72,7 @@ public class VariabiliStaticheServizio {
     private RelativeLayout layScelta;
     private String filtroRicerca = "";
     private AdapterListenerImmagini adapterImmagini;
+    private TextView txtQuanteRicerca;
 
     // private int quantiGiri;
     // private int SecondiAlCambio = 10000;
@@ -79,6 +80,14 @@ public class VariabiliStaticheServizio {
     private int SecondiPassati;
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looWebPlayer/ImmaginiMusica";
     // private int tempoTimer = 30000;
+
+    public TextView getTxtQuanteRicerca() {
+        return txtQuanteRicerca;
+    }
+
+    public void setTxtQuanteRicerca(TextView txtQuanteRicerca) {
+        this.txtQuanteRicerca = txtQuanteRicerca;
+    }
 
     public AdapterListenerImmagini getAdapterImmagini() {
         return adapterImmagini;
