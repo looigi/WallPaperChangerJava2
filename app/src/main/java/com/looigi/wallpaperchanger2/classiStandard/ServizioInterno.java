@@ -67,24 +67,24 @@ public class ServizioInterno extends Service {
 
         Notification notifica = GestioneNotifiche.getInstance().StartNotifica(this);
         // VariabiliStatiche.getInstance().setNotifica(GestioneNotifiche.getInstance().StartNotifica(this));
-        // if (VariabiliStatiche.getInstance().getNotifica() != null) {
-        startForeground(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notifica);
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
-        GestioneNotifiche.getInstance().AggiornaNotifica();
+        if (notifica != null) {
+            startForeground(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notifica);
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+            GestioneNotifiche.getInstance().AggiornaNotifica();
 
-        Esecuzione e = new Esecuzione(context);
-        e.startServizio1();
+            Esecuzione e = new Esecuzione(context);
+            e.startServizio1();
 
-        /* Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Foreground Partito",
-                Toast.LENGTH_SHORT).show();
+            /* Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Foreground Partito",
+                    Toast.LENGTH_SHORT).show();
 
-        if (VariabiliStatiche.getInstance().getMainActivity() != null) {
-            VariabiliStatiche.getInstance().getMainActivity().moveTaskToBack(false);
-        }
+            if (VariabiliStatiche.getInstance().getMainActivity() != null) {
+                VariabiliStatiche.getInstance().getMainActivity().moveTaskToBack(false);
+            } */
         } else {
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStatiche.channelName + " nulla");
-            Toast.makeText(this, "Notifica " + VariabiliStatiche.channelName + " nulla", Toast.LENGTH_SHORT).show();
-        } */
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheServizio.channelName + " nulla");
+            Toast.makeText(this, "Notifica " + VariabiliStaticheServizio.channelName + " nulla", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

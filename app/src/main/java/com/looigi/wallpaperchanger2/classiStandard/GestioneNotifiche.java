@@ -65,11 +65,15 @@ public class GestioneNotifiche {
                 String path = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine();
                 Bitmap bmImg = BitmapFactory.decodeFile(path);
                 contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
+
+                contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+                contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
             } else {
                 contentView.setImageViewBitmap(R.id.imgCopertina, null);
+
+                contentView.setTextViewText(R.id.txtTitoloNotifica, "");
+                contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
             }
-            contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
-            contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
             int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
             int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
             String prossimo = "Prossimo cambio: " +
