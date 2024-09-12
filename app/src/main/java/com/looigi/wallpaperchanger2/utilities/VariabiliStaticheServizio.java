@@ -43,6 +43,8 @@ public class VariabiliStaticheServizio {
     private Intent servizioForeground;
     private String PercorsoDIRLog = "";
     public static int secondiDiAttesaContatore = 60;
+    private boolean staPartendo = true;
+    private int errori = 0;
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
@@ -54,7 +56,8 @@ public class VariabiliStaticheServizio {
     private TextView txtQuanteImmagini;
     private int ImmaginiOnline;
     private boolean retePresente = true;
-    private boolean offline = true;
+    private boolean letteImpostazioni = false;
+    private boolean offline = false;
     private StrutturaImmagine UltimaImmagine;
     private ImageView imgImpostata;
     private boolean blur = true;
@@ -67,19 +70,52 @@ public class VariabiliStaticheServizio {
     private TextView txtPath;
     private boolean ImmagineCambiataConSchermoSpento = false;
     private boolean ePartito = false;
-    private int minutiAttesa = 1;
+    private int minutiAttesa = 15;
     private ListView lstImmagini;
     private RelativeLayout layScelta;
     private String filtroRicerca = "";
     private AdapterListenerImmagini adapterImmagini;
     private TextView txtQuanteRicerca;
+    private RelativeLayout layAttesa;
 
     // private int quantiGiri;
     // private int SecondiAlCambio = 10000;
     private TextView txtTempoAlCambio;
     private int SecondiPassati;
-    private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath()+"/LooigiSoft/looWebPlayer/ImmaginiMusica";
+    private String PercorsoIMMAGINI = "";
     // private int tempoTimer = 30000;
+
+    public int getErrori() {
+        return errori;
+    }
+
+    public void setErrori(int errori) {
+        this.errori = errori;
+    }
+
+    public boolean isStaPartendo() {
+        return staPartendo;
+    }
+
+    public void setStaPartendo(boolean staPartendo) {
+        this.staPartendo = staPartendo;
+    }
+
+    public RelativeLayout getLayAttesa() {
+        return layAttesa;
+    }
+
+    public void setLayAttesa(RelativeLayout layAttesa) {
+        this.layAttesa = layAttesa;
+    }
+
+    public boolean isLetteImpostazioni() {
+        return letteImpostazioni;
+    }
+
+    public void setLetteImpostazioni(boolean letteImpostazioni) {
+        this.letteImpostazioni = letteImpostazioni;
+    }
 
     public TextView getTxtQuanteRicerca() {
         return txtQuanteRicerca;

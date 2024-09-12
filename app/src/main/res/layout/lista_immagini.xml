@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:padding="2dp"
     android:orientation="vertical">
 
@@ -9,7 +9,7 @@
         android:id="@+id/layContenitoreLista"
         android:layout_width="match_parent"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:weightSum="10"
         android:orientation="horizontal">
 
@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_gravity="center_horizontal"
@@ -32,7 +32,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp">
                 </ImageView>
-            </LinearLayout>
+            </LinearLayout> -->
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -42,6 +42,7 @@
 
                 <ImageView
                     android:id="@+id/imgImmagine"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </ImageView>
@@ -49,7 +50,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="6"
+                android:layout_weight="8"
+                android:paddingStart="3dp"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 

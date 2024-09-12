@@ -12,7 +12,7 @@ import static androidx.core.content.ContextCompat.registerReceiver;
 
 public class Esecuzione {
     private Handler handler;
-    private int errori;
+    // private int errori;
     private long tmsPrecedente = -1L;
     private static final String NomeMaschera = "Esecuzione";
     private final Context context;
@@ -21,7 +21,7 @@ public class Esecuzione {
     public Esecuzione(Context context) {
         this.context = context;
 
-        errori = 0;
+        VariabiliStaticheServizio.getInstance().setErrori(0);
     }
 
     public void restartServizio() {
@@ -66,7 +66,9 @@ public class Esecuzione {
         } else {
             long diff = (tmsAttuale - tmsPrecedente);
             if (diff > ((VariabiliStaticheServizio.secondiDiAttesaContatore * 1000) + 10000L)) {
-                errori++;
+                int errori = VariabiliStaticheServizio.getInstance().getErrori() + 1;
+                VariabiliStaticheServizio.getInstance().setErrori(errori);
+
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Secondi " + Long.toString(diff / 1000L) + "/" +
                         Integer.toString(VariabiliStaticheServizio.secondiDiAttesaContatore));
@@ -105,9 +107,9 @@ public class Esecuzione {
             }
         }
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Contatore " +
+        /* Utility.getInstance().ScriveLog(context, NomeMaschera, "Contatore " +
                 VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
-                quantiGiri);
+                quantiGiri); */
 
         GestioneNotifiche.getInstance().AggiornaNotifica();
     }

@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.CONTEXT_RESTRICTED;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati {
@@ -20,11 +21,16 @@ public class db_dati {
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
+    private boolean Controlla = true;
 
     public db_dati(Context context) {
+        Utility.getInstance().ScriveLog(context, NomeMaschera, "Instanzio db dati");
+
         this.context = context;
-        PathDB = Environment.getExternalStorageDirectory() + "/" +
-                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheServizio.channelName + "/DB/";
+        // /data/user/0/com.looigi.wallpaperchanger2/files/LooigiSoft/wallpaperchanger2/DB/
+        PathDB = context.getFilesDir() + "/LooigiSoft/" + VariabiliStaticheServizio.channelName + "/DB/";
+
+        Utility.getInstance().ScriveLog(context, NomeMaschera, "Cartella: " + PathDB);
 
         File f = new File(PathDB);
         try {
@@ -32,23 +38,35 @@ public class db_dati {
         } catch (Exception ignored) {
 
         }
+
         myDB = ApreDB();
     }
 
     private SQLiteDatabase ApreDB() {
+        Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro DB");
+
         SQLiteDatabase db = null;
         try {
             String nomeDB = "dati.db";
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Nome DB: " + PathDB + nomeDB);
+
             db = context.openOrCreateDatabase(
                     PathDB + nomeDB, MODE_PRIVATE, null);
         } catch (Exception e) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Nell'apertura del db: " +
                     Utility.getInstance().PrendeErroreDaException(e));
+            // Utility.getInstance().ApreToast(context, "Errore apertura DB: " +
+            //         Utility.getInstance().PrendeErroreDaException(e));
         }
+
         return  db;
     }
 
     public void CreazioneTabelle() {
+        if (myDB == null) {
+            ApreDB();
+        }
+
         try {
             // SQLiteDatabase myDB = ApreDB();
             if (myDB != null) {
@@ -147,6 +165,11 @@ public class db_dati {
     }
 
     public Boolean ScriveImpostazioni() {
+        if (Controlla && !VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
+            return false;
+        }
+
         if (myDB != null) {
             try {
                 String Imm = "";
@@ -193,6 +216,9 @@ public class db_dati {
     }
 
     public boolean LeggeImpostazioni() {
+        if (myDB == null) {
+            ApreDB();
+        }
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             try {
@@ -224,7 +250,10 @@ public class db_dati {
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheServizio.getInstance().isHome());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheServizio.getInstance().isLock());
                 } else {
-                    return false;
+                    Controlla = false;
+                    boolean scritti = ScriveImpostazioni();
+                    Controlla = true;
+                    return scritti;
                 }
                 c.close();
             } catch (Exception e) {
@@ -236,6 +265,8 @@ public class db_dati {
 
                 return false;
             }
+        } else {
+            return false;
         }
 
         return true;

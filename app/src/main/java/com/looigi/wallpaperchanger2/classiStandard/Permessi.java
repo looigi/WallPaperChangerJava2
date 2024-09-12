@@ -6,19 +6,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.looigi.wallpaperchanger2.MainActivity;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 import static android.content.Context.POWER_SERVICE;
 import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
 
 public class Permessi {
+    private Context context;
+    private Activity act;
+
     public boolean ControllaPermessi(Activity context) {
         int permissionRequestCode1 = 1193;
+        this.context = context;
+        this.act = context;
 
         String[] PERMISSIONS = new String[]{
                 // Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -47,7 +61,7 @@ public class Permessi {
                 Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE
         };
 
-        if(!hasPermissions(context, PERMISSIONS)) {
+        if (!hasPermissions(context, PERMISSIONS)) {
             // PERMESSO BATTERIA SENZA RESTRIZIONI
             Intent intent2 = new Intent();
             String packageName = context.getPackageName();
@@ -91,5 +105,4 @@ public class Permessi {
 
         return true;
     }
-
 }

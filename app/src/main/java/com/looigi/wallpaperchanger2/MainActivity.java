@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +39,7 @@ public class MainActivity extends Activity {
         VariabiliStaticheServizio.getInstance().setMainActivity(this);
         // VariabiliStaticheServizio.getInstance().setSecondiDiAttesaContatore(60L);
 
-        Utility.getInstance().generaPath();
+        Utility.getInstance().generaPath(this);
 
         if (!isMyServiceRunning(RunServiceOnBoot.class)) {
             Intent intent1 = new Intent(MainActivity.this, RunServiceOnBoot.class);
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
 
         Permessi pp = new Permessi();
         VariabiliStaticheServizio.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
+
 
         if (VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
             startService();
@@ -85,7 +87,16 @@ public class MainActivity extends Activity {
             InizializzaMaschera i = new InizializzaMaschera();
             i.inizializzaMaschera(this, this);
 
-            moveTaskToBack(false);
+            /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+                Utility.getInstance().ScriveLog(this, NomeMaschera, "Uscita per mancanza di impostazioni 1");
+                Utility.getInstance().ApreToast(this, "Uscita per mancanza di impostazioni 1");
+
+                Utility.getInstance().stopService(this);
+                finish();
+                System.exit(-1);
+            }
+
+            moveTaskToBack(false); */
         } else {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
             Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
@@ -94,6 +105,15 @@ public class MainActivity extends Activity {
             // Operazioni che si devono eseguire in caso di ripartenza col servizio attivo
             InizializzaMaschera i = new InizializzaMaschera();
             i.inizializzaMaschera(this, this);
+
+            /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+                Utility.getInstance().ScriveLog(this, NomeMaschera, "Uscita per mancanza di impostazioni 2");
+                Utility.getInstance().ApreToast(this, "Uscita per mancanza di impostazioni 2");
+
+                Utility.getInstance().stopService(this);
+                finish();
+                System.exit(-1);
+            } */
         }
     }
 
@@ -170,8 +190,19 @@ public class MainActivity extends Activity {
         Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA ICONA");
         Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
-        // InizializzaMaschera i = new InizializzaMaschera();
-        // i.inizializzaMaschera(this, this);
+        // if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+            InizializzaMaschera i = new InizializzaMaschera();
+            i.inizializzaMaschera(this, this);
+        // }
+
+        /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+            Utility.getInstance().ScriveLog(this, NomeMaschera, "Uscita per mancanza di impostazioni 3");
+            Utility.getInstance().ApreToast(this, "Uscita per mancanza di impostazioni 3");
+
+            Utility.getInstance().stopService(this);
+            finish();
+            System.exit(-1);
+        } */
     }
 
     @Override

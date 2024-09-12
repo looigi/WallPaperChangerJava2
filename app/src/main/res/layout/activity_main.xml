@@ -163,8 +163,89 @@
                         android:textColor="#0000CC"
                         android:text="Modalità offline"
                         android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                    <!-- <Switch
+            <LinearLayout
+                android:id="@+id/layOffline"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtPath"
+                    android:layout_width="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Cartella di origine"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="6"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorAccent"
+                        android:text="Cartella di origine"
+                        android:layout_height="match_parent">
+
+                    </TextView>
+
+                    <Button
+                        android:id="@+id/btnCambiaPath"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="..."
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:textColor="@color/colorAccent"
+                        android:text="Refresh immagini"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgRefreshLocale"
+                            android:layout_width="30dp"
+                            android:src="@drawable/icona_refresh"
+                            android:layout_height="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- <Switch
                         android:id="@+id/switchResize"
                         android:layout_width="match_parent"
                         android:textColor="#0000CC"
@@ -213,79 +294,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layOffline"
-                    android:layout_width="match_parent"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/txtPath"
-                        android:layout_width="match_parent"
-                        android:layout_weight="5"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/colorPrimary"
-                        android:text="Cartella di origine"
-                        android:layout_height="match_parent">
-
-                    </TextView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:weightSum="6"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/colorAccent"
-                            android:text="Cartella di origine"
-                            android:layout_height="match_parent">
-
-                        </TextView>
-
-                        <Button
-                            android:id="@+id/btnCambiaPath"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="..."
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="6"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:textColor="@color/colorAccent"
-                            android:text="Refresh immagini"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|right"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/imgRefreshLocale"
-                                android:layout_width="30dp"
-                                android:src="@drawable/icona_refresh"
-                                android:layout_height="30dp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
+                <!-- <LinearLayout
                     android:layout_width="match_parent"
                     android:gravity="right"
                     android:layout_marginTop="5dp"
@@ -299,7 +309,7 @@
                         android:layout_height="30dp">
 
                     </ImageView>
-                </LinearLayout>
+                </LinearLayout> -->
 
 
                 <LinearLayout
@@ -378,6 +388,17 @@
 
         </ImageView>
 
+        <ImageView
+            android:id="@+id/imgUscita"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/shutdown"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+        </ImageView>
+
         <RelativeLayout
             android:visibility="gone"
             android:id="@+id/laySceltaImmagine"
@@ -396,7 +417,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:orientation="vertical"
                     android:weightSum="5">
 
@@ -472,13 +493,27 @@
                 <ListView
                     android:id="@+id/lstImmagini"
                     android:layout_width="match_parent"
-                    android:layout_weight="9"
+                    android:layout_weight="8"
                     android:layout_height="0dp"
                     android:dividerHeight="1dp"
                     android:listSelector="#9999EE" />
             </LinearLayout>
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layAttesa"
+            android:background="@drawable/sfondo_nero"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_centerInParent="true"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:src="@drawable/loading" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

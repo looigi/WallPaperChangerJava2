@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainActivity;
+import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 public class yourActivityRunOnStartup extends BroadcastReceiver {
@@ -20,7 +21,9 @@ public class yourActivityRunOnStartup extends BroadcastReceiver {
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             } catch (Exception e) {
-                Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Service Started", Toast.LENGTH_SHORT).show();
+                Utility.getInstance().ApreToast(context, "Service Started");
+
+                // Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Service Started", Toast.LENGTH_SHORT).show();
             }
         }
     }

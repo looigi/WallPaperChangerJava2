@@ -23,7 +23,7 @@ public class ConverteNomeUri {
                 final String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    return context.getFilesDir() + "/" + split[1];
                 }
 
                 // TODO handle non-primary volumes

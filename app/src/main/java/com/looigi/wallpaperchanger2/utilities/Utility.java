@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -36,7 +39,7 @@ public class Utility {
     public void ScriveLog(Context context, String Maschera, String Log) {
         if (VariabiliStaticheServizio.getInstance().getPercorsoDIRLog().isEmpty() ||
                 VariabiliStaticheServizio.getInstance().getNomeFileDiLog().isEmpty()) {
-            generaPath();
+            generaPath(context);
         }
 
         if (context != null) {
@@ -86,12 +89,25 @@ public class Utility {
         }
     }
 
-    public void generaPath() {
-        String pathLog = Environment.getExternalStorageDirectory() + "/" +
-                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheServizio.channelName + "/Log";
+    public void generaPath(Context context) {
+        String pathLog = context.getFilesDir() + "/LooigiSoft/" + VariabiliStaticheServizio.channelName + "/Log";
         VariabiliStaticheServizio.getInstance().setPercorsoDIRLog(pathLog);
         String nomeFileLog = VariabiliStaticheServizio.channelName + ".txt";
         VariabiliStaticheServizio.getInstance().setNomeFileDiLog(nomeFileLog);
+    }
+
+    public void ApreToast(Context context, String messaggio) {
+        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
+            if (context != null && VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
+                VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context,
+                                VariabiliStaticheServizio.channelName + ": " + messaggio,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
     }
 
     public boolean EliminaFileUnico(String fileName) {
@@ -199,6 +215,48 @@ public class Utility {
         if (VariabiliStaticheServizio.getInstance().getServizioForeground() != null) {
             context.stopService(VariabiliStaticheServizio.getInstance().getServizioForeground());
             VariabiliStaticheServizio.getInstance().setServizioForeground(null);
+        }
+    }
+
+    private int attese = 0;
+
+    public void Attesa(boolean Come) {
+        if (!VariabiliStaticheServizio.getInstance().isScreenOn()) {
+            attese = 0;
+            VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                }
+            });
+            return;
+        }
+
+        if (attese == 0) {
+            if (VariabiliStaticheServizio.getInstance().getLayAttesa() != null) {
+                VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (Come) {
+                            attese++;
+                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.VISIBLE);
+                        } else {
+                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                        }
+                    }
+                });
+            }
+        } else {
+            if (Come) {
+                attese++;
+            } else {
+                attese--;
+                if (attese <= 0) {
+                    VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                        }
+                    });
+                }
+            }
         }
     }
 }

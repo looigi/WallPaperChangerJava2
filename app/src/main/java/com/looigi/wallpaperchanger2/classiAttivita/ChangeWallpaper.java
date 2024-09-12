@@ -36,6 +36,8 @@ public class ChangeWallpaper {
 	private int SchermoY;
 
 	public ChangeWallpaper(Context context) {
+		Utility.getInstance().Attesa(true);
+
 		DisplayMetrics metrics = new DisplayMetrics();
 		if (VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
 			VariabiliStaticheServizio.getInstance().getMainActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -63,9 +65,13 @@ public class ChangeWallpaper {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su riavvio: Context nullo");
 			}
 		}
+
+		Utility.getInstance().Attesa(false);
 	}
 
 	public Boolean setWallpaper(Context context, StrutturaImmagine src) {
+		Utility.getInstance().Attesa(true);
+
 		if (SchermoX == -1) {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
 			return false;
@@ -79,13 +85,18 @@ public class ChangeWallpaper {
 				setWallpaperLocale(context, src);
 			}
 		}
+
+		Utility.getInstance().Attesa(false);
+
 		return true;
 	}
 
 	public Boolean setWallpaperLocale(Context context, StrutturaImmagine src) {
 		boolean Ritorno = true;
+		Utility.getInstance().Attesa(true);
 
 		if (SchermoX == -1) {
+			Utility.getInstance().Attesa(false);
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper locale: dimensioni schermo non impostate");
 			Ritorno = false;
 		} else {
@@ -143,6 +154,7 @@ public class ChangeWallpaper {
 				Ritorno = false;
 			}
 		}
+		Utility.getInstance().Attesa(false);
 
 		return Ritorno;
 	}
@@ -441,15 +453,27 @@ public class ChangeWallpaper {
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(35);
 			canvas1.drawText(Nome, posizioneScrittaX + spostamento, posizioneScrittaY + spostamento, paint);
-			canvas1.drawText("Data immagine: " + dateTime, posizioneScrittaX + spostamento, posizioneScrittaY + spostamento + 35, paint);
-			canvas1.drawText("Dimensione immagine: " + si.getDimensione(), posizioneScrittaX + spostamento, posizioneScrittaY + spostamento + 70, paint);
+			int altezza = 35;
+			if (dateTime != null && !dateTime.trim().isEmpty()) {
+				canvas1.drawText("Data immagine: " + dateTime, posizioneScrittaX + spostamento, posizioneScrittaY + spostamento + altezza, paint);
+				altezza = 70;
+			}
+			if (si.getDimensione() != null && !si.getDimensione().trim().isEmpty()) {
+				canvas1.drawText("Dimensione immagine: " + si.getDimensione(), posizioneScrittaX + spostamento, posizioneScrittaY + spostamento + altezza, paint);
+			}
 
 			Paint paint2 = new Paint();
 			paint2.setColor(Color.YELLOW);
 			paint2.setTextSize(35);
 			canvas1.drawText(Nome, posizioneScrittaX,  posizioneScrittaY, paint2);
-			canvas1.drawText("Data immagine: " + dateTime, posizioneScrittaX,  posizioneScrittaY + 35, paint2);
-			canvas1.drawText("Dimensione immagine: " + si.getDimensione(), posizioneScrittaX, posizioneScrittaY + 70, paint2);
+			altezza = 35;
+			if (dateTime != null && !dateTime.trim().isEmpty()) {
+				canvas1.drawText("Data immagine: " + dateTime, posizioneScrittaX, posizioneScrittaY + altezza, paint2);
+				altezza = 70;
+			}
+			if (si.getDimensione() != null && !si.getDimensione().trim().isEmpty()) {
+				canvas1.drawText("Dimensione immagine: " + si.getDimensione(), posizioneScrittaX, posizioneScrittaY + altezza, paint2);
+			}
 		}
 
 		return Immaginona;

@@ -59,10 +59,10 @@ public class ServizioInterno extends Service {
         registerReceiver(mScreenReceiver, filter);
 
         // CPU Attiva
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        /* PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 VariabiliStaticheServizio.channelName);
-        wl.acquire();
+        wl.acquire(); */
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Notification notifica = GestioneNotifiche.getInstance().StartNotifica(this);
@@ -91,10 +91,14 @@ public class ServizioInterno extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "On Dest");
+        Utility.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
 
-        wl.release();
+        if (wl != null) {
+            wl.release();
+        }
         GestioneNotifiche.getInstance().RimuoviNotifica();
-        unregisterReceiver(mScreenReceiver);
+        if (mScreenReceiver != null) {
+            unregisterReceiver(mScreenReceiver);
+        }
     }
 }

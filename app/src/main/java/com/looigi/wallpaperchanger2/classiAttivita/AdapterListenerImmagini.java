@@ -79,19 +79,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
             String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(VariabiliStaticheServizio.PercorsoImmagineSuURL + "/", "")
                     .replace(NomeImmagine, "");
 
-            ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
-            imgVisualizza.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    VariabiliStaticheServizio.getInstance().setUltimaImmagine(listaImmagini.get(i));
-
-                    ChangeWallpaper c = new ChangeWallpaper(context);
-                    if (!VariabiliStaticheServizio.getInstance().isOffline()) {
-                        new DownloadImage(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
-                    } else {
-                        c.setWallpaperLocale(context, VariabiliStaticheServizio.getInstance().getUltimaImmagine());
-                    }
-                }
-            });
+            // ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
 
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
             if (VariabiliStaticheServizio.getInstance().isOffline()) {
@@ -104,6 +92,18 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
                 new DownloadImage(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
             }
+            imgImmagine.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    VariabiliStaticheServizio.getInstance().setUltimaImmagine(listaImmagini.get(i));
+
+                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+                        new DownloadImage(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
+                    } else {
+                        c.setWallpaperLocale(context, VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                    }
+                }
+            });
 
             TextView Immagine = (TextView) view.findViewById(R.id.txtImmagine);
             Immagine.setText(NomeImmagine);

@@ -78,13 +78,13 @@ public class GestioneNotifiche {
             int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
             String prossimo = "Prossimo cambio: " +
                     VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
-                    quantiGiri;
+                    quantiGiri + " - Timeouts: " + VariabiliStaticheServizio.getInstance().getErrori();
             contentView.setTextViewText(R.id.txtDettaglio, prossimo);
             contentView.setTextViewText(R.id.txtDettaglioSfondo, prossimo);
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheServizio.NOTIFICATION_CHANNEL_STRING);
 
-            Notification notifica = notificationBuilder
+            return notificationBuilder
                 .setContentTitle(VariabiliStaticheServizio.channelName)                            // required
                 .setSmallIcon(R.drawable.eye)   // required android.R.drawable.ic_menu_slideshow
                 .setContentText(VariabiliStaticheServizio.channelName) // required
@@ -102,8 +102,6 @@ public class GestioneNotifiche {
                 .setTicker("")
                 .setContent(contentView)
                 .build();
-
-            return notifica;
         } catch (Exception e) {
             Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
                     Utility.getInstance().PrendeErroreDaException(e));
@@ -168,9 +166,14 @@ public class GestioneNotifiche {
                 Utility.getInstance().ScriveLog(context, nomeMaschera, "ContentView nullo nonostante il ricaricamento");
             } */
 
-            Notification notification = StartNotifica(context);
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notification);
+            try {
+                Notification notification = StartNotifica(context);
+                NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notification);
+            } catch (Exception e) {
+                Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
+                        Utility.getInstance().PrendeErroreDaException(e));
+            }
         }
     }
 

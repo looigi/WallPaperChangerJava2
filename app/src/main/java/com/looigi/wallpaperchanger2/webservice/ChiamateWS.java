@@ -59,6 +59,8 @@ public class ChiamateWS implements TaskDelegate {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
+        Utility.getInstance().Attesa(true);
+
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
 
@@ -78,6 +80,8 @@ public class ChiamateWS implements TaskDelegate {
     @Override
     public void TaskCompletionResult(String result) {
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+
+        Utility.getInstance().Attesa(false);
 
         switch (TipoOperazione) {
             case "TornaProssimaImmagine":

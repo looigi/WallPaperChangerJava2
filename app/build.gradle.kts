@@ -51,4 +51,6 @@ dependencies {
     implementation(libs.acra.notification)
 
     implementation(libs.ksoap2.android)
+
+    implementation(libs.android.gif.drawable)
 }

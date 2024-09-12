@@ -40,7 +40,20 @@ public class InizializzaMaschera {
     private static final String NomeMaschera = "INITMASCHERA";
 
     public void inizializzaMaschera(Context context, Activity view) {
+        Handler handlerTimer = new Handler();
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                inizializzaMaschera2(context, view);
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1000);
+    }
+
+    private void inizializzaMaschera2(Context context, Activity view) {
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Inizializzo maschera");
+
+        VariabiliStaticheServizio.getInstance().setLayAttesa(view.findViewById(R.id.layAttesa));
+        Utility.getInstance().Attesa(false);
 
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
         VariabiliStaticheServizio.getInstance().setTxtQuanteImmagini(txtQuante);
@@ -50,7 +63,14 @@ public class InizializzaMaschera {
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
         db.CreazioneTabelle();
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-        db.LeggeImpostazioni();
+        boolean letto = db.LeggeImpostazioni();
+        Utility.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
+        VariabiliStaticheServizio.getInstance().setLetteImpostazioni(letto);
+
+        if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
+            Utility.getInstance().ApreToast(context, VariabiliStaticheServizio.channelName + ": Mancanza di impostazioni");
+        }
 
         ImpostaOggetti(context, view);
 
@@ -78,6 +98,11 @@ public class InizializzaMaschera {
         VariabiliStaticheServizio.getInstance().setePartito(false);
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
+
+        if (VariabiliStaticheServizio.getInstance().isStaPartendo()) {
+            VariabiliStaticheServizio.getInstance().setStaPartendo(false);
+            view.moveTaskToBack(false);
+        }
     }
 
     private void ImpostaOggetti(Context context, Activity view) {
@@ -216,6 +241,19 @@ public class InizializzaMaschera {
             }
         });
 
+        ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
+        imgUscita.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Utility.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
+                Utility.getInstance().ApreToast(context, "Uscita");
+
+                Utility.getInstance().stopService(context);
+                GestioneNotifiche.getInstance().RimuoviNotifica();
+
+                System.exit(-1);
+            }
+        });
+
         EditText edtFiltro = view.findViewById(R.id.edtFiltro);
 
         ImageView imgRicercaScelta = (ImageView) view.findViewById(R.id.imgRicercaScelta);
@@ -241,7 +279,8 @@ public class InizializzaMaschera {
                if (Utility.getInstance().EsisteFile(path)) {
                     Utility.getInstance().EliminaFileUnico(path);
                     // Utility.getInstance().VisualizzaMessaggio("File di log eliminato");
-                   Toast.makeText(context, VariabiliStaticheServizio.channelName + ": File di log eliminato", Toast.LENGTH_SHORT).show();
+                   Utility.getInstance().ApreToast(context, "File di log eliminato");
+                   // Toast.makeText(context, VariabiliStaticheServizio.channelName + ": File di log eliminato", Toast.LENGTH_SHORT).show();
                }
            }
        });
@@ -315,6 +354,7 @@ public class InizializzaMaschera {
                     }
                 }
 
+                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
             }
@@ -326,6 +366,7 @@ public class InizializzaMaschera {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheServizio.getInstance().setBlur(isChecked);
 
+                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
 
@@ -341,6 +382,7 @@ public class InizializzaMaschera {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(isChecked);
 
+                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
 
@@ -405,6 +447,7 @@ public class InizializzaMaschera {
                     switchLock.setEnabled(false);
                 }
 
+                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
             }
@@ -486,26 +529,6 @@ public class InizializzaMaschera {
                         switchLock.setEnabled(true);
                     }
                 }, 500);
-            }
-        });
-
-        ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
-        imgUscita.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                /* Context context = getApplicationContext();
-                PackageManager packageManager = context.getPackageManager();
-                Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
-                ComponentName componentName = intent.getComponent();
-                Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-                context.startActivity(mainIntent);
-                Runtime.getRuntime().exit(0); */
-
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Applicazione terminata");
-                GestioneNotifiche.getInstance().RimuoviNotifica();
-                // MainActivity.getAppActivity().stopService(new Intent(MainActivity.getAppActivity(),
-                //         ServizioBackground.class));
-
-                System.exit(0);
             }
         });
 
