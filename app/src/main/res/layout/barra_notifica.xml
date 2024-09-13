@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="130dp"
     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
 
     <ImageView
@@ -45,7 +45,7 @@
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="27dp">
+        android:layout_height="37dp">
 
         <TextView
             android:id="@+id/txtDettaglio"
@@ -54,29 +54,18 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_marginStart="1dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="8dp"
             android:text="Wallpaper Changer"
-            android:textColor="#000000" />
+            android:textColor="#AA0000" />
 
-        <TextView
-            android:id="@+id/txtDettaglioSfondo"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="7dp"
-            android:layout_width="match_parent"
-            android:singleLine="true"
-            android:text="Wallpaper Changer"
-            android:textColor="#AA0000"
-            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="2dp"
+            android:id="@+id/imgProssima"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icona_refresh" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:paddingTop="2dp"
-        android:paddingEnd="2dp"
-        android:id="@+id/imgProssima"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/icona_refresh" />
 </RelativeLayout>

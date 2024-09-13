@@ -4,15 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.widget.ImageView;
 
-import com.looigi.wallpaperchanger2.classiAttivita.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,7 +23,6 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     private String PercorsoDIR = "";
     private Context context;
     private ImageView immagine;
-
     public DownloadImage(Context context, String NomeImmagine, ImageView immagine) {
         this.NomeImmagine = NomeImmagine;
         this.context = context;
@@ -35,9 +32,9 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             Utility.getInstance().Attesa(true);
         }
 
-        PercorsoDIR = context.getFilesDir() + "/LooigiSoft/" + VariabiliStaticheServizio.channelName;
+        PercorsoDIR = context.getFilesDir() + "/Download";
 
-        Utility.getInstance().CreaCartelle(PercorsoDIR + "/Download");
+        Utility.getInstance().CreaCartelle(PercorsoDIR);
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -51,7 +48,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             if (immagine == null) {
                 FileOutputStream outStream;
                 try {
-                    outStream = new FileOutputStream(PercorsoDIR + "/Download/Appoggio.jpg"); // .getPathImmagine());
+                    outStream = new FileOutputStream(PercorsoDIR + "/Appoggio.jpg"); // .getPathImmagine());
                     if (outStream != null & mIcon11 != null) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
@@ -102,8 +99,9 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     String[] s = sNomeImmagine.split("/");
                     sNomeImmagine = s[s.length - 2] + "/" + s[s.length - 1];
                 }
+
                 StrutturaImmagine si = new StrutturaImmagine();
-                si.setPathImmagine(PercorsoDIR + "/Download/Appoggio.jpg");
+                si.setPathImmagine(PercorsoDIR + "/Appoggio.jpg");
                 si.setImmagine(sNomeImmagine);
                 if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
                     si.setDataImmagine(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDataImmagine());
@@ -112,6 +110,8 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     si.setDataImmagine("---");
                     si.setDimensione("---");
                 }
+
+                VariabiliStaticheServizio.getInstance().setUltimaImmagine(si);
 
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 boolean fatto = c.setWallpaperLocale(context, si);

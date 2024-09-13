@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiAttivita;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -15,7 +15,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
-import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.MainActivity;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
@@ -168,14 +167,22 @@ public class ChangeWallpaper {
 
 		// Bitmap myBitmap = null;
 
-		if (Utility.getInstance().EsisteFile(si.getPathImmagine())) {
+		boolean ok = true;
+		String path = si.getPathImmagine();
+		if (!Utility.getInstance().EsisteFile(path)) {
+			path = context.getFilesDir() + "/Download/Appoggio.jpg";
+			if (!Utility.getInstance().EsisteFile(path)) {
+				ok = false;
+			}
+		}
+		if (ok) {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. File esistente: " + si.getPathImmagine());
 
 			Bitmap myBitmap = null; // = BitmapFactory.decodeFile(si.getPathImmagine());
 			try {
 				// myBitmap = getPreview(si.getPathImmagine());
 
-				myBitmap = BitmapFactory.decodeFile(si.getPathImmagine());
+				myBitmap = BitmapFactory.decodeFile(path);
 			} catch (Exception e) {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Errore preview");
 			}
@@ -244,7 +251,8 @@ public class ChangeWallpaper {
 
 			VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText("Prossimo cambio: " +
+					VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(
+							"Prossimo cambio: " +
 							VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
 							quantiGiri);
 				}
@@ -254,7 +262,7 @@ public class ChangeWallpaper {
 			db_dati db = new db_dati(context);
 			db.ScriveImpostazioni();
 
-			VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+			// VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
 
 			return myBitmap;
 		} else {

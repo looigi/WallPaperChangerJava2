@@ -53,4 +53,5 @@ dependencies {
     implementation(libs.ksoap2.android)
 
     implementation(libs.android.gif.drawable)
+    implementation("com.github.chrisbanes:PhotoView:2.0.0")
 }

@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -14,6 +20,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -44,8 +55,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".classiAttivitaDetector.MainActivityDetector"
+            android:windowSoftInputMode="adjustResize" />
+
         <service android:name = ".classiStandard.ServizioInterno"
-            android:foregroundServiceType="specialUse" />
+            android:foregroundServiceType="specialUse|location|camera" />
 
         <receiver android:name=".classiStandard.ScreenReceiver"
             android:enabled="true"
@@ -57,6 +72,8 @@
         </receiver>
 
         <service android:name=".classiStandard.GestioneNotifiche$NotificationActionService" />
+
+        <service android:name=".classiAttivitaDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
 
         <receiver android:name=".AutoStart.yourActivityRunOnStartup"
             android:enabled="true"
@@ -73,5 +90,68 @@
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".classiAttivitaDetector.Receivers.Video"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".classiAttivitaDetector.Receivers.Audio"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".classiAttivitaDetector.Receivers.Photo"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_name" >
+        </activity>
+
+        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderPhoto"
+            android:exported="false"
+            android:label="Detector Photo">
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_photo" />
+        </receiver>
+
+        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderVideo"
+            android:exported="false"
+            android:label="Detector Video">
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_video" />
+        </receiver>
+
+        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderAudio"
+            android:exported="false"
+            android:label="Detector Audio">
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_audio" />
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

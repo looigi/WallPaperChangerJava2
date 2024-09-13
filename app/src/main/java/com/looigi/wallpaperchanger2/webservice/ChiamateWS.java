@@ -3,9 +3,8 @@ package com.looigi.wallpaperchanger2.webservice;
 import android.content.Context;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classiAttivita.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
-import com.looigi.wallpaperchanger2.classiAttivita.db_dati;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -136,6 +135,19 @@ public class ChiamateWS implements TaskDelegate {
             String Dimensioni = c[3];
             VariabiliStaticheServizio.getInstance().setDataAppoggio(Datella);
             VariabiliStaticheServizio.getInstance().setDimeAppoggio(Dimensioni);
+
+            StrutturaImmagine si = new StrutturaImmagine();
+            String sNomeImmagine = c[1];
+            if (sNomeImmagine.toUpperCase().contains("HTTP:")) {
+                String[] s = sNomeImmagine.split("/");
+                sNomeImmagine = s[s.length - 2] + "/" + s[s.length - 1];
+            }
+            si.setImmagine(sNomeImmagine);
+            si.setPathImmagine(c[1]);
+            si.setDimensione(c[3]);
+            si.setDataImmagine(c[2]);
+
+            VariabiliStaticheServizio.getInstance().setUltimaImmagine(si);
 
             Immagine = VariabiliStaticheServizio.PercorsoImmagineSuURL + Immagine;
             String[] cc = Immagine.split("/");

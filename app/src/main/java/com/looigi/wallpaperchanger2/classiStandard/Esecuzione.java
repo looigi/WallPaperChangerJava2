@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.looigi.wallpaperchanger2.classiAttivita.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -17,20 +17,12 @@ public class Esecuzione {
     private static final String NomeMaschera = "Esecuzione";
     private final Context context;
     private Runnable r;
+    private HandlerThread handlerThread;
 
     public Esecuzione(Context context) {
         this.context = context;
 
         VariabiliStaticheServizio.getInstance().setErrori(0);
-    }
-
-    public void restartServizio() {
-        if (handler != null && r != null) {
-            handler.removeCallbacks(r);
-            r = null;
-        }
-
-        startServizio1();
     }
 
     public void startServizio1() {
@@ -42,7 +34,16 @@ public class Esecuzione {
                 "Tempo Timer: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa() +
                 "Quanti Giri: " + quantiGiri);
 
-        HandlerThread handlerThread = new HandlerThread("background-thread_" + VariabiliStaticheServizio.channelName);
+        long secondiAttesa = (VariabiliStaticheServizio.secondiDiAttesaContatore * 1000L);
+
+        if (VariabiliStaticheServizio.getInstance().isServizioAttivo()) {
+            BloccaTimer();
+        }
+
+        VariabiliStaticheServizio.getInstance().setServizioAttivo(true);
+
+        handlerThread = new HandlerThread("background-thread_" +
+                VariabiliStaticheServizio.channelName);
         handlerThread.start();
 
         handler = new Handler(handlerThread.getLooper());
@@ -50,10 +51,26 @@ public class Esecuzione {
             public void run() {
                 Controllo();
 
-                handler.postDelayed(this, (VariabiliStaticheServizio.secondiDiAttesaContatore * 1000));
+                if (handler != null) {
+                    handler.postDelayed(this, secondiAttesa);
+                }
             }
         };
-        handler.postDelayed(r, (VariabiliStaticheServizio.secondiDiAttesaContatore * 1000));
+        handler.postDelayed(r, secondiAttesa);
+    }
+
+    public void BloccaTimer() {
+        VariabiliStaticheServizio.getInstance().setServizioAttivo(false);
+
+        if (handler != null && r != null && handlerThread != null) {
+            handlerThread.quit();
+
+            handler.removeCallbacksAndMessages(null);
+
+            handler.removeCallbacks(r);
+            handler = null;
+            r = null;
+        }
     }
 
     private void Controllo() {
@@ -65,7 +82,7 @@ public class Esecuzione {
             tmsPrecedente = tmsAttuale;
         } else {
             long diff = (tmsAttuale - tmsPrecedente);
-            if (diff > ((VariabiliStaticheServizio.secondiDiAttesaContatore * 1000) + 10000L)) {
+            if (diff > ((VariabiliStaticheServizio.secondiDiAttesaContatore * 1000L) + 10000L)) {
                 int errori = VariabiliStaticheServizio.getInstance().getErrori() + 1;
                 VariabiliStaticheServizio.getInstance().setErrori(errori);
 
@@ -87,49 +104,41 @@ public class Esecuzione {
             VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(prossimoCambio);
         }
 
+        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
+            GestioneNotifiche.getInstance().AggiornaNotifica();
+        }
+
         if (VariabiliStaticheServizio.getInstance().getSecondiPassati() >= quantiGiri) {
             VariabiliStaticheServizio.getInstance().setSecondiPassati(0);
 
-            if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
-                if (VariabiliStaticheServizio.getInstance().isOnOff()) {
-                    VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                    CambiaImmagine();
-                }
-            } else {
-                if (!VariabiliStaticheServizio.getInstance().isImmagineCambiataConSchermoSpento()) {
-                    if (VariabiliStaticheServizio.getInstance().isOnOff()) {
-                        Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine per schermo spento---");
-                        VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(true);
-                        CambiaImmagine();
-                    }
-                }
-                // VariabiliGlobali.getInstance().setImmagineDaCambiare(true);
+            if (VariabiliStaticheServizio.getInstance().isOnOff()) {
+                // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
+                Utility.getInstance().CambiaImmagine(context);
             }
+
+            if (!VariabiliStaticheServizio.getInstance().isScreenOn() ||
+                !VariabiliStaticheServizio.getInstance().isOnOff()) {
+                BloccaTimer();
+            }
+
+            // if (!VariabiliStaticheServizio.getInstance().isScreenOn()) {
+            // } else {
+                // if (!VariabiliStaticheServizio.getInstance().isImmagineCambiataConSchermoSpento()) {
+                //     BloccaTimer();
+
+                    /* if (VariabiliStaticheServizio.getInstance().isOnOff()) {
+                        Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine per schermo spento---");
+                        Utility.getInstance().CambiaImmagine(context);
+                        // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(true);
+                    } */
+                // }
+                // VariabiliGlobali.getInstance().setImmagineDaCambiare(true);
+            // }
         }
 
         /* Utility.getInstance().ScriveLog(context, NomeMaschera, "Contatore " +
                 VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
                 quantiGiri); */
-
-        GestioneNotifiche.getInstance().AggiornaNotifica();
-    }
-
-    private void CambiaImmagine() {
-        ChangeWallpaper c = new ChangeWallpaper(context);
-        if (!VariabiliStaticheServizio.getInstance().isOffline()) {
-            boolean fatto = c.setWallpaper(context, null);
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
-        } else {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
-            int numeroRandom = Utility.getInstance().GeneraNumeroRandom(
-                    VariabiliStaticheServizio.getInstance().getListaImmagini().size() - 1);
-            if (numeroRandom > -1) {
-                boolean fatto = c.setWallpaper(context, VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
-            } else {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");
-            }
-        }
     }
 }
 

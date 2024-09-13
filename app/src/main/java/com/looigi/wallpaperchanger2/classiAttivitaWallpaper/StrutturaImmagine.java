@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiAttivita;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 public class StrutturaImmagine {
     private String Immagine;

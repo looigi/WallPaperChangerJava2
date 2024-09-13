@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="8dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- <Switch
+        android:id="@+id/sLog2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log" /> -->
+
+    <Switch
+        android:id="@+id/sVibrazione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibrazione" />
+
+    <Switch
+        android:id="@+id/sToast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toasts" />
+
+    <!-- <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Elimina LOG" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnEliminaLog"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/elimina" />
+
+        </LinearLayout>
+
+    </LinearLayout> -->
+
+
+    <!-- <Switch
+        android:id="@+id/sGPSBetter"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GPS better position" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Tempo GPS" />
+
+        <EditText
+            android:id="@+id/edtTempoGPS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSalvaTGPS"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icona_salva" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Metri GPS" />
+
+        <EditText
+            android:id="@+id/edtMetriGPS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSalvaMGPS"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icona_salva" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/sAccuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Considera Accuracy" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Accuracy" />
+
+        <EditText
+            android:id="@+id/edtAccuracy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSalvaACC"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icona_salva" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Dim. Thumbs Salvate" />
+
+        <EditText
+            android:id="@+id/edtDimThumbs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSalvaDT"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icona_salva" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Dim. Thumbs su Mappa" />
+
+        <EditText
+            android:id="@+id/edtDimThumbsM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSalvaDTM"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icona_salva" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnTornaIndietro"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/indietro" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="" />
+    </LinearLayout> -->
+</LinearLayout>

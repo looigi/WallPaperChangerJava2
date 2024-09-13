@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiAttivita;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 import com.looigi.wallpaperchanger2.webservice.DownloadImage;
 
@@ -28,8 +28,8 @@ public class AdapterListenerImmagini extends BaseAdapter {
     public AdapterListenerImmagini(Context applicationContext, List<StrutturaImmagine> Immagini) {
         this.context = applicationContext;
         this.listaImmaginiOrig = Immagini;
-        this.listaImmagini = Immagini;
-        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size() - 1));
+        this.listaImmagini = new ArrayList();
+        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
         inflater = (LayoutInflater.from(applicationContext));
     }
 
@@ -65,7 +65,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 listaImmagini.add(listaImmaginiOrig.get(i));
             }
         }
-        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size() - 1));
+        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
 
         notifyDataSetChanged();
     }

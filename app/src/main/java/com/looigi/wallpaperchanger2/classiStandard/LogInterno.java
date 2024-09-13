@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -15,29 +17,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Log {
+public class LogInterno {
 	private Context context;
 	private List<String> lista;
 	private Handler handler;
+	private boolean Detector = false;
 
-	public Log(Context c) {
+	public LogInterno(Context c, boolean Detector) {
 		CreaCartella(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog());
 
+		this.Detector = Detector;
 		context = c;
 		lista = new ArrayList<>();
 	}
 
-	public void PulisceFileDiLog(Boolean PulisceInOgniCaso) {
+	public void PulisceFileDiLog() {
 		String Datella = "";
 		Datella = PrendeDataAttuale() + " " + PrendeOraAttuale();
 
 		String sBody = Datella + ": Inizio log\n";
 
         try {
-			File file = new File(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-					VariabiliStaticheServizio.getInstance().getNomeFileDiLog());
-			if (!Utility.getInstance().EsisteFile(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-					VariabiliStaticheServizio.getInstance().getNomeFileDiLog())) {
+			String path = tornaPath();
+
+			File file = new File(path);
+			if (!Utility.getInstance().EsisteFile(path)) {
 				if (!file.createNewFile()) {
 					/* Toast.makeText(context,
 							VariabiliStatiche.channelName + ": Impossibile creare il file.",
@@ -139,14 +143,35 @@ public class Log {
 		}
 	}
 
+	private String tornaPath() {
+		String path = "";
+
+		if (VariabiliStaticheServizio.getInstance().getPercorsoDIRLog().isEmpty() ||
+				VariabiliStaticheServizio.getInstance().getNomeFileDiLog().isEmpty()) {
+			Utility.getInstance().generaPath(context);
+		}
+		path = VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
+				VariabiliStaticheServizio.getInstance().getNomeFileDiLog();
+		if (Detector) {
+			if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
+					VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {
+				UtilityDetector.getInstance().generaPath(context);
+			}
+			path = VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
+					VariabiliStaticheDetector.getInstance().getNomeFileDiLog();
+		}
+
+		return path;
+	}
+
 	private void ScriveLogInterno(String MessaggioLog) {
 		String Datella = "";
 		Datella = PrendeDataAttuale() + " " + PrendeOraAttuale();
 
-		if (Utility.getInstance().EsisteFile(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-				VariabiliStaticheServizio.getInstance().getNomeFileDiLog())) {
-			File gpxfile = new File(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog(),
-					VariabiliStaticheServizio.getInstance().getNomeFileDiLog());
+		String path = tornaPath();
+
+		if (Utility.getInstance().EsisteFile(path)) {
+			File gpxfile = new File(path);
 			FileWriter writer;
 			try {
 				writer = new FileWriter(gpxfile, true);

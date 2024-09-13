@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/rltContenitore"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/galleria"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="150dp"
+        android:background="@drawable/stiletextview">
+
+        <Gallery
+            android:id="@+id/gallery1"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/tasti"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="3px"
+        android:layout_below="@id/galleria"
+        android:background="@drawable/stiletextview">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/imgRuotaSx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ruotasx"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="7dp" />
+
+                <ImageButton
+                    android:id="@+id/imgRuotaDx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ruotadx"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="7dp" />
+
+                <ImageButton
+                    android:id="@+id/imgElimina"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/ic_delete"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="7dp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/Immagine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tasti"
+        android:layout_marginTop="3px"
+        android:background="@drawable/stiletextview">
+
+        <ImageView
+            android:id="@+id/ivGalleria"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</RelativeLayout>

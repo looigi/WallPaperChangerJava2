@@ -2,23 +2,23 @@ package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classiAttivita.ConverteNomeUri;
-import com.looigi.wallpaperchanger2.classiAttivita.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivita.db_dati;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ConverteNomeUri;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
@@ -49,7 +49,6 @@ public class MainActivity extends Activity {
         Permessi pp = new Permessi();
         VariabiliStaticheServizio.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
 
-
         if (VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
             startService();
         }
@@ -69,7 +68,19 @@ public class MainActivity extends Activity {
         Handler handlerTimer = new Handler();
         Runnable rTimer = new Runnable() {
             public void run() {
-                startService();
+                /* Intent mStartActivity = new Intent(VariabiliStaticheServizio.getInstance().getContext(),
+                        MainActivity.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(
+                        VariabiliStaticheServizio.getInstance().getContext(),
+                        mPendingIntentId,
+                        mStartActivity,
+                        PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager mgr = (AlarmManager) VariabiliStaticheServizio.getInstance().getContext().getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent); */
+                Utility.getInstance().ApreToast(VariabiliStaticheServizio.getInstance().getContext(),
+                        "Riaprire l'applicazione");
+                System.exit(0);
             }
         };
         handlerTimer.postDelayed(rTimer, 3000);
@@ -82,7 +93,7 @@ public class MainActivity extends Activity {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
             VariabiliStaticheServizio.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
-            startService(VariabiliStaticheServizio.getInstance().getServizioForeground());
+            startForegroundService(VariabiliStaticheServizio.getInstance().getServizioForeground());
 
             InizializzaMaschera i = new InizializzaMaschera();
             i.inizializzaMaschera(this, this);
@@ -218,7 +229,7 @@ public class MainActivity extends Activity {
 
         Utility.getInstance().ScriveLog(this, NomeMaschera, "OnDestroy");
 
-        Utility.getInstance().stopService(this);
+        // Utility.getInstance().ChiudeApplicazione(this);
     }
 
 }

@@ -9,9 +9,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classiAttivita.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiStandard.Log;
-import com.looigi.wallpaperchanger2.classiAttivita.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,23 +33,25 @@ public class VariabiliStaticheServizio {
     private Context context;
     private Activity mainActivity;
     private boolean ciSonoPermessi = false;
-    private Log l;
+    private LogInterno l;
     private int idNotifica = 111112;
-    public static String channelName = "wallpaperchanger2";
+    public static String channelName = "WallPaperChangerII";
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
     public static int NOTIFICATION_CHANNEL_ID = 2;
     public static int channelIdIntentOverlay = 152;
     private String NomeFileDiLog = "";
     private Intent servizioForeground;
     private String PercorsoDIRLog = "";
-    public static int secondiDiAttesaContatore = 60;
+    public static int secondiDiAttesaContatore = 10;
     private boolean staPartendo = true;
     private int errori = 0;
+    private boolean Detector = false;
+    private boolean servizioAttivo = true;
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
     public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
-    private ImageView imgCaricamento;
+    // private ImageView imgCaricamento;
     private boolean screenOn = true;
     private String DataAppoggio;
     private String DimeAppoggio;
@@ -59,6 +61,7 @@ public class VariabiliStaticheServizio {
     private boolean letteImpostazioni = false;
     private boolean offline = false;
     private StrutturaImmagine UltimaImmagine;
+    private StrutturaImmagine UltimaImmaginePerLock;
     private ImageView imgImpostata;
     private boolean blur = true;
     private boolean scriveTestoSuImmagine = true;
@@ -68,7 +71,7 @@ public class VariabiliStaticheServizio {
     private boolean resize = true;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private TextView txtPath;
-    private boolean ImmagineCambiataConSchermoSpento = false;
+    // private boolean ImmagineCambiataConSchermoSpento = false;
     private boolean ePartito = false;
     private int minutiAttesa = 15;
     private ListView lstImmagini;
@@ -77,13 +80,53 @@ public class VariabiliStaticheServizio {
     private AdapterListenerImmagini adapterImmagini;
     private TextView txtQuanteRicerca;
     private RelativeLayout layAttesa;
-
-    // private int quantiGiri;
-    // private int SecondiAlCambio = 10000;
     private TextView txtTempoAlCambio;
     private int SecondiPassati;
-    private String PercorsoIMMAGINI = "";
-    // private int tempoTimer = 30000;
+    private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath();
+    private boolean sbragaTutto = false;
+
+    public StrutturaImmagine getUltimaImmaginePerLock() {
+        return UltimaImmaginePerLock;
+    }
+
+    public void setUltimaImmaginePerLock(StrutturaImmagine ultimaImmaginePerLock) {
+        UltimaImmaginePerLock = ultimaImmaginePerLock;
+    }
+
+    public boolean isSbragaTutto() {
+        return sbragaTutto;
+    }
+
+    public void setSbragaTutto(boolean sbragaTutto) {
+        this.sbragaTutto = sbragaTutto;
+    }
+
+    public boolean isServizioAttivo() {
+        return servizioAttivo;
+    }
+
+    public void setServizioAttivo(boolean servizioAttivo) {
+        this.servizioAttivo = servizioAttivo;
+    }
+
+    // SEZIONE DETECTOR
+    private boolean Vibrazione = true;
+
+    public boolean isVibrazione() {
+        return Vibrazione;
+    }
+
+    public void setVibrazione(boolean vibrazione) {
+        Vibrazione = vibrazione;
+    }
+
+    public boolean isDetector() {
+        return Detector;
+    }
+
+    public void setDetector(boolean detector) {
+        Detector = detector;
+    }
 
     public int getErrori() {
         return errori;
@@ -189,13 +232,13 @@ public class VariabiliStaticheServizio {
         this.ePartito = ePartito;
     }
 
-    public boolean isImmagineCambiataConSchermoSpento() {
+    /* public boolean isImmagineCambiataConSchermoSpento() {
         return ImmagineCambiataConSchermoSpento;
     }
 
     public void setImmagineCambiataConSchermoSpento(boolean immagineCambiataConSchermoSpento) {
         ImmagineCambiataConSchermoSpento = immagineCambiataConSchermoSpento;
-    }
+    } */
 
     public TextView getTxtPath() {
         return txtPath;
@@ -365,7 +408,7 @@ public class VariabiliStaticheServizio {
         this.screenOn = screenOn;
     }
 
-    public ImageView getImgCaricamento() {
+    /* public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
@@ -373,7 +416,7 @@ public class VariabiliStaticheServizio {
         this.imgCaricamento = imgCaricamento;
     }
 
-    /* public long getSecondiDiAttesaContatore() {
+    public long getSecondiDiAttesaContatore() {
         return secondiDiAttesaContatore;
     }
 
@@ -421,11 +464,11 @@ public class VariabiliStaticheServizio {
         this.idNotifica = idNotifica;
     }
 
-    public Log getLog() {
+    public LogInterno getLog() {
         return l;
     }
 
-    public void setLog(Log l) {
+    public void setLog(LogInterno l) {
         this.l = l;
     }
 

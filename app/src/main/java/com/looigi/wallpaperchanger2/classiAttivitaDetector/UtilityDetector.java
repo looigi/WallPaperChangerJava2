@@ -1,0 +1,862 @@
+package com.looigi.wallpaperchanger2.classiAttivitaDetector;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.view.TextureView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.Utility;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class UtilityDetector {
+    private static final String NomeMaschera = "UTILITY";
+
+    private static UtilityDetector instance = null;
+
+    private UtilityDetector() {
+    }
+
+    public static UtilityDetector getInstance() {
+        if (instance == null) {
+            instance = new UtilityDetector();
+        }
+
+        return instance;
+    }
+    
+    public void ScriveLog(Context context, String Maschera, String Log) {
+        if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
+                VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {
+            generaPath(context);
+        }
+
+        if (context != null) {
+            if (VariabiliStaticheDetector.getInstance().getLog() == null) {
+                LogInterno l = new LogInterno(context, true);
+                VariabiliStaticheDetector.getInstance().setLog(l);
+            }
+
+            if (!UtilityDetector.getInstance().EsisteFile(VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheDetector.getInstance().getLog().PulisceFileDiLog();
+            }
+
+            if (EsisteFile(VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheDetector.getInstance().getLog().ScriveLog(Maschera + ": " + Log);
+            }
+        } else {
+
+        }
+    }
+
+    public String PrendeErroreDaException(Exception e) {
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+
+        return TransformError(errors.toString());
+    }
+
+    private String TransformError(String error) {
+        String Return = error;
+
+        if (Return.length() > 250) {
+            Return = Return.substring(0, 247) + "...";
+        }
+        Return = Return.replace("\n", " ");
+
+        return Return;
+    }
+
+    public boolean EsisteFile(String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String PrendeNomeFile(String Percorso) {
+        String Ritorno = Percorso;
+
+        for (int i = Ritorno.length()-1;i>0;i--) {
+            if (Ritorno.substring(i, i+1).equals("/")) {
+                Ritorno = Ritorno.substring(i+1,Ritorno.length());
+                break;
+            }
+        }
+
+        return Ritorno;
+    }
+
+    public void ScattaFoto(Context context, String daDove) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        String nome = "LogAcq_" + currentDateandTime + ".txt";
+
+        // l.PulisceFileDiLog();
+        ScriveLog(context, NomeMaschera,"onCreate Photo 1 " + daDove);
+        if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
+            ScriveLog(context, NomeMaschera,"onCreate Photo 2 " + daDove);
+
+            Activity act = VariabiliStaticheDetector.getInstance().getMainActivity();
+            if (act != null) {
+                TextureView textureView = (TextureView) act.findViewById(R.id.textureView);
+                if (textureView != null) {
+                    VariabiliStaticheDetector.getInstance().getCamera().ScattaFoto(
+                            nome,
+                            VariabiliStaticheDetector.getInstance().getMainActivity(),
+                            textureView);
+                } else {
+                    nascondeTV(context);
+                }
+            } else {
+                nascondeTV(context);
+            }
+        } else {
+            nascondeTV(context);
+
+            Utility.getInstance().ApreToast(context, "Camera not ready");
+
+            ScriveLog(context, NomeMaschera,"onCreate Photo Error " +  daDove + ": " + VariabiliStaticheDetector.getInstance().getCamera());
+
+            VisualizzaToast(VariabiliStaticheDetector.getInstance().getMainActivity(), "Camera non attiva " + daDove, false);
+        }
+    }
+
+    private void nascondeTV(Context context) {
+        ScriveLog(context, NomeMaschera,"Nascondo TextView Utility");
+
+        Activity act = VariabiliStaticheDetector.getInstance().getMainActivity();
+        if (act != null) {
+            TextureView textureView = (TextureView) act.findViewById(R.id.textureView);
+            if (textureView != null) {
+                textureView.setVisibility(LinearLayout.GONE);
+                ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: OK");
+            } else {
+                ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: TV non esistente");
+            }
+        } else {
+            ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: Act non esistente");
+        }
+    }
+
+    public void ControllaFileNoMedia(String Origine, String Cartella) {
+        String NomeFile=".nomedia";
+
+        File file=new File(Origine+"/"+Cartella+"/"+NomeFile);
+        if (!file.exists()) {
+            File gpxfile = new File(Origine+"/"+Cartella, NomeFile);
+            FileWriter writer;
+            try {
+                writer = new FileWriter(gpxfile);
+                writer.append(".");
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String PrendeNomeCartella(String Percorso) {
+        String Ritorno = Percorso;
+
+        for (int i = Ritorno.length()-1;i>0;i--) {
+            if (Ritorno.substring(i, i+1).equals("/")) {
+                Ritorno = Ritorno.substring(0,i);
+                break;
+            }
+        }
+
+        return Ritorno;
+    }
+
+    public void RinominaFile(String Percorso, String VecchioNome, String NuovoNome) {
+        try {
+            File from = new File(Percorso, VecchioNome);
+            File to = new File(Percorso, NuovoNome);
+            from.renameTo(to);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public String PrendeNomeImmagine() {
+        Calendar Oggi = Calendar.getInstance();
+
+        int Giorno = Oggi.get(Calendar.DAY_OF_MONTH);
+        int Mese = Oggi.get(Calendar.MONTH)+1;
+        int Anno = Oggi.get(Calendar.YEAR);
+        int Ora = Oggi.get(Calendar.HOUR_OF_DAY);
+        int Minuti = Oggi.get(Calendar.MINUTE);
+        int Secondi = Oggi.get(Calendar.SECOND);
+        String Ritorno ="";
+
+        Ritorno = Integer.toString(Anno);
+        Ritorno += String.format("%02d", Mese); //Integer.toString(Mese);
+        Ritorno += String.format("%02d", Giorno); //Integer.toString(Giorno);
+        Ritorno += "_"+String.format("%02d", Ora); // Integer.toString(Ora);
+        Ritorno += String.format("%02d", Minuti); //Integer.toString(Minuti);
+        Ritorno += String.format("%02d", Secondi); // Integer.toString(Secondi);
+
+        return Ritorno;
+    }
+
+    public void Vibra(Context context, long Quanto) {
+        ScriveLog(context, NomeMaschera,"Vibrazione: " + VariabiliStaticheDetector.getInstance().isVibrazione());
+
+        if (VariabiliStaticheDetector.getInstance().isVibrazione()) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                public void run() {
+                    if (context != null) {
+                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(VibrationEffect.createOneShot(Quanto, VibrationEffect.DEFAULT_AMPLITUDE));
+
+                        ScriveLog(context, NomeMaschera, "Vibrazione: " + Quanto);
+                    }
+                }
+            }, 100);
+        }
+    }
+
+    public void VisualizzaPOPUP(String Messaggio, final boolean Tasti, final int QualeOperazione) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(VariabiliStaticheDetector.getInstance().getContext());
+        builder.setTitle("");
+        builder.setMessage(Messaggio);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        if (Tasti) {
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        try {
+            AlertDialog dialog = builder.show();
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void VisualizzaToast(Context context, String Messaggio, boolean Lungo) {
+        if (VariabiliStaticheDetector.getInstance().isVisualizzaToast()) {
+            int come = -1;
+            if (Lungo) {
+                come = Toast.LENGTH_LONG;
+            } else {
+                come = Toast.LENGTH_SHORT;
+            }
+
+            Toast toast = Toast.makeText(context, Messaggio, come);
+            toast.show();
+        }
+    }
+
+    public String RitornaRisoluzioneMassima(List<String> Risoluzioni) {
+        int maxX = 0;
+        int maxY = 0;
+        String Ritorno = "";
+        for (int i = 0; i < Risoluzioni.size(); i++) {
+            String[] r = Risoluzioni.get(i).split("x");
+            int x = Integer.parseInt(r[0]);
+            int y = Integer.parseInt(r[1]);
+            if (x > maxX || y > maxY) {
+                maxX = x;
+                maxY = y;
+                Ritorno = Risoluzioni.get(i);
+            }
+        }
+
+        return Ritorno;
+    }
+
+    public void generaPath(Context context) {
+        if (context != null) {
+            String pathLog = PrendePathLog(context);
+            VariabiliStaticheDetector.getInstance().setPercorsoDIRLog(pathLog);
+            String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
+            VariabiliStaticheDetector.getInstance().setNomeFileDiLog(nomeFileLog);
+        }
+    }
+
+    public void EliminaFile(String NomeFile) {
+        try {
+            File file = new File(NomeFile);
+            @SuppressWarnings("unused")
+            boolean deleted = file.delete();
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void DeCriptaFiles(Context context) {
+        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+
+        int cambiate = 0;
+
+        File directory = new File(Origine + Cartella);
+        File[] files = directory.listFiles();
+        for  (File f : files)
+        {
+            String n = f.getName();
+            if (n.toUpperCase().contains(".DBF") && !n.toUpperCase().contains(".PV3")) {
+                n = n.substring(0, n.indexOf("."));
+                n += ".jpg";
+
+                File to = new File(Origine+Cartella, n);
+                f.renameTo(to);
+                removeKeyFromFile(Origine+Cartella, n, n);
+
+                cambiate++;
+            }
+            if (n.toUpperCase().contains(".DBV") && !n.toUpperCase().contains(".PV3")) {
+                n = n.substring(0, n.indexOf("."));
+                n += ".mp4";
+
+                File to = new File(Origine+Cartella, n);
+                f.renameTo(to);
+                removeKeyFromFile(Origine+Cartella, n, n);
+
+                cambiate++;
+            }
+            if (n.toUpperCase().contains(".DBA") && !n.toUpperCase().contains(".PV3")) {
+                n = n.substring(0, n.indexOf("."));
+                n += ".3gp";
+
+                File to = new File(Origine+Cartella, n);
+                f.renameTo(to);
+                removeKeyFromFile(Origine+Cartella, n, n);
+
+                cambiate++;
+            }
+        }
+
+        CaricaMultimedia();
+        VisualizzaMultimedia();
+
+        // VisualizzaPOPUP("Fatto. Immagini decriptate: "+cambiate, false, 0);
+    }
+
+    public void CriptaFiles(Context context) {
+        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        int cambiate = 0;
+
+        File directory = new File(Origine + Cartella);
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                String n = f.getName();
+                if (n.toUpperCase().contains(".JPG")) {
+                    n = n.substring(0, n.indexOf("."));
+                    n += ".dbf";
+
+                    File to = new File(Origine + Cartella, n);
+                    f.renameTo(to);
+                    addKeyToFile(Origine + Cartella, n);
+
+                    cambiate++;
+                }
+                if (n.toUpperCase().contains(".MP4")) {
+                    n = n.substring(0, n.indexOf("."));
+                    n += ".dbv";
+
+                    File to = new File(Origine + Cartella, n);
+                    f.renameTo(to);
+                    addKeyToFile(Origine + Cartella, n);
+
+                    cambiate++;
+                }
+                if (n.toUpperCase().contains(".3GP")) {
+                    n = n.substring(0, n.indexOf("."));
+                    n += ".dba";
+
+                    File to = new File(Origine + Cartella, n);
+                    f.renameTo(to);
+                    addKeyToFile(Origine + Cartella, n);
+
+                    cambiate++;
+                }
+            }
+        }
+
+        CaricaMultimedia();
+        VisualizzaMultimedia();
+
+        // VisualizzaPOPUP("Fatto. Immagini criptate: "+cambiate, false, 0);
+    }
+
+    private void removeKeyFromFile(String Path, String Filetto, String FilettoNuovo) {
+        if (!Filetto.toUpperCase().contains(".PV3")) {
+            String Filetto2 = Filetto;
+            Filetto2 = Filetto2.replace(".jpg", ".dbf");
+
+            String datiExif = "";
+
+            if (!Filetto2.toUpperCase().contains(".3GP") && !Filetto2.toUpperCase().contains(".MP4") && !FilettoNuovo.toUpperCase().contains("APPOGGIO")) {
+                datiExif = LeggeFileDiTesto(Path + Filetto2 + ".PV3");
+            }
+
+            byte[] bytes = {};
+
+            try {
+                File f = new File(Path, Filetto);
+                FileInputStream fis = new FileInputStream(f);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+
+                try {
+                    for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+                        bos.write(buf, 0, readNum);
+                    }
+                } catch (IOException ignored) {
+
+                }
+
+                byte[] altro = {68, 69, 84, 69, 67, 84, 79, 82};
+                byte[] bytesApp = bos.toByteArray();
+                if (bytesApp[0] == altro[0] && bytesApp[1] == altro[1] && bytesApp[2] == altro[2]) {
+                    bytes = Arrays.copyOfRange(bytesApp, altro.length, bytesApp.length);
+                } else {
+                    bytes = bytesApp;
+                }
+            } catch (FileNotFoundException ignored) {
+
+            }
+
+            File someFile = new File(Path, FilettoNuovo);
+            try {
+                someFile.delete();
+            } catch (Exception ignored) {
+
+            }
+
+            try {
+                FileOutputStream fos = new FileOutputStream(someFile);
+                try {
+                    fos.write(bytes);
+                    fos.flush();
+                    fos.close();
+
+                    if (!datiExif.isEmpty()) {
+                        String[] c = datiExif.split(";", -1);
+                        ExifInterface exif = new ExifInterface(Path + FilettoNuovo);
+                        exif.setAttribute(ExifInterface.TAG_ARTIST, c[0]);
+                        exif.setAttribute(ExifInterface.TAG_MODEL, c[1]);
+                        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, c[2]);
+                        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, c[3]);
+                        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, c[4]);
+                        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, c[5]);
+                        exif.saveAttributes();
+
+                        File f = new File(Path + Filetto2 + ".PV3");
+                        if (f.exists()) {
+                            f.delete();
+                        }
+                    }
+                } catch (IOException ignored) {
+
+                }
+            } catch (FileNotFoundException ignored) {
+
+            }
+        }
+    }
+
+    public void addKeyToFile(String Path, String Filetto) {
+        byte[] bytes={};
+
+        boolean OkEXIF=false;
+        String artista = "";
+        String model = "";
+        String lat = "";
+        String latRef = "";
+        String lon = "";
+        String lonref = "";
+
+        if (Filetto.toUpperCase().contains(".DBF")) {
+            try {
+                ExifInterface exif = new ExifInterface(Path + Filetto);
+                artista = exif.getAttribute(ExifInterface.TAG_ARTIST);
+                model = exif.getAttribute(ExifInterface.TAG_MODEL);
+                lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+                latRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+                lon = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+                lonref = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+
+                OkEXIF = true;
+            } catch (IOException ignored) {
+                OkEXIF = false;
+            }
+        }
+
+        try {
+            File f = new File(Path, Filetto);
+            FileInputStream fis = new FileInputStream(f);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+
+            try {
+                for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+                    bos.write(buf, 0, readNum);
+                }
+            } catch (IOException ignored) {
+
+            }
+
+            byte[] altro = {68,69,84,69,67,84,79,82};
+            byte[] bytesApp = bos.toByteArray();
+            bytes=new byte[bytesApp.length+altro.length];
+
+            int i=0;
+            for (byte b : altro) {
+                bytes[i]=b;
+                i++;
+            }
+            for (byte b : bytesApp) {
+                bytes[i]=b;
+                i++;
+            }
+        } catch (FileNotFoundException ignored) {
+
+        }
+
+        File someFile = new File(Path, Filetto);
+        try {
+            someFile.delete();
+        } catch (Exception ignored) {
+
+        }
+
+        try {
+            FileOutputStream fos = new FileOutputStream(someFile);
+            try {
+                fos.write(bytes);
+                fos.flush();
+                fos.close();
+
+                if (OkEXIF) {
+                    String datiExif = artista + ";" + model + ";" + lat + ";" + latRef + ";" + lon + ";" + lonref + ";";
+                    CreaFileDiTesto(Path, Filetto + ".PV3", datiExif);
+                }
+            } catch (IOException ignored) {
+
+            }
+        } catch (FileNotFoundException ignored) {
+
+        }
+    }
+
+    private String LeggeFileDiTesto(String path){
+        StringBuilder text = new StringBuilder();
+
+        File file = new File(path);
+        if (file.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    text.append(line);
+                }
+                br.close();
+            } catch (IOException ignored) {
+
+            }
+        }
+
+        return text.toString();
+    }
+
+    public void CreaFileDiTesto(String Percorso, String sFileName, String sBody) {
+        try {
+            File gpxfile = new File(Percorso, sFileName);
+            if (gpxfile.exists()) {
+                gpxfile.delete();
+            }
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            // e.printStackTrace();
+        }
+    }
+
+    public void CaricaMultimedia() {
+        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+        String Cartella = Environment.getExternalStorageDirectory() + "/" +
+                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+
+        File directory = new File(Origine + Cartella);
+        File[] files = directory.listFiles();
+        VariabiliStaticheDetector.getInstance().setImmagini(new ArrayList<String>());
+        VariabiliStaticheDetector.getInstance().totImmagini=0;
+        if (files != null) {
+            for (File f : files) {
+                String n = f.getName();
+                if (n.toUpperCase().contains(".JPG") || n.toUpperCase().contains(".DBF") ||
+                        n.toUpperCase().contains(".MP4") || n.toUpperCase().contains(".DBV") ||
+                        n.toUpperCase().contains(".3GP") || n.toUpperCase().contains(".DBA")) {
+                    if (!n.toUpperCase().contains(".PV3")) {
+                        VariabiliStaticheDetector.getInstance().getImmagini().add(n);
+                        VariabiliStaticheDetector.getInstance().totImmagini++;
+                    }
+                }
+            }
+        }
+        VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini-1;
+        VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
+        VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
+    }
+
+    private void copyFile(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
+    }
+
+    public void VisualizzaMultimedia() {
+        StopAudio();
+        StopVideo();
+
+        if (VariabiliStaticheDetector.getInstance().numMultimedia < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+            String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+            // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+            String Cartella = Environment.getExternalStorageDirectory() + "/" +
+                    Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+            if (VariabiliStaticheDetector.getInstance().numMultimedia>-1) {
+                String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+
+                if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
+                    File f = new File(Origine + Cartella, "Appoggio.jpg");
+                    File o = new File(Origine + Cartella, NomeMultimedia);
+
+                    try {
+                        copyFile(o, f);
+                    } catch (IOException ignored) {
+
+                    }
+                    removeKeyFromFile(Origine + Cartella, NomeMultimedia, "Appoggio.jpg");
+
+                    VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Origine + Cartella + "Appoggio.jpg"));
+
+                    f.delete();
+
+                    PhotoViewAttacher photoAttacher;
+                    photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
+                    photoAttacher.update();
+
+                    VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+
+                    if (NomeMultimedia.toUpperCase().contains(".DBF")) {
+                        VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.GONE);
+                    } else {
+                        VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.VISIBLE);
+                    }
+
+                    VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
+                            "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                } else {
+                    if (NomeMultimedia.toUpperCase().contains(".3GP") || NomeMultimedia.toUpperCase().contains(".DBA")) {
+                        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+
+                        VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.GONE);
+
+                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
+                                "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                    } else {
+                        if (NomeMultimedia.toUpperCase().contains(".MP4") || NomeMultimedia.toUpperCase().contains(".DBV")) {
+                            VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
+
+                            VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.GONE);
+
+                            VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
+                                    "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                        }
+                    }
+                }
+
+                VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText(NomeMultimedia);
+            } else {
+                VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
+            }
+        } else  {
+            VariabiliStaticheDetector.getInstance().getTxtImm().setText("Nessuna immagine rilevata");
+            VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
+        }
+    }
+
+    public void PlayAudio() {
+        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+        String Cartella = Environment.getExternalStorageDirectory() + "/" +
+                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+        String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+
+        try {
+            VariabiliStaticheDetector.getInstance().setMp(new MediaPlayer());
+            VariabiliStaticheDetector.getInstance().getMp().setDataSource(Origine+Cartella+NomeMultimedia);
+            VariabiliStaticheDetector.getInstance().getMp().prepare();
+            VariabiliStaticheDetector.getInstance().getMp().start();
+            VariabiliStaticheDetector.getInstance().getAudio().setImageResource(R.drawable.pausa);
+            VariabiliStaticheDetector.getInstance().StaSuonando = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void StopAudio() {
+        if (VariabiliStaticheDetector.getInstance().getMp()!=null) {
+            try {
+                VariabiliStaticheDetector.getInstance().getMp().stop();
+                VariabiliStaticheDetector.getInstance().getMp().release();
+                VariabiliStaticheDetector.getInstance().setMp(null);
+                VariabiliStaticheDetector.getInstance().StaSuonando = false;
+                VariabiliStaticheDetector.getInstance().getAudio().setImageResource(R.drawable.play);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void PlayVideo() {
+        if (!VariabiliStaticheDetector.getInstance().StaVedendo) {
+            String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+            // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+            String Cartella = Environment.getExternalStorageDirectory() + "/" +
+                    Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+            String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+
+            try {
+                VariabiliStaticheDetector.getInstance().getvView().setVideoURI(Uri.parse(Origine + Cartella + NomeMultimedia));
+
+                VariabiliStaticheDetector.getInstance().getvView().start();
+                VariabiliStaticheDetector.getInstance().StaVedendo = true;
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    public void StopVideo() {
+        if (VariabiliStaticheDetector.getInstance().StaVedendo) {
+            VariabiliStaticheDetector.getInstance().getvView().pause();
+            VariabiliStaticheDetector.getInstance().StaVedendo = false;
+        }
+    }
+
+    public boolean LeggeImpostazioni(Context context) {
+        db_dati_detector db = new db_dati_detector(context);
+        boolean rit = db.CaricaImpostazioni(context);
+        ScriveLog(context, NomeMaschera,"Ritorno caricamento impostazioni: " + rit);
+
+        return rit;
+    }
+    public void CreaCartelle(String Origine, String Cartella) {
+        for (int i=1;i < Cartella.length();i++) {
+            if (Cartella.substring(i,i+1).equals("/")) {
+                CreaCartella(Origine+Cartella.substring(0,i));
+            }
+        }
+    }
+
+    private void CreaCartella(String Percorso) {
+        try {
+            File dDirectory = new File(Percorso);
+            dDirectory.mkdirs();
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public String PrendePathLog(Context context) {
+        String Path = context.getFilesDir() + "/Log/";
+        return Path;
+    }
+
+    public String PrendePath(Context context) {
+        String Path = context.getFilesDir() + "/DataBase/";
+        return Path;
+    }
+
+    public String PrendePathDB(Context context) {
+        String Path = context.getFilesDir() + "/DB/";
+        return Path;
+    }
+}

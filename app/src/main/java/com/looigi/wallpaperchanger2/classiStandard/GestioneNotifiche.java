@@ -13,12 +13,17 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.MainActivity;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -57,6 +62,8 @@ public class GestioneNotifiche {
             assert manager != null;
             manager.createNotificationChannel(chan);
 
+            // manager.areNotificationsEnabled();
+
             contentView = new RemoteViews(context.getPackageName(), R.layout.barra_notifica);
             setListenersTasti(contentView, context);
             setListeners(contentView);
@@ -64,27 +71,40 @@ public class GestioneNotifiche {
             if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
                 String path = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine();
                 Bitmap bmImg = BitmapFactory.decodeFile(path);
-                contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
+                if (contentView != null) {
+                    contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
 
-                contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
-                contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+                    contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+                }
             } else {
-                contentView.setImageViewBitmap(R.id.imgCopertina, null);
+                if (contentView != null) {
+                    contentView.setImageViewBitmap(R.id.imgCopertina, null);
 
-                contentView.setTextViewText(R.id.txtTitoloNotifica, "");
-                contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
+                    contentView.setTextViewText(R.id.txtTitoloNotifica, "");
+                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
+                }
             }
             int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
             int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
             String prossimo = "Prossimo cambio: " +
                     VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
                     quantiGiri + " - Timeouts: " + VariabiliStaticheServizio.getInstance().getErrori();
-            contentView.setTextViewText(R.id.txtDettaglio, prossimo);
-            contentView.setTextViewText(R.id.txtDettaglioSfondo, prossimo);
+            if (contentView != null) {
+                contentView.setTextViewText(R.id.txtDettaglio, prossimo);
+
+                /* if (VariabiliStaticheServizio.getInstance().isDetector()) {
+                    contentView.setViewVisibility(R.id.layDetector, LinearLayout.VISIBLE);
+                    contentView.setTextViewText(R.id.txtDetector, "Detector");
+                } else {
+                    contentView.setViewVisibility(R.id.layDetector, LinearLayout.GONE);
+                } */
+            }
+
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheServizio.NOTIFICATION_CHANNEL_STRING);
 
-            return notificationBuilder
+            Notification notifica = notificationBuilder
                 .setContentTitle(VariabiliStaticheServizio.channelName)                            // required
                 .setSmallIcon(R.drawable.eye)   // required android.R.drawable.ic_menu_slideshow
                 .setContentText(VariabiliStaticheServizio.channelName) // required
@@ -102,6 +122,10 @@ public class GestioneNotifiche {
                 .setTicker("")
                 .setContent(contentView)
                 .build();
+
+            notifica.bigContentView = contentView;
+
+            return notifica;
         } catch (Exception e) {
             Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
                     Utility.getInstance().PrendeErroreDaException(e));
@@ -135,6 +159,13 @@ public class GestioneNotifiche {
             PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.txtTitoloNotifica, pApre);
+
+            Intent titoloApp = new Intent(ctx, NotificationActionService.class);
+            titoloApp.putExtra("DO", "cambioWallpaper");
+            PendingIntent pAvanti = PendingIntent.getService(ctx, 51, titoloApp,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgProssima, pAvanti);
+
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
         }
@@ -182,6 +213,7 @@ public class GestioneNotifiche {
         if (manager != null) {
             try {
                 manager.cancel(VariabiliStaticheServizio.getInstance().getIdNotifica());
+                manager.cancelAll();
                 manager = null;
                 contentView = null;
                 notificationBuilder = null;
@@ -220,19 +252,32 @@ public class GestioneNotifiche {
             if (action!=null) {
                 switch (action) {
                     case "apre":
-                        new Handler().postDelayed(new Runnable() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent i = new Intent(context, MainActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(i);
+                                if (context != null) {
+                                    Intent i = new Intent(context, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(i);
+                                }
+                            }
+                        }, 100);
+                        break;
+
+                    case "cambioWallpaper":
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utility.getInstance().CambiaImmagine(context);
+
+                                GestioneNotifiche.getInstance().AggiornaNotifica();
                             }
                         }, 100);
                         break;
                 }
             }
 
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         @Override

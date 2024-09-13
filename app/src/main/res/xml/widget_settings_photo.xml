@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+	android:initialLayout="@layout/widget_photo"
+	android:updatePeriodMillis="0"
+	android:previewImage="@drawable/ic_launcher"
+	android:minWidth="80dp"
+	android:minHeight="80dp"
+	android:targetCellWidth="1"
+	android:targetCellHeight="1"
+	android:minResizeWidth="40dp"
+	android:minResizeHeight="40dp"
+	android:maxResizeWidth="80dp"
+	android:maxResizeHeight="80dp"
+	android:resizeMode="none">
+</appwidget-provider>

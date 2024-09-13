@@ -12,4 +12,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="Nero">#000000</color>
     <color name="Bianco">#FFFFFF</color>
+    <color name="Verde_Chiaro">#99FF99</color>
+    <color name="Verde_Scuro">#22AA22</color>
 </resources>

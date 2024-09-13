@@ -1,8 +1,7 @@
-package com.looigi.wallpaperchanger2.classiAttivita;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
@@ -27,7 +26,7 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
     protected void onPreExecute() {
         super.onPreExecute();
 
-        VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+        // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
         db = new db_dati(context);
         db.EliminaImmaginiInLocale();
 
@@ -44,7 +43,7 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
             VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + imms.size());
         }
 
-        VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Lettura immagini effettuata. Immagini rilevate su disco: " +
             imms.size());
     }

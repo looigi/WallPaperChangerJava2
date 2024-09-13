@@ -30,7 +30,7 @@ public class ServizioInterno extends Service {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Utility.getInstance().stopService(context);
+        // Utility.getInstance().stopService(context);
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "onConfigurationChanged: " + newConfig.uiMode);
     }
@@ -59,10 +59,10 @@ public class ServizioInterno extends Service {
         registerReceiver(mScreenReceiver, filter);
 
         // CPU Attiva
-        /* PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 VariabiliStaticheServizio.channelName);
-        wl.acquire(); */
+        wl.acquire();
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Notification notifica = GestioneNotifiche.getInstance().StartNotifica(this);
@@ -87,6 +87,17 @@ public class ServizioInterno extends Service {
         }
     }
 
+    private void ChiudeTutto() {
+        GestioneNotifiche.getInstance().RimuoviNotifica();
+
+        if (mScreenReceiver != null) {
+            unregisterReceiver(mScreenReceiver);
+        }
+
+        stopForeground(true);
+        stopSelf();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -96,9 +107,9 @@ public class ServizioInterno extends Service {
         if (wl != null) {
             wl.release();
         }
-        GestioneNotifiche.getInstance().RimuoviNotifica();
-        if (mScreenReceiver != null) {
-            unregisterReceiver(mScreenReceiver);
+
+        if (VariabiliStaticheServizio.getInstance().isSbragaTutto()) {
+            ChiudeTutto();
         }
     }
 }

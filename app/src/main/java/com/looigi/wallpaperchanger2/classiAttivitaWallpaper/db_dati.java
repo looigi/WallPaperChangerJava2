@@ -1,10 +1,9 @@
-package com.looigi.wallpaperchanger2.classiAttivita;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
@@ -13,7 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.CONTEXT_RESTRICTED;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati {
@@ -28,7 +26,7 @@ public class db_dati {
 
         this.context = context;
         // /data/user/0/com.looigi.wallpaperchanger2/files/LooigiSoft/wallpaperchanger2/DB/
-        PathDB = context.getFilesDir() + "/LooigiSoft/" + VariabiliStaticheServizio.channelName + "/DB/";
+        PathDB = context.getFilesDir() + "/DB/";
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Cartella: " + PathDB);
 
@@ -47,7 +45,7 @@ public class db_dati {
 
         SQLiteDatabase db = null;
         try {
-            String nomeDB = "dati.db";
+            String nomeDB = "dati_wallpaper.db";
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Nome DB: " + PathDB + nomeDB);
 
             db = context.openOrCreateDatabase(
@@ -73,7 +71,8 @@ public class db_dati {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
-                        "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR);";
+                        "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR, " +
+                        "Detector VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
@@ -183,9 +182,10 @@ public class db_dati {
                     PathImm = "";
                 }
                 myDB.execSQL("Delete From Impostazioni");
+
                 String sql = "INSERT INTO"
                         + " Impostazioni"
-                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, Resize, ScriveTesto, OnOff, Home, Lock)"
+                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, Resize, ScriveTesto, OnOff, Home, Lock, Detector)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -197,7 +197,8 @@ public class db_dati {
                         + "'" + (VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine()  ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isOnOff() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isHome() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isLock() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isLock() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isDetector() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -239,6 +240,7 @@ public class db_dati {
                     VariabiliStaticheServizio.getInstance().setOnOff(c.getString(8).equals("S"));
                     VariabiliStaticheServizio.getInstance().setHome(c.getString(9).equals("S"));
                     VariabiliStaticheServizio.getInstance().setLock(c.getString(10).equals("S"));
+                    VariabiliStaticheServizio.getInstance().setDetector(c.getString(11).equals("S"));
 
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheServizio.getInstance().isOnOff());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa());
@@ -249,6 +251,7 @@ public class db_dati {
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheServizio.getInstance().isHome());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheServizio.getInstance().isLock());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheServizio.getInstance().isDetector());
                 } else {
                     Controlla = false;
                     boolean scritti = ScriveImpostazioni();
@@ -263,7 +266,7 @@ public class db_dati {
                 Utility.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
                 CreazioneTabelle();
 
-                return false;
+                return LeggeImpostazioni();
             }
         } else {
             return false;

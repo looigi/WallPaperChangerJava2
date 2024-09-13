@@ -3,7 +3,11 @@ package com.looigi.wallpaperchanger2.classiStandard;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -13,13 +17,50 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
            screenOff = false;
+
+           /* if (VariabiliStaticheServizio.getInstance().isImmagineCambiataConSchermoSpento()) {
+               Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine dopo schermo spento---");
+               VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
+
+
+               Handler handlerTimer = new Handler(Looper.getMainLooper());
+               Runnable rTimer = new Runnable() {
+                   public void run() {
+                       ChangeWallpaper c = new ChangeWallpaper(context);
+                       boolean fatto = c.setWallpaperLocale(context, VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                       Utility.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
+                       GestioneNotifiche.getInstance().AggiornaNotifica();
+                   }
+               };
+               handlerTimer.postDelayed(rTimer, 2000);
+
+           }*/
+
+            if (!VariabiliStaticheServizio.getInstance().isServizioAttivo()) {
+                /* Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() { */
+                Esecuzione e = new Esecuzione(context);
+                e.startServizio1();
+
+                        /* ChangeWallpaper c = new ChangeWallpaper(context);
+                        boolean fatto = c.setWallpaperLocale(context, VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                        Utility.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
+                        GestioneNotifiche.getInstance().AggiornaNotifica(); */
+                    /* }
+                };
+                handlerTimer.postDelayed(rTimer, 2000); */
+            }
         }
-        else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+        else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             screenOff = true;
         }
-        VariabiliStaticheServizio.getInstance().setScreenOn(screenOff);
+
+        VariabiliStaticheServizio.getInstance().setScreenOn(!screenOff);
+
+        GestioneNotifiche.getInstance().AggiornaNotifica();
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo: " + screenOff);
     }
