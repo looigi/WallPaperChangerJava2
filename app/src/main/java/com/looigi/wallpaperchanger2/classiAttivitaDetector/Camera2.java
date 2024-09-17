@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiAttivitaDetector;
+/* package com.looigi.wallpaperchanger2.classiAttivitaDetector;
 
 import android.Manifest;
 import android.app.Activity;
@@ -94,12 +94,13 @@ public class Camera2 {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-    private Activity act;
     private boolean Scattato = false;
     private boolean ERRORE = false;
     private String textureViewImpostata = "";
     private String daDove;
+    private Activity act;
     private Context context;
+    private TextureView textureView;
 
     public void Start(Activity act, Context context, String daDove) {
         this.act = act;
@@ -124,8 +125,8 @@ public class Camera2 {
             // if (textureView != null) {
             // } else {
             textureViewImpostata = "";
-            if (this.act != null) {
-                TextureView textureView = (TextureView) act.findViewById(R.id.textureView);
+            // if (this.act != null) {
+                textureView = (TextureView) act.findViewById(R.id.textureView);
                 if (textureView != null) {
                     // textureView.setVisibility(LinearLayout.VISIBLE);
                     UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Crea Texture View");
@@ -137,15 +138,16 @@ public class Camera2 {
                         UtilityDetector.getInstance().VisualizzaToast(ctx, "Error: TEXTURE VIEW NULL 2", true);
                         UtilityDetector.getInstance().Vibra(ctx, 2000, l);
                         ERRORE = true;
-                    } else { */
+                    } else { * /
                         ERRORE = false;
                         textureView.setSurfaceTextureListener(textureListener);
 
-                        UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Crea Texture View ciclo: " + VariabiliStaticheDetector.getInstance().getRisoluzione());
+                        UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "" +
+                                "Crea Texture View ciclo: " + VariabiliStaticheDetector.getInstance().getRisoluzione());
                         if (VariabiliStaticheDetector.getInstance().getRisoluzione().isEmpty()) {
-                            boolean Errore = UtilityDetector.getInstance().LeggeImpostazioni(act);
-                            VariabiliStaticheDetector.getInstance().setLetteImpostazioni(Errore);
-                            if (Errore) {
+                            boolean Lette = UtilityDetector.getInstance().LeggeImpostazioni(act);
+                            VariabiliStaticheDetector.getInstance().setLetteImpostazioni(Lette);
+                            if (!Lette) {
                                 UtilityDetector.getInstance().VisualizzaToast(this.act, "Impossibile aprire impostazioni", true);
                             }
                         }
@@ -158,12 +160,12 @@ public class Camera2 {
                     UtilityDetector.getInstance().Vibra(this.act, 2000);
                     ERRORE = true;
                 }
-            } else {
+            /* } else {
                 nascondeTV(act);
 
                 UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Crea Texture View Error: CTX NULL");
                 ERRORE = true;
-            }
+            } * /
         } else {
             nascondeTV(act);
 
@@ -288,7 +290,7 @@ public class Camera2 {
             UtilityDetector.getInstance().ScriveLog(act,  NomeMaschera, "RitornaRisoluzioni Error: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
 
-        VariabiliStaticheDetector.getInstance().Dimensioni = Dimens;
+        VariabiliStaticheDetector.getInstance().setDimensioni(Dimens);
     }
 
     private int Quale;
@@ -357,23 +359,30 @@ public class Camera2 {
         UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Secondi: " + Secondi);
 
         Estensione = VariabiliStaticheDetector.getInstance().getEstensione(); // Integer.parseInt(Ritorno.substring(pos+1,Ritorno.length()));
-        if (Estensione == 2) {
+        // if (Estensione == 2) {
             sEstensione = "dbf";
-        } else {
+        /* } else {
             sEstensione = "jpg";
-        }
+        } * /
         UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Estensione: " + Estensione + " -> " + sEstensione);
 
-        int width = 4080;
-        int height = 3060;
-        if (VariabiliStaticheDetector.getInstance().getRisoluzione() == null) {
-            VariabiliStaticheDetector.getInstance().setRisoluzione("4080x3060");
+        // int width = 4080;
+        // int height = 3060;
+        // if (VariabiliStaticheDetector.getInstance().getRisoluzione() == null) {
+            // VariabiliStaticheDetector.getInstance().setRisoluzione("4080x3060");
+        if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
+            RitornaRisoluzioni();
         }
-        String RisolX = VariabiliStaticheDetector.getInstance().getRisoluzione();
+
+        String RisolX = UtilityDetector.getInstance().RitornaRisoluzioneMassima(
+                VariabiliStaticheDetector.getInstance().getDimensioni());
+        // }
+        /* String RisolX = VariabiliStaticheDetector.getInstance().getRisoluzione(); * /
         int pos = RisolX.indexOf("x");
-        width = Integer.parseInt(RisolX.substring(pos + 1));
-        height = Integer.parseInt(RisolX.substring(0, pos));
-        UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Dimensioni: " + width + "x" + height + " (" + RisolX + ")");
+        int width = Integer.parseInt(RisolX.substring(pos + 1));
+        int height = Integer.parseInt(RisolX.substring(0, pos));
+        UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera,
+                "Dimensioni: " + width + "x" + height + " (" + RisolX + ")");
 
         reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
 
@@ -467,7 +476,7 @@ public class Camera2 {
 
                 outputSurfaces = new ArrayList<Surface>(2);
                 outputSurfaces.add(reader.getSurface());
-                if (textureView != null) {
+                if (textureView != null && textureView.getSurfaceTexture() != null) {
                     outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
                     UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Impostato outputSurfaces");
 
@@ -841,6 +850,7 @@ public class Camera2 {
         UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Close camera");
         // VariabiliStatiche.getInstance().setControllaWatchDog(true);
 
+        textureView = null;
         if (null != cameraDevice) {
             cameraDevice.close();
             cameraDevice = null;
@@ -850,4 +860,4 @@ public class Camera2 {
             imageReader = null;
         }
     }
-}
+} */

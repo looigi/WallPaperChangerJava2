@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.AutoStart;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 public class RunServiceOnBoot extends android.app.Service {
     private Handler handler;
@@ -13,7 +14,7 @@ public class RunServiceOnBoot extends android.app.Service {
     public void onCreate() {
         super.onCreate();
 
-        handler = new Handler();
+        handler = new Handler(Looper.getMainLooper());
         runnable = new Runnable() {
             @Override
             public void run() {

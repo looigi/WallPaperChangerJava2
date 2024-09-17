@@ -11,7 +11,13 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.widget.Toast;
 
-import com.looigi.wallpaperchanger2.MainActivity;
+import com.looigi.wallpaperchanger2.MainActivityDetector;
+import com.looigi.wallpaperchanger2.MainWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -75,12 +81,49 @@ public class ServizioInterno extends Service {
             Esecuzione e = new Esecuzione(context);
             e.startServizio1();
 
-            /* Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Foreground Partito",
-                    Toast.LENGTH_SHORT).show();
+            // PARTENZA MASCHERE
+            Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
+            db_dati db = new db_dati(context);
+            Utility.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
+            db.CreazioneTabelle();
+            Utility.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            boolean letto = db.LeggeImpostazioni();
+            Utility.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
+            VariabiliStaticheServizio.getInstance().setLetteImpostazioni(letto);
 
-            if (VariabiliStatiche.getInstance().getMainActivity() != null) {
-                VariabiliStatiche.getInstance().getMainActivity().moveTaskToBack(false);
-            } */
+            db_dati_detector dbD = new db_dati_detector(context);
+            dbD.CreazioneTabelle();
+
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context);
+            VariabiliStaticheDetector.getInstance().setLetteImpostazioni(lettoD);
+
+            if (VariabiliStaticheServizio.getInstance().isDetector() &&
+                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                    VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
+                Intent iD = new Intent(context, MainActivityDetector.class);
+                iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iD);
+            }
+
+            Intent iW = new Intent(context, MainWallpaper.class);
+            iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(iW);
+
+            Utility.getInstance().ApreToast(context, "Wallpaper Partito");
+
+            if (VariabiliStaticheServizio.getInstance().isDetector() &&
+                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                    VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
+                Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
+                if (notificaDetector != null) {
+                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+                    GestioneNotificheDetector.getInstance().AggiornaNotifica();
+
+                    Utility.getInstance().ApreToast(context, "Detector Partito");
+                }
+            }
+            // PARTENZA MASCHERE
         } else {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheServizio.channelName + " nulla");
             Toast.makeText(this, "Notifica " + VariabiliStaticheServizio.channelName + " nulla", Toast.LENGTH_SHORT).show();

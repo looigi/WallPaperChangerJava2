@@ -1,20 +1,13 @@
 package com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.TextureView;
-import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.AndroidCameraApi;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.utilities.Utility;
 
 public class Photo extends Activity {
 	private static String NomeMaschera = "PHOTO";
@@ -30,12 +23,24 @@ public class Photo extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_detector);
+		// setContentView(R.layout.camera);
 
-		act = this;
-		context = this; // VariabiliStatiche.getInstance().getContext();
+		// act = this;
+		// context = this; // VariabiliStatiche.getInstance().getContext();
 
-		UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Scatto foto. Controllo esistenza act: " + (act != null));
+		// InizializzaMascheraDetector id = new InizializzaMascheraDetector();
+		// id.inizializzaMaschera(context, act);
+
+		VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+
+		Intent myIntent = new Intent(
+				this,
+				AndroidCameraApi.class);
+		startActivity(myIntent);
+
+		// finish();
+
+		/* UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Scatto foto. Controllo esistenza act: " + (act != null));
 		if (act == null) {
 			Utility.getInstance().ApreToast(context, "ACT NULLA in Photo.class");
 
@@ -47,7 +52,7 @@ public class Photo extends Activity {
 			PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 			AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-			System.exit(0); */
+			System.exit(0); * /
 		} else {
 			TextureView textureView = (TextureView) act.findViewById(R.id.textureView);
 
@@ -71,7 +76,7 @@ public class Photo extends Activity {
 				VariabiliImpostazioni.getInstance().setServiceIntent(null);
 
 				VariabiliImpostazioni.getInstance().setServiceIntent(new Intent(this, ServizioInterno.class));
-				startService(VariabiliImpostazioni.getInstance().getServiceIntent()); */
+				startService(VariabiliImpostazioni.getInstance().getServiceIntent()); * /
 
 				handlerTimer = new Handler();
 				rTimer = new Runnable() {
@@ -82,8 +87,9 @@ public class Photo extends Activity {
 						rTimer2 = new Runnable() {
 							public void run() {
 								// finish();
+
 								VariabiliStaticheDetector.getInstance().getMainActivity().moveTaskToBack(true);
-								// main.finish();
+								finish();
 
 								handlerTimer2.removeCallbacks(rTimer2);
 								rTimer2 = null;
@@ -95,8 +101,9 @@ public class Photo extends Activity {
 						rTimer = null;
 					}
 				};
+
 				handlerTimer.postDelayed(rTimer, 500);
 			}
-		}
+		} */
 	}
 }

@@ -84,6 +84,15 @@ public class VariabiliStaticheServizio {
     private int SecondiPassati;
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath();
     private boolean sbragaTutto = false;
+    private boolean Espansa = false;
+
+    public boolean isEspansa() {
+        return Espansa;
+    }
+
+    public void setEspansa(boolean espansa) {
+        Espansa = espansa;
+    }
 
     public StrutturaImmagine getUltimaImmaginePerLock() {
         return UltimaImmaginePerLock;

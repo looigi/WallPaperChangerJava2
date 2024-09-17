@@ -1,19 +1,14 @@
-package com.looigi.wallpaperchanger2.classiAttivitaDetector;
+package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 
 public class MainActivityDetector extends Activity {
     private static String NomeMaschera = "MAINACTIVITY";
@@ -45,7 +40,7 @@ public class MainActivityDetector extends Activity {
                 // System.exit(-1);
             }
 
-            this.moveTaskToBack(false);
+            this.moveTaskToBack(true);
 
             VariabiliStaticheDetector.getInstance().setMascheraPartita(true);
         }
@@ -87,6 +82,32 @@ public class MainActivityDetector extends Activity {
         /* if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();
             i.inizializzaMaschera(this, this);
+        } */
+
+        /* if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
+            Handler handlerTimer;
+            Runnable rTimer;
+
+            final int[] conta = {0};
+            handlerTimer = new Handler(Looper.getMainLooper());
+            rTimer = new Runnable() {
+                public void run() {
+                    if (VariabiliStaticheDetector.getInstance().isCameraImpostata()) {
+                        VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+
+                        moveTaskToBack(true);
+                    } else {
+                        conta[0]++;
+                        if (conta[0] > 20) {
+                            // CAMERA NON ATTIVATA IN TEMPO
+                            handlerTimer.removeCallbacks(this);
+                        } else {
+                            handlerTimer.postDelayed(this, 150);
+                        }
+                    }
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 150);
         } */
     }
 

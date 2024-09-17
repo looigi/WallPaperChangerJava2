@@ -19,6 +19,8 @@ public class ProviderVideo extends AppWidgetProvider {
 	    PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
 
 	    remoteViews.setOnClickPendingIntent(R.id.imgVideo, configPendingIntent);
-	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);		 
+	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 }

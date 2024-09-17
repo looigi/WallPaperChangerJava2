@@ -265,7 +265,10 @@ public class Video extends Activity implements Callback {
 	}
 
 	private String PrendeRisoluzioni() {
-		String Ritorno="";
+		if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
+
+		}
+		String Ritorno = "";
 
 		/* GBTakePictureNoPreview c = new GBTakePictureNoPreview();
 	    c.ImpostaContext(context);
@@ -275,7 +278,7 @@ public class Video extends Activity implements Callback {
 		    c.setUseBackCamera();
 	    }
 	    Dimensioni=c.RitornaRisoluzioniVideo(); */
-		Dimensioni = VariabiliStaticheDetector.getInstance().Dimensioni;
+		Dimensioni = VariabiliStaticheDetector.getInstance().getDimensioni();
 
 	    int maxX = 0;
 	    int maxY = 0;
@@ -297,7 +300,7 @@ public class Video extends Activity implements Callback {
 			}
 			conta++;
 		}
-	    Ritorno=Dimensioni.get(quale);
+	    Ritorno = Dimensioni.get(quale);
 
 	    return Ritorno;
 	}

@@ -24,47 +24,47 @@ public class Impostazioni {
         }
         VariabiliStatiche.getInstance().Dimensioni=c.RitornaRisoluzioni();
         RiempieListaRisoluzioni(context, VariabiliStatiche.getInstance().Dimensioni);
-    } */
+    }
 
     public void RiempieListaRisoluzioni(Context context, List<String> Risoluzioni) {
         String sRisoluzioni[] = null;
-        sRisoluzioni=new String[Risoluzioni.size()];
-        for (int i=0;i<Risoluzioni.size();i++) {
-            sRisoluzioni[i]=Risoluzioni.get(i);
+        sRisoluzioni = new String[Risoluzioni.size()];
+        for (int i = 0; i < Risoluzioni.size(); i++) {
+            sRisoluzioni[i] = Risoluzioni.get(i);
         }
 
         ArrayList<String> ListaRis=new ArrayList<String>();
-        String[] risol={};
-        risol=new String[sRisoluzioni.length];
-        for (int i=0;i<sRisoluzioni.length;i++) {
-            risol[i]= new String(sRisoluzioni[i]);
+        String[] risol = {};
+        risol = new String[sRisoluzioni.length];
+        for (int i = 0;i < sRisoluzioni.length; i++) {
+            risol[i] = new String(sRisoluzioni[i]);
             ListaRis.add(risol[i]);
         }
 
         ArrayList<HashMap<String, Object>>
-                data=new ArrayList<HashMap<String,Object>>();
+                data = new ArrayList<HashMap<String,Object>>();
 
         HashMap<String,Object>
-                ListaFinale=new HashMap<String, Object>();
-        for(int i=0;i<ListaRis.size();i++){
-            String p=ListaRis.get(i);
+                ListaFinale = new HashMap<String, Object>();
+        for (int i = 0; i < ListaRis.size(); i++){
+            String p = ListaRis.get(i);
 
-            ListaFinale=new HashMap<String, Object>();
+            ListaFinale = new HashMap<String, Object>();
             ListaFinale.put("Risoluzione", p);
 
             data.add(ListaFinale);
         }
-        String[] from={"Risoluzione"};
-        int[] to={R.id.Risoluzione};
+        /* String[] from = {"Risoluzione"};
+        int[] to = {R.id.Risoluzione};
         SimpleAdapter adapter=new SimpleAdapter(
                 context.getApplicationContext(),
                 data,
                 R.layout.listview_records,
                 from,
-                to);
+                to); * /
 
-        VariabiliStaticheDetector.getInstance().getLista().setAdapter(adapter);
-    }
+        // VariabiliStaticheDetector.getInstance().getLista().setAdapter(adapter);
+    } */
 
     private void SalvaValori(Context context) {
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Scrittura impostazioni");
@@ -97,7 +97,7 @@ public class Impostazioni {
         SalvaValori(context);
     }
 
-    public void ImpostaRisoluzione(Context context, String Risol) {
+    /* public void ImpostaRisoluzione(Context context, String Risol) {
         // SQLiteDatabase myDB= null;
 //
         // myDB = context.openOrCreateDatabase("Spiator", MODE_PRIVATE, null);
@@ -105,7 +105,7 @@ public class Impostazioni {
         // myDB.close();
         VariabiliStaticheDetector.getInstance().setRisoluzione(Risol);
         SalvaValori(context);
-    }
+    } */
 
     /* public void ImpostaFrontale(Context context, TextView tv) {
         // SQLiteDatabase myDB= null;

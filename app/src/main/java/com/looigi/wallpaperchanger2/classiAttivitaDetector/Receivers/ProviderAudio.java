@@ -20,6 +20,8 @@ public class ProviderAudio extends AppWidgetProvider {
 	    PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
 
 	    remoteViews.setOnClickPendingIntent(R.id.imgAudio, configPendingIntent);
-	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);		 
+	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 }

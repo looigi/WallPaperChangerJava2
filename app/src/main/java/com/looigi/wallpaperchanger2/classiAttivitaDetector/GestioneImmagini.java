@@ -114,9 +114,10 @@ public class GestioneImmagini {
 	}
 
 	public void RuotaImmagine(Context context, int Quanto) {
-		String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
+		// String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella = VariabiliStatiche.getInstance().PathApplicazione;
-		String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		String Path = UtilityDetector.getInstance().PrendePath(context);
 		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
 		boolean OkEXIF=false;
@@ -128,7 +129,7 @@ public class GestioneImmagini {
 		String lonref = "";
 
 		try {
-			ExifInterface exif = new ExifInterface(Origine+Cartella+NomeImmagine);
+			ExifInterface exif = new ExifInterface(Path + NomeImmagine);
 			artista = exif.getAttribute(ExifInterface.TAG_ARTIST);
 			model = exif.getAttribute(ExifInterface.TAG_MODEL);
 			lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
@@ -141,18 +142,24 @@ public class GestioneImmagini {
 			OkEXIF = false;
 		}
 
-		Bitmap Immagine = BitmapFactory.decodeFile(Origine+Cartella+NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
+		Bitmap Immagine = BitmapFactory.decodeFile(Path+NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
 		Matrix matrix = new Matrix();
 		matrix.postRotate(Quanto);
 
-		Bitmap rotated = Bitmap.createBitmap(Immagine, 0, 0, Immagine.getWidth(), Immagine.getHeight(),
-				matrix, true);
+		Bitmap rotated = Bitmap.createBitmap(
+				Immagine,
+				0,
+				0,
+				Immagine.getWidth(),
+				Immagine.getHeight(),
+				matrix,
+				true);
 
-		saveBitmap(rotated, Origine+Cartella, NomeImmagine);
+		saveBitmap(rotated, Path, NomeImmagine);
 
 		if (OkEXIF) {
 			try {
-				ExifInterface exif = new ExifInterface(Origine + Cartella + NomeImmagine);
+				ExifInterface exif = new ExifInterface(Path + NomeImmagine);
 				exif.setAttribute(ExifInterface.TAG_ARTIST, artista);
 				exif.setAttribute(ExifInterface.TAG_MODEL, model);
 				exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, lat);
@@ -165,13 +172,14 @@ public class GestioneImmagini {
 			}
 		}
 
-		UtilityDetector.getInstance().VisualizzaMultimedia();
+		UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
 	public void FlipImmagine(Context context, boolean Orizzontale) {
-		String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+		// String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-		String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		String Path = UtilityDetector.getInstance().PrendePath(context);
 		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
 		boolean OkEXIF = false;
@@ -183,7 +191,7 @@ public class GestioneImmagini {
 		String lonref = "";
 
 		try {
-			ExifInterface exif = new ExifInterface(Origine+Cartella+NomeImmagine);
+			ExifInterface exif = new ExifInterface(Path + NomeImmagine);
 			artista = exif.getAttribute(ExifInterface.TAG_ARTIST);
 			model = exif.getAttribute(ExifInterface.TAG_MODEL);
 			lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
@@ -196,7 +204,7 @@ public class GestioneImmagini {
 			OkEXIF = false;
 		}
 
-		Bitmap Immagine = BitmapFactory.decodeFile(Origine+Cartella+NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
+		Bitmap Immagine = BitmapFactory.decodeFile(Path + NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
 		Matrix matrix = new Matrix();
 		int cx = Immagine.getWidth()/2;
 		int cy = Immagine.getHeight()/2;
@@ -209,11 +217,11 @@ public class GestioneImmagini {
 		Bitmap rotated = Bitmap.createBitmap(Immagine, 0, 0, Immagine.getWidth(), Immagine.getHeight(),
 				matrix, true);
 
-		saveBitmap(rotated, Origine+Cartella, NomeImmagine);
+		saveBitmap(rotated, Path, NomeImmagine);
 
 		if (OkEXIF) {
 			try {
-				ExifInterface exif = new ExifInterface(Origine + Cartella + NomeImmagine);
+				ExifInterface exif = new ExifInterface(Path + NomeImmagine);
 				exif.setAttribute(ExifInterface.TAG_ARTIST, artista);
 				exif.setAttribute(ExifInterface.TAG_MODEL, model);
 				exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, lat);
@@ -226,7 +234,7 @@ public class GestioneImmagini {
 			}
 		}
 
-		UtilityDetector.getInstance().VisualizzaMultimedia();
+		UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
 	private void saveBitmap(Bitmap bm, String Percorso, String Nome)  {
@@ -249,12 +257,13 @@ public class GestioneImmagini {
 
 	public void CambiaContrastoLuminosita(Context context, float contrast, float brightness)
 	{
-		String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+		// String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-		String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		String Path = UtilityDetector.getInstance().PrendePath(context);
 		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
-		Bitmap Immagine = BitmapFactory.decodeFile(Origine+Cartella+NomeImmagine);
+		Bitmap Immagine = BitmapFactory.decodeFile(Path+ NomeImmagine);
 		ColorMatrix cm = new ColorMatrix(new float[]
 				{
 						contrast, 0, 0, 0, brightness,
@@ -271,8 +280,8 @@ public class GestioneImmagini {
 		paint.setColorFilter(new ColorMatrixColorFilter(cm));
 		canvas.drawBitmap(Immagine, 0, 0, paint);
 
-		saveBitmap(ret, Origine+Cartella, NomeImmagine);
+		saveBitmap(ret, Path, NomeImmagine);
 
-		UtilityDetector.getInstance().VisualizzaMultimedia();
+		UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 }

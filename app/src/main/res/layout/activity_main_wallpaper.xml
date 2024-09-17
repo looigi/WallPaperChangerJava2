@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainWallpaper">
 
     <RelativeLayout
         android:id="@+id/contenitore"
@@ -16,7 +16,7 @@
         android:paddingTop="2dp"
         android:orientation="vertical"
         android:background="#000000"
-        tools:context=".MainActivity" >
+        tools:context=".MainWallpaper" >
 
         <ScrollView
             android:layout_width="match_parent"
@@ -254,6 +254,13 @@
                             android:layout_height="wrap_content" /> -->
 
                     <Switch
+                        android:id="@+id/switchEspansa"
+                        android:layout_width="match_parent"
+                        android:textColor="#0000CC"
+                        android:text="Dimensioni Originali"
+                        android:layout_height="wrap_content" />
+
+                    <Switch
                         android:id="@+id/switchBlur"
                         android:layout_width="match_parent"
                         android:textColor="#0000CC"
@@ -277,7 +284,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="5"
                             android:textColor="@color/colorPrimaryDark"
-                            android:text="Imposta subito"
+                            android:text="Refresh"
                             android:layout_height="wrap_content" />
 
                         <LinearLayout
@@ -290,6 +297,33 @@
                                 android:id="@+id/imgRefresh"
                                 android:layout_width="30dp"
                                 android:src="@drawable/icona_refresh"
+                                android:layout_height="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="6"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="Cambia subito"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imgCambiaSubito"
+                                android:layout_width="30dp"
+                                android:src="@drawable/eye"
                                 android:layout_height="30dp" />
                         </LinearLayout>
                     </LinearLayout>

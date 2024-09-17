@@ -6,20 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.looigi.wallpaperchanger2.MainActivity;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 import static android.content.Context.POWER_SERVICE;
@@ -37,8 +28,12 @@ public class Permessi {
         String[] PERMISSIONS = new String[]{
                 // Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 // Manifest.permission.READ_EXTERNAL_STORAGE,
+
                 Manifest.permission.READ_MEDIA_IMAGES,
-                // Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+
+                // Manifest.permission.READ_EXTERNAL_STORAGE,
+                // Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
                 Manifest.permission.FOREGROUND_SERVICE_CAMERA,
                 Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,

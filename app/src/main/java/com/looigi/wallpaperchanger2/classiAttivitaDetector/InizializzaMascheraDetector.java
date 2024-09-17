@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -48,14 +49,7 @@ public class InizializzaMascheraDetector {
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "On Create. Creazione Tabelle");
 
-        db_dati_detector db = new db_dati_detector(context);
-        db.CreazioneTabelle();
-
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-        boolean letto = UtilityDetector.getInstance().LeggeImpostazioni(context);
-        VariabiliStaticheDetector.getInstance().setLetteImpostazioni(letto);
-
-        Notification notifica = GestioneNotificheDetector.getInstance().StartNotifica(context);
+        /* Notification notifica = GestioneNotificheDetector.getInstance().StartNotifica(context);
         if (notifica != null) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
             GestioneNotificheDetector.getInstance().AggiornaNotifica();
@@ -65,18 +59,19 @@ public class InizializzaMascheraDetector {
 
             // Toast.makeText(context, VariabiliStaticheDetector.channelName + ": Foreground Partito",
             //         Toast.LENGTH_SHORT).show();
+            Utility.getInstance().ApreToast(context, "Detector Partito");
         } else {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica " +
                     VariabiliStaticheDetector.channelName + " nulla");
             Toast.makeText(context, "Notifica " + VariabiliStaticheDetector.channelName + " nulla",
                     Toast.LENGTH_SHORT).show();
-        }
+        } */
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Instanziamento camera");
 
-        Camera2 c = new Camera2();
-        VariabiliStaticheDetector.getInstance().setCamera(c);
-        VariabiliStaticheDetector.getInstance().getCamera().Start(act, context, "MAIN");
+        // Camera2 c = new Camera2();
+        // VariabiliStaticheDetector.getInstance().setCamera(c);
+        // VariabiliStaticheDetector.getInstance().getCamera().Start(act, context, "MAIN");
 
         /* Button bEliminaLog = (Button) act.findViewById(R.id.btnEliminaLog);
         bEliminaLog.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +92,7 @@ public class InizializzaMascheraDetector {
         Switch sVibrazione = (Switch) act.findViewById(R.id.sVibrazione);
         Switch sToast = (Switch) act.findViewById(R.id.sToast);
 
-        View fgmMappa = (View) act.findViewById(R.id.map);
+        // View fgmMappa = (View) act.findViewById(R.id.map);
 
         TextView txtCoords = (TextView) act.findViewById(R.id.txtCoords);
         VariabiliStaticheDetector.getInstance().setTxtCoords(txtCoords);
@@ -106,15 +101,15 @@ public class InizializzaMascheraDetector {
         String modello = p.getDeviceName();
         VariabiliStaticheDetector.getInstance().setModelloTelefono(modello);
 
-        int cameraID = VariabiliStaticheDetector.getInstance().getFotocamera();
+        /* int cameraID = VariabiliStaticheDetector.getInstance().getFotocamera();
         if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
             if (cameraID == 0) {
                 VariabiliStaticheDetector.getInstance().getCamera().ImpostaFrontale();
             } else {
                 VariabiliStaticheDetector.getInstance().getCamera().ImpostaRetro();
             }
-        }
-        VariabiliStaticheDetector.getInstance().setLista((ListView) act.findViewById(R.id.lstRisoluzioni));
+        } */
+        /* VariabiliStaticheDetector.getInstance().setLista((ListView) act.findViewById(R.id.lstRisoluzioni));
         if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
             VariabiliStaticheDetector.getInstance().getCamera().RitornaRisoluzioni();
         }
@@ -122,7 +117,7 @@ public class InizializzaMascheraDetector {
         if (VariabiliStaticheDetector.getInstance().Dimensioni != null) {
             Impostazioni i = new Impostazioni();
             i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni);
-        }
+        } */
 
         // VariabiliStaticheDetector.getInstance().manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -307,12 +302,12 @@ public class InizializzaMascheraDetector {
                 fr.setChecked(false);
 
                 // TextView tv = (TextView) view.findViewById(R.id.txtRisoluzione);
-                VariabiliStaticheDetector.getInstance().getCamera().ImpostaFrontale();
+                /* VariabiliStaticheDetector.getInstance().getCamera().ImpostaFrontale();
                 VariabiliStaticheDetector.getInstance().setFotocamera(0);
 
                 VariabiliStaticheDetector.getInstance().getCamera().RitornaRisoluzioni();
-                Impostazioni i = new Impostazioni();
-                i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni);
+                // Impostazioni i = new Impostazioni();
+                // i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni); */
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context);
@@ -326,19 +321,19 @@ public class InizializzaMascheraDetector {
                 ff.setChecked(false);
 
                 // TextView tv = (TextView) view.findViewById(R.id.txtRisoluzione);
-                VariabiliStaticheDetector.getInstance().getCamera().ImpostaRetro();
+                /* VariabiliStaticheDetector.getInstance().getCamera().ImpostaRetro();
                 VariabiliStaticheDetector.getInstance().setFotocamera(1);
 
                 VariabiliStaticheDetector.getInstance().getCamera().RitornaRisoluzioni();
-                Impostazioni i = new Impostazioni();
-                i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni);
+                // Impostazioni i = new Impostazioni();
+                // i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni); */
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context);
             }
         });
 
-        TextView tv = (TextView) act.findViewById(R.id.txtRisoluzione);
+        /* TextView tv = (TextView) act.findViewById(R.id.txtRisoluzione);
         tv.setText(VariabiliStaticheDetector.getInstance().getRisoluzione());
 
         if (VariabiliStaticheDetector.getInstance().getFotocamera() == 1) {
@@ -361,7 +356,7 @@ public class InizializzaMascheraDetector {
                 Impostazioni i = new Impostazioni();
                 i.ImpostaRisoluzione(context, o);
             }
-        });
+        }); */
 
         Button bs = (Button) act.findViewById(R.id.cmdImpostaScatti);
         bs.setOnClickListener(new View.OnClickListener() {
@@ -431,9 +426,12 @@ public class InizializzaMascheraDetector {
         final LinearLayout lScatti = (LinearLayout) act.findViewById(R.id.layScatti);
         final LinearLayout lTasti = (LinearLayout) act.findViewById(R.id.layTasti);
         final LinearLayout lFrecce = (LinearLayout) act.findViewById(R.id.layFrecce);
+        final LinearLayout lNomeImm = (LinearLayout) act.findViewById(R.id.layNomeImmagine);
         lScatti.setVisibility(LinearLayout.GONE);
         lTasti.setVisibility(LinearLayout.GONE);
         lFrecce.setVisibility(LinearLayout.GONE);
+        lNomeImm.setVisibility(LinearLayout.GONE);
+
         VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.GONE);
 
@@ -448,7 +446,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().getvView().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!VariabiliStaticheDetector.getInstance().StaVedendo) {
-                    UtilityDetector.getInstance().PlayVideo();
+                    UtilityDetector.getInstance().PlayVideo(context);
                 } else {
                     UtilityDetector.getInstance().StopVideo();
                 }
@@ -458,7 +456,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().getAudio().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!VariabiliStaticheDetector.getInstance().StaSuonando) {
-                    UtilityDetector.getInstance().PlayAudio();
+                    UtilityDetector.getInstance().PlayAudio(context);
                 } else {
                     UtilityDetector.getInstance().StopAudio();
                 }
@@ -467,9 +465,11 @@ public class InizializzaMascheraDetector {
 
         final Button bDecripta = (Button) act.findViewById(R.id.cmdDecript);
         final Button bCripta = (Button) act.findViewById(R.id.cmdCript);
+        final Button bSposta = (Button) act.findViewById(R.id.cmdSposta);
 
         bCripta.setVisibility(LinearLayout.GONE);
         bDecripta.setVisibility(LinearLayout.GONE);
+        bSposta.setVisibility(LinearLayout.GONE);
 
         bDecripta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -480,6 +480,12 @@ public class InizializzaMascheraDetector {
         bCripta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityDetector.getInstance().CriptaFiles(VariabiliStaticheDetector.getInstance().getContext());
+            }
+        });
+
+        bSposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityDetector.getInstance().SpostaFile(VariabiliStaticheDetector.getInstance().getContext());
             }
         });
 
@@ -509,19 +515,21 @@ public class InizializzaMascheraDetector {
                         lScatti.setVisibility(LinearLayout.VISIBLE);
                         lTasti.setVisibility(LinearLayout.VISIBLE);
                         lFrecce.setVisibility(LinearLayout.VISIBLE);
+                        lNomeImm.setVisibility(LinearLayout.VISIBLE);
                         bCripta.setVisibility(LinearLayout.VISIBLE);
                         bDecripta.setVisibility(LinearLayout.VISIBLE);
+                        bSposta.setVisibility(LinearLayout.VISIBLE);
 
                         VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.VISIBLE);
                         VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.VISIBLE);
 
-                        UtilityDetector.getInstance().CaricaMultimedia();
-                        UtilityDetector.getInstance().VisualizzaMultimedia();
+                        UtilityDetector.getInstance().CaricaMultimedia(context);
+                        UtilityDetector.getInstance().VisualizzaMultimedia(context);
 
                         Handler handlerTimer;
                         Runnable rTimer;
 
-                        handlerTimer = new Handler();
+                        handlerTimer = new Handler(Looper.getMainLooper());
                         rTimer = new Runnable() {
                             public void run() {
                                 VariabiliStaticheDetector.getInstance().MascheraImmaginiMostrata = true;
@@ -541,6 +549,7 @@ public class InizializzaMascheraDetector {
                     lScatti.setVisibility(LinearLayout.GONE);
                     lTasti.setVisibility(LinearLayout.GONE);
                     lFrecce.setVisibility(LinearLayout.GONE);
+                    lNomeImm.setVisibility(LinearLayout.GONE);
 
                     VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.GONE);
 
@@ -561,8 +570,8 @@ public class InizializzaMascheraDetector {
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityDetector.getInstance().CaricaMultimedia();
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().CaricaMultimedia(context);
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
 
@@ -572,9 +581,9 @@ public class InizializzaMascheraDetector {
                 u.FlipImmagine(context, true);
 
                 int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia();
+                UtilityDetector.getInstance().CaricaMultimedia(context);
                 VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
 
@@ -584,9 +593,9 @@ public class InizializzaMascheraDetector {
                 u.FlipImmagine(context, false);
 
                 int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia();
+                UtilityDetector.getInstance().CaricaMultimedia(context);
                 VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
 
@@ -598,7 +607,7 @@ public class InizializzaMascheraDetector {
                     VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini - 1;
                 }
 
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
 
@@ -610,7 +619,7 @@ public class InizializzaMascheraDetector {
                     VariabiliStaticheDetector.getInstance().numMultimedia = 0;
                 }
 
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
 
@@ -649,11 +658,11 @@ public class InizializzaMascheraDetector {
                 }
 
                 int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia();
+                UtilityDetector.getInstance().CaricaMultimedia(context);
                 appo--;
                 if (appo < 0) appo = 0;
                 VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-                UtilityDetector.getInstance().VisualizzaMultimedia();
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
                 UtilityDetector.getInstance().VisualizzaPOPUP("File multimediale eliminato", false, 0);
             }
         });
@@ -672,6 +681,12 @@ public class InizializzaMascheraDetector {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
+
+        if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
+            VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+
+            act.moveTaskToBack(true);
+        }
     }
 
     private String getCPUDetails(){
@@ -702,6 +717,111 @@ public class InizializzaMascheraDetector {
         return cpuDetails;
     }
 
+    private int qualeSchermata = 0;
+
+    private void SistemaSchermata(Activity act) {
+        Button btnHome = act.findViewById(R.id.btnMenuHome);
+        Button btnEstensione = act.findViewById(R.id.btnMenuEstensione);
+        Button btnImpostazioni = act.findViewById(R.id.btnMenuImpostazioni);
+        Button btnVideo = act.findViewById(R.id.btnMenuVideo);
+        Button btnTipoFoto = act.findViewById(R.id.btnMenuTipoFoto);
+        Button btnTipoScatto = act.findViewById(R.id.btnMenuTipoScatto);
+
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 0;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnEstensione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 1;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnImpostazioni.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 2;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 3;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnTipoFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 4;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnTipoScatto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 5;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        VisualizzaSchermata(act);
+
+        ImpostaInfo(act);
+    }
+
+    private void VisualizzaSchermata(Activity act) {
+        LinearLayout layHome = act.findViewById(R.id.container_home);
+        LinearLayout layEstensione = act.findViewById(R.id.container_tipo_estensione);
+        LinearLayout layImpostazioni = act.findViewById(R.id.container_impostazioni);
+        LinearLayout layVideo = act.findViewById(R.id.container_video);
+        LinearLayout layTipoFotocamera = act.findViewById(R.id.container_tipo_fotocamera);
+        LinearLayout layTipoScatto = act.findViewById(R.id.container_tipo_scatto);
+
+        layHome.setVisibility(LinearLayout.GONE);
+        layEstensione.setVisibility(LinearLayout.GONE);
+        layImpostazioni.setVisibility(LinearLayout.GONE);
+        layVideo.setVisibility(LinearLayout.GONE);
+        layTipoFotocamera.setVisibility(LinearLayout.GONE);
+        layTipoScatto.setVisibility(LinearLayout.GONE);
+
+        switch (qualeSchermata) {
+            case 0:
+                layHome.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 1:
+                layEstensione.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 2:
+                layImpostazioni.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 3:
+                layVideo.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 4:
+                layTipoFotocamera.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 5:
+                layTipoScatto.setVisibility(LinearLayout.VISIBLE);
+                break;
+        }
+    }
+
+    private void ImpostaCampiTestoPerLingua(Activity act) {
+
+    }
+
+    /*
     private void ImpostaCampiTestoPerLingua(Activity act) {
         RadioButton AS=(RadioButton) act.findViewById(R.id.optAutoScatto);
         RadioButton IM=(RadioButton) act.findViewById(R.id.optImmediato);
@@ -716,7 +836,7 @@ public class InizializzaMascheraDetector {
         TextView tpos=(TextView) act.findViewById(R.id.txtTitPos);
         TextView ts=(TextView) act.findViewById(R.id.textView22);
         TextView t4=(TextView) act.findViewById(R.id.txtTitoloEstensione);
-        TextView tr=(TextView) act.findViewById(R.id.TextView01);
+        // TextView tr=(TextView) act.findViewById(R.id.TextView01);
         CheckBox c=(CheckBox) act.findViewById(R.id.chkVibrazione);
         CheckBox ca=(CheckBox) act.findViewById(R.id.chkAnteprima);
         TextView tns=(TextView) act.findViewById(R.id.textView3);
@@ -732,7 +852,7 @@ public class InizializzaMascheraDetector {
             tpos.setText("Position of camera");
             // t2.setText("Password");
             t4.setText("File format");
-            tr.setText("Resolution");
+            // tr.setText("Resolution");
             ts.setText("Seconds");
             AS.setText("Auto Shoot");
             IM.setText("Immediate");
@@ -757,7 +877,7 @@ public class InizializzaMascheraDetector {
             tpos.setText("Fotocamera");
             // t2.setText("Password");
             t4.setText("Formato del file");
-            tr.setText("Risoluzione");
+            // tr.setText("Risoluzione");
             ts.setText("Secondi");
             AS.setText("Auto scatto");
             IM.setText("Immediato");
@@ -791,17 +911,17 @@ public class InizializzaMascheraDetector {
             Titoli[1]="Shoot Type";
             Titoli[2]="Camera";
             Titoli[3]="Image Extension";
-            Titoli[4]="Photo Resolution";
-            Titoli[5]="Settings";
-            Titoli[6]="Info";
+            // Titoli[4]="Photo Resolution";
+            Titoli[4]="Settings";
+            Titoli[5]="Info";
         } else {
             Titoli[0]="Video";
             Titoli[1]="Tipologia di scatto";
             Titoli[2]="Fotocamera";
             Titoli[3]="Estensione";
-            Titoli[4]="Risoluzione";
-            Titoli[5]="Impostazioni";
-            Titoli[6]="Info";
+            // Titoli[4]="Risoluzione";
+            Titoli[4]="Impostazioni";
+            Titoli[5]="Info";
         }
 
         TabHost tabHost = (TabHost) act.findViewById(R.id.tabGenerale1);
@@ -811,8 +931,8 @@ public class InizializzaMascheraDetector {
         tabHost.addTab(tabHost.newTabSpec("tabviewVideo").setContent(R.id.tabVideo).setIndicator(Titoli[0]));
         tabHost.addTab(tabHost.newTabSpec("tabviewTipoScatto").setContent(R.id.tabTipoScatto).setIndicator(Titoli[1]));
         tabHost.addTab(tabHost.newTabSpec("tabviewTipoFotocamera").setContent(R.id.tabTipoFotocamera).setIndicator(Titoli[2]));
-        tabHost.addTab(tabHost.newTabSpec("tabviewEstensione").setContent(R.id.tabEstensione).setIndicator(Titoli[3]));
-        tabHost.addTab(tabHost.newTabSpec("tabviewRisoluzione").setContent(R.id.tabRisoluzione).setIndicator(Titoli[4]));
+        // tabHost.addTab(tabHost.newTabSpec("tabviewEstensione").setContent(R.id.tabEstensione).setIndicator(Titoli[3]));
+        // tabHost.addTab(tabHost.newTabSpec("tabviewRisoluzione").setContent(R.id.tabRisoluzione).setIndicator(Titoli[4]));
         // tabHost.addTab(tabHost.newTabSpec("tabview9").setContent(R.id.tab9).setIndicator(Titoli[8]));
         tabHost.addTab(tabHost.newTabSpec("tabviewImpostazioni").setContent(R.id.tabImpostazioni).setIndicator(Titoli[5]));
         tabHost.addTab(tabHost.newTabSpec("tabviewHome").setContent(R.id.tabHome).setIndicator(Titoli[6]));
@@ -823,23 +943,30 @@ public class InizializzaMascheraDetector {
 
         TabWidget tw = (TabWidget) tabHost.findViewById(android.R.id.tabs);
 
-        for (int i=0;i<7;i++) {
-            View tabView = tw.getChildTabViewAt(i);
-            // tabView.getLayoutParams().width = 500; // LinearLayout.LayoutParams.WRAP_CONTENT;
+        for (int i = 0;i < 6; i++) {
+            if (tw != null) {
+                View tabView = tw.getChildTabViewAt(i);
+                if (tabView != null) {
+                    // tabView.getLayoutParams().width = 500; // LinearLayout.LayoutParams.WRAP_CONTENT;
 
-            TextView tv = (TextView) tabView.findViewById(android.R.id.title);
-            tv.setText(Titoli[i]);
-            tv.setTextSize(15);
+                    TextView tv = (TextView) tabView.findViewById(android.R.id.title);
+                    if (tv != null) {
+                        tv.setText(Titoli[i]);
+                        tv.setTextSize(15);
+                    }
+                }
+            }
 //	        tv.setWidth(200);
         }
 
         ImpostaInfo(act);
     }
+    */
 
     private void ImpostaInfo(Activity act) {
         String Messaggio="";
 
-        if (VariabiliStaticheDetector.getInstance().getLingua().equals("INGLESE")) {
+        /* if (VariabiliStaticheDetector.getInstance().getLingua().equals("INGLESE")) {
             Messaggio+= "Detector: The app that will allow you to make photos directly from ";
             Messaggio+= "a dedicated widget to be placed on the home phone. You can, at any time and only by pressing on the ";
             Messaggio+= "relative, take a picture and trovarsela directly into the default directory ";
@@ -852,7 +979,7 @@ public class InizializzaMascheraDetector {
             Messaggio+= "will therefore not be possible to take pictures. However, we are trying to solve the problem. \n \n";
             Messaggio+="The new version will also allow the creation of video and the ability to save your images\n";
             Messaggio+="on a web space\n";
-        } else {
+        } else { */
             Messaggio+="Detector: L'app che Vi permetterà di effettuare foto direttamente da ";
             Messaggio+="un widget dedicato da posizionare nella home del telefono. Sarà possibile, in qualsiasi momento e soltanto tramite pressione sull'icona ";
             Messaggio+="relativa, scattare una foto e trovarsela direttamente nella directory preimpostata ";
@@ -865,7 +992,7 @@ public class InizializzaMascheraDetector {
             Messaggio+="non sarà quindi possibile scattare foto. Stiamo comunque tentando di risolvere il problema.\n\n";
             Messaggio+="La nuova versione permetterà inoltre la creazione di video e la possibilità di salvare le proprie immagini\n";
             Messaggio+="su uno spazio web\n";
-        }
+        // }
 
         TextView tv=(TextView) act.findViewById(R.id.txtInfoHome);
         tv.setText(Messaggio);

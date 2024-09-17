@@ -42,7 +42,7 @@ public class VariabiliStaticheDetector {
     private Intent servizioForeground;
     private String PercorsoDIRLog = "";
     private long secondiDiAttesaContatore = 60L;
-    private Camera2 Camera;
+    // private Camera2 Camera;
     private boolean FaiLog=false;
     private int TipologiaScatto;
     private int Secondi = 3;
@@ -57,10 +57,10 @@ public class VariabiliStaticheDetector {
     private int DimensioniThumbs=70;
     private int DimensioniThumbsM=50;
     private boolean VisualizzaToast = true;
-    public List<String> Dimensioni;
+    private List<String> Dimensioni;
     private TextView txtCoords;
     private String ModelloTelefono="";
-    private ListView Lista;
+    // private ListView Lista;
     private TextView txtImm;
     private TextView txtNomeImm;
     private ImageView img;
@@ -68,7 +68,7 @@ public class VariabiliStaticheDetector {
     private VideoView vView;
     public boolean StaVedendo=false;
     public boolean StaSuonando=false;
-    private boolean StoScattando = false;
+    // private boolean StoScattando = false;
     public boolean MascheraImmaginiMostrata = false;
     private ImageView btnRuotaSin;
     private ImageView btnRuotaDes;
@@ -80,6 +80,24 @@ public class VariabiliStaticheDetector {
     private MediaPlayer mp;
     private boolean letteImpostazioni = false;
     private boolean MascheraPartita = false;
+    private boolean chiudiActivity = false;
+    private boolean CameraImpostata = false;
+
+    public boolean isCameraImpostata() {
+        return CameraImpostata;
+    }
+
+    public void setCameraImpostata(boolean cameraImpostata) {
+        CameraImpostata = cameraImpostata;
+    }
+
+    public boolean isChiudiActivity() {
+        return chiudiActivity;
+    }
+
+    public void setChiudiActivity(boolean chiudiActivity) {
+        this.chiudiActivity = chiudiActivity;
+    }
 
     public boolean isMascheraPartita() {
         return MascheraPartita;
@@ -113,13 +131,13 @@ public class VariabiliStaticheDetector {
         this.mp = mp;
     }
 
-    public boolean isStoScattando() {
+    /* public boolean isStoScattando() {
         return StoScattando;
     }
 
     public void setStoScattando(boolean stoScattando) {
         StoScattando = stoScattando;
-    }
+    } */
 
     public List<String> getImmagini() {
         return Immagini;
@@ -241,13 +259,13 @@ public class VariabiliStaticheDetector {
         this.vView = vView;
     }
 
-    public ListView getLista() {
+    /* public ListView getLista() {
         return Lista;
     }
 
     public void setLista(ListView lista) {
         Lista = lista;
-    }
+    } */
 
     public String getModelloTelefono() {
         return ModelloTelefono;
@@ -393,13 +411,13 @@ public class VariabiliStaticheDetector {
         NomeLogServizio = nomeLogServizio;
     }
 
-    public Camera2 getCamera() {
+    /* public Camera2 getCamera() {
         return Camera;
     }
 
     public void setCamera(Camera2 camera) {
         Camera = camera;
-    }
+    } */
 
     public long getSecondiDiAttesaContatore() {
         return secondiDiAttesaContatore;

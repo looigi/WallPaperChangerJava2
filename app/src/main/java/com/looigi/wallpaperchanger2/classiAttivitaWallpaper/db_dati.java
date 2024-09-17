@@ -72,7 +72,7 @@ public class db_dati {
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
                         "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR, " +
-                        "Detector VARCHAR);";
+                        "Detector VARCHAR, Espansa VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
@@ -185,7 +185,8 @@ public class db_dati {
 
                 String sql = "INSERT INTO"
                         + " Impostazioni"
-                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, Resize, ScriveTesto, OnOff, Home, Lock, Detector)"
+                        + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, " +
+                            "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -198,7 +199,8 @@ public class db_dati {
                         + "'" + (VariabiliStaticheServizio.getInstance().isOnOff() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isHome() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheServizio.getInstance().isLock() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isDetector() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isDetector() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheServizio.getInstance().isEspansa() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -208,6 +210,7 @@ public class db_dati {
                 PulisceDati();
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "Creazione tabelle");
                 CreazioneTabelle();
+                // ScriveImpostazioni();
 
                 return false;
             }
@@ -241,6 +244,7 @@ public class db_dati {
                     VariabiliStaticheServizio.getInstance().setHome(c.getString(9).equals("S"));
                     VariabiliStaticheServizio.getInstance().setLock(c.getString(10).equals("S"));
                     VariabiliStaticheServizio.getInstance().setDetector(c.getString(11).equals("S"));
+                    VariabiliStaticheServizio.getInstance().setEspansa(c.getString(12).equals("S"));
 
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheServizio.getInstance().isOnOff());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa());
@@ -252,6 +256,7 @@ public class db_dati {
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheServizio.getInstance().isHome());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheServizio.getInstance().isLock());
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheServizio.getInstance().isDetector());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheServizio.getInstance().isEspansa());
                 } else {
                     Controlla = false;
                     boolean scritti = ScriveImpostazioni();

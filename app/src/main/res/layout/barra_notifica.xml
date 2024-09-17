@@ -65,7 +65,7 @@
             android:id="@+id/imgProssima"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/icona_refresh" />
+            android:src="@drawable/eye" />
 
     </RelativeLayout>
 </RelativeLayout>

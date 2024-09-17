@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:id="@+id/activity_detector"
     android:background="@color/Verde_Chiaro"
-    tools:context=".MainActivity">
+    tools:context=".MainWallpaper">
 
     <ScrollView
         android:id="@+id/scrollViewPrincipale"
@@ -184,7 +184,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -193,176 +193,13 @@
                     android:id="@+id/textureView"
                     android:layout_width="200dp"
                     android:layout_height="200dp" />
-            </LinearLayout>
+            </LinearLayout> -->
         </LinearLayout>
     </ScrollView>
 
-    <TabHost
-        android:id="@+id/tabGenerale1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarStyle="outsideOverlay">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="horizontal">
-
-            <HorizontalScrollView
-                android:id="@+id/horizontalScrollView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/holo_green_dark"
-                    android:orientation="horizontal">
-
-                    <TabWidget
-                        android:id="@android:id/tabs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"></TabWidget>
-
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- <LinearLayout
-                android:id="@+id/adMobFox2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:padding="3dp"></LinearLayout> -->
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/tabVideo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center">
-
-                    <include
-                        android:id="@+id/container_header_lyt6"
-                        layout="@layout/tab_video"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabTipoScatto"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/container_header_lyt2"
-                        layout="@layout/tab_tiposcatto"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabTipoFotocamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center">
-
-                    <include
-                        android:id="@+id/container_header_lyt3"
-                        layout="@layout/tab_tipofotocamera"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabEstensione"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center">
-
-                    <include
-                        android:id="@+id/container_header_lyt4"
-                        layout="@layout/tab_estensione"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabRisoluzione"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center">
-
-                    <include
-                        android:id="@+id/container_header_lyt5"
-                        layout="@layout/tab_risoluzione"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabHome"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/container_header_lyt1"
-                        layout="@layout/tab_home"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <!-- <LinearLayout
-                    android:id="@+id/tab6"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/container_mappa"
-                        layout="@layout/tab_mappa"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout> -->
-
-                <LinearLayout
-                    android:id="@+id/tabImpostazioni"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="7dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/container_mappa"
-                        layout="@layout/tab_impostazioni"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-            </FrameLayout>
-
-        </LinearLayout>
-    </TabHost>
+    <include
+        layout="@layout/menu_detector"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

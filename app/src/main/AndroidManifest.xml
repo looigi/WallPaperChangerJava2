@@ -29,6 +29,7 @@
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".acra.Acra"
@@ -46,7 +47,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MainStart"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,8 +56,21 @@
             </intent-filter>
         </activity>
 
+        <!-- android:theme="@style/Theme.AppCompat.Translucent" -->
         <activity
-            android:name=".classiAttivitaDetector.MainActivityDetector"
+            android:name=".classiAttivitaDetector.AndroidCameraApi"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MainWallpaper"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MainActivityDetector"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classiStandard.RichiestaPath"
             android:windowSoftInputMode="adjustResize" />
 
         <service android:name = ".classiStandard.ServizioInterno"

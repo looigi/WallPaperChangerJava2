@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.os.Vibrator;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,8 +25,7 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
@@ -66,22 +64,6 @@ public class InizializzaMaschera {
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
         VariabiliStaticheServizio.getInstance().setTxtQuanteImmagini(txtQuante);
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
-        db_dati db = new db_dati(context);
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
-        db.CreazioneTabelle();
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-        boolean letto = db.LeggeImpostazioni();
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
-        VariabiliStaticheServizio.getInstance().setLetteImpostazioni(letto);
-
-        if (VariabiliStaticheServizio.getInstance().isDetector() &&
-                !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
-                VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
-            Intent intent = new Intent(context, MainActivityDetector.class);
-            context.startActivity(intent);
-        }
-
         if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
             Utility.getInstance().ApreToast(context, VariabiliStaticheServizio.channelName + ": Mancanza di impostazioni");
@@ -91,6 +73,7 @@ public class InizializzaMaschera {
 
         if (!VariabiliStaticheServizio.getInstance().isePartito()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
+            db_dati db = new db_dati(context);
             boolean letteImmagini = db.CaricaImmaginiInLocale();
 
             if (!letteImmagini) {
@@ -540,6 +523,7 @@ public class InizializzaMaschera {
             }
         });
 
+        ImageView imgCambiaSubito = (ImageView) view.findViewById(R.id.imgCambiaSubito);
         ImageView imgRefresh = (ImageView) view.findViewById(R.id.imgRefresh);
         ImageView imgRefreshLocale = (ImageView) view.findViewById(R.id.imgRefreshLocale);
         imgRefreshLocale.setOnClickListener(new View.OnClickListener() {
@@ -626,6 +610,45 @@ public class InizializzaMaschera {
 
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Utility.getInstance().Attesa(true);
+                ChangeWallpaper c = new ChangeWallpaper(context);
+                c.setWallpaperLocale(context,
+                        VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                Utility.getInstance().Attesa(false);
+            }
+        });
+
+        Switch swcEspansa = (Switch) view.findViewById(R.id.switchEspansa);
+        swcEspansa.setChecked(VariabiliStaticheServizio.getInstance().isEspansa());
+        swcEspansa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheServizio.getInstance().setEspansa(isChecked);
+
+                if (isChecked) {
+                    VariabiliStaticheServizio.getInstance().setBlur(false);
+                    VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(false);
+
+                    swcBlur.setEnabled(false);
+                    swcBlur.setChecked(false);
+                    switchScriveTesto.setEnabled(false);
+                    switchScriveTesto.setChecked(false);
+                } else {
+                    VariabiliStaticheServizio.getInstance().setBlur(true);
+                    VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(true);
+
+                    swcBlur.setEnabled(true);
+                    swcBlur.setChecked(true);
+                    switchScriveTesto.setEnabled(true);
+                    switchScriveTesto.setChecked(true);
+                }
+
+                db_dati db = new db_dati(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        imgCambiaSubito.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 // imgCaricamento.setVisibility(LinearLayout.VISIBLE);
                 btnMenoMinuti.setEnabled(false);
                 btnPiuMinuti.setEnabled(false);
@@ -633,7 +656,7 @@ public class InizializzaMaschera {
                 swcBlur.setEnabled(false);
                 swcOffline.setEnabled(false);
                 switchScriveTesto.setEnabled(false);
-                imgRefresh.setVisibility(LinearLayout.GONE);
+                imgCambiaSubito.setVisibility(LinearLayout.GONE);
                 imgRefreshLocale.setVisibility(LinearLayout.GONE);
                 btnCambioPath.setEnabled(false);
                 switchHome.setEnabled(false);
@@ -674,7 +697,7 @@ public class InizializzaMaschera {
                         swcBlur.setEnabled(true);
                         swcOffline.setEnabled(true);
                         switchScriveTesto.setEnabled(true);
-                        imgRefresh.setVisibility(LinearLayout.VISIBLE);
+                        imgCambiaSubito.setVisibility(LinearLayout.VISIBLE);
                         imgRefreshLocale.setVisibility(LinearLayout.VISIBLE);
                         btnCambioPath.setEnabled(true);
                         // imgCaricamento.setVisibility(LinearLayout.GONE);

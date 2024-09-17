@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -335,7 +336,8 @@ public class Utility {
         }
 
         if (attese == 0) {
-            if (VariabiliStaticheServizio.getInstance().getLayAttesa() != null) {
+            if (VariabiliStaticheServizio.getInstance().getLayAttesa() != null &&
+                    VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
                 VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         if (Come) {

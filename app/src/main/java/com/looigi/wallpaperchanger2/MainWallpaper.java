@@ -2,8 +2,6 @@ package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +13,10 @@ import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ConverteNomeUri;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
-import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
@@ -28,62 +24,15 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends Activity {
+public class MainWallpaper extends Activity {
     private static String NomeMaschera = "MAINACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_wallpaper);
 
-        VariabiliStaticheServizio.getInstance().setMainActivity(this);
-        // VariabiliStaticheServizio.getInstance().setSecondiDiAttesaContatore(60L);
-
-        Utility.getInstance().generaPath(this);
-
-        if (!isMyServiceRunning(RunServiceOnBoot.class)) {
-            Intent intent1 = new Intent(MainActivity.this, RunServiceOnBoot.class);
-            startService(intent1);
-        }
-
-        Permessi pp = new Permessi();
-        VariabiliStaticheServizio.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
-
-        if (VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
-            startService();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        int index = 0;
-
-        Map<String, Integer> PermissionsMap = new HashMap<String, Integer>();
-        for (String permission : permissions) {
-            PermissionsMap.put(permission, grantResults[index]);
-            index++;
-        }
-
-        Handler handlerTimer = new Handler();
-        Runnable rTimer = new Runnable() {
-            public void run() {
-                /* Intent mStartActivity = new Intent(VariabiliStaticheServizio.getInstance().getContext(),
-                        MainActivity.class);
-                int mPendingIntentId = 123456;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(
-                        VariabiliStaticheServizio.getInstance().getContext(),
-                        mPendingIntentId,
-                        mStartActivity,
-                        PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager mgr = (AlarmManager) VariabiliStaticheServizio.getInstance().getContext().getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent); */
-                Utility.getInstance().ApreToast(VariabiliStaticheServizio.getInstance().getContext(),
-                        "Riaprire l'applicazione");
-                System.exit(0);
-            }
-        };
-        handlerTimer.postDelayed(rTimer, 3000);
+        startService();
     }
 
     public void startService() {
@@ -91,9 +40,6 @@ public class MainActivity extends Activity {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
             Utility.getInstance().ScriveLog(this, NomeMaschera, "AVVIO");
             Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
-
-            VariabiliStaticheServizio.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
-            startForegroundService(VariabiliStaticheServizio.getInstance().getServizioForeground());
 
             InizializzaMaschera i = new InizializzaMaschera();
             i.inizializzaMaschera(this, this);
@@ -105,9 +51,9 @@ public class MainActivity extends Activity {
                 Utility.getInstance().stopService(this);
                 finish();
                 System.exit(-1);
-            }
+            } */
 
-            moveTaskToBack(false); */
+            moveTaskToBack(false);
         } else {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
             Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
@@ -161,34 +107,6 @@ public class MainActivity extends Activity {
         super.onStop();
 
         Utility.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch(requestCode) {
-            case 9999:
-                if (data != null) {
-                    Uri uri = data.getData();
-                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-                            DocumentsContract.getTreeDocumentId(uri));
-                    ConverteNomeUri c = new ConverteNomeUri();
-                    String path = c.getPath(this, docUri);
-
-                    VariabiliStaticheServizio.getInstance().getTxtPath().setText(path);
-                    VariabiliStaticheServizio.getInstance().setPercorsoIMMAGINI(path);
-
-                    db_dati db = new db_dati(this);
-                    db.ScriveImpostazioni();
-
-                    ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this);
-                    bckLeggeImmaginiLocali.execute();
-
-                    break;
-                }
-        }
     }
 
     @Override

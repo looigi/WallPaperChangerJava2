@@ -4,23 +4,29 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.view.TextureView;
+import android.util.Size;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiStandard.RichiestaPath;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -35,13 +41,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class UtilityDetector {
     private static final String NomeMaschera = "UTILITY";
@@ -58,7 +61,7 @@ public class UtilityDetector {
 
         return instance;
     }
-    
+
     public void ScriveLog(Context context, String Maschera, String Log) {
         if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
                 VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {
@@ -115,9 +118,9 @@ public class UtilityDetector {
     public String PrendeNomeFile(String Percorso) {
         String Ritorno = Percorso;
 
-        for (int i = Ritorno.length()-1;i>0;i--) {
-            if (Ritorno.substring(i, i+1).equals("/")) {
-                Ritorno = Ritorno.substring(i+1,Ritorno.length());
+        for (int i = Ritorno.length() - 1; i > 0; i--) {
+            if (Ritorno.substring(i, i + 1).equals("/")) {
+                Ritorno = Ritorno.substring(i + 1, Ritorno.length());
                 break;
             }
         }
@@ -125,15 +128,16 @@ public class UtilityDetector {
         return Ritorno;
     }
 
+    /*
     public void ScattaFoto(Context context, String daDove) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         String nome = "LogAcq_" + currentDateandTime + ".txt";
 
         // l.PulisceFileDiLog();
-        ScriveLog(context, NomeMaschera,"onCreate Photo 1 " + daDove);
+        ScriveLog(context, NomeMaschera, "onCreate Photo 1 " + daDove);
         if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
-            ScriveLog(context, NomeMaschera,"onCreate Photo 2 " + daDove);
+            ScriveLog(context, NomeMaschera, "onCreate Photo 2 " + daDove);
 
             Activity act = VariabiliStaticheDetector.getInstance().getMainActivity();
             if (act != null) {
@@ -154,35 +158,35 @@ public class UtilityDetector {
 
             Utility.getInstance().ApreToast(context, "Camera not ready");
 
-            ScriveLog(context, NomeMaschera,"onCreate Photo Error " +  daDove + ": " + VariabiliStaticheDetector.getInstance().getCamera());
+            ScriveLog(context, NomeMaschera, "onCreate Photo Error " + daDove + ": " + VariabiliStaticheDetector.getInstance().getCamera());
 
             VisualizzaToast(VariabiliStaticheDetector.getInstance().getMainActivity(), "Camera non attiva " + daDove, false);
         }
     }
 
     private void nascondeTV(Context context) {
-        ScriveLog(context, NomeMaschera,"Nascondo TextView Utility");
+        ScriveLog(context, NomeMaschera, "Nascondo TextView Utility");
 
         Activity act = VariabiliStaticheDetector.getInstance().getMainActivity();
         if (act != null) {
             TextureView textureView = (TextureView) act.findViewById(R.id.textureView);
             if (textureView != null) {
                 textureView.setVisibility(LinearLayout.GONE);
-                ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: OK");
+                ScriveLog(context, NomeMaschera, "Nascondo TextView Utility: OK");
             } else {
-                ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: TV non esistente");
+                ScriveLog(context, NomeMaschera, "Nascondo TextView Utility: TV non esistente");
             }
         } else {
-            ScriveLog(context, NomeMaschera,"Nascondo TextView Utility: Act non esistente");
+            ScriveLog(context, NomeMaschera, "Nascondo TextView Utility: Act non esistente");
         }
-    }
+    } */
 
     public void ControllaFileNoMedia(String Origine, String Cartella) {
-        String NomeFile=".nomedia";
+        String NomeFile = ".nomedia";
 
-        File file=new File(Origine+"/"+Cartella+"/"+NomeFile);
+        File file = new File(Origine + "/" + Cartella + "/" + NomeFile);
         if (!file.exists()) {
-            File gpxfile = new File(Origine+"/"+Cartella, NomeFile);
+            File gpxfile = new File(Origine + "/" + Cartella, NomeFile);
             FileWriter writer;
             try {
                 writer = new FileWriter(gpxfile);
@@ -198,9 +202,9 @@ public class UtilityDetector {
     public String PrendeNomeCartella(String Percorso) {
         String Ritorno = Percorso;
 
-        for (int i = Ritorno.length()-1;i>0;i--) {
-            if (Ritorno.substring(i, i+1).equals("/")) {
-                Ritorno = Ritorno.substring(0,i);
+        for (int i = Ritorno.length() - 1; i > 0; i--) {
+            if (Ritorno.substring(i, i + 1).equals("/")) {
+                Ritorno = Ritorno.substring(0, i);
                 break;
             }
         }
@@ -221,17 +225,17 @@ public class UtilityDetector {
         Calendar Oggi = Calendar.getInstance();
 
         int Giorno = Oggi.get(Calendar.DAY_OF_MONTH);
-        int Mese = Oggi.get(Calendar.MONTH)+1;
+        int Mese = Oggi.get(Calendar.MONTH) + 1;
         int Anno = Oggi.get(Calendar.YEAR);
         int Ora = Oggi.get(Calendar.HOUR_OF_DAY);
         int Minuti = Oggi.get(Calendar.MINUTE);
         int Secondi = Oggi.get(Calendar.SECOND);
-        String Ritorno ="";
+        String Ritorno = "";
 
         Ritorno = Integer.toString(Anno);
         Ritorno += String.format("%02d", Mese); //Integer.toString(Mese);
         Ritorno += String.format("%02d", Giorno); //Integer.toString(Giorno);
-        Ritorno += "_"+String.format("%02d", Ora); // Integer.toString(Ora);
+        Ritorno += "_" + String.format("%02d", Ora); // Integer.toString(Ora);
         Ritorno += String.format("%02d", Minuti); //Integer.toString(Minuti);
         Ritorno += String.format("%02d", Secondi); // Integer.toString(Secondi);
 
@@ -239,7 +243,7 @@ public class UtilityDetector {
     }
 
     public void Vibra(Context context, long Quanto) {
-        ScriveLog(context, NomeMaschera,"Vibrazione: " + VariabiliStaticheDetector.getInstance().isVibrazione());
+        ScriveLog(context, NomeMaschera, "Vibrazione: " + VariabiliStaticheDetector.getInstance().isVibrazione());
 
         if (VariabiliStaticheDetector.getInstance().isVibrazione()) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -329,25 +333,48 @@ public class UtilityDetector {
         }
     }
 
+    public void RitornaRisoluzioni(Activity act, int cameraImpostata) {
+        List<String> Dimens=new ArrayList<String>();
+
+        try {
+            CameraManager cameraManager = (CameraManager) act.getSystemService(Context.CAMERA_SERVICE);
+            String[] Camere = cameraManager.getCameraIdList();
+            String cameraId = Camere[cameraImpostata];
+            // for (String cameraId : Camere) {
+            CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
+            StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            Size[] sizes = streamConfigurationMap.getOutputSizes(ImageFormat.PRIVATE);
+            // String size = getCameraMP(sizes);
+            for (Size size : sizes) {
+                Dimens.add(size.getWidth() + "x" + size.getHeight());
+            }
+            // }
+        } catch (CameraAccessException e) {
+            UtilityDetector.getInstance().ScriveLog(act,  NomeMaschera, "RitornaRisoluzioni Error: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
+        }
+
+        VariabiliStaticheDetector.getInstance().setDimensioni(Dimens);
+    }
+
     public void DeCriptaFiles(Context context) {
-        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
         // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        // String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        String Path = PrendePath(context);
 
         int cambiate = 0;
 
-        File directory = new File(Origine + Cartella);
+        File directory = new File(Path);
         File[] files = directory.listFiles();
-        for  (File f : files)
-        {
+        for (File f : files) {
             String n = f.getName();
             if (n.toUpperCase().contains(".DBF") && !n.toUpperCase().contains(".PV3")) {
                 n = n.substring(0, n.indexOf("."));
                 n += ".jpg";
 
-                File to = new File(Origine+Cartella, n);
+                File to = new File(Path, n);
                 f.renameTo(to);
-                removeKeyFromFile(Origine+Cartella, n, n);
+                removeKeyFromFile(Path, n, n);
 
                 cambiate++;
             }
@@ -355,9 +382,9 @@ public class UtilityDetector {
                 n = n.substring(0, n.indexOf("."));
                 n += ".mp4";
 
-                File to = new File(Origine+Cartella, n);
+                File to = new File(Path, n);
                 f.renameTo(to);
-                removeKeyFromFile(Origine+Cartella, n, n);
+                removeKeyFromFile(Path, n, n);
 
                 cambiate++;
             }
@@ -365,27 +392,28 @@ public class UtilityDetector {
                 n = n.substring(0, n.indexOf("."));
                 n += ".3gp";
 
-                File to = new File(Origine+Cartella, n);
+                File to = new File(Path, n);
                 f.renameTo(to);
-                removeKeyFromFile(Origine+Cartella, n, n);
+                removeKeyFromFile(Path, n, n);
 
                 cambiate++;
             }
         }
 
-        CaricaMultimedia();
-        VisualizzaMultimedia();
+        CaricaMultimedia(context);
+        VisualizzaMultimedia(context);
 
         // VisualizzaPOPUP("Fatto. Immagini decriptate: "+cambiate, false, 0);
     }
 
     public void CriptaFiles(Context context) {
-        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+        // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
         // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        // String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        String Path = PrendePath(context);
         int cambiate = 0;
 
-        File directory = new File(Origine + Cartella);
+        File directory = new File(Path);
         File[] files = directory.listFiles();
         if (files != null) {
             for (File f : files) {
@@ -394,9 +422,9 @@ public class UtilityDetector {
                     n = n.substring(0, n.indexOf("."));
                     n += ".dbf";
 
-                    File to = new File(Origine + Cartella, n);
+                    File to = new File(Path, n);
                     f.renameTo(to);
-                    addKeyToFile(Origine + Cartella, n);
+                    addKeyToFile(Path, n);
 
                     cambiate++;
                 }
@@ -404,9 +432,9 @@ public class UtilityDetector {
                     n = n.substring(0, n.indexOf("."));
                     n += ".dbv";
 
-                    File to = new File(Origine + Cartella, n);
+                    File to = new File(Path, n);
                     f.renameTo(to);
-                    addKeyToFile(Origine + Cartella, n);
+                    addKeyToFile(Path, n);
 
                     cambiate++;
                 }
@@ -414,17 +442,17 @@ public class UtilityDetector {
                     n = n.substring(0, n.indexOf("."));
                     n += ".dba";
 
-                    File to = new File(Origine + Cartella, n);
+                    File to = new File(Path, n);
                     f.renameTo(to);
-                    addKeyToFile(Origine + Cartella, n);
+                    addKeyToFile(Path, n);
 
                     cambiate++;
                 }
             }
         }
 
-        CaricaMultimedia();
-        VisualizzaMultimedia();
+        CaricaMultimedia(context);
+        VisualizzaMultimedia(context);
 
         // VisualizzaPOPUP("Fatto. Immagini criptate: "+cambiate, false, 0);
     }
@@ -507,9 +535,9 @@ public class UtilityDetector {
     }
 
     public void addKeyToFile(String Path, String Filetto) {
-        byte[] bytes={};
+        byte[] bytes = {};
 
-        boolean OkEXIF=false;
+        boolean OkEXIF = false;
         String artista = "";
         String model = "";
         String lat = "";
@@ -547,17 +575,17 @@ public class UtilityDetector {
 
             }
 
-            byte[] altro = {68,69,84,69,67,84,79,82};
+            byte[] altro = {68, 69, 84, 69, 67, 84, 79, 82};
             byte[] bytesApp = bos.toByteArray();
-            bytes=new byte[bytesApp.length+altro.length];
+            bytes = new byte[bytesApp.length + altro.length];
 
-            int i=0;
+            int i = 0;
             for (byte b : altro) {
-                bytes[i]=b;
+                bytes[i] = b;
                 i++;
             }
             for (byte b : bytesApp) {
-                bytes[i]=b;
+                bytes[i] = b;
                 i++;
             }
         } catch (FileNotFoundException ignored) {
@@ -590,7 +618,7 @@ public class UtilityDetector {
         }
     }
 
-    private String LeggeFileDiTesto(String path){
+    private String LeggeFileDiTesto(String path) {
         StringBuilder text = new StringBuilder();
 
         File file = new File(path);
@@ -626,16 +654,16 @@ public class UtilityDetector {
         }
     }
 
-    public void CaricaMultimedia() {
-        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+    public void CaricaMultimedia(Context context) {
+        // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
         // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        String Cartella = Environment.getExternalStorageDirectory() + "/" +
-                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
-
-        File directory = new File(Origine + Cartella);
+        // String Cartella = Environment.getExternalStorageDirectory() + "/" +
+        //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+        String Path = PrendePath(context);
+        File directory = new File(Path);
         File[] files = directory.listFiles();
         VariabiliStaticheDetector.getInstance().setImmagini(new ArrayList<String>());
-        VariabiliStaticheDetector.getInstance().totImmagini=0;
+        VariabiliStaticheDetector.getInstance().totImmagini = 0;
         if (files != null) {
             for (File f : files) {
                 String n = f.getName();
@@ -649,7 +677,7 @@ public class UtilityDetector {
                 }
             }
         }
-        VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini-1;
+        VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini - 1;
         VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
         VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
     }
@@ -673,30 +701,31 @@ public class UtilityDetector {
         }
     }
 
-    public void VisualizzaMultimedia() {
+    public void VisualizzaMultimedia(Context context) {
         StopAudio();
         StopVideo();
 
         if (VariabiliStaticheDetector.getInstance().numMultimedia < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
-            String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+            // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
             // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-            String Cartella = Environment.getExternalStorageDirectory() + "/" +
-                    Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
-            if (VariabiliStaticheDetector.getInstance().numMultimedia>-1) {
+            // String Cartella = Environment.getExternalStorageDirectory() + "/" +
+            //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+            String Path = PrendePath(context);
+            if (VariabiliStaticheDetector.getInstance().numMultimedia > -1) {
                 String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
                 if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
-                    File f = new File(Origine + Cartella, "Appoggio.jpg");
-                    File o = new File(Origine + Cartella, NomeMultimedia);
+                    File f = new File(Path, "Appoggio.jpg");
+                    File o = new File(Path, NomeMultimedia);
 
                     try {
                         copyFile(o, f);
                     } catch (IOException ignored) {
 
                     }
-                    removeKeyFromFile(Origine + Cartella, NomeMultimedia, "Appoggio.jpg");
+                    removeKeyFromFile(Path, NomeMultimedia, "Appoggio.jpg");
 
-                    VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Origine + Cartella + "Appoggio.jpg"));
+                    VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Path + "Appoggio.jpg"));
 
                     f.delete();
 
@@ -756,22 +785,23 @@ public class UtilityDetector {
             } else {
                 VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
             }
-        } else  {
+        } else {
             VariabiliStaticheDetector.getInstance().getTxtImm().setText("Nessuna immagine rilevata");
             VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
         }
     }
 
-    public void PlayAudio() {
-        String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+    public void PlayAudio(Context context) {
+        // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
         // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        String Cartella = Environment.getExternalStorageDirectory() + "/" +
-                Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+        // String Cartella = Environment.getExternalStorageDirectory() + "/" +
+        //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+        String Path = PrendePath(context);
         String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
         try {
             VariabiliStaticheDetector.getInstance().setMp(new MediaPlayer());
-            VariabiliStaticheDetector.getInstance().getMp().setDataSource(Origine+Cartella+NomeMultimedia);
+            VariabiliStaticheDetector.getInstance().getMp().setDataSource(Path + NomeMultimedia);
             VariabiliStaticheDetector.getInstance().getMp().prepare();
             VariabiliStaticheDetector.getInstance().getMp().start();
             VariabiliStaticheDetector.getInstance().getAudio().setImageResource(R.drawable.pausa);
@@ -782,7 +812,7 @@ public class UtilityDetector {
     }
 
     public void StopAudio() {
-        if (VariabiliStaticheDetector.getInstance().getMp()!=null) {
+        if (VariabiliStaticheDetector.getInstance().getMp() != null) {
             try {
                 VariabiliStaticheDetector.getInstance().getMp().stop();
                 VariabiliStaticheDetector.getInstance().getMp().release();
@@ -795,16 +825,17 @@ public class UtilityDetector {
         }
     }
 
-    public void PlayVideo() {
+    public void PlayVideo(Context context) {
         if (!VariabiliStaticheDetector.getInstance().StaVedendo) {
-            String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+            // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
             // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-            String Cartella = Environment.getExternalStorageDirectory() + "/" +
-                    Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+            // String Cartella = Environment.getExternalStorageDirectory() + "/" +
+            //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+            String Path = PrendePath(context);
             String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
             try {
-                VariabiliStaticheDetector.getInstance().getvView().setVideoURI(Uri.parse(Origine + Cartella + NomeMultimedia));
+                VariabiliStaticheDetector.getInstance().getvView().setVideoURI(Uri.parse(Path + NomeMultimedia));
 
                 VariabiliStaticheDetector.getInstance().getvView().start();
                 VariabiliStaticheDetector.getInstance().StaVedendo = true;
@@ -824,16 +855,23 @@ public class UtilityDetector {
     public boolean LeggeImpostazioni(Context context) {
         db_dati_detector db = new db_dati_detector(context);
         boolean rit = db.CaricaImpostazioni(context);
-        ScriveLog(context, NomeMaschera,"Ritorno caricamento impostazioni: " + rit);
+        ScriveLog(context, NomeMaschera, "Ritorno caricamento impostazioni: " + rit);
 
         return rit;
     }
+
     public void CreaCartelle(String Origine, String Cartella) {
-        for (int i=1;i < Cartella.length();i++) {
-            if (Cartella.substring(i,i+1).equals("/")) {
-                CreaCartella(Origine+Cartella.substring(0,i));
+        for (int i = 1; i < Cartella.length(); i++) {
+            if (Cartella.substring(i, i + 1).equals("/")) {
+                CreaCartella(Origine + Cartella.substring(0, i));
             }
         }
+    }
+
+    public void SpostaFile(Context context) {
+        Intent myIntent = new Intent(VariabiliStaticheServizio.getInstance().getMainActivity(),
+                RichiestaPath.class);
+        VariabiliStaticheServizio.getInstance().getMainActivity().startActivity(myIntent);
     }
 
     private void CreaCartella(String Percorso) {
@@ -847,16 +885,19 @@ public class UtilityDetector {
 
     public String PrendePathLog(Context context) {
         String Path = context.getFilesDir() + "/Log/";
+
         return Path;
     }
 
     public String PrendePath(Context context) {
         String Path = context.getFilesDir() + "/DataBase/";
+
         return Path;
     }
 
     public String PrendePathDB(Context context) {
         String Path = context.getFilesDir() + "/DB/";
+
         return Path;
     }
 }

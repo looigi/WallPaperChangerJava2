@@ -15,9 +15,8 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
-import com.looigi.wallpaperchanger2.MainActivity;
+import com.looigi.wallpaperchanger2.MainActivityDetector;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 
 public class GestioneNotificheDetector {
     private NotificationManager manager;
@@ -183,27 +182,41 @@ public class GestioneNotificheDetector {
                 // Log.getInstance().ScriveLog(Utility.getInstance().PrendeErroreDaException(e));
             }
 
-            if (action!=null) {
+            if (action != null) {
                 switch (action) {
                     case "apre":
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 if (context != null) {
-                                    VariabiliStaticheDetector.getInstance().setMascheraPartita(false);
+                                    VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 
                                     Intent i = new Intent(context, MainActivityDetector.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(i);
+
+                                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                            i2.inizializzaMaschera(
+                                                    context,
+                                                    VariabiliStaticheDetector.getInstance().getMainActivity());
+                                        }
+                                    }, 1000);
                                 }
                             }
                         }, 100);
                         break;
 
                     case "scattaFoto":
-                        VariabiliStaticheDetector.getInstance().setStoScattando(false);
+                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
-                        UtilityDetector.getInstance().ScattaFoto(context, "da NOTIFICA");
+                        Intent myIntent = new Intent(
+                                this,
+                                AndroidCameraApi.class);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        this.startActivity(myIntent);
                         break;
                 }
             }

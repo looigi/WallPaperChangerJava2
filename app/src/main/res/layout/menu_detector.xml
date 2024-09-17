@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/Verde_Chiaro"
+        android:weightSum="15"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_green_dark"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnMenuHome"
+                        android:layout_width="wrap_content"
+                        android:text="Home"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnMenuVideo"
+                        android:layout_width="wrap_content"
+                        android:text="Video"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnMenuTipoScatto"
+                        android:layout_width="wrap_content"
+                        android:text="Tipo Scatto"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnMenuTipoFoto"
+                        android:layout_width="wrap_content"
+                        android:text="Tipo Fotocamera"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnMenuEstensione"
+                        android:layout_width="wrap_content"
+                        android:text="Estensione"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnMenuImpostazioni"
+                        android:layout_width="wrap_content"
+                        android:text="Impostazioni"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="14"
+            android:orientation="vertical"
+            android:layout_height="0dp">
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_tiposcatto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_tipofotocamera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_estensione"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/tab_impostazioni"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

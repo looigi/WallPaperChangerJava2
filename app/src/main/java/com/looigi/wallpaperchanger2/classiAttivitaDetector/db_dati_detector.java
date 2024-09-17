@@ -76,8 +76,10 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setTipologiaScatto(Integer.parseInt(c.getString(1)));
                         VariabiliStaticheDetector.getInstance().setSecondi(Integer.parseInt(c.getString(2)));
                         VariabiliStaticheDetector.getInstance().setFotocamera(Integer.parseInt(c.getString(3)));
-                        VariabiliStaticheDetector.getInstance().setRisoluzione(c.getString(4));
-                        VariabiliStaticheDetector.getInstance().setEstensione(Integer.parseInt(c.getString(5)));
+                        // VariabiliStaticheDetector.getInstance().setRisoluzione(c.getString(4));
+                        VariabiliStaticheDetector.getInstance().setRisoluzione("");
+                        // VariabiliStaticheDetector.getInstance().setEstensione(Integer.parseInt(c.getString(5)));
+                        VariabiliStaticheDetector.getInstance().setEstensione(2);
                         VariabiliStaticheDetector.getInstance().setVibrazione(c.getString(6).equals("S"));
                         VariabiliStaticheDetector.getInstance().setNumeroScatti(Integer.parseInt(c.getString(7)));
                         VariabiliStaticheDetector.getInstance().setAnteprima(c.getString(8));
@@ -101,27 +103,29 @@ public class db_dati_detector {
                     // c2.setUseBackCamera();
                     // VariabiliStatiche.getInstance().Dimensioni = VariabiliStatiche.getInstance().getCamera().RitornaRisoluzioni();
                     UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db. Imposto default");
-                    if (VariabiliStaticheDetector.getInstance().Dimensioni == null) {
+                    /* if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
                         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo risoluzioni");
                         if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
                             VariabiliStaticheDetector.getInstance().getCamera().RitornaRisoluzioni();
-                            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Risoluzioni Lette: " + VariabiliStaticheDetector.getInstance().Dimensioni.size());
+                            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,
+                                    "Risoluzioni Lette: " + VariabiliStaticheDetector.getInstance().getDimensioni().size());
                         } else {
                             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Risoluzioni NON Lette: Camera non rilevata");
                         }
-                    }
+                    } */
 
-                    String risol = "1024x768";
+                    // String risol = "1024x768";
 
-                    if (VariabiliStaticheDetector.getInstance().Dimensioni != null) {
+                    /* if (VariabiliStaticheDetector.getInstance().Dimensioni != null) {
                         UtilityDetector.getInstance().RitornaRisoluzioneMassima(VariabiliStaticheDetector.getInstance().Dimensioni);
-                    }
+                    } */
 
                     VariabiliStaticheDetector.getInstance().setFaiLog(true);
                     VariabiliStaticheDetector.getInstance().setTipologiaScatto(2);
                     VariabiliStaticheDetector.getInstance().setSecondi(3);
                     VariabiliStaticheDetector.getInstance().setFotocamera(1);
-                    VariabiliStaticheDetector.getInstance().setRisoluzione(risol);
+                    // VariabiliStaticheDetector.getInstance().setRisoluzione(risol);
+                    VariabiliStaticheDetector.getInstance().setRisoluzione("");
                     VariabiliStaticheDetector.getInstance().setEstensione(2);
                     VariabiliStaticheDetector.getInstance().setVibrazione(true);
                     VariabiliStaticheDetector.getInstance().setNumeroScatti(3);
@@ -174,7 +178,8 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().getTipologiaScatto()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getSecondi()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getFotocamera()) + "', "
-                        + "'" + (VariabiliStaticheDetector.getInstance().getRisoluzione()) + "', "
+                        // + "'" + (VariabiliStaticheDetector.getInstance().getRisoluzione()) + "', "
+                        + "'', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getEstensione()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().isVibrazione() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getNumeroScatti()) + "', "

@@ -10,20 +10,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
-import com.looigi.wallpaperchanger2.MainActivity;
+import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
@@ -256,7 +251,7 @@ public class GestioneNotifiche {
                             @Override
                             public void run() {
                                 if (context != null) {
-                                    Intent i = new Intent(context, MainActivity.class);
+                                    Intent i = new Intent(context, MainWallpaper.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(i);
                                 }

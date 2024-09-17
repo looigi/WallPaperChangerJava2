@@ -9,14 +9,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
 
-import com.looigi.wallpaperchanger2.MainActivity;
+import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
@@ -52,7 +54,7 @@ public class ChangeWallpaper {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
 
 			if (context != null) {
-				Intent mStartActivity = new Intent(context, MainActivity.class);
+				Intent mStartActivity = new Intent(context, MainWallpaper.class);
 				mStartActivity.putExtra("CAMBIAWALLPAPER", "SI");
 				int mPendingIntentId = 123351;
 				PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
@@ -101,7 +103,8 @@ public class ChangeWallpaper {
 		} else {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
 
-			Bitmap setWallToDevice = PrendeImmagineReale(context, src);
+			Bitmap setWallToDevice = null;
+			setWallToDevice = PrendeImmagineReale(context, src);
 
 			if (setWallToDevice != null) {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
@@ -158,6 +161,28 @@ public class ChangeWallpaper {
 		return Ritorno;
 	}
 
+	private int exifToDegrees(int exifOrientation) {
+		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+
+		return 0;
+	}
+
+	private Bitmap CheckRotazione(Bitmap bitmap, String path) {
+		try {
+			ExifInterface exif = new ExifInterface(path);
+			int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			int rotationInDegrees = exifToDegrees(rotation);
+			Matrix matrix = new Matrix();
+			if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
+
+			return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		} catch (IOException ex){
+			return null;
+		}
+	}
+
 	private Bitmap PrendeImmagineReale(Context context, StrutturaImmagine si) {
 		if (si == null) {
 			return null;
@@ -187,6 +212,8 @@ public class ChangeWallpaper {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Errore preview");
 			}
 
+			myBitmap = CheckRotazione(myBitmap, path);
+
 			if (myBitmap != null) {
 				// if (VariabiliGlobali.getInstance().getStretch().equals("S")) {
 					// Utility.getInstance().ScriveLog("Cambio immagine. Stretch = S");
@@ -206,9 +233,13 @@ public class ChangeWallpaper {
 								// float Altezza=(((float) (VariabiliGlobali.getInstance().getSchermoY()))/2)-(myBitmap.getHeight()/2);
 								// float Larghezza=(((float) (VariabiliGlobali.getInstance().getSchermoX()))/2)-(myBitmap.getWidth()/2);
 								// comboImage.drawBitmap(myBitmap, Larghezza, Altezza, null);
-								Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
+								if (!VariabiliStaticheServizio.getInstance().isEspansa()) {
+									Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
 
-								myBitmap = MetteBordoAImmagine(context, myBitmap, si);
+									myBitmap = MetteBordoAImmagine(context, myBitmap, si);
+								} else {
+									myBitmap = CentraImmagineTuttoSchermo(context, myBitmap);
+								}
 							} catch (Exception e) {
 								Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine. Errore: " + Utility.getInstance().PrendeErroreDaException(e));
 								myBitmap = null;
@@ -337,6 +368,66 @@ public class ChangeWallpaper {
 			}
 		} else {
 			Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni. Ritorno nullo");
+
+			return null;
+		}
+	}
+
+	private Bitmap CentraImmagineTuttoSchermo(Context context, Bitmap bPassata) {
+		Utility.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo");
+
+		// 900 x 641
+		// 1440 x 2890
+
+		// x: 150 schermoX: 100 -> (150 / 2) - (100 / 2) = 75 - 50 = 25 Inizio - Dimensione 100
+		try {
+			float width = bPassata.getWidth();
+			float height = bPassata.getHeight();
+
+			float diffX = (width / SchermoX);
+			float diffY = (height / SchermoY);
+			if (diffX < diffY) {
+				width /= diffX;
+				height /= diffX;
+			} else {
+				width /= diffY;
+				height /= diffY;
+			}
+
+			Bitmap bb = Bitmap.createScaledBitmap(bPassata, (int) width, (int) height, true);
+
+			float fineX = 0;
+			float fineY = 0;
+
+			float inizioX;
+			if (width > SchermoX) {
+				inizioX = (width / 2) - (SchermoX / 2);
+				fineX = inizioX + SchermoX;
+			} else {
+				inizioX = 0;
+				fineX = width;
+			}
+
+			float inizioY;
+			if (height > SchermoY) {
+				inizioY = (height / 2) - (SchermoY / 2);
+				fineY = inizioY + SchermoY;
+			} else {
+				inizioY = 0;
+				fineY = height;
+			}
+
+			Bitmap croppedBitmap = Bitmap.createBitmap(
+					bb,
+					(int) inizioX,
+					(int) inizioY,
+					(int) fineX,
+					(int) fineY);
+
+			return croppedBitmap;
+		} catch (Exception e) {
+			Utility.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo. Errore: " +
+					Utility.getInstance().PrendeErroreDaException(e));
 
 			return null;
 		}
