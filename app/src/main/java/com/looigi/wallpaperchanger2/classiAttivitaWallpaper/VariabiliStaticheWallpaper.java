@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.utilities;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,22 +9,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariabiliStaticheServizio {
-    private static VariabiliStaticheServizio instance = null;
+public class VariabiliStaticheWallpaper {
+    private static VariabiliStaticheWallpaper instance = null;
 
-    private VariabiliStaticheServizio() {
+    private VariabiliStaticheWallpaper() {
     }
 
-    public static VariabiliStaticheServizio getInstance() {
+    public static VariabiliStaticheWallpaper getInstance() {
         if (instance == null) {
-            instance = new VariabiliStaticheServizio();
+            instance = new VariabiliStaticheWallpaper();
         }
 
         return instance;
@@ -85,6 +83,15 @@ public class VariabiliStaticheServizio {
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath();
     private boolean sbragaTutto = false;
     private boolean Espansa = false;
+
+    public void ChiudeActivity(boolean Finish) {
+        if (mainActivity != null) {
+            // mainActivity.moveTaskToBack(true);
+            // if (Finish) {
+                mainActivity.finish();
+            // }
+        }
+    }
 
     public boolean isEspansa() {
         return Espansa;

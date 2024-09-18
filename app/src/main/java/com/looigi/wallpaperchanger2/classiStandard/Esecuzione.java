@@ -4,9 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import static androidx.core.content.ContextCompat.registerReceiver;
 
@@ -22,28 +21,28 @@ public class Esecuzione {
     public Esecuzione(Context context) {
         this.context = context;
 
-        VariabiliStaticheServizio.getInstance().setErrori(0);
+        VariabiliStaticheWallpaper.getInstance().setErrori(0);
     }
 
     public void startServizio1() {
-        int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
-        int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+        int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+        int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Start contatore di tipo 1. " +
-                "Secondi di attesa: " + VariabiliStaticheServizio.secondiDiAttesaContatore +
-                "Tempo Timer: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa() +
+                "Secondi di attesa: " + VariabiliStaticheWallpaper.secondiDiAttesaContatore +
+                "Tempo Timer: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa() +
                 "Quanti Giri: " + quantiGiri);
 
-        long secondiAttesa = (VariabiliStaticheServizio.secondiDiAttesaContatore * 1000L);
+        long secondiAttesa = (VariabiliStaticheWallpaper.secondiDiAttesaContatore * 1000L);
 
-        if (VariabiliStaticheServizio.getInstance().isServizioAttivo()) {
+        if (VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
             BloccaTimer();
         }
 
-        VariabiliStaticheServizio.getInstance().setServizioAttivo(true);
+        VariabiliStaticheWallpaper.getInstance().setServizioAttivo(true);
 
         handlerThread = new HandlerThread("background-thread_" +
-                VariabiliStaticheServizio.channelName);
+                VariabiliStaticheWallpaper.channelName);
         handlerThread.start();
 
         handler = new Handler(handlerThread.getLooper());
@@ -60,7 +59,7 @@ public class Esecuzione {
     }
 
     public void BloccaTimer() {
-        VariabiliStaticheServizio.getInstance().setServizioAttivo(false);
+        VariabiliStaticheWallpaper.getInstance().setServizioAttivo(false);
 
         if (handler != null && r != null && handlerThread != null) {
             handlerThread.quit();
@@ -74,50 +73,50 @@ public class Esecuzione {
     }
 
     private void Controllo() {
-        VariabiliStaticheServizio.getInstance().setSecondiPassati(
-                VariabiliStaticheServizio.getInstance().getSecondiPassati() + 1);
+        VariabiliStaticheWallpaper.getInstance().setSecondiPassati(
+                VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + 1);
 
         long tmsAttuale = System.currentTimeMillis() / 1000L;
         if (tmsPrecedente == -1L) {
             tmsPrecedente = tmsAttuale;
         } else {
             long diff = (tmsAttuale - tmsPrecedente);
-            if (diff > ((VariabiliStaticheServizio.secondiDiAttesaContatore * 1000L) + 10000L)) {
-                int errori = VariabiliStaticheServizio.getInstance().getErrori() + 1;
-                VariabiliStaticheServizio.getInstance().setErrori(errori);
+            if (diff > ((VariabiliStaticheWallpaper.secondiDiAttesaContatore * 1000L) + 10000L)) {
+                int errori = VariabiliStaticheWallpaper.getInstance().getErrori() + 1;
+                VariabiliStaticheWallpaper.getInstance().setErrori(errori);
 
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Secondi " + Long.toString(diff / 1000L) + "/" +
-                        Integer.toString(VariabiliStaticheServizio.secondiDiAttesaContatore));
+                        Integer.toString(VariabiliStaticheWallpaper.secondiDiAttesaContatore));
                 Utility.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
             }
             tmsPrecedente = tmsAttuale;
         }
 
-        int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
-        int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+        int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+        int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
         
         String prossimoCambio = "Prossimo cambio: " +
-                VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri;
-        if (VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio() != null) {
-            VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(prossimoCambio);
+        if (VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio() != null) {
+            VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimoCambio);
         }
 
-        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
+        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             GestioneNotifiche.getInstance().AggiornaNotifica();
         }
 
-        if (VariabiliStaticheServizio.getInstance().getSecondiPassati() >= quantiGiri) {
-            VariabiliStaticheServizio.getInstance().setSecondiPassati(0);
+        if (VariabiliStaticheWallpaper.getInstance().getSecondiPassati() >= quantiGiri) {
+            VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
 
-            if (VariabiliStaticheServizio.getInstance().isOnOff()) {
+            if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
                 Utility.getInstance().CambiaImmagine(context);
             }
 
-            if (!VariabiliStaticheServizio.getInstance().isScreenOn() ||
-                !VariabiliStaticheServizio.getInstance().isOnOff()) {
+            if (!VariabiliStaticheWallpaper.getInstance().isScreenOn() ||
+                !VariabiliStaticheWallpaper.getInstance().isOnOff()) {
                 BloccaTimer();
             }
 

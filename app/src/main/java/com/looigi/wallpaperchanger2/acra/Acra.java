@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import org.acra.ACRA;
 import org.acra.BuildConfig;
@@ -34,14 +34,14 @@ public class Acra extends Application {
                                 .withMailTo("looigi@gmail.com")
                                 .withReportAsFile(true)
                                 .withReportFileName("Crash.txt")
-                                .withSubject("Errore " + VariabiliStaticheServizio.channelName)
+                                .withSubject("Errore " + VariabiliStaticheWallpaper.channelName)
                                 .withBody("Descrizione errore nel file allegato")
                                 .build(),
 
                         new NotificationConfigurationBuilder()
-                                .withTitle(VariabiliStaticheServizio.channelName)
+                                .withTitle(VariabiliStaticheWallpaper.channelName)
                                 .withText("Errore nell'app")
-                                .withChannelName(VariabiliStaticheServizio.channelName)
+                                .withChannelName(VariabiliStaticheWallpaper.channelName)
                                 .withChannelImportance(NotificationManager.IMPORTANCE_MAX)
                                 .withResIcon(R.drawable.ic_launcher)
                                 .withSendButtonText("Invia")

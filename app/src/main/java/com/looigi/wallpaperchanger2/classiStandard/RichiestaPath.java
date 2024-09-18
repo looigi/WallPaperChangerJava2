@@ -59,6 +59,8 @@ public class RichiestaPath extends Activity {
                 filePath = filePath.replace("%3A", "").replace("%2F", "/") ;
                 // String filePath = readText(_uri);
 
+                UtilityDetector.getInstance().ControllaFileNoMedia(filePath);
+
                 boolean criptati = false;
                 for (int i = 0; i < files.length; i++) {
                     String strFileName = files[i].getName();

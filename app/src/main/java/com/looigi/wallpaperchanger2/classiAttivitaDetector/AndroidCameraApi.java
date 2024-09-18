@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classiAttivitaDetector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -21,6 +22,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.LinearLayout;
@@ -31,7 +33,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AndroidCameraApi extends AppCompatActivity {
+public class AndroidCameraApi extends Activity {
     private static String NomeMaschera = "CAMERA2";
     private static final String TAG = "AndroidCameraApi";
     private TextureView textureView;
@@ -75,11 +77,21 @@ public class AndroidCameraApi extends AppCompatActivity {
     private String sEstensione = "";
     private int QuantiScatti = 3;
     private int Scatto = 0;
+    private Activity act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
+
+        act = this;
+
+        Attiva();
+    }
+
+    private void Attiva() {
+        // VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+        // VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
 
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;
@@ -115,6 +127,8 @@ public class AndroidCameraApi extends AppCompatActivity {
         UtilityDetector.getInstance().Vibra(context, 150);
 
         AttesaCamera();
+
+        Utility.getInstance().ApreToast(context, "Start C");
     }
 
     private void AttesaCamera() {
@@ -130,10 +144,21 @@ public class AndroidCameraApi extends AppCompatActivity {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     if (VariabiliStaticheDetector.getInstance().isCameraImpostata()) {
+                        UtilityDetector.getInstance().ScriveLog(
+                                context,
+                                NomeMaschera,
+                                "Attesa Camera. OK");
+
                         takePicture();
                     } else {
                         conta[0]++;
                         if (conta[0] > 20) {
+                            UtilityDetector.getInstance().ScriveLog(
+                                    context,
+                                    NomeMaschera,
+                                    "Attesa Camera. Esco per mancata attivazione");
+                            Utility.getInstance().ApreToast(context, "Object C not activated");
+
                             // CAMERA NON ATTIVATA IN TEMPO
                             handlerTimer.removeCallbacks(this);
                         } else {
@@ -152,19 +177,32 @@ public class AndroidCameraApi extends AppCompatActivity {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width,
                                               int height) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "TextureView. Available");
+
             //open your camera here
             openCamera();
         }
+
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int
                 width, int height) {
             // Transform you image captured size according to the surface width
             //  and height
         }
+
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "TextureView. Destroyed");
+
             return false;
         }
+
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
@@ -174,15 +212,32 @@ public class AndroidCameraApi extends AppCompatActivity {
         @Override
         public void onOpened(CameraDevice camera) {
             //This is called when the camera is open
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "CameraDevice. Opened");
+
             cameraDevice = camera;
             createCameraPreview();
         }
+
         @Override
         public void onDisconnected(CameraDevice camera) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "CameraDevice: Disconnected");
+
             cameraDevice.close();
         }
+
         @Override
         public void onError(CameraDevice camera, int error) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "CameraDevice: OnError: " + error);
+
             cameraDevice.close();
             cameraDevice = null;
         }
@@ -193,17 +248,32 @@ public class AndroidCameraApi extends AppCompatActivity {
         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
             // Toast.makeText(AndroidCameraApi.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "CameraCaptureSession: onCaptureCompleted");
+
             createCameraPreview();
         }
     };
 
     protected void startBackgroundThread() {
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "StartBackground");
+
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
     protected void stopBackgroundThread() {
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "StopBackground");
+
         if (mBackgroundThread != null) {
             mBackgroundThread.quitSafely();
             try {
@@ -222,9 +292,20 @@ public class AndroidCameraApi extends AppCompatActivity {
             Utility.getInstance().ApreToast(this, "Oggetto C nullo");
             return;
         }
+
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Scatto " + (Scatto + 1) + "/" + QuantiScatti);
+
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         try {
             cameraId = manager.getCameraIdList()[cameraFronteRetro];
+
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "CameraID: " +  cameraId);
 
             if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
                 UtilityDetector.getInstance().RitornaRisoluzioni(this, cameraFronteRetro);
@@ -235,6 +316,11 @@ public class AndroidCameraApi extends AppCompatActivity {
             int pos = RisolX.indexOf("x");
             int width = Integer.parseInt(RisolX.substring(pos + 1));
             int height = Integer.parseInt(RisolX.substring(0, pos));
+
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Risoluzione: " + RisolX);
 
             ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
@@ -251,14 +337,26 @@ public class AndroidCameraApi extends AppCompatActivity {
 
             String Cartella = UtilityDetector.getInstance().PrendePath(context);
             Utility.getInstance().CreaCartelle(Cartella);
+            UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+
             String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
                     "." + sEstensione;
             File file = new File(fileName);
             // UtilityDetector.getInstance().ScriveLog(this.act,  NomeMaschera, "Nome file: " + fileName);
 
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Nome File: " + fileName);
+
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "onImageAvailable");
+
                     Image image = null;
                     try {
                         image = reader.acquireLatestImage();
@@ -267,9 +365,21 @@ public class AndroidCameraApi extends AppCompatActivity {
                         buffer.get(bytes);
                         save(bytes);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        UtilityDetector.getInstance().ScriveLog(
+                                context,
+                                NomeMaschera,
+                                "onImageAvailable. File Not Found: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        // e.printStackTrace();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        UtilityDetector.getInstance().ScriveLog(
+                                context,
+                                NomeMaschera,
+                                "onImageAvailable. IO Exception: " +
+                                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        // e.printStackTrace();
                     } finally {
                         if (image != null) {
                             image.close();
@@ -278,6 +388,11 @@ public class AndroidCameraApi extends AppCompatActivity {
                 }
 
                 private void save(byte[] bytes) throws IOException {
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Salvataggio");
+
                     OutputStream output = null;
                     try {
                         output = new FileOutputStream(file);
@@ -306,6 +421,15 @@ public class AndroidCameraApi extends AppCompatActivity {
                                 };
                                 handlerTimer.postDelayed(rTimer, Secondi);
                             } else {
+                                UtilityDetector.getInstance().ScriveLog(
+                                        context,
+                                        NomeMaschera,
+                                        "Uscita");
+
+                                UtilityDetector.getInstance().ContaFiles(context);
+
+                                VariabiliStaticheStart.getInstance().ChiudeActivity(false);
+
                                 UtilityDetector.getInstance().Vibra(context, 1500);
                                 UtilityDetector.getInstance().VisualizzaToast(context,
                                         "Completed",
@@ -342,12 +466,16 @@ public class AndroidCameraApi extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onConfigureFailed(CameraCaptureSession session) {
                 }
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Camera Access Exception: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
     }
 
@@ -367,20 +495,39 @@ public class AndroidCameraApi extends AppCompatActivity {
                         return;
                     }
                     // When the session is ready, we start displaying the preview.
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Create Camera Preview: onConfigured");
+
                     cameraCaptureSessions = cameraCaptureSession;
                     updatePreview();
                 }
+
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Create Camera Preview: onConfiguredFailed");
                     // Toast.makeText(AndroidCameraApi.this, "Configuration change", Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Create Camera Preview: Camera Access Exception: " +
+                    UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
     }
 
     private void openCamera() {
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Open Camera");
+
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         // Log.e(TAG, "is camera open");
         try {
@@ -402,7 +549,12 @@ public class AndroidCameraApi extends AppCompatActivity {
             }
             manager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Open Camera. Camera Access Exception: " +
+                    UtilityDetector.getInstance().PrendeErroreDaException(e));
+
         }
         // Log.e(TAG, "openCamera X");
     }
@@ -423,16 +575,30 @@ public class AndroidCameraApi extends AppCompatActivity {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Update Preview: Camera Impostata");
+
                     VariabiliStaticheDetector.getInstance().setCameraImpostata(true);
                 }
             };
             handlerTimer.postDelayed(rTimer, 1000);
         } catch (CameraAccessException e) {
-            // e.printStackTrace();
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Update Preview. Camera Access Exception: " +
+                            UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
     }
 
     private void closeCamera() {
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Close Camera");
+
         if (null != cameraDevice) {
             cameraDevice.close();
             cameraDevice = null;
@@ -451,7 +617,8 @@ public class AndroidCameraApi extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app
                 // Toast.makeText(AndroidCameraApi.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
-                finish();
+                // finish();
+                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
             }
         }
     }
@@ -461,6 +628,13 @@ public class AndroidCameraApi extends AppCompatActivity {
         super.onResume();
 
         // Log.e(TAG, "onResume");
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "onResume");
+
+        // Attiva();
+
         startBackgroundThread();
         if (textureView.isAvailable()) {
             openCamera();
@@ -470,10 +644,40 @@ public class AndroidCameraApi extends AppCompatActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (act != null) {
+            // mainActivity.moveTaskToBack(true);
+            // if (Finish) {
+            act.finish();
+            // }
+        }
+
+
+        super.onKeyDown(keyCode, event);
+
+        /* UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,
+                "Tasto premuto: " + Integer.toString(keyCode));
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                VariabiliStaticheStart.getInstance().ChiudeActivity(false);
+
+                return false;
+        } */
+
+        return false;
+    }
+    
+    @Override
     protected void onPause() {
         super.onPause();
 
         // Log.e(TAG, "onPause");
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "onPause");
+
         textureView.setVisibility(LinearLayout.GONE);
 
         closeCamera();
@@ -482,15 +686,20 @@ public class AndroidCameraApi extends AppCompatActivity {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
     private void FineElaborazione() {
         if (sEstensione.equals("dbf")) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Criptaggio Files");
+
             UtilityDetector.getInstance().CriptaFiles(this);
         }
 
-        finish();
+        act.finish();
     }
 }

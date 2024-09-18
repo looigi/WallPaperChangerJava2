@@ -33,7 +33,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.io.File;
@@ -58,20 +58,20 @@ public class InizializzaMaschera {
     private void inizializzaMaschera2(Context context, Activity view) {
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Inizializzo maschera");
 
-        VariabiliStaticheServizio.getInstance().setLayAttesa(view.findViewById(R.id.layAttesa));
+        VariabiliStaticheWallpaper.getInstance().setLayAttesa(view.findViewById(R.id.layAttesa));
         Utility.getInstance().Attesa(false);
 
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
-        VariabiliStaticheServizio.getInstance().setTxtQuanteImmagini(txtQuante);
+        VariabiliStaticheWallpaper.getInstance().setTxtQuanteImmagini(txtQuante);
 
-        if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
-            Utility.getInstance().ApreToast(context, VariabiliStaticheServizio.channelName + ": Mancanza di impostazioni");
+            Utility.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
         }
 
         ImpostaOggetti(context, view);
 
-        if (!VariabiliStaticheServizio.getInstance().isePartito()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isePartito()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
             db_dati db = new db_dati(context);
             boolean letteImmagini = db.CaricaImmaginiInLocale();
@@ -83,9 +83,9 @@ public class InizializzaMaschera {
                 bckLeggeImmaginiLocali.execute();
                 // }
             } else {
-                if (VariabiliStaticheServizio.getInstance().isOffline()) {
-                    int q = VariabiliStaticheServizio.getInstance().getListaImmagini().size();
-                    VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
+                if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
+                    int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
+                    VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco: " + q);
                 } else {
                     Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco inutili: OnLine");
@@ -93,14 +93,14 @@ public class InizializzaMaschera {
             }
         }
 
-        VariabiliStaticheServizio.getInstance().setePartito(false);
+        VariabiliStaticheWallpaper.getInstance().setePartito(false);
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
 
-        if (VariabiliStaticheServizio.getInstance().isStaPartendo() &&
-            VariabiliStaticheServizio.getInstance().isCiSonoPermessi()) {
-            VariabiliStaticheServizio.getInstance().setStaPartendo(false);
-            view.moveTaskToBack(false);
+        if (VariabiliStaticheWallpaper.getInstance().isStaPartendo() &&
+            VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+            VariabiliStaticheWallpaper.getInstance().setStaPartendo(false);
+            VariabiliStaticheWallpaper.getInstance().ChiudeActivity(false);
         }
     }
 
@@ -113,34 +113,34 @@ public class InizializzaMaschera {
         } */
 
         ImageView imgImpostata = (ImageView) view.findViewById(R.id.imgImpostata);
-        VariabiliStaticheServizio.getInstance().setImgImpostata(imgImpostata);
+        VariabiliStaticheWallpaper.getInstance().setImgImpostata(imgImpostata);
 
         TextView txtTempoAlCambio = (TextView) view.findViewById(R.id.txtTempoAlCambio);
-        VariabiliStaticheServizio.getInstance().setTxtTempoAlCambio(txtTempoAlCambio);
-        VariabiliStaticheServizio.getInstance().setSecondiPassati(0);
+        VariabiliStaticheWallpaper.getInstance().setTxtTempoAlCambio(txtTempoAlCambio);
+        VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Minuti al cambio: " +
-                VariabiliStaticheServizio.getInstance().getMinutiAttesa());
+                VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Tempo timer: " +
-                VariabiliStaticheServizio.secondiDiAttesaContatore);
-        int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
-        int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+                VariabiliStaticheWallpaper.secondiDiAttesaContatore);
+        int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+        int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
         String prossimo = "Prossimo cambio: " +
-                VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri;
-        VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(prossimo);
+        VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimo);
         String immagine = "";
-        if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-            immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
+        if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+            immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
         }
         GestioneNotifiche.getInstance().AggiornaNotifica();
 
         Utility.getInstance().ScriveLog(context, NomeMaschera,"Prossimo cambio: " +
-                VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri);
 
         TextView txtQuanteRicerca = (TextView) view.findViewById(R.id.txtQuanteRicerca);
         txtQuanteRicerca.setText("");
-        VariabiliStaticheServizio.getInstance().setTxtQuanteRicerca(txtQuanteRicerca);
+        VariabiliStaticheWallpaper.getInstance().setTxtQuanteRicerca(txtQuanteRicerca);
 
         Button btnMenoMinuti = (Button) view.findViewById(R.id.btnMenoMinuti);
         Button btnPiuMinuti = (Button) view.findViewById(R.id.btnPiuMinuti);
@@ -175,9 +175,9 @@ public class InizializzaMaschera {
                     if (diff < 1950) {
                         controlloLongPress = null;
 
-                        boolean isD = VariabiliStaticheServizio.getInstance().isDetector();
+                        boolean isD = VariabiliStaticheWallpaper.getInstance().isDetector();
                         isD = !isD;
-                        VariabiliStaticheServizio.getInstance().setDetector(isD);
+                        VariabiliStaticheWallpaper.getInstance().setDetector(isD);
 
                         db_dati db = new db_dati(context);
                         db.ScriveImpostazioni();
@@ -210,24 +210,24 @@ public class InizializzaMaschera {
 
         btnMenoMinuti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
+                int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
                 if (minuti > 1) {
                     minuti--;
                 } else {
                     minuti = 1;
                 }
-                VariabiliStaticheServizio.getInstance().setMinutiAttesa(minuti);
+                VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(minuti);
 
-                int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+                int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
                 edtMinuti.setText(Integer.toString(minuti));
                 String prossimo = "Prossimo cambio: " +
-                        VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                        VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                         quantiGiri;
-                VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(prossimo);
+                VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimo);
 
                 String immagine = "";
-                if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                    immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
                 }
                 GestioneNotifiche.getInstance().AggiornaNotifica();
 
@@ -237,23 +237,23 @@ public class InizializzaMaschera {
         });
         btnPiuMinuti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
+                int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
                 minuti++;
-                VariabiliStaticheServizio.getInstance().setMinutiAttesa(minuti);
+                VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(minuti);
 
                 /* VariabiliStaticheServizio.getInstance().setQuantiGiri(
                         VariabiliStaticheServizio.getInstance().getTempoTimer() /
                         VariabiliStaticheServizio.getInstance().getSecondiAlCambio()); */
                 edtMinuti.setText(Integer.toString(minuti));
-                int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+                int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
                 String prossimo = "Prossimo cambio: " +
-                        VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
+                        VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                         quantiGiri;
-                VariabiliStaticheServizio.getInstance().getTxtTempoAlCambio().setText(prossimo);
+                VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimo);
 
                 String immagine = "";
-                if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                    immagine = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
                 }
                 GestioneNotifiche.getInstance().AggiornaNotifica();
 
@@ -263,10 +263,10 @@ public class InizializzaMaschera {
         });
 
         Switch switchHome = (Switch) view.findViewById(R.id.switchHome);
-        switchHome.setChecked(VariabiliStaticheServizio.getInstance().isHome());
+        switchHome.setChecked(VariabiliStaticheWallpaper.getInstance().isHome());
         switchHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setHome(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setHome(isChecked);
 
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
@@ -274,33 +274,33 @@ public class InizializzaMaschera {
         });
 
         Switch switchLock = (Switch) view.findViewById(R.id.switchLock);
-        switchLock.setChecked(VariabiliStaticheServizio.getInstance().isLock());
+        switchLock.setChecked(VariabiliStaticheWallpaper.getInstance().isLock());
         switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setLock(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setLock(isChecked);
 
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
             }
         });
 
-        VariabiliStaticheServizio.getInstance().setLstImmagini(view.findViewById(R.id.lstImmagini));
+        VariabiliStaticheWallpaper.getInstance().setLstImmagini(view.findViewById(R.id.lstImmagini));
 
         RelativeLayout laySceltaImm = view.findViewById(R.id.laySceltaImmagine);
         laySceltaImm.setVisibility(LinearLayout.GONE);
-        VariabiliStaticheServizio.getInstance().setLayScelta(laySceltaImm);
+        VariabiliStaticheWallpaper.getInstance().setLayScelta(laySceltaImm);
         ImageView imgRicerca = (ImageView) view.findViewById(R.id.imgRicerca);
         imgRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheServizio.getInstance().isOffline()) {
+                if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
                     AdapterListenerImmagini customAdapterT = new AdapterListenerImmagini(context,
-                            VariabiliStaticheServizio.getInstance().getListaImmagini());
-                    VariabiliStaticheServizio.getInstance().getLstImmagini().setAdapter(customAdapterT);
-                    VariabiliStaticheServizio.getInstance().setAdapterImmagini(customAdapterT);
+                            VariabiliStaticheWallpaper.getInstance().getListaImmagini());
+                    VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(customAdapterT);
+                    VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(customAdapterT);
 
                     laySceltaImm.setVisibility(LinearLayout.VISIBLE);
                 } else {
-                    VariabiliStaticheServizio.getInstance().setAdapterImmagini(null);
+                    VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(null);
 
                     ChiamateWS c = new ChiamateWS(context);
                     c.TornaImmagini();
@@ -320,9 +320,9 @@ public class InizializzaMaschera {
         ImageView imgRicercaScelta = (ImageView) view.findViewById(R.id.imgRicercaScelta);
         imgRicercaScelta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheServizio.getInstance().setFiltroRicerca(edtFiltro.getText().toString());
-                VariabiliStaticheServizio.getInstance().getAdapterImmagini().updateData(
-                        VariabiliStaticheServizio.getInstance().getFiltroRicerca());
+                VariabiliStaticheWallpaper.getInstance().setFiltroRicerca(edtFiltro.getText().toString());
+                VariabiliStaticheWallpaper.getInstance().getAdapterImmagini().updateData(
+                        VariabiliStaticheWallpaper.getInstance().getFiltroRicerca());
             }
         });
         ImageView imgChiudeRicerca = (ImageView) view.findViewById(R.id.imgChiudeScelta);
@@ -335,8 +335,8 @@ public class InizializzaMaschera {
         Button btnPulisceLog = (Button) view.findViewById(R.id.btnPulisceLog);
         btnPulisceLog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
-               String path = VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-                       VariabiliStaticheServizio.getInstance().getNomeFileDiLog();
+               String path = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+                       VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
                if (Utility.getInstance().EsisteFile(path)) {
                     Utility.getInstance().EliminaFileUnico(path);
                     // Utility.getInstance().VisualizzaMessaggio("File di log eliminato");
@@ -356,8 +356,8 @@ public class InizializzaMaschera {
         Button btnInviaLog = (Button) view.findViewById(R.id.btnInviaLog);
         btnInviaLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String path1 = VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-                        VariabiliStaticheServizio.getInstance().getNomeFileDiLog();
+                String path1 = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+                        VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
                 String pathLog = UtilityDetector.getInstance().PrendePathLog(context);
                 String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
                 String path2 = pathLog + "/" + nomeFileLog;
@@ -403,8 +403,8 @@ public class InizializzaMaschera {
         layDetector.setVisibility(LinearLayout.GONE);
 
         TextView txtPath = (TextView) view.findViewById(R.id.txtPath);
-        VariabiliStaticheServizio.getInstance().setTxtPath(txtPath);
-        txtPath.setText(VariabiliStaticheServizio.getInstance().getPercorsoIMMAGINI());
+        VariabiliStaticheWallpaper.getInstance().setTxtPath(txtPath);
+        txtPath.setText(VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
         /* txtPath.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -445,59 +445,62 @@ public class InizializzaMaschera {
         }); */
 
         Button btnCambioPath = (Button) view.findViewById(R.id.btnCambiaPath);
-
         btnCambioPath.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 i.addCategory(Intent.CATEGORY_DEFAULT);
-                view.startActivityForResult(Intent.createChooser(i, "Scelta directory"), 9999);
+                view.startActivityForResult(Intent.createChooser(i, "Scelta directory"), 9999); */
+                Intent myIntent = new Intent(
+                        VariabiliStaticheWallpaper.getInstance().getMainActivity(),
+                        RichiestaPathImmaginiLocali.class);
+                VariabiliStaticheWallpaper.getInstance().getMainActivity().startActivity(myIntent);
             }
         });
 
         Switch swcOffline = (Switch) view.findViewById(R.id.switchOffline);
-        swcOffline.setChecked(VariabiliStaticheServizio.getInstance().isOffline());
+        swcOffline.setChecked(VariabiliStaticheWallpaper.getInstance().isOffline());
         LinearLayout layOffline = (LinearLayout) view.findViewById(R.id.layOffline);
-        if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             layOffline.setVisibility(LinearLayout.GONE);
         } else {
             layOffline.setVisibility(LinearLayout.VISIBLE);
         }
         swcOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setOffline(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setOffline(isChecked);
 
-                if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+                if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                     layOffline.setVisibility(LinearLayout.GONE);
                 } else {
                     layOffline.setVisibility(LinearLayout.VISIBLE);
-                    if(VariabiliStaticheServizio.getInstance().isOffline()) {
-                        if (VariabiliStaticheServizio.getInstance().getListaImmagini() != null &&
-                                VariabiliStaticheServizio.getInstance().getListaImmagini().size() > 0) {
-                            int q = VariabiliStaticheServizio.getInstance().getListaImmagini().size();
-                            VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
+                    if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
+                        if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
+                                VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() > 0) {
+                            int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
+                            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
                         } else {
                             ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
                             bckLeggeImmaginiLocali.execute();
                         }
                     } else {
-                        VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText(
-                                "Immagini online: " + VariabiliStaticheServizio.getInstance().getImmaginiOnline());
+                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
+                                "Immagini online: " + VariabiliStaticheWallpaper.getInstance().getImmaginiOnline());
                     }
                 }
 
-                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
+                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
             }
         });
 
         Switch swcBlur = (Switch) view.findViewById(R.id.switchBlur);
-        swcBlur.setChecked(VariabiliStaticheServizio.getInstance().isBlur());
+        swcBlur.setChecked(VariabiliStaticheWallpaper.getInstance().isBlur());
         swcBlur.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setBlur(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setBlur(isChecked);
 
-                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
+                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
 
@@ -508,12 +511,12 @@ public class InizializzaMaschera {
         });
 
         Switch switchScriveTesto = (Switch) view.findViewById(R.id.switchScriveTesto);
-        switchScriveTesto.setChecked(VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine());
+        switchScriveTesto.setChecked(VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
         switchScriveTesto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(isChecked);
 
-                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
+                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
 
@@ -535,8 +538,8 @@ public class InizializzaMaschera {
 
 
         Switch swcOnOff = (Switch) view.findViewById(R.id.switchOnOff);
-        swcOnOff.setChecked(VariabiliStaticheServizio.getInstance().isOnOff());
-        if (VariabiliStaticheServizio.getInstance().isOnOff()) {
+        swcOnOff.setChecked(VariabiliStaticheWallpaper.getInstance().isOnOff());
+        if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
             btnMenoMinuti.setEnabled(true);
             btnPiuMinuti.setEnabled(true);
             // btnCambioPath.setEnabled(true);
@@ -546,7 +549,7 @@ public class InizializzaMaschera {
             switchHome.setEnabled(true);
             switchLock.setEnabled(true);
 
-            if (!VariabiliStaticheServizio.getInstance().isServizioAttivo()) {
+            if (!VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
                 Esecuzione e = new Esecuzione(context);
                 e.startServizio1();
             }
@@ -562,9 +565,9 @@ public class InizializzaMaschera {
         }
         swcOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setOnOff(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setOnOff(isChecked);
 
-                if (VariabiliStaticheServizio.getInstance().isOnOff()) {
+                if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
                     btnMenoMinuti.setEnabled(true);
                     btnPiuMinuti.setEnabled(true);
                     // btnCambioPath.setEnabled(true);
@@ -584,7 +587,7 @@ public class InizializzaMaschera {
                     switchLock.setEnabled(false);
                 }
 
-                VariabiliStaticheServizio.getInstance().setLetteImpostazioni(true);
+                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati db = new db_dati(context);
                 db.ScriveImpostazioni();
             }
@@ -613,28 +616,28 @@ public class InizializzaMaschera {
                 Utility.getInstance().Attesa(true);
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 c.setWallpaperLocale(context,
-                        VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                 Utility.getInstance().Attesa(false);
             }
         });
 
         Switch swcEspansa = (Switch) view.findViewById(R.id.switchEspansa);
-        swcEspansa.setChecked(VariabiliStaticheServizio.getInstance().isEspansa());
+        swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEspansa());
         swcEspansa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheServizio.getInstance().setEspansa(isChecked);
+                VariabiliStaticheWallpaper.getInstance().setEspansa(isChecked);
 
                 if (isChecked) {
-                    VariabiliStaticheServizio.getInstance().setBlur(false);
-                    VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(false);
+                    VariabiliStaticheWallpaper.getInstance().setBlur(false);
+                    VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(false);
 
                     swcBlur.setEnabled(false);
                     swcBlur.setChecked(false);
                     switchScriveTesto.setEnabled(false);
                     switchScriveTesto.setChecked(false);
                 } else {
-                    VariabiliStaticheServizio.getInstance().setBlur(true);
-                    VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(true);
+                    VariabiliStaticheWallpaper.getInstance().setBlur(true);
+                    VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(true);
 
                     swcBlur.setEnabled(true);
                     swcBlur.setChecked(true);
@@ -670,17 +673,17 @@ public class InizializzaMaschera {
                     @Override
                     public void run() {
                         // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
+                        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
                             // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine Manuale---");
                             ChangeWallpaper c = new ChangeWallpaper(context);
-                            if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+                            if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                                 boolean fatto = c.setWallpaper(context, null);
                                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                             } else {
-                                int numeroRandom = Utility.getInstance().GeneraNumeroRandom(VariabiliStaticheServizio.getInstance().getListaImmagini().size() - 1);
+                                int numeroRandom = Utility.getInstance().GeneraNumeroRandom(VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
                                 if (numeroRandom > -1) {
-                                    boolean fatto = c.setWallpaper(context, VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
+                                    boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
                                     Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                                 } else {
                                     Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata manualmente: Caricamento immagini in corso---");
@@ -708,8 +711,8 @@ public class InizializzaMaschera {
             }
         });
 
-        if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-            Bitmap ultima = BitmapFactory.decodeFile(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine());
+        if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+            Bitmap ultima = BitmapFactory.decodeFile(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine());
             imgImpostata.setImageBitmap(ultima);
         }
     }

@@ -3,13 +3,9 @@ package com.looigi.wallpaperchanger2.classiStandard;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 public class ScreenReceiver extends BroadcastReceiver {
     private boolean screenOff;
@@ -38,7 +34,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
            }*/
 
-            if (!VariabiliStaticheServizio.getInstance().isServizioAttivo()) {
+            if (!VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
                 /* Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() { */
@@ -58,7 +54,7 @@ public class ScreenReceiver extends BroadcastReceiver {
             screenOff = true;
         }
 
-        VariabiliStaticheServizio.getInstance().setScreenOn(!screenOff);
+        VariabiliStaticheWallpaper.getInstance().setScreenOn(!screenOff);
 
         GestioneNotifiche.getInstance().AggiornaNotifica();
 

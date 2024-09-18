@@ -11,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.webservice.DownloadImage;
 
 import java.io.File;
@@ -29,7 +28,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
         this.context = applicationContext;
         this.listaImmaginiOrig = Immagini;
         this.listaImmagini = new ArrayList();
-        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
+        VariabiliStaticheWallpaper.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
         inflater = (LayoutInflater.from(applicationContext));
     }
 
@@ -65,7 +64,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 listaImmagini.add(listaImmaginiOrig.get(i));
             }
         }
-        VariabiliStaticheServizio.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
+        VariabiliStaticheWallpaper.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
 
         notifyDataSetChanged();
     }
@@ -76,13 +75,13 @@ public class AdapterListenerImmagini extends BaseAdapter {
 
         if (i < listaImmagini.size()) {
             String NomeImmagine = listaImmagini.get(i).getImmagine();
-            String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(VariabiliStaticheServizio.PercorsoImmagineSuURL + "/", "")
+            String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(VariabiliStaticheWallpaper.PercorsoImmagineSuURL + "/", "")
                     .replace(NomeImmagine, "");
 
             // ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
 
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
-            if (VariabiliStaticheServizio.getInstance().isOffline()) {
+            if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
                 File imgFile = new File(listaImmagini.get(i).getPathImmagine());
                 if (imgFile.exists()) {
                     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -94,13 +93,14 @@ public class AdapterListenerImmagini extends BaseAdapter {
             }
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliStaticheServizio.getInstance().setUltimaImmagine(listaImmagini.get(i));
+                    VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(listaImmagini.get(i));
 
                     ChangeWallpaper c = new ChangeWallpaper(context);
-                    if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
+                        Utility.getInstance().Attesa(true);
                         new DownloadImage(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
                     } else {
-                        c.setWallpaperLocale(context, VariabiliStaticheServizio.getInstance().getUltimaImmagine());
+                        c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                     }
                 }
             });

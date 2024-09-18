@@ -26,7 +26,7 @@ import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPath;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -181,12 +181,12 @@ public class UtilityDetector {
         }
     } */
 
-    public void ControllaFileNoMedia(String Origine, String Cartella) {
+    public void ControllaFileNoMedia(String Cartella) {
         String NomeFile = ".nomedia";
 
-        File file = new File(Origine + "/" + Cartella + "/" + NomeFile);
+        File file = new File(Cartella + "/" + NomeFile);
         if (!file.exists()) {
-            File gpxfile = new File(Origine + "/" + Cartella, NomeFile);
+            File gpxfile = new File(Cartella + "/" + NomeFile);
             FileWriter writer;
             try {
                 writer = new FileWriter(gpxfile);
@@ -678,8 +678,10 @@ public class UtilityDetector {
             }
         }
         VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini - 1;
-        VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
-        VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
+        if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+            VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
+            VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
+        }
     }
 
     private void copyFile(File src, File dst) throws IOException {
@@ -725,7 +727,9 @@ public class UtilityDetector {
                     }
                     removeKeyFromFile(Path, NomeMultimedia, "Appoggio.jpg");
 
-                    VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Path + "Appoggio.jpg"));
+                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                        VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Path + "Appoggio.jpg"));
+                    }
 
                     f.delete();
 
@@ -733,9 +737,15 @@ public class UtilityDetector {
                     photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
                     photoAttacher.update();
 
-                    VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
-                    VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
+                    }
+                    if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
+                        VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
+                    }
+                    if (VariabiliStaticheDetector.getInstance().getvView() != null) {
+                        VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                    }
 
                     if (NomeMultimedia.toUpperCase().contains(".DBF")) {
                         VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
@@ -869,9 +879,19 @@ public class UtilityDetector {
     }
 
     public void SpostaFile(Context context) {
-        Intent myIntent = new Intent(VariabiliStaticheServizio.getInstance().getMainActivity(),
+        Intent myIntent = new Intent(
+                VariabiliStaticheWallpaper.getInstance().getMainActivity(),
                 RichiestaPath.class);
-        VariabiliStaticheServizio.getInstance().getMainActivity().startActivity(myIntent);
+        VariabiliStaticheWallpaper.getInstance().getMainActivity().startActivity(myIntent);
+    }
+
+    public void ContaFiles(Context context) {
+        String Path = UtilityDetector.getInstance().PrendePath(context);
+        File p = new File(Path);
+        File[] list = p.listFiles();
+        String Messaggio = "Detector. J: " + list.length;
+
+        GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
     }
 
     private void CreaCartella(String Percorso) {

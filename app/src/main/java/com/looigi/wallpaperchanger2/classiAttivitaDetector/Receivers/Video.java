@@ -18,6 +18,9 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +35,7 @@ public class Video extends Activity implements Callback {
 	private List<String> Dimensioni;
 	private Handler handlerTimer;
 	private Runnable rTimer;
+	private Activity act;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -39,18 +43,12 @@ public class Video extends Activity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video);
 
-		context=this;
-		
+		context = this;
+		act = this;
+
 		SurfaceView surfaceView=(SurfaceView) findViewById(R.id.surfaceView1);
-		
 		LinearLayout lsv=(LinearLayout) findViewById(R.id.laySV);
-		
 		LinearLayout.LayoutParams params = null;
-	    
-		// Utility u=new Utility();
-		// if (VariabiliStatiche.getInstance().Anteprima == null) {
-		// 	u.LeggeAnteprima(context);
-		// }
 
 		if (VariabiliStaticheDetector.getInstance().getAnteprima() == null) {
 			VariabiliStaticheDetector.getInstance().setAnteprima("S");
@@ -80,7 +78,7 @@ public class Video extends Activity implements Callback {
 
 		ImpostaVideo();
 		
-		Button cmdVideo=(Button) findViewById(R.id.cmdChiude);
+		Button cmdVideo = (Button) findViewById(R.id.cmdChiude);
 		cmdVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +96,7 @@ public class Video extends Activity implements Callback {
             }
         });					        
 		
-		Button cmdAzione=(Button) findViewById(R.id.cmdAzione);
+		Button cmdAzione = (Button) findViewById(R.id.cmdAzione);
 		cmdAzione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,26 +104,14 @@ public class Video extends Activity implements Callback {
             }
         });
 
-		/* handlerTimer = new Handler();
-		rTimer = new Runnable() {
-			public void run() {
-				// finish();
-				moveTaskToBack(true);
-
-				handlerTimer.removeCallbacks(rTimer);
-				rTimer = null;
-			}
-		};
-		handlerTimer.postDelayed(rTimer, 10); */
-
 		RinominaFilesAudioInSystem();
 
 		handlerTimer = new Handler();
 		rTimer = new Runnable() {
 			public void run() {
-				// finish();
-				// main.moveTaskToBack(true);
-				// main.finish();
+				VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+				VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+				VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
 				handlerTimer.removeCallbacks(rTimer);
 				rTimer = null;
@@ -133,29 +119,6 @@ public class Video extends Activity implements Callback {
 		};
 		handlerTimer.postDelayed(rTimer, 100);
 	}
-
-//	private void LeggeOrientamento(Context context) {
-//    	SQLiteDatabase myDB= null;
-//    	int MODE_PRIVATE=0;
-//
-//    	try {
-//			myDB = context.openOrCreateDatabase("Spiator", MODE_PRIVATE, null);
-//		   	String Sql="SELECT Orient FROM Orientamento;";
-//			Cursor c = myDB.rawQuery(Sql , null);
-//			c.moveToFirst();
-//			MainActivityDetector.Orient=c.getInt(0);
-//			c.close();
-//
-//			myDB.close();
-//    	} catch (Exception e) {
-//			myDB.execSQL("Delete From Orientamento;");
-//			myDB.execSQL("Insert Into Orientamento Values (0);");
-//
-//			myDB.close();
-//
-//			MainActivityDetector.Orient=0;
-//    	}
-//	}
 
 	private void RinominaFilesAudioInSystem() {
 //        SuoniTelefono s=new SuoniTelefono();
@@ -264,10 +227,7 @@ public class Video extends Activity implements Callback {
 		}
 	}
 
-	private String PrendeRisoluzioni() {
-		if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
-
-		}
+	private String PrendeRisoluzioni(int cameraImpostata) {
 		String Ritorno = "";
 
 		/* GBTakePictureNoPreview c = new GBTakePictureNoPreview();
@@ -278,6 +238,9 @@ public class Video extends Activity implements Callback {
 		    c.setUseBackCamera();
 	    }
 	    Dimensioni=c.RitornaRisoluzioniVideo(); */
+		if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
+			UtilityDetector.getInstance().RitornaRisoluzioni(this, cameraImpostata);
+		}
 		Dimensioni = VariabiliStaticheDetector.getInstance().getDimensioni();
 
 	    int maxX = 0;
@@ -313,35 +276,43 @@ public class Video extends Activity implements Callback {
 		// pos=Ritorno.indexOf("@");
 		// Ritorno=Ritorno.substring(pos+1,Ritorno.length());
 		// pos=Ritorno.indexOf("§");
-		Fotocamera=VariabiliStaticheDetector.getInstance().getFotocamera(); // Integer.parseInt(Ritorno.substring(0,pos));
+		int cameraFronteRetro;
+
+		int cameraID = VariabiliStaticheDetector.getInstance().getFotocamera();
+		if (cameraID == 0) {
+			cameraFronteRetro = 0;
+		} else {
+			cameraFronteRetro = 1;
+		}
 		// Ritorno=Ritorno.substring(pos+1,Ritorno.length());
 		// String RisolX;
 		// pos=Ritorno.indexOf("§");
 		// RisolX=Ritorno.substring(0,pos);
 		// pos=RisolX.indexOf("x");
 		// pos=Ritorno.indexOf("§");
-		int Estensione=VariabiliStaticheDetector.getInstance().getEstensione(); // Integer.parseInt(Ritorno.substring(pos+1,Ritorno.length()));
-		String sEstensione;
-
-		if (Estensione==2) {
-			sEstensione="dbv";
-		} else {
+		// int Estensione = VariabiliStaticheDetector.getInstance().getEstensione(); // Integer.parseInt(Ritorno.substring(pos+1,Ritorno.length()));
+		String sEstensione = "dbv";
+		/* } else {
 			sEstensione="mp4";
-		}
+		} */
 
-		String ris=PrendeRisoluzioni();
-		int pos=ris.indexOf("x");
-		int X=Integer.parseInt(ris.substring(0, pos));
-		int Y=Integer.parseInt(ris.substring(pos+1,ris.length()));
+		String ris = PrendeRisoluzioni(cameraFronteRetro);
+		int pos = ris.indexOf("x");
+		int X = Integer.parseInt(ris.substring(0, pos));
+		int Y = Integer.parseInt(ris.substring(pos+1,ris.length()));
 
-	    String Origine=Environment.getExternalStorageDirectory().getAbsolutePath();
+	    // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
 	    // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
+
 		String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		Utility.getInstance().CreaCartelle(Cartella);
+		String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
+				"." + sEstensione;
 
-		UtilityDetector.getInstance().CreaCartelle(Origine, Cartella);
-		UtilityDetector.getInstance().ControllaFileNoMedia(Origine, Cartella);
+		UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
 
-	    String fileName = Origine + Cartella + UtilityDetector.getInstance().PrendeNomeImmagine()+"."+sEstensione;
+	    // String fileName = Origine + Cartella + UtilityDetector.getInstance().PrendeNomeImmagine()+"."+sEstensione;
 
 	    recorder.setOutputFile(fileName);
 

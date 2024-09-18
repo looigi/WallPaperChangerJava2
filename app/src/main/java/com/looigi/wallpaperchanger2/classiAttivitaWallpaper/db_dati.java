@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -141,7 +140,7 @@ public class db_dati {
                         listaImmagini.add(s);
                     } while (c.moveToNext());
 
-                    VariabiliStaticheServizio.getInstance().setListaImmagini(listaImmagini);
+                    VariabiliStaticheWallpaper.getInstance().setListaImmagini(listaImmagini);
                 } else {
                     return false;
                 }
@@ -164,7 +163,7 @@ public class db_dati {
     }
 
     public Boolean ScriveImpostazioni() {
-        if (Controlla && !VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+        if (Controlla && !VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
             return false;
         }
@@ -172,12 +171,12 @@ public class db_dati {
         if (myDB != null) {
             try {
                 String Imm = "";
-                if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                    Imm = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine();
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    Imm = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
                 }
                 String PathImm = "";
-                if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                    PathImm = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine();
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    PathImm = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine();
                 } else {
                     PathImm = "";
                 }
@@ -190,17 +189,17 @@ public class db_dati {
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().getMinutiAttesa()) + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().getPercorsoIMMAGINI()) + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isOffline() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isBlur() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isResize() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine()  ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isOnOff() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isHome() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isLock() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isDetector() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheServizio.getInstance().isEspansa() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().getMinutiAttesa()) + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI()) + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isOffline() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isBlur() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isResize() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine()  ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isOnOff() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isHome() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isLock() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isDetector() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isEspansa() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -232,31 +231,31 @@ public class db_dati {
                     StrutturaImmagine si = new StrutturaImmagine();
                     si.setImmagine(c.getString(0));
                     si.setPathImmagine(c.getString(1));
-                    VariabiliStaticheServizio.getInstance().setUltimaImmagine(si);
+                    VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
-                    VariabiliStaticheServizio.getInstance().setMinutiAttesa(Integer.parseInt(c.getString(2)));
-                    VariabiliStaticheServizio.getInstance().setPercorsoIMMAGINI(c.getString(3));
-                    VariabiliStaticheServizio.getInstance().setOffline(c.getString(4).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setBlur(c.getString(5).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setResize(c.getString(6).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setScriveTestoSuImmagine(c.getString(7).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setOnOff(c.getString(8).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setHome(c.getString(9).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setLock(c.getString(10).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setDetector(c.getString(11).equals("S"));
-                    VariabiliStaticheServizio.getInstance().setEspansa(c.getString(12).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(Integer.parseInt(c.getString(2)));
+                    VariabiliStaticheWallpaper.getInstance().setPercorsoIMMAGINI(c.getString(3));
+                    VariabiliStaticheWallpaper.getInstance().setOffline(c.getString(4).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setBlur(c.getString(5).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setResize(c.getString(6).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(c.getString(7).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setOnOff(c.getString(8).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setHome(c.getString(9).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setLock(c.getString(10).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setDetector(c.getString(11).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setEspansa(c.getString(12).equals("S"));
 
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheServizio.getInstance().isOnOff());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheServizio.getInstance().getMinutiAttesa());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Percorso immagini: " + VariabiliStaticheServizio.getInstance().getPercorsoIMMAGINI());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Offline: " + VariabiliStaticheServizio.getInstance().isOffline());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheServizio.getInstance().isBlur());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheServizio.getInstance().isResize());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheServizio.getInstance().isScriveTestoSuImmagine());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheServizio.getInstance().isHome());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheServizio.getInstance().isLock());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheServizio.getInstance().isDetector());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheServizio.getInstance().isEspansa());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Percorso immagini: " + VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Offline: " + VariabiliStaticheWallpaper.getInstance().isOffline());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheWallpaper.getInstance().isBlur());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheWallpaper.getInstance().isResize());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheWallpaper.getInstance().isHome());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheWallpaper.getInstance().isLock());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheWallpaper.getInstance().isDetector());
+                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
                 } else {
                     Controlla = false;
                     boolean scritti = ScriveImpostazioni();

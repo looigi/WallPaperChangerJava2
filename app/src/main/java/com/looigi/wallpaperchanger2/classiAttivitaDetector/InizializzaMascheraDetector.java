@@ -685,7 +685,7 @@ public class InizializzaMascheraDetector {
         if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
             VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 
-            act.moveTaskToBack(true);
+            VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
         }
     }
 

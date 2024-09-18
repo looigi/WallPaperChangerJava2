@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class ChiamateWS implements TaskDelegate {
     private static final String NomeMaschera = "CHIAMATEWS";
     private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = VariabiliStaticheServizio.UrlWS + "/";
+    private final String RadiceWS = VariabiliStaticheWallpaper.UrlWS + "/";
     private String ws = "looVF.asmx/";
     private String NS="http://looVF.org/";
     private String SA="http://looVF.org/";
@@ -107,19 +107,19 @@ public class ChiamateWS implements TaskDelegate {
                 String[] Campi = righe[i].split(";");
                 StrutturaImmagine s = new StrutturaImmagine();
                 s.setImmagine(Campi[0]);
-                s.setPathImmagine(VariabiliStaticheServizio.PercorsoImmagineSuURL + "/" + Campi[1]);
+                s.setPathImmagine(VariabiliStaticheWallpaper.PercorsoImmagineSuURL + "/" + Campi[1]);
                 s.setDimensione(Campi[2]);
                 s.setDataImmagine(Campi[3]);
                 lista.add(s);
             }
-            VariabiliStaticheServizio.getInstance().setListaImmagini(lista);
-            VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + lista.size());
+            VariabiliStaticheWallpaper.getInstance().setListaImmagini(lista);
+            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + lista.size());
 
-            VariabiliStaticheServizio.getInstance().setAdapterImmagini(new AdapterListenerImmagini(context,
-                    VariabiliStaticheServizio.getInstance().getListaImmagini()));
-            VariabiliStaticheServizio.getInstance().getLstImmagini().setAdapter(VariabiliStaticheServizio.getInstance().getAdapterImmagini());
+            VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(new AdapterListenerImmagini(context,
+                    VariabiliStaticheWallpaper.getInstance().getListaImmagini()));
+            VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(VariabiliStaticheWallpaper.getInstance().getAdapterImmagini());
 
-            VariabiliStaticheServizio.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheWallpaper.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
         }
     }
 
@@ -133,8 +133,8 @@ public class ChiamateWS implements TaskDelegate {
             String Immagine = c[1].replace("/var/www/html/Sfondi", "");
             String Datella = c[2];
             String Dimensioni = c[3];
-            VariabiliStaticheServizio.getInstance().setDataAppoggio(Datella);
-            VariabiliStaticheServizio.getInstance().setDimeAppoggio(Dimensioni);
+            VariabiliStaticheWallpaper.getInstance().setDataAppoggio(Datella);
+            VariabiliStaticheWallpaper.getInstance().setDimeAppoggio(Dimensioni);
 
             StrutturaImmagine si = new StrutturaImmagine();
             String sNomeImmagine = c[1];
@@ -147,14 +147,14 @@ public class ChiamateWS implements TaskDelegate {
             si.setDimensione(c[3]);
             si.setDataImmagine(c[2]);
 
-            VariabiliStaticheServizio.getInstance().setUltimaImmagine(si);
+            VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
-            Immagine = VariabiliStaticheServizio.PercorsoImmagineSuURL + Immagine;
+            Immagine = VariabiliStaticheWallpaper.PercorsoImmagineSuURL + Immagine;
             String[] cc = Immagine.split("/");
             String NomeImmagine = cc[cc.length - 1];
-            VariabiliStaticheServizio.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + quanteImmagini);
+            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + quanteImmagini);
 
-            VariabiliStaticheServizio.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
+            VariabiliStaticheWallpaper.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
             new DownloadImage(context, NomeImmagine, null).execute(Immagine);
         }

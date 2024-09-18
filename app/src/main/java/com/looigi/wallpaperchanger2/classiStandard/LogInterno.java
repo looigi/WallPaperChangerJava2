@@ -7,7 +7,7 @@ import android.os.Looper;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +24,7 @@ public class LogInterno {
 	private boolean Detector = false;
 
 	public LogInterno(Context c, boolean Detector) {
-		CreaCartella(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog());
+		CreaCartella(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog());
 
 		this.Detector = Detector;
 		context = c;
@@ -146,12 +146,12 @@ public class LogInterno {
 	private String tornaPath() {
 		String path = "";
 
-		if (VariabiliStaticheServizio.getInstance().getPercorsoDIRLog().isEmpty() ||
-				VariabiliStaticheServizio.getInstance().getNomeFileDiLog().isEmpty()) {
+		if (VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog().isEmpty() ||
+				VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog().isEmpty()) {
 			Utility.getInstance().generaPath(context);
 		}
-		path = VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-				VariabiliStaticheServizio.getInstance().getNomeFileDiLog();
+		path = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+				VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
 		if (Detector) {
 			if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
 					VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {

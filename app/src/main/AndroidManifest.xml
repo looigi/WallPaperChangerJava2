@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -56,9 +57,10 @@
             </intent-filter>
         </activity>
 
-        <!-- android:theme="@style/Theme.AppCompat.Translucent" -->
+        <!--  -->
         <activity
             android:name=".classiAttivitaDetector.AndroidCameraApi"
+            android:theme="@style/Theme.AppCompat.Translucent"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -71,6 +73,10 @@
 
         <activity
             android:name=".classiStandard.RichiestaPath"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classiStandard.RichiestaPathImmaginiLocali"
             android:windowSoftInputMode="adjustResize" />
 
         <service android:name = ".classiStandard.ServizioInterno"

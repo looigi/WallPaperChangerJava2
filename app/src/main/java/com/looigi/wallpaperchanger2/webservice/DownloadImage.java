@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -103,15 +103,15 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                 StrutturaImmagine si = new StrutturaImmagine();
                 si.setPathImmagine(PercorsoDIR + "/Appoggio.jpg");
                 si.setImmagine(sNomeImmagine);
-                if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                    si.setDataImmagine(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDataImmagine());
-                    si.setDimensione(VariabiliStaticheServizio.getInstance().getUltimaImmagine().getDimensione());
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    si.setDataImmagine(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getDataImmagine());
+                    si.setDimensione(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getDimensione());
                 } else {
                     si.setDataImmagine("---");
                     si.setDimensione("---");
                 }
 
-                VariabiliStaticheServizio.getInstance().setUltimaImmagine(si);
+                VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 boolean fatto = c.setWallpaperLocale(context, si);

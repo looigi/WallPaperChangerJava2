@@ -17,6 +17,10 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.MainActivityDetector;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers.Audio;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers.Video;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificheDetector {
     private NotificationManager manager;
@@ -58,7 +62,7 @@ public class GestioneNotificheDetector {
             setListeners(contentView);
 
             contentView.setTextViewText(R.id.txtTitolo, VariabiliStaticheDetector.channelName);
-            // contentView.setTextViewText(R.id.txtContatore, Messaggio);
+            contentView.setTextViewText(R.id.txtDettaglio, Messaggio);
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheDetector.NOTIFICATION_CHANNEL_STRING);
 
@@ -118,17 +122,29 @@ public class GestioneNotificheDetector {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.layBarraNotifica, pApre);
 
-            Intent titoloApp = new Intent(ctx, NotificationActionServiceDetector.class);
-            titoloApp.putExtra("DO", "scattaFoto");
-            PendingIntent pScatta = PendingIntent.getService(ctx, 51, titoloApp,
+            Intent scatta = new Intent(ctx, NotificationActionServiceDetector.class);
+            scatta.putExtra("DO", "Foto");
+            PendingIntent pScatta = PendingIntent.getService(ctx, 51, scatta,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgPhoto, pScatta);
-        // } else {
-            // // Log.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
+
+            Intent video = new Intent(ctx, NotificationActionServiceDetector.class);
+            video.putExtra("DO", "Video");
+            PendingIntent pVideo = PendingIntent.getService(ctx, 52, video,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgPhoto, pVideo);
+
+            Intent audio = new Intent(ctx, NotificationActionServiceDetector.class);
+            audio.putExtra("DO", "Audio");
+            PendingIntent pAudio = PendingIntent.getService(ctx, 53, audio,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgPhoto, pAudio);
         }
     }
 
-    public void AggiornaNotifica() {
+    public void AggiornaNotifica(String Messaggio) {
+        this.Messaggio = Messaggio;
+
         if (context != null) {
             try {
                 Notification notification = StartNotifica(context);
@@ -171,7 +187,7 @@ public class GestioneNotificheDetector {
             super.onStartCommand(intent, flags, startId);
 
             context = VariabiliStaticheDetector.getInstance().getContext();
-            String action="";
+            String action = "";
 
             // Log.getInstance().ScriveLog("Notifica: onCreate PassaggioNotifica");
 
@@ -191,17 +207,25 @@ public class GestioneNotificheDetector {
                                 if (context != null) {
                                     VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 
-                                    Intent i = new Intent(context, MainActivityDetector.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    context.startActivity(i);
+                                    VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+                                    VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
                                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
-                                            i2.inizializzaMaschera(
-                                                    context,
-                                                    VariabiliStaticheDetector.getInstance().getMainActivity());
+                                            Intent i = new Intent(context, MainActivityDetector.class);
+                                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            context.startActivity(i);
+
+                                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                                    i2.inizializzaMaschera(
+                                                            context,
+                                                            VariabiliStaticheDetector.getInstance().getMainActivity());
+                                                }
+                                            }, 1000);
                                         }
                                     }, 1000);
                                 }
@@ -209,14 +233,64 @@ public class GestioneNotificheDetector {
                         }, 100);
                         break;
 
-                    case "scattaFoto":
+                    case "Foto":
                         VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
-                        Intent myIntent = new Intent(
-                                this,
-                                AndroidCameraApi.class);
-                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        this.startActivity(myIntent);
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        AndroidCameraApi.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                            }
+                        }, 1000);
+
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
+                        break;
+
+                    case "Video":
+                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        Video.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                            }
+                        }, 1000);
+
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
+                        break;
+
+                    case "Audio":
+                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        Audio.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                            }
+                        }, 1000);
+
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
                         break;
                 }
             }

@@ -6,23 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.view.KeyEvent;
 
-import androidx.annotation.Nullable;
-
-import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ConverteNomeUri;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 public class MainWallpaper extends Activity {
     private static String NomeMaschera = "MAINACTIVITY";
@@ -31,6 +21,9 @@ public class MainWallpaper extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_wallpaper);
+
+        VariabiliStaticheWallpaper.getInstance().setMainActivity(this);
+        VariabiliStaticheWallpaper.getInstance().setContext(this);
 
         startService();
     }
@@ -53,7 +46,7 @@ public class MainWallpaper extends Activity {
                 System.exit(-1);
             } */
 
-            moveTaskToBack(false);
+            VariabiliStaticheWallpaper.getInstance().ChiudeActivity(false);
         } else {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
             Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
@@ -94,7 +87,7 @@ public class MainWallpaper extends Activity {
 
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                moveTaskToBack(true);
+                VariabiliStaticheWallpaper.getInstance().ChiudeActivity(false);
 
                 return false;
         }
@@ -109,6 +102,35 @@ public class MainWallpaper extends Activity {
         Utility.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
     }
 
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 9999:
+                if (data != null) {
+                    Uri uri = data.getData();
+                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+                            DocumentsContract.getTreeDocumentId(uri));
+                    ConverteNomeUri c = new ConverteNomeUri();
+                    String path = c.getPath(this, docUri);
+
+                    VariabiliStaticheWallpaper.getInstance().getTxtPath().setText(path);
+                    VariabiliStaticheWallpaper.getInstance().setPercorsoIMMAGINI(path);
+
+                    db_dati db = new db_dati(this);
+                    db.ScriveImpostazioni();
+
+                    ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this);
+                    bckLeggeImmaginiLocali.execute();
+
+                    break;
+                }
+        }
+    }
+    */
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -118,6 +140,9 @@ public class MainWallpaper extends Activity {
         Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
         Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA ICONA");
         Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
+
+        VariabiliStaticheWallpaper.getInstance().setMainActivity(this);
+        VariabiliStaticheWallpaper.getInstance().setContext(this);
 
         // if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
             InizializzaMaschera i = new InizializzaMaschera();

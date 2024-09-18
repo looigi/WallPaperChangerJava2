@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,14 +45,8 @@ public class Audio extends Activity  {
 		lsv.setLayoutParams(params);
 
         recorder = new MediaRecorder();
-        
-	    /* try {
-		    recorder.setPreviewDisplay(holder.getSurface());
-	    } catch (Exception e) {
-		    recorder=null;
-	    } */
 
-		Button cmdChiude=(Button) findViewById(R.id.cmdChiude);
+		Button cmdChiude = (Button) findViewById(R.id.cmdChiude);
 		cmdChiude.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +54,7 @@ public class Audio extends Activity  {
             }
         });					        
 		
-		Button cmdAzione=(Button) findViewById(R.id.cmdAzione);
+		Button cmdAzione = (Button) findViewById(R.id.cmdAzione);
 		cmdAzione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,8 +67,9 @@ public class Audio extends Activity  {
 		handlerTimer = new Handler();
 		rTimer = new Runnable() {
 			public void run() {
-				// finish();
-				VariabiliStaticheDetector.getInstance().getMainActivity().moveTaskToBack(true);
+				VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+				VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+				VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
 				handlerTimer.removeCallbacks(rTimer);
 				rTimer = null;
@@ -163,30 +161,36 @@ public class Audio extends Activity  {
 		// pos=Ritorno.indexOf("@");
 		// Ritorno=Ritorno.substring(pos+1,Ritorno.length());
 		// pos=Ritorno.indexOf("§");
-		Fotocamera= VariabiliStaticheDetector.getInstance().getFotocamera(); //  Integer.parseInt(Ritorno.substring(0,pos));
+		int cameraFronteRetro;
+
+		int cameraID = VariabiliStaticheDetector.getInstance().getFotocamera();
+		if (cameraID == 0) {
+			cameraFronteRetro = 0;
+		} else {
+			cameraFronteRetro = 1;
+		}
+
 		// Ritorno=Ritorno.substring(pos+1,Ritorno.length());
 		// // String RisolX;
 		// pos=Ritorno.indexOf("§");
 		// String RisolX=Ritorno.substring(0,pos);
 		// pos=RisolX.indexOf("x");
 		// pos=Ritorno.indexOf("§");
-		int Estensione= VariabiliStaticheDetector.getInstance().getEstensione(); // Integer.parseInt(Ritorno.substring(pos+1,Ritorno.length()));
-		String sEstensione;
+		// int Estensione = VariabiliStaticheDetector.getInstance().getEstensione(); // Integer.parseInt(Ritorno.substring(pos+1,Ritorno.length()));
+		String sEstensione ="dba";
 
-		if (Estensione==2) {
-			sEstensione="dba";
-		} else {
-			sEstensione="3gp";
-		}
-
-		String Origine=Environment.getExternalStorageDirectory().getAbsolutePath();
+		// String Origine=Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
+
 		String Cartella = UtilityDetector.getInstance().PrendePath(context);
+		Utility.getInstance().CreaCartelle(Cartella);
+		String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
+				"." + sEstensione;
 
-		UtilityDetector.getInstance().CreaCartelle(Origine, Cartella);
-		UtilityDetector.getInstance().ControllaFileNoMedia(Origine, Cartella);
+		UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
 
-		String fileName = Origine + Cartella + UtilityDetector.getInstance().PrendeNomeImmagine()+"."+sEstensione;
+		// String fileName = Origine + Cartella + UtilityDetector.getInstance().PrendeNomeImmagine()+"."+sEstensione;
 
 		recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);

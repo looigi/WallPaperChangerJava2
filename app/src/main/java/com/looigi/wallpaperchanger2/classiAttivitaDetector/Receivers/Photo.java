@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.AndroidCameraApi;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class Photo extends Activity {
 	private static String NomeMaschera = "PHOTO";
@@ -25,18 +28,39 @@ public class Photo extends Activity {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.camera);
 
-		// act = this;
-		// context = this; // VariabiliStatiche.getInstance().getContext();
+		act = this;
+		context = this; // VariabiliStatiche.getInstance().getContext();
 
 		// InizializzaMascheraDetector id = new InizializzaMascheraDetector();
 		// id.inizializzaMaschera(context, act);
 
-		VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+		// VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
-		Intent myIntent = new Intent(
-				this,
-				AndroidCameraApi.class);
-		startActivity(myIntent);
+		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				Intent myIntent = new Intent(
+						act,
+						AndroidCameraApi.class);
+				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				act.startActivity(myIntent);
+			}
+		}, 1000);
+
+		VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+		VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+		VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
+		/* handlerTimer = new Handler();
+		rTimer = new Runnable() {
+			public void run() {
+				if (VariabiliStaticheStart.getInstance().getMainActivity() != null) {
+					VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
+					VariabiliStaticheStart.getInstance().getMainActivity().finish();
+				}
+			}
+		};
+		handlerTimer.postDelayed(rTimer, 1000); */
 
 		// finish();
 

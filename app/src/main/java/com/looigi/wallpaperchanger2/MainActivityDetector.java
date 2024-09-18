@@ -36,11 +36,12 @@ public class MainActivityDetector extends Activity {
                         VariabiliStaticheDetector.channelName + ": Uscita per mancanza di impostazioni 1",
                         Toast.LENGTH_LONG).show();
 
-                finish();
+                // finish();
+                VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                 // System.exit(-1);
             }
 
-            this.moveTaskToBack(true);
+            VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
 
             VariabiliStaticheDetector.getInstance().setMascheraPartita(true);
         }
@@ -54,7 +55,7 @@ public class MainActivityDetector extends Activity {
 
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                this.moveTaskToBack(true);
+                VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
 
                 return false;
         }
@@ -78,6 +79,9 @@ public class MainActivityDetector extends Activity {
         UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
         UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
         UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
+
+        VariabiliStaticheDetector.getInstance().setMainActivity(this);
+        VariabiliStaticheDetector.getInstance().setContext(this);
 
         /* if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();

@@ -16,7 +16,11 @@ public class ProviderVideo extends AppWidgetProvider {
 	    RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_video);
 
 	    Intent configIntent = new Intent(context, Video.class);
-	    PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
+	    PendingIntent configPendingIntent = PendingIntent.getActivity(
+				context,
+				0,
+				configIntent,
+                PendingIntent.FLAG_IMMUTABLE);
 
 	    remoteViews.setOnClickPendingIntent(R.id.imgVideo, configPendingIntent);
 	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);

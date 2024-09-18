@@ -19,8 +19,10 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotifiche {
     private NotificationManager manager;
@@ -44,8 +46,8 @@ public class GestioneNotifiche {
             context = ctxP;
 
             NotificationChannel chan = new NotificationChannel(
-                    VariabiliStaticheServizio.NOTIFICATION_CHANNEL_STRING,
-                    VariabiliStaticheServizio.channelName,
+                    VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_STRING,
+                    VariabiliStaticheWallpaper.channelName,
                     NotificationManager.IMPORTANCE_LOW);
             chan.setLightColor(Color.BLUE);
             chan.setShowBadge(false);
@@ -59,18 +61,18 @@ public class GestioneNotifiche {
 
             // manager.areNotificationsEnabled();
 
-            contentView = new RemoteViews(context.getPackageName(), R.layout.barra_notifica);
+            contentView = new RemoteViews(context.getPackageName(), R.layout.barra_notifica_wallpaper);
             setListenersTasti(contentView, context);
             setListeners(contentView);
 
-            if (VariabiliStaticheServizio.getInstance().getUltimaImmagine() != null) {
-                String path = VariabiliStaticheServizio.getInstance().getUltimaImmagine().getPathImmagine();
+            if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                String path = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine();
                 Bitmap bmImg = BitmapFactory.decodeFile(path);
                 if (contentView != null) {
                     contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
 
-                    contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
-                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheServizio.getInstance().getUltimaImmagine().getImmagine());
+                    contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
+                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
                 }
             } else {
                 if (contentView != null) {
@@ -80,11 +82,11 @@ public class GestioneNotifiche {
                     contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
                 }
             }
-            int minuti = VariabiliStaticheServizio.getInstance().getMinutiAttesa();
-            int quantiGiri = (minuti * 60) / VariabiliStaticheServizio.secondiDiAttesaContatore;
+            int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+            int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
             String prossimo = "Prossimo cambio: " +
-                    VariabiliStaticheServizio.getInstance().getSecondiPassati() + "/" +
-                    quantiGiri + " - Timeouts: " + VariabiliStaticheServizio.getInstance().getErrori();
+                    VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
+                    quantiGiri + " - Timeouts: " + VariabiliStaticheWallpaper.getInstance().getErrori();
             if (contentView != null) {
                 contentView.setTextViewText(R.id.txtDettaglio, prossimo);
 
@@ -97,12 +99,12 @@ public class GestioneNotifiche {
             }
 
 
-            notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheServizio.NOTIFICATION_CHANNEL_STRING);
+            notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_STRING);
 
             Notification notifica = notificationBuilder
-                .setContentTitle(VariabiliStaticheServizio.channelName)                            // required
+                .setContentTitle(VariabiliStaticheWallpaper.channelName)                            // required
                 .setSmallIcon(R.drawable.eye)   // required android.R.drawable.ic_menu_slideshow
-                .setContentText(VariabiliStaticheServizio.channelName) // required
+                .setContentText(VariabiliStaticheWallpaper.channelName) // required
                 // .setDefaults(Notification.DEFAULT_ALL)
                 .setOnlyAlertOnce(false)
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
@@ -195,7 +197,7 @@ public class GestioneNotifiche {
             try {
                 Notification notification = StartNotifica(context);
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(VariabiliStaticheServizio.NOTIFICATION_CHANNEL_ID, notification);
+                mNotificationManager.notify(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notification);
             } catch (Exception e) {
                 Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
                         Utility.getInstance().PrendeErroreDaException(e));
@@ -207,7 +209,7 @@ public class GestioneNotifiche {
         // // Utility.getInstance().ScriveLog("Rimuovi notifica");
         if (manager != null) {
             try {
-                manager.cancel(VariabiliStaticheServizio.getInstance().getIdNotifica());
+                manager.cancel(VariabiliStaticheWallpaper.getInstance().getIdNotifica());
                 manager.cancelAll();
                 manager = null;
                 contentView = null;
@@ -232,7 +234,7 @@ public class GestioneNotifiche {
         public int onStartCommand(Intent intent, int flags, int startId) {
             super.onStartCommand(intent, flags, startId);
 
-            context = VariabiliStaticheServizio.getInstance().getContext();
+            context = VariabiliStaticheWallpaper.getInstance().getContext();
             String action="";
 
             // Utility.getInstance().ScriveLog("Notifica: onCreate PassaggioNotifica");
@@ -247,16 +249,27 @@ public class GestioneNotifiche {
             if (action!=null) {
                 switch (action) {
                     case "apre":
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (context != null) {
-                                    Intent i = new Intent(context, MainWallpaper.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    context.startActivity(i);
-                                }
+                                Intent i = new Intent(context, MainWallpaper.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(i);
+
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        InizializzaMaschera i = new InizializzaMaschera();
+                                        i.inizializzaMaschera(
+                                                context,
+                                                VariabiliStaticheWallpaper.getInstance().getMainActivity());
+                                    }
+                                }, 1000);
                             }
-                        }, 100);
+                        }, 1000);
                         break;
 
                     case "cambioWallpaper":

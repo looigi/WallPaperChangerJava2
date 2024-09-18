@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import static android.content.Context.POWER_SERVICE;
 import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
@@ -20,6 +22,7 @@ public class Permessi {
     private Context context;
     private Activity act;
 
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public boolean ControllaPermessi(Activity context) {
         int permissionRequestCode1 = 1193;
         this.context = context;
@@ -52,6 +55,7 @@ public class Permessi {
                 Manifest.permission.RECEIVE_BOOT_COMPLETED,
                 // Manifest.permission.WAKE_LOCK,
                 Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO,
                 // android.Manifest.permission.BLUETOOTH,
                 // android.Manifest.permission.BLUETOOTH_ADMIN
                 Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
@@ -75,7 +79,7 @@ public class Permessi {
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")
             );
-            context.startActivityForResult(intent, VariabiliStaticheServizio.channelIdIntentOverlay);
+            context.startActivityForResult(intent, VariabiliStaticheWallpaper.channelIdIntentOverlay);
             // PERMESSO FRONTE SCHERMO
 
             // ALTRI PERMESSI

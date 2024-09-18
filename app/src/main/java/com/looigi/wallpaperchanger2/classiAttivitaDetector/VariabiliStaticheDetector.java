@@ -83,6 +83,15 @@ public class VariabiliStaticheDetector {
     private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
 
+    public void ChiudeActivity(boolean Finish) {
+        if (mainActivity != null) {
+            // mainActivity.moveTaskToBack(true);
+            // if (Finish) {
+                mainActivity.finish();
+            // }
+        }
+    }
+
     public boolean isCameraImpostata() {
         return CameraImpostata;
     }

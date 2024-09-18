@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 
@@ -52,25 +52,25 @@ public class Utility {
     }
     
     public void ScriveLog(Context context, String Maschera, String Log) {
-        if (VariabiliStaticheServizio.getInstance().getPercorsoDIRLog().isEmpty() ||
-                VariabiliStaticheServizio.getInstance().getNomeFileDiLog().isEmpty()) {
+        if (VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog().isEmpty() ||
+                VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog().isEmpty()) {
             generaPath(context);
         }
 
         if (context != null) {
-            if (VariabiliStaticheServizio.getInstance().getLog() == null) {
+            if (VariabiliStaticheWallpaper.getInstance().getLog() == null) {
                 LogInterno l = new LogInterno(context, false);
-                VariabiliStaticheServizio.getInstance().setLog(l);
+                VariabiliStaticheWallpaper.getInstance().setLog(l);
             }
 
-            if (!Utility.getInstance().EsisteFile(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-                    VariabiliStaticheServizio.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheServizio.getInstance().getLog().PulisceFileDiLog();
+            if (!Utility.getInstance().EsisteFile(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheWallpaper.getInstance().getLog().PulisceFileDiLog();
             }
 
-            if (EsisteFile(VariabiliStaticheServizio.getInstance().getPercorsoDIRLog() + "/" +
-                    VariabiliStaticheServizio.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheServizio.getInstance().getLog().ScriveLog(Maschera + ": " + Log);
+            if (EsisteFile(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheWallpaper.getInstance().getLog().ScriveLog(Maschera + ": " + Log);
             }
         } else {
 
@@ -148,7 +148,7 @@ public class Utility {
 
 
     public void ChiudeApplicazione(Context context) {
-        VariabiliStaticheServizio.getInstance().setSbragaTutto(true);
+        VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
 
         GestioneNotifiche.getInstance().RimuoviNotifica();
 
@@ -156,33 +156,33 @@ public class Utility {
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
-        if (VariabiliStaticheServizio.getInstance().getServizioForeground() != null) {
-            context.stopService(VariabiliStaticheServizio.getInstance().getServizioForeground());
-            VariabiliStaticheServizio.getInstance().setServizioForeground(null);
+        if (VariabiliStaticheWallpaper.getInstance().getServizioForeground() != null) {
+            context.stopService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
+            VariabiliStaticheWallpaper.getInstance().setServizioForeground(null);
         }
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
         Utility.getInstance().ApreToast(context, "Uscita");
 
-        finishAffinity(VariabiliStaticheServizio.getInstance().getMainActivity());
+        finishAffinity(VariabiliStaticheWallpaper.getInstance().getMainActivity());
 
         System.exit(0);
     }
 
     public void generaPath(Context context) {
         String pathLog = context.getFilesDir() + "/Log";
-        VariabiliStaticheServizio.getInstance().setPercorsoDIRLog(pathLog);
-        String nomeFileLog = VariabiliStaticheServizio.channelName + ".txt";
-        VariabiliStaticheServizio.getInstance().setNomeFileDiLog(nomeFileLog);
+        VariabiliStaticheWallpaper.getInstance().setPercorsoDIRLog(pathLog);
+        String nomeFileLog = VariabiliStaticheWallpaper.channelName + ".txt";
+        VariabiliStaticheWallpaper.getInstance().setNomeFileDiLog(nomeFileLog);
     }
 
     public void ApreToast(Context context, String messaggio) {
-        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
-            if (context != null && VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
-                VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            if (context != null && VariabiliStaticheWallpaper.getInstance().getMainActivity() != null) {
+                VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(context,
-                                VariabiliStaticheServizio.channelName + ": " + messaggio,
+                                VariabiliStaticheWallpaper.channelName + ": " + messaggio,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -200,10 +200,10 @@ public class Utility {
     }
 
     public void VisualizzaMessaggio(String Messaggio) {
-        VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+        VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
             public void run() {
-                AlertDialog alertDialog = new AlertDialog.Builder(VariabiliStaticheServizio.getInstance().getMainActivity()).create();
-                alertDialog.setTitle("Messaggio " + VariabiliStaticheServizio.channelName);
+                AlertDialog alertDialog = new AlertDialog.Builder(VariabiliStaticheWallpaper.getInstance().getMainActivity()).create();
+                alertDialog.setTitle("Messaggio " + VariabiliStaticheWallpaper.channelName);
                 alertDialog.setMessage(Messaggio);
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
@@ -228,7 +228,7 @@ public class Utility {
             // OggettiAVideo.getInstance().getImgRest().setVisibility(LinearLayout.VISIBLE);
         } else {
             try {
-                progressDialog = new ProgressDialog(VariabiliStaticheServizio.getInstance().getMainActivity());
+                progressDialog = new ProgressDialog(VariabiliStaticheWallpaper.getInstance().getMainActivity());
                 progressDialog.setMessage("Attendere Prego...\n\n" + tOperazione);
                 progressDialog.setCancelable(false);
                 progressDialog.setCanceledOnTouchOutside(false);
@@ -256,12 +256,12 @@ public class Utility {
     }
 
     public void Vibra(Context context, long Quanto) {
-        ScriveLog(context, NomeMaschera,"Vibrazione: " + VariabiliStaticheServizio.getInstance().isVibrazione());
+        ScriveLog(context, NomeMaschera,"Vibrazione: " + VariabiliStaticheWallpaper.getInstance().isVibrazione());
 
-        if (VariabiliStaticheServizio.getInstance().isVibrazione()) {
+        if (VariabiliStaticheWallpaper.getInstance().isVibrazione()) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    Vibrator v = (Vibrator) VariabiliStaticheServizio.getInstance().getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    Vibrator v = (Vibrator) VariabiliStaticheWallpaper.getInstance().getContext().getSystemService(Context.VIBRATOR_SERVICE);
                     v.vibrate(VibrationEffect.createOneShot(Quanto, VibrationEffect.DEFAULT_AMPLITUDE));
 
                     ScriveLog(context, NomeMaschera,"Vibrazione: " + Quanto);
@@ -273,12 +273,12 @@ public class Utility {
     public void VisualizzaErrore(Context context, String Errore) {
         // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
         ScriveLog(context, NomeMaschera, "Visualizzo messaggio di errore. Schermo acceso: " +
-                VariabiliStaticheServizio.getInstance().isScreenOn());
-        if (VariabiliStaticheServizio.getInstance().isScreenOn()) {
-            VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                VariabiliStaticheWallpaper.getInstance().isScreenOn());
+        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    AlertDialog alertDialog = new AlertDialog.Builder(VariabiliStaticheServizio.getInstance().getMainActivity()).create();
-                    alertDialog.setTitle("Messaggio " + VariabiliStaticheServizio.channelName);
+                    AlertDialog alertDialog = new AlertDialog.Builder(VariabiliStaticheWallpaper.getInstance().getMainActivity()).create();
+                    alertDialog.setTitle("Messaggio " + VariabiliStaticheWallpaper.channelName);
                     alertDialog.setMessage(Errore);
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
@@ -306,15 +306,15 @@ public class Utility {
 
     public void CambiaImmagine(Context context) {
         ChangeWallpaper c = new ChangeWallpaper(context);
-        if (!VariabiliStaticheServizio.getInstance().isOffline()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             boolean fatto = c.setWallpaper(context, null);
             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
         } else {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
             int numeroRandom = Utility.getInstance().GeneraNumeroRandom(
-                    VariabiliStaticheServizio.getInstance().getListaImmagini().size() - 1);
+                    VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
             if (numeroRandom > -1) {
-                boolean fatto = c.setWallpaper(context, VariabiliStaticheServizio.getInstance().getListaImmagini().get(numeroRandom));
+                boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
             } else {
                 Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");
@@ -325,26 +325,26 @@ public class Utility {
     private int attese = 0;
 
     public void Attesa(boolean Come) {
-        if (!VariabiliStaticheServizio.getInstance().isScreenOn()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             attese = 0;
-            VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+            VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
                 }
             });
             return;
         }
 
         if (attese == 0) {
-            if (VariabiliStaticheServizio.getInstance().getLayAttesa() != null &&
-                    VariabiliStaticheServizio.getInstance().getMainActivity() != null) {
-                VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+            if (VariabiliStaticheWallpaper.getInstance().getLayAttesa() != null &&
+                    VariabiliStaticheWallpaper.getInstance().getMainActivity() != null) {
+                VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         if (Come) {
                             attese++;
-                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.VISIBLE);
+                            VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.VISIBLE);
                         } else {
-                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
                         }
                     }
                 });
@@ -355,9 +355,9 @@ public class Utility {
             } else {
                 attese--;
                 if (attese <= 0) {
-                    VariabiliStaticheServizio.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+                    VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
                         public void run() {
-                            VariabiliStaticheServizio.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
                         }
                     });
                 }

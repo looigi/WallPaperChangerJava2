@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheServizio;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -115,7 +115,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
 
     @Override
     protected String doInBackground(String... strings) {
-        if (!VariabiliStaticheServizio.getInstance().isRetePresente()) {
+        if (!VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Operazione di rete " + tOperazione + " non possibile: Rete non presente");
             Errore = true;
             result = "ERROR: Rete non presente";
@@ -258,7 +258,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                 messErrore = Ritorno;
                 Errore = true;
 
-                if (VariabiliStaticheServizio.getInstance().isRetePresente()) {
+                if (VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
                     // OggettiAVideo.getInstance().getImgIndietro().setVisibility(LinearLayout.VISIBLE);
                     // OggettiAVideo.getInstance().getImgAvanti().setVisibility(LinearLayout.VISIBLE);
                     // OggettiAVideo.getInstance().getImgPlay().setVisibility(LinearLayout.VISIBLE);
