@@ -19,11 +19,9 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDe
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-
-import java.io.File;
 
 public class ServizioInterno extends Service {
     private static final String NomeMaschera = "SERVIZIOINTERNO";
@@ -86,7 +84,7 @@ public class ServizioInterno extends Service {
 
             // PARTENZA MASCHERE
             Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
-            db_dati db = new db_dati(context);
+            db_dati_wallpaper db = new db_dati_wallpaper(context);
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
             db.CreazioneTabelle();
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");

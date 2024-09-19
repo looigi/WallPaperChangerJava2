@@ -31,7 +31,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDete
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
@@ -73,7 +73,7 @@ public class InizializzaMaschera {
 
         if (!VariabiliStaticheWallpaper.getInstance().isePartito()) {
             Utility.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
-            db_dati db = new db_dati(context);
+            db_dati_wallpaper db = new db_dati_wallpaper(context);
             boolean letteImmagini = db.CaricaImmaginiInLocale();
 
             if (!letteImmagini) {
@@ -179,7 +179,7 @@ public class InizializzaMaschera {
                         isD = !isD;
                         VariabiliStaticheWallpaper.getInstance().setDetector(isD);
 
-                        db_dati db = new db_dati(context);
+                        db_dati_wallpaper db = new db_dati_wallpaper(context);
                         db.ScriveImpostazioni();
 
                         // GestioneNotifiche.getInstance().AggiornaNotifica();
@@ -231,7 +231,7 @@ public class InizializzaMaschera {
                 }
                 GestioneNotifiche.getInstance().AggiornaNotifica();
 
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -257,7 +257,7 @@ public class InizializzaMaschera {
                 }
                 GestioneNotifiche.getInstance().AggiornaNotifica();
 
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -268,7 +268,7 @@ public class InizializzaMaschera {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setHome(isChecked);
 
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -279,7 +279,7 @@ public class InizializzaMaschera {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setLock(isChecked);
 
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -489,7 +489,7 @@ public class InizializzaMaschera {
                 }
 
                 VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -501,7 +501,7 @@ public class InizializzaMaschera {
                 VariabiliStaticheWallpaper.getInstance().setBlur(isChecked);
 
                 VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
 
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
@@ -517,7 +517,7 @@ public class InizializzaMaschera {
                 VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(isChecked);
 
                 VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
 
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
@@ -588,7 +588,7 @@ public class InizializzaMaschera {
                 }
 
                 VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
@@ -645,13 +645,15 @@ public class InizializzaMaschera {
                     switchScriveTesto.setChecked(true);
                 }
 
-                db_dati db = new db_dati(context);
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
         });
 
         imgCambiaSubito.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Utility.getInstance().Attesa(true);
+
                 // imgCaricamento.setVisibility(LinearLayout.VISIBLE);
                 btnMenoMinuti.setEnabled(false);
                 btnPiuMinuti.setEnabled(false);
@@ -706,6 +708,8 @@ public class InizializzaMaschera {
                         // imgCaricamento.setVisibility(LinearLayout.GONE);
                         switchHome.setEnabled(true);
                         switchLock.setEnabled(true);
+
+                        Utility.getInstance().Attesa(false);
                     }
                 }, 500);
             }

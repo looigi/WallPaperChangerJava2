@@ -117,7 +117,7 @@ public class GestioneNotificheDetector {
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
             Intent apre = new Intent(ctx, NotificationActionServiceDetector.class);
-            apre.putExtra("DO", "apre");
+            apre.putExtra("DO", "Apre");
             PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.layBarraNotifica, pApre);
@@ -132,13 +132,13 @@ public class GestioneNotificheDetector {
             video.putExtra("DO", "Video");
             PendingIntent pVideo = PendingIntent.getService(ctx, 52, video,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgPhoto, pVideo);
+            view.setOnClickPendingIntent(R.id.imgVideo, pVideo);
 
             Intent audio = new Intent(ctx, NotificationActionServiceDetector.class);
             audio.putExtra("DO", "Audio");
             PendingIntent pAudio = PendingIntent.getService(ctx, 53, audio,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgPhoto, pAudio);
+            view.setOnClickPendingIntent(R.id.imgAudio, pAudio);
         }
     }
 
@@ -200,7 +200,7 @@ public class GestioneNotificheDetector {
 
             if (action != null) {
                 switch (action) {
-                    case "apre":
+                    case "Apre":
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -234,16 +234,16 @@ public class GestioneNotificheDetector {
                         break;
 
                     case "Foto":
-                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+                        // VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        VariabiliStaticheDetector.getInstance().getContext(),
                                         AndroidCameraApi.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
                             }
                         }, 1000);
 
@@ -254,16 +254,16 @@ public class GestioneNotificheDetector {
                         break;
 
                     case "Video":
-                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+                        // VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        VariabiliStaticheDetector.getInstance().getContext(),
                                         Video.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
                             }
                         }, 1000);
 
@@ -274,16 +274,16 @@ public class GestioneNotificheDetector {
                         break;
 
                     case "Audio":
-                        VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
+                        // VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
 
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheStart.getInstance().getContext(),
+                                        VariabiliStaticheDetector.getInstance().getContext(),
                                         Audio.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
                             }
                         }, 1000);
 

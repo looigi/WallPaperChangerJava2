@@ -1,32 +1,16 @@
 package com.looigi.wallpaperchanger2.classiStandard;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.UriPermission;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 
 import androidx.annotation.Nullable;
 
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ConverteNomeUri;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
-import com.looigi.wallpaperchanger2.utilities.Utility;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
 
 public class RichiestaPathImmaginiLocali extends Activity {
     private static String NomeMaschera = "RICHIESTAPATH";
@@ -65,7 +49,7 @@ public class RichiestaPathImmaginiLocali extends Activity {
             VariabiliStaticheWallpaper.getInstance().getTxtPath().setText(path);
             VariabiliStaticheWallpaper.getInstance().setPercorsoIMMAGINI(path);
 
-            db_dati db = new db_dati(this);
+            db_dati_wallpaper db = new db_dati_wallpaper(this);
             db.ScriveImpostazioni();
 
             ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this);

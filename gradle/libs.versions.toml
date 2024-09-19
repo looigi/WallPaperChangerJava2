@@ -12,6 +12,10 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 acra = "4.11.1"
 androidMail = "1.6.7"
+photoview = "2.0.0"
+playServicesMaps = "19.0.0"
+playServicesMapsVersion = "17.0.0"
+secretsGradlePlugin = "2.0.1"
 
 [libraries]
 acra-core = { module = "ch.acra:acra-core", version.ref = "acraVersion" }
@@ -29,6 +33,10 @@ activity = { group = "androidx.activity", name = "activity", version = "1.9.2" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 acra = { group = "ch.acra", name = "acra", version = "4.11.1" }
 android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
+photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
+secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

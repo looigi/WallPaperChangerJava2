@@ -1,14 +1,12 @@
 package com.looigi.wallpaperchanger2.classiAttivitaDetector;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -18,22 +16,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers.Video;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.TestMemory;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 
 import java.io.File;
@@ -639,23 +632,24 @@ public class InizializzaMascheraDetector {
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
+                // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
+                // String Cartella = UtilityDetector.getInstance().PrendePath(context);
                 String Cartella = UtilityDetector.getInstance().PrendePath(context);
                 String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
                 try {
-                    File file = new File(Origine + Cartella + NomeImmagine);
+                    File file = new File(Cartella + NomeImmagine);
                     boolean deleted = file.delete();
                 } catch (Exception ignored) {
 
                 }
 
-                try {
-                    File file = new File(Origine + Cartella + NomeImmagine + ".PV3");
+                /* try {
+                    File file = new File(Cartella + NomeImmagine + ".PV3");
                     boolean deleted = file.delete();
                 } catch (Exception ignored) {
 
-                }
+                } */
 
                 int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
                 UtilityDetector.getInstance().CaricaMultimedia(context);
@@ -664,6 +658,8 @@ public class InizializzaMascheraDetector {
                 VariabiliStaticheDetector.getInstance().numMultimedia = appo;
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
                 UtilityDetector.getInstance().VisualizzaPOPUP("File multimediale eliminato", false, 0);
+
+                UtilityDetector.getInstance().ContaFiles(context);
             }
         });
 

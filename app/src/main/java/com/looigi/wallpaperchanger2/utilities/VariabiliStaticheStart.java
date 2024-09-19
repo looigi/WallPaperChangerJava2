@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.gps.StrutturaGps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ public class VariabiliStaticheStart {
     private Context context;
     private Activity mainActivity;
     private boolean GiaPartito = false;
-
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
             // mainActivity.moveTaskToBack(true);

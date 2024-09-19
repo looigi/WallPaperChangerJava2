@@ -1,10 +1,7 @@
 package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.content.Context;
-import android.content.UriPermission;
 import android.os.AsyncTask;
-
-import androidx.documentfile.provider.DocumentFile;
 
 import com.looigi.wallpaperchanger2.utilities.Utility;
 
@@ -16,7 +13,7 @@ import java.util.List;
 public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, String> {
     private static final String NomeMaschera = "SCANDISK";
     private List<StrutturaImmagine> imms = new ArrayList<>();
-    private db_dati db;
+    private db_dati_wallpaper db;
     private Context context;
 
     public ScannaDiscoPerImmaginiLocali(Context context) {
@@ -30,7 +27,7 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
         super.onPreExecute();
 
         // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
-        db = new db_dati(context);
+        db = new db_dati_wallpaper(context);
         db.EliminaImmaginiInLocale();
 
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Lettura immagini presenti su disco su path: " +

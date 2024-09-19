@@ -889,9 +889,13 @@ public class UtilityDetector {
         String Path = UtilityDetector.getInstance().PrendePath(context);
         File p = new File(Path);
         File[] list = p.listFiles();
-        String Messaggio = "Detector. J: " + list.length;
+        if (list != null) {
+            String Messaggio = "Detector. J: " + list.length;
 
-        GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
+            GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
+        } else {
+            GestioneNotificheDetector.getInstance().AggiornaNotifica("Detector");
+        }
     }
 
     private void CreaCartella(String Percorso) {

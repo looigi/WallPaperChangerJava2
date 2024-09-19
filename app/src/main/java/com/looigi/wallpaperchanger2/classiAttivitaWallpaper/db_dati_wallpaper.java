@@ -13,14 +13,14 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class db_dati {
+public class db_dati_wallpaper {
     private static final String NomeMaschera = "DBDATI";
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
     private boolean Controlla = true;
 
-    public db_dati(Context context) {
+    public db_dati_wallpaper(Context context) {
         Utility.getInstance().ScriveLog(context, NomeMaschera, "Instanzio db dati");
 
         this.context = context;

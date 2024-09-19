@@ -1,10 +1,7 @@
 package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,7 +15,6 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
 
-import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
@@ -301,7 +297,7 @@ public class ChangeWallpaper {
 			});
 
 			// Notifica.getInstance().AggiornaNotifica();
-			db_dati db = new db_dati(context);
+			db_dati_wallpaper db = new db_dati_wallpaper(context);
 			db.ScriveImpostazioni();
 
 			// VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);

@@ -54,12 +54,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:weightSum="5"
         android:orientation="horizontal"
+        android:weightSum="3"
         android:layout_alignParentBottom="true"
         android:layout_height="45dp">
 
-        <LinearLayout
+        <!-- <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -73,14 +73,7 @@
                 android:text="Detector"
                 android:textColor="#AAAA00"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+        </LinearLayout> -->
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -120,7 +113,7 @@
                     android:layout_height="40dp"
                     android:src="@drawable/audio" />
             </LinearLayout>
-        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

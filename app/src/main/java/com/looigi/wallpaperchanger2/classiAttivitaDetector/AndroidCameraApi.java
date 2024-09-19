@@ -14,6 +14,7 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.gps.StrutturaGps;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -400,6 +403,8 @@ public class AndroidCameraApi extends Activity {
                     } finally {
                         if (null != output) {
                             output.close();
+
+                            AggiungeTag(file);
                         }
                     }
 
@@ -477,6 +482,39 @@ public class AndroidCameraApi extends Activity {
                     NomeMaschera,
                     "Camera Access Exception: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
+    }
+
+    private void AggiungeTag(File imageFile) throws IOException {
+        ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+
+        if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
+            StrutturaGps s = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
+
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, Double.toString(s.getLat()));
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, Double.toString(s.getLon()));
+            exif.setAttribute(ExifInterface.TAG_GPS_ALTITUDE, Double.toString(s.getAltitude()));
+            exif.setAttribute(ExifInterface.TAG_GPS_SPEED, Double.toString(s.getSpeed()));
+
+            if (s.getLat() > 0) {
+                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+            } else {
+                exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+            }
+
+            if (s.getLon() > 0) {
+                exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+            } else {
+                exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+            }
+        }
+
+        exif.setAttribute(ExifInterface.TAG_ARTIST, "WallPaperChanger 2");
+        exif.setAttribute(ExifInterface.TAG_MAKE, "Looigi");
+        if (VariabiliStaticheDetector.getInstance().getModelloTelefono() != null) {
+            exif.setAttribute(ExifInterface.TAG_MODEL, VariabiliStaticheDetector.getInstance().getModelloTelefono());
+        }
+
+        exif.saveAttributes();
     }
 
     protected void createCameraPreview() {

@@ -318,7 +318,7 @@ public class Video extends Activity implements Callback {
 
 	    recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
 	    recorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
-	    recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+	    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 	    recorder.setVideoSize(X, Y);
 	    // recorder.setVideoFrameRate(30);
 		CamcorderProfile cpHigh = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);

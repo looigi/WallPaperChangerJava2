@@ -3,34 +3,25 @@ package com.looigi.wallpaperchanger2;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.DocumentsContract;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.AndroidCameraApi;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ConverteNomeUri;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
+import com.looigi.wallpaperchanger2.gps.GestioneGPS;
+import com.looigi.wallpaperchanger2.gps.Mappa;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +49,9 @@ public class MainStart  extends Activity {
             Utility.getInstance().generaPath(this);
 
             Permessi pp = new Permessi();
-            VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
+            }
 
             if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
                 StartActivities();
@@ -124,6 +117,27 @@ public class MainStart  extends Activity {
                 }, 1000);
             }
         });
+
+        ImageView imgM = findViewById(R.id.imgStartMappa);
+        imgM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                act.finish();
+                VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, Mappa.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 1000);
+            }
+        });
+
+        GestioneGPS g = new GestioneGPS();
+        g.AbilitaGPS(context);
     }
 
     @Override

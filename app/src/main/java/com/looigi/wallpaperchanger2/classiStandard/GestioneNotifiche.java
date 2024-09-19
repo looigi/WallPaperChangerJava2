@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -20,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.gps.Mappa;
 import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -82,6 +84,13 @@ public class GestioneNotifiche {
                     contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
                 }
             }
+
+            if (VariabiliStaticheWallpaper.getInstance().isDetector()) {
+                contentView.setViewVisibility(R.id.imgMap, LinearLayout.VISIBLE);
+            } else {
+                contentView.setViewVisibility(R.id.imgMap, LinearLayout.GONE);
+            }
+
             int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
             int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
             String prossimo = "Prossimo cambio: " +
@@ -159,9 +168,15 @@ public class GestioneNotifiche {
 
             Intent titoloApp = new Intent(ctx, NotificationActionService.class);
             titoloApp.putExtra("DO", "cambioWallpaper");
-            PendingIntent pAvanti = PendingIntent.getService(ctx, 51, titoloApp,
+            PendingIntent pAvanti = PendingIntent.getService(ctx, 71, titoloApp,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgProssima, pAvanti);
+
+            Intent mappa = new Intent(ctx, NotificationActionService.class);
+            mappa.putExtra("DO", "mappa");
+            PendingIntent pMappa = PendingIntent.getService(ctx, 72, mappa,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgMap, pMappa);
 
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
@@ -279,6 +294,21 @@ public class GestioneNotifiche {
                                 Utility.getInstance().CambiaImmagine(context);
 
                                 GestioneNotifiche.getInstance().AggiornaNotifica();
+                            }
+                        }, 100);
+                        break;
+
+                    case "mappa":
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(context, Mappa.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(i);
                             }
                         }, 100);
                         break;

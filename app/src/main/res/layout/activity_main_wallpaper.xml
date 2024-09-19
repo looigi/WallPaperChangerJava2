@@ -284,7 +284,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="5"
                             android:textColor="@color/colorPrimaryDark"
-                            android:text="Refresh"
+                            android:text="Refresh Immagine"
                             android:layout_height="wrap_content" />
 
                         <LinearLayout

@@ -62,6 +62,16 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:paddingEnd="2dp"
+            android:id="@+id/imgMap"
+            android:layout_marginEnd="55dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/map" />
+
+        <ImageView
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="2dp"
             android:id="@+id/imgProssima"
             android:layout_width="50dp"
             android:layout_height="50dp"
