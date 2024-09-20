@@ -23,6 +23,51 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
+    private int oraGpsAccensione = 16;
+    private int minutiGpsAccensione = 5;
+    private int oraGpsSpengimento = 7;
+    private int minutiGpsSpengimento = 30;
+    private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
+
+    public int getMinutiDiAttesaGpsPrimaDelloSpengimento() {
+        return minutiDiAttesaGpsPrimaDelloSpengimento;
+    }
+
+    public void setMinutiDiAttesaGpsPrimaDelloSpengimento(int minutiDiAttesaGpsPrimaDelloSpengimento) {
+        this.minutiDiAttesaGpsPrimaDelloSpengimento = minutiDiAttesaGpsPrimaDelloSpengimento;
+    }
+
+    public int getMinutiGpsSpengimento() {
+        return minutiGpsSpengimento;
+    }
+
+    public void setMinutiGpsSpengimento(int minutiGpsSpengimento) {
+        this.minutiGpsSpengimento = minutiGpsSpengimento;
+    }
+
+    public int getOraGpsSpengimento() {
+        return oraGpsSpengimento;
+    }
+
+    public void setOraGpsSpengimento(int oraGpsSpengimento) {
+        this.oraGpsSpengimento = oraGpsSpengimento;
+    }
+
+    public int getOraGpsAccensione() {
+        return oraGpsAccensione;
+    }
+
+    public void setOraGpsAccensione(int oraGpsAccensione) {
+        this.oraGpsAccensione = oraGpsAccensione;
+    }
+
+    public int getMinutiGpsAccensione() {
+        return minutiGpsAccensione;
+    }
+
+    public void setMinutiGpsAccensione(int minutiGpsAccensione) {
+        this.minutiGpsAccensione = minutiGpsAccensione;
+    }
 
     public boolean isGpsAttivo() {
         return gpsAttivo;

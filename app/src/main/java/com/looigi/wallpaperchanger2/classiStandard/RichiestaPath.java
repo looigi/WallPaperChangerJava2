@@ -111,6 +111,9 @@ public class RichiestaPath extends Activity {
             // handle failure to get persistable permission though NOT DOCUMENTED
             UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Sicurezza sulla cartella: " +
                     _uri + " -> " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+
+            UtilityWallpaper.getInstance().ApreToast(this,"Sicurezza sulla cartella: " +
+                    _uri + " -> " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
 
         /* String dest = Environment.getExternalStorageDirectory().getAbsolutePath() + "/LooigiSoft/" +

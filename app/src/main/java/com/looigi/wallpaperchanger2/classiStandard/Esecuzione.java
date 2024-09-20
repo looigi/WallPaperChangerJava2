@@ -7,6 +7,8 @@ import android.os.HandlerThread;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
+import java.util.Calendar;
+
 import static androidx.core.content.ContextCompat.registerReceiver;
 
 public class Esecuzione {
