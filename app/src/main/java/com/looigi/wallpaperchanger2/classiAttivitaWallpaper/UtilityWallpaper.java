@@ -1,11 +1,13 @@
-package com.looigi.wallpaperchanger2.utilities;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.webkit.MimeTypeMap;
@@ -13,12 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -34,44 +38,43 @@ import java.util.zip.ZipOutputStream;
 
 import static androidx.core.app.ActivityCompat.finishAffinity;
 
-public class Utility {
+public class UtilityWallpaper {
     private static final String NomeMaschera = "UTILITY";
     private ProgressDialog progressDialog;
 
-    private static Utility instance = null;
+    private static UtilityWallpaper instance = null;
 
-    private Utility() {
+    private UtilityWallpaper() {
     }
 
-    public static Utility getInstance() {
+    public static UtilityWallpaper getInstance() {
         if (instance == null) {
-            instance = new Utility();
+            instance = new UtilityWallpaper();
         }
 
         return instance;
     }
     
     public void ScriveLog(Context context, String Maschera, String Log) {
-        if (VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog().isEmpty() ||
-                VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog().isEmpty()) {
+        /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {
             generaPath(context);
-        }
+        } */
 
         if (context != null) {
-            if (VariabiliStaticheWallpaper.getInstance().getLog() == null) {
+            if (VariabiliStaticheStart.getInstance().getLog() == null) {
                 LogInterno l = new LogInterno(context, false);
-                VariabiliStaticheWallpaper.getInstance().setLog(l);
+                VariabiliStaticheStart.getInstance().setLog(l);
             }
 
-            if (!Utility.getInstance().EsisteFile(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+            /* if (!UtilityWallpaper.getInstance().EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheWallpaper.getInstance().getLog().PulisceFileDiLog();
+                VariabiliStaticheStart.getInstance().getLog().PulisceFileDiLog();
             }
 
-            if (EsisteFile(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
-                    VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheWallpaper.getInstance().getLog().ScriveLog(Maschera + ": " + Log);
-            }
+            if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog())) { */
+                VariabiliStaticheStart.getInstance().getLog().ScriveLog("WallPaper", Maschera,  Log);
+            // }
         } else {
 
         }
@@ -116,37 +119,6 @@ public class Utility {
         return mimeType;
     }
 
-    public void zip(String[] files, String zipFile) throws IOException {
-        int BUFFER_SIZE = 1024;
-
-        BufferedInputStream origin = null;
-        ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
-        try {
-            byte data[] = new byte[BUFFER_SIZE];
-
-            for (int i = 0; i < files.length; i++) {
-                if (EsisteFile(files[i])) {
-                    FileInputStream fi = new FileInputStream(files[i]);
-                    origin = new BufferedInputStream(fi, BUFFER_SIZE);
-                    try {
-                        ZipEntry entry = new ZipEntry(files[i].substring(files[i].lastIndexOf("/") + 1));
-                        out.putNextEntry(entry);
-                        int count;
-                        while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
-                            out.write(data, 0, count);
-                        }
-                    } finally {
-                        origin.close();
-                    }
-                }
-            }
-        }
-        finally {
-            out.close();
-        }
-    }
-
-
     public void ChiudeApplicazione(Context context) {
         VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
 
@@ -154,27 +126,27 @@ public class Utility {
 
         GestioneNotificheDetector.getInstance().RimuoviNotifica();
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
         if (VariabiliStaticheWallpaper.getInstance().getServizioForeground() != null) {
             context.stopService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
             VariabiliStaticheWallpaper.getInstance().setServizioForeground(null);
         }
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
-        Utility.getInstance().ApreToast(context, "Uscita");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
+        UtilityWallpaper.getInstance().ApreToast(context, "Uscita");
 
         finishAffinity(VariabiliStaticheWallpaper.getInstance().getMainActivity());
 
         System.exit(0);
     }
 
-    public void generaPath(Context context) {
+    /* public void generaPath(Context context) {
         String pathLog = context.getFilesDir() + "/Log";
-        VariabiliStaticheWallpaper.getInstance().setPercorsoDIRLog(pathLog);
+        VariabiliStaticheStart.getInstance().setPercorsoDIRLog(pathLog);
         String nomeFileLog = VariabiliStaticheWallpaper.channelName + ".txt";
         VariabiliStaticheWallpaper.getInstance().setNomeFileDiLog(nomeFileLog);
-    }
+    } */
 
     public void ApreToast(Context context, String messaggio) {
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
@@ -308,16 +280,16 @@ public class Utility {
         ChangeWallpaper c = new ChangeWallpaper(context);
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             boolean fatto = c.setWallpaper(context, null);
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
         } else {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
-            int numeroRandom = Utility.getInstance().GeneraNumeroRandom(
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
+            int numeroRandom = UtilityWallpaper.getInstance().GeneraNumeroRandom(
                     VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
             if (numeroRandom > -1) {
                 boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
             } else {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");
             }
         }
     }
@@ -363,5 +335,131 @@ public class Utility {
                 }
             }
         }
+    }
+
+    public void EliminaLogs(Context context) {
+        String path = context.getFilesDir() + "/Log/WallPaper";
+        File directory = new File(path);
+        File[] filesW = directory.listFiles();
+
+        path = context.getFilesDir() + "/Log/Detector";
+        directory = new File(path);
+        File[] filesD = directory.listFiles();
+
+        path = context.getFilesDir() + "/Log/GPS";
+        directory = new File(path);
+        File[] filesG = directory.listFiles();
+
+        int quanti = filesW.length + filesD.length + filesG.length;
+
+        for (File f : filesW) {
+            f.delete();
+        }
+
+        for (File f : filesD) {
+            f.delete();
+        }
+
+        for (File f : filesG) {
+            f.delete();
+        }
+
+        ApreToast(context, "File di logs eliminati: " + quanti);
+    }
+
+    public void CondividiLogs(Context context) {
+        String path1 = context.getFilesDir() + "/Log/WallPaper";
+        // File directory = new File(path);
+        // File[] filesW = directory.listFiles();
+
+        String path2 = context.getFilesDir() + "/Log/Detector";
+        // directory = new File(path);
+        // File[] filesD = directory.listFiles();
+
+        // int quanti = filesW.length + filesD.length;
+
+        String path3 = context.getFilesDir() + "/DB";
+
+        String path4 = context.getFilesDir() + "/Log/GPS";
+
+        String pathDest = context.getFilesDir() + "/Appoggio";
+        String destFile = pathDest + "/logs.zip";
+        CreaCartelle(pathDest);
+        if (EsisteFile(destFile)) {
+            EliminaFileUnico(destFile);
+        }
+
+        int quanti = 0;
+
+        String[] App = { "WallPaper", "Detector", "DB", "GPS" };
+        String[] paths = { path1, path2, path3, path4 };
+        try {
+            quanti += zip(App , paths, destFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        File f = new File(destFile);
+        Uri uri = FileProvider.getUriForFile(context,
+                context.getApplicationContext().getPackageName() + ".provider",
+                f);
+
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT,"logs.zip");
+        i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+        i.putExtra(Intent.EXTRA_STREAM,uri);
+        i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+        context.startActivity(Intent.createChooser(i,"Share file di log e db"));
+
+        ApreToast(context, "File di logs condivisi: " + quanti);
+    }
+
+    public int zip(String[] Applicazione, String[] Path, String zipFile) throws IOException {
+        int BUFFER_SIZE = 1024;
+
+        BufferedInputStream origin = null;
+        ZipOutputStream out = new ZipOutputStream(
+                new BufferedOutputStream(
+                new FileOutputStream(zipFile)));
+
+        int quanti = 0;
+
+        try {
+            byte data[] = new byte[BUFFER_SIZE];
+            int q = 0;
+
+            for (String p : Path) {
+                File directory = new File(p);
+                File[] files = directory.listFiles();
+
+                for (File f : files) {
+                    String nome = Applicazione[q] + "/" + f.getName();
+
+                    FileInputStream fi = new FileInputStream(f);
+                    origin = new BufferedInputStream(fi, BUFFER_SIZE);
+                    try {
+                        ZipEntry entry = new ZipEntry(nome);
+                        out.putNextEntry(entry);
+                        int count;
+                        while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
+                            out.write(data, 0, count);
+                        }
+                    } finally {
+                        origin.close();
+                        quanti = files.length;
+                    }
+                }
+                q++;
+            }
+        }
+        finally {
+            out.close();
+        }
+
+        return quanti;
     }
 }

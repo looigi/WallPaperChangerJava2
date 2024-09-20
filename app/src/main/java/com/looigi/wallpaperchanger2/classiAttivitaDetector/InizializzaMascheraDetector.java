@@ -3,7 +3,8 @@ package com.looigi.wallpaperchanger2.classiAttivitaDetector;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -27,7 +28,8 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers.Video;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.TestMemory;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class InizializzaMascheraDetector {
     public void inizializzaMaschera(Context context, Activity act) {
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"onStartCommand Service");
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "On Create. Creazione Tabelle");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create. Creazione Tabelle");
 
         /* Notification notifica = GestioneNotificheDetector.getInstance().StartNotifica(context);
         if (notifica != null) {
@@ -60,7 +62,7 @@ public class InizializzaMascheraDetector {
                     Toast.LENGTH_SHORT).show();
         } */
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Instanziamento camera");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Instanziamento camera");
 
         // Camera2 c = new Camera2();
         // VariabiliStaticheDetector.getInstance().setCamera(c);
@@ -70,7 +72,7 @@ public class InizializzaMascheraDetector {
         bEliminaLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String PercorsoDIR = VariabiliStaticheDetector.getInstance().getPercorsoDIRLog();
+                String PercorsoDIR = VariabiliStaticheStart.getInstance().getPercorsoDIRLog();
                 String nomeFile = VariabiliStaticheDetector.getInstance().getNomeFileDiLog();
                 UtilityDetector.getInstance().EliminaFile(PercorsoDIR + "/" + nomeFile);
 
@@ -84,6 +86,7 @@ public class InizializzaMascheraDetector {
         Switch sLog = (Switch) act.findViewById(R.id.sLog2); */
         Switch sVibrazione = (Switch) act.findViewById(R.id.sVibrazione);
         Switch sToast = (Switch) act.findViewById(R.id.sToast);
+        Switch sGpsPreciso = (Switch) act.findViewById(R.id.sGpsPreciso);
 
         // View fgmMappa = (View) act.findViewById(R.id.map);
 
@@ -138,6 +141,24 @@ public class InizializzaMascheraDetector {
             }
         });
 
+        sGpsPreciso.setChecked(VariabiliStaticheDetector.getInstance().isGpsPreciso());
+        sGpsPreciso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean gps = VariabiliStaticheDetector.getInstance().isGpsPreciso();
+                gps = !gps;
+                VariabiliStaticheDetector.getInstance().setGpsPreciso(gps);
+
+                db_dati_detector db = new db_dati_detector(context);
+                db.ScriveImpostazioni(context);
+
+                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
+                }
+            }
+        });
+
         sToast.setChecked(VariabiliStaticheDetector.getInstance().isVisualizzaToast());
         sToast.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +169,15 @@ public class InizializzaMascheraDetector {
                 i.ImpostaVisualizzaToast(context, sToast.isChecked());
             }
         });
+
+        ImageView imgGps = (ImageView) act.findViewById(R.id.imgGPS);
+        Bitmap bmGps;
+        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+        } else {
+            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+        }
+        imgGps.setImageBitmap(bmGps);
 
         ImageView imgItaliano = (ImageView) act.findViewById(R.id.imgItaliano);
         imgItaliano.setOnClickListener(new View.OnClickListener() {

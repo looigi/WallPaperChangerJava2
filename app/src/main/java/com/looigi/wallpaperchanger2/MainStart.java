@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
@@ -19,8 +20,9 @@ import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.gps.GestioneGPS;
 import com.looigi.wallpaperchanger2.gps.Mappa;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class MainStart  extends Activity {
             VariabiliStaticheStart.getInstance().setContext(this);
             VariabiliStaticheStart.getInstance().setMainActivity(this);
 
-            Utility.getInstance().generaPath(this);
+            // UtilityWallpaper.getInstance().generaPath(this);
 
             Permessi pp = new Permessi();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -58,11 +60,20 @@ public class MainStart  extends Activity {
             }
         }
 
-        impostaSchermata();
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                impostaSchermata();
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 5000);
     }
 
     private void impostaSchermata() {
         ImageView imgD = findViewById(R.id.imgStartDetector);
+        if (!VariabiliStaticheStart.getInstance().isDetector()) {
+            imgD.setVisibility(LinearLayout.GONE);
+        }
         imgD.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 act.finish();
@@ -119,6 +130,9 @@ public class MainStart  extends Activity {
         });
 
         ImageView imgM = findViewById(R.id.imgStartMappa);
+        if (!VariabiliStaticheStart.getInstance().isDetector()) {
+            imgM.setVisibility(LinearLayout.GONE);
+        }
         imgM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 act.finish();
@@ -136,8 +150,13 @@ public class MainStart  extends Activity {
             }
         });
 
-        GestioneGPS g = new GestioneGPS();
-        g.AbilitaGPS(context);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+
+            GestioneGPS g = new GestioneGPS();
+            VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
+            g.AbilitaGPS(context);
+        }
     }
 
     @Override
@@ -225,7 +244,7 @@ public class MainStart  extends Activity {
     protected void onStop() {
         super.onStop();
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
     }
 
     @Override

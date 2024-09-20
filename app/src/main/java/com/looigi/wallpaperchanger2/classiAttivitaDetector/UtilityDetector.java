@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPath;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -63,26 +64,25 @@ public class UtilityDetector {
     }
 
     public void ScriveLog(Context context, String Maschera, String Log) {
-        if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
-                VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {
+        /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {
             generaPath(context);
-        }
+        } */
 
         if (context != null) {
-            if (VariabiliStaticheDetector.getInstance().getLog() == null) {
+            if (VariabiliStaticheStart.getInstance().getLog() == null) {
                 LogInterno l = new LogInterno(context, true);
-                VariabiliStaticheDetector.getInstance().setLog(l);
+                VariabiliStaticheStart.getInstance().setLog(l);
             }
 
-            if (!UtilityDetector.getInstance().EsisteFile(VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
+            /* if (!UtilityDetector.getInstance().EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheDetector.getInstance().getLog().PulisceFileDiLog();
+                VariabiliStaticheStart.getInstance().getLog().PulisceFileDiLog();
             }
 
-            if (EsisteFile(VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
-                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
-                VariabiliStaticheDetector.getInstance().getLog().ScriveLog(Maschera + ": " + Log);
-            }
+            if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
+                VariabiliStaticheStart.getInstance().getLog().ScriveLog("Detector", Maschera,  Log);
+            // }
         } else {
 
         }
@@ -314,14 +314,14 @@ public class UtilityDetector {
         return Ritorno;
     }
 
-    public void generaPath(Context context) {
+    /* public void generaPath(Context context) {
         if (context != null) {
             String pathLog = PrendePathLog(context);
-            VariabiliStaticheDetector.getInstance().setPercorsoDIRLog(pathLog);
+            VariabiliStaticheStart.getInstance().setPercorsoDIRLog(pathLog);
             String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
             VariabiliStaticheDetector.getInstance().setNomeFileDiLog(nomeFileLog);
         }
-    }
+    } */
 
     public void EliminaFile(String NomeFile) {
         try {
@@ -889,8 +889,14 @@ public class UtilityDetector {
         String Path = UtilityDetector.getInstance().PrendePath(context);
         File p = new File(Path);
         File[] list = p.listFiles();
+        int q = 0;
+        for (File f : list) {
+            if (!f.getName().toUpperCase().contains("NOMEDIA")) {
+                q++;
+            }
+        }
         if (list != null) {
-            String Messaggio = "Detector. J: " + list.length;
+            String Messaggio = "Detector. J: " + q;
 
             GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
         } else {
@@ -907,11 +913,11 @@ public class UtilityDetector {
         }
     }
 
-    public String PrendePathLog(Context context) {
+    /* public String PrendePathLog(Context context) {
         String Path = context.getFilesDir() + "/Log/";
 
         return Path;
-    }
+    } */
 
     public String PrendePath(Context context) {
         String Path = context.getFilesDir() + "/DataBase/";

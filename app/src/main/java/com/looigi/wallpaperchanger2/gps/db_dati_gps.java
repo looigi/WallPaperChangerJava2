@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati_gps {
+    private static final String NomeMaschera = "DBDATI";
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
@@ -26,8 +29,9 @@ public class db_dati_gps {
         File f = new File(PathDB);
         try {
             f.mkdirs();
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Errore costruttore: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
 
         myDB = ApreDB();
@@ -41,6 +45,11 @@ public class db_dati_gps {
             db = context.openOrCreateDatabase(
                     PathDB + nomeDB, MODE_PRIVATE, null);
         } catch (Exception e) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Errore nell'apertura del db: " +
+                            UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
 
         return  db;
@@ -57,10 +66,12 @@ public class db_dati_gps {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "posizioni "
                         + " (data VARCHAR, ora VARCHAR, latitudine VARCHAR, longitudine VARCHAR, speed VARCHAR, " +
-                        "altitude VARCHAR, accuracy VARCHAR);";
+                        "altitude VARCHAR, accuracy VARCHAR, distanza VARCHAR);";
                 myDB.execSQL(sql);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Errore creazione tabelle: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
     }
 
@@ -70,7 +81,7 @@ public class db_dati_gps {
                 String sql = "";
                 sql = "INSERT INTO"
                         + " posizioni"
-                        + " (data, ora, latitudine, longitudine, speed, altitude, accuracy)"
+                        + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, distanza)"
                         + " VALUES ("
                         + "'" + s.getData() + "', "
                         + "'" + s.getOra() + "', "
@@ -78,10 +89,15 @@ public class db_dati_gps {
                         + "'" + s.getLon() + "', "
                         + "'" + s.getSpeed() + "', "
                         + "'" + s.getAltitude() + "', "
-                        + "'" + s.getAccuracy() + "' "
+                        + "'" + s.getAccuracy() + "', "
+                        + "'" + s.getDistanza() + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore aggiunta posizione: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e) +
+                        " Riprova: " + Riprova);
+
                 PulisceDati();
                 CreazioneTabelle();
                 if (!Riprova) {
@@ -95,6 +111,22 @@ public class db_dati_gps {
         }
 
         return true;
+    }
+
+    public void EliminaPosizioni(String Data) {
+        if (myDB == null) {
+            ApreDB();
+        }
+
+        if (myDB != null) {
+            try {
+                String sql = "DELETE FROM posizioni Where data = '" + Data + "'";
+                myDB.execSQL(sql);
+            } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore eliminazione dati: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+            }
+        }
     }
 
     public List<StrutturaGps> RitornaPosizioni(String Data) {
@@ -119,6 +151,7 @@ public class db_dati_gps {
                         s.setSpeed(Float.parseFloat(c.getString(4)));
                         s.setAltitude(Float.parseFloat(c.getString(5)));
                         s.setAccuracy(Float.parseFloat(c.getString(6)));
+                        s.setDistanza(Float.parseFloat(c.getString(7)));
 
                         lista.add(s);
                     } while (c.moveToNext());
@@ -126,6 +159,10 @@ public class db_dati_gps {
                 }
                 c.close();
             } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore ritorno dati: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e) +
+                        " Riprova: " + Riprova);
+
                 PulisceDati();
                 CreazioneTabelle();
 
@@ -166,11 +203,16 @@ public class db_dati_gps {
                     s.setSpeed(Float.parseFloat(c.getString(4)));
                     s.setAltitude(Float.parseFloat(c.getString(5)));
                     s.setAccuracy(Float.parseFloat(c.getString(6)));
+                    s.setDistanza(Float.parseFloat(c.getString(7)));
 
                     lista = s;
                 }
                 c.close();
             } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore ritorno ultima posizione: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e) +
+                                " Riprova: " + Riprova);
+
                 PulisceDati();
                 CreazioneTabelle();
 

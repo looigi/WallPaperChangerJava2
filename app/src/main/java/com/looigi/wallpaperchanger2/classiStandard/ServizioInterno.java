@@ -20,8 +20,9 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class ServizioInterno extends Service {
     private static final String NomeMaschera = "SERVIZIOINTERNO";
@@ -40,14 +41,14 @@ public class ServizioInterno extends Service {
 
         // Utility.getInstance().stopService(context);
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "onConfigurationChanged: " + newConfig.uiMode);
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "onConfigurationChanged: " + newConfig.uiMode);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Start Command");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Start Command");
 
         return START_STICKY;
     }
@@ -57,7 +58,7 @@ public class ServizioInterno extends Service {
     public void onCreate() {
         context = this;
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "On Create");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create");
 
         mScreenReceiver = new ScreenReceiver();
         IntentFilter filter = new IntentFilter();
@@ -76,20 +77,20 @@ public class ServizioInterno extends Service {
         // VariabiliStatiche.getInstance().setNotifica(GestioneNotifiche.getInstance().StartNotifica(this));
         if (notifica != null) {
             startForeground(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notifica);
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
             GestioneNotifiche.getInstance().AggiornaNotifica();
 
             Esecuzione e = new Esecuzione(context);
             e.startServizio1();
 
             // PARTENZA MASCHERE
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
             db_dati_wallpaper db = new db_dati_wallpaper(context);
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
             db.CreazioneTabelle();
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
             boolean letto = db.LeggeImpostazioni();
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
             VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(letto);
 
             db_dati_detector dbD = new db_dati_detector(context);
@@ -103,7 +104,7 @@ public class ServizioInterno extends Service {
             boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context);
             VariabiliStaticheDetector.getInstance().setLetteImpostazioni(lettoD);
 
-            if (VariabiliStaticheWallpaper.getInstance().isDetector() &&
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
                     VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
                 Intent iD = new Intent(context, MainActivityDetector.class);
@@ -113,18 +114,20 @@ public class ServizioInterno extends Service {
                 Handler handlerTimer = new Handler();
                 Runnable rTimer = new Runnable() {
                     public void run() {
-                        InizializzaMascheraDetector id = new InizializzaMascheraDetector();
-                        id.inizializzaMaschera(
-                                context,
-                                VariabiliStaticheDetector.getInstance().getMainActivity());
+                        if (VariabiliStaticheDetector.getInstance().getMainActivity() != null) {
+                            InizializzaMascheraDetector id = new InizializzaMascheraDetector();
+                            id.inizializzaMaschera(
+                                    context,
+                                    VariabiliStaticheDetector.getInstance().getMainActivity());
+                        }
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 1000);
             }
 
-            Utility.getInstance().ApreToast(context, "Wallpaper Partito");
+            UtilityWallpaper.getInstance().ApreToast(context, "Wallpaper Partito");
 
-            if (VariabiliStaticheWallpaper.getInstance().isDetector() &&
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
                     VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
                 Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
@@ -133,12 +136,12 @@ public class ServizioInterno extends Service {
 
                     UtilityDetector.getInstance().ContaFiles(context);
 
-                    Utility.getInstance().ApreToast(context, "Detector Partito");
+                    UtilityWallpaper.getInstance().ApreToast(context, "Detector Partito");
                 }
             }
             // PARTENZA MASCHERE
         } else {
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");
             Toast.makeText(this, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla", Toast.LENGTH_SHORT).show();
         }
     }
@@ -158,7 +161,7 @@ public class ServizioInterno extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
 
         if (wl != null) {
             wl.release();

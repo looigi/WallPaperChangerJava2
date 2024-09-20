@@ -16,7 +16,6 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
 
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
-import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.io.File;
@@ -32,14 +31,14 @@ public class ChangeWallpaper {
 	private int SchermoY;
 
 	public ChangeWallpaper(Context context) {
-		Utility.getInstance().Attesa(true);
+		UtilityWallpaper.getInstance().Attesa(true);
 
 		if (VariabiliStaticheWallpaper.getInstance().getMainActivity() != null) {
 			PrendeDimensioniSchermo(context);
 		} else {
 			SchermoX = -1;
 			SchermoY = -1;
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
 
 			/* if (context != null) {
 				Intent mStartActivity = new Intent(context, MainWallpaper.class);
@@ -55,7 +54,7 @@ public class ChangeWallpaper {
 			} */
 		}
 
-		Utility.getInstance().Attesa(false);
+		UtilityWallpaper.getInstance().Attesa(false);
 	}
 
 	private void PrendeDimensioniSchermo(Context context) {
@@ -65,23 +64,23 @@ public class ChangeWallpaper {
 		SchermoX = metrics.widthPixels; //  * 70 / 100;
 		SchermoY = metrics.heightPixels;
 
-		Utility.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine instanziato. Dimensioni schermo: " +
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine instanziato. Dimensioni schermo: " +
 				SchermoX + "x" + SchermoY);
 	}
 
 	public Boolean setWallpaper(Context context, StrutturaImmagine src) {
-		Utility.getInstance().Attesa(true);
+		UtilityWallpaper.getInstance().Attesa(true);
 
 		if (SchermoX == -1) {
 			PrendeDimensioniSchermo(context);
 		}
 
 		if (SchermoX == -1) {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
 			return false;
 		} else {
 			if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
 
 				ChiamateWS c = new ChiamateWS(context);
 				c.TornaProssimaImmagine();
@@ -90,35 +89,35 @@ public class ChangeWallpaper {
 			}
 		}
 
-		Utility.getInstance().Attesa(false);
+		UtilityWallpaper.getInstance().Attesa(false);
 
 		return true;
 	}
 
 	public Boolean setWallpaperLocale(Context context, StrutturaImmagine src) {
 		boolean Ritorno = true;
-		Utility.getInstance().Attesa(true);
+		UtilityWallpaper.getInstance().Attesa(true);
 
 		if (SchermoX == -1) {
 			PrendeDimensioniSchermo(context);
 		}
 
 		if (SchermoX == -1) {
-			Utility.getInstance().Attesa(false);
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper locale: dimensioni schermo non impostate");
+			UtilityWallpaper.getInstance().Attesa(false);
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper locale: dimensioni schermo non impostate");
 			Ritorno = false;
 		} else {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
 
 			Bitmap setWallToDevice = null;
 			setWallToDevice = PrendeImmagineReale(context, src);
 
 			if (setWallToDevice != null) {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
 
 				WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 				try {
-					Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Impostazione dimensioni " + setWallToDevice.getWidth() + "x" + setWallToDevice.getHeight());
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Impostazione dimensioni " + setWallToDevice.getWidth() + "x" + setWallToDevice.getHeight());
 
 					// HOME SCREEN
 					if (VariabiliStaticheWallpaper.getInstance().isHome()) {
@@ -146,12 +145,12 @@ public class ChangeWallpaper {
 					// 	wallpaperManager.suggestDesiredDimensions(VariabiliGlobali.getInstance().getDimeWallWidthOriginale(), VariabiliGlobali.getInstance().getDimeWallHeightOriginale());
 					// }
 
-					Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Settata bitmap.");
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Settata bitmap.");
 				} catch (IOException e) {
 					// Utility.getInstance().ScriveLog("Errore: " + u.PrendeErroreDaException(e));
 					// e.printStackTrace();
 
-					Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Errore " + Utility.getInstance().PrendeErroreDaException(e));
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Errore " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 
 					// Toast.makeText(VariabiliGlobali.getInstance().getContext(),
 					// 		u.PrendeErroreDaException(e),
@@ -163,7 +162,7 @@ public class ChangeWallpaper {
 				Ritorno = false;
 			}
 		}
-		Utility.getInstance().Attesa(false);
+		UtilityWallpaper.getInstance().Attesa(false);
 
 		return Ritorno;
 	}
@@ -195,20 +194,20 @@ public class ChangeWallpaper {
 			return null;
 		}
 
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Prende immagine sistemata");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prende immagine sistemata");
 
 		// Bitmap myBitmap = null;
 
 		boolean ok = true;
 		String path = si.getPathImmagine();
-		if (!Utility.getInstance().EsisteFile(path)) {
+		if (!UtilityWallpaper.getInstance().EsisteFile(path)) {
 			path = context.getFilesDir() + "/Download/Appoggio.jpg";
-			if (!Utility.getInstance().EsisteFile(path)) {
+			if (!UtilityWallpaper.getInstance().EsisteFile(path)) {
 				ok = false;
 			}
 		}
 		if (ok) {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. File esistente: " + si.getPathImmagine());
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. File esistente: " + si.getPathImmagine());
 
 			Bitmap myBitmap = null; // = BitmapFactory.decodeFile(si.getPathImmagine());
 			try {
@@ -216,7 +215,7 @@ public class ChangeWallpaper {
 
 				myBitmap = BitmapFactory.decodeFile(path);
 			} catch (Exception e) {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Errore preview");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Errore preview");
 			}
 
 			myBitmap = CheckRotazione(myBitmap, path);
@@ -241,14 +240,14 @@ public class ChangeWallpaper {
 								// float Larghezza=(((float) (VariabiliGlobali.getInstance().getSchermoX()))/2)-(myBitmap.getWidth()/2);
 								// comboImage.drawBitmap(myBitmap, Larghezza, Altezza, null);
 								if (!VariabiliStaticheWallpaper.getInstance().isEspansa()) {
-									Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
+									UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
 
 									myBitmap = MetteBordoAImmagine(context, myBitmap, si);
 								} else {
 									myBitmap = CentraImmagineTuttoSchermo(context, myBitmap);
 								}
 							} catch (Exception e) {
-								Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine. Errore: " + Utility.getInstance().PrendeErroreDaException(e));
+								UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine. Errore: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 								myBitmap = null;
 							}
 						// } else {
@@ -266,10 +265,10 @@ public class ChangeWallpaper {
 				// }
 				// SalvaImmagine(myBitmap);
 			} else {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Bitmap nulla");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Bitmap nulla");
 			}
 
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Aggiorno notifica");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Aggiorno notifica");
 
 			VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 			// Notifica.getInstance().setContext(VariabiliGlobali.getInstance().getContext());
@@ -304,14 +303,14 @@ public class ChangeWallpaper {
 
 			return myBitmap;
 		} else {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Svuoto bitmap. File inesistente.");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Svuoto bitmap. File inesistente.");
 
 			return null;
 		}
 	}
 	
 	private Bitmap getPreview(Context context, String uri) {
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Get preview");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Get preview");
 
 		try {
 			File image = new File(uri);
@@ -327,11 +326,11 @@ public class ChangeWallpaper {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inSampleSize = originalSize/(SchermoY+SchermoX);
 
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Get preview fatto");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Get preview fatto");
 
 			return BitmapFactory.decodeFile(image.getPath(), opts);
 		} catch (Exception ignored) {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Prende Preview errore ");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prende Preview errore ");
 			return null;
 		}
 	}
@@ -339,7 +338,7 @@ public class ChangeWallpaper {
 	private Bitmap ConverteDimensioni(Context context, Bitmap b) {
 		if (b!=null) {
 			try {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 1");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 1");
 
 				// Bitmap bb=b;
 				int width = b.getWidth();
@@ -365,23 +364,23 @@ public class ChangeWallpaper {
 				} */
 				Bitmap bb = Bitmap.createScaledBitmap(b, (int) p1, (int) p2, true);
 
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 2");
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 2");
 
 				return bb;
 			} catch (Exception ignored) {
-				Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni errore: " + Utility.getInstance().PrendeErroreDaException(ignored));
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni errore: " + UtilityWallpaper.getInstance().PrendeErroreDaException(ignored));
 
 				return null;
 			}
 		} else {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni. Ritorno nullo");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni. Ritorno nullo");
 
 			return null;
 		}
 	}
 
 	private Bitmap CentraImmagineTuttoSchermo(Context context, Bitmap bPassata) {
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo");
 
 		// 900 x 641
 		// 1440 x 2890
@@ -433,15 +432,15 @@ public class ChangeWallpaper {
 
 			return croppedBitmap;
 		} catch (Exception e) {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo. Errore: " +
-					Utility.getInstance().PrendeErroreDaException(e));
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo. Errore: " +
+					UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 
 			return null;
 		}
 	}
 
 	private Bitmap MetteBordoAImmagine(Context context, Bitmap myBitmapPassata, StrutturaImmagine si) {
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo a immagine");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo a immagine");
 
 		Bitmap myBitmap = ConverteDimensioni(context, myBitmapPassata);
 
@@ -451,7 +450,7 @@ public class ChangeWallpaper {
 		float posX = ((float)SchermoX / 2) - (dimeImmX / 2);
 		float posY = ((float)SchermoY / 2) - (dimeImmY / 2);
 
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 1");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 1");
 
 		// ImmagineX = SchermoX-ImmagineX;
 		// ImmagineX = SchermoX;
@@ -463,7 +462,7 @@ public class ChangeWallpaper {
 		Bitmap myOutputBitmap = myBitmap.copy(myBitmap.getConfig(), true);
 		Bitmap immagineDiSfondo = null;
 		try {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 2");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 2");
 
 			RenderScript renderScript = RenderScript.create(context);
 			Allocation blurInput = Allocation.createFromBitmap(renderScript, myBitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
@@ -485,20 +484,20 @@ public class ChangeWallpaper {
 				e.printStackTrace();
 			} */
 		} catch (Exception e) {
-			Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo: " + Utility.getInstance().PrendeErroreDaException(e));
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 			int a = 0;
 		}
 
 		// int offset = 50;
 		// int divisore = 2;
 
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 2");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 2");
 
 		// Bitmap Immaginona = Bitmap.createBitmap((SharedObjects.getInstance().getSchermoX()) + offset * 2,
 // 					SharedObjects.getInstance().getSchermoY() + offset * 2, Bitmap.Config.ARGB_8888);
 		Bitmap Immaginona = Bitmap.createBitmap(SchermoX, SchermoY, Bitmap.Config.ARGB_8888);
 
-		Utility.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 3");
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 3");
 
 		Canvas canvas1 = new Canvas(Immaginona);
 		/* if (posY > 0) {

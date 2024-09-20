@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.utilities.Utility;
 import com.looigi.wallpaperchanger2.webservice.DownloadImage;
 
 import java.io.File;
@@ -97,7 +96,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
 
                     ChangeWallpaper c = new ChangeWallpaper(context);
                     if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        Utility.getInstance().Attesa(true);
+                        UtilityWallpaper.getInstance().Attesa(true);
                         new DownloadImage(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
                     } else {
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());

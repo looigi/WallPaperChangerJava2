@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import static androidx.core.content.ContextCompat.registerReceiver;
@@ -28,7 +28,7 @@ public class Esecuzione {
         int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
         int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Start contatore di tipo 1. " +
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Start contatore di tipo 1. " +
                 "Secondi di attesa: " + VariabiliStaticheWallpaper.secondiDiAttesaContatore +
                 "Tempo Timer: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa() +
                 "Quanti Giri: " + quantiGiri);
@@ -85,10 +85,10 @@ public class Esecuzione {
                 int errori = VariabiliStaticheWallpaper.getInstance().getErrori() + 1;
                 VariabiliStaticheWallpaper.getInstance().setErrori(errori);
 
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Secondi " + Long.toString(diff / 1000L) + "/" +
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Secondi " + Long.toString(diff / 1000L) + "/" +
                         Integer.toString(VariabiliStaticheWallpaper.secondiDiAttesaContatore));
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
             }
             tmsPrecedente = tmsAttuale;
         }
@@ -112,7 +112,7 @@ public class Esecuzione {
 
             if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                Utility.getInstance().CambiaImmagine(context);
+                UtilityWallpaper.getInstance().CambiaImmagine(context);
             }
 
             if (!VariabiliStaticheWallpaper.getInstance().isScreenOn() ||

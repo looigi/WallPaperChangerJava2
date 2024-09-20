@@ -3,15 +3,12 @@ package com.looigi.wallpaperchanger2;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.view.KeyEvent;
 
 import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 public class MainWallpaper extends Activity {
@@ -30,9 +27,9 @@ public class MainWallpaper extends Activity {
 
     public void startService() {
         if (!isMyServiceRunning(ServizioInterno.class)) {
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "AVVIO");
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "AVVIO");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
             InizializzaMaschera i = new InizializzaMaschera();
             i.inizializzaMaschera(this, this);
@@ -48,9 +45,9 @@ public class MainWallpaper extends Activity {
 
             VariabiliStaticheWallpaper.getInstance().ChiudeActivity(false);
         } else {
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
-            Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA NOTIFICA");
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
             // Operazioni che si devono eseguire in caso di ripartenza col servizio attivo
             InizializzaMaschera i = new InizializzaMaschera();
@@ -82,7 +79,7 @@ public class MainWallpaper extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera,
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera,
                 "Tasto premuto: " + Integer.toString(keyCode));
 
         switch(keyCode) {
@@ -99,7 +96,7 @@ public class MainWallpaper extends Activity {
     protected void onStop() {
         super.onStop();
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "OnStop");
     }
 
     /*
@@ -135,11 +132,11 @@ public class MainWallpaper extends Activity {
     protected void onRestart() {
         super.onRestart();
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "OnRestart");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "OnRestart");
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA ICONA");
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "RIAPERTURA DA ICONA");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
         VariabiliStaticheWallpaper.getInstance().setMainActivity(this);
         VariabiliStaticheWallpaper.getInstance().setContext(this);
@@ -163,14 +160,14 @@ public class MainWallpaper extends Activity {
     protected void onPause() {
         super.onPause();
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "OnPause");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "OnPause");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        Utility.getInstance().ScriveLog(this, NomeMaschera, "OnDestroy");
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "OnDestroy");
 
         // Utility.getInstance().ChiudeApplicazione(this);
     }

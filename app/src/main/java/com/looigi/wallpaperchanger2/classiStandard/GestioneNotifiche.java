@@ -22,16 +22,17 @@ import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.gps.Mappa;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotifiche {
+    private static final String nomeMaschera = "GESTIONENOTIFICHE";
     private NotificationManager manager;
     private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;
     private Context context;
-    private static final String nomeMaschera = "GESTIONENOTIFICHE";
     // private Notification notifica;
 
     private static final GestioneNotifiche ourInstance = new GestioneNotifiche();
@@ -85,10 +86,19 @@ public class GestioneNotifiche {
                 }
             }
 
-            if (VariabiliStaticheWallpaper.getInstance().isDetector()) {
+            if (VariabiliStaticheStart.getInstance().isDetector()) {
                 contentView.setViewVisibility(R.id.imgMap, LinearLayout.VISIBLE);
+                contentView.setViewVisibility(R.id.imgSwitchGPS, LinearLayout.VISIBLE);
+                Bitmap bmGps;
+                if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+                } else {
+                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+                }
+                contentView.setImageViewBitmap(R.id.imgSwitchGPS, bmGps);
             } else {
                 contentView.setViewVisibility(R.id.imgMap, LinearLayout.GONE);
+                contentView.setViewVisibility(R.id.imgSwitchGPS, LinearLayout.GONE);
             }
 
             int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
@@ -133,8 +143,8 @@ public class GestioneNotifiche {
 
             return notifica;
         } catch (Exception e) {
-            Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
-                    Utility.getInstance().PrendeErroreDaException(e));
+            UtilityWallpaper.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
+                    UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 
             return null;
         }
@@ -178,6 +188,12 @@ public class GestioneNotifiche {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgMap, pMappa);
 
+            Intent switchgps = new Intent(ctx, NotificationActionService.class);
+            switchgps.putExtra("DO", "gps");
+            PendingIntent pSwitchGPS = PendingIntent.getService(ctx, 73, switchgps,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgSwitchGPS, pSwitchGPS);
+
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
         }
@@ -214,8 +230,8 @@ public class GestioneNotifiche {
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notification);
             } catch (Exception e) {
-                Utility.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
-                        Utility.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
+                        UtilityWallpaper.getInstance().PrendeErroreDaException(e));
             }
         }
     }
@@ -291,7 +307,7 @@ public class GestioneNotifiche {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Utility.getInstance().CambiaImmagine(context);
+                                UtilityWallpaper.getInstance().CambiaImmagine(context);
 
                                 GestioneNotifiche.getInstance().AggiornaNotifica();
                             }
@@ -311,6 +327,22 @@ public class GestioneNotifiche {
                                 context.startActivity(i);
                             }
                         }, 100);
+                        break;
+
+                    case "gps":
+                        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                            boolean gps = VariabiliStaticheGPS.getInstance().isGpsAttivo();
+                            gps = !gps;
+                            VariabiliStaticheGPS.getInstance().setGpsAttivo(gps);
+                            if (gps) {
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
+                            } else {
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
+                            }
+                            GestioneNotifiche.getInstance().AggiornaNotifica();
+                        } else {
+                            UtilityWallpaper.getInstance().ApreToast(this, "GPS Non attivo");
+                        }
                         break;
                 }
             }

@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
     private Activity act;
     private TextView txtMappa;
     private GoogleMap mappa;
+    private int vecchiDati = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                 }
             }
         });
+
         ImageView imgA = act.findViewById(R.id.imgAvantiMappa);
         imgA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -91,6 +94,17 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
                     DisegnaPath(mappa);
                 }
+            }
+        });
+
+        ImageView imgE = act.findViewById(R.id.imgMappaElimina);
+        imgE.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db_dati_gps db = new db_dati_gps(context);
+                db.EliminaPosizioni(dataOdierna);
+
+                UtilityWallpaper.getInstance().ApreToast(context,
+                        "Eliminati dati gps per la data " + dataOdierna);
             }
         });
 
@@ -170,9 +184,15 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         List<StrutturaGps> listaGPS = db.RitornaPosizioni(dataOdierna);
         txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
 
-        googleMap.clear();
+        if (listaGPS.isEmpty()) {
+            googleMap.clear();
+        }
 
-        if (!listaGPS.isEmpty()) {
+        if (!listaGPS.isEmpty() && vecchiDati != listaGPS.size()) {
+            googleMap.clear();
+
+            vecchiDati = listaGPS.size();
+
             float vecchiaSpeed = -1;
             List<StrutturaGps> lista = new ArrayList<>();
             LatLngBounds.Builder bc = new LatLngBounds.Builder();

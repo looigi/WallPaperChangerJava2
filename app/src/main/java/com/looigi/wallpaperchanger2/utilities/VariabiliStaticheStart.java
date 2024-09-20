@@ -32,8 +32,12 @@ public class VariabiliStaticheStart {
     }
 
     private Context context;
+    private LogInterno l;
     private Activity mainActivity;
     private boolean GiaPartito = false;
+    private String PercorsoDIRLog;
+    private boolean Detector;
+
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
             // mainActivity.moveTaskToBack(true);
@@ -41,6 +45,30 @@ public class VariabiliStaticheStart {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isDetector() {
+        return Detector;
+    }
+
+    public void setDetector(boolean detector) {
+        Detector = detector;
+    }
+
+    public String getPercorsoDIRLog() {
+        return PercorsoDIRLog;
+    }
+
+    public void setPercorsoDIRLog(String percorsoDIRLog) {
+        PercorsoDIRLog = percorsoDIRLog;
+    }
+
+    public LogInterno getLog() {
+        return l;
+    }
+
+    public void setLog(LogInterno l) {
+        this.l = l;
     }
 
     public boolean isGiaPartito() {

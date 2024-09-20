@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
@@ -184,7 +183,7 @@ public class Audio extends Activity  {
 		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
 
 		String Cartella = UtilityDetector.getInstance().PrendePath(context);
-		Utility.getInstance().CreaCartelle(Cartella);
+		UtilityWallpaper.getInstance().CreaCartelle(Cartella);
 		String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
 				"." + sEstensione;
 

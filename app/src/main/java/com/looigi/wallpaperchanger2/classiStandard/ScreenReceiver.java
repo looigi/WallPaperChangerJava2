@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 public class ScreenReceiver extends BroadcastReceiver {
@@ -58,6 +58,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 
         GestioneNotifiche.getInstance().AggiornaNotifica();
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo: " + screenOff);
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo: " + screenOff);
     }
 }

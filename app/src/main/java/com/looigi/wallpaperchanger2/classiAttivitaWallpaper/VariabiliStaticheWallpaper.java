@@ -31,19 +31,19 @@ public class VariabiliStaticheWallpaper {
     private Context context;
     private Activity mainActivity;
     private boolean ciSonoPermessi = false;
-    private LogInterno l;
+    // private LogInterno l;
     private int idNotifica = 111112;
     public static String channelName = "WallPaperChangerII";
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
     public static int NOTIFICATION_CHANNEL_ID = 2;
     public static int channelIdIntentOverlay = 152;
-    private String NomeFileDiLog = "";
+    // private String NomeFileDiLog = "";
     private Intent servizioForeground;
-    private String PercorsoDIRLog = "";
+    // private String PercorsoDIRLog = "";
     public static int secondiDiAttesaContatore = 10;
     private boolean staPartendo = true;
     private int errori = 0;
-    private boolean Detector = false;
+    // private boolean Detector = false;
     private boolean servizioAttivo = true;
 
     // INIZIO VARIABILI ATTIVITA'
@@ -136,13 +136,13 @@ public class VariabiliStaticheWallpaper {
         Vibrazione = vibrazione;
     }
 
-    public boolean isDetector() {
+    /* public boolean isDetector() {
         return Detector;
     }
 
     public void setDetector(boolean detector) {
         Detector = detector;
-    }
+    } */
 
     public int getErrori() {
         return errori;
@@ -438,7 +438,7 @@ public class VariabiliStaticheWallpaper {
 
     public void setSecondiDiAttesaContatore(long secondiDiAttesaContatore) {
         this.secondiDiAttesaContatore = secondiDiAttesaContatore;
-    } */
+    }
 
     public String getNomeFileDiLog() {
         return NomeFileDiLog;
@@ -455,6 +455,7 @@ public class VariabiliStaticheWallpaper {
     public void setPercorsoDIRLog(String percorsoDIRLog) {
         PercorsoDIRLog = percorsoDIRLog;
     }
+    */
 
     public Intent getServizioForeground() {
         return servizioForeground;
@@ -480,13 +481,13 @@ public class VariabiliStaticheWallpaper {
         this.idNotifica = idNotifica;
     }
 
-    public LogInterno getLog() {
+    /* public LogInterno getLog() {
         return l;
     }
 
     public void setLog(LogInterno l) {
         this.l = l;
-    }
+    } */
 
     public boolean isCiSonoPermessi() {
         return ciSonoPermessi;

@@ -52,7 +52,7 @@ public class db_dati_detector {
                         + " (FaiLog VARCHAR,  TipologiaScatto VARCHAR, Secondi VARCHAR, Fotocamera VARCHAR, " +
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
-                        "VisualizzaToast VARCHAR);";
+                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR);";
 
                 myDB.execSQL(sql);
             }
@@ -88,6 +88,7 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setDimensioniThumbs(Integer.parseInt(c.getString(11)));
                         VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(Integer.parseInt(c.getString(12)));
                         VariabiliStaticheDetector.getInstance().setVisualizzaToast(c.getString(13).equals("S"));
+                        VariabiliStaticheDetector.getInstance().setGpsPreciso(c.getString(14).equals("S"));
 
                         return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
@@ -135,6 +136,7 @@ public class db_dati_detector {
                     VariabiliStaticheDetector.getInstance().setDimensioniThumbs(70);
                     VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(50);
                     VariabiliStaticheDetector.getInstance().setVisualizzaToast(true);
+                    VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
 
                     Controlla = false;
                     ScriveImpostazioni(context);
@@ -188,7 +190,8 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().getLingua()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getDimensioniThumbs()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getDimensioniThumbsM()) + "', "
-                        + "'" + (VariabiliStaticheDetector.getInstance().isVisualizzaToast() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isVisualizzaToast() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {

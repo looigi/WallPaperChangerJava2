@@ -14,16 +14,26 @@ import android.provider.Settings;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class GestioneGPS {
+    private static final String NomeMaschera = "GESTIONEGPS";
     private LocationManager locationManager;
     private Context context;
     private boolean ultimoNull = false;
 
+    public void BloccaGPS() {
+        if (locationManager != null && locationListenerGPS != null) {
+            locationManager.removeUpdates(locationListenerGPS);
+        }
+    }
+
     public void AbilitaGPS(Context context) {
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita GPS");
+
         this.context = context;
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -33,9 +43,16 @@ public class GestioneGPS {
             return;
         }
 
+        String provider;
+        if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
+            provider = LocationManager.GPS_PROVIDER;
+        } else {
+            provider = LocationManager.NETWORK_PROVIDER;
+        }
+
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                2000,
+                provider,
+                5000,
                 10,
                 locationListenerGPS);
 
@@ -85,6 +102,8 @@ public class GestioneGPS {
 
             boolean ok = true;
 
+            float distanza = 0;
+
             if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
                 StrutturaGps vecchia = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
                 float[] results = new float[1];
@@ -94,10 +113,14 @@ public class GestioneGPS {
                         location.getLatitude(),
                         location.getLongitude(),
                         results);
+                distanza = results[0];
                 if (results[0] > 75) {
-                    ok = false;
+                    // ok = false;
                 }
             }
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
+                    location.getLatitude() + ", " + location.getLongitude());
 
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
@@ -112,6 +135,7 @@ public class GestioneGPS {
                     s.setAltitude(-1);
                     s.setSpeed(-1);
                     s.setAccuracy(-1);
+                    s.setDistanza(-1);
 
                     VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
                     ultimoNull = true;
@@ -134,6 +158,7 @@ public class GestioneGPS {
             s.setAltitude(altitude);
             s.setSpeed(speed);
             s.setAccuracy(accuracy);
+            s.setDistanza(distanza);
 
             VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 

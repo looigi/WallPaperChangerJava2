@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ public class db_dati_wallpaper {
     private boolean Controlla = true;
 
     public db_dati_wallpaper(Context context) {
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Instanzio db dati");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Instanzio db dati");
 
         this.context = context;
         // /data/user/0/com.looigi.wallpaperchanger2/files/LooigiSoft/wallpaperchanger2/DB/
         PathDB = context.getFilesDir() + "/DB/";
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Cartella: " + PathDB);
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cartella: " + PathDB);
 
         File f = new File(PathDB);
         try {
@@ -40,18 +40,18 @@ public class db_dati_wallpaper {
     }
 
     private SQLiteDatabase ApreDB() {
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Apro DB");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Apro DB");
 
         SQLiteDatabase db = null;
         try {
             String nomeDB = "dati_wallpaper.db";
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Nome DB: " + PathDB + nomeDB);
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Nome DB: " + PathDB + nomeDB);
 
             db = context.openOrCreateDatabase(
                     PathDB + nomeDB, MODE_PRIVATE, null);
         } catch (Exception e) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Nell'apertura del db: " +
-                    Utility.getInstance().PrendeErroreDaException(e));
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Nell'apertura del db: " +
+                    UtilityWallpaper.getInstance().PrendeErroreDaException(e));
             // Utility.getInstance().ApreToast(context, "Errore apertura DB: " +
             //         Utility.getInstance().PrendeErroreDaException(e));
         }
@@ -80,8 +80,8 @@ public class db_dati_wallpaper {
                 myDB.execSQL(sql);
             }
         } catch (Exception ignored) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella creazione delle tabelle: " +
-                    Utility.getInstance().PrendeErroreDaException(ignored));
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella creazione delle tabelle: " +
+                    UtilityWallpaper.getInstance().PrendeErroreDaException(ignored));
         }
     }
 
@@ -107,11 +107,11 @@ public class db_dati_wallpaper {
                         + ")";
                 myDB.execSQL(sql);
             } catch (Exception e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
-                        Utility.getInstance().PrendeErroreDaException(e));
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
+                        UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
                 PulisceDatiIL();
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
                 CreazioneTabelle();
 
                 return false;
@@ -145,11 +145,11 @@ public class db_dati_wallpaper {
                     return false;
                 }
             } catch (Exception e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
-                        Utility.getInstance().PrendeErroreDaException(e));
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
+                        UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
                 PulisceDatiIL();
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
                 CreazioneTabelle();
                 CaricaImmaginiInLocale();
 
@@ -164,7 +164,7 @@ public class db_dati_wallpaper {
 
     public Boolean ScriveImpostazioni() {
         if (Controlla && !VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
             return false;
         }
 
@@ -198,16 +198,16 @@ public class db_dati_wallpaper {
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isOnOff() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isHome() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isLock() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheWallpaper.getInstance().isDetector() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheStart.getInstance().isDetector() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isEspansa() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Su scrittura impostazioni: " +
-                        Utility.getInstance().PrendeErroreDaException(e));
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "Pulizia tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Su scrittura impostazioni: " +
+                        UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Pulizia tabelle");
                 PulisceDati();
-                Utility.getInstance().ScriveLog(context, NomeMaschera, "Creazione tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Creazione tabelle");
                 CreazioneTabelle();
                 // ScriveImpostazioni();
 
@@ -242,20 +242,20 @@ public class db_dati_wallpaper {
                     VariabiliStaticheWallpaper.getInstance().setOnOff(c.getString(8).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setHome(c.getString(9).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setLock(c.getString(10).equals("S"));
-                    VariabiliStaticheWallpaper.getInstance().setDetector(c.getString(11).equals("S"));
+                    VariabiliStaticheStart.getInstance().setDetector(c.getString(11).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setEspansa(c.getString(12).equals("S"));
 
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Percorso immagini: " + VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Offline: " + VariabiliStaticheWallpaper.getInstance().isOffline());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheWallpaper.getInstance().isBlur());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheWallpaper.getInstance().isResize());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheWallpaper.getInstance().isHome());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheWallpaper.getInstance().isLock());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheWallpaper.getInstance().isDetector());
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Percorso immagini: " + VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Offline: " + VariabiliStaticheWallpaper.getInstance().isOffline());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheWallpaper.getInstance().isBlur());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheWallpaper.getInstance().isResize());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambia Home: " + VariabiliStaticheWallpaper.getInstance().isHome());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambia Lock: " + VariabiliStaticheWallpaper.getInstance().isLock());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheStart.getInstance().isDetector());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
                 } else {
                     Controlla = false;
                     boolean scritti = ScriveImpostazioni();
@@ -264,10 +264,10 @@ public class db_dati_wallpaper {
                 }
                 c.close();
             } catch (Exception e) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella lettura delle impostazioni: " + Utility.getInstance().PrendeErroreDaException(e));
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella lettura delle impostazioni: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
                 PulisceDati();
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
                 CreazioneTabelle();
 
                 return LeggeImpostazioni();

@@ -10,6 +10,15 @@ public class StrutturaGps {
     private double Altitude;
     private float Speed;
     private float Accuracy;
+    private float distanza;
+
+    public float getDistanza() {
+        return distanza;
+    }
+
+    public void setDistanza(float distanza) {
+        this.distanza = distanza;
+    }
 
     public double getAltitude() {
         return Altitude;

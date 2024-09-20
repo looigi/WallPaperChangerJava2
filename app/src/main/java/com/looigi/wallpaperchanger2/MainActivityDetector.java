@@ -21,7 +21,7 @@ public class MainActivityDetector extends Activity {
         VariabiliStaticheDetector.getInstance().setMainActivity(this);
         VariabiliStaticheDetector.getInstance().setContext(this);
 
-        UtilityDetector.getInstance().generaPath(this);
+        // UtilityDetector.getInstance().generaPath(this);
 
         if (!VariabiliStaticheDetector.getInstance().isMascheraPartita()) {
             UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "\n----------------------------");
@@ -83,10 +83,10 @@ public class MainActivityDetector extends Activity {
         VariabiliStaticheDetector.getInstance().setMainActivity(this);
         VariabiliStaticheDetector.getInstance().setContext(this);
 
-        /* if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
+        if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();
             i.inizializzaMaschera(this, this);
-        } */
+        }
 
         /* if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
             Handler handlerTimer;

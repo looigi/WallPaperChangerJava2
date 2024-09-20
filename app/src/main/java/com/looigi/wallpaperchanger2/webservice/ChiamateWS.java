@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class ChiamateWS implements TaskDelegate {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
-        Utility.getInstance().Attesa(true);
+        UtilityWallpaper.getInstance().Attesa(true);
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -78,9 +78,9 @@ public class ChiamateWS implements TaskDelegate {
 
     @Override
     public void TaskCompletionResult(String result) {
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-        Utility.getInstance().Attesa(false);
+        UtilityWallpaper.getInstance().Attesa(false);
 
         switch (TipoOperazione) {
             case "TornaProssimaImmagine":
@@ -98,7 +98,7 @@ public class ChiamateWS implements TaskDelegate {
 
     private void fTornaImmagini(String result) {
         if (result.contains("ERROR:")) {
-            Utility.getInstance().VisualizzaErrore(context, result);
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             // ColtoEDiClasse.jpg;Sport/ColtoEDiClasse.jpg;130629;05/26/2015
             List<StrutturaImmagine> lista = new ArrayList<>();
@@ -125,7 +125,7 @@ public class ChiamateWS implements TaskDelegate {
 
     private void fTornaProssimaImmagine(String result) {
         if (result.contains("ERROR:")) {
-            Utility.getInstance().VisualizzaErrore(context, result);
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             // 2433;/var/www/html/CartelleCondivise/SfondiDir/Donne/MetalWomen/df89106251200cc0021db5ae3e32.jpg
             String[] c = result.split(";");

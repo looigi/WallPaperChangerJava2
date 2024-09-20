@@ -32,8 +32,9 @@ import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmag
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.io.File;
@@ -44,7 +45,7 @@ public class InizializzaMaschera {
     private Long controlloLongPress = null;
 
     public void inizializzaMaschera(Context context, Activity view) {
-        Utility.getInstance().Attesa(true);
+        UtilityWallpaper.getInstance().Attesa(true);
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
@@ -56,29 +57,29 @@ public class InizializzaMaschera {
     }
 
     private void inizializzaMaschera2(Context context, Activity view) {
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Inizializzo maschera");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Inizializzo maschera");
 
         VariabiliStaticheWallpaper.getInstance().setLayAttesa(view.findViewById(R.id.layAttesa));
-        Utility.getInstance().Attesa(false);
+        UtilityWallpaper.getInstance().Attesa(false);
 
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
         VariabiliStaticheWallpaper.getInstance().setTxtQuanteImmagini(txtQuante);
 
         if (!VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
-            Utility.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
+            UtilityWallpaper.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
         }
 
         ImpostaOggetti(context, view);
 
         if (!VariabiliStaticheWallpaper.getInstance().isePartito()) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
             db_dati_wallpaper db = new db_dati_wallpaper(context);
             boolean letteImmagini = db.CaricaImmaginiInLocale();
 
             if (!letteImmagini) {
                 // if (VariabiliGlobali.getInstance().isOffline()) {
-                Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagini in locale non rilevate... Scanno...");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini in locale non rilevate... Scanno...");
                 ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
                 bckLeggeImmaginiLocali.execute();
                 // }
@@ -86,16 +87,16 @@ public class InizializzaMaschera {
                 if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
                     int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
                     VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco: " + q);
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco: " + q);
                 } else {
-                    Utility.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco inutili: OnLine");
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco inutili: OnLine");
                 }
             }
         }
 
         VariabiliStaticheWallpaper.getInstance().setePartito(false);
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
 
         if (VariabiliStaticheWallpaper.getInstance().isStaPartendo() &&
             VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
@@ -118,9 +119,9 @@ public class InizializzaMaschera {
         TextView txtTempoAlCambio = (TextView) view.findViewById(R.id.txtTempoAlCambio);
         VariabiliStaticheWallpaper.getInstance().setTxtTempoAlCambio(txtTempoAlCambio);
         VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Minuti al cambio: " +
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Minuti al cambio: " +
                 VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Tempo timer: " +
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Tempo timer: " +
                 VariabiliStaticheWallpaper.secondiDiAttesaContatore);
         int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
         int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
@@ -134,7 +135,7 @@ public class InizializzaMaschera {
         }
         GestioneNotifiche.getInstance().AggiornaNotifica();
 
-        Utility.getInstance().ScriveLog(context, NomeMaschera,"Prossimo cambio: " +
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prossimo cambio: " +
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri);
 
@@ -158,7 +159,7 @@ public class InizializzaMaschera {
                     Runnable rTimer;
 
                     controlloLongPress = System.currentTimeMillis();
-                    Utility.getInstance().Vibra(context, 100);
+                    UtilityWallpaper.getInstance().Vibra(context, 100);
 
                     handlerTimer = new Handler(Looper.getMainLooper());
                     rTimer = new Runnable() {
@@ -175,9 +176,9 @@ public class InizializzaMaschera {
                     if (diff < 1950) {
                         controlloLongPress = null;
 
-                        boolean isD = VariabiliStaticheWallpaper.getInstance().isDetector();
+                        boolean isD = VariabiliStaticheStart.getInstance().isDetector();
                         isD = !isD;
-                        VariabiliStaticheWallpaper.getInstance().setDetector(isD);
+                        VariabiliStaticheStart.getInstance().setDetector(isD);
 
                         db_dati_wallpaper db = new db_dati_wallpaper(context);
                         db.ScriveImpostazioni();
@@ -311,7 +312,7 @@ public class InizializzaMaschera {
         ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
         imgUscita.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Utility.getInstance().ChiudeApplicazione(context);
+                UtilityWallpaper.getInstance().ChiudeApplicazione(context);
             }
         });
 
@@ -335,48 +336,35 @@ public class InizializzaMaschera {
         Button btnPulisceLog = (Button) view.findViewById(R.id.btnPulisceLog);
         btnPulisceLog.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
-               String path = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
-                       VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
-               if (Utility.getInstance().EsisteFile(path)) {
-                    Utility.getInstance().EliminaFileUnico(path);
-                    // Utility.getInstance().VisualizzaMessaggio("File di log eliminato");
-
-                   String pathLog = UtilityDetector.getInstance().PrendePathLog(context);
-                   String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
-                   if (Utility.getInstance().EsisteFile(pathLog + "/" + nomeFileLog)) {
-                       Utility.getInstance().EliminaFileUnico(pathLog + "/" + nomeFileLog);
-                   }
-                   // Toast.makeText(context, VariabiliStaticheServizio.channelName + ": File di log eliminato", Toast.LENGTH_SHORT).show();
-               }
-
-               Utility.getInstance().ApreToast(context, "File di log eliminato");
+               UtilityWallpaper.getInstance().EliminaLogs(context);
            }
        });
 
         Button btnInviaLog = (Button) view.findViewById(R.id.btnInviaLog);
         btnInviaLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String path1 = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
+                UtilityWallpaper.getInstance().CondividiLogs(context);
+                /* String path1 = VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                         VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
                 String pathLog = UtilityDetector.getInstance().PrendePathLog(context);
                 String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
                 String path2 = pathLog + "/" + nomeFileLog;
                 String pathDest = context.getFilesDir() + "/Appoggio";
                 String destFile = pathDest + "/logs.zip";
-                Utility.getInstance().CreaCartelle(pathDest);
-                if (Utility.getInstance().EsisteFile(destFile)) {
-                    Utility.getInstance().EliminaFileUnico(destFile);
+                UtilityWallpaper.getInstance().CreaCartelle(pathDest);
+                if (UtilityWallpaper.getInstance().EsisteFile(destFile)) {
+                    UtilityWallpaper.getInstance().EliminaFileUnico(destFile);
                 }
-                if (!Utility.getInstance().EsisteFile(path1)) {
-                    Utility.getInstance().ScriveLog(context, NomeMaschera, "Invio Log");
+                if (!UtilityWallpaper.getInstance().EsisteFile(path1)) {
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Invio Log");
                 }
-                if (!Utility.getInstance().EsisteFile(path2)) {
+                if (!UtilityWallpaper.getInstance().EsisteFile(path2)) {
                     UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Invio Log");
                 }
                 String[] Files = { path1, path2 };
                 try {
-                    Utility.getInstance().zip(Files, destFile);
-                    if (Utility.getInstance().EsisteFile(destFile)) {
+                    UtilityWallpaper.getInstance().zip(Files, destFile);
+                    if (UtilityWallpaper.getInstance().EsisteFile(destFile)) {
                         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                         StrictMode.setVmPolicy(builder.build());
 
@@ -390,12 +378,12 @@ public class InizializzaMaschera {
                         i.putExtra(Intent.EXTRA_SUBJECT,"logs.zip");
                         i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                         i.putExtra(Intent.EXTRA_STREAM,uri);
-                        i.setType(Utility.getInstance().GetMimeType(context, uri));
+                        i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
                         context.startActivity(Intent.createChooser(i,"Share file di log"));
                     }
                 } catch (IOException e) {
-                    Utility.getInstance().ApreToast(context, "Errore nell'invio dei files di log");
-                }
+                    UtilityWallpaper.getInstance().ApreToast(context, "Errore nell'invio dei files di log");
+                } */
             }
         });
 
@@ -613,11 +601,11 @@ public class InizializzaMaschera {
 
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Utility.getInstance().Attesa(true);
+                UtilityWallpaper.getInstance().Attesa(true);
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 c.setWallpaperLocale(context,
                         VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
-                Utility.getInstance().Attesa(false);
+                UtilityWallpaper.getInstance().Attesa(false);
             }
         });
 
@@ -652,7 +640,7 @@ public class InizializzaMaschera {
 
         imgCambiaSubito.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Utility.getInstance().Attesa(true);
+                UtilityWallpaper.getInstance().Attesa(true);
 
                 // imgCaricamento.setVisibility(LinearLayout.VISIBLE);
                 btnMenoMinuti.setEnabled(false);
@@ -677,18 +665,18 @@ public class InizializzaMaschera {
                         // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
                         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
                             // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
-                            Utility.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine Manuale---");
+                            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine Manuale---");
                             ChangeWallpaper c = new ChangeWallpaper(context);
                             if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                                 boolean fatto = c.setWallpaper(context, null);
-                                Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+                                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                             } else {
-                                int numeroRandom = Utility.getInstance().GeneraNumeroRandom(VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
+                                int numeroRandom = UtilityWallpaper.getInstance().GeneraNumeroRandom(VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
                                 if (numeroRandom > -1) {
                                     boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
-                                    Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+                                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
                                 } else {
-                                    Utility.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata manualmente: Caricamento immagini in corso---");
+                                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata manualmente: Caricamento immagini in corso---");
                                 }
                             }
                             // } else {
@@ -709,7 +697,7 @@ public class InizializzaMaschera {
                         switchHome.setEnabled(true);
                         switchLock.setEnabled(true);
 
-                        Utility.getInstance().Attesa(false);
+                        UtilityWallpaper.getInstance().Attesa(false);
                     }
                 }, 500);
             }

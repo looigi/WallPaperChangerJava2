@@ -29,13 +29,12 @@ import android.view.TextureView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.gps.StrutturaGps;
 import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
@@ -93,8 +92,12 @@ public class AndroidCameraApi extends Activity {
     }
 
     private void Attiva() {
-        // VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
-        // VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+        if (!UtilityDetector.getInstance().LeggeImpostazioni(this)) {
+            UtilityWallpaper.getInstance().ApreToast(this,
+                    "Impossibile leggere le impostazioni");
+
+            return;
+        }
 
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;
@@ -131,7 +134,7 @@ public class AndroidCameraApi extends Activity {
 
         AttesaCamera();
 
-        Utility.getInstance().ApreToast(context, "Start C");
+        UtilityWallpaper.getInstance().ApreToast(context, "Start C");
     }
 
     private void AttesaCamera() {
@@ -160,7 +163,7 @@ public class AndroidCameraApi extends Activity {
                                     context,
                                     NomeMaschera,
                                     "Attesa Camera. Esco per mancata attivazione");
-                            Utility.getInstance().ApreToast(context, "Object C not activated");
+                            UtilityWallpaper.getInstance().ApreToast(context, "Object C not activated");
 
                             // CAMERA NON ATTIVATA IN TEMPO
                             handlerTimer.removeCallbacks(this);
@@ -292,7 +295,7 @@ public class AndroidCameraApi extends Activity {
     protected void takePicture() {
         if (null == cameraDevice) {
             // Log.e(TAG, "cameraDevice is null");
-            Utility.getInstance().ApreToast(this, "Oggetto C nullo");
+            UtilityWallpaper.getInstance().ApreToast(this, "Oggetto C nullo");
             return;
         }
 
@@ -339,7 +342,7 @@ public class AndroidCameraApi extends Activity {
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
 
             String Cartella = UtilityDetector.getInstance().PrendePath(context);
-            Utility.getInstance().CreaCartelle(Cartella);
+            UtilityWallpaper.getInstance().CreaCartelle(Cartella);
             UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
 
             String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
@@ -569,7 +572,7 @@ public class AndroidCameraApi extends Activity {
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         // Log.e(TAG, "is camera open");
         try {
-            cameraId = manager.getCameraIdList()[cameraFronteRetro];
+            cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;

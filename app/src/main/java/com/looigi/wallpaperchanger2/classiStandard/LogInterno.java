@@ -6,8 +6,9 @@ import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,33 +20,30 @@ import java.util.List;
 
 public class LogInterno {
 	private Context context;
-	private List<String> lista;
+	private List<StrutturaLog> lista;
 	private Handler handler;
 	private boolean Detector = false;
 
 	public LogInterno(Context c, boolean Detector) {
-		CreaCartella(VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog());
-
 		this.Detector = Detector;
 		context = c;
 		lista = new ArrayList<>();
 	}
 
-	public void PulisceFileDiLog() {
+	/*
+	public void PulisceFileDiLog(String Path, String NomeFile) {
 		String Datella = "";
 		Datella = PrendeDataAttuale() + " " + PrendeOraAttuale();
 
 		String sBody = Datella + ": Inizio log\n";
 
         try {
-			String path = tornaPath();
-
-			File file = new File(path);
-			if (!Utility.getInstance().EsisteFile(path)) {
+			File file = new File(Path + "/" + NomeFile);
+			if (!UtilityWallpaper.getInstance().EsisteFile(Path + "/" + NomeFile)) {
 				if (!file.createNewFile()) {
 					/* Toast.makeText(context,
 							VariabiliStatiche.channelName + ": Impossibile creare il file.",
-							Toast.LENGTH_LONG).show(); */
+							Toast.LENGTH_LONG).show(); * /
 					return;
 				}
 			}
@@ -58,7 +56,7 @@ public class LogInterno {
 			/* Toast.makeText(context,
 					VariabiliStatiche.channelName + ": Impossibile creare il file: " +
 					Utility.getInstance().PrendeErroreDaException(e),
-					Toast.LENGTH_LONG).show(); */
+					Toast.LENGTH_LONG).show(); * /
         }
 
         /* File gpxfile = new File(VariabiliStatiche.PercorsoDIRLog, NomeFile);
@@ -70,9 +68,10 @@ public class LogInterno {
 			writer.close();
 		} catch (IOException e) {
 			// e.printStackTrace();
-		} */
+		} * /
     }
-    
+    */
+
 	private String PrendeDataAttuale() {
 		String Ritorno="";
 		
@@ -118,11 +117,18 @@ public class LogInterno {
         return Ritorno;
 	}
    
-    public void ScriveLog(String MessaggioLog) {
+    public void ScriveLog(String Applicazione, String Maschera, String MessaggioLog) {
 		if (lista == null) {
 			lista = new ArrayList<>();
 		}
-		lista.add(MessaggioLog);
+
+		StrutturaLog s = new StrutturaLog();
+		s.setApplicazione(Applicazione);
+		s.setData(PrendeDataAttuale() + " " + PrendeOraAttuale());
+		s.setNomeMaschera(Maschera);
+		s.setLog(MessaggioLog);
+
+		lista.add(s);
 
 		if (handler == null) {
 			handler = new Handler(Looper.getMainLooper());
@@ -143,39 +149,59 @@ public class LogInterno {
 		}
 	}
 
-	private String tornaPath() {
-		String path = "";
+	public String PrendePathLog(Context context) {
+		return context.getFilesDir() + "/Log/";
+	}
 
-		if (VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog().isEmpty() ||
-				VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog().isEmpty()) {
-			Utility.getInstance().generaPath(context);
+	public void generaPath(Context context) {
+        if (context != null) {
+            String pathLog = PrendePathLog(context);
+            VariabiliStaticheStart.getInstance().setPercorsoDIRLog(pathLog);
 		}
-		path = VariabiliStaticheWallpaper.getInstance().getPercorsoDIRLog() + "/" +
-				VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
-		if (Detector) {
-			if (VariabiliStaticheDetector.getInstance().getPercorsoDIRLog().isEmpty() ||
-					VariabiliStaticheDetector.getInstance().getNomeFileDiLog().isEmpty()) {
-				UtilityDetector.getInstance().generaPath(context);
+    }
+
+	private String tornaPath(StrutturaLog M) {
+		String path = "";
+		String NomeFileLog = M.getNomeMaschera();
+
+		if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog() == null) {
+			generaPath(context);
+		}
+
+		path = VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + M.getApplicazione();
+		CreaCartella(path);
+
+		path += "/" + NomeFileLog + ".txt";
+		if (!EsisteFile(path)) {
+			try {
+				File f = new File(path);
+				f.createNewFile();
+			} catch (IOException e) {
+
 			}
-			path = VariabiliStaticheDetector.getInstance().getPercorsoDIRLog() + "/" +
-					VariabiliStaticheDetector.getInstance().getNomeFileDiLog();
 		}
 
 		return path;
 	}
 
-	private void ScriveLogInterno(String MessaggioLog) {
-		String Datella = "";
-		Datella = PrendeDataAttuale() + " " + PrendeOraAttuale();
+	private boolean EsisteFile(String fileName) {
+		File file = new File(fileName);
+		if (file.exists()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-		String path = tornaPath();
+	private void ScriveLogInterno(StrutturaLog M) {
+		String path = tornaPath(M);
 
-		if (Utility.getInstance().EsisteFile(path)) {
+		if (EsisteFile(path)) {
 			File gpxfile = new File(path);
 			FileWriter writer;
 			try {
 				writer = new FileWriter(gpxfile, true);
-				writer.append(Datella + ": " + MessaggioLog + "\n");
+				writer.append(M.getData() + ": " + M.getLog() + "\n");
 				writer.flush();
 				writer.close();
 			} catch (IOException e) {
@@ -187,12 +213,19 @@ public class LogInterno {
 		}
     }
 
-    private void CreaCartella(String Percorso) {
-		try {
-			File dDirectory = new File(Percorso);
-			dDirectory.mkdirs();
-		} catch (Exception ignored) {
-			
-		}  
+	private void CreaCartella(String Path) {
+		String[] Pezzetti = Path.split("/");
+		String DaCreare = "";
+
+		for (int i = 0; i < Pezzetti.length; i++) {
+			if (!Pezzetti[i].isEmpty()) {
+				DaCreare += "/" + Pezzetti[i];
+				File newFolder = new File(DaCreare);
+				if (!newFolder.exists()) {
+					newFolder.mkdir();
+				}
+			}
+		}
 	}
+
 }

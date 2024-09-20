@@ -35,7 +35,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.Utility;
 
 import java.io.File;
 import java.io.FileNotFoundException;

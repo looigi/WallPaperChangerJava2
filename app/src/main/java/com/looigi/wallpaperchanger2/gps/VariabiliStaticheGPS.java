@@ -21,6 +21,24 @@ public class VariabiliStaticheGPS {
     }
 
     private StrutturaGps CoordinateAttuali;
+    private GestioneGPS gestioneGPS;
+    private boolean gpsAttivo = true;
+
+    public boolean isGpsAttivo() {
+        return gpsAttivo;
+    }
+
+    public void setGpsAttivo(boolean gpsAttivo) {
+        this.gpsAttivo = gpsAttivo;
+    }
+
+    public GestioneGPS getGestioneGPS() {
+        return gestioneGPS;
+    }
+
+    public void setGestioneGPS(GestioneGPS gestioneGPS) {
+        this.gestioneGPS = gestioneGPS;
+    }
 
     public StrutturaGps getCoordinateAttuali() {
         return CoordinateAttuali;

@@ -6,7 +6,6 @@ import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -19,7 +18,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
@@ -306,7 +305,7 @@ public class Video extends Activity implements Callback {
 		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
 
 		String Cartella = UtilityDetector.getInstance().PrendePath(context);
-		Utility.getInstance().CreaCartelle(Cartella);
+		UtilityWallpaper.getInstance().CreaCartelle(Cartella);
 		String fileName = Cartella + UtilityDetector.getInstance().PrendeNomeImmagine() +
 				"." + sEstensione;
 

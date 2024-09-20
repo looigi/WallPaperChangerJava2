@@ -3,26 +3,19 @@ package com.looigi.wallpaperchanger2.classiStandard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.webkit.MimeTypeMap;
 
 import androidx.annotation.Nullable;
-import androidx.loader.content.CursorLoader;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.utilities.Utility;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -33,30 +26,48 @@ public class RichiestaPath extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        /* Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         Uri u = Uri.parse("/storage/emulated/0");
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, u);
-        startActivityForResult(intent, 1);
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, u); */
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, "/storage/emulated/0");
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, 123);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Spostamento Files");
+
         String SRC_PATH = UtilityDetector.getInstance().PrendePath(this);
         File directory = new File(SRC_PATH);
         File[] files = directory.listFiles();
 
+        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Path Origine: " + SRC_PATH);
+        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Files: " + files.length);
+
         Uri _uri = data.getData();
 
         try {
-            getContentResolver().takePersistableUriPermission(_uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            getContentResolver().takePersistableUriPermission(
+                    _uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             String filePath = _uri.toString();
+            UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Path URI: " + filePath);
+
             int c = filePath.indexOf("%3A");
             if (c > 0) {
                 filePath = "/storage/emulated/0/" + filePath.substring(c, filePath.length()) + "/";
                 filePath = filePath.replace("%3A", "").replace("%2F", "/") ;
+
+                UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Path Files: " + filePath);
                 // String filePath = readText(_uri);
 
                 UtilityDetector.getInstance().ControllaFileNoMedia(filePath);
@@ -64,9 +75,13 @@ public class RichiestaPath extends Activity {
                 boolean criptati = false;
                 for (int i = 0; i < files.length; i++) {
                     String strFileName = files[i].getName();
-                    if (strFileName.contains(".dbf")) {
-                        criptati = true;
-                        break;
+                    if (!strFileName.toUpperCase().contains("NOMEDIA")) {
+                        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "Criptaggio file: " + strFileName);
+
+                        if (strFileName.contains(".dbf")) {
+                            criptati = true;
+                            break;
+                        }
                     }
                 }
                 if (criptati) {
@@ -78,11 +93,15 @@ public class RichiestaPath extends Activity {
                     String strFileName = files2[i].getName();
                     String pathOrigine = files2[i].getParent();
 
-                    Utility.getInstance().ScriveLog(this, NomeMaschera,"Spostamento " + i + ": " +
-                            pathOrigine + strFileName
-                            + " -> " + filePath);
+                    if (!strFileName.toUpperCase().contains("NOMEDIA")) {
+                        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "Spostamento " + i + ": " +
+                                pathOrigine + strFileName
+                                + " -> " + filePath);
 
-                    boolean rit = moveFile(this, pathOrigine, strFileName, filePath);
+                        boolean rit = moveFile(this, pathOrigine, strFileName, filePath);
+
+                        UtilityDetector.getInstance().ScriveLog(this, NomeMaschera, "Ritorno spostamento: " + rit);
+                    }
                 }
             }
 
@@ -90,8 +109,8 @@ public class RichiestaPath extends Activity {
             UtilityDetector.getInstance().VisualizzaMultimedia(this);
         } catch (SecurityException e) {
             // handle failure to get persistable permission though NOT DOCUMENTED
-            Utility.getInstance().ScriveLog(this, NomeMaschera,"Sicurezza sulla cartella: " +
-                    _uri + " -> " + Utility.getInstance().PrendeErroreDaException(e));
+            UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Sicurezza sulla cartella: " +
+                    _uri + " -> " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
 
         /* String dest = Environment.getExternalStorageDirectory().getAbsolutePath() + "/LooigiSoft/" +
@@ -136,7 +155,7 @@ public class RichiestaPath extends Activity {
             }
 
             in = new FileInputStream(inputPath + "/" + inputFile);
-            if (!Utility.getInstance().EsisteFile(outputPath + inputFile)) {
+            if (!UtilityWallpaper.getInstance().EsisteFile(outputPath + inputFile)) {
                 File f = new File(outputPath + inputFile);
                 f.createNewFile();
             }
@@ -161,14 +180,14 @@ public class RichiestaPath extends Activity {
         }
 
         catch (FileNotFoundException fnfe1) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,"File non trovato: " +
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"File non trovato: " +
                     inputPath + "/" + inputFile + " -> " + outputPath +  inputFile);
 
             return false;
         }
         catch (Exception e) {
-            Utility.getInstance().ScriveLog(context, NomeMaschera,
-                    "Errore nello spostamento: " + Utility.getInstance().PrendeErroreDaException(e));
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,
+                    "Errore nello spostamento: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 
             return false;
         }

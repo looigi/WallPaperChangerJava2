@@ -30,17 +30,17 @@ public class VariabiliStaticheDetector {
     private Context context;
     private Activity mainActivity;
     private boolean ciSonoPermessi = false;
-    private LogInterno l;
+    // private LogInterno l;
     private int errori = 0;
     private int idNotifica = 111113;
     public static String channelName = "DetectorII";
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.detector2";
     public static int NOTIFICATION_CHANNEL_ID = 3;
     public static int channelIdIntentOverlay = 153;
-    private String NomeFileDiLog = "";
+    // private String NomeFileDiLog = "";
     private String NomeLogServizio = "";
     private Intent servizioForeground;
-    private String PercorsoDIRLog = "";
+    // private String PercorsoDIRLog = "";
     private long secondiDiAttesaContatore = 60L;
     // private Camera2 Camera;
     private boolean FaiLog=false;
@@ -82,6 +82,7 @@ public class VariabiliStaticheDetector {
     private boolean MascheraPartita = false;
     private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
+    private boolean GpsPreciso = false;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -90,6 +91,14 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isGpsPreciso() {
+        return GpsPreciso;
+    }
+
+    public void setGpsPreciso(boolean gpsPreciso) {
+        GpsPreciso = gpsPreciso;
     }
 
     public boolean isCameraImpostata() {
@@ -436,7 +445,7 @@ public class VariabiliStaticheDetector {
         this.secondiDiAttesaContatore = secondiDiAttesaContatore;
     }
 
-    public String getNomeFileDiLog() {
+    /* public String getNomeFileDiLog() {
         return NomeFileDiLog;
     }
 
@@ -450,7 +459,7 @@ public class VariabiliStaticheDetector {
 
     public void setPercorsoDIRLog(String percorsoDIRLog) {
         PercorsoDIRLog = percorsoDIRLog;
-    }
+    } */
 
     public Intent getServizioForeground() {
         return servizioForeground;
@@ -476,13 +485,13 @@ public class VariabiliStaticheDetector {
         this.idNotifica = idNotifica;
     }
 
-    public LogInterno getLog() {
+    /* public LogInterno getLog() {
         return l;
     }
 
     public void setLog(LogInterno l) {
         this.l = l;
-    }
+    } */
 
     public boolean isCiSonoPermessi() {
         return ciSonoPermessi;
