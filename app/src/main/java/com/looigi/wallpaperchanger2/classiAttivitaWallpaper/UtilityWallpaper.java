@@ -279,15 +279,15 @@ public class UtilityWallpaper {
     public void CambiaImmagine(Context context) {
         ChangeWallpaper c = new ChangeWallpaper(context);
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-            boolean fatto = c.setWallpaper(context, null);
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+            c.setWallpaper(context, null);
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");
         } else {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
             int numeroRandom = UtilityWallpaper.getInstance().GeneraNumeroRandom(
                     VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
             if (numeroRandom > -1) {
-                boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata: " + fatto + "---");
+                c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata");
             } else {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata: Caricamento immagini in corso---");
             }

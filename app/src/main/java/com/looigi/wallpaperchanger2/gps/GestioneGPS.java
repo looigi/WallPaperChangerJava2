@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.health.connect.datatypes.BloodPressureRecord;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,10 +34,14 @@ public class GestioneGPS {
     // private Handler handlerAccensione;
     // private Runnable rAccensione;
     private long ultimoTSLocation = -1;
-    private boolean statoAttivo = true;
+    // private boolean statoAttivo = true;
+    private HandlerThread handlerThread1;
+    private Handler handler1;
+    private Runnable r1;
 
     public void BloccaGPS() {
-        statoAttivo = false;
+        // statoAttivo = false;
+        VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
 
         /* if (handlerThreadAccensione != null) {
             handlerThreadAccensione.stop();
@@ -53,13 +57,153 @@ public class GestioneGPS {
         if (locationManager != null && locationListenerGPS != null) {
             locationManager.removeUpdates(locationListenerGPS);
         }
+
+        GestioneNotifiche.getInstance().AggiornaNotifica();
+    }
+
+    public void AbilitaTimer(Context context) {
+        if (handler1 != null) {
+            return;
+        }
+
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita Timer GPS");
+
+        this.context = context;
+
+        this.ControlloAccSpegn();
+
+        handlerThread1 = new HandlerThread("background-thread_timer_gps");
+        handlerThread1.start();
+
+        int secondiAttesa = 15 * 60 * 1000;
+
+        handler1 = new Handler(handlerThread1.getLooper());
+        r1 = new Runnable() {
+            public void run() {
+                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Controllo disattivazione/attivazione. Stato attuale: " + statoAttivo);
+
+                ControlloAccSpegn();
+
+                handler1.postDelayed(this, secondiAttesa);
+            }
+        };
+        handler1.postDelayed(r1, secondiAttesa);
+    }
+
+    private void ControlloOraPerAccSpegn(Calendar calendar, String disatt, String riatt) {
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+            String[] oraDisatt = disatt.split(":");
+
+            int hD = Integer.parseInt(oraDisatt[0]);
+            int mD = Integer.parseInt(oraDisatt[1]);
+
+            if (hD >= hour || (hD == hour && mD >= minute)) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Disattivo: " + hD + ":" + mD + " -> " + hour + ":" + minute);
+
+                BloccaGPS();
+            }
+        } else {
+            String[] oraRiatt = riatt.split(":");
+
+            int hD = Integer.parseInt(oraRiatt[0]);
+            int mD = Integer.parseInt(oraRiatt[1]);
+
+            if (hD >= hour || (hD == hour && mD >= minute)) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Riattivo: " + hD + ":" + mD + " -> " + hour + ":" + minute);
+
+                AbilitaGPS(context);
+            }
+        }
+    }
+
+    private void ControlloAccSpegn() {
+        StrutturaAccensioneGPS s = new StrutturaAccensioneGPS();
+        if (s != null) {
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+            switch (day) {
+                case Calendar.SUNDAY:
+                    if (s.isSpegnimentoAttivoDomenica()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneDomenica(),
+                                s.getOraRiattivazioneDomenica()
+                        );
+                    }
+                    break;
+                case Calendar.SATURDAY:
+                    if (s.isSpegnimentoAttivoSabato()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneSabato(),
+                                s.getOraRiattivazioneSabato()
+                        );
+                    }
+                    break;
+                case Calendar.MONDAY:
+                    if (s.isSpegnimentoAttivoLunedi()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneLunedi(),
+                                s.getOraRiattivazioneLunedi()
+                        );
+                    }
+                    break;
+                case Calendar.THURSDAY:
+                    if (s.isSpegnimentoAttivoMartedi()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneMartedi(),
+                                s.getOraRiattivazioneMartedi()
+                        );
+                    }
+                    break;
+                case Calendar.WEDNESDAY:
+                    if (s.isSpegnimentoAttivoMercoledi()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneMercoledi(),
+                                s.getOraRiattivazioneMercoledi()
+                        );
+                    }
+                    break;
+                case Calendar.TUESDAY:
+                    if (s.isSpegnimentoAttivoGiovedi()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneGiovedi(),
+                                s.getOraRiattivazioneGiovedi()
+                        );
+                    }
+                    break;
+                case Calendar.FRIDAY:
+                    if (s.isSpegnimentoAttivoVenerdi()) {
+                        ControlloOraPerAccSpegn(
+                                calendar,
+                                s.getOraDisattivazioneVenerdi(),
+                                s.getOraRiattivazioneVenerdi()
+                        );
+                    }
+                    break;
+            }
+
+        }
     }
 
     public void AbilitaGPS(Context context) {
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita GPS");
 
-        this.context = context;
-        statoAttivo = true;
+        VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         ultimoTSLocation = new Date().getTime();
@@ -80,8 +224,8 @@ public class GestioneGPS {
 
         locationManager.requestLocationUpdates(
                 provider,
-                5000,
-                10,
+                VariabiliStaticheDetector.getInstance().getGpsMs(),
+                VariabiliStaticheDetector.getInstance().getGpsMeters(),
                 locationListenerGPS);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -218,7 +362,12 @@ public class GestioneGPS {
                         results);
                 distanza = results[0];
                 if (results[0] > 75) {
-                    // ok = false;
+                    ok = false;
+                }
+            }
+            if (ok) {
+                if (location.getAccuracy() > 50) {
+                    ok = false;
                 }
             }
 
@@ -228,7 +377,7 @@ public class GestioneGPS {
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
 
-            if (!ok) {
+            /* if (!ok) {
                 if (!ultimoNull) {
                     StrutturaGps s = new StrutturaGps();
                     s.setLat(-1);
@@ -245,7 +394,8 @@ public class GestioneGPS {
                 }
             } else {
                 ultimoNull = false;
-            }
+            } */
+            ultimoNull = false;
 
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();

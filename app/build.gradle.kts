@@ -74,4 +74,6 @@ dependencies {
     implementation(libs.android.gif.drawable)
     implementation(libs.photoview)
     implementation(libs.play.services.maps)
+
+    implementation(libs.face.detection)
 }

@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.wallpaperchanger2.gps.StrutturaAccensioneGPS;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
+
 import java.io.File;
 
 public class db_dati_detector {
@@ -52,7 +55,22 @@ public class db_dati_detector {
                         + " (FaiLog VARCHAR,  TipologiaScatto VARCHAR, Secondi VARCHAR, Fotocamera VARCHAR, " +
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
-                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR);";
+                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR);";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS " +
+                        "Accensioni " +
+                        "(Domenica VARCHAR, Lunedi VARCHAR, Martedi VARCHAR, Mercoledi VARCHAR," +
+                        "Giovedi VARCHAR, Venerdi VARCHAR, Sabato VARCHAR, " +
+                        "OraAccDomenica VARCHAR, OraSpegnDomenica VARCHAR, " +
+                        "OraAccLunedi VARCHAR, OraSpegnLunedi VARCHAR, " +
+                        "OraAccMartedi VARCHAR, OraSpegnMartedi VARCHAR, " +
+                        "OraAccMercoledi VARCHAR, OraSpegnMercoledi VARCHAR, " +
+                        "OraAccGiovedi VARCHAR, OraSpegnGiovedi VARCHAR, " +
+                        "OraAccVenerdi VARCHAR, OraSpegnVenerdi VARCHAR, " +
+                        "OraAccSabato VARCHAR, OraSpegnSabato VARCHAR " +
+                        ")";
 
                 myDB.execSQL(sql);
             }
@@ -89,6 +107,8 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(Integer.parseInt(c.getString(12)));
                         VariabiliStaticheDetector.getInstance().setVisualizzaToast(c.getString(13).equals("S"));
                         VariabiliStaticheDetector.getInstance().setGpsPreciso(c.getString(14).equals("S"));
+                        VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(c.getString(15)));
+                        VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(c.getString(16)));
 
                         return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
@@ -99,27 +119,7 @@ public class db_dati_detector {
                         return false; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
                     }
                 } else {
-                    // GBTakePictureNoPreview c2 = new GBTakePictureNoPreview();
-                    // c2.ImpostaContext(VariabiliStatiche.getInstance().getContext());
-                    // c2.setUseBackCamera();
-                    // VariabiliStatiche.getInstance().Dimensioni = VariabiliStatiche.getInstance().getCamera().RitornaRisoluzioni();
                     UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db. Imposto default");
-                    /* if (VariabiliStaticheDetector.getInstance().getDimensioni() == null) {
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo risoluzioni");
-                        if (VariabiliStaticheDetector.getInstance().getCamera() != null) {
-                            VariabiliStaticheDetector.getInstance().getCamera().RitornaRisoluzioni();
-                            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,
-                                    "Risoluzioni Lette: " + VariabiliStaticheDetector.getInstance().getDimensioni().size());
-                        } else {
-                            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Risoluzioni NON Lette: Camera non rilevata");
-                        }
-                    } */
-
-                    // String risol = "1024x768";
-
-                    /* if (VariabiliStaticheDetector.getInstance().Dimensioni != null) {
-                        UtilityDetector.getInstance().RitornaRisoluzioneMassima(VariabiliStaticheDetector.getInstance().Dimensioni);
-                    } */
 
                     VariabiliStaticheDetector.getInstance().setFaiLog(true);
                     VariabiliStaticheDetector.getInstance().setTipologiaScatto(2);
@@ -137,6 +137,8 @@ public class db_dati_detector {
                     VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(50);
                     VariabiliStaticheDetector.getInstance().setVisualizzaToast(true);
                     VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
+                    VariabiliStaticheDetector.getInstance().setGpsMs(1000);
+                    VariabiliStaticheDetector.getInstance().setGpsMeters(5);
 
                     Controlla = false;
                     ScriveImpostazioni(context);
@@ -191,7 +193,9 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().getDimensioniThumbs()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().getDimensioniThumbsM()) + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().isVisualizzaToast() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "', "
+                        + " " + VariabiliStaticheDetector.getInstance().getGpsMs() + ", "
+                        + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + " "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {

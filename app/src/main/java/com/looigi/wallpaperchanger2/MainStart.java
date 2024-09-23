@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.gps.GestioneGPS;
@@ -118,7 +118,7 @@ public class MainStart  extends Activity {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                InizializzaMaschera i = new InizializzaMaschera();
+                                InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
                                 i.inizializzaMaschera(
                                         context,
                                         VariabiliStaticheWallpaper.getInstance().getMainActivity());
@@ -155,6 +155,7 @@ public class MainStart  extends Activity {
 
             GestioneGPS g = new GestioneGPS();
             VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
+            g.AbilitaTimer(context);
             g.AbilitaGPS(context);
         }
     }

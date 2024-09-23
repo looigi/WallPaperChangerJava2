@@ -114,8 +114,8 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                 VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
                 ChangeWallpaper c = new ChangeWallpaper(context);
-                boolean fatto = c.setWallpaperLocale(context, si);
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
+                c.setWallpaperLocale(context, si);
+                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
             }
         } else {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");

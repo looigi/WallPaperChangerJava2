@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 
 import java.io.File;
@@ -68,10 +67,162 @@ public class db_dati_gps {
                         + " (data VARCHAR, ora VARCHAR, latitudine VARCHAR, longitudine VARCHAR, speed VARCHAR, " +
                         "altitude VARCHAR, accuracy VARCHAR, distanza VARCHAR);";
                 myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS " +
+                        "Accensioni " +
+                        "(Domenica VARCHAR, Lunedi VARCHAR, Martedi VARCHAR, Mercoledi VARCHAR," +
+                        "Giovedi VARCHAR, Venerdi VARCHAR, Sabato VARCHAR, " +
+                        "OraAccDomenica VARCHAR, OraSpegnDomenica VARCHAR, " +
+                        "OraAccLunedi VARCHAR, OraSpegnLunedi VARCHAR, " +
+                        "OraAccMartedi VARCHAR, OraSpegnMartedi VARCHAR, " +
+                        "OraAccMercoledi VARCHAR, OraSpegnMercoledi VARCHAR, " +
+                        "OraAccGiovedi VARCHAR, OraSpegnGiovedi VARCHAR, " +
+                        "OraAccVenerdi VARCHAR, OraSpegnVenerdi VARCHAR, " +
+                        "OraAccSabato VARCHAR, OraSpegnSabato VARCHAR " +
+                        ")";
+
+                myDB.execSQL(sql);
             }
         } catch (Exception e) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Errore creazione tabelle: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+        }
+    }
+
+    public Boolean ScriveAccensioni(Context context) {
+        if (myDB != null) {
+            try {
+                String Imm = "";
+                myDB.execSQL("Delete From Accensioni");
+
+                String sql = "INSERT INTO"
+                        + " Accensioni"
+                        + " VALUES ("
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoLunedi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMartedi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMercoledi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoGiovedi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoVenerdi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoSabato() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneDomenica()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneDomenica()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneLunedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneLunedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMartedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMartedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMercoledi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMercoledi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneGiovedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneGiovedi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneVenerdi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneVenerdi()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneSabato()) + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneSabato()) + "' "
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db accensioni: " + e.getMessage());
+                // Log.getInstance().ScriveLog("ERRORE Su scrittura impostazioni: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
+                // Log.getInstance().ScriveLog("Pulizia tabelle");
+                PulisceDatiAcc();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                ScriveAccensioni(context);
+
+                return false;
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public boolean CaricaAccensioni(Context context) {
+        // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Accensioni", null);
+                if (c.getCount() > 0) {
+                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per accensioni");
+                    c.moveToFirst();
+
+                    try {
+                        StrutturaAccensioneGPS s = new StrutturaAccensioneGPS();
+                        s.setSpegnimentoAttivoDomenica(c.getString(0).equals("S"));
+                        s.setSpegnimentoAttivoLunedi(c.getString(1).equals("S"));
+                        s.setSpegnimentoAttivoMartedi(c.getString(2).equals("S"));
+                        s.setSpegnimentoAttivoMercoledi(c.getString(3).equals("S"));
+                        s.setSpegnimentoAttivoGiovedi(c.getString(4).equals("S"));
+                        s.setSpegnimentoAttivoVenerdi(c.getString(5).equals("S"));
+                        s.setSpegnimentoAttivoSabato(c.getString(6).equals("S"));
+                        s.setOraDisattivazioneDomenica(c.getString(7));
+                        s.setOraRiattivazioneDomenica(c.getString(8));
+                        s.setOraDisattivazioneLunedi(c.getString(9));
+                        s.setOraRiattivazioneLunedi(c.getString(10));
+                        s.setOraDisattivazioneMartedi(c.getString(11));
+                        s.setOraRiattivazioneMartedi(c.getString(12));
+                        s.setOraDisattivazioneMercoledi(c.getString(13));
+                        s.setOraRiattivazioneMercoledi(c.getString(14));
+                        s.setOraDisattivazioneGiovedi(c.getString(15));
+                        s.setOraRiattivazioneGiovedi(c.getString(16));
+                        s.setOraDisattivazioneVenerdi(c.getString(17));
+                        s.setOraRiattivazioneVenerdi(c.getString(18));
+                        s.setOraDisattivazioneSabato(c.getString(19));
+                        s.setOraRiattivazioneSabato(c.getString(20));
+                        VariabiliStaticheGPS.getInstance().setAccensioneGPS(s);
+
+                        return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
+                    } catch (Exception e) {
+                        PulisceDati();
+                        CreazioneTabelle();
+                        CaricaAccensioni(context);
+
+                        return false; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
+                    }
+                } else {
+                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db accensione. Imposto default");
+
+                    StrutturaAccensioneGPS s = new StrutturaAccensioneGPS();
+                    s.setSpegnimentoAttivoDomenica(true);
+                    s.setSpegnimentoAttivoLunedi(true);
+                    s.setSpegnimentoAttivoMartedi(true);
+                    s.setSpegnimentoAttivoMercoledi(true);
+                    s.setSpegnimentoAttivoGiovedi(true);
+                    s.setSpegnimentoAttivoVenerdi(true);
+                    s.setSpegnimentoAttivoSabato(true);
+                    s.setOraDisattivazioneDomenica("08:00");
+                    s.setOraRiattivazioneDomenica("16:00");
+                    s.setOraDisattivazioneLunedi("08:00");
+                    s.setOraRiattivazioneLunedi("16:00");
+                    s.setOraDisattivazioneMartedi("08:00");
+                    s.setOraRiattivazioneMartedi("16:00");
+                    s.setOraDisattivazioneMercoledi("08:00");
+                    s.setOraRiattivazioneMercoledi("16:00");
+                    s.setOraDisattivazioneGiovedi("08:00");
+                    s.setOraRiattivazioneGiovedi("16:00");
+                    s.setOraDisattivazioneVenerdi("08:00");
+                    s.setOraRiattivazioneVenerdi("16:00");
+                    s.setOraDisattivazioneSabato("08:00");
+                    s.setOraRiattivazioneSabato("16:00");
+                    VariabiliStaticheGPS.getInstance().setAccensioneGPS(s);
+
+                    return true;
+                }
+            } catch (Exception e) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db accensioni: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                PulisceDatiAcc();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                // CaricaAccensioni(context);
+
+                return false; // "Tabella creata di nuovo: " + e.getMessage();
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            return false; // "Db Non Valido";
         }
     }
 
@@ -245,6 +396,19 @@ public class db_dati_gps {
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table posizioni");
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    public void PulisceDatiAcc() {
+        // SQLiteDatabase myDB = ApreDB();
+        if (myDB != null) {
+            // myDB.execSQL("Delete From Utente");
+            // myDB.execSQL("Delete From Ultima");
+            try {
+                myDB.execSQL("Drop Table Accensioni");
             } catch (Exception ignored) {
 
             }

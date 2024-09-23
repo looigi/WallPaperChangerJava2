@@ -23,13 +23,22 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
-    private int oraGpsAccensione = 16;
-    private int minutiGpsAccensione = 5;
-    private int oraGpsSpengimento = 7;
-    private int minutiGpsSpengimento = 30;
-    private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
+    // private int oraGpsAccensione = 16;
+    // private int minutiGpsAccensione = 5;
+    // private int oraGpsSpengimento = 7;
+    // private int minutiGpsSpengimento = 30;
+    // private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
+    private StrutturaAccensioneGPS accensioneGPS;
 
-    public int getMinutiDiAttesaGpsPrimaDelloSpengimento() {
+    public StrutturaAccensioneGPS getAccensioneGPS() {
+        return accensioneGPS;
+    }
+
+    public void setAccensioneGPS(StrutturaAccensioneGPS accensioneGPS) {
+        this.accensioneGPS = accensioneGPS;
+    }
+
+    /* public int getMinutiDiAttesaGpsPrimaDelloSpengimento() {
         return minutiDiAttesaGpsPrimaDelloSpengimento;
     }
 
@@ -67,7 +76,7 @@ public class VariabiliStaticheGPS {
 
     public void setMinutiGpsAccensione(int minutiGpsAccensione) {
         this.minutiGpsAccensione = minutiGpsAccensione;
-    }
+    } */
 
     public boolean isGpsAttivo() {
         return gpsAttivo;

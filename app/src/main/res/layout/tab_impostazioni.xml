@@ -24,13 +24,31 @@
         android:layout_height="wrap_content"
         android:text="Toasts" />
 
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GPS" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
     <Switch
+        android:layout_marginTop="10dp"
         android:id="@+id/sGpsPreciso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gps Preciso" />
 
-    <!-- <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="5"
         android:gravity="center_vertical"
@@ -40,23 +58,313 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Elimina LOG" />
+            android:text="GPS Ms" />
+
+        <EditText
+            android:id="@+id/edtGpsMs"
+            android:inputType="number"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="GPS Meters" />
+
+        <EditText
+            android:id="@+id/edtGpsMeters"
+            android:inputType="number"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disattivazione GPS" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+        </TextView>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
-            android:gravity="center_vertical|right"
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btnEliminaLog"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/elimina" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Disattiv."
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Riattiv."
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <Switch
+                android:id="@+id/optDomenica"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Domenica" />
+
+            <Switch
+                android:id="@+id/optLunedi"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Lunedì" />
+
+            <Switch
+                android:id="@+id/optMartedi"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Martedì" />
+
+            <Switch
+                android:id="@+id/optMercoledi"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Mercoledì" />
+
+            <Switch
+                android:id="@+id/optGiovedi"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Giovedì" />
+
+            <Switch
+                android:id="@+id/optVenerdi"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Venerdì" />
+
+            <Switch
+                android:id="@+id/optSabato"
+                android:layoutDirection="rtl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Sabato" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="40dp">
+
+                <EditText
+                    android:id="@+id/edtOraInizioDomenica"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineDomenica"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtOraInizioLunedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineLunedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="40dp">
+
+                <EditText
+                    android:id="@+id/edtOraInizioMartedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineMartedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtOraInizioMercoledi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineMercoledi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtOraInizioGiovedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineGiovedi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtOraInizioVenerdi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineVenerdi"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtOraInizioSabato"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+
+                <EditText
+                    android:id="@+id/edtOraFineSabato"
+                    android:inputType="text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"/>
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout> -->
+    </LinearLayout>
 
 
     <!-- <Switch

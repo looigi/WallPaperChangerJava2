@@ -256,7 +256,7 @@
                         android:id="@+id/switchEspansa"
                         android:layout_width="match_parent"
                         android:textColor="#0000CC"
-                        android:text="Dimensioni Originali"
+                        android:text="Zoom su volti"
                         android:layout_height="wrap_content" />
 
                     <Switch

@@ -83,6 +83,8 @@ public class VariabiliStaticheDetector {
     private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
     private boolean GpsPreciso = false;
+    private int GpsMeters = 5;
+    private int GpsMs = 1000;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -91,6 +93,22 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public int getGpsMeters() {
+        return GpsMeters;
+    }
+
+    public void setGpsMeters(int gpsMeters) {
+        GpsMeters = gpsMeters;
+    }
+
+    public int getGpsMs() {
+        return GpsMs;
+    }
+
+    public void setGpsMs(int gpsMs) {
+        GpsMs = gpsMs;
     }
 
     public boolean isGpsPreciso() {

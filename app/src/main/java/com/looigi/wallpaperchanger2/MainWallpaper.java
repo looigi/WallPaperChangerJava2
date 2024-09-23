@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import com.looigi.wallpaperchanger2.classiStandard.InizializzaMaschera;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -31,7 +31,7 @@ public class MainWallpaper extends Activity {
             UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "AVVIO");
             UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
-            InizializzaMaschera i = new InizializzaMaschera();
+            InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
             i.inizializzaMaschera(this, this);
 
             /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
@@ -50,7 +50,7 @@ public class MainWallpaper extends Activity {
             UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "----------------------------");
 
             // Operazioni che si devono eseguire in caso di ripartenza col servizio attivo
-            InizializzaMaschera i = new InizializzaMaschera();
+            InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
             i.inizializzaMaschera(this, this);
 
             /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
@@ -142,7 +142,7 @@ public class MainWallpaper extends Activity {
         VariabiliStaticheWallpaper.getInstance().setContext(this);
 
         // if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
-            InizializzaMaschera i = new InizializzaMaschera();
+            InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
             i.inizializzaMaschera(this, this);
         // }
 

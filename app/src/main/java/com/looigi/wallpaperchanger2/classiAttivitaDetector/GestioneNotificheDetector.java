@@ -68,7 +68,7 @@ public class GestioneNotificheDetector {
 
             Notification notifica = notificationBuilder
                     .setContentTitle(VariabiliStaticheDetector.channelName)                            // required
-                    .setSmallIcon(R.drawable.barcode)   // required android.R.drawable.ic_menu_slideshow
+                    .setSmallIcon(R.drawable.detector)   // required android.R.drawable.ic_menu_slideshow
                     .setContentText(VariabiliStaticheDetector.channelName) // required
                     // .setDefaults(Notification.DEFAULT_ALL)
                     .setOnlyAlertOnce(false)

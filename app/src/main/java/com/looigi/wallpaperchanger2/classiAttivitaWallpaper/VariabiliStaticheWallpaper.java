@@ -3,13 +3,12 @@ package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Environment;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +82,8 @@ public class VariabiliStaticheWallpaper {
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath();
     private boolean sbragaTutto = false;
     private boolean Espansa = false;
+    private boolean staPrendendoVolto = false;
+    private List<Rect> quadratiFaccia;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -91,6 +92,22 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public List<Rect> getQuadratiFaccia() {
+        return quadratiFaccia;
+    }
+
+    public void setQuadratiFaccia(List<Rect> quadratiFaccia) {
+        this.quadratiFaccia = quadratiFaccia;
+    }
+
+    public boolean isStaPrendendoVolto() {
+        return staPrendendoVolto;
+    }
+
+    public void setStaPrendendoVolto(boolean staPrendendoVolto) {
+        this.staPrendendoVolto = staPrendendoVolto;
     }
 
     public boolean isEspansa() {

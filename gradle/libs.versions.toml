@@ -2,6 +2,7 @@
 acraVersion = "5.11.2"
 agp = "8.6.0"
 androidGifDrawable = "1.2.22"
+faceDetection = "16.1.7"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -23,6 +24,7 @@ acra-mail = { module = "ch.acra:acra-mail", version.ref = "acraVersion" }
 acra-notification = { module = "ch.acra:acra-notification", version.ref = "acraVersion" }
 acra-toast = { module = "ch.acra:acra-toast", version.ref = "acraVersion" }
 android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
+face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

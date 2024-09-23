@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.MainWallpaper;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.gps.Mappa;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -293,7 +294,7 @@ public class GestioneNotifiche {
                                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        InizializzaMaschera i = new InizializzaMaschera();
+                                        InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
                                         i.inizializzaMaschera(
                                                 context,
                                                 VariabiliStaticheWallpaper.getInstance().getMainActivity());

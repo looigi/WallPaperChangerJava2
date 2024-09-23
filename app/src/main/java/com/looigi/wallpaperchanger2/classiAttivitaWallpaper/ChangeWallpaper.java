@@ -6,15 +6,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.media.ExifInterface;
+import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Looper;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
+import android.view.Display;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
@@ -22,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class ChangeWallpaper {
 	private static final String NomeMaschera = "CHANGEWALLPAPER";
@@ -58,17 +62,17 @@ public class ChangeWallpaper {
 	}
 
 	private void PrendeDimensioniSchermo(Context context) {
-		DisplayMetrics metrics = new DisplayMetrics();
-		VariabiliStaticheWallpaper.getInstance().getMainActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		// DisplayMetrics metrics = new DisplayMetrics();
+		Display d = VariabiliStaticheWallpaper.getInstance().getMainActivity().getDisplay();
 
-		SchermoX = metrics.widthPixels; //  * 70 / 100;
-		SchermoY = metrics.heightPixels;
+		SchermoX = d.getWidth(); //  * 70 / 100;
+		SchermoY = d.getHeight();
 
 		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine instanziato. Dimensioni schermo: " +
 				SchermoX + "x" + SchermoY);
 	}
 
-	public Boolean setWallpaper(Context context, StrutturaImmagine src) {
+	public void setWallpaper(Context context, StrutturaImmagine src) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
 		if (SchermoX == -1) {
@@ -77,7 +81,7 @@ public class ChangeWallpaper {
 
 		if (SchermoX == -1) {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
-			return false;
+			// return false;
 		} else {
 			if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
 				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
@@ -91,11 +95,10 @@ public class ChangeWallpaper {
 
 		UtilityWallpaper.getInstance().Attesa(false);
 
-		return true;
+		// return true;
 	}
 
-	public Boolean setWallpaperLocale(Context context, StrutturaImmagine src) {
-		boolean Ritorno = true;
+	public void setWallpaperLocale(Context context, StrutturaImmagine src) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
 		if (SchermoX == -1) {
@@ -105,69 +108,220 @@ public class ChangeWallpaper {
 		if (SchermoX == -1) {
 			UtilityWallpaper.getInstance().Attesa(false);
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper locale: dimensioni schermo non impostate");
-			Ritorno = false;
+
+			UtilityWallpaper.getInstance().Attesa(false);
 		} else {
-			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
+			boolean ok = true;
 
-			Bitmap setWallToDevice = null;
-			setWallToDevice = PrendeImmagineReale(context, src);
-
-			if (setWallToDevice != null) {
-				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
-
-				WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-				try {
-					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Impostazione dimensioni " + setWallToDevice.getWidth() + "x" + setWallToDevice.getHeight());
-
-					// HOME SCREEN
-					if (VariabiliStaticheWallpaper.getInstance().isHome()) {
-						wallpaperManager.setBitmap(
-								setWallToDevice,
-								null,
-								true,
-								WallpaperManager.FLAG_SYSTEM
-						);
-					}
-
-					// LOCK SCREEN
-					if (VariabiliStaticheWallpaper.getInstance().isLock()) {
-						wallpaperManager.setBitmap(
-								setWallToDevice,
-								null,
-								true,
-								WallpaperManager.FLAG_LOCK);
-					}
-
-					// wallpaperManager.setWallpaperOffsetSteps(1, 1);
-					// if (VariabiliGlobali.getInstance().getStretch().equals("S")) {
-					// wallpaperManager.suggestDesiredDimensions(setWallToDevice.getWidth(), setWallToDevice.getHeight());
-					// } else {
-					// 	wallpaperManager.suggestDesiredDimensions(VariabiliGlobali.getInstance().getDimeWallWidthOriginale(), VariabiliGlobali.getInstance().getDimeWallHeightOriginale());
-					// }
-
-					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Settata bitmap.");
-				} catch (IOException e) {
-					// Utility.getInstance().ScriveLog("Errore: " + u.PrendeErroreDaException(e));
-					// e.printStackTrace();
-
-					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Errore " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
-
-					// Toast.makeText(VariabiliGlobali.getInstance().getContext(),
-					// 		u.PrendeErroreDaException(e),
-					// 		Toast.LENGTH_LONG).show();
-
-					Ritorno = false;
+			String path = src.getPathImmagine();
+			if (!UtilityWallpaper.getInstance().EsisteFile(path)) {
+				path = context.getFilesDir() + "/Download/Appoggio.jpg";
+				if (!UtilityWallpaper.getInstance().EsisteFile(path)) {
+					ok = false;
 				}
-			} else {
-				Ritorno = false;
+			}
+			if (ok) {
+				Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+				if (!VariabiliStaticheWallpaper.getInstance().isEspansa()) {
+					// Cambio immagine non espansa
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
+
+					bitmap = MetteBordoAImmagine(context, bitmap, src);
+
+					setWallpaperLocaleEsegue(context, bitmap);
+
+					faseFinale(context, src);
+				} else {
+					try {
+						VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
+
+						RilevamentoVolti rv = new RilevamentoVolti(context);
+						rv.ElaboraImmagine(path);
+
+						Handler handler1 = new Handler(Looper.getMainLooper());
+
+						String finalPath = path;
+						Runnable r1 = new Runnable() {
+							public void run() {
+								if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
+									handler1.removeCallbacks(this);
+
+									List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
+
+									Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
+									int larghezzaImmagine = bitmap.getWidth();
+									int altezzaImmagine = bitmap.getHeight();
+
+									Bitmap bmpAppoggio;
+
+									/* if (r == null || (SchermoX > bitmap.getWidth() && SchermoY > bitmap.getHeight())) {
+										bmpAppoggio = MetteBordoAImmagine(context, bitmap, src);
+									} else { */
+
+									int inizioVisoX = 9999;
+									int inizioVisoY = 9999;
+									int larghezzaViso = -9999;
+									int altezzaViso = -9999;
+
+									for (Rect r1 : r) {
+										if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
+										if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
+										if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
+										if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
+									}
+
+									inizioVisoY -= (int) (larghezzaImmagine * .25);
+									if (inizioVisoY < 0) { inizioVisoY = 0; }
+									inizioVisoX -= (int) (larghezzaImmagine * .25);
+									if (inizioVisoX < 0) { inizioVisoX = 0; }
+
+									larghezzaViso = larghezzaImmagine - inizioVisoX;
+									altezzaViso = altezzaImmagine - inizioVisoY;
+
+									// if (larghezzaViso > larghezzaImmagine) { larghezzaViso = larghezzaImmagine - inizioVisoX; }
+									// if (altezzaViso > altezzaImmagine) { altezzaViso = altezzaImmagine - inizioVisoY; }
+
+									// larghezzaViso += (SchermoX / 10);
+									// altezzaViso += (SchermoY / 10);
+
+									try {
+										bmpAppoggio = Bitmap.createBitmap(
+												bitmap,
+												inizioVisoX,
+												inizioVisoY,
+												larghezzaViso,
+												altezzaViso
+										);
+
+										/* bmpAppoggio = Bitmap.createScaledBitmap(
+												bmpAppoggio,
+												SchermoX,
+												SchermoY,
+												true
+										); */
+
+										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
+
+										setWallpaperLocaleEsegue(context, bmpAppoggio);
+
+										faseFinale(context, src);
+									} catch (Exception e) {
+										UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+												"Cambio immagine. Errore conversione: " +
+														UtilityDetector.getInstance().PrendeErroreDaException(e));
+									}
+
+									// }
+								} else {
+									handler1.postDelayed(this, 1000);
+								}
+							}
+						};
+						handler1.postDelayed(r1, 1000);
+					} catch (Exception e) {
+						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore preview");
+					}
+				}
 			}
 		}
-		UtilityWallpaper.getInstance().Attesa(false);
-
-		return Ritorno;
 	}
 
-	private int exifToDegrees(int exifOrientation) {
+	private void faseFinale(Context context, StrutturaImmagine si) {
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Aggiorno notifica");
+
+		VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
+		// Notifica.getInstance().setContext(VariabiliGlobali.getInstance().getContext());
+
+		// Notifica.getInstance().setTitolo(si.getImmagine());
+		// Notifica.getInstance().setImmagine(si.getPathImmagine());
+		// GestioneNotifiche.getInstance().RimuoviNotifica();
+		GestioneNotifiche.getInstance().AggiornaNotifica();
+
+		Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
+		VariabiliStaticheWallpaper.getInstance().getImgImpostata().setImageBitmap(ultima);
+
+		VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
+
+		int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+		int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
+
+		VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+			public void run() {
+				VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(
+						"Prossimo cambio: " +
+								VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
+								quantiGiri);
+			}
+		});
+
+		// Notifica.getInstance().AggiornaNotifica();
+		db_dati_wallpaper db = new db_dati_wallpaper(context);
+		db.ScriveImpostazioni();
+	}
+
+		private void setWallpaperLocaleEsegue(Context context, Bitmap bitmap) {
+		// boolean Ritorno = true;
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
+
+		// Bitmap setWallToDevice = PrendeImmagineReale(context, Path);
+
+		if (bitmap != null) {
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
+
+			WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+			try {
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Impostazione dimensioni " + bitmap.getWidth() + "x" + bitmap.getHeight());
+
+				// HOME SCREEN
+				if (VariabiliStaticheWallpaper.getInstance().isHome()) {
+					wallpaperManager.setBitmap(
+							bitmap,
+							null,
+							true,
+							WallpaperManager.FLAG_SYSTEM
+					);
+				}
+
+				// LOCK SCREEN
+				if (VariabiliStaticheWallpaper.getInstance().isLock()) {
+					wallpaperManager.setBitmap(
+							bitmap,
+							null,
+							true,
+							WallpaperManager.FLAG_LOCK);
+				}
+
+				// wallpaperManager.setWallpaperOffsetSteps(1, 1);
+				// if (VariabiliGlobali.getInstance().getStretch().equals("S")) {
+				// wallpaperManager.suggestDesiredDimensions(setWallToDevice.getWidth(), setWallToDevice.getHeight());
+				// } else {
+				// 	wallpaperManager.suggestDesiredDimensions(VariabiliGlobali.getInstance().getDimeWallWidthOriginale(), VariabiliGlobali.getInstance().getDimeWallHeightOriginale());
+				// }
+
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Settata bitmap.");
+			} catch (IOException e) {
+				// Utility.getInstance().ScriveLog("Errore: " + u.PrendeErroreDaException(e));
+				// e.printStackTrace();
+
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Errore " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+
+				// Toast.makeText(VariabiliGlobali.getInstance().getContext(),
+				// 		u.PrendeErroreDaException(e),
+				// 		Toast.LENGTH_LONG).show();
+
+				// Ritorno = false;
+			}
+		} else {
+			// Ritorno = false;
+		}
+
+		UtilityWallpaper.getInstance().Attesa(false);
+
+		// return Ritorno;
+	}
+
+	/* private int exifToDegrees(int exifOrientation) {
 		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
 		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
 		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
@@ -187,18 +341,18 @@ public class ChangeWallpaper {
 		} catch (IOException ex){
 			return null;
 		}
-	}
+	} */
 
-	private Bitmap PrendeImmagineReale(Context context, StrutturaImmagine si) {
-		if (si == null) {
+	private void wPrendeImmagineReale(Context context, Bitmap bitmap) {
+		/* if (si == null) {
 			return null;
-		}
+		} * /
 
-		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prende immagine sistemata");
+		// UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prende immagine sistemata");
 
 		// Bitmap myBitmap = null;
 
-		boolean ok = true;
+		/* boolean ok = true;
 		String path = si.getPathImmagine();
 		if (!UtilityWallpaper.getInstance().EsisteFile(path)) {
 			path = context.getFilesDir() + "/Download/Appoggio.jpg";
@@ -218,9 +372,9 @@ public class ChangeWallpaper {
 				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Errore preview");
 			}
 
-			myBitmap = CheckRotazione(myBitmap, path);
+			myBitmap = CheckRotazione(myBitmap);
 
-			if (myBitmap != null) {
+			if (myBitmap != null) { * /
 				// if (VariabiliGlobali.getInstance().getStretch().equals("S")) {
 					// Utility.getInstance().ScriveLog("Cambio immagine. Stretch = S");
 
@@ -229,11 +383,11 @@ public class ChangeWallpaper {
 
 				/* if (VariabiliGlobali.getInstance().isResize()) {
 					myBitmap = ConverteDimensioni(myBitmap);
-				} */
+				} * /
 
 			 		// if (VariabiliGlobali.getInstance().isBlur()) {
 						// if (myBitmap != null) {
-							try {
+							/* try {
 								// Bitmap Immaginona = Bitmap.createBitmap(VariabiliGlobali.getInstance().getSchermoX(), VariabiliGlobali.getInstance().getSchermoY(), Bitmap.Config.ARGB_8888);
 								// Canvas comboImage = new Canvas(Immaginona);
 								// float Altezza=(((float) (VariabiliGlobali.getInstance().getSchermoY()))/2)-(myBitmap.getHeight()/2);
@@ -261,12 +415,12 @@ public class ChangeWallpaper {
 
 						myBitmap = Bitmap.createScaledBitmap(myBitmap, (int) VariabiliGlobali.getInstance().getSchermoX() - BordoX,
 								(int) VariabiliGlobali.getInstance().getSchermoY() - BordoY, true);
-					} */
+					} * /
 				// }
 				// SalvaImmagine(myBitmap);
-			} else {
+			/* } else {
 				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Bitmap nulla");
-			}
+			} * /
 
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Aggiorno notifica");
 
@@ -306,7 +460,7 @@ public class ChangeWallpaper {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Svuoto bitmap. File inesistente.");
 
 			return null;
-		}
+		} */
 	}
 	
 	private Bitmap getPreview(Context context, String uri) {
@@ -382,10 +536,6 @@ public class ChangeWallpaper {
 	private Bitmap CentraImmagineTuttoSchermo(Context context, Bitmap bPassata) {
 		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Centra immagine per tutto schermo");
 
-		// 900 x 641
-		// 1440 x 2890
-
-		// x: 150 schermoX: 100 -> (150 / 2) - (100 / 2) = 75 - 50 = 25 Inizio - Dimensione 100
 		try {
 			float width = bPassata.getWidth();
 			float height = bPassata.getHeight();

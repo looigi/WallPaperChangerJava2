@@ -1,14 +1,12 @@
-package com.looigi.wallpaperchanger2.classiStandard;
+package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
@@ -21,26 +19,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiStandard.Esecuzione;
+import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
-import java.io.File;
-import java.io.IOException;
-
-public class InizializzaMaschera {
+public class InizializzaMascheraWallpaper {
     private static final String NomeMaschera = "INITMASCHERA";
     private Long controlloLongPress = null;
 
@@ -524,6 +513,7 @@ public class InizializzaMaschera {
             }
         });
 
+        Switch swcEspansa = (Switch) view.findViewById(R.id.switchEspansa);
 
         Switch swcOnOff = (Switch) view.findViewById(R.id.switchOnOff);
         swcOnOff.setChecked(VariabiliStaticheWallpaper.getInstance().isOnOff());
@@ -532,6 +522,7 @@ public class InizializzaMaschera {
             btnPiuMinuti.setEnabled(true);
             // btnCambioPath.setEnabled(true);
             swcBlur.setEnabled(true);
+            swcEspansa.setEnabled(true);
             swcOffline.setEnabled(true);
             switchScriveTesto.setEnabled(true);
             switchHome.setEnabled(true);
@@ -546,6 +537,7 @@ public class InizializzaMaschera {
             btnPiuMinuti.setEnabled(false);
             // btnCambioPath.setEnabled(false);
             swcBlur.setEnabled(false);
+            swcEspansa.setEnabled(false);
             swcOffline.setEnabled(false);
             switchScriveTesto.setEnabled(false);
             switchHome.setEnabled(false);
@@ -609,13 +601,12 @@ public class InizializzaMaschera {
             }
         });
 
-        Switch swcEspansa = (Switch) view.findViewById(R.id.switchEspansa);
         swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEspansa());
         swcEspansa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setEspansa(isChecked);
 
-                if (isChecked) {
+                /* if (isChecked) {
                     VariabiliStaticheWallpaper.getInstance().setBlur(false);
                     VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(false);
 
@@ -631,7 +622,7 @@ public class InizializzaMaschera {
                     swcBlur.setChecked(true);
                     switchScriveTesto.setEnabled(true);
                     switchScriveTesto.setChecked(true);
-                }
+                } */
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
@@ -647,6 +638,7 @@ public class InizializzaMaschera {
                 btnPiuMinuti.setEnabled(false);
                 // btnCambioPath.setEnabled(false);
                 swcBlur.setEnabled(false);
+                swcEspansa.setEnabled(false);
                 swcOffline.setEnabled(false);
                 switchScriveTesto.setEnabled(false);
                 imgCambiaSubito.setVisibility(LinearLayout.GONE);
@@ -663,18 +655,20 @@ public class InizializzaMaschera {
                     @Override
                     public void run() {
                         // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+                        UtilityWallpaper.getInstance().CambiaImmagine(context);
+
+                        /* if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
                             // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine Manuale---");
                             ChangeWallpaper c = new ChangeWallpaper(context);
                             if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                                boolean fatto = c.setWallpaper(context, null);
-                                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+                                c.setWallpaper(context, null);
+                                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");
                             } else {
                                 int numeroRandom = UtilityWallpaper.getInstance().GeneraNumeroRandom(VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
                                 if (numeroRandom > -1) {
-                                    boolean fatto = c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
-                                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente: " + fatto + "---");
+                                    c.setWallpaper(context, VariabiliStaticheWallpaper.getInstance().getListaImmagini().get(numeroRandom));
+                                    // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");
                                 } else {
                                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine NON cambiata manualmente: Caricamento immagini in corso---");
                                 }
@@ -682,12 +676,13 @@ public class InizializzaMaschera {
                             // } else {
                             //     Log.getInstance().ScriveLog("---Cambio Immagine posticipato per schermo spento---");
                             // VariabiliGlobali.getInstance().setImmagineDaCambiare(true);
-                        }
+                        } */
 
                         btnMenoMinuti.setEnabled(true);
                         btnPiuMinuti.setEnabled(true);
                         // btnCambioPath.setEnabled(true);
                         swcBlur.setEnabled(true);
+                        swcEspansa.setEnabled(true);
                         swcOffline.setEnabled(true);
                         switchScriveTesto.setEnabled(true);
                         imgCambiaSubito.setVisibility(LinearLayout.VISIBLE);
