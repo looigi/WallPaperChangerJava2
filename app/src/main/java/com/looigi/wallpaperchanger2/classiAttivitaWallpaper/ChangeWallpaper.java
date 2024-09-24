@@ -106,7 +106,6 @@ public class ChangeWallpaper {
 		}
 
 		if (SchermoX == -1) {
-			UtilityWallpaper.getInstance().Attesa(false);
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper locale: dimensioni schermo non impostate");
 
 			UtilityWallpaper.getInstance().Attesa(false);
@@ -142,6 +141,8 @@ public class ChangeWallpaper {
 						Handler handler1 = new Handler(Looper.getMainLooper());
 
 						String finalPath = path;
+						Bitmap finalBitmap = bitmap;
+
 						Runnable r1 = new Runnable() {
 							public void run() {
 								if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
@@ -149,70 +150,79 @@ public class ChangeWallpaper {
 
 									List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
 
-									Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
-									int larghezzaImmagine = bitmap.getWidth();
-									int altezzaImmagine = bitmap.getHeight();
+									Bitmap bmpAppoggio = null;
 
-									Bitmap bmpAppoggio;
+									if (r != null) {
+										Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
+										int larghezzaImmagine = bitmap.getWidth();
+										int altezzaImmagine = bitmap.getHeight();
 
-									/* if (r == null || (SchermoX > bitmap.getWidth() && SchermoY > bitmap.getHeight())) {
-										bmpAppoggio = MetteBordoAImmagine(context, bitmap, src);
-									} else { */
+										/* if (r == null || (SchermoX > bitmap.getWidth() && SchermoY > bitmap.getHeight())) {
+											bmpAppoggio = MetteBordoAImmagine(context, bitmap, src);
+										} else { */
 
-									int inizioVisoX = 9999;
-									int inizioVisoY = 9999;
-									int larghezzaViso = -9999;
-									int altezzaViso = -9999;
+										int inizioVisoX = 9999;
+										int inizioVisoY = 9999;
+										int larghezzaViso = -9999;
+										int altezzaViso = -9999;
 
-									for (Rect r1 : r) {
-										if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
-										if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
-										if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
-										if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
+										for (Rect r1 : r) {
+											if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
+											if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
+											if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
+											if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
+										}
+
+										inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+										if (inizioVisoY < 0) { inizioVisoY = 0; }
+										inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+										if (inizioVisoX < 0) { inizioVisoX = 0; }
+
+										// larghezzaViso = larghezzaImmagine - inizioVisoX;
+										// altezzaViso = altezzaImmagine - inizioVisoY;
+
+										/* larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+										if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
+											larghezzaViso = larghezzaImmagine - inizioVisoX;
+										} */
+										altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+										if (altezzaViso + inizioVisoY > altezzaImmagine) {
+											altezzaViso = altezzaImmagine - inizioVisoY;
+										}
+
+										try {
+											bmpAppoggio = Bitmap.createBitmap(
+													bitmap,
+													inizioVisoX,
+													inizioVisoY,
+													larghezzaViso,
+													altezzaViso
+											);
+
+											/* bmpAppoggio = Bitmap.createScaledBitmap(
+													bmpAppoggio,
+													SchermoX,
+													SchermoY,
+													true
+											); */
+										} catch (Exception e) {
+											UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+													"Cambio immagine. Errore conversione: " +
+															UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+											bmpAppoggio = finalBitmap;
+										}
+									} else {
+										bmpAppoggio = finalBitmap;
 									}
 
-									inizioVisoY -= (int) (larghezzaImmagine * .25);
-									if (inizioVisoY < 0) { inizioVisoY = 0; }
-									inizioVisoX -= (int) (larghezzaImmagine * .25);
-									if (inizioVisoX < 0) { inizioVisoX = 0; }
+									bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
 
-									larghezzaViso = larghezzaImmagine - inizioVisoX;
-									altezzaViso = altezzaImmagine - inizioVisoY;
+									setWallpaperLocaleEsegue(context, bmpAppoggio);
 
-									// if (larghezzaViso > larghezzaImmagine) { larghezzaViso = larghezzaImmagine - inizioVisoX; }
-									// if (altezzaViso > altezzaImmagine) { altezzaViso = altezzaImmagine - inizioVisoY; }
-
-									// larghezzaViso += (SchermoX / 10);
-									// altezzaViso += (SchermoY / 10);
-
-									try {
-										bmpAppoggio = Bitmap.createBitmap(
-												bitmap,
-												inizioVisoX,
-												inizioVisoY,
-												larghezzaViso,
-												altezzaViso
-										);
-
-										/* bmpAppoggio = Bitmap.createScaledBitmap(
-												bmpAppoggio,
-												SchermoX,
-												SchermoY,
-												true
-										); */
-
-										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
-
-										setWallpaperLocaleEsegue(context, bmpAppoggio);
-
-										faseFinale(context, src);
-									} catch (Exception e) {
-										UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-												"Cambio immagine. Errore conversione: " +
-														UtilityDetector.getInstance().PrendeErroreDaException(e));
-									}
-
+									faseFinale(context, src);
 									// }
+									UtilityWallpaper.getInstance().Attesa(false);
 								} else {
 									handler1.postDelayed(this, 1000);
 								}
@@ -221,6 +231,7 @@ public class ChangeWallpaper {
 						handler1.postDelayed(r1, 1000);
 					} catch (Exception e) {
 						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore preview");
+						UtilityWallpaper.getInstance().Attesa(false);
 					}
 				}
 			}

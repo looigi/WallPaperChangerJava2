@@ -552,6 +552,7 @@ public class InizializzaMascheraWallpaper {
                     btnPiuMinuti.setEnabled(true);
                     // btnCambioPath.setEnabled(true);
                     swcBlur.setEnabled(true);
+                    swcEspansa.setEnabled(true);
                     swcOffline.setEnabled(true);
                     switchScriveTesto.setEnabled(true);
                     switchHome.setEnabled(true);
@@ -561,6 +562,7 @@ public class InizializzaMascheraWallpaper {
                     btnPiuMinuti.setEnabled(false);
                     // btnCambioPath.setEnabled(false);
                     swcBlur.setEnabled(false);
+                    swcEspansa.setEnabled(false);
                     swcOffline.setEnabled(false);
                     switchScriveTesto.setEnabled(false);
                     switchHome.setEnabled(false);

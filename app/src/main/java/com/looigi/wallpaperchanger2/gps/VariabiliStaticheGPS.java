@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.gps;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,22 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
+    public static int attesaControlloGPS = 1;
     // private int oraGpsAccensione = 16;
     // private int minutiGpsAccensione = 5;
     // private int oraGpsSpengimento = 7;
     // private int minutiGpsSpengimento = 30;
     // private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
     private StrutturaAccensioneGPS accensioneGPS;
+    private ImageView bitmapHome;
+
+    public ImageView getBitmapHome() {
+        return bitmapHome;
+    }
+
+    public void setBitmapHome(ImageView bitmapHome) {
+        this.bitmapHome = bitmapHome;
+    }
 
     public StrutturaAccensioneGPS getAccensioneGPS() {
         return accensioneGPS;

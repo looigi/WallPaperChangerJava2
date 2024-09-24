@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
@@ -58,12 +61,28 @@ public class GestioneGPS {
             locationManager.removeUpdates(locationListenerGPS);
         }
 
+        db_dati_gps db = new db_dati_gps(context);
+        db.ScriveAccensioni(context);
+
+        Bitmap bmGps;
+        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+        } else {
+            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+        }
+        if (VariabiliStaticheGPS.getInstance().getBitmapHome() != null) {
+            VariabiliStaticheGPS.getInstance().getBitmapHome().setImageBitmap(bmGps);
+        }
+
         GestioneNotifiche.getInstance().AggiornaNotifica();
     }
 
     public void AbilitaTimer(Context context) {
         if (handler1 != null) {
-            return;
+            handler1.removeCallbacks(r1);
+            handler1 = null;
+            handlerThread1 = null;
+            // return;
         }
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita Timer GPS");
@@ -75,7 +94,7 @@ public class GestioneGPS {
         handlerThread1 = new HandlerThread("background-thread_timer_gps");
         handlerThread1.start();
 
-        int secondiAttesa = 15 * 60 * 1000;
+        int secondiAttesa = VariabiliStaticheGPS.attesaControlloGPS * 60 * 1000;
 
         handler1 = new Handler(handlerThread1.getLooper());
         r1 = new Runnable() {
@@ -100,7 +119,7 @@ public class GestioneGPS {
             int hD = Integer.parseInt(oraDisatt[0]);
             int mD = Integer.parseInt(oraDisatt[1]);
 
-            if (hD >= hour || (hD == hour && mD >= minute)) {
+            if (hour >= hD || (hour == hD && minute >= mD)) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
@@ -114,7 +133,7 @@ public class GestioneGPS {
             int hD = Integer.parseInt(oraRiatt[0]);
             int mD = Integer.parseInt(oraRiatt[1]);
 
-            if (hD >= hour || (hD == hour && mD >= minute)) {
+            if (hour >= hD || (hour == hD && minute >= mD)) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
@@ -126,7 +145,7 @@ public class GestioneGPS {
     }
 
     private void ControlloAccSpegn() {
-        StrutturaAccensioneGPS s = new StrutturaAccensioneGPS();
+        StrutturaAccensioneGPS s = VariabiliStaticheGPS.getInstance().getAccensioneGPS();
         if (s != null) {
             Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_WEEK);

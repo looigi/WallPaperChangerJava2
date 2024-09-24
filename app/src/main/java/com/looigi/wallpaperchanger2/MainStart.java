@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.gps.Mappa;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.gps.db_dati_gps;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.HashMap;
@@ -95,9 +96,9 @@ public class MainStart  extends Activity {
                                         context,
                                         VariabiliStaticheDetector.getInstance().getMainActivity());
                             }
-                        }, 1000);
+                        }, 500);
                     }
-                }, 1000);
+                }, 500);
             }
         });
 
@@ -123,9 +124,9 @@ public class MainStart  extends Activity {
                                         context,
                                         VariabiliStaticheWallpaper.getInstance().getMainActivity());
                             }
-                        }, 1000);
+                        }, 500);
                     }
-                }, 1000);
+                }, 500);
             }
         });
 
@@ -146,12 +147,15 @@ public class MainStart  extends Activity {
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }
-                }, 1000);
+                }, 500);
             }
         });
 
         if (VariabiliStaticheStart.getInstance().isDetector()) {
-            VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+            db_dati_gps db = new db_dati_gps(context);
+            db.CaricaAccensioni(context);
+
+            // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
 
             GestioneGPS g = new GestioneGPS();
             VariabiliStaticheGPS.getInstance().setGestioneGPS(g);

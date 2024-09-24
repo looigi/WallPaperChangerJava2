@@ -9,17 +9,28 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.RilevamentoVolti;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.List;
 
 public class GestioneImmagini {
+	private static final String NomeMaschera = "GESTIONEIMMAGINI";
+
 	public void Ruotaimmagine(String NomeFile, int Angolo) {
 		try {
 			rotateBitmap(NomeFile, Angolo);
@@ -173,6 +184,103 @@ public class GestioneImmagini {
 		}
 
 		UtilityDetector.getInstance().VisualizzaMultimedia(context);
+	}
+
+	public void PrendeVolto(Context context) {
+		UtilityWallpaper.getInstance().Attesa(true);
+
+		String Path = UtilityDetector.getInstance().PrendePath(context);
+		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+		String NomeDestinazione = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+		String[] c = NomeDestinazione.split("\\.");
+		if (c.length > 0) {
+			Calendar calendar = Calendar.getInstance();
+			int s = calendar.get(Calendar.SECOND);
+			NomeDestinazione = c[0] + "_" + s + "." + c[1];
+		}
+
+		VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
+
+		RilevamentoVolti rv = new RilevamentoVolti(context);
+		rv.ElaboraImmagine(Path + NomeImmagine);
+
+		Handler handler1 = new Handler(Looper.getMainLooper());
+
+		String finalPath = Path + NomeImmagine;
+		String finalNomeDestinazione = NomeDestinazione;
+
+		Runnable r1 = new Runnable() {
+			public void run() {
+				if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
+					handler1.removeCallbacks(this);
+
+					List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
+
+					Bitmap bmpAppoggio = null;
+
+					if (r != null) {
+						Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
+						int larghezzaImmagine = bitmap.getWidth();
+						int altezzaImmagine = bitmap.getHeight();
+
+						int inizioVisoX = 9999;
+						int inizioVisoY = 9999;
+						int larghezzaViso = -9999;
+						// int altezzaViso = -9999;
+
+						for (Rect r1 : r) {
+							if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
+							if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
+							if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
+							// if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
+						}
+
+						inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+						if (inizioVisoY < 0) { inizioVisoY = 0; }
+						inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+						if (inizioVisoX < 0) { inizioVisoX = 0; }
+
+						/* larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+						if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
+							larghezzaViso = larghezzaImmagine - inizioVisoX;
+						}
+						altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+						if (altezzaViso + inizioVisoY > altezzaImmagine) {
+							altezzaViso = altezzaImmagine - inizioVisoY;
+						} */
+
+						try {
+							bmpAppoggio = Bitmap.createBitmap(
+									bitmap,
+									inizioVisoX,
+									inizioVisoY,
+									larghezzaViso,
+									altezzaImmagine - inizioVisoY
+							);
+
+							FileOutputStream out = new FileOutputStream(Path + finalNomeDestinazione);
+							bmpAppoggio.compress(CompressFormat.JPEG, 100, out);
+
+							UtilityDetector.getInstance().CaricaMultimedia(context);
+							UtilityDetector.getInstance().VisualizzaMultimedia(context);
+						} catch (IOException e) {
+							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+									"Cambio immagine. IO Exception: " +
+											UtilityDetector.getInstance().PrendeErroreDaException(e));
+						} catch (Exception e) {
+							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+									"Cambio immagine. Errore conversione: " +
+											UtilityDetector.getInstance().PrendeErroreDaException(e));
+						}
+					}
+
+					UtilityWallpaper.getInstance().Attesa(false);
+				} else {
+					handler1.postDelayed(this, 1000);
+				}
+			}
+		};
+		handler1.postDelayed(r1, 1000);
 	}
 
 	public void FlipImmagine(Context context, boolean Orizzontale) {

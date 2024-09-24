@@ -172,6 +172,7 @@ public class InizializzaMascheraDetector {
         });
 
         ImageView imgGps = (ImageView) act.findViewById(R.id.imgGPS);
+        VariabiliStaticheGPS.getInstance().setBitmapHome(imgGps);
         Bitmap bmGps;
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
             bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
@@ -624,6 +625,7 @@ public class InizializzaMascheraDetector {
         ImageView btnAvanti = (ImageView) act.findViewById(R.id.imgAvanti);
         ImageView btnElimina = (ImageView) act.findViewById(R.id.imgElimina);
         ImageView btnRefresh = (ImageView) act.findViewById(R.id.imgRefresh);
+        ImageView btnVolto = (ImageView) act.findViewById(R.id.imgVolto);
 
         VariabiliStaticheDetector.getInstance().setBtnFlipX((ImageView) act.findViewById(R.id.imgFlipX));
         VariabiliStaticheDetector.getInstance().setBtnFlipY((ImageView) act.findViewById(R.id.imgFlipY));
@@ -634,6 +636,13 @@ public class InizializzaMascheraDetector {
             public void onClick(View v) {
                 UtilityDetector.getInstance().CaricaMultimedia(context);
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
+            }
+        });
+
+        btnVolto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                GestioneImmagini u = new GestioneImmagini();
+                u.PrendeVolto(context);
             }
         });
 
@@ -1101,432 +1110,466 @@ public class InizializzaMascheraDetector {
     }
 
     private void impostaAccensioniGPS(Context context, Activity act) {
-        db_dati_gps db = new db_dati_gps(context);
-        db.CaricaAccensioni(context);
+        if (VariabiliStaticheGPS.getInstance().getAccensioneGPS() != null) {
+            EditText etOraDisattivazioneDomenica = (EditText) act.findViewById(R.id.edtOraInizioDomenica);
+            EditText etOraDisattivazioneLunedi = (EditText) act.findViewById(R.id.edtOraInizioLunedi);
+            EditText etOraDisattivazioneMartedi = (EditText) act.findViewById(R.id.edtOraInizioMartedi);
+            EditText etOraDisattivazioneMercoledi = (EditText) act.findViewById(R.id.edtOraInizioMercoledi);
+            EditText etOraDisattivazioneGiovedi = (EditText) act.findViewById(R.id.edtOraInizioGiovedi);
+            EditText etOraDisattivazioneVenerdi = (EditText) act.findViewById(R.id.edtOraInizioVenerdi);
+            EditText etOraDisattivazioneSabato = (EditText) act.findViewById(R.id.edtOraInizioSabato);
 
-        EditText etOraDisattivazioneDomenica = (EditText) act.findViewById(R.id.edtOraInizioDomenica);
-        EditText etOraDisattivazioneLunedi = (EditText) act.findViewById(R.id.edtOraInizioLunedi);
-        EditText etOraDisattivazioneMartedi = (EditText) act.findViewById(R.id.edtOraInizioMartedi);
-        EditText etOraDisattivazioneMercoledi = (EditText) act.findViewById(R.id.edtOraInizioMercoledi);
-        EditText etOraDisattivazioneGiovedi = (EditText) act.findViewById(R.id.edtOraInizioGiovedi);
-        EditText etOraDisattivazioneVenerdi = (EditText) act.findViewById(R.id.edtOraInizioVenerdi);
-        EditText etOraDisattivazioneSabato = (EditText) act.findViewById(R.id.edtOraInizioSabato);
-        EditText etOraRiattivazioneDomenica = (EditText) act.findViewById(R.id.edtOraFineDomenica);
-        EditText etOraRiattivazioneLunedi = (EditText) act.findViewById(R.id.edtOraFineLunedi);
-        EditText etOraRiattivazioneMartedi = (EditText) act.findViewById(R.id.edtOraFineMartedi);
-        EditText etOraRiattivazioneMercoledi = (EditText) act.findViewById(R.id.edtOraFineMercoledi);
-        EditText etOraRiattivazioneGiovedi = (EditText) act.findViewById(R.id.edtOraFineGiovedi);
-        EditText etOraRiattivazioneVenerdi = (EditText) act.findViewById(R.id.edtOraFineVenerdi);
-        EditText etOraRiattivazioneSabato = (EditText) act.findViewById(R.id.edtOraFineSabato);
+            EditText etOraRiattivazioneDomenica = (EditText) act.findViewById(R.id.edtOraFineDomenica);
+            EditText etOraRiattivazioneLunedi = (EditText) act.findViewById(R.id.edtOraFineLunedi);
+            EditText etOraRiattivazioneMartedi = (EditText) act.findViewById(R.id.edtOraFineMartedi);
+            EditText etOraRiattivazioneMercoledi = (EditText) act.findViewById(R.id.edtOraFineMercoledi);
+            EditText etOraRiattivazioneGiovedi = (EditText) act.findViewById(R.id.edtOraFineGiovedi);
+            EditText etOraRiattivazioneVenerdi = (EditText) act.findViewById(R.id.edtOraFineVenerdi);
+            EditText etOraRiattivazioneSabato = (EditText) act.findViewById(R.id.edtOraFineSabato);
 
-        Switch sDomenica = act.findViewById(R.id.optDomenica);
-        Switch sLunedi = act.findViewById(R.id.optLunedi);
-        Switch sMartedi = act.findViewById(R.id.optMartedi);
-        Switch sMercoledi = act.findViewById(R.id.optMercoledi);
-        Switch sGiovedi = act.findViewById(R.id.optGiovedi);
-        Switch sVenerdi = act.findViewById(R.id.optVenerdi);
-        Switch sSabato = act.findViewById(R.id.optSabato);
+            Switch sDomenica = act.findViewById(R.id.optDomenica);
+            Switch sLunedi = act.findViewById(R.id.optLunedi);
+            Switch sMartedi = act.findViewById(R.id.optMartedi);
+            Switch sMercoledi = act.findViewById(R.id.optMercoledi);
+            Switch sGiovedi = act.findViewById(R.id.optGiovedi);
+            Switch sVenerdi = act.findViewById(R.id.optVenerdi);
+            Switch sSabato = act.findViewById(R.id.optSabato);
 
-        sDomenica.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica());
-        if (sDomenica.isChecked()) {
-            etOraDisattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneDomenica.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneDomenica.setVisibility(LinearLayout.GONE);
+            sDomenica.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica());
+            if (sDomenica.isChecked()) {
+                etOraDisattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneDomenica.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneDomenica.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sDomenica.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoDomenica(sDomenica.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica()) {
+                        etOraDisattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneDomenica.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneDomenica.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sLunedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoLunedi());
+            if (sLunedi.isChecked()) {
+                etOraDisattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneLunedi.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneLunedi.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sLunedi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoLunedi(sLunedi.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoLunedi()) {
+                        etOraDisattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneLunedi.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneLunedi.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sMartedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMartedi());
+            if (sMartedi.isChecked()) {
+                etOraDisattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneMartedi.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneMartedi.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sMartedi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoMartedi(sMartedi.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMartedi()) {
+                        etOraDisattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneMartedi.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneMartedi.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sMercoledi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMercoledi());
+            if (sMercoledi.isChecked()) {
+                etOraDisattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneMercoledi.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneMercoledi.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sMercoledi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoMercoledi(sMercoledi.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMercoledi()) {
+                        etOraDisattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneMercoledi.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneMercoledi.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sGiovedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoGiovedi());
+            if (sGiovedi.isChecked()) {
+                etOraDisattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneGiovedi.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneGiovedi.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sGiovedi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoGiovedi(sGiovedi.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoGiovedi()) {
+                        etOraDisattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneGiovedi.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneGiovedi.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sVenerdi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoVenerdi());
+            if (sVenerdi.isChecked()) {
+                etOraDisattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneVenerdi.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneVenerdi.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sVenerdi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoVenerdi(sVenerdi.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoVenerdi()) {
+                        etOraDisattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneVenerdi.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneVenerdi.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            sSabato.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoSabato());
+            if (sSabato.isChecked()) {
+                etOraDisattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
+                etOraRiattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                etOraDisattivazioneSabato.setVisibility(LinearLayout.INVISIBLE);
+                etOraRiattivazioneSabato.setVisibility(LinearLayout.INVISIBLE);
+            }
+            sSabato.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoSabato(sSabato.isChecked());
+
+                    if (VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoSabato()) {
+                        etOraDisattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
+                        etOraRiattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        etOraDisattivazioneSabato.setVisibility(LinearLayout.INVISIBLE);
+                        etOraRiattivazioneSabato.setVisibility(LinearLayout.INVISIBLE);
+                    }
+
+                    db_dati_gps db = new db_dati_gps(context);
+                    db.ScriveAccensioni(context);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                }
+            });
+
+            etOraDisattivazioneDomenica.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneDomenica());
+            etOraDisattivazioneDomenica.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneDomenica(etOraDisattivazioneDomenica.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneLunedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneLunedi());
+            etOraDisattivazioneLunedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneLunedi(etOraDisattivazioneLunedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneMartedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMartedi());
+            etOraDisattivazioneMartedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneMartedi(etOraDisattivazioneMartedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneMercoledi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMercoledi());
+            etOraDisattivazioneMercoledi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneMercoledi(etOraDisattivazioneMercoledi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneGiovedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneGiovedi());
+            etOraDisattivazioneGiovedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneGiovedi(etOraDisattivazioneGiovedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneVenerdi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneVenerdi());
+            etOraDisattivazioneVenerdi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneVenerdi(etOraDisattivazioneVenerdi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraDisattivazioneSabato.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneSabato());
+            etOraDisattivazioneSabato.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraDisattivazioneSabato(etOraDisattivazioneSabato.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+
+            etOraRiattivazioneDomenica.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneDomenica());
+            etOraRiattivazioneDomenica.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneDomenica(etOraRiattivazioneDomenica.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneLunedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneLunedi());
+            etOraRiattivazioneLunedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneLunedi(etOraRiattivazioneLunedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneMartedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMartedi());
+            etOraRiattivazioneMartedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneMartedi(etOraRiattivazioneMartedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneMercoledi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMercoledi());
+            etOraRiattivazioneMercoledi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneMercoledi(etOraRiattivazioneMercoledi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneGiovedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneGiovedi());
+            etOraRiattivazioneGiovedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneGiovedi(etOraRiattivazioneGiovedi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneVenerdi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneVenerdi());
+            etOraRiattivazioneVenerdi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneVenerdi(etOraRiattivazioneVenerdi.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
+            etOraRiattivazioneSabato.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneSabato());
+            etOraRiattivazioneSabato.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        {
+                            VariabiliStaticheGPS.getInstance().getAccensioneGPS()
+                                    .setOraRiattivazioneSabato(etOraRiattivazioneSabato.getText().toString());
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScriveAccensioni(context);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                        }
+                    }
+                }
+            });
         }
-        sDomenica.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoDomenica(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneDomenica.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneDomenica.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneDomenica.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sLunedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoLunedi());
-        if (sLunedi.isChecked()) {
-            etOraDisattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneLunedi.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneLunedi.setVisibility(LinearLayout.GONE);
-        }
-        sLunedi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoLunedi();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoLunedi(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneLunedi.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneLunedi.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneLunedi.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sMartedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMartedi());
-        if (sMartedi.isChecked()) {
-            etOraDisattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneMartedi.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneMartedi.setVisibility(LinearLayout.GONE);
-        }
-        sMartedi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMartedi();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoMartedi(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneMartedi.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneMartedi.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneMartedi.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sMercoledi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMercoledi());
-        if (sMercoledi.isChecked()) {
-            etOraDisattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneMercoledi.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneMercoledi.setVisibility(LinearLayout.GONE);
-        }
-        sMercoledi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoMercoledi();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoMercoledi(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneMercoledi.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneMercoledi.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneMercoledi.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sGiovedi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoGiovedi());
-        if (sGiovedi.isChecked()) {
-            etOraDisattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneGiovedi.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneGiovedi.setVisibility(LinearLayout.GONE);
-        }
-        sGiovedi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoGiovedi();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoGiovedi(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneGiovedi.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneGiovedi.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneGiovedi.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sVenerdi.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoVenerdi());
-        if (sVenerdi.isChecked()) {
-            etOraDisattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneVenerdi.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneVenerdi.setVisibility(LinearLayout.GONE);
-        }
-        sVenerdi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoVenerdi();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoVenerdi(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneVenerdi.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneVenerdi.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneVenerdi.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-        sSabato.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoSabato());
-        if (sSabato.isChecked()) {
-            etOraDisattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
-            etOraRiattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            etOraDisattivazioneSabato.setVisibility(LinearLayout.GONE);
-            etOraRiattivazioneSabato.setVisibility(LinearLayout.GONE);
-        }
-        sSabato.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean acceso = VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoSabato();
-                acceso = !acceso;
-                VariabiliStaticheGPS.getInstance().getAccensioneGPS().setSpegnimentoAttivoSabato(acceso);
-
-                if (acceso) {
-                    etOraDisattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
-                    etOraRiattivazioneSabato.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    etOraDisattivazioneSabato.setVisibility(LinearLayout.GONE);
-                    etOraRiattivazioneSabato.setVisibility(LinearLayout.GONE);
-                }
-
-                db_dati_gps db = new db_dati_gps(context);
-                db.ScriveAccensioni(context);
-            }
-        });
-
-        etOraDisattivazioneDomenica.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneDomenica());
-        etOraDisattivazioneDomenica.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneDomenica(etOraDisattivazioneDomenica.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneLunedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneLunedi());
-        etOraDisattivazioneLunedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneLunedi(etOraDisattivazioneLunedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneMartedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMartedi());
-        etOraDisattivazioneMartedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneMartedi(etOraDisattivazioneMartedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneMercoledi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneMercoledi());
-        etOraDisattivazioneMercoledi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneMercoledi(etOraDisattivazioneMercoledi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneGiovedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneGiovedi());
-        etOraDisattivazioneGiovedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneGiovedi(etOraDisattivazioneGiovedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneVenerdi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneVenerdi());
-        etOraDisattivazioneVenerdi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneVenerdi(etOraDisattivazioneVenerdi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraDisattivazioneSabato.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneSabato());
-        etOraDisattivazioneSabato.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraDisattivazioneSabato(etOraDisattivazioneSabato.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-
-        etOraRiattivazioneDomenica.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneDomenica());
-        etOraRiattivazioneDomenica.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneDomenica(etOraRiattivazioneDomenica.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneLunedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneLunedi());
-        etOraRiattivazioneLunedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneLunedi(etOraRiattivazioneLunedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneMartedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMartedi());
-        etOraRiattivazioneMartedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneMartedi(etOraRiattivazioneMartedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneMercoledi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneMercoledi());
-        etOraRiattivazioneMercoledi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneMercoledi(etOraRiattivazioneMercoledi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneGiovedi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneGiovedi());
-        etOraRiattivazioneGiovedi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneGiovedi(etOraRiattivazioneGiovedi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneVenerdi.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneVenerdi());
-        etOraRiattivazioneVenerdi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneVenerdi(etOraRiattivazioneVenerdi.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
-        etOraRiattivazioneSabato.setText(VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneSabato());
-        etOraRiattivazioneSabato.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheGPS.getInstance().getAccensioneGPS()
-                                .setOraRiattivazioneSabato(etOraRiattivazioneSabato.getText().toString());
-
-                        db_dati_gps db = new db_dati_gps(context);
-                        db.ScriveAccensioni(context);
-                    }
-                }
-            }
-        });
     }
 }

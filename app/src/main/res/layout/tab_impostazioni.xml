@@ -162,49 +162,42 @@
 
             <Switch
                 android:id="@+id/optDomenica"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Domenica" />
 
             <Switch
                 android:id="@+id/optLunedi"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Lunedì" />
 
             <Switch
                 android:id="@+id/optMartedi"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Martedì" />
 
             <Switch
                 android:id="@+id/optMercoledi"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Mercoledì" />
 
             <Switch
                 android:id="@+id/optGiovedi"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Giovedì" />
 
             <Switch
                 android:id="@+id/optVenerdi"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Venerdì" />
 
             <Switch
                 android:id="@+id/optSabato"
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="Sabato" />

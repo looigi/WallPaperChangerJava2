@@ -78,8 +78,8 @@ public class db_dati_gps {
                         "OraAccMercoledi VARCHAR, OraSpegnMercoledi VARCHAR, " +
                         "OraAccGiovedi VARCHAR, OraSpegnGiovedi VARCHAR, " +
                         "OraAccVenerdi VARCHAR, OraSpegnVenerdi VARCHAR, " +
-                        "OraAccSabato VARCHAR, OraSpegnSabato VARCHAR " +
-                        ")";
+                        "OraAccSabato VARCHAR, OraSpegnSabato VARCHAR, " +
+                        "GPSAttivo VARCHAR)";
 
                 myDB.execSQL(sql);
             }
@@ -89,7 +89,7 @@ public class db_dati_gps {
         }
     }
 
-    public Boolean ScriveAccensioni(Context context) {
+    public Boolean  ScriveAccensioni(Context context) {
         if (myDB != null) {
             try {
                 String Imm = "";
@@ -118,7 +118,9 @@ public class db_dati_gps {
                         + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneVenerdi()) + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneVenerdi()) + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraDisattivazioneSabato()) + "', "
-                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneSabato()) + "' "
+                        + "'" + (VariabiliStaticheGPS.getInstance().getAccensioneGPS().getOraRiattivazioneSabato()) + "', "
+                        // + "'" + (VariabiliStaticheGPS.getInstance().isGpsAttivo() ? "S" : "N") + "' "
+                        + "'-' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -171,6 +173,7 @@ public class db_dati_gps {
                         s.setOraRiattivazioneVenerdi(c.getString(18));
                         s.setOraDisattivazioneSabato(c.getString(19));
                         s.setOraRiattivazioneSabato(c.getString(20));
+                        // VariabiliStaticheGPS.getInstance().setGpsAttivo(c.getString(21).equals("S"));
                         VariabiliStaticheGPS.getInstance().setAccensioneGPS(s);
 
                         return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
@@ -206,6 +209,7 @@ public class db_dati_gps {
                     s.setOraRiattivazioneVenerdi("16:00");
                     s.setOraDisattivazioneSabato("08:00");
                     s.setOraRiattivazioneSabato("16:00");
+                    VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
                     VariabiliStaticheGPS.getInstance().setAccensioneGPS(s);
 
                     return true;
