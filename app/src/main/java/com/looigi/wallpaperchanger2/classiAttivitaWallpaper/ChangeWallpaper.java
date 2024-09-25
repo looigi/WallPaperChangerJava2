@@ -2,21 +2,26 @@ package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.util.DisplayMetrics;
 import android.view.Display;
+import android.widget.ImageView;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
@@ -98,6 +103,34 @@ public class ChangeWallpaper {
 		// return true;
 	}
 
+	private int exifToDegrees(int exifOrientation) {
+		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+		return 0;
+	}
+
+	private Bitmap RuotaImmagine(Context context, String path, Bitmap bitmap) {
+		File curFile = new File(path); // ... This is an image file from my device.
+		Bitmap rotatedBitmap;
+
+		try {
+			ExifInterface exif = new ExifInterface(curFile.getPath());
+			int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			int rotationInDegrees = exifToDegrees(rotation);
+			Matrix matrix = new Matrix();
+			if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
+			rotatedBitmap = Bitmap.createBitmap(bitmap,0,0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+			return rotatedBitmap;
+		} catch(IOException ex){
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+					"Cambio immagine. Errore rotazione: " +
+					UtilityWallpaper.getInstance().PrendeErroreDaException(ex));
+			return bitmap;
+		}
+	}
+
 	public void setWallpaperLocale(Context context, StrutturaImmagine src) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
@@ -121,83 +154,96 @@ public class ChangeWallpaper {
 			}
 			if (ok) {
 				Bitmap bitmap = BitmapFactory.decodeFile(path);
+				bitmap = RuotaImmagine(context, path, bitmap);
+				if (bitmap != null) {
+					if (!VariabiliStaticheWallpaper.getInstance().isEspansa()) {
+						// Cambio immagine non espansa
+						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Mette bordo a immagine");
 
-				if (!VariabiliStaticheWallpaper.getInstance().isEspansa()) {
-					// Cambio immagine non espansa
-					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine. Mette bordo a immagine");
+						bitmap = MetteBordoAImmagine(context, bitmap, src);
 
-					bitmap = MetteBordoAImmagine(context, bitmap, src);
+						setWallpaperLocaleEsegue(context, bitmap);
 
-					setWallpaperLocaleEsegue(context, bitmap);
+						faseFinale(context, src);
+					} else {
+						try {
+							VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
 
-					faseFinale(context, src);
-				} else {
-					try {
-						VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
+							RilevamentoVolti rv = new RilevamentoVolti(context);
+							rv.ElaboraImmagineDaPath(path);
 
-						RilevamentoVolti rv = new RilevamentoVolti(context);
-						rv.ElaboraImmagine(path);
+							Handler handler1 = new Handler(Looper.getMainLooper());
 
-						Handler handler1 = new Handler(Looper.getMainLooper());
+							String finalPath = path;
+							Bitmap finalBitmap = bitmap;
 
-						String finalPath = path;
-						Bitmap finalBitmap = bitmap;
+							Runnable r1 = new Runnable() {
+								public void run() {
+									if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
+										handler1.removeCallbacks(this);
 
-						Runnable r1 = new Runnable() {
-							public void run() {
-								if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
-									handler1.removeCallbacks(this);
+										List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
 
-									List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
+										Bitmap bmpAppoggio = null;
 
-									Bitmap bmpAppoggio = null;
-
-									if (r != null) {
-										Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
-										int larghezzaImmagine = bitmap.getWidth();
-										int altezzaImmagine = bitmap.getHeight();
+										if (r != null) {
+											Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
+											int larghezzaImmagine = bitmap.getWidth();
+											int altezzaImmagine = bitmap.getHeight();
 
 										/* if (r == null || (SchermoX > bitmap.getWidth() && SchermoY > bitmap.getHeight())) {
 											bmpAppoggio = MetteBordoAImmagine(context, bitmap, src);
 										} else { */
 
-										int inizioVisoX = 9999;
-										int inizioVisoY = 9999;
-										int larghezzaViso = -9999;
-										int altezzaViso = -9999;
+											int inizioVisoX = 9999;
+											int inizioVisoY = 9999;
+											int larghezzaViso = -9999;
+											int altezzaViso = -9999;
 
-										for (Rect r1 : r) {
-											if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
-											if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
-											if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
-											if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
-										}
+											for (Rect r1 : r) {
+												if (r1.left < inizioVisoX) {
+													inizioVisoX = r1.left;
+												}
+												if (r1.top < inizioVisoY) {
+													inizioVisoY = r1.top;
+												}
+												if (r1.right > larghezzaViso) {
+													larghezzaViso = r1.right;
+												}
+												if (r1.bottom > altezzaViso) {
+													altezzaViso = r1.bottom;
+												}
+											}
 
-										inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
-										if (inizioVisoY < 0) { inizioVisoY = 0; }
-										inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
-										if (inizioVisoX < 0) { inizioVisoX = 0; }
+											inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+											if (inizioVisoY < 0) {
+												inizioVisoY = 0;
+											}
+											inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+											if (inizioVisoX < 0) {
+												inizioVisoX = 0;
+											}
 
-										// larghezzaViso = larghezzaImmagine - inizioVisoX;
-										// altezzaViso = altezzaImmagine - inizioVisoY;
+											// larghezzaViso = larghezzaImmagine - inizioVisoX;
+											// altezzaViso = altezzaImmagine - inizioVisoY;
 
-										/* larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
-										if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
-											larghezzaViso = larghezzaImmagine - inizioVisoX;
-										} */
-										altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
-										if (altezzaViso + inizioVisoY > altezzaImmagine) {
-											altezzaViso = altezzaImmagine - inizioVisoY;
-										}
+											// larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+											if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
+												larghezzaViso = larghezzaImmagine - inizioVisoX;
+											}
+											altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+											if (altezzaViso + inizioVisoY > altezzaImmagine) {
+												altezzaViso = altezzaImmagine - inizioVisoY;
+											}
 
-										try {
-											bmpAppoggio = Bitmap.createBitmap(
-													bitmap,
-													inizioVisoX,
-													inizioVisoY,
-													larghezzaViso,
-													altezzaViso
-											);
+											try {
+												bmpAppoggio = Bitmap.createBitmap(
+														bitmap,
+														inizioVisoX,
+														inizioVisoY,
+														larghezzaViso,
+														altezzaViso
+												);
 
 											/* bmpAppoggio = Bitmap.createScaledBitmap(
 													bmpAppoggio,
@@ -205,34 +251,38 @@ public class ChangeWallpaper {
 													SchermoY,
 													true
 											); */
-										} catch (Exception e) {
-											UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-													"Cambio immagine. Errore conversione: " +
-															UtilityDetector.getInstance().PrendeErroreDaException(e));
+											} catch (Exception e) {
+												UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+														"Cambio immagine. Errore conversione: " +
+																UtilityDetector.getInstance().PrendeErroreDaException(e));
 
+												bmpAppoggio = finalBitmap;
+											}
+										} else {
 											bmpAppoggio = finalBitmap;
 										}
+
+										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
+
+										setWallpaperLocaleEsegue(context, bmpAppoggio);
+
+										faseFinale(context, src);
+										// }
+										UtilityWallpaper.getInstance().Attesa(false);
 									} else {
-										bmpAppoggio = finalBitmap;
+										handler1.postDelayed(this, 1000);
 									}
-
-									bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
-
-									setWallpaperLocaleEsegue(context, bmpAppoggio);
-
-									faseFinale(context, src);
-									// }
-									UtilityWallpaper.getInstance().Attesa(false);
-								} else {
-									handler1.postDelayed(this, 1000);
 								}
-							}
-						};
-						handler1.postDelayed(r1, 1000);
-					} catch (Exception e) {
-						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore preview");
-						UtilityWallpaper.getInstance().Attesa(false);
+							};
+							handler1.postDelayed(r1, 1000);
+						} catch (Exception e) {
+							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore preview");
+							UtilityWallpaper.getInstance().Attesa(false);
+						}
 					}
+				} else {
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore rotazione");
+					UtilityWallpaper.getInstance().Attesa(false);
 				}
 			}
 		}

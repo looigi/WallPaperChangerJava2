@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiAttivitaDetector;
+package com.looigi.wallpaperchanger2.modificaImmagine;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,10 +12,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.RilevamentoVolti;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -42,7 +43,7 @@ public class GestioneImmagini {
 	private boolean rotateBitmap(String NomeFile, int angle) throws IOException {
 		File inFile = new File(NomeFile);
 
-		boolean OkEXIF=false;
+		boolean OkEXIF = false;
 		String artista = "";
 		String model = "";
 		String lat = "";
@@ -124,14 +125,14 @@ public class GestioneImmagini {
 	    return false;
 	}
 
-	public void RuotaImmagine(Context context, int Quanto) {
+	public Bitmap RuotaImmagine(Context context, Bitmap Immagine, int Quanto) {
 		// String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella = VariabiliStatiche.getInstance().PathApplicazione;
 		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
-		String Path = UtilityDetector.getInstance().PrendePath(context);
+		/* String Path = UtilityDetector.getInstance().PrendePath(context);
 		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
-		boolean OkEXIF=false;
+		boolean OkEXIF = false;
 		String artista = "";
 		String model = "";
 		String lat = "";
@@ -151,13 +152,13 @@ public class GestioneImmagini {
 			OkEXIF = true;
 		} catch (IOException ignored) {
 			OkEXIF = false;
-		}
+		} */
 
-		Bitmap Immagine = BitmapFactory.decodeFile(Path+NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
+		// Bitmap Immagine = BitmapFactory.decodeFile(Path+NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
 		Matrix matrix = new Matrix();
 		matrix.postRotate(Quanto);
 
-		Bitmap rotated = Bitmap.createBitmap(
+		return Bitmap.createBitmap(
 				Immagine,
 				0,
 				0,
@@ -166,9 +167,9 @@ public class GestioneImmagini {
 				matrix,
 				true);
 
-		saveBitmap(rotated, Path, NomeImmagine);
+		// saveBitmap(rotated, Path, NomeImmagine);
 
-		if (OkEXIF) {
+		/* if (OkEXIF) {
 			try {
 				ExifInterface exif = new ExifInterface(Path + NomeImmagine);
 				exif.setAttribute(ExifInterface.TAG_ARTIST, artista);
@@ -181,12 +182,90 @@ public class GestioneImmagini {
 			} catch (IOException ignored) {
 
 			}
-		}
+		} */
 
-		UtilityDetector.getInstance().VisualizzaMultimedia(context);
+		// UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
-	public void PrendeVolto(Context context) {
+	public void PrendeVoltoDaBitmap(Context context, Bitmap bitmap, modificaImmagine mI) {
+		UtilityWallpaper.getInstance().Attesa(true);
+
+		VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
+
+		RilevamentoVolti rv = new RilevamentoVolti(context);
+		rv.ElaboraImmagineDaBitmap(bitmap);
+
+		Handler handler1 = new Handler(Looper.getMainLooper());
+
+		Runnable r1 = new Runnable() {
+			public void run() {
+				if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
+					handler1.removeCallbacks(this);
+
+					List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
+
+					Bitmap bmpAppoggio = null;
+
+					if (r != null) {
+						int larghezzaImmagine = bitmap.getWidth();
+						int altezzaImmagine = bitmap.getHeight();
+
+						int inizioVisoX = 9999;
+						int inizioVisoY = 9999;
+						int larghezzaViso = -9999;
+						// int altezzaViso = -9999;
+
+						for (Rect r1 : r) {
+							if (r1.left < inizioVisoX) { inizioVisoX = r1.left; }
+							if (r1.top < inizioVisoY) { inizioVisoY = r1.top; }
+							if (r1.right > larghezzaViso) { larghezzaViso = r1.right; }
+							// if (r1.bottom > altezzaViso) { altezzaViso = r1.bottom; }
+						}
+
+						inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+						if (inizioVisoY < 0) { inizioVisoY = 0; }
+						inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+						if (inizioVisoX < 0) { inizioVisoX = 0; }
+
+						/* larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+						if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
+							larghezzaViso = larghezzaImmagine - inizioVisoX;
+						}
+						altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+						if (altezzaViso + inizioVisoY > altezzaImmagine) {
+							altezzaViso = altezzaImmagine - inizioVisoY;
+						} */
+
+						try {
+							bmpAppoggio = Bitmap.createBitmap(
+									bitmap,
+									inizioVisoX,
+									inizioVisoY,
+									larghezzaViso,
+									altezzaImmagine - inizioVisoY
+							);
+
+							mI.ImpostaBitmap(bmpAppoggio);
+						} catch (Exception e) {
+							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+									"Cambio immagine. Errore conversione: " +
+											UtilityDetector.getInstance().PrendeErroreDaException(e));
+						}
+					}
+
+					UtilityWallpaper.getInstance().Attesa(false);
+				} else {
+					handler1.postDelayed(this, 1000);
+				}
+			}
+		};
+		handler1.postDelayed(r1, 1000);
+	}
+
+	/*
+	public void PrendeVoltoDaPath(Context context) {
+		boolean Criptata = false;
+
 		UtilityWallpaper.getInstance().Attesa(true);
 
 		String Path = UtilityDetector.getInstance().PrendePath(context);
@@ -202,12 +281,13 @@ public class GestioneImmagini {
 		VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);
 
 		RilevamentoVolti rv = new RilevamentoVolti(context);
-		rv.ElaboraImmagine(Path + NomeImmagine);
+		rv.ElaboraImmagineDaPath(Path + NomeImmagine);
 
 		Handler handler1 = new Handler(Looper.getMainLooper());
 
 		String finalPath = Path + NomeImmagine;
 		String finalNomeDestinazione = NomeDestinazione;
+		boolean finalCriptata = Criptata;
 
 		Runnable r1 = new Runnable() {
 			public void run() {
@@ -247,7 +327,7 @@ public class GestioneImmagini {
 						altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
 						if (altezzaViso + inizioVisoY > altezzaImmagine) {
 							altezzaViso = altezzaImmagine - inizioVisoY;
-						} */
+						} * /
 
 						try {
 							bmpAppoggio = Bitmap.createBitmap(
@@ -261,13 +341,25 @@ public class GestioneImmagini {
 							FileOutputStream out = new FileOutputStream(Path + finalNomeDestinazione);
 							bmpAppoggio.compress(CompressFormat.JPEG, 100, out);
 
+							if (finalCriptata) {
+								UtilityDetector.getInstance().addKeyToFile(Path, finalNomeDestinazione);
+							}
+
 							UtilityDetector.getInstance().CaricaMultimedia(context);
 							UtilityDetector.getInstance().VisualizzaMultimedia(context);
 						} catch (IOException e) {
+							if (finalCriptata) {
+								UtilityWallpaper.getInstance().EliminaFileUnico(Path + finalNomeDestinazione);
+							}
+
 							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
 									"Cambio immagine. IO Exception: " +
 											UtilityDetector.getInstance().PrendeErroreDaException(e));
 						} catch (Exception e) {
+							if (finalCriptata) {
+								UtilityWallpaper.getInstance().EliminaFileUnico(Path + finalNomeDestinazione);
+							}
+
 							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
 									"Cambio immagine. Errore conversione: " +
 											UtilityDetector.getInstance().PrendeErroreDaException(e));
@@ -282,12 +374,13 @@ public class GestioneImmagini {
 		};
 		handler1.postDelayed(r1, 1000);
 	}
+	*/
 
-	public void FlipImmagine(Context context, boolean Orizzontale) {
+	public Bitmap FlipImmagine(Context context, Bitmap Immagine, boolean Orizzontale) {
 		// String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
 		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
-		String Path = UtilityDetector.getInstance().PrendePath(context);
+		/* String Path = UtilityDetector.getInstance().PrendePath(context);
 		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
 
 		boolean OkEXIF = false;
@@ -310,9 +403,9 @@ public class GestioneImmagini {
 			OkEXIF = true;
 		} catch (IOException ignored) {
 			OkEXIF = false;
-		}
+		} */
 
-		Bitmap Immagine = BitmapFactory.decodeFile(Path + NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
+		// Bitmap Immagine = BitmapFactory.decodeFile(Path + NomeImmagine); // getPreview(Origine+Cartella+NomeImmagine);
 		Matrix matrix = new Matrix();
 		int cx = Immagine.getWidth()/2;
 		int cy = Immagine.getHeight()/2;
@@ -322,10 +415,10 @@ public class GestioneImmagini {
 			matrix.postScale(1, -1, cx, cy);
 		}
 
-		Bitmap rotated = Bitmap.createBitmap(Immagine, 0, 0, Immagine.getWidth(), Immagine.getHeight(),
+		return Bitmap.createBitmap(Immagine, 0, 0, Immagine.getWidth(), Immagine.getHeight(),
 				matrix, true);
 
-		saveBitmap(rotated, Path, NomeImmagine);
+		/* saveBitmap(rotated, Path, NomeImmagine);
 
 		if (OkEXIF) {
 			try {
@@ -340,9 +433,9 @@ public class GestioneImmagini {
 			} catch (IOException ignored) {
 
 			}
-		}
+		} */
 
-		UtilityDetector.getInstance().VisualizzaMultimedia(context);
+		// UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
 	private void saveBitmap(Bitmap bm, String Percorso, String Nome)  {
@@ -363,15 +456,8 @@ public class GestioneImmagini {
 		}
 	}
 
-	public void CambiaContrastoLuminosita(Context context, float contrast, float brightness)
+	public Bitmap CambiaContrastoLuminosita(Context context, Bitmap Immagine, float contrast, float brightness)
 	{
-		// String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
-		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
-		String Path = UtilityDetector.getInstance().PrendePath(context);
-		String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
-
-		Bitmap Immagine = BitmapFactory.decodeFile(Path+ NomeImmagine);
 		ColorMatrix cm = new ColorMatrix(new float[]
 				{
 						contrast, 0, 0, 0, brightness,
@@ -379,17 +465,15 @@ public class GestioneImmagini {
 						0, 0, contrast, 0, brightness,
 						0, 0, 0, 1, 0
 				});
-
-		Bitmap ret = Bitmap.createBitmap(Immagine.getWidth(), Immagine.getHeight(), Immagine.getConfig());
-
-		Canvas canvas = new Canvas(ret);
-
+		Bitmap mEnhancedBitmap = Bitmap.createBitmap(
+				Immagine.getWidth(),
+				Immagine.getHeight(),
+				Immagine.getConfig());
+		Canvas canvas = new Canvas(mEnhancedBitmap);
 		Paint paint = new Paint();
 		paint.setColorFilter(new ColorMatrixColorFilter(cm));
 		canvas.drawBitmap(Immagine, 0, 0, paint);
 
-		saveBitmap(ret, Path, NomeImmagine);
-
-		UtilityDetector.getInstance().VisualizzaMultimedia(context);
+		return mEnhancedBitmap;
 	}
 }

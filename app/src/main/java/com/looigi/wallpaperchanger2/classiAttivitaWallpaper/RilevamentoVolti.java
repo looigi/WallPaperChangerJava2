@@ -22,6 +22,7 @@ import java.util.List;
 public class RilevamentoVolti {
     private Context context;
     private final FaceDetectorOptions highAccuracyOpts;
+    private boolean daModificaImmagine = false;
 
     public RilevamentoVolti(Context context) {
         highAccuracyOpts =
@@ -32,8 +33,20 @@ public class RilevamentoVolti {
                         .build();
     }
 
-    public void ElaboraImmagine(String path) {
+    public void ElaboraImmagineDaBitmap(Bitmap bitmap) {
+        daModificaImmagine = true;
+
+        Elabora(bitmap);
+    }
+
+    public void ElaboraImmagineDaPath(String path) {
+        daModificaImmagine = false;
+
         Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Elabora(bitmap);
+    }
+
+    private void Elabora(Bitmap bitmap) {
         InputImage image = InputImage.fromBitmap(bitmap, 0);
 
         FaceDetector detector = FaceDetection.getClient(highAccuracyOpts);
@@ -47,6 +60,7 @@ public class RilevamentoVolti {
                                         for (Face face : faces) {
                                             rects.add(face.getBoundingBox());
 
+                                            float rotY = face.getHeadEulerAngleY();
                                             /* Paint paint=new Paint();
 									paint.setColor(Color.RED);
 

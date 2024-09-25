@@ -126,16 +126,16 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                     return Color.BLUE;
                 } else {
                     if (sp > 89 && sp < 110) {
-                        return Color.YELLOW;
-                    } else {
                         return Color.RED;
+                    } else {
+                        return Color.YELLOW;
                     }
                 }
             }
         }
     }
 
-    private void AggiungePolyLine(GoogleMap googleMap, List<StrutturaGps> lista, float speed) {
+    private void AggiungePolyLine(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
         LatLng[] path = new LatLng[lista.size()];
         int c = 0;
 
@@ -148,7 +148,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                 .clickable(true)
                 .add(path)
                 .width(12)
-                .color(ritornaColore(speed))
+                .color(colore)
         );
     }
 
@@ -193,27 +193,28 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
             vecchiDati = listaGPS.size();
 
-            float vecchiaSpeed = -1;
+            int vecchioColore = -1;
             List<StrutturaGps> lista = new ArrayList<>();
             LatLngBounds.Builder bc = new LatLngBounds.Builder();
 
             for (StrutturaGps s : listaGPS) {
                 if (s.getLat() == -1 && s.getLon() == -1) {
-                    AggiungePolyLine(googleMap, lista, vecchiaSpeed);
+                    AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
 
                     lista = new ArrayList<>();
                 } else {
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
 
-                    float speed = s.getSpeed();
-                    if (vecchiaSpeed != speed) {
-                        if (vecchiaSpeed != -1) {
-                            AggiungePolyLine(googleMap, lista, vecchiaSpeed);
+                    float speed = Math.round(s.getSpeed()) * 10;
+                    int colore = ritornaColore(speed);
+                    if (vecchioColore != colore) {
+                        if (vecchioColore != -1) {
+                            AggiungePolyLine(googleMap, lista, colore);
                             lista = new ArrayList<>();
                         }
 
-                        vecchiaSpeed = speed;
+                        vecchioColore = colore;
                     }
 
                     lista.add(s);
@@ -221,7 +222,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             }
 
             if (!lista.isEmpty()) {
-                AggiungePolyLine(googleMap, lista, vecchiaSpeed);
+                AggiungePolyLine(googleMap, lista, vecchioColore);
             }
 
             AggiungeMarkers(googleMap);

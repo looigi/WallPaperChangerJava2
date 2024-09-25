@@ -97,6 +97,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".modificaImmagine.modificaImmagine"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classiStandard.RichiestaPathImmaginiLocali"
             android:windowSoftInputMode="adjustResize" />
 

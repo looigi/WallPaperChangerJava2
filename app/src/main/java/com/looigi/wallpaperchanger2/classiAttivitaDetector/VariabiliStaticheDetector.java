@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
-
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 
 import java.util.List;
 
@@ -53,9 +52,9 @@ public class VariabiliStaticheDetector {
     private String Anteprima;
     private int Orientamento;
     private String Lingua;
-    private boolean Vibrazione=true;
-    private int DimensioniThumbs=70;
-    private int DimensioniThumbsM=50;
+    private boolean Vibrazione = true;
+    private int DimensioniThumbs = 70;
+    private int DimensioniThumbsM = 50;
     private boolean VisualizzaToast = true;
     private List<String> Dimensioni;
     private TextView txtCoords;
@@ -70,10 +69,7 @@ public class VariabiliStaticheDetector {
     public boolean StaSuonando=false;
     // private boolean StoScattando = false;
     public boolean MascheraImmaginiMostrata = false;
-    private ImageView btnRuotaSin;
-    private ImageView btnRuotaDes;
-    private ImageView btnFlipX;
-    private ImageView btnFlipY;
+    private ImageView imgModificaImmagine;
     private List<String> Immagini;
     public Integer numMultimedia;
     public Integer totImmagini;
@@ -85,6 +81,7 @@ public class VariabiliStaticheDetector {
     private boolean GpsPreciso = false;
     private int GpsMeters = 5;
     private int GpsMs = 1000;
+    // private Button btnLayModificaImmagine;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -93,6 +90,22 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    /* public Button getBtnLayModificaImmagine() {
+        return btnLayModificaImmagine;
+    }
+
+    public void setBtnLayModificaImmagine(Button btnLayModificaImmagine) {
+        this.btnLayModificaImmagine = btnLayModificaImmagine;
+    } */
+
+    public ImageView getImgModificaImmagine() {
+        return imgModificaImmagine;
+    }
+
+    public void setImgModificaImmagine(ImageView imgModificaImmagine) {
+        this.imgModificaImmagine = imgModificaImmagine;
     }
 
     public int getGpsMeters() {
@@ -197,38 +210,6 @@ public class VariabiliStaticheDetector {
 
     public void setTotImmagini(Integer totImmagini) {
         this.totImmagini = totImmagini;
-    }
-
-    public ImageView getBtnRuotaSin() {
-        return btnRuotaSin;
-    }
-
-    public void setBtnRuotaSin(ImageView btnRuotaSin) {
-        this.btnRuotaSin = btnRuotaSin;
-    }
-
-    public ImageView getBtnRuotaDes() {
-        return btnRuotaDes;
-    }
-
-    public void setBtnRuotaDes(ImageView btnRuotaDes) {
-        this.btnRuotaDes = btnRuotaDes;
-    }
-
-    public ImageView getBtnFlipX() {
-        return btnFlipX;
-    }
-
-    public void setBtnFlipX(ImageView btnFlipX) {
-        this.btnFlipX = btnFlipX;
-    }
-
-    public ImageView getBtnFlipY() {
-        return btnFlipY;
-    }
-
-    public void setBtnFlipY(ImageView btnFlipY) {
-        this.btnFlipY = btnFlipY;
     }
 
     public boolean isMascheraImmaginiMostrata() {

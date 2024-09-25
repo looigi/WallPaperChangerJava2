@@ -71,15 +71,15 @@ public class MainStart  extends Activity {
     }
 
     private void impostaSchermata() {
+        LinearLayout layStart = findViewById(R.id.layStart);
+
         ImageView imgD = findViewById(R.id.imgStartDetector);
         if (!VariabiliStaticheStart.getInstance().isDetector()) {
             imgD.setVisibility(LinearLayout.GONE);
         }
         imgD.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                act.finish();
-                VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
-                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                layStart.setVisibility(LinearLayout.GONE);
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
@@ -99,15 +99,22 @@ public class MainStart  extends Activity {
                         }, 500);
                     }
                 }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
             }
         });
 
         ImageView imgW = findViewById(R.id.imgStartWallpaper);
         imgW.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                act.finish();
-                VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
-                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                layStart.setVisibility(LinearLayout.GONE);
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
@@ -127,6 +134,15 @@ public class MainStart  extends Activity {
                         }, 500);
                     }
                 }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
             }
         });
 
@@ -136,9 +152,7 @@ public class MainStart  extends Activity {
         }
         imgM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                act.finish();
-                VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
-                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                layStart.setVisibility(LinearLayout.GONE);
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
@@ -148,6 +162,15 @@ public class MainStart  extends Activity {
                         context.startActivity(i);
                     }
                 }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
             }
         });
 

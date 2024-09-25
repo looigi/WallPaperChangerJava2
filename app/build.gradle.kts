@@ -76,4 +76,5 @@ dependencies {
     implementation(libs.play.services.maps)
 
     implementation(libs.face.detection)
+    implementation(libs.android.image.cropper)
 }

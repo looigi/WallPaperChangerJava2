@@ -14,12 +14,14 @@
 
     <Switch
         android:id="@+id/sVibrazione"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Vibrazione" />
 
     <Switch
         android:id="@+id/sToast"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Toasts" />
@@ -32,6 +34,7 @@
 
     <TextView
         android:gravity="center_horizontal"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GPS" />
@@ -44,6 +47,7 @@
     <Switch
         android:layout_marginTop="10dp"
         android:id="@+id/sGpsPreciso"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gps Preciso" />
@@ -57,12 +61,14 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:layout_weight="3"
             android:text="GPS Ms" />
 
         <EditText
             android:id="@+id/edtGpsMs"
             android:inputType="number"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content">
@@ -80,12 +86,14 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:layout_weight="3"
             android:text="GPS Meters" />
 
         <EditText
             android:id="@+id/edtGpsMeters"
             android:inputType="number"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content">
@@ -103,6 +111,7 @@
     <TextView
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:text="Disattivazione GPS" />
 
@@ -163,42 +172,49 @@
             <Switch
                 android:id="@+id/optDomenica"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Domenica" />
 
             <Switch
                 android:id="@+id/optLunedi"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Lunedì" />
 
             <Switch
                 android:id="@+id/optMartedi"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Martedì" />
 
             <Switch
                 android:id="@+id/optMercoledi"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Mercoledì" />
 
             <Switch
                 android:id="@+id/optGiovedi"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Giovedì" />
 
             <Switch
                 android:id="@+id/optVenerdi"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Venerdì" />
 
             <Switch
                 android:id="@+id/optSabato"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="40dp"
                 android:text="Sabato" />
         </RadioGroup>
@@ -218,12 +234,14 @@
                 <EditText
                     android:id="@+id/edtOraInizioDomenica"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
 
                 <EditText
                     android:id="@+id/edtOraFineDomenica"
+                    android:textColor="@color/black"
                     android:inputType="text"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -239,6 +257,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioLunedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -246,6 +265,7 @@
                 <EditText
                     android:id="@+id/edtOraFineLunedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -260,6 +280,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioMartedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -267,6 +288,7 @@
                 <EditText
                     android:id="@+id/edtOraFineMartedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -281,6 +303,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioMercoledi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -288,6 +311,7 @@
                 <EditText
                     android:id="@+id/edtOraFineMercoledi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -302,6 +326,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioGiovedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -309,6 +334,7 @@
                 <EditText
                     android:id="@+id/edtOraFineGiovedi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -323,6 +349,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioVenerdi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -330,6 +357,7 @@
                 <EditText
                     android:id="@+id/edtOraFineVenerdi"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -344,6 +372,7 @@
                 <EditText
                     android:id="@+id/edtOraInizioSabato"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>
@@ -351,6 +380,7 @@
                 <EditText
                     android:id="@+id/edtOraFineSabato"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"/>

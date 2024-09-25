@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
-            android:weightSum="6"
+            android:weightSum="5"
             android:padding="5dp" >
 
             <LinearLayout
@@ -102,7 +102,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="3"
@@ -128,7 +128,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Sposta" />
-            </LinearLayout>
+            </LinearLayout> -->
         </LinearLayout>
     </LinearLayout>
 
@@ -149,11 +149,11 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imgVolto"
+            android:id="@+id/imgModificaImmagine"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/volto" />
+            android:src="@drawable/edit_image" />
 
         <ImageView
             android:id="@+id/imgRefresh"
@@ -163,39 +163,18 @@
             android:src="@android:drawable/ic_popup_sync" />
 
         <ImageView
-            android:id="@+id/imgFlipX"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/flip_x" />
-
-        <ImageView
-            android:id="@+id/imgFlipY"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/flip_y" />
-
-        <ImageView
-            android:id="@+id/imgRuotaSin"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/ruotasx" />
-
-        <ImageView
-            android:id="@+id/imgRuotaDes"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/ruotadx" />
-
-        <ImageView
             android:id="@+id/imgElimina"
             android:layout_marginLeft="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@android:drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/imgSposta"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/move" />
     </LinearLayout>
 
     <LinearLayout
@@ -207,7 +186,9 @@
         <LinearLayout
             android:id="@+id/layScatti"
             android:layout_width="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="9"
+            android:padding="3dp"
+            android:background="@drawable/bordato"
             android:orientation="vertical"
             android:layout_height="0dp">
 
@@ -220,8 +201,8 @@
                 <ImageView
                     android:id="@+id/imgPlayAudio"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:src="@drawable/play" />
 
                 <VideoView
@@ -237,6 +218,11 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_launcher" />
 
+                <!-- <com.canhub.cropper.CropImageView
+                    android:id="@+id/cropImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" /> -->
             </LinearLayout>
 
         </LinearLayout>
@@ -277,7 +263,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:id="@+id/layNomeImmagine"
             android:layout_marginTop="3dp"
             android:background="@drawable/stiletextview"

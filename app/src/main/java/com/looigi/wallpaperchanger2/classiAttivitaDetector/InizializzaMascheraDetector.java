@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,6 +32,9 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.TestMemory
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.gps.db_dati_gps;
+import com.looigi.wallpaperchanger2.modificaImmagine.GestioneImmagini;
+import com.looigi.wallpaperchanger2.modificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.modificaImmagine.modificaImmagine;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +43,7 @@ import java.io.InputStream;
 public class InizializzaMascheraDetector {
     private static final String NomeMaschera = "INITMASCHERA";
     private Long datella1 = null;
+    // private boolean Criptata = false;
 
     public void inizializzaMaschera(Context context, Activity act) {
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"onStartCommand Service");
@@ -502,7 +507,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().setAudio((ImageView) act.findViewById(R.id.imgPlayAudio));
         VariabiliStaticheDetector.getInstance().setvView((VideoView) act.findViewById(R.id.videoView1));
 
-        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
         VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
 
@@ -526,11 +531,11 @@ public class InizializzaMascheraDetector {
             }
         });
 
-        final Button bDecripta = (Button) act.findViewById(R.id.cmdDecript);
-        final Button bCripta = (Button) act.findViewById(R.id.cmdCript);
-        final Button bSposta = (Button) act.findViewById(R.id.cmdSposta);
+        // final Button bDecripta = (Button) act.findViewById(R.id.cmdDecript);
+        // final Button bCripta = (Button) act.findViewById(R.id.cmdCript);
+        // final Button bSposta = (Button) act.findViewById(R.id.cmdSposta);
 
-        bCripta.setVisibility(LinearLayout.GONE);
+        /* bCripta.setVisibility(LinearLayout.GONE);
         bDecripta.setVisibility(LinearLayout.GONE);
         bSposta.setVisibility(LinearLayout.GONE);
 
@@ -544,8 +549,9 @@ public class InizializzaMascheraDetector {
             public void onClick(View v) {
                 UtilityDetector.getInstance().CriptaFiles(VariabiliStaticheDetector.getInstance().getContext());
             }
-        });
+        }); */
 
+        ImageView bSposta = act.findViewById(R.id.imgSposta);
         bSposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityDetector.getInstance().SpostaFile(VariabiliStaticheDetector.getInstance().getContext());
@@ -579,12 +585,14 @@ public class InizializzaMascheraDetector {
                         lTasti.setVisibility(LinearLayout.VISIBLE);
                         lFrecce.setVisibility(LinearLayout.VISIBLE);
                         lNomeImm.setVisibility(LinearLayout.VISIBLE);
-                        bCripta.setVisibility(LinearLayout.VISIBLE);
-                        bDecripta.setVisibility(LinearLayout.VISIBLE);
+                        // bCripta.setVisibility(LinearLayout.VISIBLE);
+                        // bDecripta.setVisibility(LinearLayout.VISIBLE);
                         bSposta.setVisibility(LinearLayout.VISIBLE);
 
                         VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.VISIBLE);
                         VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.VISIBLE);
+
+                        // VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setVisibility(LinearLayout.VISIBLE);
 
                         UtilityDetector.getInstance().CaricaMultimedia(context);
                         UtilityDetector.getInstance().VisualizzaMultimedia(context);
@@ -625,47 +633,29 @@ public class InizializzaMascheraDetector {
         ImageView btnAvanti = (ImageView) act.findViewById(R.id.imgAvanti);
         ImageView btnElimina = (ImageView) act.findViewById(R.id.imgElimina);
         ImageView btnRefresh = (ImageView) act.findViewById(R.id.imgRefresh);
-        ImageView btnVolto = (ImageView) act.findViewById(R.id.imgVolto);
+        // ImageView btnVolto = (ImageView) act.findViewById(R.id.imgVolto);
 
-        VariabiliStaticheDetector.getInstance().setBtnFlipX((ImageView) act.findViewById(R.id.imgFlipX));
-        VariabiliStaticheDetector.getInstance().setBtnFlipY((ImageView) act.findViewById(R.id.imgFlipY));
-        VariabiliStaticheDetector.getInstance().setBtnRuotaDes((ImageView) act.findViewById(R.id.imgRuotaDes));
-        VariabiliStaticheDetector.getInstance().setBtnRuotaSin((ImageView) act.findViewById(R.id.imgRuotaSin));
+        // ImageView btnCrop = (ImageView) act.findViewById(R.id.imgCrop);
+        VariabiliStaticheDetector.getInstance().setImgModificaImmagine(act.findViewById(R.id.imgModificaImmagine));
+
+        btnIndietro.setVisibility(LinearLayout.VISIBLE);
+        btnAvanti.setVisibility(LinearLayout.VISIBLE);
+        btnElimina.setVisibility(LinearLayout.VISIBLE);
+        btnRefresh.setVisibility(LinearLayout.VISIBLE);
+
+        // RelativeLayout layModificaImmagine = act.findViewById(R.id.container_tipo_modifica_immagine);
+        // layModificaImmagine.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, modificaImmagine.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityDetector.getInstance().CaricaMultimedia(context);
-                UtilityDetector.getInstance().VisualizzaMultimedia(context);
-            }
-        });
-
-        btnVolto.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GestioneImmagini u = new GestioneImmagini();
-                u.PrendeVolto(context);
-            }
-        });
-
-        VariabiliStaticheDetector.getInstance().getBtnFlipX().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GestioneImmagini u = new GestioneImmagini();
-                u.FlipImmagine(context, true);
-
-                int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia(context);
-                VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-                UtilityDetector.getInstance().VisualizzaMultimedia(context);
-            }
-        });
-
-        VariabiliStaticheDetector.getInstance().getBtnFlipY().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GestioneImmagini u = new GestioneImmagini();
-                u.FlipImmagine(context, false);
-
-                int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia(context);
-                VariabiliStaticheDetector.getInstance().numMultimedia = appo;
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
             }
         });
@@ -691,20 +681,6 @@ public class InizializzaMascheraDetector {
                 }
 
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
-            }
-        });
-
-        VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GestioneImmagini u = new GestioneImmagini();
-                u.RuotaImmagine(context,270);
-            }
-        });
-
-        VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GestioneImmagini u = new GestioneImmagini();
-                u.RuotaImmagine(context, 90);
             }
         });
 
@@ -802,6 +778,7 @@ public class InizializzaMascheraDetector {
         Button btnVideo = act.findViewById(R.id.btnMenuVideo);
         Button btnTipoFoto = act.findViewById(R.id.btnMenuTipoFoto);
         Button btnTipoScatto = act.findViewById(R.id.btnMenuTipoScatto);
+        // VariabiliStaticheDetector.getInstance().setBtnLayModificaImmagine(act.findViewById(R.id.btnModificaImmagine));
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -851,6 +828,15 @@ public class InizializzaMascheraDetector {
             }
         });
 
+        /* VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setVisibility(LinearLayout.INVISIBLE);
+        VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 6;
+                VisualizzaSchermata(act);
+            }
+        }); */
+
         VisualizzaSchermata(act);
 
         ImpostaInfo(act);
@@ -863,6 +849,7 @@ public class InizializzaMascheraDetector {
         LinearLayout layVideo = act.findViewById(R.id.container_video);
         LinearLayout layTipoFotocamera = act.findViewById(R.id.container_tipo_fotocamera);
         LinearLayout layTipoScatto = act.findViewById(R.id.container_tipo_scatto);
+        // RelativeLayout layModificaImmagine = act.findViewById(R.id.container_tipo_modifica_immagine);
 
         layHome.setVisibility(LinearLayout.GONE);
         layEstensione.setVisibility(LinearLayout.GONE);
@@ -870,6 +857,7 @@ public class InizializzaMascheraDetector {
         layVideo.setVisibility(LinearLayout.GONE);
         layTipoFotocamera.setVisibility(LinearLayout.GONE);
         layTipoScatto.setVisibility(LinearLayout.GONE);
+        // layModificaImmagine.setVisibility(LinearLayout.GONE);
 
         switch (qualeSchermata) {
             case 0:
@@ -890,6 +878,9 @@ public class InizializzaMascheraDetector {
             case 5:
                 layTipoScatto.setVisibility(LinearLayout.VISIBLE);
                 break;
+            /* case 6:
+                layModificaImmagine.setVisibility(LinearLayout.VISIBLE);
+                break; */
         }
     }
 

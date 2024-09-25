@@ -2,6 +2,7 @@
 acraVersion = "5.11.2"
 agp = "8.6.0"
 androidGifDrawable = "1.2.22"
+androidImageCropper = "4.6.0"
 faceDetection = "16.1.7"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -14,6 +15,7 @@ constraintlayout = "2.1.4"
 acra = "4.11.1"
 androidMail = "1.6.7"
 photoview = "2.0.0"
+picasso = "2.8"
 playServicesMaps = "19.0.0"
 playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
@@ -24,6 +26,7 @@ acra-mail = { module = "ch.acra:acra-mail", version.ref = "acraVersion" }
 acra-notification = { module = "ch.acra:acra-notification", version.ref = "acraVersion" }
 acra-toast = { module = "ch.acra:acra-toast", version.ref = "acraVersion" }
 android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
+android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -36,6 +39,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 acra = { group = "ch.acra", name = "acra", version = "4.11.1" }
 android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }

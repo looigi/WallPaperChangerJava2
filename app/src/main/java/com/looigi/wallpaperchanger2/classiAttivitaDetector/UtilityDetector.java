@@ -457,7 +457,7 @@ public class UtilityDetector {
         // VisualizzaPOPUP("Fatto. Immagini criptate: "+cambiate, false, 0);
     }
 
-    private void removeKeyFromFile(String Path, String Filetto, String FilettoNuovo) {
+    public void removeKeyFromFile(String Path, String Filetto, String FilettoNuovo) {
         if (!Filetto.toUpperCase().contains(".PV3")) {
             String Filetto2 = Filetto;
             Filetto2 = Filetto2.replace(".jpg", ".dbf");
@@ -491,7 +491,7 @@ public class UtilityDetector {
                 } else {
                     bytes = bytesApp;
                 }
-            } catch (FileNotFoundException ignored) {
+            } catch (Exception ignored) {
 
             }
 
@@ -747,7 +747,9 @@ public class UtilityDetector {
                         VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
                     }
 
-                    if (NomeMultimedia.toUpperCase().contains(".DBF")) {
+                    VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
+
+                    /* if (NomeMultimedia.toUpperCase().contains(".DBF")) {
                         VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
                         VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
                         VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
@@ -757,7 +759,7 @@ public class UtilityDetector {
                         VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.VISIBLE);
                         VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.VISIBLE);
                         VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.VISIBLE);
-                    }
+                    } */
 
                     VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
                             "/" + VariabiliStaticheDetector.getInstance().totImmagini);
@@ -767,10 +769,7 @@ public class UtilityDetector {
                         VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.VISIBLE);
                         VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
 
-                        VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
-                        VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
-                        VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
-                        VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
 
                         VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
                                 "/" + VariabiliStaticheDetector.getInstance().totImmagini);
@@ -780,10 +779,7 @@ public class UtilityDetector {
                             VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
                             VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
 
-                            VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
-                            VariabiliStaticheDetector.getInstance().getBtnFlipY().setVisibility(LinearLayout.GONE);
-                            VariabiliStaticheDetector.getInstance().getBtnRuotaDes().setVisibility(LinearLayout.GONE);
-                            VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.GONE);
+                            VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
 
                             VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
                                     "/" + VariabiliStaticheDetector.getInstance().totImmagini);
