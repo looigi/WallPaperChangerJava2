@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
@@ -252,7 +253,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch switchHome = (Switch) view.findViewById(R.id.switchHome);
+        SwitchCompat switchHome = (SwitchCompat) view.findViewById(R.id.switchHome);
         switchHome.setChecked(VariabiliStaticheWallpaper.getInstance().isHome());
         switchHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -263,7 +264,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch switchLock = (Switch) view.findViewById(R.id.switchLock);
+        SwitchCompat switchLock = (SwitchCompat) view.findViewById(R.id.switchLock);
         switchLock.setChecked(VariabiliStaticheWallpaper.getInstance().isLock());
         switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -376,8 +377,23 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        RelativeLayout layDetector = view.findViewById(R.id.layDetectorMain);
-        layDetector.setVisibility(LinearLayout.GONE);
+        // RelativeLayout layDetector = view.findViewById(R.id.layDetectorMain);
+        // layDetector.setVisibility(LinearLayout.GONE);
+
+        ImageView imgImpoWP = view.findViewById(R.id.imgImpoWP);
+        RelativeLayout layImpoWP = view.findViewById(R.id.layImpostazioniWP);
+        layImpoWP.setVisibility(LinearLayout.GONE);
+        imgImpoWP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layImpoWP.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+        ImageView imgChiudeImpoWP = view.findViewById(R.id.imgChiudeImpoWP);
+        imgChiudeImpoWP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layImpoWP.setVisibility(LinearLayout.GONE);
+            }
+        });
 
         TextView txtPath = (TextView) view.findViewById(R.id.txtPath);
         VariabiliStaticheWallpaper.getInstance().setTxtPath(txtPath);
@@ -434,7 +450,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch swcOffline = (Switch) view.findViewById(R.id.switchOffline);
+        SwitchCompat swcOffline = (SwitchCompat) view.findViewById(R.id.switchOffline);
         swcOffline.setChecked(VariabiliStaticheWallpaper.getInstance().isOffline());
         LinearLayout layOffline = (LinearLayout) view.findViewById(R.id.layOffline);
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
@@ -471,7 +487,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch swcBlur = (Switch) view.findViewById(R.id.switchBlur);
+        SwitchCompat swcBlur = (SwitchCompat) view.findViewById(R.id.switchBlur);
         swcBlur.setChecked(VariabiliStaticheWallpaper.getInstance().isBlur());
         swcBlur.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -487,7 +503,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch switchScriveTesto = (Switch) view.findViewById(R.id.switchScriveTesto);
+        SwitchCompat switchScriveTesto = view.findViewById(R.id.switchScriveTesto);
         switchScriveTesto.setChecked(VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
         switchScriveTesto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -513,16 +529,19 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Switch swcEspansa = (Switch) view.findViewById(R.id.switchEspansa);
+        SwitchCompat swcEspansa = (SwitchCompat) view.findViewById(R.id.switchEspansa);
+        SwitchCompat swcSoloVolti = view.findViewById(R.id.switchSoloVolto);
 
-        Switch swcOnOff = (Switch) view.findViewById(R.id.switchOnOff);
+        SwitchCompat swcOnOff = (SwitchCompat) view.findViewById(R.id.switchOnOff);
         swcOnOff.setChecked(VariabiliStaticheWallpaper.getInstance().isOnOff());
         if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
-            btnMenoMinuti.setEnabled(true);
+            swcOnOff.setText("ON");
+            /* btnMenoMinuti.setEnabled(true);
             btnPiuMinuti.setEnabled(true);
             // btnCambioPath.setEnabled(true);
             swcBlur.setEnabled(true);
             swcEspansa.setEnabled(true);
+            swcSoloVolti.setEnabled(true);
             swcOffline.setEnabled(true);
             switchScriveTesto.setEnabled(true);
             switchHome.setEnabled(true);
@@ -531,24 +550,27 @@ public class InizializzaMascheraWallpaper {
             if (!VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
                 Esecuzione e = new Esecuzione(context);
                 e.startServizio1();
-            }
+            } */
         } else {
-            btnMenoMinuti.setEnabled(false);
+            swcOnOff.setText("OFF");
+            /* btnMenoMinuti.setEnabled(false);
             btnPiuMinuti.setEnabled(false);
             // btnCambioPath.setEnabled(false);
             swcBlur.setEnabled(false);
             swcEspansa.setEnabled(false);
+            swcSoloVolti.setEnabled(false);
             swcOffline.setEnabled(false);
             switchScriveTesto.setEnabled(false);
             switchHome.setEnabled(false);
-            switchLock.setEnabled(false);
+            switchLock.setEnabled(false); */
         }
         swcOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setOnOff(isChecked);
 
                 if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
-                    btnMenoMinuti.setEnabled(true);
+                    swcOnOff.setText("ON");
+                    /* btnMenoMinuti.setEnabled(true);
                     btnPiuMinuti.setEnabled(true);
                     // btnCambioPath.setEnabled(true);
                     swcBlur.setEnabled(true);
@@ -556,9 +578,10 @@ public class InizializzaMascheraWallpaper {
                     swcOffline.setEnabled(true);
                     switchScriveTesto.setEnabled(true);
                     switchHome.setEnabled(true);
-                    switchLock.setEnabled(true);
+                    switchLock.setEnabled(true); */
                 } else {
-                    btnMenoMinuti.setEnabled(false);
+                    swcOnOff.setText("OFF");
+                    /* btnMenoMinuti.setEnabled(false);
                     btnPiuMinuti.setEnabled(false);
                     // btnCambioPath.setEnabled(false);
                     swcBlur.setEnabled(false);
@@ -566,7 +589,7 @@ public class InizializzaMascheraWallpaper {
                     swcOffline.setEnabled(false);
                     switchScriveTesto.setEnabled(false);
                     switchHome.setEnabled(false);
-                    switchLock.setEnabled(false);
+                    switchLock.setEnabled(false); */
                 }
 
                 VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
@@ -575,7 +598,7 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        /* Switch swcResize = (Switch) findViewById(R.id.switchResize);
+        /* SwitchCompat swcResize = (SwitchCompat) findViewById(R.id.switchResize);
         swcResize.setChecked(VariabiliGlobali.getInstance().isResize());
         swcResize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -603,29 +626,30 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
+        swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
+        swcSoloVolti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheWallpaper.getInstance().setSoloVolti(isChecked);
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEspansa());
+        if (VariabiliStaticheWallpaper.getInstance().isEspansa()) {
+            swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            swcSoloVolti.setVisibility(LinearLayout.GONE);
+        }
         swcEspansa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setEspansa(isChecked);
-
-                /* if (isChecked) {
-                    VariabiliStaticheWallpaper.getInstance().setBlur(false);
-                    VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(false);
-
-                    swcBlur.setEnabled(false);
-                    swcBlur.setChecked(false);
-                    switchScriveTesto.setEnabled(false);
-                    switchScriveTesto.setChecked(false);
+                if (isChecked) {
+                    swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
                 } else {
-                    VariabiliStaticheWallpaper.getInstance().setBlur(true);
-                    VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(true);
-
-                    swcBlur.setEnabled(true);
-                    swcBlur.setChecked(true);
-                    switchScriveTesto.setEnabled(true);
-                    switchScriveTesto.setChecked(true);
-                } */
-
+                    swcSoloVolti.setVisibility(LinearLayout.GONE);
+                }
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }

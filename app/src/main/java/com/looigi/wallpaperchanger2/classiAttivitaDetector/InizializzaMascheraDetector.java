@@ -25,6 +25,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import androidx.appcompat.widget.SwitchCompat;
+
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.Receivers.Video;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.TestMemory.DatiMemoria;
@@ -89,10 +91,10 @@ public class InizializzaMascheraDetector {
             }
         });
 
-        Switch sLog = (Switch) act.findViewById(R.id.sLog2); */
-        Switch sVibrazione = (Switch) act.findViewById(R.id.sVibrazione);
-        Switch sToast = (Switch) act.findViewById(R.id.sToast);
-        Switch sGpsPreciso = (Switch) act.findViewById(R.id.sGpsPreciso);
+        SwitchCompat sLog = (SwitchCompat) act.findViewById(R.id.sLog2); */
+        SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
+        SwitchCompat sToast = (SwitchCompat) act.findViewById(R.id.sToast);
+        SwitchCompat sGpsPreciso = (SwitchCompat) act.findViewById(R.id.sGpsPreciso);
 
         // View fgmMappa = (View) act.findViewById(R.id.map);
 
@@ -452,7 +454,7 @@ public class InizializzaMascheraDetector {
         tLibera.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                // final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
                 if (datella1 == null) {
                     Handler handlerTimer;
@@ -476,6 +478,8 @@ public class InizializzaMascheraDetector {
                     handlerTimer.postDelayed(rTimer, 2000);
                 } else {
                     long diff = System.currentTimeMillis() - datella1;
+
+                    datella1 = null;
 
                     if (diff < 1950) {
                         lPr.setVisibility(LinearLayout.GONE);
@@ -579,6 +583,8 @@ public class InizializzaMascheraDetector {
                     handlerTimer.postDelayed(rTimer, 2000);
                 } else {
                     long diff = System.currentTimeMillis() - datella1;
+
+                    datella1 = null;
 
                     if (diff < 1950) {
                         lScatti.setVisibility(LinearLayout.VISIBLE);
@@ -1118,13 +1124,13 @@ public class InizializzaMascheraDetector {
             EditText etOraRiattivazioneVenerdi = (EditText) act.findViewById(R.id.edtOraFineVenerdi);
             EditText etOraRiattivazioneSabato = (EditText) act.findViewById(R.id.edtOraFineSabato);
 
-            Switch sDomenica = act.findViewById(R.id.optDomenica);
-            Switch sLunedi = act.findViewById(R.id.optLunedi);
-            Switch sMartedi = act.findViewById(R.id.optMartedi);
-            Switch sMercoledi = act.findViewById(R.id.optMercoledi);
-            Switch sGiovedi = act.findViewById(R.id.optGiovedi);
-            Switch sVenerdi = act.findViewById(R.id.optVenerdi);
-            Switch sSabato = act.findViewById(R.id.optSabato);
+            SwitchCompat sDomenica = act.findViewById(R.id.optDomenica);
+            SwitchCompat sLunedi = act.findViewById(R.id.optLunedi);
+            SwitchCompat sMartedi = act.findViewById(R.id.optMartedi);
+            SwitchCompat sMercoledi = act.findViewById(R.id.optMercoledi);
+            SwitchCompat sGiovedi = act.findViewById(R.id.optGiovedi);
+            SwitchCompat sVenerdi = act.findViewById(R.id.optVenerdi);
+            SwitchCompat sSabato = act.findViewById(R.id.optSabato);
 
             sDomenica.setChecked(VariabiliStaticheGPS.getInstance().getAccensioneGPS().isSpegnimentoAttivoDomenica());
             if (sDomenica.isChecked()) {

@@ -7,9 +7,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.canhub.cropper.CropImageView;
 import com.looigi.wallpaperchanger2.R;
@@ -40,18 +42,31 @@ public class modificaImmagine extends Activity {
     private ImageView btnFlipY;
     private ImageView btnChiude;
     private ImageView btnVolto;
-    private LinearLayout layColori;
+    // private LinearLayout layColori;
     private ImageView btnCrop;
     private ImageView btnSalvaCrop;
     private ImageView btnSalva;
     private ImageView btnAnnullaCrop;
     private modificaImmagine mI;
     private GestioneImmagini g;
-    private int modalita;
+    // private int modalita;
     private Bitmap vecchiaBitmap;
     private LinearLayout laySalvataggio;
     private List<Bitmap> undoBitmap;
     private ImageView imgUndo;
+    private int Resize = 100;
+    private int Angolo = 0;
+    private TextView txtDimensioni;
+    private TextView txtInformazioni;
+    private ImageView imgColori;
+    private ImageView imgResize;
+    private ImageView imgRuota;
+    private LinearLayout layRuota;
+    private LinearLayout layResize;
+    private LinearLayout layColori;
+    private SeekBar seekDimensioni;
+    private SeekBar seekAngolo;
+    private boolean nonFareRuota = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +79,9 @@ public class modificaImmagine extends Activity {
         modalitaCrop = false;
         undoBitmap = new ArrayList<>();
         g = new GestioneImmagini();
+        Resize = 100;
+        Angolo = 0;
+        nonFareRuota = false;
 
         ImpostaSchermata(this);
 
@@ -80,10 +98,8 @@ public class modificaImmagine extends Activity {
         NomeImmagineDaSalvare = NomeImmagine;
 
         bitmap = BitmapFactory.decodeFile(Path + NomeImmagineDaSalvare);
-        crop.setImageBitmap(bitmap);
-        img.setImageBitmap(bitmap);
 
-        DisegnaUndo();
+        AggiornaBitmap(bitmap);
     }
 
     public void EsegueSalvataggio(boolean Sovrascrive) {
@@ -116,93 +132,89 @@ public class modificaImmagine extends Activity {
         UtilityDetector.getInstance().VisualizzaMultimedia(context);
     }
 
-    private void impostaContrasto() {
-        modalita = 1;
-        vecchiaBitmap = bitmap;
-
-        btnSalvaCrop.setVisibility(LinearLayout.VISIBLE);
-        btnAnnullaCrop.setVisibility(LinearLayout.VISIBLE);
-        btnRuotaDes.setVisibility(LinearLayout.GONE);
-        btnRuotaSin.setVisibility(LinearLayout.GONE);
-        btnFlipX.setVisibility(LinearLayout.GONE);
-        btnFlipY.setVisibility(LinearLayout.GONE);
-        btnVolto.setVisibility(LinearLayout.GONE);
-        btnCrop.setVisibility(LinearLayout.GONE);
-        btnSalva.setVisibility(LinearLayout.GONE);
-        btnChiude.setVisibility(LinearLayout.GONE);
-        imgUndo.setVisibility(LinearLayout.GONE);
-    }
-
-    private void toglieContrasto() {
-        modalita = 0;
-
-        btnSalvaCrop.setVisibility(LinearLayout.GONE);
-        btnAnnullaCrop.setVisibility(LinearLayout.GONE);
-        btnRuotaDes.setVisibility(LinearLayout.VISIBLE);
-        btnRuotaSin.setVisibility(LinearLayout.VISIBLE);
-        btnFlipX.setVisibility(LinearLayout.VISIBLE);
-        btnFlipY.setVisibility(LinearLayout.VISIBLE);
-        btnVolto.setVisibility(LinearLayout.VISIBLE);
-        btnCrop.setVisibility(LinearLayout.VISIBLE);
-        btnSalva.setVisibility(LinearLayout.VISIBLE);
-        btnChiude.setVisibility(LinearLayout.VISIBLE);
-        if (undoBitmap.size() > 1) {
-            imgUndo.setVisibility(LinearLayout.VISIBLE);
-        }
-    }
-
     private void impostaCrop() {
+        Resize = 100;
+        Angolo = 0;
+        seekDimensioni.setProgress(Resize);
+        seekAngolo.setProgress(Angolo);
+
         if (modalitaCrop) {
+            crop.setImageBitmap(bitmap);
+
             crop.setVisibility(LinearLayout.VISIBLE);
             img.setVisibility(LinearLayout.GONE);
 
             btnSalvaCrop.setVisibility(LinearLayout.VISIBLE);
             btnAnnullaCrop.setVisibility(LinearLayout.VISIBLE);
-            btnRuotaDes.setVisibility(LinearLayout.GONE);
-            btnRuotaSin.setVisibility(LinearLayout.GONE);
             btnFlipX.setVisibility(LinearLayout.GONE);
             btnFlipY.setVisibility(LinearLayout.GONE);
             btnVolto.setVisibility(LinearLayout.GONE);
             btnCrop.setVisibility(LinearLayout.GONE);
-            layColori.setVisibility(LinearLayout.GONE);
+            // layColori.setVisibility(LinearLayout.GONE);
             btnSalva.setVisibility(LinearLayout.GONE);
             btnChiude.setVisibility(LinearLayout.GONE);
             imgUndo.setVisibility(LinearLayout.GONE);
-
-            crop.setImageBitmap(bitmap);
+            imgColori.setVisibility(LinearLayout.GONE);
+            imgResize.setVisibility(LinearLayout.GONE);
+            imgRuota.setVisibility(LinearLayout.GONE);
+            layColori.setVisibility(LinearLayout.GONE);
+            layResize.setVisibility(LinearLayout.GONE);
+            layRuota.setVisibility(LinearLayout.GONE);
+            if (vecchiaBitmap != null) {
+                bitmap = vecchiaBitmap;
+                vecchiaBitmap = null;
+            }
         } else {
+            crop.setImageBitmap(null);
+
             crop.setVisibility(LinearLayout.GONE);
             img.setVisibility(LinearLayout.VISIBLE);
 
             btnSalvaCrop.setVisibility(LinearLayout.GONE);
             btnAnnullaCrop.setVisibility(LinearLayout.GONE);
-            btnRuotaDes.setVisibility(LinearLayout.VISIBLE);
-            btnRuotaSin.setVisibility(LinearLayout.VISIBLE);
             btnFlipX.setVisibility(LinearLayout.VISIBLE);
             btnFlipY.setVisibility(LinearLayout.VISIBLE);
             btnVolto.setVisibility(LinearLayout.VISIBLE);
             btnCrop.setVisibility(LinearLayout.VISIBLE);
-            layColori.setVisibility(LinearLayout.VISIBLE);
+            // layColori.setVisibility(LinearLayout.VISIBLE);
             btnSalva.setVisibility(LinearLayout.VISIBLE);
             btnChiude.setVisibility(LinearLayout.VISIBLE);
             if (undoBitmap.size() > 1) {
                 imgUndo.setVisibility(LinearLayout.VISIBLE);
             }
-
-            img.setImageBitmap(bitmap);
+            imgColori.setVisibility(LinearLayout.VISIBLE);
+            imgResize.setVisibility(LinearLayout.VISIBLE);
+            imgRuota.setVisibility(LinearLayout.VISIBLE);
+            layColori.setVisibility(LinearLayout.GONE);
+            layResize.setVisibility(LinearLayout.GONE);
+            layRuota.setVisibility(LinearLayout.GONE);
         }
+
+        AggiornaBitmap(bitmap);
     }
 
-    private void AggiornaBitmap() {
-        crop.setImageBitmap(bitmap);
+    private void AggiornaBitmap(Bitmap bitmap) {
+        // crop.setImageBitmap(bitmap);
         img.setImageBitmap(bitmap);
+
+        if (bitmap != null) {
+            txtDimensioni.setText(Resize + "%: " + bitmap.getWidth() + "x" + bitmap.getHeight());
+
+            txtInformazioni.setText(
+                    NomeImmagineDaSalvare + "\n" +
+                    bitmap.getWidth() + "x" + bitmap.getHeight()
+            );
+        } else {
+            txtDimensioni.setText("");
+            txtInformazioni.setText("");
+        }
 
         DisegnaUndo();
     }
 
     public void ImpostaBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
-        AggiornaBitmap();
+        AggiornaBitmap(bitmap);
     }
 
     private void DisegnaUndo() {
@@ -221,7 +233,7 @@ public class modificaImmagine extends Activity {
         btnFlipX = act.findViewById(R.id.imgFlipX);
         btnFlipY = act.findViewById(R.id.imgFlipY);
         btnVolto = act.findViewById(R.id.imgVolto);
-        layColori = act.findViewById(R.id.layColori);
+        // layColori = act.findViewById(R.id.layColori);
         btnCrop = act.findViewById(R.id.imgCrop);
         btnSalvaCrop = (ImageView) act.findViewById(R.id.imgSalvaCrop);
         btnSalva = (ImageView) act.findViewById(R.id.imgSalva);
@@ -233,8 +245,162 @@ public class modificaImmagine extends Activity {
         imgUndo.setVisibility(LinearLayout.GONE);
         Button cmdSovrascrive = (Button) act.findViewById(R.id.cmdSovrascrivi);
         Button cmdRinomina = (Button) act.findViewById(R.id.cmdRinomina);
+        layColori = act.findViewById(R.id.layColori);
+        layColori.setVisibility(LinearLayout.GONE);
+        ImageView imgAnnullaColori = act.findViewById(R.id.imgAnnullaColori);
+        layResize = act.findViewById(R.id.layResize);
+        layResize.setVisibility(LinearLayout.GONE);
+        layRuota = act.findViewById(R.id.layRuota);
+        layRuota.setVisibility(LinearLayout.GONE);
+        imgResize = act.findViewById(R.id.imgResize);
+        imgRuota = act.findViewById(R.id.imgRuota);
+        ImageView imgAnnullaRuota = act.findViewById(R.id.imgAnnullaRuota);
+        ImageView imgAnnullaResize = act.findViewById(R.id.imgAnnullaResize);
+        ImageView imgColori2 = act.findViewById(R.id.imgColori2);
+        ImageView imgResize2 = act.findViewById(R.id.imgResize2);
+        ImageView imgRuota2 = act.findViewById(R.id.imgRuota2);
+        ImageView imgEsegueRotazione = act.findViewById(R.id.imgEsegueRotazione);
+        imgColori = act.findViewById(R.id.imgColori);
+        seekDimensioni = act.findViewById(R.id.seekBarDimensioni);
+        seekDimensioni.setMin(0);
+        seekDimensioni.setMax(200);
+        seekDimensioni.setProgress(Resize);
+        txtDimensioni = act.findViewById(R.id.txtDimensioni);
+        seekAngolo = act.findViewById(R.id.seekBarAngolo);
+        seekAngolo.setMin(0);
+        seekAngolo.setMax(360);
+        seekAngolo.setProgress(Angolo);
+        EditText txtAngolo = act.findViewById(R.id.txtAngolo);
+        txtAngolo.setText(Integer.toString(Angolo));
+        txtInformazioni = act.findViewById(R.id.txtImmagineDati);
 
         impostaCrop();
+
+        imgAnnullaColori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+                }
+
+                AggiornaBitmap(bitmap);
+
+                layColori.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgAnnullaResize.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+                }
+
+                AggiornaBitmap(bitmap);
+
+                layResize.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgAnnullaRuota.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+                }
+                nonFareRuota = false;
+
+                AggiornaBitmap(bitmap);
+
+                layRuota.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgColori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+
+                    AggiornaBitmap(bitmap);
+                }
+                vecchiaBitmap = bitmap;
+
+                layColori.setVisibility(LinearLayout.VISIBLE);
+                layResize.setVisibility(LinearLayout.GONE);
+                layRuota.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgResize.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+
+                    AggiornaBitmap(bitmap);
+                }
+                vecchiaBitmap = bitmap;
+
+                layResize.setVisibility(LinearLayout.VISIBLE);
+                layColori.setVisibility(LinearLayout.GONE);
+                layRuota.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgRuota.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nonFareRuota = false;
+
+                if (vecchiaBitmap != null) {
+                    bitmap = vecchiaBitmap;
+                    vecchiaBitmap = null;
+
+                    AggiornaBitmap(bitmap);
+                }
+                vecchiaBitmap = bitmap;
+
+                layRuota.setVisibility(LinearLayout.VISIBLE);
+                layResize.setVisibility(LinearLayout.GONE);
+                layColori.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgColori2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                vecchiaBitmap = null;
+
+                AggiornaBitmap(bitmap);
+
+                layColori.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgResize2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Resize = 100;
+                seekDimensioni.setProgress(Resize);
+                vecchiaBitmap = null;
+
+                AggiornaBitmap(bitmap);
+
+                layResize.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        imgRuota2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                nonFareRuota = true;
+
+                AggiornaBitmap(bitmap);
+
+                Angolo = 0;
+                seekAngolo.setProgress(Angolo);
+                vecchiaBitmap = null;
+
+                layRuota.setVisibility(LinearLayout.GONE);
+            }
+        });
 
         cmdSovrascrive.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -250,8 +416,7 @@ public class modificaImmagine extends Activity {
                 if (quale >= 0) {
                     bitmap = undoBitmap.get(quale);
 
-                    crop.setImageBitmap(bitmap);
-                    img.setImageBitmap(bitmap);
+                    AggiornaBitmap(bitmap);
 
                     undoBitmap.remove(undoBitmap.size() - 1);
                     if (undoBitmap.size() <= 1) {
@@ -305,14 +470,14 @@ public class modificaImmagine extends Activity {
             public void onClick(View v) {
                 DisegnaUndo();
 
-                if (modalita != 1) {
+                // if (modalita != 1) {
                     bitmap = crop.getCroppedImage();
                     modalitaCrop = false;
 
                     impostaCrop();
-                } else {
+                /* } else {
                     toglieContrasto();
-                }
+                } */
             }
         });
 
@@ -322,7 +487,7 @@ public class modificaImmagine extends Activity {
 
                 bitmap = g.RuotaImmagine(context,bitmap,270);
 
-                AggiornaBitmap();
+                AggiornaBitmap(bitmap);
             }
         });
 
@@ -332,20 +497,20 @@ public class modificaImmagine extends Activity {
 
                 bitmap = g.RuotaImmagine(context, bitmap,90);
 
-                AggiornaBitmap();
+                AggiornaBitmap(bitmap);
             }
         });
 
         btnAnnullaCrop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (modalita != 1) {
+                // if (modalita != 1) {
                     modalitaCrop = false;
 
                     impostaCrop();
-                } else {
+                /* } else {
                     bitmap = vecchiaBitmap;
                     toglieContrasto();
-                }
+                } */
             }
         });
 
@@ -355,7 +520,7 @@ public class modificaImmagine extends Activity {
 
                 bitmap = g.FlipImmagine(context, bitmap,true);
 
-                AggiornaBitmap();
+                AggiornaBitmap(bitmap);
             }
         });
 
@@ -365,7 +530,7 @@ public class modificaImmagine extends Activity {
 
                 bitmap = g.FlipImmagine(context, bitmap,false);
 
-                AggiornaBitmap();
+                AggiornaBitmap(bitmap);
             }
         });
 
@@ -389,15 +554,18 @@ public class modificaImmagine extends Activity {
 
             @Override
             public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
-                if (modalita != 1) {
+                /* if (modalita != 1) {
                     impostaContrasto();
-                }
+                } */
 
                 Contrasto = progress;
 
-                bitmap = g.CambiaContrastoLuminosita(context, vecchiaBitmap, Contrasto, Luminosita);
+                Bitmap b = g.CambiaContrastoLuminosita(context, vecchiaBitmap, Contrasto, Luminosita);
+                if (b != null) {
+                    bitmap = b;
 
-                AggiornaBitmap();
+                    AggiornaBitmap(bitmap);
+                }
             }
         });
 
@@ -418,14 +586,80 @@ public class modificaImmagine extends Activity {
 
             @Override
             public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
-                if (modalita != 1) {
+                /* if (modalita != 1) {
                     impostaContrasto();
-                }
+                } */
 
                 Luminosita = progress;
 
                 bitmap = g.CambiaContrastoLuminosita(context, vecchiaBitmap, Contrasto, Luminosita);
-                AggiornaBitmap();
+
+                AggiornaBitmap(bitmap);
+            }
+        });
+
+        seekDimensioni.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
+                Resize = progress;
+
+                int vecchioX = bitmap.getWidth();
+                int vecchioY = bitmap.getHeight();
+                int nuovoX = Math.round((float) (vecchioX * Resize) / 100);
+                int nuovoY = Math.round((float) (vecchioY * Resize) / 100);
+
+                txtDimensioni.setText(Resize + "%: " + nuovoX + "x" + nuovoY);
+
+                bitmap = g.Resize(bitmap, nuovoX, nuovoY);
+
+                AggiornaBitmap(bitmap);
+            }
+        });
+
+        imgEsegueRotazione.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Angolo = Integer.parseInt(txtAngolo.getText().toString());
+
+                txtAngolo.setText(Integer.toString(Angolo));
+
+                bitmap = g.RuotaImmagine(context, vecchiaBitmap, Angolo);
+
+                AggiornaBitmap(bitmap);
+            }
+        });
+
+        seekAngolo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
+                if (!nonFareRuota) {
+                    Angolo = progress;
+
+                    txtAngolo.setText(Integer.toString(Angolo));
+
+                    bitmap = g.RuotaImmagine(context, vecchiaBitmap, Angolo);
+
+                    AggiornaBitmap(bitmap);
+                }
             }
         });
     }

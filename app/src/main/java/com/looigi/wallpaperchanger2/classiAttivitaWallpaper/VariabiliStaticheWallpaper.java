@@ -84,6 +84,7 @@ public class VariabiliStaticheWallpaper {
     private String PercorsoIMMAGINI = Environment.getExternalStorageDirectory().getPath();
     private boolean sbragaTutto = false;
     private boolean Espansa = false;
+    private boolean SoloVolti = true;
     private boolean staPrendendoVolto = false;
     private List<Rect> quadratiFaccia;
 
@@ -94,6 +95,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isSoloVolti() {
+        return SoloVolti;
+    }
+
+    public void setSoloVolti(boolean soloVolti) {
+        SoloVolti = soloVolti;
     }
 
     public List<Rect> getQuadratiFaccia() {

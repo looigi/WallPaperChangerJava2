@@ -198,16 +198,19 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             LatLngBounds.Builder bc = new LatLngBounds.Builder();
 
             for (StrutturaGps s : listaGPS) {
-                if (s.getLat() == -1 && s.getLon() == -1) {
+                /* if (s.getLat() == -1 && s.getLon() == -1) {
                     AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
 
                     lista = new ArrayList<>();
-                } else {
+                } else { */
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
 
-                    float speed = Math.round(s.getSpeed()) * 10;
+                    float speed = Math.round(s.getSpeed()) * 5;
                     int colore = ritornaColore(speed);
+
+                    lista.add(s);
+
                     if (vecchioColore != colore) {
                         if (vecchioColore != -1) {
                             AggiungePolyLine(googleMap, lista, colore);
@@ -216,9 +219,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
                         vecchioColore = colore;
                     }
-
-                    lista.add(s);
-                }
+                // }
             }
 
             if (!lista.isEmpty()) {

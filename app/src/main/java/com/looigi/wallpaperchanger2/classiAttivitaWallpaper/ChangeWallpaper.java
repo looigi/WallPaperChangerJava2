@@ -215,10 +215,13 @@ public class ChangeWallpaper {
 												}
 											}
 
-											inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
-											if (inizioVisoY < 0) {
-												inizioVisoY = 0;
+											if (VariabiliStaticheWallpaper.getInstance().isSoloVolti()) {
+												inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+												if (inizioVisoY < 0) {
+													inizioVisoY = 0;
+												}
 											}
+
 											inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
 											if (inizioVisoX < 0) {
 												inizioVisoX = 0;
@@ -231,10 +234,17 @@ public class ChangeWallpaper {
 											if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
 												larghezzaViso = larghezzaImmagine - inizioVisoX;
 											}
-											altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
-											if (altezzaViso + inizioVisoY > altezzaImmagine) {
-												altezzaViso = altezzaImmagine - inizioVisoY;
+
+											if (VariabiliStaticheWallpaper.getInstance().isSoloVolti()) {
+												altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
+												if (altezzaViso + inizioVisoY > altezzaImmagine) {
+													altezzaViso = altezzaImmagine - inizioVisoY;
+												}
+											} else {
+												inizioVisoY = 0;
+												altezzaViso = altezzaImmagine - 1;
 											}
+
 
 											try {
 												bmpAppoggio = Bitmap.createBitmap(

@@ -158,7 +158,7 @@ public class GestioneImmagini {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(Quanto);
 
-		return Bitmap.createBitmap(
+		Bitmap rit = Bitmap.createBitmap(
 				Immagine,
 				0,
 				0,
@@ -167,6 +167,7 @@ public class GestioneImmagini {
 				matrix,
 				true);
 
+		return rit;
 		// saveBitmap(rotated, Path, NomeImmagine);
 
 		/* if (OkEXIF) {
@@ -456,24 +457,48 @@ public class GestioneImmagini {
 		}
 	}
 
+	public Bitmap Resize(Bitmap imaged, int maxWidth, int maxHeight) {
+		Bitmap image = imaged;
+
+		if (maxHeight > 0 && maxWidth > 0) {
+			int width = image.getWidth();
+			int height = image.getHeight();
+			float ratioBitmap = (float) width / (float) height;
+			float ratioMax = (float) maxWidth / (float) maxHeight;
+			int finalWidth = maxWidth;
+			int finalHeight = maxHeight;
+			if (ratioMax > 1) {
+				finalWidth = Math.round(((float) maxHeight * ratioBitmap));
+			} else {
+				finalHeight = Math.round(((float) maxWidth / ratioBitmap));
+			}
+			return image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, false);
+		}
+		return image;
+	}
+
 	public Bitmap CambiaContrastoLuminosita(Context context, Bitmap Immagine, float contrast, float brightness)
 	{
-		ColorMatrix cm = new ColorMatrix(new float[]
-				{
-						contrast, 0, 0, 0, brightness,
-						0, contrast, 0, 0, brightness,
-						0, 0, contrast, 0, brightness,
-						0, 0, 0, 1, 0
-				});
-		Bitmap mEnhancedBitmap = Bitmap.createBitmap(
-				Immagine.getWidth(),
-				Immagine.getHeight(),
-				Immagine.getConfig());
-		Canvas canvas = new Canvas(mEnhancedBitmap);
-		Paint paint = new Paint();
-		paint.setColorFilter(new ColorMatrixColorFilter(cm));
-		canvas.drawBitmap(Immagine, 0, 0, paint);
+		if (Immagine != null) {
+			ColorMatrix cm = new ColorMatrix(new float[]
+					{
+							contrast, 0, 0, 0, brightness,
+							0, contrast, 0, 0, brightness,
+							0, 0, contrast, 0, brightness,
+							0, 0, 0, 1, 0
+					});
+			Bitmap mEnhancedBitmap = Bitmap.createBitmap(
+					Immagine.getWidth(),
+					Immagine.getHeight(),
+					Immagine.getConfig());
+			Canvas canvas = new Canvas(mEnhancedBitmap);
+			Paint paint = new Paint();
+			paint.setColorFilter(new ColorMatrixColorFilter(cm));
+			canvas.drawBitmap(Immagine, 0, 0, paint);
 
-		return mEnhancedBitmap;
+			return mEnhancedBitmap;
+		} else {
+			return null;
+		}
 	}
 }

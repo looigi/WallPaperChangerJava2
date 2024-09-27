@@ -2,12 +2,14 @@ package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VolumePressed;
 
 public class MainActivityDetector extends Activity {
     private static String NomeMaschera = "MAINACTIVITY";

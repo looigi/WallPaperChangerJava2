@@ -41,14 +41,16 @@
 
                     <ImageView
                         android:id="@+id/imgImpostata"
-                        android:layout_width="250dp"
-                        android:layout_height="250dp">
+                        android:layout_width="450dp"
+                        android:layout_height="450dp">
 
                     </ImageView>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                     android:layout_width="match_parent"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:weightSum="5"
                     android:layout_height="wrap_content">
@@ -57,226 +59,48 @@
                         android:id="@+id/txtQuanteImmagini"
                         android:textColor="@color/colorAccent"
                         android:gravity="center_horizontal"
-                        android:layout_weight="4"
+                        android:layout_weight="3"
                         android:text=""
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
+                        android:layout_weight="2"
+                        android:gravity="right"
                         android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/imgRicerca"
                             android:src="@drawable/icona_cerca"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp">
+                            android:layout_width="40dp"
+                            android:layout_height="40dp">
 
+                        </ImageView>
+
+                        <ImageView
+                            android:layout_marginStart="5dp"
+                            android:id="@+id/imgImpoWP"
+                            android:src="@drawable/icona_equalizz"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp">
                         </ImageView>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:weightSum="6"
+                    android:orientation="vertical"
                     android:layout_marginTop="5dp"
                     android:padding="5dp"
                     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:textColor="@color/colorAccent"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="6"
                         android:gravity="center_vertical"
-                        android:text="Minuti di attesa"
-                        android:layout_height="match_parent">
-
-                    </TextView>
-
-                    <Button
-                        android:id="@+id/btnMenoMinuti"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="-"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/txtMinuti"
-                            android:textSize="32dp"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btnPiuMinuti"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="+"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:layout_height="wrap_content">
-
-                    <Switch
-                        android:id="@+id/switchHome"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Cambia Home"
-                        android:layout_height="wrap_content" />
-
-                    <Switch
-                        android:id="@+id/switchLock"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Cambia Lock"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:padding="5dp"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <Switch
-                        android:id="@+id/switchOffline"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Modalità offline"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layOffline"
-                    android:layout_width="match_parent"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/txtPath"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="5"
-                        android:gravity="center_horizontal"
-                        android:text="Cartella di origine"
-                        android:textColor="@color/colorPrimary">
-
-                    </TextView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:weightSum="6"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/colorAccent"
-                            android:text="Cartella di origine"
-                            android:layout_height="match_parent">
-
-                        </TextView>
-
-                        <Button
-                            android:id="@+id/btnCambiaPath"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="..."
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="6"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="5"
-                            android:textColor="@color/colorAccent"
-                            android:text="Refresh immagini"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|right"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/imgRefreshLocale"
-                                android:layout_width="30dp"
-                                android:src="@drawable/icona_refresh"
-                                android:layout_height="30dp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:padding="5dp"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!-- <Switch
-                            android:id="@+id/switchResize"
-                            android:layout_width="match_parent"
-                            android:textColor="#0000CC"
-                            android:text="Resize"
-                            android:layout_height="wrap_content" /> -->
-
-                    <Switch
-                        android:id="@+id/switchEspansa"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Zoom su volti"
-                        android:layout_height="wrap_content" />
-
-                    <Switch
-                        android:id="@+id/switchBlur"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Sfuma"
-                        android:layout_height="wrap_content" />
-
-                    <Switch
-                        android:id="@+id/switchScriveTesto"
-                        android:layout_width="match_parent"
-                        android:textColor="#0000CC"
-                        android:text="Scrive info immagine"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="6"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -294,15 +118,16 @@
 
                             <ImageView
                                 android:id="@+id/imgRefresh"
-                                android:layout_width="30dp"
+                                android:layout_width="40dp"
                                 android:src="@drawable/icona_refresh"
-                                android:layout_height="30dp" />
+                                android:layout_height="40dp" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:layout_weight="6"
                         android:layout_height="wrap_content">
 
@@ -321,60 +146,17 @@
 
                             <ImageView
                                 android:id="@+id/imgCambiaSubito"
-                                android:layout_width="30dp"
+                                android:layout_width="40dp"
                                 android:src="@drawable/eye"
-                                android:layout_height="30dp" />
+                                android:layout_height="40dp" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:weightSum="6"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_vertical"
-                        android:text="Invia file di log"
-                        android:layout_height="match_parent">
-
-                    </TextView>
-
-                    <Button
-                        android:id="@+id/btnInviaLog"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="..."
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center_vertical"
-                        android:text="Pulisce file di log"
-                        android:layout_height="match_parent">
-
-                    </TextView>
-
-                    <Button
-                        android:id="@+id/btnPulisceLog"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:text="..."
-                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchOnOff"
             android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
             android:layout_alignParentEnd="true"
@@ -428,7 +210,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:id="@+id/layDetectorMain"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -439,5 +221,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </RelativeLayout>
+    </RelativeLayout> -->
+
+    <include
+        android:visibility="gone"
+        layout="@layout/impostazioni_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

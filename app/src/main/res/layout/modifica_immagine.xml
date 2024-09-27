@@ -7,63 +7,105 @@
     android:id="@+id/container_tipo_modifica_immagine"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/txtImmagineDati"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bordato"
+        android:layout_marginStart="50dp"
+        android:layout_height="wrap_content">
+    </TextView>
+
     <com.canhub.cropper.CropImageView
         android:visibility="gone"
         android:id="@+id/cropImgViewModifica"
+        android:layout_below="@+id/txtImmagineDati"
+        android:layout_marginStart="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/imgViewModifica"
+        android:layout_below="@+id/txtImmagineDati"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layColori"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:padding="2dp"
         android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bordato"
+        android:padding="2dp"
+        android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="5"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="100dp"
                 android:text="Contrasto"
                 android:layout_height="wrap_content" />
 
             <SeekBar
                 android:id="@+id/seekBarCont"
-                android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="5"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="100dp"
                 android:text="Luminosità"
                 android:layout_height="wrap_content" />
 
             <SeekBar
                 android:id="@+id/seekBarLum"
-                android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgColori2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/colori" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaColori"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
         <!-- <LinearLayout
             android:layout_width="match_parent"
             android:weightSum="5"
@@ -85,97 +127,118 @@
 
     <LinearLayout
         android:id="@+id/layTasti"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:background="@drawable/bianco_trasparente"
-        android:layout_width="match_parent"
-        android:gravity="right|center_vertical"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:gravity="right|bottom"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgUndo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/undo" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgSalvaCrop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/icona_salva" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgAnnullaCrop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/elimina_quadrato" />
+                <ImageView
+                    android:id="@+id/imgUndo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/undo" />
 
-        <ImageView
-            android:id="@+id/imgCrop"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/crop" />
+                <ImageView
+                    android:id="@+id/imgSalvaCrop"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/icona_salva" />
 
-        <ImageView
-            android:id="@+id/imgVolto"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/volto" />
+                <ImageView
+                    android:id="@+id/imgAnnullaCrop"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/elimina_quadrato" />
 
-        <ImageView
-            android:id="@+id/imgFlipX"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/flip_x" />
+                <ImageView
+                    android:id="@+id/imgCrop"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/crop" />
 
-        <ImageView
-            android:id="@+id/imgFlipY"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/flip_y" />
+                <ImageView
+                    android:id="@+id/imgColori"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/colori" />
 
-        <ImageView
-            android:id="@+id/imgRuotaSin"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/ruotasx" />
+                <ImageView
+                    android:id="@+id/imgVolto"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/volto" />
 
-        <ImageView
-            android:id="@+id/imgRuotaDes"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/ruotadx" />
+                <ImageView
+                    android:id="@+id/imgRuota"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/rotate" />
 
-        <ImageView
-            android:id="@+id/imgSalva"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/icona_salva" />
+                <ImageView
+                    android:id="@+id/imgResize"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/resize" />
 
-        <ImageView
-            android:id="@+id/imgChiude"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/elimina_quadrato" />
+                <ImageView
+                    android:id="@+id/imgFlipX"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/flip_x" />
+
+                <ImageView
+                    android:id="@+id/imgFlipY"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/flip_y" />
+
+                <ImageView
+                    android:id="@+id/imgSalva"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/icona_salva" />
+
+                <ImageView
+                    android:id="@+id/imgChiude"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="2dp"
+                    android:src="@drawable/elimina_quadrato" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/laySalvataggio"
         android:background="@drawable/bordato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_centerInParent="true"
@@ -204,6 +267,173 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rinomina"></Button>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layRuota"
+        android:layout_marginStart="50dp"
+        android:background="@drawable/bordato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:text="Angolo">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/txtAngolo"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                </EditText>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgEsegueRotazione"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/icona_cerca" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <SeekBar
+                android:id="@+id/seekBarAngolo"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+            </SeekBar>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgRuota2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/rotate" />
+
+            <ImageView
+                android:id="@+id/imgRuotaSin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ruotasx" />
+
+            <ImageView
+                android:id="@+id/imgRuotaDes"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ruotadx" />
+
+            <ImageView
+                android:id="@+id/imgAnnullaRuota"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/elimina_quadrato" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layResize"
+        android:background="@drawable/bordato"
+        android:layout_marginStart="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:id="@+id/txtDimensioni"
+                android:layout_width="match_parent"
+                android:lines="1"
+                android:layout_height="wrap_content"
+                android:text="Percentuale">
+
+            </TextView>
+
+            <SeekBar
+                android:id="@+id/seekBarDimensioni"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+            </SeekBar>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgResize2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/resize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaResize"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

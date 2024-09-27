@@ -6,597 +6,609 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!-- <Switch
+    <!-- <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sLog2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log" /> -->
 
-    <Switch
-        android:id="@+id/sVibrazione"
-        android:textColor="@color/black"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vibrazione" />
-
-    <Switch
-        android:id="@+id/sToast"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Toasts" />
-
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <TextView
-        android:gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GPS" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <Switch
-        android:layout_marginTop="10dp"
-        android:id="@+id/sGpsPreciso"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gps Preciso" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_weight="3"
-            android:text="GPS Ms" />
-
-        <EditText
-            android:id="@+id/edtGpsMs"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content">
-
-        </EditText>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_weight="3"
-            android:text="GPS Meters" />
-
-        <EditText
-            android:id="@+id/edtGpsMeters"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content">
-
-        </EditText>
-
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <TextView
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:textColor="@color/black"
-        android:layout_height="wrap_content"
-        android:text="Disattivazione GPS" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-        </TextView>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sVibrazione"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vibrazione" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sToast"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Toasts" />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Disattiv."
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GPS" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_marginTop="10dp"
+                android:id="@+id/sGpsPreciso"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gps Preciso" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:gravity="center_vertical"
                 android:layout_height="wrap_content">
-            </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="3"
+                    android:text="GPS Ms" />
+
+                <EditText
+                    android:id="@+id/edtGpsMs"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="3"
+                    android:text="GPS Meters" />
+
+                <EditText
+                    android:id="@+id/edtGpsMeters"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Riattiv."
-                android:layout_height="wrap_content">
-            </TextView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-        <RadioGroup
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <Switch
-                android:id="@+id/optDomenica"
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Domenica" />
+                android:layout_height="wrap_content"
+                android:text="Disattivazione GPS" />
 
-            <Switch
-                android:id="@+id/optLunedi"
+            <View
                 android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Lunedì" />
-
-            <Switch
-                android:id="@+id/optMartedi"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Martedì" />
-
-            <Switch
-                android:id="@+id/optMercoledi"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Mercoledì" />
-
-            <Switch
-                android:id="@+id/optGiovedi"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Giovedì" />
-
-            <Switch
-                android:id="@+id/optVenerdi"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Venerdì" />
-
-            <Switch
-                android:id="@+id/optSabato"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
-                android:layout_height="40dp"
-                android:text="Sabato" />
-        </RadioGroup>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:weightSum="2"
-                android:layout_height="40dp">
-
-                <EditText
-                    android:id="@+id/edtOraInizioDomenica"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
-
-                <EditText
-                    android:id="@+id/edtOraFineDomenica"
-                    android:textColor="@color/black"
-                    android:inputType="text"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edtOraInizioLunedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:layout_height="wrap_content">
+                </TextView>
 
-                <EditText
-                    android:id="@+id/edtOraFineLunedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="Disattiv."
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="Riattiv."
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:weightSum="2"
-                android:layout_height="40dp">
-
-                <EditText
-                    android:id="@+id/edtOraInizioMartedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
-
-                <EditText
-                    android:id="@+id/edtOraFineMartedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edtOraInizioMercoledi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <RadioGroup
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optDomenica"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Domenica" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optLunedi"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Lunedì" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optMartedi"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Martedì" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optMercoledi"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Mercoledì" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optGiovedi"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Giovedì" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optVenerdi"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Venerdì" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/optSabato"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:text="Sabato" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="40dp">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioDomenica"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineDomenica"
+                            android:textColor="@color/black"
+                            android:inputType="text"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioLunedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineLunedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="40dp">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioMartedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineMartedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioMercoledi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineMercoledi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioGiovedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineGiovedi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioVenerdi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineVenerdi"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtOraInizioSabato"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+
+                        <EditText
+                            android:id="@+id/edtOraFineSabato"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!-- <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sGPSBetter"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GPS better position" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Tempo GPS" />
 
                 <EditText
-                    android:id="@+id/edtOraFineMercoledi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:id="@+id/edtTempoGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSalvaTGPS"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/icona_salva" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:weightSum="5"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edtOraInizioGiovedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Metri GPS" />
 
                 <EditText
-                    android:id="@+id/edtOraFineGiovedi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:id="@+id/edtMetriGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSalvaMGPS"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/icona_salva" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sAccuracy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Considera Accuracy" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Accuracy" />
+
+                <EditText
+                    android:id="@+id/edtAccuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSalvaACC"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/icona_salva" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:weightSum="5"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edtOraInizioVenerdi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Dim. Thumbs Salvate" />
 
                 <EditText
-                    android:id="@+id/edtOraFineVenerdi"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:id="@+id/edtDimThumbs"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSalvaDT"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/icona_salva" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:weightSum="5"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edtOraInizioSabato"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Dim. Thumbs su Mappa" />
 
                 <EditText
-                    android:id="@+id/edtOraFineSabato"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:id="@+id/edtDimThumbsM"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"/>
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSalvaDTM"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/icona_salva" />
+
+                </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnTornaIndietro"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/indietro" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="" />
+            </LinearLayout> -->
         </LinearLayout>
-    </LinearLayout>
-
-
-    <!-- <Switch
-        android:id="@+id/sGPSBetter"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GPS better position" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Tempo GPS" />
-
-        <EditText
-            android:id="@+id/edtTempoGPS"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnSalvaTGPS"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icona_salva" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Metri GPS" />
-
-        <EditText
-            android:id="@+id/edtMetriGPS"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnSalvaMGPS"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icona_salva" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <Switch
-        android:id="@+id/sAccuracy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Considera Accuracy" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Accuracy" />
-
-        <EditText
-            android:id="@+id/edtAccuracy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnSalvaACC"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icona_salva" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Dim. Thumbs Salvate" />
-
-        <EditText
-            android:id="@+id/edtDimThumbs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnSalvaDT"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icona_salva" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Dim. Thumbs su Mappa" />
-
-        <EditText
-            android:id="@+id/edtDimThumbsM"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:ems="10"
-            android:inputType="number" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnSalvaDTM"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icona_salva" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnTornaIndietro"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/indietro" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="" />
-    </LinearLayout> -->
+    </ScrollView>
 </LinearLayout>

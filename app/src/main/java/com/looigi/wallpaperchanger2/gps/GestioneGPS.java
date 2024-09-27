@@ -99,8 +99,6 @@ public class GestioneGPS {
         handler1 = new Handler(handlerThread1.getLooper());
         r1 = new Runnable() {
             public void run() {
-                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Controllo disattivazione/attivazione. Stato attuale: " + statoAttivo);
-
                 ControlloAccSpegn();
 
                 handler1.postDelayed(this, secondiAttesa);
@@ -110,34 +108,41 @@ public class GestioneGPS {
     }
 
     private void ControlloOraPerAccSpegn(Calendar calendar, String disatt, String riatt) {
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Controllo disattivazione/attivazione:\nOra Attuale: " + hour + ":" + minute + "\n" +
+                "Ora Disattivazione: " + disatt + "\n" +
+                "Ora Riattivazione: " + riatt + "\nStato Attuale: " + VariabiliStaticheGPS.getInstance().isGpsAttivo());
+
+        String[] oraDisatt = disatt.split(":");
+
+        int hDD = Integer.parseInt(oraDisatt[0]);
+        int mDD = Integer.parseInt(oraDisatt[1]);
+
+        String[] oraRiatt = riatt.split(":");
+
+        int hDR = Integer.parseInt(oraRiatt[0]);
+        int mDR = Integer.parseInt(oraRiatt[1]);
+
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-            String[] oraDisatt = disatt.split(":");
-
-            int hD = Integer.parseInt(oraDisatt[0]);
-            int mD = Integer.parseInt(oraDisatt[1]);
-
-            if (hour >= hD || (hour == hD && minute >= mD)) {
+            if ((hour >= hDD && hour < hDR) || (hour == hDD && minute >= mDD)) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Disattivo: " + hD + ":" + mD + " -> " + hour + ":" + minute);
+                        "Controllo disattivazione/attivazione. Disattivo: " + hDD + ":" + mDD + " -> " + hour + ":" + minute);
 
                 BloccaGPS();
             }
         } else {
-            String[] oraRiatt = riatt.split(":");
-
-            int hD = Integer.parseInt(oraRiatt[0]);
-            int mD = Integer.parseInt(oraRiatt[1]);
-
-            if (hour >= hD || (hour == hD && minute >= mD)) {
+            if ((hour >= hDR && hour >= hDD) || (hour == hDR && minute >= mDR)) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Riattivo: " + hD + ":" + mD + " -> " + hour + ":" + minute);
+                        "Controllo disattivazione/attivazione. Riattivo: " + hDR + ":" + mDR + " -> " + hour + ":" + minute);
 
                 AbilitaGPS(context);
             }
@@ -149,6 +154,7 @@ public class GestioneGPS {
         if (s != null) {
             Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_WEEK);
+            boolean accendiComunque = false;
 
             switch (day) {
                 case Calendar.SUNDAY:
@@ -158,6 +164,8 @@ public class GestioneGPS {
                                 s.getOraDisattivazioneDomenica(),
                                 s.getOraRiattivazioneDomenica()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
                 case Calendar.SATURDAY:
@@ -167,6 +175,8 @@ public class GestioneGPS {
                                 s.getOraDisattivazioneSabato(),
                                 s.getOraRiattivazioneSabato()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
                 case Calendar.MONDAY:
@@ -176,15 +186,19 @@ public class GestioneGPS {
                                 s.getOraDisattivazioneLunedi(),
                                 s.getOraRiattivazioneLunedi()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
-                case Calendar.THURSDAY:
+                case Calendar.TUESDAY:
                     if (s.isSpegnimentoAttivoMartedi()) {
                         ControlloOraPerAccSpegn(
                                 calendar,
                                 s.getOraDisattivazioneMartedi(),
                                 s.getOraRiattivazioneMartedi()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
                 case Calendar.WEDNESDAY:
@@ -194,15 +208,19 @@ public class GestioneGPS {
                                 s.getOraDisattivazioneMercoledi(),
                                 s.getOraRiattivazioneMercoledi()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
-                case Calendar.TUESDAY:
+                case Calendar.THURSDAY:
                     if (s.isSpegnimentoAttivoGiovedi()) {
                         ControlloOraPerAccSpegn(
                                 calendar,
                                 s.getOraDisattivazioneGiovedi(),
                                 s.getOraRiattivazioneGiovedi()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
                 case Calendar.FRIDAY:
@@ -212,10 +230,22 @@ public class GestioneGPS {
                                 s.getOraDisattivazioneVenerdi(),
                                 s.getOraRiattivazioneVenerdi()
                         );
+                    } else {
+                        accendiComunque = true;
                     }
                     break;
             }
 
+            if (accendiComunque) {
+                if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                    UtilityGPS.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Controllo disattivazione/attivazione. Attivo perché disattivato e siamo fuori giorno impostato");
+
+                    AbilitaGPS(context);
+                }
+            }
         }
     }
 
@@ -311,7 +341,7 @@ public class GestioneGPS {
 
                 /* boolean acceso = false;
 
-                switch (day) {
+                SwitchCompat (day) {
                     case Calendar.SUNDAY:
                     case Calendar.SATURDAY:
                         break;

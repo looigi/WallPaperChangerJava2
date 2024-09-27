@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
@@ -74,8 +75,10 @@ public class MainStart  extends Activity {
         LinearLayout layStart = findViewById(R.id.layStart);
 
         ImageView imgD = findViewById(R.id.imgStartDetector);
+        TextView txtLabelDet = findViewById(R.id.txtStartLabelDet);
         if (!VariabiliStaticheStart.getInstance().isDetector()) {
             imgD.setVisibility(LinearLayout.GONE);
+            txtLabelDet.setVisibility(LinearLayout.GONE);
         }
         imgD.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -147,8 +150,10 @@ public class MainStart  extends Activity {
         });
 
         ImageView imgM = findViewById(R.id.imgStartMappa);
+        TextView txtLabelMap = findViewById(R.id.txtStartLabelMap);
         if (!VariabiliStaticheStart.getInstance().isDetector()) {
             imgM.setVisibility(LinearLayout.GONE);
+            txtLabelMap.setVisibility(LinearLayout.GONE);
         }
         imgM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

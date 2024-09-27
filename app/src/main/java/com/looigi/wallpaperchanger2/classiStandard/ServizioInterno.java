@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDe
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VolumePressed;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -29,6 +31,7 @@ public class ServizioInterno extends Service {
     private Context context;
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
+    private VolumePressed mVolumePressed;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -59,6 +62,12 @@ public class ServizioInterno extends Service {
         context = this;
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create");
+
+        mVolumePressed = new VolumePressed(this, new Handler(Looper.getMainLooper()));
+        getApplicationContext().getContentResolver().registerContentObserver(
+                android.provider.Settings.System.CONTENT_URI,
+                true,
+                mVolumePressed );
 
         mScreenReceiver = new ScreenReceiver();
         IntentFilter filter = new IntentFilter();
@@ -162,6 +171,12 @@ public class ServizioInterno extends Service {
         super.onDestroy();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
+
+        if (mVolumePressed != null) {
+            getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);
+            mVolumePressed = null;
+        }
+
 
         if (wl != null) {
             wl.release();

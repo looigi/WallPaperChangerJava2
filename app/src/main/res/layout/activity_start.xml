@@ -65,6 +65,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtStartLabelDet"
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_marginTop="10dp"
@@ -98,6 +99,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtStartLabelMap"
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:layout_marginTop="10dp"
