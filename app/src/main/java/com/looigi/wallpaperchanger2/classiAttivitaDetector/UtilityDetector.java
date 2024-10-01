@@ -1,7 +1,9 @@
 package com.looigi.wallpaperchanger2.classiAttivitaDetector;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,9 +18,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Size;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -46,6 +50,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.content.Context.POWER_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class UtilityDetector {
     private static final String NomeMaschera = "UTILITY";
@@ -797,6 +804,34 @@ public class UtilityDetector {
         }
     }
 
+    public void SpegneSchermo(Context context) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /* WindowManager.LayoutParams params = VariabiliStaticheStart.getInstance().getMainActivity().getWindow().getAttributes();
+
+                params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                params.screenBrightness = 0.1f;
+
+                VariabiliStaticheStart.getInstance().getMainActivity().getWindow().setAttributes(params); */
+            }
+        }, 1000);
+    }
+
+    public void AccendeSchermo(Context context) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /* WindowManager.LayoutParams params = VariabiliStaticheStart.getInstance().getMainActivity().getWindow().getAttributes();
+
+                params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                params.screenBrightness = 0.9f;
+
+                VariabiliStaticheStart.getInstance().getMainActivity().getWindow().setAttributes(params); */
+            }
+        }, 1000);
+    }
+
     public void PlayAudio(Context context) {
         // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
         // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
@@ -813,7 +848,7 @@ public class UtilityDetector {
             VariabiliStaticheDetector.getInstance().getAudio().setImageResource(R.drawable.pausa);
             VariabiliStaticheDetector.getInstance().StaSuonando = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 

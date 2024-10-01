@@ -11,9 +11,11 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,13 +41,15 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
     private Handler handlerTimer;
     private Runnable rTimer;
     private String dataOdierna;
-    private Date dataAttuale;
     private Context context;
     private db_dati_gps db;
     private Activity act;
     private TextView txtMappa;
     private GoogleMap mappa;
     private int vecchiDati = -1;
+    private Date dataAttuale;
+    private boolean primoPassaggio = true;
+    private boolean segue = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
         this.context = this;
         this.act = this;
+        primoPassaggio = true;
+        segue = true;
 
         txtMappa = act.findViewById(R.id.txtMappa);
 
@@ -62,6 +68,14 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
         dataOdierna = sdfD.format(calendar.getTime());
+
+        SwitchCompat sSegue = act.findViewById(R.id.sSegue);
+        sSegue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                segue = sSegue.isChecked();
+            }
+        });
 
         ImageView imgI = act.findViewById(R.id.imgIndietroMappa);
         imgI.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +88,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
                     dataOdierna = sdfD.format(c.getTime());
                     dataAttuale = c.getTime();
+
+                    VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath(mappa);
                 }
@@ -92,6 +108,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                     dataOdierna = sdfD.format(c.getTime());
                     dataAttuale = c.getTime();
 
+                    VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
+
                     DisegnaPath(mappa);
                 }
             }
@@ -102,6 +120,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             public void onClick(View v) {
                 db_dati_gps db = new db_dati_gps(context);
                 db.EliminaPosizioni(dataOdierna);
+
+                VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
                 UtilityWallpaper.getInstance().ApreToast(context,
                         "Eliminati dati gps per la data " + dataOdierna);
@@ -140,8 +160,10 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         int c = 0;
 
         for (StrutturaGps l : lista) {
-            path[c] = new LatLng(l.getLat(), l.getLon());
-            c++;
+            if (c < lista.size()) {
+                path[c] = new LatLng(l.getLat(), l.getLon());
+                c++;
+            }
         }
 
         Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
@@ -177,11 +199,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
     }
 
     private void DisegnaPath(GoogleMap googleMap) {
-        if (db == null) {
-            db = new db_dati_gps(context);
-        }
+        List<StrutturaGps> listaGPS = VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti();
 
-        List<StrutturaGps> listaGPS = db.RitornaPosizioni(dataOdierna);
         txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
 
         if (listaGPS.isEmpty()) {
@@ -206,7 +225,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
 
-                    float speed = Math.round(s.getSpeed()) * 5;
+                    float speed = Math.round(s.getSpeed()) * 3;
                     int colore = ritornaColore(speed);
 
                     lista.add(s);
@@ -228,12 +247,16 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
             AggiungeMarkers(googleMap);
 
-            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 30));
-                }
-            });
+            if (primoPassaggio || segue) {
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                    }
+                });
+
+                primoPassaggio = false;
+            }
         }
     }
 

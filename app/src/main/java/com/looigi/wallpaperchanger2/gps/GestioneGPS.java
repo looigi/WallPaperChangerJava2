@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -77,6 +79,15 @@ public class GestioneGPS {
         GestioneNotifiche.getInstance().AggiornaNotifica();
     }
 
+    public void ChiudeMaschera() {
+        if (handler1 != null) {
+            handler1.removeCallbacks(r1);
+            handler1 = null;
+            handlerThread1 = null;
+            // return;
+        }
+    }
+
     public void AbilitaTimer(Context context) {
         if (handler1 != null) {
             handler1.removeCallbacks(r1);
@@ -105,6 +116,24 @@ public class GestioneGPS {
             }
         };
         handler1.postDelayed(r1, secondiAttesa);
+    }
+
+    private boolean checkWifiOnAndConnected() {
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
+
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+
+            if( wifiInfo.getNetworkId() == -1 ){
+                return false; // Not connected to an access point
+            }
+
+            return true; // Connected to an access point
+        }
+        else {
+            return false; // Wi-Fi adapter is OFF
+        }
     }
 
     private void ControlloOraPerAccSpegn(Calendar calendar, String disatt, String riatt) {
@@ -150,6 +179,39 @@ public class GestioneGPS {
     }
 
     private void ControlloAccSpegn() {
+        boolean wifi = checkWifiOnAndConnected();
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Controllo disattivazione/attivazione. Controllo wifi connesso: " + wifi);
+
+        if (wifi) {
+            if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Disattivo per WiFi attivo");
+
+                BloccaGPS();
+
+                return;
+            } else {
+                return;
+            }
+        } /* else {
+            if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Riattivo per WiFi non attivo.\nControllo impostazioni.");
+
+                // AbilitaGPS(context);
+
+                // return;
+            }
+        } */
+
         StrutturaAccensioneGPS s = VariabiliStaticheGPS.getInstance().getAccensioneGPS();
         if (s != null) {
             Calendar calendar = Calendar.getInstance();
@@ -306,6 +368,8 @@ public class GestioneGPS {
             AlertDialog alert=alertDialog.create();
             alert.show();
         } */
+
+        ControlloAccSpegn();
     }
 
     /* private void controllaStatoGPS() {
@@ -461,6 +525,8 @@ public class GestioneGPS {
             s.setSpeed(speed);
             s.setAccuracy(accuracy);
             s.setDistanza(distanza);
+
+            VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
 
             VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 

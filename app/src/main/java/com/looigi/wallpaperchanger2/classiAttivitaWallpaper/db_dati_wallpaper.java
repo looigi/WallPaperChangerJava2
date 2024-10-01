@@ -71,7 +71,7 @@ public class db_dati_wallpaper {
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
                         "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR, " +
-                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR);";
+                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR, Effetti VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
@@ -185,7 +185,7 @@ public class db_dati_wallpaper {
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, " +
-                            "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa, SoloVolto)"
+                            "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa, SoloVolto, Effetti)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -200,7 +200,8 @@ public class db_dati_wallpaper {
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isLock() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheStart.getInstance().isDetector() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isEspansa() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheWallpaper.getInstance().isSoloVolti() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isSoloVolti() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isEffetti() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -246,6 +247,7 @@ public class db_dati_wallpaper {
                     VariabiliStaticheStart.getInstance().setDetector(c.getString(11).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setEspansa(c.getString(12).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setSoloVolti(c.getString(13).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setEffetti(c.getString(14).equals("S"));
 
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
@@ -259,6 +261,7 @@ public class db_dati_wallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Detector: " + VariabiliStaticheStart.getInstance().isDetector());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Solo Volti: " + VariabiliStaticheWallpaper.getInstance().isSoloVolti());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Effetti: " + VariabiliStaticheWallpaper.getInstance().isEffetti());
                 } else {
                     Controlla = false;
                     boolean scritti = ScriveImpostazioni();

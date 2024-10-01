@@ -741,6 +741,8 @@ public class AndroidCameraApi extends Activity {
             UtilityDetector.getInstance().CriptaFiles(this);
         }
 
+        UtilityDetector.getInstance().AccendeSchermo(context);
+
         act.finish();
     }
 }

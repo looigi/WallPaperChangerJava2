@@ -24,7 +24,7 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
-    public static int attesaControlloGPS = 1;
+    public static int attesaControlloGPS = 10;
     // private int oraGpsAccensione = 16;
     // private int minutiGpsAccensione = 5;
     // private int oraGpsSpengimento = 7;
@@ -32,6 +32,16 @@ public class VariabiliStaticheGPS {
     // private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
     private StrutturaAccensioneGPS accensioneGPS;
     private ImageView bitmapHome;
+    private GestioneMappa mappa;
+    public static int quantiPuntiSumappa = 990;
+
+    public GestioneMappa getMappa() {
+        return mappa;
+    }
+
+    public void setMappa(GestioneMappa mappa) {
+        this.mappa = mappa;
+    }
 
     public ImageView getBitmapHome() {
         return bitmapHome;

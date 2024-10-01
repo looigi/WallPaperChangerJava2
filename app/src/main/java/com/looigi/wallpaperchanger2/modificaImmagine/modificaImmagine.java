@@ -518,7 +518,7 @@ public class modificaImmagine extends Activity {
             public void onClick(View v) {
                 DisegnaUndo();
 
-                bitmap = g.FlipImmagine(context, bitmap,true);
+                bitmap = g.FlipImmagine(bitmap,true);
 
                 AggiornaBitmap(bitmap);
             }
@@ -528,7 +528,7 @@ public class modificaImmagine extends Activity {
             public void onClick(View v) {
                 DisegnaUndo();
 
-                bitmap = g.FlipImmagine(context, bitmap,false);
+                bitmap = g.FlipImmagine(bitmap,false);
 
                 AggiornaBitmap(bitmap);
             }
@@ -560,7 +560,7 @@ public class modificaImmagine extends Activity {
 
                 Contrasto = progress;
 
-                Bitmap b = g.CambiaContrastoLuminosita(context, vecchiaBitmap, Contrasto, Luminosita);
+                Bitmap b = g.CambiaContrastoLuminosita(vecchiaBitmap, Contrasto, Luminosita);
                 if (b != null) {
                     bitmap = b;
 
@@ -592,7 +592,7 @@ public class modificaImmagine extends Activity {
 
                 Luminosita = progress;
 
-                bitmap = g.CambiaContrastoLuminosita(context, vecchiaBitmap, Contrasto, Luminosita);
+                bitmap = g.CambiaContrastoLuminosita(vecchiaBitmap, Contrasto, Luminosita);
 
                 AggiornaBitmap(bitmap);
             }

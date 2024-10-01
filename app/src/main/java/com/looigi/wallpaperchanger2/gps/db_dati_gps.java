@@ -89,7 +89,11 @@ public class db_dati_gps {
         }
     }
 
-    public Boolean  ScriveAccensioni(Context context) {
+    public Boolean ScriveAccensioni(Context context) {
+        if (VariabiliStaticheGPS.getInstance().getAccensioneGPS() == null) {
+            return false;
+        }
+
         if (myDB != null) {
             try {
                 String Imm = "";

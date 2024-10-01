@@ -2,7 +2,6 @@ package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,17 +12,15 @@ import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.Display;
-import android.widget.ImageView;
 
-import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.modificaImmagine.GestioneImmagini;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
 
 import java.io.File;
@@ -31,6 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class ChangeWallpaper {
 	private static final String NomeMaschera = "CHANGEWALLPAPER";
@@ -161,6 +159,9 @@ public class ChangeWallpaper {
 						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Mette bordo a immagine");
 
 						bitmap = MetteBordoAImmagine(context, bitmap, src);
+						if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
+							bitmap = applicaEffetti(bitmap);
+						}
 
 						setWallpaperLocaleEsegue(context, bitmap);
 
@@ -188,6 +189,7 @@ public class ChangeWallpaper {
 
 										if (r != null) {
 											Bitmap bitmap = BitmapFactory.decodeFile(finalPath);
+
 											int larghezzaImmagine = bitmap.getWidth();
 											int altezzaImmagine = bitmap.getHeight();
 
@@ -215,11 +217,17 @@ public class ChangeWallpaper {
 												}
 											}
 
+											/* Rect r1 = new Rect();
+											r1.set(inizioVisoX, inizioVisoY, larghezzaViso, altezzaViso);
+											bitmap = disegnaRettangolo(bitmap, r1, Color.WHITE); */
+
 											if (VariabiliStaticheWallpaper.getInstance().isSoloVolti()) {
 												inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
 												if (inizioVisoY < 0) {
 													inizioVisoY = 0;
 												}
+											} else {
+												inizioVisoY = 0;
 											}
 
 											inizioVisoX -= (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
@@ -227,10 +235,7 @@ public class ChangeWallpaper {
 												inizioVisoX = 0;
 											}
 
-											// larghezzaViso = larghezzaImmagine - inizioVisoX;
-											// altezzaViso = altezzaImmagine - inizioVisoY;
-
-											// larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+											larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
 											if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
 												larghezzaViso = larghezzaImmagine - inizioVisoX;
 											}
@@ -241,38 +246,43 @@ public class ChangeWallpaper {
 													altezzaViso = altezzaImmagine - inizioVisoY;
 												}
 											} else {
-												inizioVisoY = 0;
-												altezzaViso = altezzaImmagine - 1;
+												altezzaViso = altezzaImmagine + inizioVisoY;
 											}
 
+											/*Rect r2 = new Rect();
+											r2.set(inizioVisoX, inizioVisoY, larghezzaViso, altezzaViso);
+											bitmap = disegnaRettangolo(bitmap, r2, Color.RED); */
 
-											try {
+											// try {
 												bmpAppoggio = Bitmap.createBitmap(
 														bitmap,
 														inizioVisoX,
 														inizioVisoY,
-														larghezzaViso,
-														altezzaViso
+														larghezzaViso - inizioVisoX,
+														altezzaViso - inizioVisoY
 												);
 
-											/* bmpAppoggio = Bitmap.createScaledBitmap(
-													bmpAppoggio,
-													SchermoX,
-													SchermoY,
-													true
-											); */
-											} catch (Exception e) {
+												/* bmpAppoggio = Bitmap.createScaledBitmap(
+														bmpAppoggio,
+														SchermoX,
+														SchermoY,
+														true
+												); */
+											/* } catch (Exception e) {
 												UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
 														"Cambio immagine. Errore conversione: " +
 																UtilityDetector.getInstance().PrendeErroreDaException(e));
 
 												bmpAppoggio = finalBitmap;
-											}
+											} */
 										} else {
 											bmpAppoggio = finalBitmap;
 										}
 
 										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
+										if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
+											bmpAppoggio = applicaEffetti(bmpAppoggio);
+										}
 
 										setWallpaperLocaleEsegue(context, bmpAppoggio);
 
@@ -296,6 +306,20 @@ public class ChangeWallpaper {
 				}
 			}
 		}
+	}
+
+	private Bitmap disegnaRettangolo(Bitmap b, Rect r, int Colore) {
+		Paint p = new Paint();
+		p.setAntiAlias(true);
+		p.setStyle(Paint.Style.STROKE);
+		p.setColor(Colore);
+
+		Bitmap tBitmap = Bitmap.createBitmap(b.getWidth(), b.getHeight(), Bitmap.Config.RGB_565);
+		Canvas tCanvas = new Canvas(tBitmap);
+		tCanvas.drawBitmap(b, 0, 0, null);
+		tCanvas.drawRoundRect(r.left, r.top, r.right, r.bottom,10 ,10 , p);
+
+		return tBitmap;
 	}
 
 	private void faseFinale(Context context, StrutturaImmagine si) {
@@ -349,7 +373,7 @@ public class ChangeWallpaper {
 					wallpaperManager.setBitmap(
 							bitmap,
 							null,
-							true,
+							false,
 							WallpaperManager.FLAG_SYSTEM
 					);
 				}
@@ -561,7 +585,7 @@ public class ChangeWallpaper {
 	}
 
 	private Bitmap ConverteDimensioni(Context context, Bitmap b) {
-		if (b!=null) {
+		if (b != null) {
 			try {
 				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Converte dimensioni 1");
 
@@ -686,7 +710,11 @@ public class ChangeWallpaper {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo 2");
 
 			RenderScript renderScript = RenderScript.create(context);
-			Allocation blurInput = Allocation.createFromBitmap(renderScript, myBitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+			Allocation blurInput = Allocation.createFromBitmap(
+					renderScript,
+					myBitmap,
+					Allocation.MipmapControl.MIPMAP_NONE,
+					Allocation.USAGE_SCRIPT);
 			Allocation blurOutput = Allocation.createFromBitmap(renderScript, myOutputBitmap);
 			ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(renderScript,
 					Element.U8_4(renderScript));
@@ -706,7 +734,6 @@ public class ChangeWallpaper {
 			} */
 		} catch (Exception e) {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Mette bordo: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
-			int a = 0;
 		}
 
 		// int offset = 50;
@@ -748,7 +775,9 @@ public class ChangeWallpaper {
 
 		Utility.getInstance().ScriveLog("Mette bordo uscita"); */
 		if(VariabiliStaticheWallpaper.getInstance().isBlur()) {
-			canvas1.drawBitmap(immagineDiSfondo, 0, 0, null);
+            if (immagineDiSfondo != null) {
+				canvas1.drawBitmap(immagineDiSfondo, 0, 0, null);
+			}
 		}
 		canvas1.drawBitmap(myBitmap, posX, posY, null);
 
@@ -803,5 +832,29 @@ public class ChangeWallpaper {
 		}
 
 		return Immaginona;
+	}
+
+	public Bitmap applicaEffetti(Bitmap bitmap) {
+		Bitmap b = bitmap;
+		GestioneImmagini g = new GestioneImmagini();
+
+		final int random1 = new Random().nextInt(10) + 1;
+
+		// Bianco / nero
+		if (random1 == 3 || random1 == 6) {
+			b = g.ConverteBN(b);
+		} else {
+			if (random1 == 9) {
+				b = g.ConvertSephia(b);
+			}
+		}
+
+		final int random2 = new Random().nextInt(5) + 1;
+
+		if (random2 == 2) {
+			b = g.FlipImmagine(bitmap,true);
+		}
+
+		return b;
 	}
 }

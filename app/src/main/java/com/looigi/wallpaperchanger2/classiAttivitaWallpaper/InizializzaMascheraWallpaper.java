@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,11 +25,19 @@ import androidx.core.content.ContextCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiStandard.Esecuzione;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
+import com.looigi.wallpaperchanger2.gps.GestioneGPS;
+import com.looigi.wallpaperchanger2.gps.GestioneMappa;
+import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.webservice.ChiamateWS;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class InizializzaMascheraWallpaper {
     private static final String NomeMaschera = "INITMASCHERA";
@@ -133,6 +142,12 @@ public class InizializzaMascheraWallpaper {
         txtQuanteRicerca.setText("");
         VariabiliStaticheWallpaper.getInstance().setTxtQuanteRicerca(txtQuanteRicerca);
 
+        TextView txtDetector = view.findViewById(R.id.txtDetector);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            txtDetector.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            txtDetector.setVisibility(LinearLayout.GONE);
+        }
         Button btnMenoMinuti = (Button) view.findViewById(R.id.btnMenoMinuti);
         Button btnPiuMinuti = (Button) view.findViewById(R.id.btnPiuMinuti);
         TextView edtMinuti = (TextView) view.findViewById(R.id.txtMinuti);
@@ -178,19 +193,54 @@ public class InizializzaMascheraWallpaper {
                             Handler handlerTimer = new Handler(Looper.getMainLooper());
                             Runnable rTimer = new Runnable() {
                                 public void run() {
+                                    txtDetector.setVisibility(LinearLayout.VISIBLE);
+
+                                    GestioneGPS g = new GestioneGPS();
+                                    VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
+                                    g.AbilitaTimer(context);
+                                    g.AbilitaGPS(context);
+
+                                    GestioneMappa m = new GestioneMappa(context);
+                                    Calendar calendar = Calendar.getInstance();
+                                    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+                                    String dataOdierna = sdfD.format(calendar.getTime());
+                                    m.LeggePunti(dataOdierna);
+                                    VariabiliStaticheGPS.getInstance().setMappa(m);
+
                                     /* LayoutInflater inflater = (LayoutInflater.from(context));
                                     View viewDetector = inflater.inflate(R.layout.barra_notifica_detector, null);
 
                                     InizializzaMascheraDetector id = new InizializzaMascheraDetector();
                                     id.inizializzaMaschera(context, view, viewDetector); */
+
+                                    VariabiliStaticheDetector.getInstance().setMascheraPartita(false);
+
                                     Intent intent = new Intent(context, MainActivityDetector.class);
                                     context.startActivity(intent);
+
+                                    Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
+                                    if (notificaDetector != null) {
+                                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+
+                                        UtilityDetector.getInstance().ContaFiles(context);
+
+                                        UtilityWallpaper.getInstance().ApreToast(context, "Detector Partito");
+                                    }
                                 }
                             };
                             handlerTimer.postDelayed(rTimer, 1000);
                         } else {
                             // Rimuove Notifica Detector
+                            txtDetector.setVisibility(LinearLayout.GONE);
+
                             GestioneNotificheDetector.getInstance().RimuoviNotifica();
+
+                            VariabiliStaticheGPS.getInstance().getMappa().ChiudeMaschera();
+                            VariabiliStaticheGPS.getInstance().setMappa(null);
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
+                            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
                         }
                     }
                 }
@@ -531,6 +581,16 @@ public class InizializzaMascheraWallpaper {
 
         SwitchCompat swcEspansa = (SwitchCompat) view.findViewById(R.id.switchEspansa);
         SwitchCompat swcSoloVolti = view.findViewById(R.id.switchSoloVolto);
+        SwitchCompat swcEffetti = (SwitchCompat) view.findViewById(R.id.switchEffetti);
+        swcEffetti.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
+        swcEffetti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheWallpaper.getInstance().setEffetti(isChecked);
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+            }
+        });
 
         SwitchCompat swcOnOff = (SwitchCompat) view.findViewById(R.id.switchOnOff);
         swcOnOff.setChecked(VariabiliStaticheWallpaper.getInstance().isOnOff());

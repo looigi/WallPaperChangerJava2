@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.AndroidCameraApi;
+import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -44,6 +45,8 @@ public class Photo extends Activity {
 						AndroidCameraApi.class);
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				act.startActivity(myIntent);
+
+				UtilityDetector.getInstance().SpegneSchermo(context);
 			}
 		}, 1000);
 

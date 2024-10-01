@@ -1,5 +1,6 @@
 [versions]
 acraVersion = "5.11.2"
+afAndroidSdk = "6.15.1"
 agp = "8.6.0"
 androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
@@ -27,6 +28,7 @@ acra-core = { module = "ch.acra:acra-core", version.ref = "acraVersion" }
 acra-mail = { module = "ch.acra:acra-mail", version.ref = "acraVersion" }
 acra-notification = { module = "ch.acra:acra-notification", version.ref = "acraVersion" }
 acra-toast = { module = "ch.acra:acra-toast", version.ref = "acraVersion" }
+af-android-sdk = { module = "com.appsflyer:af-android-sdk", version.ref = "afAndroidSdk" }
 android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 core = { module = "androidx.core:core", version.ref = "core" }

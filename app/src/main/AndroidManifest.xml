@@ -107,6 +107,14 @@
         <service android:name = ".classiStandard.ServizioInterno"
             android:foregroundServiceType="specialUse|location|camera" />
 
+        <!-- <receiver android:name=".classiAttivitaDetector.VolumePressed"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver> -->
+
         <receiver android:name=".classiStandard.ScreenReceiver"
             android:enabled="true"
             android:exported="true">

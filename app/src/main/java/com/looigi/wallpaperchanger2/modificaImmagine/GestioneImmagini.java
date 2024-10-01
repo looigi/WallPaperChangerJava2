@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -377,7 +378,7 @@ public class GestioneImmagini {
 	}
 	*/
 
-	public Bitmap FlipImmagine(Context context, Bitmap Immagine, boolean Orizzontale) {
+	public Bitmap FlipImmagine(Bitmap Immagine, boolean Orizzontale) {
 		// String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
 		// String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
 		// String Cartella = UtilityDetector.getInstance().PrendePath(context);
@@ -477,7 +478,7 @@ public class GestioneImmagini {
 		return image;
 	}
 
-	public Bitmap CambiaContrastoLuminosita(Context context, Bitmap Immagine, float contrast, float brightness)
+	public Bitmap CambiaContrastoLuminosita(Bitmap Immagine, float contrast, float brightness)
 	{
 		if (Immagine != null) {
 			ColorMatrix cm = new ColorMatrix(new float[]
@@ -500,5 +501,54 @@ public class GestioneImmagini {
 		} else {
 			return null;
 		}
+	}
+
+	public Bitmap ConverteBN(Bitmap bitmap) {
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+
+		Bitmap bmpMonochrome = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmpMonochrome);
+		ColorMatrix ma = new ColorMatrix();
+		ma.setSaturation(0);
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(ma));
+		canvas.drawBitmap(bitmap, 0, 0, paint);
+
+		return bmpMonochrome;
+	}
+
+	public Bitmap ConvertSephia(Bitmap bmpOriginal)
+	{
+		int red, green, blue, pixel, gry;
+		int height = bmpOriginal.getHeight();
+		int width = bmpOriginal.getWidth();
+		int depth = 20;
+
+		Bitmap sepia = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+		int[] pixels = new int[width * height];
+		bmpOriginal.getPixels(pixels, 0, width, 0, 0, width, height);
+		for (int i = 0; i < pixels.length; i++) {
+			pixel = pixels[i];
+
+			red = (pixel >> 16) & 0xFF;
+			green = (pixel >> 8) & 0xFF;
+			blue = pixel & 0xFF;
+
+			red = green = blue = (red + green + blue) / 3;
+
+			red += (depth * 2);
+			green += depth;
+
+			if (red > 255)
+				red = 255;
+			if (green > 255)
+				green = 255;
+			pixels[i] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+		}
+		sepia.setPixels(pixels, 0, width, 0, 0, width, height);
+
+		return sepia;
 	}
 }

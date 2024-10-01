@@ -20,6 +20,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.InizializzaMascheraW
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.gps.GestioneGPS;
+import com.looigi.wallpaperchanger2.gps.GestioneMappa;
 import com.looigi.wallpaperchanger2.gps.Mappa;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -27,6 +28,8 @@ import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.gps.db_dati_gps;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,23 +65,36 @@ public class MainStart  extends Activity {
             }
         }
 
+        LinearLayout laySplash = findViewById(R.id.laySplash);
+
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
+                laySplash.setVisibility(LinearLayout.GONE);
                 impostaSchermata();
             }
         };
-        handlerTimer.postDelayed(rTimer, 5000);
+        handlerTimer.postDelayed(rTimer, 3000);
     }
 
     private void impostaSchermata() {
         LinearLayout layStart = findViewById(R.id.layStart);
 
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            GestioneMappa m = new GestioneMappa(this);
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+            String dataOdierna = sdfD.format(calendar.getTime());
+            m.LeggePunti(dataOdierna);
+            VariabiliStaticheGPS.getInstance().setMappa(m);
+        }
+
         ImageView imgD = findViewById(R.id.imgStartDetector);
+
         TextView txtLabelDet = findViewById(R.id.txtStartLabelDet);
-        if (!VariabiliStaticheStart.getInstance().isDetector()) {
-            imgD.setVisibility(LinearLayout.GONE);
-            txtLabelDet.setVisibility(LinearLayout.GONE);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            imgD.setVisibility(LinearLayout.VISIBLE);
+            txtLabelDet.setVisibility(LinearLayout.VISIBLE);
         }
         imgD.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -151,9 +167,9 @@ public class MainStart  extends Activity {
 
         ImageView imgM = findViewById(R.id.imgStartMappa);
         TextView txtLabelMap = findViewById(R.id.txtStartLabelMap);
-        if (!VariabiliStaticheStart.getInstance().isDetector()) {
-            imgM.setVisibility(LinearLayout.GONE);
-            txtLabelMap.setVisibility(LinearLayout.GONE);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            imgM.setVisibility(LinearLayout.VISIBLE);
+            txtLabelMap.setVisibility(LinearLayout.VISIBLE);
         }
         imgM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

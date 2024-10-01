@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -244,6 +245,8 @@ public class GestioneNotificheDetector {
                                         AndroidCameraApi.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+
+                                UtilityDetector.getInstance().SpegneSchermo(context);
                             }
                         }, 1000);
 

@@ -2,16 +2,27 @@ package com.looigi.wallpaperchanger2.classiStandard;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.media.AudioManager;
+import android.media.session.MediaSession;
+import android.media.session.PlaybackState;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.PowerManager;
+import android.os.SystemClock;
+import android.view.KeyEvent;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.looigi.wallpaperchanger2.MainActivityDetector;
 import com.looigi.wallpaperchanger2.MainWallpaper;
@@ -20,7 +31,6 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDe
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VolumePressed;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
@@ -31,7 +41,9 @@ public class ServizioInterno extends Service {
     private Context context;
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
-    private VolumePressed mVolumePressed;
+    // private VolumePressed volPressed;
+    // private AudioManager mAudioManagerInterno;
+    // private ComponentName mReceiverComponentInterno;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,18 +74,23 @@ public class ServizioInterno extends Service {
         context = this;
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create");
-
-        mVolumePressed = new VolumePressed(this, new Handler(Looper.getMainLooper()));
+        /* mVolumePressed = new VolumePressed(this, new Handler(Looper.getMainLooper()));
         getApplicationContext().getContentResolver().registerContentObserver(
                 android.provider.Settings.System.CONTENT_URI,
                 true,
                 mVolumePressed );
 
+        volPressed = new VolumePressed();
+        IntentFilter filterVP = new IntentFilter();
+        filterVP.addAction(Intent.ACTION_MEDIA_BUTTON);
+        // filterVP.setPriority(1000);
+        registerReceiver(volPressed, filterVP, Context.RECEIVER_NOT_EXPORTED); */
+
         mScreenReceiver = new ScreenReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(mScreenReceiver, filter);
+        IntentFilter filterSO = new IntentFilter();
+        filterSO.addAction(Intent.ACTION_SCREEN_OFF);
+        filterSO.addAction(Intent.ACTION_SCREEN_ON);
+        registerReceiver(mScreenReceiver, filterSO);
 
         // CPU Attiva
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -172,11 +189,20 @@ public class ServizioInterno extends Service {
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
 
-        if (mVolumePressed != null) {
+        /* if (mVolumePressed != null) {
             getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);
             mVolumePressed = null;
         }
 
+        if (mAudioManagerInterno != null) {
+            // unregisterReceiver(volPressed);
+            mAudioManagerInterno.unregisterMediaButtonEventReceiver(mReceiverComponentInterno);
+            mReceiverComponentInterno = null;
+        } */
+
+        if (mScreenReceiver != null) {
+            unregisterReceiver(mScreenReceiver);
+        }
 
         if (wl != null) {
             wl.release();
@@ -186,4 +212,41 @@ public class ServizioInterno extends Service {
             ChiudeTutto();
         }
     }
+
+    /* public static class VolumePressed extends BroadcastReceiver {
+        private static final String NomeMaschera = "VOLUMEPRESSED";
+
+        public VolumePressed() {
+            super();
+
+            UtilityWallpaper.getInstance().ScriveLog(
+                    VariabiliStaticheStart.getInstance().getMainActivity(),
+                    NomeMaschera,
+                    "Instanziamento");
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String intentAction = intent.getAction();
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Azione: " + intentAction);
+
+            if (!Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
+                return;
+            }
+
+            KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+            if (event == null) {
+                return;
+            }
+
+            int action = event.getAction();
+            if (action == KeyEvent.ACTION_DOWN) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ACTION DOWN");
+
+                Toast.makeText(context, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
+            }
+
+            abortBroadcast();
+        }
+    } */
 }

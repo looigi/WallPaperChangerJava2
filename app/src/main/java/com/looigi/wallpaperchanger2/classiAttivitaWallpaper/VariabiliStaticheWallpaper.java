@@ -44,8 +44,8 @@ public class VariabiliStaticheWallpaper {
     private int errori = 0;
     // private boolean Detector = false;
     private boolean servizioAttivo = true;
-    public static float percAumentoX = .13F;
-    public static float percAumentoY = .13F;
+    public static float percAumentoX = .07F;
+    public static float percAumentoY = .07F;
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
@@ -68,6 +68,7 @@ public class VariabiliStaticheWallpaper {
     private boolean home = true;
     private boolean lock = false;
     private boolean resize = true;
+    private boolean effetti = false;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private TextView txtPath;
     // private boolean ImmagineCambiataConSchermoSpento = false;
@@ -95,6 +96,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isEffetti() {
+        return effetti;
+    }
+
+    public void setEffetti(boolean effetti) {
+        this.effetti = effetti;
     }
 
     public boolean isSoloVolti() {

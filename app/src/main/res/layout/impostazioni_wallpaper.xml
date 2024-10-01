@@ -64,8 +64,29 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layImpo1"
+        android:id="@+id/layDetector"
         android:layout_below="@+id/layMinuti"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtDetector"
+            android:textColor="@color/Rosso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detector Attivo">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layImpo1"
+        android:layout_below="@+id/layDetector"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="vertical"
@@ -209,6 +230,13 @@
             android:layout_width="match_parent"
             android:textColor="#0000CC"
             android:text="Solo volto"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchEffetti"
+            android:layout_width="match_parent"
+            android:textColor="#0000CC"
+            android:text="Effetti Random"
             android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.SwitchCompat
