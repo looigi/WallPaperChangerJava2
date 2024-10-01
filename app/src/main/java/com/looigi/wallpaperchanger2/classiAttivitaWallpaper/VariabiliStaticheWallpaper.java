@@ -62,6 +62,7 @@ public class VariabiliStaticheWallpaper {
     private StrutturaImmagine UltimaImmagine;
     private StrutturaImmagine UltimaImmaginePerLock;
     private ImageView imgImpostata;
+    private ImageView imgImpostataFinale;
     private boolean blur = true;
     private boolean scriveTestoSuImmagine = true;
     private boolean onOff = true;
@@ -96,6 +97,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public ImageView getImgImpostataFinale() {
+        return imgImpostataFinale;
+    }
+
+    public void setImgImpostataFinale(ImageView imgImpostataFinale) {
+        this.imgImpostataFinale = imgImpostataFinale;
     }
 
     public boolean isEffetti() {

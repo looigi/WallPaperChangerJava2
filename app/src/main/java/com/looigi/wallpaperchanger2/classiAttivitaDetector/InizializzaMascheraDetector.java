@@ -92,6 +92,17 @@ public class InizializzaMascheraDetector {
         });
 
         SwitchCompat sLog = (SwitchCompat) act.findViewById(R.id.sLog2); */
+        SwitchCompat sFotoPower = (SwitchCompat) act.findViewById(R.id.sPower);
+        sFotoPower.setChecked(VariabiliStaticheDetector.getInstance().isFotoSuPower());
+        sFotoPower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheDetector.getInstance().setFotoSuPower(sFotoPower.isChecked());
+
+                db_dati_detector db = new db_dati_detector(context);
+                db.ScriveImpostazioni(context);
+            }
+        });
         SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
         SwitchCompat sToast = (SwitchCompat) act.findViewById(R.id.sToast);
         SwitchCompat sGpsPreciso = (SwitchCompat) act.findViewById(R.id.sGpsPreciso);

@@ -114,6 +114,8 @@ public class InizializzaMascheraWallpaper {
 
         ImageView imgImpostata = (ImageView) view.findViewById(R.id.imgImpostata);
         VariabiliStaticheWallpaper.getInstance().setImgImpostata(imgImpostata);
+        ImageView imgImpostataFinale = (ImageView) view.findViewById(R.id.imgImpostataFinale);
+        VariabiliStaticheWallpaper.getInstance().setImgImpostataFinale(imgImpostataFinale);
 
         TextView txtTempoAlCambio = (TextView) view.findViewById(R.id.txtTempoAlCambio);
         VariabiliStaticheWallpaper.getInstance().setTxtTempoAlCambio(txtTempoAlCambio);
@@ -583,9 +585,41 @@ public class InizializzaMascheraWallpaper {
         SwitchCompat swcSoloVolti = view.findViewById(R.id.switchSoloVolto);
         SwitchCompat swcEffetti = (SwitchCompat) view.findViewById(R.id.switchEffetti);
         swcEffetti.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
+        if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
+            swcSoloVolti.setChecked(false);
+            swcSoloVolti.setEnabled(false);
+            swcEspansa.setChecked(false);
+            swcEspansa.setEnabled(false);
+        } else {
+            swcSoloVolti.setEnabled(true);
+            swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
+            swcEspansa.setEnabled(true);
+            swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
+            if (swcEspansa.isChecked()) {
+                swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                swcSoloVolti.setVisibility(LinearLayout.GONE);
+            }
+        }
         swcEffetti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setEffetti(isChecked);
+                if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
+                    swcSoloVolti.setChecked(false);
+                    swcSoloVolti.setEnabled(false);
+                    swcEspansa.setChecked(false);
+                    swcEspansa.setEnabled(false);
+                } else {
+                    swcSoloVolti.setEnabled(true);
+                    swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
+                    swcEspansa.setEnabled(true);
+                    swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
+                    if (swcEspansa.isChecked()) {
+                        swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        swcSoloVolti.setVisibility(LinearLayout.GONE);
+                    }
+                }
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
@@ -787,6 +821,12 @@ public class InizializzaMascheraWallpaper {
         if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
             Bitmap ultima = BitmapFactory.decodeFile(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine());
             imgImpostata.setImageBitmap(ultima);
+
+            String path1 = context.getFilesDir() + "/Download/AppoggioImpostato.jpg";
+            if (UtilityWallpaper.getInstance().EsisteFile(path1)) {
+                Bitmap ultimaFinale = BitmapFactory.decodeFile(path1);
+                VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
+            }
         }
     }
 }

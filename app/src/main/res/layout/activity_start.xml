@@ -126,10 +126,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:textSize="37dp"
+            android:id="@+id/txtStartTitolo"
+            android:textSize="47dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WallPaper Changer 2.0">
+            android:text="WallPaper\nChanger 2.0">
 
         </TextView>
 

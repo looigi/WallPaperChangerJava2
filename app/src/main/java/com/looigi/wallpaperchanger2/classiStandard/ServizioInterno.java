@@ -2,27 +2,15 @@ package com.looigi.wallpaperchanger2.classiStandard;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.media.AudioManager;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.os.SystemClock;
-import android.view.KeyEvent;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.looigi.wallpaperchanger2.MainActivityDetector;
 import com.looigi.wallpaperchanger2.MainWallpaper;
@@ -90,7 +78,8 @@ public class ServizioInterno extends Service {
         IntentFilter filterSO = new IntentFilter();
         filterSO.addAction(Intent.ACTION_SCREEN_OFF);
         filterSO.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(mScreenReceiver, filterSO);
+        filterSO.setPriority(9999);
+        context.registerReceiver(mScreenReceiver, filterSO);
 
         // CPU Attiva
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -201,7 +190,7 @@ public class ServizioInterno extends Service {
         } */
 
         if (mScreenReceiver != null) {
-            unregisterReceiver(mScreenReceiver);
+            context.unregisterReceiver(mScreenReceiver);
         }
 
         if (wl != null) {

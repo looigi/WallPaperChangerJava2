@@ -186,6 +186,13 @@
                     android:src="@drawable/volto" />
 
                 <ImageView
+                    android:id="@+id/imgSharpen"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/sharpen" />
+
+                <ImageView
                     android:id="@+id/imgRuota"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

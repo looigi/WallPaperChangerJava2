@@ -70,6 +70,8 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         dataOdierna = sdfD.format(calendar.getTime());
 
         SwitchCompat sSegue = act.findViewById(R.id.sSegue);
+        sSegue.setChecked(true);
+        segue = true;
         sSegue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

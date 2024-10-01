@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,14 @@ public class MainStart  extends Activity {
         context = this;
         act = this;
 
+        TextView txtTitolo = findViewById(R.id.txtStartTitolo);
+        txtTitolo.setShadowLayer(
+                15f,     // radius: The radius of the shadow
+                0f,      // dx: The horizontal offset of the shadow
+                0f,      // dy: The vertical offset of the shadow
+                Color.BLUE // shadowColor: The color of the shadow
+        );
+
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
             Intent intent1 = new Intent(MainStart.this, RunServiceOnBoot.class);
             startService(intent1);
@@ -74,7 +83,7 @@ public class MainStart  extends Activity {
                 impostaSchermata();
             }
         };
-        handlerTimer.postDelayed(rTimer, 3000);
+        handlerTimer.postDelayed(rTimer, 5000);
     }
 
     private void impostaSchermata() {

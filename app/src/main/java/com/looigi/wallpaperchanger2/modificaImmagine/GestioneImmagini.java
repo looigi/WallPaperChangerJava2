@@ -15,20 +15,24 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicConvolve3x3;
 
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.RilevamentoVolti;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 public class GestioneImmagini {
 	private static final String NomeMaschera = "GESTIONEIMMAGINI";
@@ -440,7 +444,7 @@ public class GestioneImmagini {
 		// UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
-	private void saveBitmap(Bitmap bm, String Percorso, String Nome)  {
+	public void saveBitmap(Bitmap bm, String Percorso, String Nome)  {
 		if (bm!=null) {
 			OutputStream fOut = null;
 			Uri outputFileUri;
@@ -450,7 +454,7 @@ public class GestioneImmagini {
 				sdImageMainDirectory.delete();
 				outputFileUri = Uri.fromFile(sdImageMainDirectory);
 				fOut = new FileOutputStream(sdImageMainDirectory);
-				bm.compress(CompressFormat.JPEG, 90, fOut);
+				bm.compress(CompressFormat.JPEG, 100, fOut);
 				fOut.flush();
 				fOut.close();
 			} catch (Exception ignored) {
@@ -504,51 +508,83 @@ public class GestioneImmagini {
 	}
 
 	public Bitmap ConverteBN(Bitmap bitmap) {
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-
-		Bitmap bmpMonochrome = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bmpMonochrome);
-		ColorMatrix ma = new ColorMatrix();
-		ma.setSaturation(0);
-		Paint paint = new Paint();
-		paint.setColorFilter(new ColorMatrixColorFilter(ma));
-		canvas.drawBitmap(bitmap, 0, 0, paint);
-
-		return bmpMonochrome;
+		return  BitmapBuilder.toGrayscale(
+				bitmap,
+				0.2F
+		);
 	}
 
 	public Bitmap ConvertSephia(Bitmap bmpOriginal)
 	{
-		int red, green, blue, pixel, gry;
-		int height = bmpOriginal.getHeight();
-		int width = bmpOriginal.getWidth();
-		int depth = 20;
+		return BitmapBuilder.toSepia(bmpOriginal);
+	}
 
-		Bitmap sepia = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+	public Bitmap ConvertReflection(Bitmap bmpOriginal)
+	{
+		return BitmapBuilder.reflectionEffect(
+				bmpOriginal,
+				5
+		);
+	}
 
-		int[] pixels = new int[width * height];
-		bmpOriginal.getPixels(pixels, 0, width, 0, 0, width, height);
-		for (int i = 0; i < pixels.length; i++) {
-			pixel = pixels[i];
+	public Bitmap ConvertSketch(Bitmap bmpOriginal)
+	{
+		return BitmapBuilder.sketchEffect(
+				VariabiliStaticheStart.getInstance().getContext(),
+				bmpOriginal
+		);
+	}
 
-			red = (pixel >> 16) & 0xFF;
-			green = (pixel >> 8) & 0xFF;
-			blue = pixel & 0xFF;
+	public Bitmap AddGlow(Bitmap src) {
+		final int random2 = new Random().nextInt(5) + 1;
+		int colore = 0;
 
-			red = green = blue = (red + green + blue) / 3;
-
-			red += (depth * 2);
-			green += depth;
-
-			if (red > 255)
-				red = 255;
-			if (green > 255)
-				green = 255;
-			pixels[i] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+		switch (random2) {
+			case 1:
+				colore = Color.BLUE;
+				break;
+			case 2:
+				colore = Color.WHITE;
+				break;
+			case 3:
+				colore = Color.GREEN;
+				break;
+			case 4:
+				colore = Color.RED;
+				break;
+			case 5:
+				colore = Color.YELLOW;
+				break;
 		}
-		sepia.setPixels(pixels, 0, width, 0, 0, width, height);
 
-		return sepia;
+		final int dimensione = new Random().nextInt(60) + 25;
+
+		return BitmapBuilder.glowEffect(src, dimensione, colore);
+	}
+
+	public Bitmap doSharpen(Context context, Bitmap original) {
+		float[] sharp = { -0.60f, -0.60f, -0.60f, -0.60f, 5.81f, -0.60f,
+				-0.60f, -0.60f, -0.60f };
+
+		Bitmap bitmap = Bitmap.createBitmap(
+				original.getWidth(), original.getHeight(),
+				Bitmap.Config.ARGB_8888);
+
+		RenderScript rs = RenderScript.create(context);
+
+		Allocation allocIn = Allocation.createFromBitmap(rs, original);
+		Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
+
+		ScriptIntrinsicConvolve3x3 convolution
+				= ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
+		convolution.setInput(allocIn);
+		convolution.setCoefficients(sharp);
+		convolution.forEach(allocOut);
+
+		allocOut.copyTo(bitmap);
+		rs.destroy();
+
+		return bitmap;
+
 	}
 }

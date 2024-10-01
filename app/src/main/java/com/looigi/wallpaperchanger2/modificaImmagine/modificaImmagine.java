@@ -42,6 +42,7 @@ public class modificaImmagine extends Activity {
     private ImageView btnFlipY;
     private ImageView btnChiude;
     private ImageView btnVolto;
+    private ImageView btnSharpen;
     // private LinearLayout layColori;
     private ImageView btnCrop;
     private ImageView btnSalvaCrop;
@@ -150,6 +151,7 @@ public class modificaImmagine extends Activity {
             btnFlipY.setVisibility(LinearLayout.GONE);
             btnVolto.setVisibility(LinearLayout.GONE);
             btnCrop.setVisibility(LinearLayout.GONE);
+            btnSharpen.setVisibility(LinearLayout.GONE);
             // layColori.setVisibility(LinearLayout.GONE);
             btnSalva.setVisibility(LinearLayout.GONE);
             btnChiude.setVisibility(LinearLayout.GONE);
@@ -176,6 +178,7 @@ public class modificaImmagine extends Activity {
             btnFlipY.setVisibility(LinearLayout.VISIBLE);
             btnVolto.setVisibility(LinearLayout.VISIBLE);
             btnCrop.setVisibility(LinearLayout.VISIBLE);
+            btnSharpen.setVisibility(LinearLayout.VISIBLE);
             // layColori.setVisibility(LinearLayout.VISIBLE);
             btnSalva.setVisibility(LinearLayout.VISIBLE);
             btnChiude.setVisibility(LinearLayout.VISIBLE);
@@ -238,6 +241,7 @@ public class modificaImmagine extends Activity {
         btnSalvaCrop = (ImageView) act.findViewById(R.id.imgSalvaCrop);
         btnSalva = (ImageView) act.findViewById(R.id.imgSalva);
         btnChiude = (ImageView) act.findViewById(R.id.imgChiude);
+        btnSharpen = (ImageView) act.findViewById(R.id.imgSharpen);
         btnAnnullaCrop = (ImageView) act.findViewById(R.id.imgAnnullaCrop);
         laySalvataggio = (LinearLayout) act.findViewById(R.id.laySalvataggio);
         laySalvataggio.setVisibility(LinearLayout.GONE);
@@ -519,6 +523,16 @@ public class modificaImmagine extends Activity {
                 DisegnaUndo();
 
                 bitmap = g.FlipImmagine(bitmap,true);
+
+                AggiornaBitmap(bitmap);
+            }
+        });
+
+        btnSharpen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DisegnaUndo();
+
+                bitmap = g.doSharpen(context, bitmap);
 
                 AggiornaBitmap(bitmap);
             }

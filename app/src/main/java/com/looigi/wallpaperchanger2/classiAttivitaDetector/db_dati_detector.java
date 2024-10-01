@@ -55,7 +55,7 @@ public class db_dati_detector {
                         + " (FaiLog VARCHAR,  TipologiaScatto VARCHAR, Secondi VARCHAR, Fotocamera VARCHAR, " +
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
-                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR);";
+                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR, FotoPower VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -109,6 +109,7 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setGpsPreciso(c.getString(14).equals("S"));
                         VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(c.getString(15)));
                         VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(c.getString(16)));
+                        VariabiliStaticheDetector.getInstance().setFotoSuPower(c.getString(17).equals("S"));
 
                         return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
@@ -139,6 +140,7 @@ public class db_dati_detector {
                     VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
                     VariabiliStaticheDetector.getInstance().setGpsMs(1000);
                     VariabiliStaticheDetector.getInstance().setGpsMeters(5);
+                    VariabiliStaticheDetector.getInstance().setFotoSuPower(true);
 
                     Controlla = false;
                     ScriveImpostazioni(context);
@@ -195,7 +197,8 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().isVisualizzaToast() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "', "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMs() + ", "
-                        + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + " "
+                        + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + ", "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuPower() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {

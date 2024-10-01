@@ -52,6 +52,7 @@ public class VariabiliStaticheDetector {
     private String Anteprima;
     private int Orientamento;
     private String Lingua;
+    private boolean FotoSuPower = true;
     private boolean Vibrazione = true;
     private int DimensioniThumbs = 70;
     private int DimensioniThumbsM = 50;
@@ -92,7 +93,14 @@ public class VariabiliStaticheDetector {
         }
     }
 
-    /* public Button getBtnLayModificaImmagine() {
+    public boolean isFotoSuPower() {
+        return FotoSuPower;
+    }
+
+    public void setFotoSuPower(boolean fotoSuPower) {
+        FotoSuPower = fotoSuPower;
+    }
+/* public Button getBtnLayModificaImmagine() {
         return btnLayModificaImmagine;
     }
 

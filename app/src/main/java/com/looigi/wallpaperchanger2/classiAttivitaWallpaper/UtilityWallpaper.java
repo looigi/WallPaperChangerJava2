@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classiAttivitaWallpaper;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -299,7 +300,14 @@ public class UtilityWallpaper {
     public void Attesa(boolean Come) {
         if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             attese = 0;
-            VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+            Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
+            if (act == null) {
+                act = VariabiliStaticheWallpaper.getInstance().getMainActivity();
+            }
+            if (act == null) {
+                act = VariabiliStaticheDetector.getInstance().getMainActivity();
+            }
+            act.runOnUiThread(new Runnable() {
                 public void run() {
                     VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
                 }

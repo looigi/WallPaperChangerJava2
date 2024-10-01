@@ -154,14 +154,27 @@ public class ChangeWallpaper {
 				Bitmap bitmap = BitmapFactory.decodeFile(path);
 				bitmap = RuotaImmagine(context, path, bitmap);
 				if (bitmap != null) {
-					if (!VariabiliStaticheWallpaper.getInstance().isEspansa()) {
+					boolean soloVolto = false;
+
+					if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
+						final int random1 = new Random().nextInt(3) + 1;
+
+						if (random1 != 2) {
+							soloVolto = true;
+						}
+					} else {
+						soloVolto = VariabiliStaticheWallpaper.getInstance().isEspansa();
+					}
+
+					if (!soloVolto) {
 						// Cambio immagine non espansa
 						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Mette bordo a immagine");
 
-						bitmap = MetteBordoAImmagine(context, bitmap, src);
 						if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
 							bitmap = applicaEffetti(bitmap);
 						}
+
+						bitmap = MetteBordoAImmagine(context, bitmap, src);
 
 						setWallpaperLocaleEsegue(context, bitmap);
 
@@ -221,7 +234,17 @@ public class ChangeWallpaper {
 											r1.set(inizioVisoX, inizioVisoY, larghezzaViso, altezzaViso);
 											bitmap = disegnaRettangolo(bitmap, r1, Color.WHITE); */
 
+											boolean voltoPrimoPiano = false;
 											if (VariabiliStaticheWallpaper.getInstance().isSoloVolti()) {
+												voltoPrimoPiano = true;
+											} else {
+												final int random1 = new Random().nextInt(2) + 1;
+												if (random1 == 1) {
+													voltoPrimoPiano = true;
+												}
+											}
+
+											if (voltoPrimoPiano) {
 												inizioVisoY -= (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
 												if (inizioVisoY < 0) {
 													inizioVisoY = 0;
@@ -240,20 +263,20 @@ public class ChangeWallpaper {
 												larghezzaViso = larghezzaImmagine - inizioVisoX;
 											}
 
-											if (VariabiliStaticheWallpaper.getInstance().isSoloVolti()) {
+											if (voltoPrimoPiano) {
 												altezzaViso += (int) (altezzaImmagine * VariabiliStaticheWallpaper.percAumentoY);
 												if (altezzaViso + inizioVisoY > altezzaImmagine) {
 													altezzaViso = altezzaImmagine - inizioVisoY;
 												}
 											} else {
-												altezzaViso = altezzaImmagine + inizioVisoY;
+												altezzaViso = (altezzaImmagine + inizioVisoY) - 1;
 											}
 
 											/*Rect r2 = new Rect();
 											r2.set(inizioVisoX, inizioVisoY, larghezzaViso, altezzaViso);
 											bitmap = disegnaRettangolo(bitmap, r2, Color.RED); */
 
-											// try {
+											try {
 												bmpAppoggio = Bitmap.createBitmap(
 														bitmap,
 														inizioVisoX,
@@ -268,21 +291,22 @@ public class ChangeWallpaper {
 														SchermoY,
 														true
 												); */
-											/* } catch (Exception e) {
+											} catch (Exception e) {
 												UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
 														"Cambio immagine. Errore conversione: " +
 																UtilityDetector.getInstance().PrendeErroreDaException(e));
 
 												bmpAppoggio = finalBitmap;
-											} */
+											}
 										} else {
 											bmpAppoggio = finalBitmap;
 										}
 
-										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
 										if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
 											bmpAppoggio = applicaEffetti(bmpAppoggio);
 										}
+
+										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
 
 										setWallpaperLocaleEsegue(context, bmpAppoggio);
 
@@ -336,6 +360,12 @@ public class ChangeWallpaper {
 		Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
 		VariabiliStaticheWallpaper.getInstance().getImgImpostata().setImageBitmap(ultima);
 
+		String path1 = context.getFilesDir() + "/Download/AppoggioImpostato.jpg";
+		if (UtilityWallpaper.getInstance().EsisteFile(path1)) {
+			Bitmap ultimaFinale = BitmapFactory.decodeFile(path1);
+			VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
+		}
+
 		VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
 
 		int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
@@ -363,6 +393,12 @@ public class ChangeWallpaper {
 
 		if (bitmap != null) {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Applicazione wallpaper.");
+
+			GestioneImmagini g = new GestioneImmagini();
+			String path1 = context.getFilesDir() + "/Download";
+			UtilityWallpaper.getInstance().CreaCartelle(path1);
+			UtilityWallpaper.getInstance().EliminaFileUnico(path1 + "/AppoggioImpostato.jpg");
+			g.saveBitmap(bitmap, path1, "AppoggioImpostato.jpg");
 
 			WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 			try {
@@ -838,21 +874,31 @@ public class ChangeWallpaper {
 		Bitmap b = bitmap;
 		GestioneImmagini g = new GestioneImmagini();
 
-		final int random1 = new Random().nextInt(10) + 1;
+		final int random1 = new Random().nextInt(15) + 1;
 
 		// Bianco / nero
-		if (random1 == 3 || random1 == 6) {
-			b = g.ConverteBN(b);
-		} else {
-			if (random1 == 9) {
+		switch (random1) {
+			case 2:
+				b = g.AddGlow(b);
+				break;
+			case 6:
+				b = g.ConverteBN(b);
+				break;
+			case 9:
 				b = g.ConvertSephia(b);
-			}
+				break;
+			case 12:
+				b = g.ConvertReflection(b);
+				break;
+			case 13:
+				b = g.ConvertSketch(b);
+				break;
 		}
 
 		final int random2 = new Random().nextInt(5) + 1;
 
 		if (random2 == 2) {
-			b = g.FlipImmagine(bitmap,true);
+			b = g.FlipImmagine(b,true);
 		}
 
 		return b;
