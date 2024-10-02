@@ -24,15 +24,19 @@ public class ScreenReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (VariabiliStaticheDetector.getInstance().isFotoSuPower()) {
             if (datella1 == null) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 1");
+
                 Handler handlerTimer;
                 Runnable rTimer;
 
                 datella1 = System.currentTimeMillis();
-                UtilityDetector.getInstance().Vibra(context, 100);
+                // UtilityDetector.getInstance().Vibra(context, 100);
 
                 handlerTimer = new Handler(Looper.getMainLooper());
                 rTimer = new Runnable() {
                     public void run() {
+                        // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 1 - Annullo. Troppo Tempo");
+
                         datella1 = null;
                     }
                 };
@@ -42,9 +46,13 @@ public class ScreenReceiver extends BroadcastReceiver {
 
                 datella1 = null;
 
-                UtilityWallpaper.getInstance().ApreToast(context, String.valueOf(diff));
+                // UtilityWallpaper.getInstance().ApreToast(context, String.valueOf(diff));
+
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 2. Diff: " + diff);
 
                 if (diff < 1050) {
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 2. Eseguo");
+
                     UtilityDetector.getInstance().Vibra(context, 200);
 
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {

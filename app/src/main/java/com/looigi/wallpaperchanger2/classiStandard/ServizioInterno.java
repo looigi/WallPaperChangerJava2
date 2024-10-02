@@ -121,7 +121,8 @@ public class ServizioInterno extends Service {
 
             if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
-                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi() &&
+                    VariabiliStaticheDetector.getInstance().getMainActivity() != null) {
                 Intent iD = new Intent(context, MainActivityDetector.class);
                 iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(iD);

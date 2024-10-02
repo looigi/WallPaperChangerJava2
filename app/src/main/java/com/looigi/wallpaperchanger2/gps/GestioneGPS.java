@@ -194,24 +194,19 @@ public class GestioneGPS {
                         "Controllo disattivazione/attivazione. Disattivo per WiFi attivo");
 
                 BloccaGPS();
-
-                return;
-            } else {
-                return;
             }
-        } /* else {
+        } else {
             if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Riattivo per WiFi non attivo.\nControllo impostazioni.");
 
-                // AbilitaGPS(context);
-
-                // return;
+                AbilitaGPS(context);
             }
-        } */
+        }
 
+        /*
         StrutturaAccensioneGPS s = VariabiliStaticheGPS.getInstance().getAccensioneGPS();
         if (s != null) {
             Calendar calendar = Calendar.getInstance();
@@ -309,6 +304,7 @@ public class GestioneGPS {
                 }
             }
         }
+        */
     }
 
     public void AbilitaGPS(Context context) {

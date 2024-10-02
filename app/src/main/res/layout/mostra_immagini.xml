@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/laySpinner"
+        android:background="@drawable/bordato"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Categoria"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <Spinner
+                android:id="@+id/spnCategorie"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Filtro"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/edtFiltroImmagimi"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+        android:layout_below="@+id/laySpinner"
+        android:layout_alignParentStart="true"
+        android:id="@+id/imgLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile>
+
+    <TextView
+        android:id="@+id/txtInfoImmagine"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bordato">
+
+    </TextView>
+    <!-- <ImageView
+        android:id="@+id/imgIndietroLibrary"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/indietro"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/imgAvantiLibrary"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/avanti"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+    </ImageView> -->
+</RelativeLayout>

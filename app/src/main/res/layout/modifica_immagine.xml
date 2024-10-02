@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
+    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
         android:id="@+id/imgViewModifica"
         android:layout_below="@+id/txtImmagineDati"
         android:layout_marginStart="50dp"

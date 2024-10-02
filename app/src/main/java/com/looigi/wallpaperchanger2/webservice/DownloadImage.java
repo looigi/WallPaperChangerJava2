@@ -1,15 +1,19 @@
 package com.looigi.wallpaperchanger2.webservice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.gps.Mappa;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,6 +27,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     private String PercorsoDIR = "";
     private Context context;
     private ImageView immagine;
+
     public DownloadImage(Context context, String NomeImmagine, ImageView immagine) {
         this.NomeImmagine = NomeImmagine;
         this.context = context;
@@ -75,7 +80,15 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     Errore = true;
                 }
             } else {
-                immagine.setImageBitmap(mIcon11);
+                Bitmap finalMIcon1 = mIcon11;
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        immagine.setImageBitmap(finalMIcon1);
+                    }
+                }, 100);
+
             }
         } catch (Exception e) {
             if (immagine == null) {

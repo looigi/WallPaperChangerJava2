@@ -124,7 +124,7 @@
                 android:layout_height="1dp"
                 android:background="@android:color/black" />
 
-            <TextView
+            <!-- <TextView
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
@@ -406,7 +406,7 @@
             </LinearLayout>
 
 
-            <!-- <androidx.appcompat.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sGPSBetter"
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"

@@ -37,6 +37,8 @@ import com.looigi.wallpaperchanger2.gps.db_dati_gps;
 import com.looigi.wallpaperchanger2.modificaImmagine.GestioneImmagini;
 import com.looigi.wallpaperchanger2.modificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.modificaImmagine.modificaImmagine;
+import com.looigi.wallpaperchanger2.mostraImmagini.MostraImmaginiLibrary;
+import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.io.File;
 import java.io.IOException;
@@ -200,6 +202,52 @@ public class InizializzaMascheraDetector {
         imgGps.setImageBitmap(bmGps);
 
         ImageView imgItaliano = (ImageView) act.findViewById(R.id.imgItaliano);
+
+        imgItaliano.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+                if (datella1 == null) {
+                    Handler handlerTimer;
+                    Runnable rTimer;
+
+                    datella1 = System.currentTimeMillis();
+                    UtilityDetector.getInstance().Vibra(context, 100);
+
+                    handlerTimer = new Handler();
+                    rTimer = new Runnable() {
+                        public void run() {
+                            datella1 = null;
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 2000);
+                } else {
+                    long diff = System.currentTimeMillis() - datella1;
+
+                    datella1 = null;
+
+                    if (diff < 1950) {
+                        Handler handlerTimer;
+                        Runnable rTimer;
+
+                        handlerTimer = new Handler(Looper.getMainLooper());
+                        rTimer = new Runnable() {
+                            public void run() {
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        MostraImmaginiLibrary.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 2000);
+                    }
+                }
+
+                return false;
+            }
+        });
         imgItaliano.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -518,7 +566,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.GONE);
 
-        VariabiliStaticheDetector.getInstance().setImg((ImageView) act.findViewById(R.id.imgScatto));
+        VariabiliStaticheDetector.getInstance().setImg((ImmagineZoomabile) act.findViewById(R.id.imgScatto));
         VariabiliStaticheDetector.getInstance().setAudio((ImageView) act.findViewById(R.id.imgPlayAudio));
         VariabiliStaticheDetector.getInstance().setvView((VideoView) act.findViewById(R.id.videoView1));
 
@@ -1118,6 +1166,7 @@ public class InizializzaMascheraDetector {
     }
 
     private void impostaAccensioniGPS(Context context, Activity act) {
+        /*
         if (VariabiliStaticheGPS.getInstance().getAccensioneGPS() != null) {
             EditText etOraDisattivazioneDomenica = (EditText) act.findViewById(R.id.edtOraInizioDomenica);
             EditText etOraDisattivazioneLunedi = (EditText) act.findViewById(R.id.edtOraInizioLunedi);
@@ -1579,5 +1628,6 @@ public class InizializzaMascheraDetector {
                 }
             });
         }
+        */
     }
 }

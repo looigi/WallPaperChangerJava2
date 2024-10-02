@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+
 import java.util.List;
 
 public class VariabiliStaticheDetector {
@@ -63,7 +65,7 @@ public class VariabiliStaticheDetector {
     // private ListView Lista;
     private TextView txtImm;
     private TextView txtNomeImm;
-    private ImageView img;
+    private ImmagineZoomabile img;
     private ImageView audio;
     private VideoView vView;
     public boolean StaVedendo=false;
@@ -260,11 +262,11 @@ public class VariabiliStaticheDetector {
         this.txtNomeImm = txtNomeImm;
     }
 
-    public ImageView getImg() {
+    public ImmagineZoomabile getImg() {
         return img;
     }
 
-    public void setImg(ImageView img) {
+    public void setImg(ImmagineZoomabile img) {
         this.img = img;
     }
 

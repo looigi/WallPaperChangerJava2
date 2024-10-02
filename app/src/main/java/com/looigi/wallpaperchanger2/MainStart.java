@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.gps.db_dati_gps;
+import com.looigi.wallpaperchanger2.mostraImmagini.MostraImmaginiLibrary;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
@@ -215,6 +216,12 @@ public class MainStart  extends Activity {
             g.AbilitaTimer(context);
             g.AbilitaGPS(context);
         }
+
+        /* Intent myIntent = new Intent(
+                this,
+                MostraImmaginiLibrary.class);
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(myIntent); */
     }
 
     @Override

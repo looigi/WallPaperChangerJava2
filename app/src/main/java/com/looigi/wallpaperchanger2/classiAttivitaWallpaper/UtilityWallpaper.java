@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiStandard.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.mostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedInputStream;
@@ -151,8 +152,15 @@ public class UtilityWallpaper {
 
     public void ApreToast(Context context, String messaggio) {
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
-            if (context != null && VariabiliStaticheWallpaper.getInstance().getMainActivity() != null) {
-                VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+            Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
+            if (act == null) {
+                act = VariabiliStaticheDetector.getInstance().getMainActivity();
+            }
+            if (act == null) {
+                act = VariabiliStaticheWallpaper.getInstance().getMainActivity();
+            }
+            if (context != null && act != null) {
+                act.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(context,
                                 VariabiliStaticheWallpaper.channelName + ": " + messaggio,
@@ -307,11 +315,16 @@ public class UtilityWallpaper {
             if (act == null) {
                 act = VariabiliStaticheDetector.getInstance().getMainActivity();
             }
-            act.runOnUiThread(new Runnable() {
-                public void run() {
-                    VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
-                }
-            });
+            if (act == null) {
+                act = VariabiliStaticheMostraImmagini.getInstance().getAct();
+            }
+            if (act != null) {
+                act.runOnUiThread(new Runnable() {
+                    public void run() {
+                        VariabiliStaticheWallpaper.getInstance().getLayAttesa().setVisibility(LinearLayout.GONE);
+                    }
+                });
+            }
             return;
         }
 

@@ -81,6 +81,10 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
+            android:name=".mostraImmagini.MostraImmaginiLibrary"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".gps.Mappa"
             android:windowSoftInputMode="adjustResize" />
 

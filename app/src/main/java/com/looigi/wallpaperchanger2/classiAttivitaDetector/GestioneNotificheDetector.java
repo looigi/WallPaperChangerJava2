@@ -205,6 +205,15 @@ public class GestioneNotificheDetector {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                if (context == null) {
+                                    context = VariabiliStaticheStart.getInstance().getContext();
+                                }
+                                if (context == null) {
+                                    context = VariabiliStaticheWallpaper.getInstance().getContext();
+                                }
+                                if (context == null) {
+                                    context = VariabiliStaticheDetector.getInstance().getContext();
+                                }
                                 if (context != null) {
                                     VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 

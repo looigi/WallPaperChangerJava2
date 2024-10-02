@@ -625,7 +625,7 @@ public class UtilityDetector {
         }
     }
 
-    private String LeggeFileDiTesto(String path) {
+    public String LeggeFileDiTesto(String path) {
         StringBuilder text = new StringBuilder();
 
         File file = new File(path);
