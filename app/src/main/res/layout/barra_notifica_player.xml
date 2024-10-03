@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
+
+    <ImageView
+        android:id="@+id/imgCopertina"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/player" />
+
+    <!-- <LinearLayout
+        android:id="@+id/layBarraNotifica"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/txtDettaglio"
+        android:layout_marginStart="2dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="#AA0000"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TextView> -->
+
+    <LinearLayout
+        android:id="@+id/layPlayer1"
+        android:background="@drawable/bordato"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtDettaglio"
+            android:layout_marginStart="2dp"
+            android:layout_width="wrap_content"
+            android:textSize="14sp"
+            android:lines="1"
+            android:text="Detector"
+            android:textColor="#AA0000"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/layPlayer1"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgIndietroPlayerBarra"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/indietro" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgPlayStopBarra"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/play" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAvantiPlayerBarra"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/avanti" />
+            </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

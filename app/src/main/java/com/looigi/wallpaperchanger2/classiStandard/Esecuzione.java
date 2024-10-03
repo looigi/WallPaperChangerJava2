@@ -4,10 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-
-import java.util.Calendar;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 
 import static androidx.core.content.ContextCompat.registerReceiver;
 

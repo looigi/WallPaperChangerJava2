@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.looigi.wallpaperchanger2.MainStart;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 
 public class yourActivityRunOnStartup extends BroadcastReceiver {
     public yourActivityRunOnStartup() {

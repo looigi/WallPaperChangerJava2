@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 
 import org.acra.ACRA;
 import org.acra.BuildConfig;
@@ -43,7 +43,7 @@ public class Acra extends Application {
                                 .withText("Errore nell'app")
                                 .withChannelName(VariabiliStaticheWallpaper.channelName)
                                 .withChannelImportance(NotificationManager.IMPORTANCE_MAX)
-                                .withResIcon(R.drawable.ic_launcher)
+                                .withResIcon(R.drawable.eye)
                                 .withSendButtonText("Invia")
                                 .withResSendButtonIcon(R.drawable.icona_ok)
                                 .withDiscardButtonText("Annulla")

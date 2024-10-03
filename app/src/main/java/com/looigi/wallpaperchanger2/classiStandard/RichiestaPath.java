@@ -9,8 +9,8 @@ import android.provider.DocumentsContract;
 
 import androidx.annotation.Nullable;
 
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 
 import java.io.File;
 import java.io.FileInputStream;

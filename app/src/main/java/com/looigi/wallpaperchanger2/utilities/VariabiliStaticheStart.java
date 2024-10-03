@@ -2,20 +2,12 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Environment;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.gps.StrutturaGps;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 
 public class VariabiliStaticheStart {
     private static VariabiliStaticheStart instance = null;
@@ -37,6 +29,24 @@ public class VariabiliStaticheStart {
     private boolean GiaPartito = false;
     private String PercorsoDIRLog;
     private boolean Detector;
+
+    public Activity tornaActivityValida() {
+        Activity act = VariabiliStaticheWallpaper.getInstance().getMainActivity();
+        if (act == null) {
+            act = VariabiliStaticheStart.getInstance().getMainActivity();
+        }
+        if (act == null) {
+            act = VariabiliStaticheDetector.getInstance().getMainActivity();
+        }
+        if (act == null) {
+            act = VariabiliStatichePlayer.getInstance().getAct();
+        }
+        if (act == null) {
+            act = VariabiliStaticheMostraImmagini.getInstance().getAct();
+        }
+
+        return act;
+    }
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {

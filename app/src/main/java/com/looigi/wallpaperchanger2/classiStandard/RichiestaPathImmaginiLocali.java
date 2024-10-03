@@ -8,9 +8,9 @@ import android.provider.DocumentsContract;
 
 import androidx.annotation.Nullable;
 
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.ScannaDiscoPerImmaginiLocali;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
 
 public class RichiestaPathImmaginiLocali extends Activity {
     private static String NomeMaschera = "RICHIESTAPATH";

@@ -72,7 +72,7 @@
 
         <!--  -->
         <activity
-            android:name=".classiAttivitaDetector.AndroidCameraApi"
+            android:name=".classiDetector.AndroidCameraApi"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:windowSoftInputMode="adjustResize" />
 
@@ -81,19 +81,23 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".mostraImmagini.MostraImmaginiLibrary"
+            android:name=".classeMostraImmagini.MostraImmaginiLibrary"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".gps.Mappa"
+            android:name=".classiGps.Mappa"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".MainWallpaper"
+            android:name=".classiPlayer.MainPlayer"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".MainActivityDetector"
+            android:name=".classiWallpaper.MainWallpaper"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classiDetector.MainActivityDetector"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -101,7 +105,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".modificaImmagine.modificaImmagine"
+            android:name=".classeModificaImmagine.modificaImmagine"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -128,9 +132,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".classiStandard.GestioneNotifiche$NotificationActionService" />
+        <service android:name=".classiPlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 
-        <service android:name=".classiAttivitaDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
+        <service android:name=".classiWallpaper.GestioneNotifiche$NotificationActionService" />
+
+        <service android:name=".classiDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
 
         <receiver android:name=".AutoStart.yourActivityRunOnStartup"
             android:enabled="true"
@@ -149,24 +155,24 @@
         </receiver>
 
         <activity
-            android:name=".classiAttivitaDetector.Receivers.Video"
+            android:name=".classiDetector.Receivers.Video"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
         <activity
-            android:name=".classiAttivitaDetector.Receivers.Audio"
+            android:name=".classiDetector.Receivers.Audio"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
         <activity
-            android:name=".classiAttivitaDetector.Receivers.Photo"
+            android:name=".classiDetector.Receivers.Photo"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
-        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderPhoto"
+        <receiver android:name=".classiDetector.Receivers.ProviderPhoto"
             android:exported="false"
             android:label="Detector Photo">
             <intent-filter >
@@ -177,7 +183,7 @@
                 android:resource="@xml/widget_settings_photo" />
         </receiver>
 
-        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderVideo"
+        <receiver android:name=".classiDetector.Receivers.ProviderVideo"
             android:exported="false"
             android:label="Detector Video">
             <intent-filter >
@@ -189,7 +195,7 @@
                 android:resource="@xml/widget_settings_video" />
         </receiver>
 
-        <receiver android:name=".classiAttivitaDetector.Receivers.ProviderAudio"
+        <receiver android:name=".classiDetector.Receivers.ProviderAudio"
             android:exported="false"
             android:label="Detector Audio">
             <intent-filter >

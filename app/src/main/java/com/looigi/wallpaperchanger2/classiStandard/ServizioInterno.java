@@ -9,19 +9,21 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.widget.Toast;
 
-import com.looigi.wallpaperchanger2.MainActivityDetector;
-import com.looigi.wallpaperchanger2.MainWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class ServizioInterno extends Service {
@@ -127,7 +129,7 @@ public class ServizioInterno extends Service {
                 iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(iD);
 
-                Handler handlerTimer = new Handler();
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
                         if (VariabiliStaticheDetector.getInstance().getMainActivity() != null) {
@@ -146,6 +148,7 @@ public class ServizioInterno extends Service {
             if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
                     VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+
                 Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
                 if (notificaDetector != null) {
                     UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
@@ -155,6 +158,7 @@ public class ServizioInterno extends Service {
                     UtilityWallpaper.getInstance().ApreToast(context, "Detector Partito");
                 }
             }
+
             // PARTENZA MASCHERE
         } else {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");

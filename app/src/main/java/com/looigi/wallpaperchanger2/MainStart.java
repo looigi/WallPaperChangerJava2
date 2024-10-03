@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,19 +16,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.InizializzaMascheraWallpaper;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classiWallpaper.InizializzaMascheraWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
-import com.looigi.wallpaperchanger2.gps.GestioneGPS;
-import com.looigi.wallpaperchanger2.gps.GestioneMappa;
-import com.looigi.wallpaperchanger2.gps.Mappa;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiAttivitaWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.gps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.gps.db_dati_gps;
-import com.looigi.wallpaperchanger2.mostraImmagini.MostraImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
+import com.looigi.wallpaperchanger2.classiGps.Mappa;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classiGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
@@ -175,6 +180,40 @@ public class MainStart  extends Activity {
             }
         });
 
+        ImageView imgP = findViewById(R.id.imgStartPlayer);
+        imgP.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent iP = new Intent(context, MainPlayer.class);
+                        iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iP);
+
+                        Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
+                        if (notificaPlayer != null) {
+                            // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
+
+                            GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+
+                            UtilityWallpaper.getInstance().ApreToast(context, "Player Partito");
+                        }
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
         ImageView imgM = findViewById(R.id.imgStartMappa);
         TextView txtLabelMap = findViewById(R.id.txtStartLabelMap);
         if (VariabiliStaticheStart.getInstance().isDetector()) {
@@ -217,7 +256,16 @@ public class MainStart  extends Activity {
             g.AbilitaGPS(context);
         }
 
-        /* Intent myIntent = new Intent(
+
+
+
+        /* Intent iP = new Intent(context, MainPlayer.class);
+        iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(iP);
+
+        Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
+
+        Intent myIntent = new Intent(
                 this,
                 MostraImmaginiLibrary.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
