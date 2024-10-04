@@ -33,6 +33,7 @@ import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
@@ -198,7 +199,7 @@ public class MainStart  extends Activity {
 
                             GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
 
-                            UtilityWallpaper.getInstance().ApreToast(context, "Player Partito");
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
                         }
                     }
                 }, 500);

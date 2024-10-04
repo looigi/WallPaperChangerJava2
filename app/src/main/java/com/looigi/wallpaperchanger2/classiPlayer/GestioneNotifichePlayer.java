@@ -106,7 +106,7 @@ public class GestioneNotifichePlayer {
 
             return notifica;
         } catch (Exception e) {
-            UtilityDetector.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
+            UtilityPlayer.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
                     UtilityDetector.getInstance().PrendeErroreDaException(e));
 
             return null;
@@ -169,7 +169,7 @@ public class GestioneNotifichePlayer {
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notification);
             } catch (Exception e) {
-                UtilityDetector.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
+                UtilityPlayer.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
         }
@@ -247,13 +247,14 @@ public class GestioneNotifichePlayer {
                     case "Indietro":
                         break;
                     case "PlayStop":
-                        UtilityPlayer.getInstance().PressionePlay(this);
+                        boolean acceso = VariabiliStatichePlayer.getInstance().isStaSuonando();
+                        UtilityPlayer.getInstance().PressionePlay(this, !acceso);
                         break;
                     case "Avanti":
                         UtilityPlayer.getInstance().StoppaTimer();
 
-                        ChiamateWsPlayer ws = new ChiamateWsPlayer(VariabiliStatichePlayer.getInstance().getAct());
-                        ws.RitornaBranoDaID("");
+                        UtilityPlayer.getInstance().BranoAvanti(
+                                VariabiliStatichePlayer.getInstance().getContext(), "", false);
                         break;
                 }
             }

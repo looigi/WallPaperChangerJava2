@@ -529,10 +529,15 @@ public class GestioneImmagini {
 
 	public Bitmap ConvertSketch(Bitmap bmpOriginal)
 	{
-		return BitmapBuilder.sketchEffect(
-				VariabiliStaticheStart.getInstance().getContext(),
-				bmpOriginal
-		);
+		Context ctx = VariabiliStaticheStart.getInstance().getContext();
+		if (ctx != null) {
+			return BitmapBuilder.sketchEffect(
+					ctx,
+					bmpOriginal
+			);
+		} else {
+			return bmpOriginal;
+		}
 	}
 
 	public Bitmap AddGlow(Bitmap src) {

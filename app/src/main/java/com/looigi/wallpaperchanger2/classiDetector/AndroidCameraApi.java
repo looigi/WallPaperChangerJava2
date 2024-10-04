@@ -35,6 +35,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiGps.StrutturaGps;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
@@ -93,7 +94,7 @@ public class AndroidCameraApi extends Activity {
 
     private void Attiva() {
         if (!UtilityDetector.getInstance().LeggeImpostazioni(this)) {
-            UtilityWallpaper.getInstance().ApreToast(this,
+            UtilitiesGlobali.getInstance().ApreToast(this,
                     "Impossibile leggere le impostazioni");
 
             return;
@@ -134,7 +135,7 @@ public class AndroidCameraApi extends Activity {
 
         AttesaCamera();
 
-        UtilityWallpaper.getInstance().ApreToast(context, "Start C");
+        UtilitiesGlobali.getInstance().ApreToast(context, "Start C");
     }
 
     private void AttesaCamera() {
@@ -163,7 +164,7 @@ public class AndroidCameraApi extends Activity {
                                     context,
                                     NomeMaschera,
                                     "Attesa Camera. Esco per mancata attivazione");
-                            UtilityWallpaper.getInstance().ApreToast(context, "Object C not activated");
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Object C not activated");
 
                             // CAMERA NON ATTIVATA IN TEMPO
                             handlerTimer.removeCallbacks(this);
@@ -295,7 +296,7 @@ public class AndroidCameraApi extends Activity {
     protected void takePicture() {
         if (null == cameraDevice) {
             // Log.e(TAG, "cameraDevice is null");
-            UtilityWallpaper.getInstance().ApreToast(this, "Oggetto C nullo");
+            UtilitiesGlobali.getInstance().ApreToast(this, "Oggetto C nullo");
             return;
         }
 

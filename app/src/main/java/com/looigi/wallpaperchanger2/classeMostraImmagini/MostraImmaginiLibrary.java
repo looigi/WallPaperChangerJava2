@@ -15,6 +15,7 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWs;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ public class MostraImmaginiLibrary extends Activity {
         act = this;
 
         VariabiliStaticheMostraImmagini.getInstance().setAct(act);
+        VariabiliStaticheMostraImmagini.getInstance().setCtx(context);
 
         VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(-999);
         VariabiliStaticheMostraImmagini.getInstance().setFiltro("");
@@ -52,18 +54,18 @@ public class MostraImmaginiLibrary extends Activity {
 
         VariabiliStaticheMostraImmagini.getInstance().getImg().setOnTouchListener(new OnSwipeTouchListener(MostraImmaginiLibrary.this) {
             public void onSwipeTop() {
-                UtilityWallpaper.getInstance().ApreToast(context, "Swipe Top");
+                UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Top");
             }
             public void onSwipeRight() {
-                // UtilityWallpaper.getInstance().ApreToast(context, "Swipe Right");
+                // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Right");
                 UtilityImmagini.getInstance().TornaIndietro(context);
             }
             public void onSwipeLeft() {
-                // UtilityWallpaper.getInstance().ApreToast(context, "Swipe Left");
+                // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Left");
                 UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
             }
             public void onSwipeBottom() {
-                UtilityWallpaper.getInstance().ApreToast(context, "Swipe Bottom");
+                UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Bottom");
             }
         });
 

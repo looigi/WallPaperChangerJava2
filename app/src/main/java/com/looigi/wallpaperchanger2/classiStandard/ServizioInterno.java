@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
@@ -24,6 +26,8 @@ import com.looigi.wallpaperchanger2.classiDetector.db_dati_detector;
 import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.MyPhoneStateListener;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class ServizioInterno extends Service {
@@ -34,6 +38,8 @@ public class ServizioInterno extends Service {
     // private VolumePressed volPressed;
     // private AudioManager mAudioManagerInterno;
     // private ComponentName mReceiverComponentInterno;
+    private MyPhoneStateListener mPhoneStatelistener;
+    private TelephonyManager mTelephonyManager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -75,6 +81,10 @@ public class ServizioInterno extends Service {
         filterVP.addAction(Intent.ACTION_MEDIA_BUTTON);
         // filterVP.setPriority(1000);
         registerReceiver(volPressed, filterVP, Context.RECEIVER_NOT_EXPORTED); */
+
+        mPhoneStatelistener = new MyPhoneStateListener();
+        mTelephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        mTelephonyManager.listen(mPhoneStatelistener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
         mScreenReceiver = new ScreenReceiver();
         IntentFilter filterSO = new IntentFilter();
@@ -143,7 +153,7 @@ public class ServizioInterno extends Service {
                 handlerTimer.postDelayed(rTimer, 1000);
             }
 
-            UtilityWallpaper.getInstance().ApreToast(context, "Wallpaper Partito");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Wallpaper Partito");
 
             if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
@@ -155,7 +165,7 @@ public class ServizioInterno extends Service {
 
                     UtilityDetector.getInstance().ContaFiles(context);
 
-                    UtilityWallpaper.getInstance().ApreToast(context, "Detector Partito");
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
                 }
             }
 

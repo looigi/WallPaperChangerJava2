@@ -65,7 +65,8 @@ public class db_dati_gps {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "posizioni "
                         + " (data VARCHAR, ora VARCHAR, latitudine VARCHAR, longitudine VARCHAR, speed VARCHAR, " +
-                        "altitude VARCHAR, accuracy VARCHAR, distanza VARCHAR);";
+                        "altitude VARCHAR, accuracy VARCHAR, distanza VARCHAR, wifi VARCHAR, livelloSegnale VARCHAR, " +
+                        "tipoConnessione VARCHAR, livello VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS " +
@@ -240,7 +241,8 @@ public class db_dati_gps {
                 String sql = "";
                 sql = "INSERT INTO"
                         + " posizioni"
-                        + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, distanza)"
+                        + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, "
+                        + "distanza, wifi, livelloSegnale, tipoConnessione, livello)"
                         + " VALUES ("
                         + "'" + s.getData() + "', "
                         + "'" + s.getOra() + "', "
@@ -249,7 +251,11 @@ public class db_dati_gps {
                         + "'" + s.getSpeed() + "', "
                         + "'" + s.getAltitude() + "', "
                         + "'" + s.getAccuracy() + "', "
-                        + "'" + s.getDistanza() + "' "
+                        + "'" + s.getDistanza() + "', "
+                        + "'" + (s.isWifi()  ? "S" : "N") + "', "
+                        + "'" + s.getLivelloSegnale() + "', "
+                        + "'" + s.getTipoSegnale() + "', "
+                        + "'" + s.getLevel() + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -311,6 +317,10 @@ public class db_dati_gps {
                         s.setAltitude(Float.parseFloat(c.getString(5)));
                         s.setAccuracy(Float.parseFloat(c.getString(6)));
                         s.setDistanza(Float.parseFloat(c.getString(7)));
+                        s.setWifi(c.getString(8).equals("S"));
+                        s.setLivelloSegnale(c.getInt(9));
+                        s.setTipoSegnale(c.getString(10));
+                        s.setLevel(c.getInt(11));
 
                         lista.add(s);
                     } while (c.moveToNext());

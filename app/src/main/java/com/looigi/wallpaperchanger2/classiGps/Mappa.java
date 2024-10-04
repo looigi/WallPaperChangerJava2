@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.telephony.CellSignalStrength;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -124,7 +126,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
 
                 VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                UtilityWallpaper.getInstance().ApreToast(context,
+                UtilitiesGlobali.getInstance().ApreToast(context,
                         "Eliminati dati gps per la data " + dataOdierna);
             }
         });
@@ -134,7 +136,27 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    private int ritornaColore(float speed) {
+    private int ritornaColoreSegnale(StrutturaGps s) {
+        int sp = (int) s.getLevel();
+
+        switch(sp) {
+            case CellSignalStrength.SIGNAL_STRENGTH_NONE_OR_UNKNOWN:
+                return Color.TRANSPARENT;
+            case CellSignalStrength.SIGNAL_STRENGTH_POOR:
+                return Color.rgb( 200, 0, 0);
+            case CellSignalStrength.SIGNAL_STRENGTH_MODERATE:
+                return Color.rgb( 230, 115, 0);
+            case CellSignalStrength.SIGNAL_STRENGTH_GOOD:
+                return Color.rgb( 255, 255, 0);
+            case CellSignalStrength.SIGNAL_STRENGTH_GREAT:
+                return Color.rgb( 0, 255, 0);
+            default:
+                return Color.BLACK;
+        }
+
+    }
+
+    private int ritornaColoreVelocita(float speed) {
         int sp = (int) speed;
 
         if (sp < 40) {
@@ -156,7 +178,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         }
     }
 
-    private void AggiungePolyLine(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
+    private void AggiungePolyLineVelocita(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
         LatLng[] path = new LatLng[lista.size()];
         int c = 0;
 
@@ -167,10 +189,29 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             }
         }
 
-        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+        Polyline polylineVelocita = googleMap.addPolyline(new PolylineOptions()
                 .clickable(true)
                 .add(path)
-                .width(12)
+                .width(10)
+                .color(colore)
+        );
+    }
+
+    private void AggiungePolyLineSegnale(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
+        LatLng[] path = new LatLng[lista.size()];
+        int c = 0;
+
+        for (StrutturaGps l : lista) {
+            if (c < lista.size()) {
+                path[c] = new LatLng(l.getLat(), l.getLon());
+                c++;
+            }
+        }
+
+        Polyline polylineSegnale = googleMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .add(path)
+                .width(20)
                 .color(colore)
         );
     }
@@ -217,6 +258,45 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             List<StrutturaGps> lista = new ArrayList<>();
             LatLngBounds.Builder bc = new LatLngBounds.Builder();
 
+            // Aggiunta path segnale
+            for (int i = listaGPS.size() - 1; i >= 0; i--) {
+                StrutturaGps s = listaGPS.get(i);
+                int colore = ritornaColoreSegnale(s);
+
+                lista.add(s);
+
+                if (vecchioColore != colore) {
+                    if (vecchioColore != -1) {
+                        AggiungePolyLineSegnale(googleMap, lista, colore);
+                        lista = new ArrayList<>();
+                    }
+
+                    vecchioColore = colore;
+                }
+                // }
+            }
+
+            if (!lista.isEmpty()) {
+                AggiungePolyLineSegnale(googleMap, lista, vecchioColore);
+            }
+
+            /* if (!listaGPS.isEmpty()) {
+                LatLng[] path = new LatLng[2];
+                path[0] = new LatLng(listaGPS.get(listaGPS.size() - 1).getLat(), listaGPS.get(listaGPS.size() - 1).getLon());
+                path[1] = new LatLng(listaGPS.get(0).getLat(), listaGPS.get(0).getLon());
+
+                Polyline polylineBreak = googleMap.addPolyline(new PolylineOptions()
+                                .clickable(false)
+                                .add(path)
+                                .visible(false)
+                                .width(1)
+                                .color(Color.TRANSPARENT)
+                );
+            } */
+
+            vecchioColore = -1;
+
+            // Aggiunta path velocità
             for (StrutturaGps s : listaGPS) {
                 /* if (s.getLat() == -1 && s.getLon() == -1) {
                     AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
@@ -226,14 +306,14 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
 
-                    float speed = Math.round(s.getSpeed()) * 3;
-                    int colore = ritornaColore(speed);
+                    float speed = Math.round(s.getSpeed()) * 3.5F;
+                    int colore = ritornaColoreVelocita(speed);
 
                     lista.add(s);
 
                     if (vecchioColore != colore) {
                         if (vecchioColore != -1) {
-                            AggiungePolyLine(googleMap, lista, colore);
+                            AggiungePolyLineVelocita(googleMap, lista, colore);
                             lista = new ArrayList<>();
                         }
 
@@ -243,7 +323,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
             }
 
             if (!lista.isEmpty()) {
-                AggiungePolyLine(googleMap, lista, vecchioColore);
+                AggiungePolyLineVelocita(googleMap, lista, vecchioColore);
             }
 
             AggiungeMarkers(googleMap);

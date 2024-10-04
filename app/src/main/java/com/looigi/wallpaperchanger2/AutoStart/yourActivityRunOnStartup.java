@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class yourActivityRunOnStartup extends BroadcastReceiver {
     public yourActivityRunOnStartup() {
@@ -19,7 +20,7 @@ public class yourActivityRunOnStartup extends BroadcastReceiver {
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             } catch (Exception e) {
-                UtilityWallpaper.getInstance().ApreToast(context, "Service Started");
+                UtilitiesGlobali.getInstance().ApreToast(context, "Service Started");
 
                 // Toast.makeText(context, VariabiliStaticheServizio.channelName + ": Service Started", Toast.LENGTH_SHORT).show();
             }

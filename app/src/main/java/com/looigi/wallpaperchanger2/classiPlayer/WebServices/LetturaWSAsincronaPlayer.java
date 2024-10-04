@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -33,12 +34,13 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
     private TaskDelegatePlayer delegate;
     private boolean ApriDialog;
     private Context context;
+    private boolean Pregresso = false;
 
     public LetturaWSAsincronaPlayer(Context context, String NAMESPACE, int TimeOut,
                                     String SOAP_ACTION, String tOperazione,
                                     boolean ApriDialog, String Urletto,
                                     String TimeStampAttuale,
-                                    TaskDelegatePlayer delegate) {
+                                    TaskDelegatePlayer delegate, boolean Pregresso) {
         this.NAMESPACE = NAMESPACE;
         this.Timeout = TimeOut;
         this.context = context;
@@ -51,6 +53,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
         // this.QuantiTentativi = 3;
         this.Tentativo = 0;
         this.delegate = delegate;
+        this.Pregresso = Pregresso;
     }
 
     private void SplittaCampiUrletto(String Cosa) {
@@ -132,7 +135,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                             Valore = Parametri[i].substring(pos + 1, Parametri[i].length());
                         }
                         Request.addProperty(Parametro, Valore);
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Parametro " + Parametro + ": " + Valore);
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Parametro " + Parametro + ": " + Valore);
                     }
                 }
             }
@@ -146,7 +149,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
             SoapSerializationEnvelope soapEnvelope = null;
             HttpTransportSE aht = null;
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Urletto: " + Urletto);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Urletto: " + Urletto);
 
             try {
                 soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -169,7 +172,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 result = "ERROR: " + messErrore;
                 messErrore = result;
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore di socket su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore di socket su ws per operazione " + tOperazione + ": " + messErrore);
             } catch (IOException e) {
                 // VariabiliGlobali.getInstance().setRetePresente(false);
 
@@ -180,7 +183,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 result = "ERROR: " + messErrore;
                 messErrore = result;
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore di I/O su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore di I/O su ws per operazione " + tOperazione + ": " + messErrore);
             } catch (XmlPullParserException e) {
                 Errore = true;
                 messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
@@ -192,7 +195,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 result = "ERRORE: " + messErrore;
                 messErrore = result;
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore di parsing su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore di parsing su ws per operazione " + tOperazione + ": " + messErrore);
             } catch (Exception e) {
                 Errore = true;
                 messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
@@ -201,13 +204,13 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 result = "ERROR: " + messErrore;
                 messErrore = result;
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore generico su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore generico su ws per operazione " + tOperazione + ": " + messErrore);
             }
             if (!Errore && !isCancelled()) {
                 try {
                     result = "" + soapEnvelope.getResponse();
 
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Lettura ok su ws per operazione " + tOperazione);
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Lettura ok su ws per operazione " + tOperazione);
                 } catch (SoapFault e) {
                     Errore = true;
                     messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
@@ -219,7 +222,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                     result = "ERROR: " + messErrore;
                     messErrore = result;
 
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore SoapFault su ws per operazione " + tOperazione + ": " + messErrore);
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore SoapFault su ws per operazione " + tOperazione + ": " + messErrore);
                 }
             } else {
                 int a = 0;
@@ -233,7 +236,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
             if (isCancelled()) {
                 messErrore = "ESCI";
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Richiesta uscita da ws su operazione " + tOperazione + ": " + messErrore);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Richiesta uscita da ws su operazione " + tOperazione + ": " + messErrore);
             }
 
         return null;
@@ -250,11 +253,11 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 Errore = true;
             }
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Termine chiamata su operazione " + tOperazione);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Termine chiamata su operazione " + tOperazione);
 
             delegate.TaskCompletionResult(result);
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
 
             delegate.TaskCompletionResult(result);
         }

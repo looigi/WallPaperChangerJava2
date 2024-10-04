@@ -10,6 +10,7 @@ import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiLibrar
 import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -169,7 +170,7 @@ public class ChiamateWs implements TaskDelegate {
                 throw new RuntimeException(e);
             }
         } else {
-            UtilityWallpaper.getInstance().ApreToast(context, result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -205,7 +206,7 @@ public class ChiamateWs implements TaskDelegate {
             }
             // Utility.getInstance().VisualizzaMessaggio(result);
         } else {
-            UtilityWallpaper.getInstance().ApreToast(context, result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 

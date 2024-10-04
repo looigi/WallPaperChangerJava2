@@ -23,7 +23,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,6 +45,7 @@ public class GestioneGPS {
     private HandlerThread handlerThread1;
     private Handler handler1;
     private Runnable r1;
+    private boolean wifi;
 
     public void BloccaGPS() {
         // statoAttivo = false;
@@ -117,24 +121,6 @@ public class GestioneGPS {
         handler1.postDelayed(r1, secondiAttesa);
     }
 
-    private boolean checkWifiOnAndConnected() {
-        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
-        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
-
-            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-
-            if( wifiInfo.getNetworkId() == -1 ){
-                return false; // Not connected to an access point
-            }
-
-            return true; // Connected to an access point
-        }
-        else {
-            return false; // Wi-Fi adapter is OFF
-        }
-    }
-
     private void ControlloOraPerAccSpegn(Calendar calendar, String disatt, String riatt) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
@@ -178,7 +164,7 @@ public class GestioneGPS {
     }
 
     private void ControlloAccSpegn() {
-        boolean wifi = checkWifiOnAndConnected();
+        wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
 
         UtilityGPS.getInstance().ScriveLog(
                 context,
@@ -520,6 +506,10 @@ public class GestioneGPS {
             s.setSpeed(speed);
             s.setAccuracy(accuracy);
             s.setDistanza(distanza);
+            s.setWifi(wifi);
+            s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
+            s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
+            s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
 
             VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
 

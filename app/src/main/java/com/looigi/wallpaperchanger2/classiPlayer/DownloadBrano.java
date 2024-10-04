@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 
 import java.io.BufferedInputStream;
@@ -32,12 +31,14 @@ public class DownloadBrano extends AsyncTask<String, String, String> {
     private int contaUguale = 0;
     private boolean PulisceBrani = false;
     private Context context;
+    private boolean Pregresso = false;
 
-    public DownloadBrano(Context context, StrutturaBrano s) {
+    public DownloadBrano(Context context, StrutturaBrano s, boolean Pregresso) {
         UtilityPlayer.getInstance().Attesa(true);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download brano: " + s.getBrano());
 
         this.context = context;
+        this.Pregresso = Pregresso;
         sb = s;
         tempoImpiegato = 0;
         ultimiBytes = 0;
@@ -74,13 +75,13 @@ public class DownloadBrano extends AsyncTask<String, String, String> {
             int lenghtOfFile = urlConnection.getContentLength();
             // OggettiAVideo.getInstance().getProgressDownload().setMax(lenghtOfFile);
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Lunghezza file: " + Long.toString(lenghtOfFile));
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Lunghezza file: " + Long.toString(lenghtOfFile));
 
             // download the file
             InputStream input = new BufferedInputStream(url.openStream(),8192);
 
             // Output stream
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Creazione file output: " + sb.getPathBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Creazione file output: " + sb.getPathBrano());
             OutputStream output = new FileOutputStream(sb.getPathBrano());
 
             byte[] data = new byte[1024];
@@ -104,7 +105,7 @@ public class DownloadBrano extends AsyncTask<String, String, String> {
             output.close();
             input.close();
         } catch (Exception e) {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore: " + e.getMessage());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore: " + e.getMessage());
             erroreDownload = true;
             Files.getInstance().EliminaFileUnico(sb.getPathBrano());
         }
@@ -127,22 +128,34 @@ public class DownloadBrano extends AsyncTask<String, String, String> {
                     float DimensioneFile = Files.getInstance().DimensioniFile(sb.getPathBrano()) * 1024F;
                     float perc = Math.abs(Math.round(DimensioneFile / (Dimensione * 1024F * 1024F)) * 100F);
                     if (perc < 80 && Dimensione > 0F) {
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Elimino file " + sb.getPathBrano() + " in quanto più piccolo dell'80%");
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Elimino file " + sb.getPathBrano() + " in quanto più piccolo dell'80%");
                         Files.getInstance().EliminaFileUnico(sb.getPathBrano());
                     } else {
                         long dime = Files.getInstance().DimensioniFile(sb.getPathBrano());
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "File scaricato: " + sb.getPathBrano() + ". Dimensioni: " + dime);
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "File scaricato: " + sb.getPathBrano() + ". Dimensioni: " + dime);
                         if (dime > 1000) {
                             sb.setDimensione(dime * 1024L);
 
-                            db_dati_player db = new db_dati_player(context);
-                            db.ScriveUltimoBrano(sb);
+                            if (!Pregresso) {
+                                db_dati_player db = new db_dati_player(context);
+                                db.ScriveBrano(sb);
+                                db.ScriveUltimoBranoAscoltato(sb);
 
-                            VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
+                                VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
-                            UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+                                UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+                            } else {
+                                VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(sb);
+                                VariabiliStatichePlayer.getInstance().setHaCaricatoBranoPregresso(true);
+
+                                UtilityPlayer.getInstance().ScriveBranoPregresso();
+                            }
                         } else {
-                            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Elimino file. Dimensioni troppo piccole");
+                            if (Pregresso) {
+                                VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
+                                VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(false);
+                            }
+                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Elimino file. Dimensioni troppo piccole");
                             Files.getInstance().EliminaFileUnico(sb.getPathBrano());
                         }
                     }
@@ -150,7 +163,11 @@ public class DownloadBrano extends AsyncTask<String, String, String> {
                 }
             }, 100);
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore download brano");
+            if (Pregresso) {
+                VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
+                VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(false);
+            }
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore download brano");
         }
 
         UtilityPlayer.getInstance().Attesa(false);

@@ -9,6 +9,42 @@ public class StrutturaGps {
     private float Speed;
     private float Accuracy;
     private float distanza;
+    private boolean wifi;
+    private int livelloSegnale;
+    private String tipoSegnale;
+    private int level;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getTipoSegnale() {
+        return tipoSegnale;
+    }
+
+    public void setTipoSegnale(String tipoSegnale) {
+        this.tipoSegnale = tipoSegnale;
+    }
+
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public int getLivelloSegnale() {
+        return livelloSegnale;
+    }
+
+    public void setLivelloSegnale(int livelloSegnale) {
+        this.livelloSegnale = livelloSegnale;
+    }
 
     public float getDistanza() {
         return distanza;

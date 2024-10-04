@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedInputStream;
@@ -134,7 +135,7 @@ public class UtilityWallpaper {
         }
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
-        UtilityWallpaper.getInstance().ApreToast(context, "Uscita");
+        UtilitiesGlobali.getInstance().ApreToast(context, "Uscita");
 
         finishAffinity(VariabiliStaticheWallpaper.getInstance().getMainActivity());
 
@@ -147,21 +148,6 @@ public class UtilityWallpaper {
         String nomeFileLog = VariabiliStaticheWallpaper.channelName + ".txt";
         VariabiliStaticheWallpaper.getInstance().setNomeFileDiLog(nomeFileLog);
     } */
-
-    public void ApreToast(Context context, String messaggio) {
-        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
-            Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
-            if (context != null && act != null) {
-                act.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(context,
-                                VariabiliStaticheWallpaper.channelName + ": " + messaggio,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }
-    }
 
     public boolean EliminaFileUnico(String fileName) {
         if (EsisteFile(fileName)) {
@@ -200,7 +186,7 @@ public class UtilityWallpaper {
         if (!ApriDialog) {
             // OggettiAVideo.getInstance().getImgRest().setVisibility(LinearLayout.VISIBLE);
         } else {
-            Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+            Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
             try {
                 progressDialog = new ProgressDialog(act);
                 progressDialog.setMessage("Attendere Prego...\n\n" + tOperazione);
@@ -249,7 +235,7 @@ public class UtilityWallpaper {
         ScriveLog(context, NomeMaschera, "Visualizzo messaggio di errore. Schermo acceso: " +
                 VariabiliStaticheWallpaper.getInstance().isScreenOn());
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
-            Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+            Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
             act.runOnUiThread(new Runnable() {
                 public void run() {
                     AlertDialog alertDialog = new AlertDialog.Builder(act).create();
@@ -302,7 +288,7 @@ public class UtilityWallpaper {
     public void Attesa(boolean Come) {
         if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             attese = 0;
-            Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+            Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
             if (act != null) {
                 act.runOnUiThread(new Runnable() {
                     public void run() {
@@ -370,7 +356,7 @@ public class UtilityWallpaper {
             f.delete();
         }
 
-        ApreToast(context, "File di logs eliminati: " + quanti);
+        UtilitiesGlobali.getInstance().ApreToast(context, "File di logs eliminati: " + quanti);
     }
 
     public void CondividiLogs(Context context) {
@@ -421,7 +407,7 @@ public class UtilityWallpaper {
         i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
         context.startActivity(Intent.createChooser(i,"Share file di log e db"));
 
-        ApreToast(context, "File di logs condivisi: " + quanti);
+        UtilitiesGlobali.getInstance().ApreToast(context, "File di logs condivisi: " + quanti);
     }
 
     public int zip(String[] Applicazione, String[] Path, String zipFile) throws IOException {

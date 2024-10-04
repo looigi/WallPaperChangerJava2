@@ -21,6 +21,7 @@ import android.view.Display;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.GestioneImmagini;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWS;
 
@@ -41,7 +42,7 @@ public class ChangeWallpaper {
 	public ChangeWallpaper(Context context) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
-		Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		if (act != null) {
 			PrendeDimensioniSchermo(context);
 		} else {
@@ -68,7 +69,7 @@ public class ChangeWallpaper {
 
 	private void PrendeDimensioniSchermo(Context context) {
 		// DisplayMetrics metrics = new DisplayMetrics();
-		Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		if (act != null) {
 			Display d = act.getDisplay();
 
@@ -378,7 +379,7 @@ public class ChangeWallpaper {
 		int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
 		int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
 
-		Activity act = VariabiliStaticheStart.getInstance().tornaActivityValida();
+		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		act.runOnUiThread(new Runnable() {
 			public void run() {
 				VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(

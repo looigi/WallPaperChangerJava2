@@ -23,36 +23,73 @@ public class VariabiliStaticheStart {
         return instance;
     }
 
+
     private Context context;
     private LogInterno l;
     private Activity mainActivity;
     private boolean GiaPartito = false;
     private String PercorsoDIRLog;
     private boolean Detector;
+    private boolean ceWifi = false;
+    private int livelloSegnaleConnessione;
+    private String tipoConnessione;
+    private int velocitaUpload;
+    private int velocitaDownload;
+    private int livello;
 
-    public Activity tornaActivityValida() {
-        Activity act = VariabiliStaticheWallpaper.getInstance().getMainActivity();
-        if (act == null) {
-            act = VariabiliStaticheStart.getInstance().getMainActivity();
-        }
-        if (act == null) {
-            act = VariabiliStaticheDetector.getInstance().getMainActivity();
-        }
-        if (act == null) {
-            act = VariabiliStatichePlayer.getInstance().getAct();
-        }
-        if (act == null) {
-            act = VariabiliStaticheMostraImmagini.getInstance().getAct();
-        }
+    public int getLivello() {
+        return livello;
+    }
 
-        return act;
+    public void setLivello(int livello) {
+        this.livello = livello;
+    }
+
+    public int getVelocitaUpload() {
+        return velocitaUpload;
+    }
+
+    public void setVelocitaUpload(int velocitaUpload) {
+        this.velocitaUpload = velocitaUpload;
+    }
+
+    public int getVelocitaDownload() {
+        return velocitaDownload;
+    }
+
+    public void setVelocitaDownload(int velocitaDownload) {
+        this.velocitaDownload = velocitaDownload;
+    }
+
+    public boolean isCeWifi() {
+        return ceWifi;
+    }
+
+    public String getTipoConnessione() {
+        return tipoConnessione;
+    }
+
+    public void setTipoConnessione(String tipoConnessione) {
+        this.tipoConnessione = tipoConnessione;
+    }
+
+    public void setCeWifi(boolean ceWifi) {
+        this.ceWifi = ceWifi;
+    }
+
+    public int getLivelloSegnaleConnessione() {
+        return livelloSegnaleConnessione;
+    }
+
+    public void setLivelloSegnaleConnessione(int livelloSegnaleConnessione) {
+        this.livelloSegnaleConnessione = livelloSegnaleConnessione;
     }
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
             // mainActivity.moveTaskToBack(true);
             // if (Finish) {
-                mainActivity.finish();
+            mainActivity.finish();
             // }
         }
     }

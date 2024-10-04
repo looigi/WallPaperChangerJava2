@@ -28,13 +28,14 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private final String SA2="http://csaricanuovai.org/";
     private String TipoOperazione = "";
     private Context context;
+    private boolean Pregresso = false;
 
     public ChiamateWsPlayer(Context context) {
         this.context = context;
     }
 
     public void RitornaImmaginiArtista(String Artista) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Immagini Artista");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Immagini Artista");
 
         String Urletto="RitornaImmaginiArtista?Artista=" + Artista;
 
@@ -54,7 +55,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RicercaBrani(String Ricerca) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ricerca Brani");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ricerca Brani");
 
         String Urletto="RitornaBrani?Ricerca=" + Ricerca;
 
@@ -74,7 +75,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RicaricaBrani() {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani. Eliminazione JSON");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani. Eliminazione JSON");
 
         String Urletto="EliminaJSON?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId();
 
@@ -94,7 +95,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RicaricaBrani2() {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani2. Creazione JSON");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani2. Creazione JSON");
 
         String Urletto="RefreshCanzoniHard?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId();
 
@@ -117,7 +118,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
             return;
         }
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Stelle Brano " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Stelle Brano " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
 
         String Urletto="RitornaStelleBrano?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId() + "&idBrano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano();
 
@@ -137,7 +138,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RitornaListaAlbum(String Artista, String Ricerca) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Album");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Album");
 
         Artista = UtilityPlayer.getInstance().ConverteNome(Artista);
 
@@ -159,7 +160,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RitornaListaBrani(String Artista, String Album, String Ricerca) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista brani per Artista " + Artista + " e album " + Album);
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista brani per Artista " + Artista + " e album " + Album);
 
         Artista = UtilityPlayer.getInstance().ConverteNome(Artista);
         Album = UtilityPlayer.getInstance().ConverteNome(Album);
@@ -182,7 +183,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RitornaListaTags() {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Tags");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Tags");
 
         String Urletto="RitornaListaTags";
 
@@ -202,7 +203,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void RitornaListaArtisti(boolean ApreDialog) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Artisti");
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Artisti");
 
         String Urletto="RitornaArtisti";
 
@@ -223,12 +224,14 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     private long lastCall = -1;
 
-    public void RitornaBranoDaID(String idBrano) {
-        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano.");
+    public void RitornaBranoDaID(String idBrano, boolean Pregresso) {
+        this.Pregresso = Pregresso;
+
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Pregresso: " + Pregresso);
 
         long ora = new Date().getTime();
         if (ora - lastCall < 2000) {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Esco per troppo veloce: " + (ora - lastCall));
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Esco per troppo veloce: " + (ora - lastCall));
 
             return;
         }
@@ -334,7 +337,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                        boolean ControllaTempoEsecuzione, int Stelle) {
 
         UtilityPlayer.getInstance().Attesa(true);
-        UtilityPlayer.getInstance().AggiornaOperazioneInCorso(tOperazione);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso(tOperazione + (Pregresso ? "Pregresso" : ""));
 
         bckAsyncTask = new LetturaWSAsincronaPlayer(
                 context,
@@ -345,7 +348,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 ApriDialog,
                 Urletto,
                 "0", // TimeStampAttuale,
-                this);
+                this,
+                Pregresso);
         bckAsyncTask.execute(Urletto);
     }
 
@@ -357,13 +361,13 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (ControllaTempoEsecuzione) {
             if (differenza > 30) {
                 // Ci ha messo troppo tempo
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Troppo tempo a rispondere: " + differenza);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Troppo tempo a rispondere: " + differenza);
 
                 UtilityPlayer.getInstance().ImpostaStatoReteOFF();
                 accesoStatoReteMancante = true;
             } else {
                 if (accesoStatoReteMancante) {
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Ripristino stato rete");
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Ripristino stato rete");
                     accesoStatoReteMancante = false;
                     UtilityPlayer.getInstance().ImpostaStatoReteON();
                 }
@@ -403,7 +407,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             testo = testo.replace("%20", " ");
             String testo2 = testo.substring(0, 30);
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Aggiornamento testo brano eseguito: " + testo2);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Aggiornamento testo brano eseguito: " + testo2);
 
             // Files.getInstance().ScriveFile(VariabiliGlobali.getInstance().getPathTesto(), VariabiliGlobali.getInstance().getNomeFileTesto(), testo);
 
@@ -459,7 +463,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                         // VariabiliStatichePlayer.getInstance().getListaBraniRicercati().add(s);
                     } catch (Exception e) {
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Errore ritorno RitornaBrani: " +
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore ritorno RitornaBrani: " +
                                 UtilityDetector.getInstance().PrendeErroreDaException(e));
                     }
                 }
@@ -499,10 +503,10 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (!ritorno) {
             // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti");
 
             String[] Globale = result.split("§", -1);
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti -> " + Globale.length);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti -> " + Globale.length);
 
             for (int i = 0; i < Globale.length; i++) {
                 if (!Globale[i].trim().replace("\n", "").isEmpty()) {
@@ -529,12 +533,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                         // VariabiliStatichePlayer.getInstance().AggiungeArtista(sa);
                     } catch (Exception ignored) {
-                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti. Errore su parse (" + Globale[i] + "): " +
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti. Errore su parse (" + Globale[i] + "): " +
                                 UtilityDetector.getInstance().PrendeErroreDaException(ignored));
                     }
                 }
             }
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti effettuato");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti effettuato");
         }
     }
 
@@ -542,8 +546,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (result.contains("ERROR:")) {
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
                 // UtilityPlayer.getInstance().ImpostaStatoReteOFF();
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata.");
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, result);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata.");
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, result);
             }
 
             return false;
@@ -555,7 +559,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     public void CaricaBrano(String result) {
         boolean ritorno = ControllaRitorno("Carica Brano", result);
         if (!ritorno) {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Carica brano: Esco per result non valido");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Carica brano: Esco per result non valido");
 
             return;
         }
@@ -569,7 +573,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TestoEAltro = new String[]{"", "", "", ""};
             }
 
-            VariabiliStatichePlayer.getInstance().setBraniTotali(Integer.parseInt(DatiBrano[1]));
+            if (!Pregresso) {
+                VariabiliStatichePlayer.getInstance().setBraniTotali(Integer.parseInt(DatiBrano[1]));
+            }
 
             StrutturaBrano s = new StrutturaBrano();
             s.setIdBrano(Integer.parseInt(DatiBrano[0]));
@@ -742,31 +748,32 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 s.setTestoTradotto("");
             }
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "idBrano Pregresso: " + s.getIdBrano());
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Titolo Brano Pregresso: " + s.getBrano());
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Album Pregresso: " + s.getAlbum());
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Artista Pregresso: " + s.getArtista());
-
-            // OggettiAVideo.getInstance().getImgPregresso().setVisibility(LinearLayout.VISIBLE);
-
-            // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Caricamento pregresso: " + branoPregresso);
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "File: " + s.getPathBrano());
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "File esistente: " + UtilityDetector.getInstance().EsisteFile(s.getPathBrano()));
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "URL: " + s.getUrlBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Brano Pregresso: " + Pregresso);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "idBrano: " + s.getIdBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Titolo Brano: " + s.getBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Album: " + s.getAlbum());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Artista: " + s.getArtista());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "File: " + s.getPathBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "File esistente: " + UtilityDetector.getInstance().EsisteFile(s.getPathBrano()));
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "URL: " + s.getUrlBrano());
 
             if (!UtilityDetector.getInstance().EsisteFile(s.getPathBrano())) {
-                // DOWNLOAD MP3
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Scarico il brano in locale");
-                new DownloadBrano(context, s).execute(s.getUrlBrano());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Scarico il brano in locale");
+                new DownloadBrano(context, s, Pregresso).execute(s.getUrlBrano());
             } else {
-                if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
-                    db_dati_player db = new db_dati_player(context);
-                    db.ScriveUltimoBrano(s);
+                if (!Pregresso) {
+                    if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
+                        db_dati_player db = new db_dati_player(context);
+                        db.ScriveBrano(s);
+                        db.ScriveUltimoBranoAscoltato(s);
 
-                    VariabiliStatichePlayer.getInstance().setUltimoBrano(s);
+                        VariabiliStatichePlayer.getInstance().setUltimoBrano(s);
+                    }
+
+                    UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+                } else {
+                    VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(s);
                 }
-
-                UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
             }
         }
     }

@@ -12,6 +12,7 @@ import com.looigi.wallpaperchanger2.classiWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -64,14 +65,14 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     }
                 } catch (FileNotFoundException e) {
                     if (immagine == null) {
-                        UtilityWallpaper.getInstance().ApreToast(context, "File non esistente per il download");
+                        UtilitiesGlobali.getInstance().ApreToast(context, "File non esistente per il download");
 
                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     }
                     Errore = true;
                 } catch (IOException e) {
                     if (immagine == null) {
-                        UtilityWallpaper.getInstance().ApreToast(context, "Errore nel salvataggio su download Immagine");
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel salvataggio su download Immagine");
 
                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     }
@@ -90,7 +91,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             }
         } catch (Exception e) {
             if (immagine == null) {
-                UtilityWallpaper.getInstance().ApreToast(context, "Errore sul download Immagine");
+                UtilitiesGlobali.getInstance().ApreToast(context, "Errore sul download Immagine");
 
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
             }

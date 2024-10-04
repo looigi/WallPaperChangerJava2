@@ -47,7 +47,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
                 datella1 = null;
 
-                // UtilityWallpaper.getInstance().ApreToast(context, String.valueOf(diff));
+                // UtilitiesGlobali.getInstance().ApreToast(context, String.valueOf(diff));
 
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 2. Diff: " + diff);
 

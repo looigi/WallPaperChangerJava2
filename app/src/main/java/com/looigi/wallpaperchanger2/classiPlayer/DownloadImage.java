@@ -51,7 +51,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             mIcon11 = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
             // e.printStackTrace();
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
             // Utility.getInstance().ImpostaSfondoLogo();
             Errore = true;
         }
@@ -66,9 +66,9 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"URL per salvataggio immagine: " + this.Immagine);
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Creo cartelle per salvataggio immagine: " + this.CartellaImmagine);
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Path salvataggio immagine: " + this.PathImmagine);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"URL per salvataggio immagine: " + this.Immagine);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Creo cartelle per salvataggio immagine: " + this.CartellaImmagine);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Path salvataggio immagine: " + this.PathImmagine);
             Files.getInstance().CreaCartelle(this.CartellaImmagine); // .getCartellaImmagine());
             this.PathImmagine = this.PathImmagine.replace("\\", "/");
             VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
@@ -84,28 +84,30 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                 outStream.flush();
                 outStream.close();
 
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Immagine Scaricata: " + this.PathImmagine);
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Immagine Scaricata: " + this.PathImmagine);
             } catch (FileNotFoundException e) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
 
                 VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                bmImage.setImageBitmap(null);
+                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
             } catch (IOException e) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore nel salvataggio su download Immagine: " + e.getMessage());
 
                 VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                bmImage.setImageBitmap(null);
+                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
             }
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine. Imposto logo");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine. Imposto logo");
 
             VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-            bmImage.setImageBitmap(null);
+
+            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
         }
 
-        UtilityPlayer.getInstance().AggiornaInformazioni(VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano());
-        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+        UtilityPlayer.getInstance().AggiornaInformazioni(false);
 
         UtilityPlayer.getInstance().Attesa(false);
+
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
     }
 }

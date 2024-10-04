@@ -11,6 +11,8 @@ import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class VariabiliStatichePlayer {
     private static VariabiliStatichePlayer instance = null;
 
@@ -33,6 +35,8 @@ public class VariabiliStatichePlayer {
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2.player";
     public static int NOTIFICATION_CHANNEL_ID = 4;
     public static int channelIdIntentOverlay = 152;
+    public static int SecondiCambioImmagine = 10;
+    public static int SecondiBranoPregresso= 15;
     private boolean staSuonando = false;
     public static String UrlWS = "http://looigi.no-ip.biz:1081";
     private StrutturaUtenti Utente;
@@ -45,7 +49,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgPlayStop;
     private ImmagineZoomabile imgBrano;
     private TextView txtTitolo;
-    private ImageView imgCaricamento;
+    private GifImageView imgCaricamento;
     private TextView txtOperazione;
     private String pathUltimaImmagine;
     private TextView txtInizio;
@@ -54,10 +58,16 @@ public class VariabiliStatichePlayer {
     private int DurataBranoInSecondi;
     private int SecondiPassati;
     private boolean FermaTimer = false;
-    public static int SecondiCambioImmagine = 15;
     public boolean mascheraNascosta = false;
     private String inizioMinuti;
     private String fineMinuti;
+    private TextView txtInformazioniPlayer;
+    private int StavaSuonando = -1;
+    private boolean staCaricandoBranoPregresso = false;
+    private StrutturaBrano StrutturaBranoPregressoCaricata;
+    private TextView txtBranoPregresso;
+    private boolean haCaricatoBranoPregresso = false;
+    private ImageView imgCambiaPregresso;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -89,6 +99,62 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ImageView getImgCambiaPregresso() {
+        return imgCambiaPregresso;
+    }
+
+    public void setImgCambiaPregresso(ImageView imgCambiaPregresso) {
+        this.imgCambiaPregresso = imgCambiaPregresso;
+    }
+
+    public boolean isHaCaricatoBranoPregresso() {
+        return haCaricatoBranoPregresso;
+    }
+
+    public void setHaCaricatoBranoPregresso(boolean haCaricatoBranoPregresso) {
+        this.haCaricatoBranoPregresso = haCaricatoBranoPregresso;
+    }
+
+    public TextView getTxtBranoPregresso() {
+        return txtBranoPregresso;
+    }
+
+    public void setTxtBranoPregresso(TextView txtBranoPregresso) {
+        this.txtBranoPregresso = txtBranoPregresso;
+    }
+
+    public boolean isStaCaricandoBranoPregresso() {
+        return staCaricandoBranoPregresso;
+    }
+
+    public void setStaCaricandoBranoPregresso(boolean staCaricandoBranoPregresso) {
+        this.staCaricandoBranoPregresso = staCaricandoBranoPregresso;
+    }
+
+    public StrutturaBrano getStrutturaBranoPregressoCaricata() {
+        return StrutturaBranoPregressoCaricata;
+    }
+
+    public void setStrutturaBranoPregressoCaricata(StrutturaBrano strutturaBranoPregressoCaricata) {
+        StrutturaBranoPregressoCaricata = strutturaBranoPregressoCaricata;
+    }
+
+    public int getStavaSuonando() {
+        return StavaSuonando;
+    }
+
+    public void setStavaSuonando(int stavaSuonando) {
+        StavaSuonando = stavaSuonando;
+    }
+
+    public TextView getTxtInformazioniPlayer() {
+        return txtInformazioniPlayer;
+    }
+
+    public void setTxtInformazioniPlayer(TextView txtInformazioniPlayer) {
+        this.txtInformazioniPlayer = txtInformazioniPlayer;
     }
 
     public String getInizioMinuti() {
@@ -179,11 +245,11 @@ public class VariabiliStatichePlayer {
         this.txtOperazione = txtOperazione;
     }
 
-    public ImageView getImgCaricamento() {
+    public GifImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(ImageView imgCaricamento) {
+    public void setImgCaricamento(GifImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 

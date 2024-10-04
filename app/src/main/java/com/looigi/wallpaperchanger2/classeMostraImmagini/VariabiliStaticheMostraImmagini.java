@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeMostraImmagini;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class VariabiliStaticheMostraImmagini {
     }
 
     private Activity act;
+    private Context ctx;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;
     private int idCategoria;
@@ -34,6 +36,14 @@ public class VariabiliStaticheMostraImmagini {
     private Spinner spnCategorie;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
+
+    public Context getCtx() {
+        return ctx;
+    }
+
+    public void setCtx(Context ctx) {
+        this.ctx = ctx;
+    }
 
     public void AggiungeCaricata() {
         this.immaginiCaricate.add(ultimaImmagineCaricata);

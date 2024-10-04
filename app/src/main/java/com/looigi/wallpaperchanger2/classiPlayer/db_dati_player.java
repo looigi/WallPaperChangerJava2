@@ -57,6 +57,12 @@ public class db_dati_player {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "UltimoBrano"
+                        + " (idBrano VARCHAR);";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "listaBrani"
                         + " (idBrano VARCHAR, quantiBrani VARCHAR, Artista VARCHAR, Album VARCHAR,"
                         + " Brano VARCHAR, Anno VARCHAR, Traccia VARCHAR, Estensione VARCHAR,"
                         + " Data VARCHAR, Dimensione VARCHAR, Ascoltata VARCHAR, Bellezza VARCHAR,"
@@ -67,8 +73,8 @@ public class db_dati_player {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
-                        + "ImmaginiUltimoBrano"
-                        + " (Album VARCHAR,"
+                        + "ImmaginiBrano"
+                        + " (idBrano VARCHAR, Album VARCHAR,"
                         + " NomeImmagine VARCHAR,"
                         + " UrlImmagine VARCHAR,"
                         + " PathImmagine VARCHAR,"
@@ -83,13 +89,13 @@ public class db_dati_player {
         }
     }
 
-    public StrutturaBrano CaricaUltimoBrano() {
-        // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
+    public StrutturaBrano CaricaBrano(String idBrano) {
+        // UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM UltimoBrano", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani Where idBrano=" + idBrano, null);
                 if (c.getCount() > 0) {
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per ultimo brano");
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per ultimo brano");
                     c.moveToFirst();
 
                     try {
@@ -114,55 +120,51 @@ public class db_dati_player {
                         sb.setTags(c.getString(17));
                         sb.setTipoBrano(Integer.parseInt(c.getString(18)));
 
-                        sb.setImmagini(caricaImmaginiUltimoBrano());
+                        sb.setImmagini(CaricaImmaginiBrano(sb.getIdBrano().toString()));
 
                         return sb;
                     } catch (Exception e) {
-                        PulisceDatiUB();
+                        PulisceDatiSB();
                         CreazioneTabelle();
-                        CaricaUltimoBrano();
-
-                        return null; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
+                        return CaricaBrano(idBrano);
                     }
                 } else {
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per ultimo brano. Imposto default");
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per ultimo brano. Imposto default");
 
                     return null;
                 }
             } catch (Exception e) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db ultimo brano: " +
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db ultimo brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
-                PulisceDatiUB();
+                PulisceDatiSB();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                CaricaUltimoBrano();
-
-                return null;
+                return CaricaBrano(idBrano);
             }
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             return null;
         }
     }
 
-    private List<StrutturaImmagini> caricaImmaginiUltimoBrano() {
+    private List<StrutturaImmagini> CaricaImmaginiBrano(String idBrano) {
         List<StrutturaImmagini> lista = new ArrayList<>();
 
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM ImmaginiUltimoBrano", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM ImmaginiBrano Where idBrano=" + idBrano, null);
                 if (c.getCount() > 0) {
                     c.moveToFirst();
 
                     try {
                         do {
                             StrutturaImmagini i = new StrutturaImmagini();
-                            i.setAlbum(c.getString(0));
-                            i.setNomeImmagine(c.getString(1));
-                            i.setUrlImmagine(c.getString(2));
-                            i.setPathImmagine(c.getString(3));
-                            i.setCartellaImmagine(c.getString(4));
+                            i.setAlbum(c.getString(1));
+                            i.setNomeImmagine(c.getString(2));
+                            i.setUrlImmagine(c.getString(3));
+                            i.setPathImmagine(c.getString(4));
+                            i.setCartellaImmagine(c.getString(5));
 
                             lista.add(i);
                         } while (c.moveToNext());
@@ -178,13 +180,102 @@ public class db_dati_player {
         return lista;
     }
 
-    public Boolean ScriveUltimoBrano(StrutturaBrano sb) {
+    public String CaricaUltimoBranoAscoltato() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Ultimobrano", null);
+                if (c.getCount() > 0) {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per ultimo brano");
+                    c.moveToFirst();
+
+                    try {
+                        return c.getString(0);
+                    } catch (Exception e) {
+                        PulisceDatiUB();
+                        CreazioneTabelle();
+                        return CaricaUltimoBranoAscoltato();
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per ultimo brano. Imposto default");
+
+                    return "";
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db ultimo brano: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                PulisceDatiUB();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return CaricaUltimoBranoAscoltato();
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return "";
+        }
+    }
+
+    public int QuantiBraniInArchivio() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT Count(*) FROM listaBrani", null);
+                if (c.getCount() > 0) {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per conteggio brani");
+                    c.moveToFirst();
+
+                    try {
+                        return c.getInt(0);
+                    } catch (Exception e) {
+                        return -1;
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per conteggio brani");
+
+                    return -1;
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db conteggio brani: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -1;
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return -1;
+        }
+    }
+
+    public Boolean ScriveUltimoBranoAscoltato(StrutturaBrano sb) {
         if (myDB != null) {
             try {
                 myDB.execSQL("Delete From UltimoBrano");
 
                 String sql = "INSERT INTO"
                         + " UltimoBrano"
+                        + " VALUES ("
+                        + "'" + sb.getIdBrano() + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
+                PulisceDatiUB();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return ScriveBrano(sb);
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public Boolean ScriveBrano(StrutturaBrano sb) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO"
+                        + " listaBrani"
                         + " VALUES ("
                         + "'" + sb.getIdBrano() + "', "
                         + "'" + sb.getQuantiBrani() + "', "
@@ -208,27 +299,27 @@ public class db_dati_player {
                         + ") ";
                 myDB.execSQL(sql);
 
-                ScriveImmaginiUltimoBrano(sb);
+                ScriveImmaginiBrano(sb);
             } catch (SQLException e) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
-                PulisceDatiUB();
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
+                PulisceDatiSB();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                ScriveUltimoBrano(sb);
-
-                return false;
+                return ScriveBrano(sb);
             }
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
 
         return true;
     }
 
-    private void ScriveImmaginiUltimoBrano(StrutturaBrano sb) {
+    private void ScriveImmaginiBrano(StrutturaBrano sb) {
         if (myDB != null) {
             try {
-                myDB.execSQL("Delete From ImmaginiUltimoBrano");
+                // myDB.execSQL("Delete From ImmaginiUltimoBrano");
+
+                String idBrano = sb.getIdBrano().toString();
 
                 List<StrutturaImmagini> lista = sb.getImmagini();
                 List<StrutturaImmagini> nuovaLista = new ArrayList<>();
@@ -238,8 +329,9 @@ public class db_dati_player {
                         nuovaLista.add(i);
 
                         String sql = "INSERT INTO"
-                                + " ImmaginiUltimoBrano"
+                                + " ImmaginiBrano"
                                 + " VALUES ("
+                                + "'" + idBrano + "', "
                                 + "'" + i.getAlbum().replace("'", "''") + "', "
                                 + "'" + i.getNomeImmagine().replace("'", "''") + "', "
                                 + "'" + i.getUrlImmagine().replace("'", "''") + "', "
@@ -252,14 +344,14 @@ public class db_dati_player {
 
                 sb.setImmagini(nuovaLista);
             } catch (SQLException e) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
-                PulisceDatiUBI();
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
+                PulisceDatiSBI();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                ScriveImmaginiUltimoBrano(sb);
+                ScriveImmaginiBrano(sb);
             }
         } else {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 
@@ -270,24 +362,35 @@ public class db_dati_player {
         }
     }
 
-    public void PulisceDatiUB() {
+    public void PulisceDatiSB() {
         if (myDB != null) {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db Ultimo brano");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db brani");
             try {
-                myDB.execSQL("Drop Table UltimoBrano");
+                myDB.execSQL("Drop Table listaBrani");
             } catch (Exception ignored) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db ultimo brano: " + ignored.getMessage());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db brani: " + ignored.getMessage());
             }
         }
     }
 
-    public void PulisceDatiUBI() {
+    public void PulisceDatiSBI() {
         if (myDB != null) {
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db Immagini Ultimo brano");
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db immagini brano");
             try {
-                myDB.execSQL("Drop Table ImmaginiUltimoBrano");
+                myDB.execSQL("Drop Table ImmaginiBrano");
             } catch (Exception ignored) {
-                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db Immagini ultimo brano: " + ignored.getMessage());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db immagini brano: " + ignored.getMessage());
+            }
+        }
+    }
+
+    public void PulisceDatiUB() {
+        if (myDB != null) {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db Ultimo brano");
+            try {
+                myDB.execSQL("Drop Table UltimoBrano");
+            } catch (Exception ignored) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db ultimo brano: " + ignored.getMessage());
             }
         }
     }

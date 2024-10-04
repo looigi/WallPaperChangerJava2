@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -112,7 +113,7 @@ public class RichiestaPath extends Activity {
             UtilityDetector.getInstance().ScriveLog(this, NomeMaschera,"Sicurezza sulla cartella: " +
                     _uri + " -> " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
 
-            UtilityWallpaper.getInstance().ApreToast(this,"Sicurezza sulla cartella: " +
+            UtilitiesGlobali.getInstance().ApreToast(this,"Sicurezza sulla cartella: " +
                     _uri + " -> " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
         }
 

@@ -1,11 +1,13 @@
 package com.looigi.wallpaperchanger2.classiPlayer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
@@ -15,6 +17,7 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class MainPlayer extends Activity {
@@ -38,6 +41,18 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setTxtInizio(findViewById(R.id.txtInizio));
         VariabiliStatichePlayer.getInstance().setTxtFine(findViewById(R.id.txtFine));
         VariabiliStatichePlayer.getInstance().setSeekBarBrano(findViewById(R.id.seekBarBrano));
+        VariabiliStatichePlayer.getInstance().setTxtInformazioniPlayer(findViewById(R.id.txtInformazioniPlayer));
+        VariabiliStatichePlayer.getInstance().setTxtBranoPregresso(findViewById(R.id.txtBranoPregresso));
+        VariabiliStatichePlayer.getInstance().setImgCambiaPregresso(findViewById(R.id.imgCambiaPregresso));
+
+        UtilityPlayer.getInstance().Attesa(false);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+        if (VariabiliStatichePlayer.getInstance().getStrutturaBranoPregressoCaricata() != null) {
+            UtilityPlayer.getInstance().ScriveBranoPregresso();
+        } else {
+            VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
+            VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
+        }
 
         if (!VariabiliStatichePlayer.getInstance().isGiaPartito()) {
             VariabiliStatichePlayer.getInstance().setGiaPartito(true);
@@ -47,9 +62,7 @@ public class MainPlayer extends Activity {
             VariabiliStatichePlayer.getInstance().getTxtTitolo().setText("");
             VariabiliStatichePlayer.getInstance().getTxtInizio().setText("");
             VariabiliStatichePlayer.getInstance().getTxtFine().setText("");
-
-            UtilityPlayer.getInstance().Attesa(false);
-            UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+            VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer().setText("");
 
             StrutturaUtenti su = new StrutturaUtenti();
             su.setId(1);
@@ -59,15 +72,18 @@ public class MainPlayer extends Activity {
             VariabiliStatichePlayer.getInstance().setUtente(su);
 
             db_dati_player db = new db_dati_player(this);
-            StrutturaBrano sb = db.CaricaUltimoBrano();
+            String idBrano = db.CaricaUltimoBranoAscoltato();
+            StrutturaBrano sb = null;
+            if (!idBrano.isEmpty()) {
+                sb = db.CaricaBrano(idBrano);
+            }
             if (sb != null) {
                 // Brano già scaricato
                 VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
                 UtilityPlayer.getInstance().CaricaBranoNelLettore(this);
             } else {
-                ChiamateWsPlayer ws = new ChiamateWsPlayer(this);
-                ws.RitornaBranoDaID("1");
+                UtilityPlayer.getInstance().BranoAvanti(this, "", false);
             }
 
             // this.moveTaskToBack(true);
@@ -95,17 +111,29 @@ public class MainPlayer extends Activity {
             public void onClick(View v) {
                 UtilityPlayer.getInstance().StoppaTimer();
 
-                ChiamateWsPlayer ws = new ChiamateWsPlayer(VariabiliStatichePlayer.getInstance().getAct());
-                ws.RitornaBranoDaID("");
+                UtilityPlayer.getInstance().BranoAvanti(
+                        VariabiliStatichePlayer.getInstance().getContext(), "",
+                        false);
             }
         });
+
+        VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityPlayer.getInstance().RicaricaPregresso();
+            }
+        });
+
         VariabiliStatichePlayer.getInstance().getImgIndietro().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             }
         });
+
         VariabiliStatichePlayer.getInstance().getImgPlayStop().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityPlayer.getInstance().PressionePlay(VariabiliStatichePlayer.getInstance().getContext());
+                boolean acceso = VariabiliStatichePlayer.getInstance().isStaSuonando();
+                acceso = !acceso;
+                Context context = UtilitiesGlobali.getInstance().tornaContextValido();
+                UtilityPlayer.getInstance().PressionePlay(context, acceso);
             }
         });
 

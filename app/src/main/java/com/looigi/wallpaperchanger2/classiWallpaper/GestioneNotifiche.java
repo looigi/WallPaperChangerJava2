@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiGps.Mappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotifiche {
@@ -340,7 +341,7 @@ public class GestioneNotifiche {
                             }
                             GestioneNotifiche.getInstance().AggiornaNotifica();
                         } else {
-                            UtilityWallpaper.getInstance().ApreToast(this, "GPS Non attivo");
+                            UtilitiesGlobali.getInstance().ApreToast(this, "GPS Non attivo");
                         }
                         break;
                 }

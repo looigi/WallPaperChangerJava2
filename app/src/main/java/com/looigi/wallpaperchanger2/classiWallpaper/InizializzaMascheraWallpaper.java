@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWS;
 
@@ -65,7 +66,7 @@ public class InizializzaMascheraWallpaper {
 
         if (!VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
-            UtilityWallpaper.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
+            UtilitiesGlobali.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
         }
 
         ImpostaOggetti(context, view);
@@ -225,7 +226,7 @@ public class InizializzaMascheraWallpaper {
 
                                         UtilityDetector.getInstance().ContaFiles(context);
 
-                                        UtilityWallpaper.getInstance().ApreToast(context, "Detector Partito");
+                                        UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
                                     }
                                 }
                             };
@@ -381,7 +382,7 @@ public class InizializzaMascheraWallpaper {
 
                                     GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
 
-                                    UtilityWallpaper.getInstance().ApreToast(context, "Player Partito");
+                                    UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
                                 }
                             }
                         }, 500);
@@ -458,7 +459,7 @@ public class InizializzaMascheraWallpaper {
                         context.startActivity(Intent.createChooser(i,"Share file di log"));
                     }
                 } catch (IOException e) {
-                    UtilityWallpaper.getInstance().ApreToast(context, "Errore nell'invio dei files di log");
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Errore nell'invio dei files di log");
                 } */
             }
         });
