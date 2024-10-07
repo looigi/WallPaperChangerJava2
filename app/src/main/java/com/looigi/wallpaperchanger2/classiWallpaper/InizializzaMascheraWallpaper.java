@@ -1,16 +1,14 @@
 package com.looigi.wallpaperchanger2.classiWallpaper;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Vibrator;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,26 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
-import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
-import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWS;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class InizializzaMascheraWallpaper {
     private static final String NomeMaschera = "INITMASCHERA";
@@ -163,7 +146,7 @@ public class InizializzaMascheraWallpaper {
                 } else {
                     VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(null);
 
-                    ChiamateWS c = new ChiamateWS(context);
+                    ChiamateWsWP c = new ChiamateWsWP(context);
                     c.TornaImmagini();
                 }
             }
@@ -187,6 +170,9 @@ public class InizializzaMascheraWallpaper {
                             public void run() {
                                 Intent iP = new Intent(context, MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "WALLPAPER");
+                                iP.putExtras(b);
                                 context.startActivity(iP);
                             }
                         }, 500);

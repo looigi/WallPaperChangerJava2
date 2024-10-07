@@ -365,6 +365,7 @@ public class UtilityWallpaper {
         String path3 = context.getFilesDir() + "/DB";
         String path4 = context.getFilesDir() + "/Log/GPS";
         String path5 = context.getFilesDir() + "/Log/Player";
+        String path6 = context.getFilesDir() + "/Log/Immagini";
 
         String pathDest = context.getFilesDir() + "/Appoggio";
         String destFile = pathDest + "/logs.zip";
@@ -375,8 +376,8 @@ public class UtilityWallpaper {
 
         int quanti = 0;
 
-        String[] App = { "WallPaper", "Detector", "DB", "GPS", "Player" };
-        String[] paths = { path1, path2, path3, path4, path5 };
+        String[] App = { "WallPaper", "Detector", "DB", "GPS", "Player", "Immagini" };
+        String[] paths = { path1, path2, path3, path4, path5, path6 };
         try {
             quanti += zip(App , paths, destFile);
         } catch (IOException e) {

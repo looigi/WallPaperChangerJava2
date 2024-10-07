@@ -21,9 +21,9 @@ import android.view.Display;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.GestioneImmagini;
+import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWS;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,7 +97,7 @@ public class ChangeWallpaper {
 			if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
 				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
 
-				ChiamateWS c = new ChiamateWS(context);
+				ChiamateWsWP c = new ChiamateWsWP(context);
 				c.TornaProssimaImmagine();
 			} else {
 				setWallpaperLocale(context, src);

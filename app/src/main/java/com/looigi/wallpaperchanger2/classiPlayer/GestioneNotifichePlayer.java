@@ -73,12 +73,14 @@ public class GestioneNotifichePlayer {
             contentView.setImageViewBitmap(R.id.imgPlayStopBarra, bmpStart);
 
             String pathImmagine = VariabiliStatichePlayer.getInstance().getPathUltimaImmagine();
-            if (!pathImmagine.isEmpty()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(pathImmagine);
-                contentView.setImageViewBitmap(R.id.imgCopertina, bitmap);
-            } else {
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-                contentView.setImageViewBitmap(R.id.imgCopertina, bitmap);
+            if (VariabiliStatichePlayer.getInstance().getPathUltimaImmagine() != null) {
+                if (!pathImmagine.isEmpty()) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(pathImmagine);
+                    contentView.setImageViewBitmap(R.id.imgCopertina, bitmap);
+                } else {
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                    contentView.setImageViewBitmap(R.id.imgCopertina, bitmap);
+                }
             }
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStatichePlayer.NOTIFICATION_CHANNEL_STRING);

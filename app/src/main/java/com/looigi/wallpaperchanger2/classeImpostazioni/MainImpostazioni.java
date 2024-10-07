@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.Impostazioni;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
@@ -31,6 +32,9 @@ import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiStandard.db_debug;
@@ -52,6 +56,9 @@ public class MainImpostazioni extends Activity {
     private int qualeSchermata = 0;
     private boolean segue = true;
     private Long controlloLongPress = null;
+    private LinearLayout layAprePlayer;
+    private LinearLayout layChiudePlayer;
+    private LinearLayout laySettingsImpo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,29 @@ public class MainImpostazioni extends Activity {
 
         context = this;
         act = this;
+
+        Bundle b = getIntent().getExtras();
+        String value = "";
+        if (b != null) {
+            value = b.getString("qualeSettaggio");
+        }
+        switch (value) {
+            case "WALLPAPER":
+                qualeSchermata = 0;
+                break;
+            case "DETECTOR":
+                qualeSchermata = 1;
+                break;
+            case "PLAYER":
+                qualeSchermata = 2;
+                break;
+            case "MAPPA":
+                qualeSchermata = 3;
+                break;
+            default:
+                qualeSchermata = 0;
+                break;
+        }
 
         Button btnWallpaper = act.findViewById(R.id.btnSettingsWallpaper);
         Button btnPlayer = act.findViewById(R.id.btnSettingsPlayer);
@@ -625,8 +655,65 @@ public class MainImpostazioni extends Activity {
         });
     }
 
-    private void ImpostaSchermataPlayer(Activity act) {
+    private void impostaTastiPlayer() {
+        if (VariabiliStaticheStart.getInstance().isPlayerAperto()) {
+            layAprePlayer.setVisibility(LinearLayout.GONE);
+            layChiudePlayer.setVisibility(LinearLayout.VISIBLE);
+            laySettingsImpo.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layAprePlayer.setVisibility(LinearLayout.VISIBLE);
+            layChiudePlayer.setVisibility(LinearLayout.GONE);
+            laySettingsImpo.setVisibility(LinearLayout.GONE);
+        }
+    }
 
+    private void ImpostaSchermataPlayer(Activity act) {
+        layAprePlayer = act.findViewById(R.id.layAprePlayer);
+        layChiudePlayer = act.findViewById(R.id.layChiudePlayer);
+        laySettingsImpo = act.findViewById(R.id.laySettingsPlayer);
+
+        Button btnAprePlayer = (Button) act.findViewById(R.id.btnAprePlayer);
+        btnAprePlayer.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheStart.getInstance().setPlayerAperto(true);
+                impostaTastiPlayer();
+
+                Intent iP = new Intent(context, MainPlayer.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iP);
+
+                Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
+                if (notificaPlayer != null) {
+                    // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
+
+                    GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
+                }
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                    }
+                }, 500);
+            }
+        });
+
+        Button btnChiudePlayer = (Button) act.findViewById(R.id.btnChiudePlayer);
+        btnChiudePlayer.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheStart.getInstance().setPlayerAperto(false);
+                impostaTastiPlayer();
+
+                GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+
+                UtilityPlayer.getInstance().PressionePlay(context, false);
+                UtilityPlayer.getInstance().ChiudeActivity(true);
+            }
+        });
+
+        impostaTastiPlayer();
     }
 
     private void ImpostaSchermataDebug(Activity act) {

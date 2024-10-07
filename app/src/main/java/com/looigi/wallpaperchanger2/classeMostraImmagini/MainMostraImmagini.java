@@ -3,7 +3,6 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -11,26 +10,27 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWs;
+import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MostraImmaginiLibrary extends Activity {
+public class MainMostraImmagini extends Activity {
     private Context context;
     private Activity act;
 
-    public MostraImmaginiLibrary() {
+    public MainMostraImmagini() {
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mostra_immagini);
+        setContentView(R.layout.activity_mostra_immagini);
 
         context = this;
         act = this;
@@ -43,7 +43,9 @@ public class MostraImmaginiLibrary extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(1);
         VariabiliStaticheMostraImmagini.getInstance().setRandom("S");
 
-        ChiamateWs ws = new ChiamateWs(context);
+        VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoMI));
+
+        ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie();
 
         VariabiliStaticheMostraImmagini.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
@@ -52,9 +54,9 @@ public class MostraImmaginiLibrary extends Activity {
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
         // ImageView imgAvanti = findViewById(R.id.imgAvantiLibrary);
 
-        VariabiliStaticheMostraImmagini.getInstance().getImg().setOnTouchListener(new OnSwipeTouchListener(MostraImmaginiLibrary.this) {
+        VariabiliStaticheMostraImmagini.getInstance().getImg().setOnTouchListener(new OnSwipeTouchListener(MainMostraImmagini.this) {
             public void onSwipeTop() {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Top");
+                // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Top");
             }
             public void onSwipeRight() {
                 // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Right");
@@ -65,7 +67,7 @@ public class MostraImmaginiLibrary extends Activity {
                 UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
             }
             public void onSwipeBottom() {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Bottom");
+                // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Bottom");
             }
         });
 
@@ -149,13 +151,20 @@ public class MostraImmaginiLibrary extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        act.finish();
+    }
+
+    /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         act.finish();
 
         super.onKeyDown(keyCode, event);
 
         /* Utility.getInstance().ScriveLog(this, NomeMaschera,
-                "Tasto premuto: " + Integer.toString(keyCode)); */
+                "Tasto premuto: " + Integer.toString(keyCode)); * /
 
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
@@ -165,5 +174,5 @@ public class MostraImmaginiLibrary extends Activity {
         }
 
         return false;
-    }
+    } */
 }

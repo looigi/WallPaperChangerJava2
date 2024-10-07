@@ -62,6 +62,9 @@ public class MainPlayer extends Activity {
                             public void run() {
                                 Intent iP = new Intent(VariabiliStatichePlayer.getInstance().getContext(), MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "PLAYER");
+                                iP.putExtras(b);
                                 VariabiliStatichePlayer.getInstance().getContext().startActivity(iP);
                             }
                         }, 500);

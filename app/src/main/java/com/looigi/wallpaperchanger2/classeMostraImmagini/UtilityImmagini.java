@@ -1,9 +1,18 @@
 package com.looigi.wallpaperchanger2.classeMostraImmagini;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWs;
+import androidx.appcompat.app.AlertDialog;
+
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtilityImmagini {
+    private static final String NomeMaschera = "UTILITYIMMAGINI";
     private static UtilityImmagini instance = null;
+    private int quantiCaricamenti = 0;
 
     private UtilityImmagini() {
     }
@@ -25,8 +36,73 @@ public class UtilityImmagini {
         return instance;
     }
 
+    public void Attesa(boolean Acceso) {
+        if (Acceso) {
+            if (quantiCaricamenti == 0) {
+                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+            }
+            quantiCaricamenti++;
+        } else {
+            quantiCaricamenti--;
+            if (quantiCaricamenti < 1) {
+                quantiCaricamenti = 0;
+                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+            }
+        }
+    }
+
+    public void VisualizzaErrore(Context context, String Errore) {
+        // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        ScriveLog(context, NomeMaschera, "Visualizzo messaggio di errore. Schermo acceso: " +
+                VariabiliStaticheWallpaper.getInstance().isScreenOn());
+        if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
+            act.runOnUiThread(new Runnable() {
+                public void run() {
+                    AlertDialog alertDialog = new AlertDialog.Builder(act).create();
+                    alertDialog.setTitle("Messaggio " + VariabiliStaticheWallpaper.channelName);
+                    alertDialog.setMessage(Errore);
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // alertDialog.show();
+                }
+            });
+        } else {
+            ScriveLog(context, NomeMaschera,"Schermo spento. Non visualizzo messaggio di errore: " + Errore);
+        }
+    }
+
+    public void ScriveLog(Context context, String Maschera, String Log) {
+        /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {
+            generaPath(context);
+        } */
+
+        if (context != null) {
+            if (VariabiliStaticheStart.getInstance().getLog() == null) {
+                LogInterno l = new LogInterno(context, true);
+                VariabiliStaticheStart.getInstance().setLog(l);
+            }
+
+            /* if (!UtilityDetector.getInstance().EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheStart.getInstance().getLog().PulisceFileDiLog();
+            }
+
+            if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("IMMAGINI", Maschera,  Log);
+            // }
+        } else {
+
+        }
+    }
+
     public void RitornaProssimaImmagine(Context context) {
-        ChiamateWs ws = new ChiamateWs(context);
+        ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaProssimaImmagine(
                 VariabiliStaticheMostraImmagini.getInstance().getIdCategoria(),
                 VariabiliStaticheMostraImmagini.getInstance().getFiltro(),

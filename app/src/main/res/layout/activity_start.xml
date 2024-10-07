@@ -70,7 +70,7 @@
                 android:layout_weight="6"
                 android:layout_marginTop="10dp"
                 android:textSize="16dp"
-                android:text="Player"
+                android:text="LooWebPlayer"
                 android:layout_height="wrap_content">
 
             </TextView>
@@ -175,7 +175,7 @@
                 android:layout_weight="6"
                 android:layout_marginTop="10dp"
                 android:textSize="16dp"
-                android:text="Player"
+                android:text="Impostazioni"
                 android:layout_height="wrap_content">
 
             </TextView>

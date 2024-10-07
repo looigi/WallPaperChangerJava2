@@ -83,6 +83,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                             public void run() {
                                 Intent iP = new Intent(context, MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "MAPPA");
+                                iP.putExtras(b);
                                 context.startActivity(iP);
                             }
                         }, 500);

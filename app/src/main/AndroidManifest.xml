@@ -81,7 +81,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".classeMostraImmagini.MostraImmaginiLibrary"
+            android:name=".classeMostraImmagini.MainMostraImmagini"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

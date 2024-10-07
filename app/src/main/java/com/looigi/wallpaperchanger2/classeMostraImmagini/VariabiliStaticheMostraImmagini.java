@@ -5,10 +5,13 @@ import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheMostraImmagini {
     private static VariabiliStaticheMostraImmagini instance = null;
@@ -26,6 +29,8 @@ public class VariabiliStaticheMostraImmagini {
 
     private Activity act;
     private Context ctx;
+    public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
+    public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;
     private int idCategoria;
@@ -36,6 +41,24 @@ public class VariabiliStaticheMostraImmagini {
     private Spinner spnCategorie;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
+    private GifImageView imgCaricamento;
+    private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
+
+    public List<StrutturaImmagine> getListaImmagini() {
+        return listaImmagini;
+    }
+
+    public void setListaImmagini(List<StrutturaImmagine> listaImmagini) {
+        this.listaImmagini = listaImmagini;
+    }
+
+    public GifImageView getImgCaricamento() {
+        return imgCaricamento;
+    }
+
+    public void setImgCaricamento(GifImageView imgCaricamento) {
+        this.imgCaricamento = imgCaricamento;
+    }
 
     public Context getCtx() {
         return ctx;

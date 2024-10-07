@@ -84,6 +84,7 @@ public class MainStart  extends Activity {
         }
 
         LinearLayout laySplash = findViewById(R.id.laySplash);
+        laySplash.setVisibility(LinearLayout.VISIBLE);
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
@@ -196,6 +197,8 @@ public class MainStart  extends Activity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        VariabiliStaticheStart.getInstance().setPlayerAperto(true);
+
                         Intent iP = new Intent(context, MainPlayer.class);
                         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(iP);
@@ -233,9 +236,12 @@ public class MainStart  extends Activity {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent iP = new Intent(VariabiliStatichePlayer.getInstance().getContext(), MainImpostazioni.class);
+                                Intent iP = new Intent(context, MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStatichePlayer.getInstance().getContext().startActivity(iP);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "WALLPAPER");
+                                iP.putExtras(b);
+                                context.startActivity(iP);
                             }
                         }, 500);
                     }

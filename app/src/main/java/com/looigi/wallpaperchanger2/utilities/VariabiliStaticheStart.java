@@ -36,6 +36,15 @@ public class VariabiliStaticheStart {
     private int velocitaDownload;
     private int livello;
     private boolean logAttivo = true;
+    private boolean playerAperto = false;
+
+    public boolean isPlayerAperto() {
+        return playerAperto;
+    }
+
+    public void setPlayerAperto(boolean playerAperto) {
+        this.playerAperto = playerAperto;
+    }
 
     public boolean isLogAttivo() {
         return logAttivo;

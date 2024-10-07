@@ -1,15 +1,17 @@
-package com.looigi.wallpaperchanger2.classiWallpaper.WebServices;
+package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -19,18 +21,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class ChiamateWs implements TaskDelegate {
+public class ChiamateWSMI implements TaskDelegate {
+    private static final String NomeMaschera = "CHIAMATEWS";
     private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = "http://looigi.no-ip.biz:1071/";
+    private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS + "/";
+    private String ws = "newLooVF.asmx/";
+    private String NS="http://newLooVF.org/";
+    private String SA="http://newLooVF.org/";
     private String TipoOperazione = "";
     private Context context;
-    private final String ws = "newLooVF.asmx/";
-    private final String NS="http://newLooVF.org/";
-    private final String SA="http://newLooVF.org/";
+    private boolean ApriDialog = false;
 
-    public ChiamateWs(Context context) {
+    public ChiamateWSMI(Context context) {
         this.context = context;
     }
 
@@ -54,11 +57,8 @@ public class ChiamateWs implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                10000,
-                true,
-                true,
-                false,
-                -1);
+                35000,
+                ApriDialog);
     }
 
     public void RitornaCategorie() {
@@ -72,35 +72,38 @@ public class ChiamateWs implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                10000,
-                true,
-                true,
-                false,
-                -1);
+                35000,
+                ApriDialog);
     }
 
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
-                       boolean ApriDialog, boolean ChiamataDiretta,
-                       boolean ControllaTempoEsecuzione, int Stelle) {
+                       boolean ApriDialog) {
 
-        UtilityWallpaper.getInstance().Attesa(true);
+        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
+        UtilityImmagini.getInstance().Attesa(true);
+
+        Long tsLong = System.currentTimeMillis()/1000;
+        String TimeStampAttuale = tsLong.toString();
 
         bckAsyncTask = new LetturaWSAsincrona(
+                context,
                 NS,
                 Timeout,
                 SOAP_ACTION,
                 tOperazione,
                 ApriDialog,
                 Urletto,
-                "0", // TimeStampAttuale,
+                TimeStampAttuale,
                 this);
         bckAsyncTask.execute(Urletto);
     }
 
     @Override
     public void TaskCompletionResult(String result) {
-        UtilityWallpaper.getInstance().Attesa(false);
+        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+
+        UtilityImmagini.getInstance().Attesa(false);
 
         switch (TipoOperazione) {
             case "ProssimaImmagine":
@@ -110,6 +113,10 @@ public class ChiamateWs implements TaskDelegate {
                 fRitornaCategorie(result);
                 break;
         }
+    }
+
+    public void StoppaEsecuzione() {
+        bckAsyncTask.cancel(true);
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
@@ -145,7 +152,10 @@ public class ChiamateWs implements TaskDelegate {
 
                 VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(listaCategorie);
 
-                int idCategoriaImpostata = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getIdCategoria();
+                int idCategoriaImpostata = -1;
+                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
+                    idCategoriaImpostata = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getIdCategoria();
+                }
                 String CategoriaAttuale = "";
 
                 String[] l = new String[listaCategorie.size()];
@@ -208,9 +218,5 @@ public class ChiamateWs implements TaskDelegate {
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
-    }
-
-    public void StoppaEsecuzione() {
-        bckAsyncTask.cancel(true);
     }
 }

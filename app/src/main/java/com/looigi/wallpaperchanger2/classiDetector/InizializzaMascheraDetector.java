@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -31,7 +32,7 @@ import com.looigi.wallpaperchanger2.classiDetector.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.modificaImmagine;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.MostraImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.io.File;
@@ -153,6 +154,9 @@ public class InizializzaMascheraDetector {
                             public void run() {
                                 Intent iP = new Intent(context, MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "DETECTOR");
+                                iP.putExtras(b);
                                 context.startActivity(iP);
                             }
                         }, 500);
@@ -196,7 +200,7 @@ public class InizializzaMascheraDetector {
                             public void run() {
                                 Intent myIntent = new Intent(
                                         VariabiliStaticheDetector.getInstance().getContext(),
-                                        MostraImmaginiLibrary.class);
+                                        MainMostraImmagini.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
                             }

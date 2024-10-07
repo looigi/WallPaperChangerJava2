@@ -91,25 +91,27 @@ public class UtilityPlayer {
     }
 
     public void PressionePlay(Context context, boolean Acceso) {
-        Bitmap bmpStart;
+        if (VariabiliStatichePlayer.getInstance().getMp() != null) {
+            Bitmap bmpStart;
 
-        if (Acceso) {
-            VariabiliStatichePlayer.getInstance().getMp().start();
-            bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.pausa);
-            FaiRipartireTimer();
-            VariabiliStatichePlayer.getInstance().setStaSuonando(true);
-        } else {
-            VariabiliStatichePlayer.getInstance().getMp().pause();
-            bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.play);
-            FermaTimer();
-            VariabiliStatichePlayer.getInstance().setStaSuonando(false);
-        }
+            if (Acceso) {
+                VariabiliStatichePlayer.getInstance().getMp().start();
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.pausa);
+                FaiRipartireTimer();
+                VariabiliStatichePlayer.getInstance().setStaSuonando(true);
+            } else {
+                VariabiliStatichePlayer.getInstance().getMp().pause();
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.play);
+                FermaTimer();
+                VariabiliStatichePlayer.getInstance().setStaSuonando(false);
+            }
 
-        VariabiliStatichePlayer.getInstance().getImgPlayStop().setImageBitmap(bmpStart);
-        if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
-            AggiornaInformazioni(false);
-        } else {
-            AggiornaInformazioni(true);
+            VariabiliStatichePlayer.getInstance().getImgPlayStop().setImageBitmap(bmpStart);
+            if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
+                AggiornaInformazioni(false);
+            } else {
+                AggiornaInformazioni(true);
+            }
         }
     }
 
@@ -519,6 +521,15 @@ public class UtilityPlayer {
             VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 
             BranoAvanti(context, "", true);
+        }
+    }
+
+    public void ChiudeActivity(boolean Finish) {
+        if (VariabiliStatichePlayer.getInstance().getAct() != null) {
+            // mainActivity.moveTaskToBack(true);
+            // if (Finish) {
+            VariabiliStatichePlayer.getInstance().getAct().finish();
+            // }
         }
     }
 }
