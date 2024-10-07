@@ -13,15 +13,14 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -123,8 +122,9 @@ public class UtilityWallpaper {
     public void ChiudeApplicazione(Context context) {
         VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
 
-        GestioneNotifiche.getInstance().RimuoviNotifica();
-
+        GestioneNotificheWP.getInstance().RimuoviNotifica();
+        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+        GestioneNotificheTasti.getInstance().RimuoviNotifica();
         GestioneNotificheDetector.getInstance().RimuoviNotifica();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");

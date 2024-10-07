@@ -25,7 +25,7 @@ import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-public class GestioneNotifiche {
+public class GestioneNotificheWP {
     private static final String nomeMaschera = "GESTIONENOTIFICHEWALLPAPER";
     private NotificationManager manager;
     private NotificationCompat.Builder notificationBuilder;
@@ -33,13 +33,13 @@ public class GestioneNotifiche {
     private Context context;
     // private Notification notifica;
 
-    private static final GestioneNotifiche ourInstance = new GestioneNotifiche();
+    private static final GestioneNotificheWP ourInstance = new GestioneNotificheWP();
 
-    public static GestioneNotifiche getInstance() {
+    public static GestioneNotificheWP getInstance() {
         return ourInstance;
     }
 
-    private GestioneNotifiche() {
+    private GestioneNotificheWP() {
     }
 
     public Notification StartNotifica(Context ctxP) {
@@ -82,21 +82,6 @@ public class GestioneNotifiche {
                     contentView.setTextViewText(R.id.txtTitoloNotifica, "");
                     contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
                 }
-            }
-
-            if (VariabiliStaticheStart.getInstance().isDetector()) {
-                contentView.setViewVisibility(R.id.imgMap, LinearLayout.VISIBLE);
-                contentView.setViewVisibility(R.id.imgSwitchGPS, LinearLayout.VISIBLE);
-                Bitmap bmGps;
-                if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
-                } else {
-                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
-                }
-                contentView.setImageViewBitmap(R.id.imgSwitchGPS, bmGps);
-            } else {
-                contentView.setViewVisibility(R.id.imgMap, LinearLayout.GONE);
-                contentView.setViewVisibility(R.id.imgSwitchGPS, LinearLayout.GONE);
             }
 
             int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
@@ -180,7 +165,7 @@ public class GestioneNotifiche {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgProssima, pAvanti);
 
-            Intent mappa = new Intent(ctx, NotificationActionService.class);
+            /* Intent mappa = new Intent(ctx, NotificationActionService.class);
             mappa.putExtra("DO", "mappa");
             PendingIntent pMappa = PendingIntent.getService(ctx, 72, mappa,
                     PendingIntent.FLAG_IMMUTABLE);
@@ -190,7 +175,7 @@ public class GestioneNotifiche {
             switchgps.putExtra("DO", "gps");
             PendingIntent pSwitchGPS = PendingIntent.getService(ctx, 73, switchgps,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPS, pSwitchGPS);
+            view.setOnClickPendingIntent(R.id.imgSwitchGPS, pSwitchGPS); */
 
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
@@ -308,7 +293,7 @@ public class GestioneNotifiche {
                             public void run() {
                                 UtilityWallpaper.getInstance().CambiaImmagine(context);
 
-                                GestioneNotifiche.getInstance().AggiornaNotifica();
+                                GestioneNotificheWP.getInstance().AggiornaNotifica();
                             }
                         }, 100);
                         break;
@@ -338,7 +323,7 @@ public class GestioneNotifiche {
                             } else {
                                 VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICHE");
                             }
-                            GestioneNotifiche.getInstance().AggiornaNotifica();
+                            GestioneNotificheWP.getInstance().AggiornaNotifica();
                         } else {
                             UtilitiesGlobali.getInstance().ApreToast(this, "GPS Non attivo");
                         }

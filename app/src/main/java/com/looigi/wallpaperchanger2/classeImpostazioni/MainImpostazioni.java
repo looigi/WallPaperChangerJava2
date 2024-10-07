@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.Impostazioni;
-import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
@@ -35,14 +34,14 @@ import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiStandard.db_debug;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.ScannaDiscoPerImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -280,6 +279,8 @@ public class MainImpostazioni extends Activity {
 
                                         UtilityDetector.getInstance().ContaFiles(context);
 
+                                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
                                         UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
                                     }
                                 }
@@ -326,7 +327,7 @@ public class MainImpostazioni extends Activity {
                 if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                     immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
                 }
-                GestioneNotifiche.getInstance().AggiornaNotifica();
+                GestioneNotificheWP.getInstance().AggiornaNotifica();
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
@@ -352,7 +353,7 @@ public class MainImpostazioni extends Activity {
                 if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                     immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
                 }
-                GestioneNotifiche.getInstance().AggiornaNotifica();
+                GestioneNotificheWP.getInstance().AggiornaNotifica();
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();

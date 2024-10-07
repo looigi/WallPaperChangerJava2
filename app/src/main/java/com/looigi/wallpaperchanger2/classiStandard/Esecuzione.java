@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -118,7 +118,7 @@ public class Esecuzione {
         }
 
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
-            GestioneNotifiche.getInstance().AggiornaNotifica();
+            GestioneNotificheWP.getInstance().AggiornaNotifica();
         }
 
         if (VariabiliStaticheWallpaper.getInstance().getSecondiPassati() >= quantiGiri) {

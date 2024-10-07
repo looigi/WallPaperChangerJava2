@@ -10,8 +10,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -23,8 +21,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -55,6 +53,7 @@ public class GestioneGPS {
 
         // statoAttivo = false;
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
+        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
         /* if (handlerThreadAccensione != null) {
             handlerThreadAccensione.stop();
@@ -86,7 +85,7 @@ public class GestioneGPS {
             VariabiliStaticheGPS.getInstance().getBitmapHome().setImageBitmap(bmGps);
         }
 
-        GestioneNotifiche.getInstance().AggiornaNotifica();
+        GestioneNotificheWP.getInstance().AggiornaNotifica();
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove);
     }
@@ -325,6 +324,7 @@ public class GestioneGPS {
         }
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita GPS");
+        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
         VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

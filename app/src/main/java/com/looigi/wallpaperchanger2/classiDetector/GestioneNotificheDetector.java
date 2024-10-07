@@ -217,7 +217,7 @@ public class GestioneNotificheDetector {
                                     context = VariabiliStaticheDetector.getInstance().getContext();
                                 }
                                 if (context != null) {
-                                    VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+                                    // VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 
                                     VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
                                     VariabiliStaticheStart.getInstance().ChiudeActivity(true);

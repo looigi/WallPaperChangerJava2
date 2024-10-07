@@ -37,6 +37,15 @@ public class VariabiliStaticheStart {
     private int livello;
     private boolean logAttivo = true;
     private boolean playerAperto = false;
+    private boolean VisibileImmagini = false;
+
+    public boolean isVisibileImmagini() {
+        return VisibileImmagini;
+    }
+
+    public void setVisibileImmagini(boolean visibileImmagini) {
+        VisibileImmagini = visibileImmagini;
+    }
 
     public boolean isPlayerAperto() {
         return playerAperto;

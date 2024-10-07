@@ -38,7 +38,7 @@ public class MainActivityDetector extends Activity {
                 // System.exit(-1);
             }
 
-            VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
+            // VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
 
             VariabiliStaticheDetector.getInstance().setMascheraPartita(true);
         }

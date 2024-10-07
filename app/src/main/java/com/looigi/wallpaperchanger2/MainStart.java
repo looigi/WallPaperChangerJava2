@@ -125,8 +125,6 @@ public class MainStart  extends Activity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
-
                         Intent i = new Intent(context, MainActivityDetector.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
@@ -139,15 +137,14 @@ public class MainStart  extends Activity {
                                         context,
                                         VariabiliStaticheDetector.getInstance().getMainActivity());
                             }
-                        }, 500);
+                        }, 100);
                     }
                 }, 500);
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        act.finish();
-                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        // act.finish();
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
                     }
                 }, 100);
@@ -277,6 +274,13 @@ public class MainStart  extends Activity {
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
                     }
                 }, 100);
+            }
+        });
+
+        ImageView imgU = findViewById(R.id.imgStartUScita);
+        imgU.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityWallpaper.getInstance().ChiudeApplicazione(context);
             }
         });
 

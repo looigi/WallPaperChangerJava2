@@ -33,7 +33,9 @@ import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.modificaImmagine;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.IOException;
@@ -198,6 +200,9 @@ public class InizializzaMascheraDetector {
                         handlerTimer = new Handler(Looper.getMainLooper());
                         rTimer = new Runnable() {
                             public void run() {
+                                VariabiliStaticheStart.getInstance().setVisibileImmagini(true);
+                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
                                 Intent myIntent = new Intent(
                                         VariabiliStaticheDetector.getInstance().getContext(),
                                         MainMostraImmagini.class);
@@ -725,11 +730,11 @@ public class InizializzaMascheraDetector {
 
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Maschera inizializzata");
 
-        if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
-            VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+        /* if (!VariabiliStaticheDetector.getInstance().isGiaPartito()) {
+            VariabiliStaticheDetector.getInstance().setGiaPartito(true);
 
             VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
-        }
+        } */
     }
 
     private String getCPUDetails(){

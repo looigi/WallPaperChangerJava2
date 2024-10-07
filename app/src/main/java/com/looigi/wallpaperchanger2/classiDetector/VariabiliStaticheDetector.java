@@ -77,11 +77,12 @@ public class VariabiliStaticheDetector {
     private MediaPlayer mp;
     private boolean letteImpostazioni = false;
     private boolean MascheraPartita = false;
-    private boolean chiudiActivity = false;
+    // private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
     private boolean GpsPreciso = false;
     private int GpsMeters = 5;
     private int GpsMs = 1000;
+    private boolean giaPartito = false;
     // private Button btnLayModificaImmagine;
 
     public void ChiudeActivity(boolean Finish) {
@@ -91,6 +92,14 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isGiaPartito() {
+        return giaPartito;
+    }
+
+    public void setGiaPartito(boolean giaPartito) {
+        this.giaPartito = giaPartito;
     }
 
     public boolean isFotoSuPower() {
@@ -148,13 +157,13 @@ public class VariabiliStaticheDetector {
         CameraImpostata = cameraImpostata;
     }
 
-    public boolean isChiudiActivity() {
+    /* public boolean isChiudiActivity() {
         return chiudiActivity;
     }
 
     public void setChiudiActivity(boolean chiudiActivity) {
         this.chiudiActivity = chiudiActivity;
-    }
+    } */
 
     public boolean isMascheraPartita() {
         return MascheraPartita;

@@ -23,7 +23,6 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.GestioneImmagini;
 import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 
 import java.io.File;
 import java.io.IOException;
@@ -363,7 +362,7 @@ public class ChangeWallpaper {
 		// Notifica.getInstance().setTitolo(si.getImmagine());
 		// Notifica.getInstance().setImmagine(si.getPathImmagine());
 		// GestioneNotifiche.getInstance().RimuoviNotifica();
-		GestioneNotifiche.getInstance().AggiornaNotifica();
+		GestioneNotificheWP.getInstance().AggiornaNotifica();
 
 		Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
 		VariabiliStaticheWallpaper.getInstance().getImgImpostata().setImageBitmap(ultima);

@@ -9,7 +9,7 @@ import android.os.Looper;
 import com.looigi.wallpaperchanger2.classiDetector.AndroidCameraApi;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -87,7 +87,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
         VariabiliStaticheWallpaper.getInstance().setScreenOn(!screenOff);
 
-        GestioneNotifiche.getInstance().AggiornaNotifica();
+        GestioneNotificheWP.getInstance().AggiornaNotifica();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo: " + screenOff);
     }

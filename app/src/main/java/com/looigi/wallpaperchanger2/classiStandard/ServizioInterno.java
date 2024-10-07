@@ -16,7 +16,7 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
+import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
@@ -26,6 +26,8 @@ import com.looigi.wallpaperchanger2.classiDetector.db_dati_detector;
 import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.utilities.MyPhoneStateListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -100,12 +102,18 @@ public class ServizioInterno extends Service {
         wl.acquire();
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        Notification notifica = GestioneNotifiche.getInstance().StartNotifica(this);
+        Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
+        if (notificaTasti != null) {
+            // startForeground(VariabiliStaticheTasti.NOTIFICATION_CHANNEL_ID, notificaTasti);
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        }
+
+        Notification notifica = GestioneNotificheWP.getInstance().StartNotifica(this);
         // VariabiliStatiche.getInstance().setNotifica(GestioneNotifiche.getInstance().StartNotifica(this));
         if (notifica != null) {
             startForeground(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notifica);
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
-            GestioneNotifiche.getInstance().AggiornaNotifica();
+            GestioneNotificheWP.getInstance().AggiornaNotifica();
 
             Esecuzione e = new Esecuzione(context);
             e.startServizio1();
@@ -177,7 +185,7 @@ public class ServizioInterno extends Service {
     }
 
     private void ChiudeTutto() {
-        GestioneNotifiche.getInstance().RimuoviNotifica();
+        GestioneNotificheWP.getInstance().RimuoviNotifica();
 
         if (mScreenReceiver != null) {
             unregisterReceiver(mScreenReceiver);

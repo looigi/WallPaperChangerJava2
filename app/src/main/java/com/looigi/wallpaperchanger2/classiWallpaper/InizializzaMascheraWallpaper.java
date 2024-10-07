@@ -118,7 +118,7 @@ public class InizializzaMascheraWallpaper {
         if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
             immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
         }
-        GestioneNotifiche.getInstance().AggiornaNotifica();
+        GestioneNotificheWP.getInstance().AggiornaNotifica();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Prossimo cambio: " +
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
@@ -152,12 +152,12 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
+        /* ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
         imgUscita.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityWallpaper.getInstance().ChiudeApplicazione(context);
             }
-        });
+        }); */
 
         ImageView imgSettings = (ImageView) view.findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {

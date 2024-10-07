@@ -148,9 +148,11 @@
 
         <service android:name=".classiPlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 
-        <service android:name=".classiWallpaper.GestioneNotifiche$NotificationActionService" />
+        <service android:name=".classiWallpaper.GestioneNotificheWP$NotificationActionService" />
 
         <service android:name=".classiDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
+
+        <service android:name=".notificaTasti.GestioneNotificheTasti$NotificationActionServiceTasti" />
 
         <receiver android:name=".AutoStart.yourActivityRunOnStartup"
             android:enabled="true"
