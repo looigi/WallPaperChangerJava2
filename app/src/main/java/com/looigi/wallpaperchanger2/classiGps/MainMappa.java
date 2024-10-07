@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classiGps;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,7 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
+public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
     private Handler handlerTimer;
     private Runnable rTimer;
@@ -50,7 +52,7 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
     private int vecchiDati = -1;
     private Date dataAttuale;
     private boolean primoPassaggio = true;
-    private boolean segue = true;
+    public static boolean segue = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +72,23 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
         dataOdierna = sdfD.format(calendar.getTime());
 
-        SwitchCompat sSegue = act.findViewById(R.id.sSegue);
-        sSegue.setChecked(true);
-        segue = true;
-        sSegue.setOnClickListener(new View.OnClickListener() {
-            @Override
+        ImageView imgSettings = (ImageView) act.findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                segue = sSegue.isChecked();
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(context, MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
             }
         });
 
@@ -241,6 +253,24 @@ public class Mappa extends AppCompatActivity  implements OnMapReadyCallback {
     }
 
     private void DisegnaPath(GoogleMap googleMap) {
+        if (VariabiliStaticheGPS.getInstance().getMappa() == null) {
+            Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
+            if (ctx != null) {
+                GestioneMappa m = new GestioneMappa(ctx);
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+                String dataOdierna = sdfD.format(calendar.getTime());
+                m.LeggePunti(dataOdierna);
+                VariabiliStaticheGPS.getInstance().setMappa(m);
+
+                if (VariabiliStaticheGPS.getInstance().getMappa() == null) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
         List<StrutturaGps> listaGPS = VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti();
 
         txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());

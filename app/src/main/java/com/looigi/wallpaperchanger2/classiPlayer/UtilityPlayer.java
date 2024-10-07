@@ -125,13 +125,13 @@ public class UtilityPlayer {
         if (sb != null) {
             String path = sb.getPathBrano();
 
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Eseguo il brano: " + path);
+            ScriveLog(context, NomeMaschera, "Eseguo il brano: " + path);
 
             if (VariabiliStatichePlayer.getInstance().getMp() == null) {
                 VariabiliStatichePlayer.getInstance().setMp(new MediaPlayer());
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Instanzio MP");
+                ScriveLog(context, NomeMaschera, "Instanzio MP");
             } else {
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Rilascio il vecchio brano");
+                ScriveLog(context, NomeMaschera, "Rilascio il vecchio brano");
                 try {
                     if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
                         VariabiliStatichePlayer.getInstance().getMp().stop();
@@ -151,11 +151,11 @@ public class UtilityPlayer {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
-                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Terminato il brano. Skippo da Main");
+                        ScriveLog(context, NomeMaschera, "Terminato il brano. Skippo da Main");
 
-                        UtilityPlayer.getInstance().StoppaTimer();
+                        StoppaTimer();
 
-                        UtilityPlayer.getInstance().BranoAvanti(context, "", false);
+                        BranoAvanti(context, "", false);
                     }
                 }
             });
@@ -177,9 +177,9 @@ public class UtilityPlayer {
 
                 FaiPartireTimer(context);
 
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Brano caricato");
+                ScriveLog(context, NomeMaschera, "Brano caricato");
             } catch (IOException e) {
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore caricamento brano: " +
+                ScriveLog(context, NomeMaschera, "Errore caricamento brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
 
@@ -214,7 +214,7 @@ public class UtilityPlayer {
 
     private boolean DurataBrano(Context context, StrutturaBrano sb) {
         if (sb == null) {
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Acquisizione durata brano: NON Possibile. Struttura non presente");
+            ScriveLog(context, NomeMaschera, "Acquisizione durata brano: NON Possibile. Struttura non presente");
 
             VariabiliStatichePlayer.getInstance().getSeekBarBrano().setMax(0);
             VariabiliStatichePlayer.getInstance().getSeekBarBrano().setProgress(0);
@@ -231,7 +231,7 @@ public class UtilityPlayer {
 
             return false;
         } else {
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Acquisizione durata brano: " + sb.getPathBrano());
+            ScriveLog(context, NomeMaschera, "Acquisizione durata brano: " + sb.getPathBrano());
 
             try {
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
@@ -249,14 +249,14 @@ public class UtilityPlayer {
                 VariabiliStatichePlayer.getInstance().setInizioMinuti("00:00");
                 VariabiliStatichePlayer.getInstance().setFineMinuti(ConverteSecondiInTempo(VariabiliStatichePlayer.getInstance().getDurataBranoInSecondi()));
 
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Acquisita durata brano: " + Long.toString(duration));
+                ScriveLog(context, NomeMaschera, "Acquisita durata brano: " + Long.toString(duration));
                 VariabiliStatichePlayer.getInstance().getSeekBarBrano().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStatichePlayer.getInstance().getTxtInizio().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStatichePlayer.getInstance().getTxtFine().setVisibility(LinearLayout.VISIBLE);
 
                 return true;
             } catch (Exception e) {
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore acquisizione durata brano: " + e.getMessage());
+                ScriveLog(context, NomeMaschera, "Errore acquisizione durata brano: " + e.getMessage());
 
                 VariabiliStatichePlayer.getInstance().getSeekBarBrano().setMax(0);
                 VariabiliStatichePlayer.getInstance().getSeekBarBrano().setProgress(0);
@@ -320,7 +320,7 @@ public class UtilityPlayer {
 
             StoppaTimer();
 
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano pregresso: " + sb.getBrano());
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano pregresso: " + sb.getBrano());
 
             db_dati_player db = new db_dati_player(context);
             db.ScriveBrano(sb);
@@ -330,12 +330,12 @@ public class UtilityPlayer {
             VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
             VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
 
-            UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+            CaricaBranoNelLettore(context);
 
             return;
         }
 
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano");
+        ScriveLog(context, NomeMaschera, "Avanzo Brano");
 
         boolean cercaBranoInLocale = false;
         boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
@@ -343,10 +343,10 @@ public class UtilityPlayer {
         int level = VariabiliStaticheStart.getInstance().getLivello();
         String tipo = VariabiliStaticheStart.getInstance().getTipoConnessione();
 
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. WiFi: " + wifi);
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello Segnale: " + livello);
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. WiFi: " + wifi);
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello Segnale: " + livello);
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
 
         if (!wifi) {
             if (level <= 2) {
@@ -355,39 +355,39 @@ public class UtilityPlayer {
         }
 
         if (!cercaBranoInLocale) {
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
 
             ChiamateWsPlayer ws = new ChiamateWsPlayer(context);
             ws.RitornaBranoDaID(Brano, Pregresso);
         } else {
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
 
             db_dati_player db = new db_dati_player(context);
             int max = db.QuantiBraniInArchivio();
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Quanti brani: " + max);
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Quanti brani: " + max);
             
             boolean ancora = true;
             int c = 0;
             boolean ok = false;
             
             while (ancora) {
-                int numeroBrano = UtilityPlayer.getInstance().GeneraNumeroRandom(max);
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + numeroBrano);
+                int numeroBrano = GeneraNumeroRandom(max);
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + numeroBrano);
                 StrutturaBrano sb = db.CaricaBrano(Integer.toString(numeroBrano));
                 if (sb != null) {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano());
+                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano());
 
                     ancora = false;
                     VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
-                    UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+                    CaricaBranoNelLettore(context);
 
                     VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
                     VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
 
                     ok = true;
                 } else {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido. Riprovo: " + c);
+                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido. Riprovo: " + c);
 
                     c++;
                     if (c > 5) {
@@ -454,7 +454,7 @@ public class UtilityPlayer {
     }
 
     public void FaiPartireTimer(Context context) {
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Fatto Partire Timer");
+        ScriveLog(context, NomeMaschera, "Fatto Partire Timer");
 
         SecondiPassati = 0;
         VariabiliStatichePlayer.getInstance().setSecondiPassati(SecondiPassati);
@@ -489,7 +489,7 @@ public class UtilityPlayer {
                         !VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso()) {
                         VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 
-                        UtilityPlayer.getInstance().BranoAvanti(context, "", true);
+                        BranoAvanti(context, "", true);
                     }
                 }
 
@@ -518,7 +518,7 @@ public class UtilityPlayer {
             VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
             VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 
-            UtilityPlayer.getInstance().BranoAvanti(context, "", true);
+            BranoAvanti(context, "", true);
         }
     }
 }

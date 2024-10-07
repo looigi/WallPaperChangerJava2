@@ -23,9 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import androidx.appcompat.widget.SwitchCompat;
-
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classiDetector.Receivers.Video;
 import com.looigi.wallpaperchanger2.classiDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classiDetector.TestMemory.TestMemory;
@@ -89,20 +88,6 @@ public class InizializzaMascheraDetector {
         });
 
         SwitchCompat sLog = (SwitchCompat) act.findViewById(R.id.sLog2); */
-        SwitchCompat sFotoPower = (SwitchCompat) act.findViewById(R.id.sPower);
-        sFotoPower.setChecked(VariabiliStaticheDetector.getInstance().isFotoSuPower());
-        sFotoPower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VariabiliStaticheDetector.getInstance().setFotoSuPower(sFotoPower.isChecked());
-
-                db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
-            }
-        });
-        SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
-        SwitchCompat sToast = (SwitchCompat) act.findViewById(R.id.sToast);
-        SwitchCompat sGpsPreciso = (SwitchCompat) act.findViewById(R.id.sGpsPreciso);
 
         // View fgmMappa = (View) act.findViewById(R.id.map);
 
@@ -146,46 +131,6 @@ public class InizializzaMascheraDetector {
             }
         }); */
 
-        sVibrazione.setChecked(VariabiliStaticheDetector.getInstance().isVibrazione());
-        sVibrazione.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VariabiliStaticheDetector.getInstance().setVibrazione(sVibrazione.isChecked());
-
-                Impostazioni i = new Impostazioni();
-                i.ImpostaVibrazione(context, sVibrazione.isChecked());
-            }
-        });
-
-        sGpsPreciso.setChecked(VariabiliStaticheDetector.getInstance().isGpsPreciso());
-        sGpsPreciso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean gps = VariabiliStaticheDetector.getInstance().isGpsPreciso();
-                gps = !gps;
-                VariabiliStaticheDetector.getInstance().setGpsPreciso(gps);
-
-                db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
-
-                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
-                }
-            }
-        });
-
-        sToast.setChecked(VariabiliStaticheDetector.getInstance().isVisualizzaToast());
-        sToast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VariabiliStaticheDetector.getInstance().setVisualizzaToast(sToast.isChecked());
-
-                Impostazioni i = new Impostazioni();
-                i.ImpostaVisualizzaToast(context, sToast.isChecked());
-            }
-        });
-
         ImageView imgGps = (ImageView) act.findViewById(R.id.imgGPS);
         VariabiliStaticheGPS.getInstance().setBitmapHome(imgGps);
         Bitmap bmGps;
@@ -196,8 +141,28 @@ public class InizializzaMascheraDetector {
         }
         imgGps.setImageBitmap(bmGps);
 
-        ImageView imgItaliano = (ImageView) act.findViewById(R.id.imgItaliano);
 
+        ImageView imgSettings = (ImageView) act.findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(context, MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+
+        ImageView imgItaliano = (ImageView) act.findViewById(R.id.imgItaliano);
         imgItaliano.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -268,44 +233,6 @@ public class InizializzaMascheraDetector {
                 VariabiliStaticheDetector.getInstance().setLingua("INGLESE");
 
                 ImpostaCampiTestoPerLingua(act);
-            }
-        });
-
-        EditText etGpsMs = (EditText) act.findViewById(R.id.edtGpsMs);
-        etGpsMs.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMs()));
-        etGpsMs.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(etGpsMs.getText().toString()));
-
-                        db_dati_detector db = new db_dati_detector(context);
-                        db.ScriveImpostazioni(context);
-
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
-                    }
-                }
-            }
-        });
-
-        EditText etGpsMeters = (EditText) act.findViewById(R.id.edtGpsMeters);
-        etGpsMeters.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMeters()));
-        etGpsMeters.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(etGpsMeters.getText().toString()));
-
-                        db_dati_detector db = new db_dati_detector(context);
-                        db.ScriveImpostazioni(context);
-
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
-                    }
-                }
             }
         });
 
@@ -834,7 +761,7 @@ public class InizializzaMascheraDetector {
     private void SistemaSchermata(Activity act) {
         Button btnHome = act.findViewById(R.id.btnMenuHome);
         Button btnEstensione = act.findViewById(R.id.btnMenuEstensione);
-        Button btnImpostazioni = act.findViewById(R.id.btnMenuImpostazioni);
+        // Button btnImpostazioni = act.findViewById(R.id.btnMenuImpostazioni);
         Button btnVideo = act.findViewById(R.id.btnMenuVideo);
         Button btnTipoFoto = act.findViewById(R.id.btnMenuTipoFoto);
         Button btnTipoScatto = act.findViewById(R.id.btnMenuTipoScatto);
@@ -856,13 +783,13 @@ public class InizializzaMascheraDetector {
             }
         });
 
-        btnImpostazioni.setOnClickListener(new View.OnClickListener() {
+        /* btnImpostazioni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 qualeSchermata = 2;
                 VisualizzaSchermata(act);
             }
-        });
+        }); */
 
         btnVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -905,7 +832,7 @@ public class InizializzaMascheraDetector {
     private void VisualizzaSchermata(Activity act) {
         LinearLayout layHome = act.findViewById(R.id.container_home);
         LinearLayout layEstensione = act.findViewById(R.id.container_tipo_estensione);
-        LinearLayout layImpostazioni = act.findViewById(R.id.container_impostazioni);
+        LinearLayout layImpostazioni = act.findViewById(R.id.lay_impostazioni_detector);
         LinearLayout layVideo = act.findViewById(R.id.container_video);
         LinearLayout layTipoFotocamera = act.findViewById(R.id.container_tipo_fotocamera);
         LinearLayout layTipoScatto = act.findViewById(R.id.container_tipo_scatto);
@@ -913,7 +840,7 @@ public class InizializzaMascheraDetector {
 
         layHome.setVisibility(LinearLayout.GONE);
         layEstensione.setVisibility(LinearLayout.GONE);
-        layImpostazioni.setVisibility(LinearLayout.GONE);
+        // layImpostazioni.setVisibility(LinearLayout.GONE);
         layVideo.setVisibility(LinearLayout.GONE);
         layTipoFotocamera.setVisibility(LinearLayout.GONE);
         layTipoScatto.setVisibility(LinearLayout.GONE);

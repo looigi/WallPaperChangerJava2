@@ -16,19 +16,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classiStandard.db_debug;
 import com.looigi.wallpaperchanger2.classiWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classiStandard.Permessi;
 import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
 import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
-import com.looigi.wallpaperchanger2.classiGps.Mappa;
+import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
@@ -96,6 +98,9 @@ public class MainStart  extends Activity {
     private void impostaSchermata() {
         LinearLayout layStart = findViewById(R.id.layStart);
 
+        db_debug db = new db_debug(context);
+        db.CaricaImpostazioni();
+
         if (VariabiliStaticheStart.getInstance().isDetector()) {
             GestioneMappa m = new GestioneMappa(this);
             Calendar calendar = Calendar.getInstance();
@@ -119,6 +124,8 @@ public class MainStart  extends Activity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+
                         Intent i = new Intent(context, MainActivityDetector.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
@@ -215,6 +222,28 @@ public class MainStart  extends Activity {
             }
         });
 
+        ImageView imgSettings = (ImageView) findViewById(R.id.imgStartSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(VariabiliStatichePlayer.getInstance().getContext(), MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStatichePlayer.getInstance().getContext().startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+
         ImageView imgM = findViewById(R.id.imgStartMappa);
         TextView txtLabelMap = findViewById(R.id.txtStartLabelMap);
         if (VariabiliStaticheStart.getInstance().isDetector()) {
@@ -228,7 +257,7 @@ public class MainStart  extends Activity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent i = new Intent(context, Mappa.class);
+                        Intent i = new Intent(context, MainMappa.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }
@@ -246,19 +275,16 @@ public class MainStart  extends Activity {
         });
 
         if (VariabiliStaticheStart.getInstance().isDetector()) {
-            db_dati_gps db = new db_dati_gps(context);
-            db.CaricaAccensioni(context);
+            db_dati_gps db2 = new db_dati_gps(context);
+            db2.CaricaAccensioni(context);
 
             // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
 
             GestioneGPS g = new GestioneGPS();
             VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
             g.AbilitaTimer(context);
-            g.AbilitaGPS(context);
+            g.AbilitaGPS();
         }
-
-
-
 
         /* Intent iP = new Intent(context, MainPlayer.class);
         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

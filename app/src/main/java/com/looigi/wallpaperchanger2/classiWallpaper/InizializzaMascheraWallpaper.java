@@ -22,6 +22,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
@@ -144,189 +145,6 @@ public class InizializzaMascheraWallpaper {
         txtQuanteRicerca.setText("");
         VariabiliStaticheWallpaper.getInstance().setTxtQuanteRicerca(txtQuanteRicerca);
 
-        TextView txtDetector = view.findViewById(R.id.txtDetector);
-        if (VariabiliStaticheStart.getInstance().isDetector()) {
-            txtDetector.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            txtDetector.setVisibility(LinearLayout.GONE);
-        }
-        Button btnMenoMinuti = (Button) view.findViewById(R.id.btnMenoMinuti);
-        Button btnPiuMinuti = (Button) view.findViewById(R.id.btnPiuMinuti);
-        TextView edtMinuti = (TextView) view.findViewById(R.id.txtMinuti);
-        edtMinuti.setText(Integer.toString(minuti));
-        edtMinuti.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-
-                if (controlloLongPress == null) {
-                    edtMinuti.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-
-                    Handler handlerTimer;
-                    Runnable rTimer;
-
-                    controlloLongPress = System.currentTimeMillis();
-                    UtilityWallpaper.getInstance().Vibra(context, 100);
-
-                    handlerTimer = new Handler(Looper.getMainLooper());
-                    rTimer = new Runnable() {
-                        public void run() {
-                            controlloLongPress = null;
-                        }
-                    };
-                    handlerTimer.postDelayed(rTimer, 2000);
-                } else {
-                    long diff = System.currentTimeMillis() - controlloLongPress;
-
-                    edtMinuti.setTextColor(ContextCompat.getColor(context, R.color.black));
-
-                    if (diff < 1950) {
-                        controlloLongPress = null;
-
-                        boolean isD = VariabiliStaticheStart.getInstance().isDetector();
-                        isD = !isD;
-                        VariabiliStaticheStart.getInstance().setDetector(isD);
-
-                        db_dati_wallpaper db = new db_dati_wallpaper(context);
-                        db.ScriveImpostazioni();
-
-                        // GestioneNotifiche.getInstance().AggiornaNotifica();
-                        if (isD) {
-                            Handler handlerTimer = new Handler(Looper.getMainLooper());
-                            Runnable rTimer = new Runnable() {
-                                public void run() {
-                                    txtDetector.setVisibility(LinearLayout.VISIBLE);
-
-                                    GestioneGPS g = new GestioneGPS();
-                                    VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
-                                    g.AbilitaTimer(context);
-                                    g.AbilitaGPS(context);
-
-                                    GestioneMappa m = new GestioneMappa(context);
-                                    Calendar calendar = Calendar.getInstance();
-                                    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
-                                    String dataOdierna = sdfD.format(calendar.getTime());
-                                    m.LeggePunti(dataOdierna);
-                                    VariabiliStaticheGPS.getInstance().setMappa(m);
-
-                                    /* LayoutInflater inflater = (LayoutInflater.from(context));
-                                    View viewDetector = inflater.inflate(R.layout.barra_notifica_detector, null);
-
-                                    InizializzaMascheraDetector id = new InizializzaMascheraDetector();
-                                    id.inizializzaMaschera(context, view, viewDetector); */
-
-                                    VariabiliStaticheDetector.getInstance().setMascheraPartita(false);
-
-                                    Intent intent = new Intent(context, MainActivityDetector.class);
-                                    context.startActivity(intent);
-
-                                    Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
-                                    if (notificaDetector != null) {
-                                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
-
-                                        UtilityDetector.getInstance().ContaFiles(context);
-
-                                        UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
-                                    }
-                                }
-                            };
-                            handlerTimer.postDelayed(rTimer, 1000);
-                        } else {
-                            // Rimuove Notifica Detector
-                            txtDetector.setVisibility(LinearLayout.GONE);
-
-                            GestioneNotificheDetector.getInstance().RimuoviNotifica();
-
-                            VariabiliStaticheGPS.getInstance().getMappa().ChiudeMaschera();
-                            VariabiliStaticheGPS.getInstance().setMappa(null);
-
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
-                            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
-                        }
-                    }
-                }
-
-                return false;
-            }
-        });
-
-        btnMenoMinuti.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
-                if (minuti > 1) {
-                    minuti--;
-                } else {
-                    minuti = 1;
-                }
-                VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(minuti);
-
-                int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
-                edtMinuti.setText(Integer.toString(minuti));
-                String prossimo = "Prossimo cambio: " +
-                        VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
-                        quantiGiri;
-                VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimo);
-
-                String immagine = "";
-                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
-                    immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
-                }
-                GestioneNotifiche.getInstance().AggiornaNotifica();
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-        btnPiuMinuti.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
-                minuti++;
-                VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(minuti);
-
-                /* VariabiliStaticheServizio.getInstance().setQuantiGiri(
-                        VariabiliStaticheServizio.getInstance().getTempoTimer() /
-                        VariabiliStaticheServizio.getInstance().getSecondiAlCambio()); */
-                edtMinuti.setText(Integer.toString(minuti));
-                int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
-                String prossimo = "Prossimo cambio: " +
-                        VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
-                        quantiGiri;
-                VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimo);
-
-                String immagine = "";
-                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
-                    immagine = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine();
-                }
-                GestioneNotifiche.getInstance().AggiornaNotifica();
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
-        SwitchCompat switchHome = (SwitchCompat) view.findViewById(R.id.switchHome);
-        switchHome.setChecked(VariabiliStaticheWallpaper.getInstance().isHome());
-        switchHome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setHome(isChecked);
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
-        SwitchCompat switchLock = (SwitchCompat) view.findViewById(R.id.switchLock);
-        switchLock.setChecked(VariabiliStaticheWallpaper.getInstance().isLock());
-        switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setLock(isChecked);
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
         VariabiliStaticheWallpaper.getInstance().setLstImmagini(view.findViewById(R.id.lstImmagini));
 
         RelativeLayout laySceltaImm = view.findViewById(R.id.laySceltaImmagine);
@@ -358,35 +176,20 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        ImageView imgPlayer = (ImageView) view.findViewById(R.id.imgPlayerBarra);
-        imgPlayer.setOnClickListener(new View.OnClickListener() {
+        ImageView imgSettings = (ImageView) view.findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
-                        VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
-                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
-                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
-
-
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent iP = new Intent(context, MainPlayer.class);
+                                Intent iP = new Intent(context, MainImpostazioni.class);
                                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(iP);
-
-                                Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
-                                if (notificaPlayer != null) {
-                                    // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
-
-                                    GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
-
-                                    UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
-                                }
                             }
                         }, 500);
-
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 1000);
@@ -410,64 +213,10 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        Button btnPulisceLog = (Button) view.findViewById(R.id.btnPulisceLog);
-        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
-           public void onClick(View v) {
-               UtilityWallpaper.getInstance().EliminaLogs(context);
-           }
-       });
-
-        Button btnInviaLog = (Button) view.findViewById(R.id.btnInviaLog);
-        btnInviaLog.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                UtilityWallpaper.getInstance().CondividiLogs(context);
-                /* String path1 = VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
-                        VariabiliStaticheWallpaper.getInstance().getNomeFileDiLog();
-                String pathLog = UtilityDetector.getInstance().PrendePathLog(context);
-                String nomeFileLog = VariabiliStaticheDetector.channelName + ".txt";
-                String path2 = pathLog + "/" + nomeFileLog;
-                String pathDest = context.getFilesDir() + "/Appoggio";
-                String destFile = pathDest + "/logs.zip";
-                UtilityWallpaper.getInstance().CreaCartelle(pathDest);
-                if (UtilityWallpaper.getInstance().EsisteFile(destFile)) {
-                    UtilityWallpaper.getInstance().EliminaFileUnico(destFile);
-                }
-                if (!UtilityWallpaper.getInstance().EsisteFile(path1)) {
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Invio Log");
-                }
-                if (!UtilityWallpaper.getInstance().EsisteFile(path2)) {
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Invio Log");
-                }
-                String[] Files = { path1, path2 };
-                try {
-                    UtilityWallpaper.getInstance().zip(Files, destFile);
-                    if (UtilityWallpaper.getInstance().EsisteFile(destFile)) {
-                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                        StrictMode.setVmPolicy(builder.build());
-
-                        File f = new File(destFile);
-                        Uri uri = FileProvider.getUriForFile(context,
-                                context.getApplicationContext().getPackageName() + ".provider",
-                                f);
-
-                        Intent i = new Intent(Intent.ACTION_SEND);
-                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
-                        i.putExtra(Intent.EXTRA_SUBJECT,"logs.zip");
-                        i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
-                        i.putExtra(Intent.EXTRA_STREAM,uri);
-                        i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
-                        context.startActivity(Intent.createChooser(i,"Share file di log"));
-                    }
-                } catch (IOException e) {
-                    UtilitiesGlobali.getInstance().ApreToast(context, "Errore nell'invio dei files di log");
-                } */
-            }
-        });
-
         // RelativeLayout layDetector = view.findViewById(R.id.layDetectorMain);
         // layDetector.setVisibility(LinearLayout.GONE);
 
-        ImageView imgImpoWP = view.findViewById(R.id.imgImpoWP);
+        /* ImageView imgImpoWP = view.findViewById(R.id.imgImpoWP);
         RelativeLayout layImpoWP = view.findViewById(R.id.layImpostazioniWP);
         layImpoWP.setVisibility(LinearLayout.GONE);
         imgImpoWP.setOnClickListener(new View.OnClickListener() {
@@ -480,11 +229,8 @@ public class InizializzaMascheraWallpaper {
             public void onClick(View v) {
                 layImpoWP.setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
 
-        TextView txtPath = (TextView) view.findViewById(R.id.txtPath);
-        VariabiliStaticheWallpaper.getInstance().setTxtPath(txtPath);
-        txtPath.setText(VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
         /* txtPath.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -524,142 +270,8 @@ public class InizializzaMascheraWallpaper {
             }
         }); */
 
-        Button btnCambioPath = (Button) view.findViewById(R.id.btnCambiaPath);
-        btnCambioPath.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                /* Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                i.addCategory(Intent.CATEGORY_DEFAULT);
-                view.startActivityForResult(Intent.createChooser(i, "Scelta directory"), 9999); */
-                Intent myIntent = new Intent(
-                        VariabiliStaticheWallpaper.getInstance().getMainActivity(),
-                        RichiestaPathImmaginiLocali.class);
-                VariabiliStaticheWallpaper.getInstance().getMainActivity().startActivity(myIntent);
-            }
-        });
-
-        SwitchCompat swcOffline = (SwitchCompat) view.findViewById(R.id.switchOffline);
-        swcOffline.setChecked(VariabiliStaticheWallpaper.getInstance().isOffline());
-        LinearLayout layOffline = (LinearLayout) view.findViewById(R.id.layOffline);
-        if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-            layOffline.setVisibility(LinearLayout.GONE);
-        } else {
-            layOffline.setVisibility(LinearLayout.VISIBLE);
-        }
-        swcOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setOffline(isChecked);
-
-                if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                    layOffline.setVisibility(LinearLayout.GONE);
-                } else {
-                    layOffline.setVisibility(LinearLayout.VISIBLE);
-                    if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
-                                VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() > 0) {
-                            int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
-                            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
-                        } else {
-                            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
-                            bckLeggeImmaginiLocali.execute();
-                        }
-                    } else {
-                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
-                                "Immagini online: " + VariabiliStaticheWallpaper.getInstance().getImmaginiOnline());
-                    }
-                }
-
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
-        SwitchCompat swcBlur = (SwitchCompat) view.findViewById(R.id.switchBlur);
-        swcBlur.setChecked(VariabiliStaticheWallpaper.getInstance().isBlur());
-        swcBlur.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setBlur(isChecked);
-
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-
-                // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                // ChangeWallpaper c = new ChangeWallpaper(context);
-                // c.setWallpaperLocale(VariabiliStaticheServizio.getInstance().getUltimaImmagine());
-            }
-        });
-
-        SwitchCompat switchScriveTesto = view.findViewById(R.id.switchScriveTesto);
-        switchScriveTesto.setChecked(VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());
-        switchScriveTesto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(isChecked);
-
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-
-                // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                // ChangeWallpaper c = new ChangeWallpaper(context);
-                // c.setWallpaperLocale(VariabiliStaticheServizio.getInstance().getUltimaImmagine());
-            }
-        });
-
         ImageView imgCambiaSubito = (ImageView) view.findViewById(R.id.imgCambiaSubito);
         ImageView imgRefresh = (ImageView) view.findViewById(R.id.imgRefresh);
-        ImageView imgRefreshLocale = (ImageView) view.findViewById(R.id.imgRefreshLocale);
-        imgRefreshLocale.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
-                bckLeggeImmaginiLocali.execute();
-            }
-        });
-
-        SwitchCompat swcEspansa = (SwitchCompat) view.findViewById(R.id.switchEspansa);
-        SwitchCompat swcSoloVolti = view.findViewById(R.id.switchSoloVolto);
-        SwitchCompat swcEffetti = (SwitchCompat) view.findViewById(R.id.switchEffetti);
-        swcEffetti.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
-        if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
-            swcSoloVolti.setChecked(false);
-            swcSoloVolti.setEnabled(false);
-            swcEspansa.setChecked(false);
-            swcEspansa.setEnabled(false);
-        } else {
-            swcSoloVolti.setEnabled(true);
-            swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
-            swcEspansa.setEnabled(true);
-            swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
-            if (swcEspansa.isChecked()) {
-                swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
-            } else {
-                swcSoloVolti.setVisibility(LinearLayout.GONE);
-            }
-        }
-        swcEffetti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setEffetti(isChecked);
-                if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
-                    swcSoloVolti.setChecked(false);
-                    swcSoloVolti.setEnabled(false);
-                    swcEspansa.setChecked(false);
-                    swcEspansa.setEnabled(false);
-                } else {
-                    swcSoloVolti.setEnabled(true);
-                    swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
-                    swcEspansa.setEnabled(true);
-                    swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEffetti());
-                    if (swcEspansa.isChecked()) {
-                        swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
-                    } else {
-                        swcSoloVolti.setVisibility(LinearLayout.GONE);
-                    }
-                }
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
 
         SwitchCompat swcOnOff = (SwitchCompat) view.findViewById(R.id.switchOnOff);
         swcOnOff.setChecked(VariabiliStaticheWallpaper.getInstance().isOnOff());
@@ -755,52 +367,23 @@ public class InizializzaMascheraWallpaper {
             }
         });
 
-        swcSoloVolti.setChecked(VariabiliStaticheWallpaper.getInstance().isSoloVolti());
-        swcSoloVolti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setSoloVolti(isChecked);
-
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
-        swcEspansa.setChecked(VariabiliStaticheWallpaper.getInstance().isEspansa());
-        if (VariabiliStaticheWallpaper.getInstance().isEspansa()) {
-            swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            swcSoloVolti.setVisibility(LinearLayout.GONE);
-        }
-        swcEspansa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setEspansa(isChecked);
-                if (isChecked) {
-                    swcSoloVolti.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    swcSoloVolti.setVisibility(LinearLayout.GONE);
-                }
-                db_dati_wallpaper db = new db_dati_wallpaper(context);
-                db.ScriveImpostazioni();
-            }
-        });
-
         imgCambiaSubito.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityWallpaper.getInstance().Attesa(true);
 
                 // imgCaricamento.setVisibility(LinearLayout.VISIBLE);
-                btnMenoMinuti.setEnabled(false);
-                btnPiuMinuti.setEnabled(false);
+                // btnMenoMinuti.setEnabled(false);
+                // btnPiuMinuti.setEnabled(false);
                 // btnCambioPath.setEnabled(false);
-                swcBlur.setEnabled(false);
-                swcEspansa.setEnabled(false);
-                swcOffline.setEnabled(false);
-                switchScriveTesto.setEnabled(false);
+                // swcBlur.setEnabled(false);
+                // swcEspansa.setEnabled(false);
+                // swcOffline.setEnabled(false);
+                // switchScriveTesto.setEnabled(false);
                 imgCambiaSubito.setVisibility(LinearLayout.GONE);
-                imgRefreshLocale.setVisibility(LinearLayout.GONE);
-                btnCambioPath.setEnabled(false);
-                switchHome.setEnabled(false);
-                switchLock.setEnabled(false);
+                // imgRefreshLocale.setVisibility(LinearLayout.GONE);
+                // btnCambioPath.setEnabled(false);
+                // switchHome.setEnabled(false);
+                // switchLock.setEnabled(false);
 
                 Runnable runTimer;
                 Handler handlerTimer;
@@ -833,19 +416,19 @@ public class InizializzaMascheraWallpaper {
                             // VariabiliGlobali.getInstance().setImmagineDaCambiare(true);
                         } */
 
-                        btnMenoMinuti.setEnabled(true);
-                        btnPiuMinuti.setEnabled(true);
+                        // btnMenoMinuti.setEnabled(true);
+                        // btnPiuMinuti.setEnabled(true);
                         // btnCambioPath.setEnabled(true);
-                        swcBlur.setEnabled(true);
-                        swcEspansa.setEnabled(true);
-                        swcOffline.setEnabled(true);
-                        switchScriveTesto.setEnabled(true);
+                        // swcBlur.setEnabled(true);
+                        // swcEspansa.setEnabled(true);
+                        // swcOffline.setEnabled(true);
+                        // switchScriveTesto.setEnabled(true);
                         imgCambiaSubito.setVisibility(LinearLayout.VISIBLE);
-                        imgRefreshLocale.setVisibility(LinearLayout.VISIBLE);
-                        btnCambioPath.setEnabled(true);
+                        // imgRefreshLocale.setVisibility(LinearLayout.VISIBLE);
+                        // btnCambioPath.setEnabled(true);
                         // imgCaricamento.setVisibility(LinearLayout.GONE);
-                        switchHome.setEnabled(true);
-                        switchLock.setEnabled(true);
+                        // switchHome.setEnabled(true);
+                        // switchLock.setEnabled(true);
 
                         UtilityWallpaper.getInstance().Attesa(false);
                     }

@@ -19,9 +19,8 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiGps.Mappa;
+import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -322,7 +321,7 @@ public class GestioneNotifiche {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent i = new Intent(context, Mappa.class);
+                                Intent i = new Intent(context, MainMappa.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(i);
                             }
@@ -335,9 +334,9 @@ public class GestioneNotifiche {
                             gps = !gps;
                             VariabiliStaticheGPS.getInstance().setGpsAttivo(gps);
                             if (gps) {
-                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(context);
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
                             } else {
-                                VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS();
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICHE");
                             }
                             GestioneNotifiche.getInstance().AggiornaNotifica();
                         } else {
@@ -347,7 +346,7 @@ public class GestioneNotifiche {
                 }
             }
 
-            return START_STICKY;
+            return START_NOT_STICKY;
         }
 
         @Override

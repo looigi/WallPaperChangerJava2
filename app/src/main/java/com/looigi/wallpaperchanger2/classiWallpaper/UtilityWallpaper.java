@@ -361,18 +361,10 @@ public class UtilityWallpaper {
 
     public void CondividiLogs(Context context) {
         String path1 = context.getFilesDir() + "/Log/WallPaper";
-        // File directory = new File(path);
-        // File[] filesW = directory.listFiles();
-
         String path2 = context.getFilesDir() + "/Log/Detector";
-        // directory = new File(path);
-        // File[] filesD = directory.listFiles();
-
-        // int quanti = filesW.length + filesD.length;
-
         String path3 = context.getFilesDir() + "/DB";
-
         String path4 = context.getFilesDir() + "/Log/GPS";
+        String path5 = context.getFilesDir() + "/Log/Player";
 
         String pathDest = context.getFilesDir() + "/Appoggio";
         String destFile = pathDest + "/logs.zip";
@@ -383,8 +375,8 @@ public class UtilityWallpaper {
 
         int quanti = 0;
 
-        String[] App = { "WallPaper", "Detector", "DB", "GPS" };
-        String[] paths = { path1, path2, path3, path4 };
+        String[] App = { "WallPaper", "Detector", "DB", "GPS", "Player" };
+        String[] paths = { path1, path2, path3, path4, path5 };
         try {
             quanti += zip(App , paths, destFile);
         } catch (IOException e) {

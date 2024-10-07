@@ -61,7 +61,7 @@ public class ServizioInterno extends Service {
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Start Command");
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @SuppressLint({"ForegroundServiceType", "WakelockTimeout"})

@@ -23,7 +23,7 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
-    public static int attesaControlloGPS = 10;
+    public static int attesaControlloGPS = 1;
     // private int oraGpsAccensione = 16;
     // private int minutiGpsAccensione = 5;
     // private int oraGpsSpengimento = 7;

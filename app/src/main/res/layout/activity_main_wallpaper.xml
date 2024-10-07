@@ -37,7 +37,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
-                    android:weightSum="3"
+                    android:weightSum="4"
                     android:orientation="horizontal"
                     android:layout_height="450dp">
 
@@ -45,6 +45,16 @@
                         android:layout_width="0dp"
                         android:layout_weight="2"
                         android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                            android:text="Originale"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/Rosso"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
 
                         <ImageView
                             android:id="@+id/imgImpostata"
@@ -57,11 +67,21 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:padding="2dp"
                         android:layout_margin="2dp"
                         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                         android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                            android:text="Visualizzata"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/Rosso"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
 
                         <ImageView
                             android:id="@+id/imgImpostataFinale"
@@ -98,19 +118,20 @@
 
                         <ImageView
                             android:id="@+id/imgRicerca"
+                            android:layout_marginEnd="5dp"
                             android:src="@drawable/icona_cerca"
                             android:layout_width="40dp"
                             android:layout_height="40dp">
 
                         </ImageView>
 
-                        <ImageView
+                        <!-- <ImageView
                             android:layout_marginStart="5dp"
                             android:id="@+id/imgImpoWP"
                             android:src="@drawable/icona_equalizz"
                             android:layout_width="40dp"
                             android:layout_height="40dp">
-                        </ImageView>
+                        </ImageView> -->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -199,7 +220,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="5"
                             android:textColor="@color/colorPrimaryDark"
-                            android:text="LooSpotify"
+                            android:text="Settings"
                             android:layout_height="wrap_content" />
 
                         <LinearLayout
@@ -209,11 +230,11 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/imgPlayerBarra"
+                                android:id="@+id/imgSettings"
                                 android:layout_alignParentStart="true"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/player" />
+                                android:src="@drawable/settings" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -285,12 +306,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </RelativeLayout> -->
+    </RelativeLayout>
 
     <include
         android:visibility="gone"
         layout="@layout/impostazioni_wallpaper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" /> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

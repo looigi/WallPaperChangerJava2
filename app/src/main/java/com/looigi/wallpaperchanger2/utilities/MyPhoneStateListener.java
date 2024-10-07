@@ -9,23 +9,34 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
+import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 
+import java.util.Date;
 import java.util.List;
 
 public class MyPhoneStateListener extends PhoneStateListener {
     private TelephonyManager mTelephonyManager;
     private MyPhoneStateListener mPhoneStatelistener;
+    private long ultimoControllo = -1;
 
     @Override
     public void onSignalStrengthsChanged(SignalStrength signalStrength) {
         super.onSignalStrengthsChanged(signalStrength);
 
+        long ora = new Date().getTime();
+        if (ora - ultimoControllo < 10000) {
+            return;
+        }
+        ultimoControllo = ora;
+
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
         
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
-        
         VariabiliStaticheStart.getInstance().setCeWifi(wifi);
+        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+        }
 
         List<CellSignalStrength> segnali = signalStrength.getCellSignalStrengths();
         int mSignalStrength = segnali.get(0).getDbm();
@@ -41,15 +52,26 @@ public class MyPhoneStateListener extends PhoneStateListener {
         String tipoConnessione = getNetworkClass();
         VariabiliStaticheStart.getInstance().setTipoConnessione(tipoConnessione);
 
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        //should check null because in airplane mode it will be null
-        NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
-        int downSpeed = nc.getLinkDownstreamBandwidthKbps();
-        int upSpeed = nc.getLinkUpstreamBandwidthKbps();
+        int downSpeed = 0;
+        int upSpeed = 0;
 
-        VariabiliStaticheStart.getInstance().setVelocitaDownload(downSpeed);
-        VariabiliStaticheStart.getInstance().setVelocitaUpload(upSpeed);
+        if (context != null) {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm != null) {
+                NetworkInfo netInfo = cm.getActiveNetworkInfo();
+                //should check null because in airplane mode it will be null
+                if (netInfo != null) {
+                    NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+                    if (nc != null) {
+                        downSpeed = nc.getLinkDownstreamBandwidthKbps();
+                        upSpeed = nc.getLinkUpstreamBandwidthKbps();
+
+                        VariabiliStaticheStart.getInstance().setVelocitaDownload(downSpeed);
+                        VariabiliStaticheStart.getInstance().setVelocitaUpload(upSpeed);
+                    }
+                }
+            }
+        }
 
         if (VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer() != null) {
             String testo = (wifi ? "WiFi" : "Mobile");

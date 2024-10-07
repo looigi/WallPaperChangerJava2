@@ -61,6 +61,13 @@
             android:layout_height="30dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/inglese" />
+
+        <ImageView
+            android:id="@+id/imgSettings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/settings" />
     </LinearLayout>
 
 </LinearLayout>

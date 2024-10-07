@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,7 +24,10 @@ public class db_dati_gps {
 
     public db_dati_gps(Context context) {
         this.context = context;
-        PathDB = context.getFilesDir() + "/DB/";
+        if (context == null) {
+            this.context = UtilitiesGlobali.getInstance().tornaContextValido();
+        }
+        PathDB = this.context.getFilesDir() + "/DB/";
 
         File f = new File(PathDB);
         try {

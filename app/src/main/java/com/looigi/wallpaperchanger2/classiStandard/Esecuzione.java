@@ -7,6 +7,8 @@ import android.os.HandlerThread;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotifiche;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import static androidx.core.content.ContextCompat.registerReceiver;
 
@@ -15,7 +17,7 @@ public class Esecuzione {
     // private int errori;
     private long tmsPrecedente = -1L;
     private static final String NomeMaschera = "Esecuzione";
-    private final Context context;
+    private Context context;
     private Runnable r;
     private HandlerThread handlerThread;
 
@@ -96,7 +98,18 @@ public class Esecuzione {
 
         int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
         int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
-        
+
+        if (context != null) {
+            VariabiliStaticheStart.getInstance().setContext(context);
+        } else {
+            context = UtilitiesGlobali.getInstance().tornaContextValido();
+            if (context == null) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE CONTEXT NON VALIDO");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "-------------------");
+            }
+        }
+
         String prossimoCambio = "Prossimo cambio: " +
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri;

@@ -23,7 +23,6 @@ public class VariabiliStaticheStart {
         return instance;
     }
 
-
     private Context context;
     private LogInterno l;
     private Activity mainActivity;
@@ -36,6 +35,15 @@ public class VariabiliStaticheStart {
     private int velocitaUpload;
     private int velocitaDownload;
     private int livello;
+    private boolean logAttivo = true;
+
+    public boolean isLogAttivo() {
+        return logAttivo;
+    }
+
+    public void setLogAttivo(boolean logAttivo) {
+        this.logAttivo = logAttivo;
+    }
 
     public int getLivello() {
         return livello;

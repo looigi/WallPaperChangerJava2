@@ -113,6 +113,10 @@ public class LogInterno {
 	}
    
     public void ScriveLog(String Applicazione, String Maschera, String MessaggioLog) {
+		if (!VariabiliStaticheStart.getInstance().isLogAttivo()) {
+			return;
+		}
+
 		if (lista == null) {
 			lista = new ArrayList<>();
 		}

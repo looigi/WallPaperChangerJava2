@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".classiWallpaper.MainWallpaper">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,46 +32,34 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btnMenuHome"
+                        android:id="@+id/btnSettingsWallpaper"
                         android:layout_width="wrap_content"
-                        android:text="Home"
+                        android:text="WallPaper"
                         android:layout_height="match_parent" />
 
                     <Button
-                        android:id="@+id/btnMenuVideo"
+                        android:id="@+id/btnSettingsDetector"
                         android:layout_width="wrap_content"
-                        android:text="Video"
+                        android:text="Detector"
                         android:layout_height="match_parent" />
 
                     <Button
-                        android:id="@+id/btnMenuTipoScatto"
+                        android:id="@+id/btnSettingsPlayer"
                         android:layout_width="wrap_content"
-                        android:text="Tipo Scatto"
+                        android:text="Player"
                         android:layout_height="match_parent" />
 
                     <Button
-                        android:id="@+id/btnMenuTipoFoto"
+                        android:id="@+id/btnSettingsMappa"
                         android:layout_width="wrap_content"
-                        android:text="Tipo Fotocamera"
+                        android:text="Mappa"
                         android:layout_height="match_parent" />
 
                     <Button
-                        android:id="@+id/btnMenuEstensione"
+                        android:id="@+id/btnSettingsDebug"
                         android:layout_width="wrap_content"
-                        android:text="Estensione"
+                        android:text="Debug"
                         android:layout_height="match_parent" />
-
-                    <!-- <Button
-                        android:id="@+id/btnModificaImmagine"
-                        android:layout_width="wrap_content"
-                        android:text="Modifica Imm."
-                        android:layout_height="match_parent" />
-
-                    <Button
-                        android:id="@+id/btnMenuImpostazioni"
-                        android:layout_width="wrap_content"
-                        android:text="Impostazioni"
-                        android:layout_height="match_parent" /> -->
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -81,42 +74,33 @@
 
             <include
                 android:visibility="gone"
-                layout="@layout/tab_home"
+                layout="@layout/impostazioni_wallpaper"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
                 android:visibility="gone"
-                layout="@layout/tab_video"
+                layout="@layout/impostazioni_detector"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
                 android:visibility="gone"
-                layout="@layout/tab_tiposcatto"
+                layout="@layout/impostazioni_player"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
                 android:visibility="gone"
-                layout="@layout/tab_tipofotocamera"
+                layout="@layout/impostazioni_mappa"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
                 android:visibility="gone"
-                layout="@layout/tab_estensione"
+                layout="@layout/impostazioni_debug"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-            <!-- <include
-                android:visibility="gone"
-                layout="@layout/tab_impostazioni"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" /> -->
-
         </LinearLayout>
-
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -2,21 +2,27 @@ package com.looigi.wallpaperchanger2.classiPlayer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -44,6 +50,26 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setTxtInformazioniPlayer(findViewById(R.id.txtInformazioniPlayer));
         VariabiliStatichePlayer.getInstance().setTxtBranoPregresso(findViewById(R.id.txtBranoPregresso));
         VariabiliStatichePlayer.getInstance().setImgCambiaPregresso(findViewById(R.id.imgCambiaPregresso));
+
+        ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(VariabiliStatichePlayer.getInstance().getContext(), MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStatichePlayer.getInstance().getContext().startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
 
         UtilityPlayer.getInstance().Attesa(false);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
@@ -175,5 +201,4 @@ public class MainPlayer extends Activity {
 
         VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
     }
-
 }
