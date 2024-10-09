@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class ScreenReceiver extends BroadcastReceiver {
     private boolean screenOff;
-    private static String NomeMaschera = "SCREENRECEVIER";
+    private static String NomeMaschera = "SCREENRECEIVER";
     private Long datella1 = null;
 
     @Override

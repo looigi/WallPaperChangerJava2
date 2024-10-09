@@ -56,7 +56,11 @@ public class Permessi {
                 // Manifest.permission.WAKE_LOCK,
                 Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO,
-                // android.Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CHANGE_NETWORK_STATE,
+                // Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.BLUETOOTH_CONNECT,
                 // android.Manifest.permission.BLUETOOTH_ADMIN
                 Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                 Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE

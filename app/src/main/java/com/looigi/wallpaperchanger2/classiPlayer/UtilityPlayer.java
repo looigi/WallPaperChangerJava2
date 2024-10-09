@@ -1,13 +1,23 @@
 package com.looigi.wallpaperchanger2.classiPlayer;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.LinearLayout;
+
+import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
@@ -19,9 +29,12 @@ import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+
+import static android.bluetooth.BluetoothProfile.GATT;
 
 public class UtilityPlayer {
     private static final String NomeMaschera = "UTILITYPLAYER";
@@ -64,6 +77,25 @@ public class UtilityPlayer {
             return -1;
         }
     }
+
+    /* public boolean isBluetoothHeadsetConnected() {
+        Context context = UtilitiesGlobali.getInstance().tornaContextValido();
+        BluetoothManager manager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        List<BluetoothDevice> connected = manager.getConnectedDevices(GATT);
+        for (BluetoothDevice b : connected) {
+            int tipo = b.getType();
+            String nome = b.getName();
+            int connesso = b.getBondState();
+            if (nome.equals("ppp")) {
+
+            }
+        }
+        // Log.i("Connected Devices: ", connected.size()+"");
+        return true;
+    } */
 
     public void ScriveLog(Context context, String Maschera, String Log) {
         /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {
@@ -126,6 +158,8 @@ public class UtilityPlayer {
         StrutturaBrano sb = VariabiliStatichePlayer.getInstance().getUltimoBrano();
         if (sb != null) {
             String path = sb.getPathBrano();
+
+            ImpostaBellezza();
 
             ScriveLog(context, NomeMaschera, "Eseguo il brano: " + path);
 
@@ -276,30 +310,42 @@ public class UtilityPlayer {
     }
 
     public void Attesa(boolean Acceso) {
-        if (Acceso) {
-            if (quantiCaricamenti == 0) {
-                VariabiliStatichePlayer.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (Acceso) {
+                    if (quantiCaricamenti == 0) {
+                        VariabiliStatichePlayer.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                    }
+                    quantiCaricamenti++;
+                } else {
+                    quantiCaricamenti--;
+                    if (quantiCaricamenti < 1) {
+                        quantiCaricamenti = 0;
+                        VariabiliStatichePlayer.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                    }
+                }
             }
-            quantiCaricamenti++;
-        } else {
-            quantiCaricamenti--;
-            if (quantiCaricamenti < 1) {
-                quantiCaricamenti = 0;
-                VariabiliStatichePlayer.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
-            }
-        }
+        };
+        handlerTimer.postDelayed(rTimer, 50);
     }
 
     public void AggiornaOperazioneInCorso(String Operazione) {
-        if (Operazione.isEmpty()) {
-            VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.GONE);
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (Operazione.isEmpty()) {
+                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.GONE);
 
-            VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
-        } else {
-            VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
+                } else {
+                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.VISIBLE);
 
-            VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
-        }
+                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 50);
     }
 
     public void AggiornaInformazioni(boolean Elimina) {
@@ -350,16 +396,24 @@ public class UtilityPlayer {
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
 
-        if (!wifi) {
-            if (level <= 2) {
-                cercaBranoInLocale = true;
-            }
+        if (!VariabiliStatichePlayer.getInstance().isRetePresente()) {
+            cercaBranoInLocale = true;
+        } else {
+            // if (!wifi) {
+                if (level <= 2) {
+                    cercaBranoInLocale = true;
+                }
+            // }
         }
 
         if (!cercaBranoInLocale) {
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
 
-            ChiamateWsPlayer ws = new ChiamateWsPlayer(context);
+            if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+                VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+            }
+            ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+            VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
             ws.RitornaBranoDaID(Brano, Pregresso);
         } else {
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
@@ -532,4 +586,15 @@ public class UtilityPlayer {
             // }
         }
     }
+
+    public void ImpostaBellezza() {
+        int bellezza = VariabiliStatichePlayer.getInstance().getUltimoBrano().getBellezza();
+        for (int i = 0; i <= bellezza; i++) {
+            VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito);;
+        }
+        for (int i = bellezza + 1; i <= 10; i++) {
+            VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito_vuoto);
+        }
+    }
+
 }

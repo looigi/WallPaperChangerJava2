@@ -324,10 +324,11 @@ public class GestioneGPS {
         }
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita GPS");
-        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
         VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
         ultimoTSLocation = new Date().getTime();
         VariabiliStaticheGPS.getInstance().setCoordinateAttuali(null);

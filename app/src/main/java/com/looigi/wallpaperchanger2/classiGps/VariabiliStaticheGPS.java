@@ -33,6 +33,15 @@ public class VariabiliStaticheGPS {
     private ImageView bitmapHome;
     private GestioneMappa mappa;
     public static int quantiPuntiSumappa = 990;
+    private long distanzaTotale = 0;
+
+    public long getDistanzaTotale() {
+        return distanzaTotale;
+    }
+
+    public void setDistanzaTotale(long distanzaTotale) {
+        this.distanzaTotale = distanzaTotale;
+    }
 
     public GestioneMappa getMappa() {
         return mappa;

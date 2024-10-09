@@ -10,9 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
@@ -21,16 +19,14 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -94,11 +90,24 @@ public class GestioneNotificheTasti {
                     bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
                 }
                 contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGps);
+
+                if (VariabiliStaticheGPS.getInstance().getMappa() != null &&
+                        VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti() != null) {
+                    long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
+                    float dist = Math.round((distanza / 1000F) * 100) / 100F;
+                    contentView.setTextViewText(R.id.txtPunti,
+                            "Punti: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size()) + "\n" +
+                                    "Dist.: " + Float.toString(dist) + " Km.");
+                } else {
+                    contentView.setTextViewText(R.id.txtPunti,
+                            "Punti: 0\nDist.: 0");
+                }
             } else {
                 // contentView.setViewVisibility(R.id.imgMap, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgDetectorTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgMappaTasti, LinearLayout.GONE);
+                contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
             if (VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
@@ -106,6 +115,29 @@ public class GestioneNotificheTasti {
             } else {
                 contentView.setViewVisibility(R.id.imgImmaginiTasti, LinearLayout.GONE);
             }
+
+            if (VariabiliStaticheStart.getInstance().isVisibileVideo()) {
+                contentView.setViewVisibility(R.id.imgImmaginiVideo, LinearLayout.VISIBLE);
+            } else {
+                contentView.setViewVisibility(R.id.imgImmaginiVideo, LinearLayout.GONE);
+            }
+
+            boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
+            String testo = (wifi ? "WiFi" : "Mobile");
+            if (!wifi) {
+                testo += " " + VariabiliStaticheStart.getInstance().getTipoConnessione();
+            }
+            String livello = UtilitiesGlobali.getInstance().getLevelString(
+                    VariabiliStaticheStart.getInstance().getLivello()
+            );
+            testo += " - Liv. Segn.: " +
+                    VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione() +
+                    " (" + livello + ")";
+            testo += "\nDl: " +
+                    VariabiliStaticheStart.getInstance().getVelocitaDownload() +
+                    " - Ul: " + VariabiliStaticheStart.getInstance().getVelocitaUpload() + " " +
+                    VariabiliStaticheStart.getInstance().getUltimoControlloRete();
+            contentView.setTextViewText(R.id.txtSegnale, testo);
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheTasti.NOTIFICATION_CHANNEL_STRING);
 
@@ -192,9 +224,15 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgImmaginiTasti, pImm);
 
+            Intent vid = new Intent(ctx, NotificationActionServiceTasti.class);
+            vid.putExtra("DO", "video");
+            PendingIntent pVid = PendingIntent.getService(ctx, 207, vid,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgImmaginiTasti, pVid);
+
             Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
             uscita.putExtra("DO", "uscita");
-            PendingIntent pUscita = PendingIntent.getService(ctx, 207, uscita,
+            PendingIntent pUscita = PendingIntent.getService(ctx, 208, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
         }
@@ -331,8 +369,13 @@ public class GestioneNotificheTasti {
                         iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(iIm);
                         break;
+                    case "video":
+                        Intent iVi = new Intent(context, MainMostraVideo.class);
+                        iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iVi);
+                        break;
                     case "uscita":
-                        UtilityWallpaper.getInstance().ChiudeApplicazione(context);
+                        UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
                         break;
                 }
             }

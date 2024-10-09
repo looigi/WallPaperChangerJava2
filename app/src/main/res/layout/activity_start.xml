@@ -127,6 +127,78 @@
 
                 <ImageView
                     android:visibility="gone"
+                    android:id="@+id/imgStartImmagini"
+                    android:layout_width="50dp"
+                    android:src="@drawable/loovf"
+                    android:layout_height="50dp">
+
+                </ImageView>
+            </LinearLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/txtStartLabelImm"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
+                android:text="Immagini"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:weightSum="8">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/imgStartVideo"
+                    android:layout_width="50dp"
+                    android:src="@drawable/video2"
+                    android:layout_height="50dp">
+
+                </ImageView>
+            </LinearLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/txtStartLabelVid"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_marginTop="10dp"
+                android:textSize="16dp"
+                android:text="Video"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:weightSum="8">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:visibility="gone"
                     android:id="@+id/imgStartMappa"
                     android:layout_width="50dp"
                     android:src="@drawable/map"

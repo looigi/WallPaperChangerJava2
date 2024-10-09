@@ -57,7 +57,7 @@ public class MainImpostazioni extends Activity {
     private Long controlloLongPress = null;
     private LinearLayout layAprePlayer;
     private LinearLayout layChiudePlayer;
-    private LinearLayout laySettingsImpo;
+    // private LinearLayout laySettingsImpo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +93,36 @@ public class MainImpostazioni extends Activity {
         Button btnWallpaper = act.findViewById(R.id.btnSettingsWallpaper);
         Button btnPlayer = act.findViewById(R.id.btnSettingsPlayer);
         Button btnDebug = act.findViewById(R.id.btnSettingsDebug);
-        if (VariabiliStaticheStart.getInstance().isDetector()) {
-            btnDebug.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            btnDebug.setVisibility(LinearLayout.GONE);
-        }
+
         Button btnDetector = act.findViewById(R.id.btnSettingsDetector);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            btnDetector.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            btnDetector.setVisibility(LinearLayout.GONE);
+        }
+
         Button btnMappa = act.findViewById(R.id.btnSettingsMappa);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            btnMappa.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            btnMappa.setVisibility(LinearLayout.GONE);
+        }
+
+        Button btnImmagini = act.findViewById(R.id.btnSettingsImmagini);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
+            btnImmagini.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            btnImmagini.setVisibility(LinearLayout.GONE);
+        }
+
+        Button btnVideo = act.findViewById(R.id.btnSettingsVideo);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                VariabiliStaticheStart.getInstance().isVisibileVideo()) {
+            btnVideo.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            btnVideo.setVisibility(LinearLayout.GONE);
+        }
 
         btnWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,11 +164,29 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        btnImmagini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 5;
+                VisualizzaSchermata(act);
+            }
+        });
+
+        btnVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 6;
+                VisualizzaSchermata(act);
+            }
+        });
+
         ImpostaSchermataWallpaper(act);
         ImpostaSchermataDetector(act);
         ImpostaSchermataMappa(act);
         ImpostaSchermataPlayer(act);
         ImpostaSchermataDebug(act);
+        ImpostaSchermataImmagini(act);
+        ImpostaSchermataVideo(act);
 
         VisualizzaSchermata(act);
     }
@@ -163,12 +204,16 @@ public class MainImpostazioni extends Activity {
         LinearLayout layMappa = act.findViewById(R.id.layImpostazioniMappa);
         LinearLayout layPlayer = act.findViewById(R.id.layImpostazioniPlayer);
         LinearLayout layDebug = act.findViewById(R.id.layImpostazioniDebug);
+        LinearLayout layImmagini = act.findViewById(R.id.layImpostazioniImmagini);
+        LinearLayout layVideo = act.findViewById(R.id.layImpostazioniVideo);
 
         layWallaper.setVisibility(LinearLayout.GONE);
         layDetector.setVisibility(LinearLayout.GONE);
         layMappa.setVisibility(LinearLayout.GONE);
         layPlayer.setVisibility(LinearLayout.GONE);
         layDebug.setVisibility(LinearLayout.GONE);
+        layImmagini.setVisibility(LinearLayout.GONE);
+        layVideo.setVisibility(LinearLayout.GONE);
 
         switch(qualeSchermata) {
             case 0:
@@ -185,6 +230,12 @@ public class MainImpostazioni extends Activity {
                 break;
             case 4:
                 layDebug.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 5:
+                layImmagini.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 6:
+                layVideo.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -545,6 +596,25 @@ public class MainImpostazioni extends Activity {
                 // c.setWallpaperLocale(VariabiliStaticheServizio.getInstance().getUltimaImmagine());
             }
         });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogWP);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogWP);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogWP);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "WALLPAPER");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "WALLPAPER");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "WALLPAPER");
+            }
+        });
     }
 
     private void ImpostaSchermataDetector(Activity act) {
@@ -640,6 +710,25 @@ public class MainImpostazioni extends Activity {
                 }
             }
         });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogDT);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogDT);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogDT);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "DETECTOR");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "DETECTOR");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "DETECTOR");
+            }
+        });
     }
 
     private void ImpostaSchermataMappa(Activity act) {
@@ -654,24 +743,104 @@ public class MainImpostazioni extends Activity {
                 MainMappa.segue = segue;
             }
         });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogMP);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogMP);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogMP);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "MAPPA");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "MAPPA");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "MAPPA");
+            }
+        });
     }
 
     private void impostaTastiPlayer() {
         if (VariabiliStaticheStart.getInstance().isPlayerAperto()) {
             layAprePlayer.setVisibility(LinearLayout.GONE);
             layChiudePlayer.setVisibility(LinearLayout.VISIBLE);
-            laySettingsImpo.setVisibility(LinearLayout.VISIBLE);
+            // laySettingsImpo.setVisibility(LinearLayout.VISIBLE);
         } else {
             layAprePlayer.setVisibility(LinearLayout.VISIBLE);
             layChiudePlayer.setVisibility(LinearLayout.GONE);
-            laySettingsImpo.setVisibility(LinearLayout.GONE);
+            // laySettingsImpo.setVisibility(LinearLayout.GONE);
         }
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogPL);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogPL);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogPL);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "PLAYER");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "PLAYER");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "PLAYER");
+            }
+        });
+    }
+
+    private void ImpostaSchermataImmagini(Activity act) {
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogIM);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogIM);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogIM);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "IMMAGINI");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "IMMAGINI");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "IMMAGINI");
+            }
+        });
+    }
+
+    private void ImpostaSchermataVideo(Activity act) {
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogVD);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogVD);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogVD);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "VIDEO");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "VIDEO");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "VIDEO");
+            }
+        });
     }
 
     private void ImpostaSchermataPlayer(Activity act) {
         layAprePlayer = act.findViewById(R.id.layAprePlayer);
         layChiudePlayer = act.findViewById(R.id.layChiudePlayer);
-        laySettingsImpo = act.findViewById(R.id.laySettingsPlayer);
+        // laySettingsImpo = act.findViewById(R.id.laySettingsPlayer);
 
         Button btnAprePlayer = (Button) act.findViewById(R.id.btnAprePlayer);
         btnAprePlayer.setOnClickListener(new View.OnClickListener() {
@@ -732,14 +901,14 @@ public class MainImpostazioni extends Activity {
         Button btnPulisceLog = (Button) act.findViewById(R.id.btnPulisceLog);
         btnPulisceLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityWallpaper.getInstance().EliminaLogs(context);
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "");
             }
         });
 
         Button btnInviaLog = (Button) act.findViewById(R.id.btnInviaLog);
         btnInviaLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityWallpaper.getInstance().CondividiLogs(context);
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "");
             }
         });
     }

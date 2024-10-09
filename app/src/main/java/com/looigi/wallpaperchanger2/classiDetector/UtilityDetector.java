@@ -733,9 +733,11 @@ public class UtilityDetector {
 
                     f.delete();
 
-                    PhotoViewAttacher photoAttacher;
-                    photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
-                    photoAttacher.update();
+                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                        PhotoViewAttacher photoAttacher;
+                        photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
+                        photoAttacher.update();
+                    }
 
                     if (VariabiliStaticheDetector.getInstance().getImg() != null) {
                         VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);

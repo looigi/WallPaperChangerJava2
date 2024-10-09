@@ -35,6 +35,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
     private boolean ApriDialog;
     private Context context;
     private boolean Pregresso = false;
+    private boolean blocco = false;
 
     public LetturaWSAsincronaPlayer(Context context, String NAMESPACE, int TimeOut,
                                     String SOAP_ACTION, String tOperazione,
@@ -54,6 +55,7 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
         this.Tentativo = 0;
         this.delegate = delegate;
         this.Pregresso = Pregresso;
+        this.blocco = false;
     }
 
     private void SplittaCampiUrletto(String Cosa) {
@@ -115,6 +117,10 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
         ControllaFineCiclo();
     }
 
+    public void BloccaEsecuzione() {
+        blocco = true;
+    }
+
     @Override
     protected String doInBackground(String... strings) {
             Errore = false;
@@ -158,8 +164,13 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
                 aht = new HttpTransportSE(Urletto, Timeout);
                 aht.call(SOAP_ACTION, soapEnvelope);
 
-                if (isCancelled()) {
-                    messErrore = "ESCI";
+                if (isCancelled() || blocco) {
+                    messErrore = "ERROR: Uscita " + tOperazione + " per blocco chiamata";
+                    result = messErrore;
+
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
+
+                    delegate.TaskCompletionResult(result);
                 }
             } catch (SocketTimeoutException e) {
                 Errore = true;
@@ -245,7 +256,8 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
     private void ControllaFineCiclo() {
         // Utility.getInstance().ChiudeDialog();
 
-        if (!messErrore.equals("ESCI")) {
+        if (!blocco) {
+        // if (!messErrore.equals("ESCI")) {
             String Ritorno = result;
 
             if (Ritorno.contains("ERROR:")) {
@@ -256,10 +268,14 @@ public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Termine chiamata su operazione " + tOperazione);
 
             delegate.TaskCompletionResult(result);
-        } else {
+        /* } else {
+            result = "";
+            messErrore = "ERROR: Uscita " + tOperazione + " per blocco chiamata";
+
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
 
             delegate.TaskCompletionResult(result);
+        } */
         }
     }
 }

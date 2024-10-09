@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
@@ -34,10 +35,37 @@ public class VariabiliStaticheStart {
     private String tipoConnessione;
     private int velocitaUpload;
     private int velocitaDownload;
+    private String ultimoControlloRete;
     private int livello;
     private boolean logAttivo = true;
     private boolean playerAperto = false;
     private boolean VisibileImmagini = false;
+    private boolean VisibileVideo = false;
+    private TelephonyManager mTelephonyManager;
+
+    public TelephonyManager getmTelephonyManager() {
+        return mTelephonyManager;
+    }
+
+    public void setmTelephonyManager(TelephonyManager mTelephonyManager) {
+        this.mTelephonyManager = mTelephonyManager;
+    }
+
+    public String getUltimoControlloRete() {
+        return ultimoControlloRete;
+    }
+
+    public void setUltimoControlloRete(String ultimoControlloRete) {
+        this.ultimoControlloRete = ultimoControlloRete;
+    }
+
+    public boolean isVisibileVideo() {
+        return VisibileVideo;
+    }
+
+    public void setVisibileVideo(boolean visibileVideo) {
+        VisibileVideo = visibileVideo;
+    }
 
     public boolean isVisibileImmagini() {
         return VisibileImmagini;

@@ -17,12 +17,13 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiStandard.db_debug;
 import com.looigi.wallpaperchanger2.classiWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
@@ -65,6 +66,8 @@ public class MainStart  extends Activity {
         );
 
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
+            VariabiliStaticheStart.getInstance().setPlayerAperto(false);
+
             Intent intent1 = new Intent(MainStart.this, RunServiceOnBoot.class);
             startService(intent1);
 
@@ -277,10 +280,72 @@ public class MainStart  extends Activity {
             }
         });
 
+        ImageView imgI = findViewById(R.id.imgStartImmagini);
+        TextView txtLabelImm = findViewById(R.id.txtStartLabelImm);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+            VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
+            imgI.setVisibility(LinearLayout.VISIBLE);
+            txtLabelImm.setVisibility(LinearLayout.VISIBLE);
+        }
+        imgI.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainMostraImmagini.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgV = findViewById(R.id.imgStartVideo);
+        TextView txtLabelVid = findViewById(R.id.txtStartLabelVid);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                VariabiliStaticheStart.getInstance().isVisibileVideo()) {
+            imgV.setVisibility(LinearLayout.VISIBLE);
+            txtLabelVid.setVisibility(LinearLayout.VISIBLE);
+        }
+        imgV.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainMostraVideo.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
         ImageView imgU = findViewById(R.id.imgStartUScita);
         imgU.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityWallpaper.getInstance().ChiudeApplicazione(context);
+                UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
             }
         });
 
@@ -296,7 +361,7 @@ public class MainStart  extends Activity {
             g.AbilitaGPS();
         }
 
-        /* Intent iP = new Intent(context, MainPlayer.class);
+        /* Intent iP = new Intent(context, MainMostraVideo.class);
         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(iP);
 
@@ -320,7 +385,7 @@ public class MainStart  extends Activity {
             index++;
         }
 
-        Handler handlerTimer = new Handler();
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
                 StartActivities();

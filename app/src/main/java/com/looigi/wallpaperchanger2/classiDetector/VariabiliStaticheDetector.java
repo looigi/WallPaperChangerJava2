@@ -80,8 +80,8 @@ public class VariabiliStaticheDetector {
     // private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
     private boolean GpsPreciso = false;
-    private int GpsMeters = 5;
-    private int GpsMs = 1000;
+    private int GpsMeters = 10;
+    private int GpsMs = 3000;
     private boolean giaPartito = false;
     // private Button btnLayModificaImmagine;
 

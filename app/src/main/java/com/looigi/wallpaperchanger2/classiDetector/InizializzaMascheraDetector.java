@@ -26,6 +26,7 @@ import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classiDetector.Receivers.Video;
 import com.looigi.wallpaperchanger2.classiDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classiDetector.TestMemory.TestMemory;
@@ -235,7 +236,56 @@ public class InizializzaMascheraDetector {
             }
         });
 
+        VariabiliStaticheStart.getInstance().setVisibileVideo(false);
         ImageView imgInglese = (ImageView) act.findViewById(R.id.imgInglese);
+        imgInglese.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+                if (datella1 == null) {
+                    Handler handlerTimer;
+                    Runnable rTimer;
+
+                    datella1 = System.currentTimeMillis();
+                    UtilityDetector.getInstance().Vibra(context, 100);
+
+                    handlerTimer = new Handler();
+                    rTimer = new Runnable() {
+                        public void run() {
+                            datella1 = null;
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 2000);
+                } else {
+                    long diff = System.currentTimeMillis() - datella1;
+
+                    datella1 = null;
+
+                    if (diff < 1950) {
+                        Handler handlerTimer;
+                        Runnable rTimer;
+
+                        handlerTimer = new Handler(Looper.getMainLooper());
+                        rTimer = new Runnable() {
+                            public void run() {
+                                VariabiliStaticheStart.getInstance().setVisibileVideo(true);
+                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        MainMostraVideo.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 2000);
+                    }
+                }
+
+                return false;
+            }
+        });
         imgInglese.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

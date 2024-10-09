@@ -2,6 +2,8 @@ package com.looigi.wallpaperchanger2.classiGps;
 
 import android.content.Context;
 
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,7 @@ public class GestioneMappa {
     private List<StrutturaGps> listaGPS;
     private Context context;
     private Date dataAttuale;
+    private int conta = 0;
 
     public GestioneMappa(Context context) {
         this.context = context;
@@ -22,6 +25,8 @@ public class GestioneMappa {
 
         listaGPS = db.RitornaPosizioni(dataOdierna);
         listaGPS = togliePuntiEccessivi(listaGPS);
+
+        calcolaDistanza();
     }
 
     public void ChiudeMaschera() {
@@ -45,6 +50,15 @@ public class GestioneMappa {
 
     public void AggiungePosizione(StrutturaGps g) {
         listaGPS.add(g);
+
+        long d = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
+        long dist = Math.round(g.getDistanza());
+        VariabiliStaticheGPS.getInstance().setDistanzaTotale(d + dist);
+        conta++;
+        if (conta > 10) {
+            conta = 0;
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        }
     }
 
     public void PuliscePunti() {
@@ -52,6 +66,16 @@ public class GestioneMappa {
     }
 
     public List<StrutturaGps> RitornaPunti() {
+        calcolaDistanza();
+
         return listaGPS;
+    }
+
+    private void calcolaDistanza() {
+        long d = 0;
+        for (StrutturaGps g : listaGPS) {
+            d += g.getDistanza();
+        }
+        VariabiliStaticheGPS.getInstance().setDistanzaTotale(d);
     }
 }

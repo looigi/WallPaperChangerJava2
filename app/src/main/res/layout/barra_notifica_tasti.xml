@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="120dp"
     android:orientation="vertical"
     android:background="@drawable/bordato_colorato">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtSegnale"
+            android:textColor="@color/Rosso"
+            android:gravity="center_horizontal"
+            android:textSize="12sp"
+            android:lines="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,6 +70,17 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/txtPunti"
+            android:text="Punti: 0\nDist.: 0"
+            android:gravity="left"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
         <ImageView
             android:id="@+id/imgMappaTasti"
             android:layout_marginStart="5dp"
@@ -71,6 +96,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/loovf" />
+
+        <ImageView
+            android:id="@+id/imgImmaginiVideo"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/video2" />
 
         <ImageView
             android:id="@+id/imgUscitaTasti"

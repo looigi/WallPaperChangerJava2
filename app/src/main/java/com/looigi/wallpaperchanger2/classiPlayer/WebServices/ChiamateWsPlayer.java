@@ -1,6 +1,8 @@
 package com.looigi.wallpaperchanger2.classiPlayer.WebServices;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.DownloadBrano;
@@ -10,6 +12,7 @@ import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaPreferiti;
 import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,9 +32,13 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private String TipoOperazione = "";
     private Context context;
     private boolean Pregresso = false;
+    private String Brano = "";
+    private boolean Riprova = false;
+    private StrutturaChiamateWSPlayer chiamataDaFare;
 
-    public ChiamateWsPlayer(Context context) {
+    public ChiamateWsPlayer(Context context, boolean Riprova) {
         this.context = context;
+        this.Riprova = Riprova;
     }
 
     public void RitornaImmaginiArtista(String Artista) {
@@ -229,6 +236,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Pregresso: " + Pregresso);
 
+        Brano = idBrano;
+
         long ora = new Date().getTime();
         if (ora - lastCall < 2000) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Esco per troppo veloce: " + (ora - lastCall));
@@ -324,11 +333,17 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TipoOperazione,
                 NS,
                 SA,
-                25000,
+                5000,
                 false,
                 true,
                 false,
                 -1);
+    }
+
+    public void StoppaEsecuzione() {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Blocco elaborazione per cambio brano");
+        bckAsyncTask.BloccaEsecuzione();
+        bckAsyncTask.cancel(true);
     }
 
     public void Esegue(String Urletto, String tOperazione,
@@ -339,18 +354,32 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         UtilityPlayer.getInstance().Attesa(true);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso(tOperazione + (Pregresso ? "Pregresso" : ""));
 
-        bckAsyncTask = new LetturaWSAsincronaPlayer(
-                context,
-                NS,
-                Timeout,
-                SOAP_ACTION,
-                tOperazione,
-                ApriDialog,
-                Urletto,
-                "0", // TimeStampAttuale,
-                this,
-                Pregresso);
-        bckAsyncTask.execute(Urletto);
+        chiamataDaFare = new StrutturaChiamateWSPlayer();
+        chiamataDaFare.setBrano(Brano);
+        chiamataDaFare.setNS(NS);
+        chiamataDaFare.setTimeout(Timeout);
+        chiamataDaFare.setSOAP_ACTION(SOAP_ACTION);
+        chiamataDaFare.settOperazione(tOperazione);
+        chiamataDaFare.setApriDialog(ApriDialog);
+        chiamataDaFare.setUrletto(Urletto);
+        chiamataDaFare.setPregresso(Pregresso);
+
+        if (VariabiliStatichePlayer.getInstance().isRetePresente()) {
+            bckAsyncTask = new LetturaWSAsincronaPlayer(
+                    context,
+                    NS,
+                    Timeout,
+                    SOAP_ACTION,
+                    tOperazione,
+                    ApriDialog,
+                    Urletto,
+                    "0", // TimeStampAttuale,
+                    this,
+                    Pregresso);
+            bckAsyncTask.execute(Urletto);
+        } else {
+            aggiungeOperazione();
+        }
     }
 
     @Override
@@ -542,21 +571,47 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         }
     }
 
+    private void aggiungeOperazione() {
+        if (!Riprova) {
+            VariabiliStatichePlayer.getInstance().AggiungeChiamata(chiamataDaFare);
+
+            RipristinoChiamate.getInstance().AttivaTimerChiamate(context);
+        }
+    }
+
     private boolean ControllaRitorno(String Operazione, String result) {
         if (result.contains("ERROR:")) {
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
-                // UtilityPlayer.getInstance().ImpostaStatoReteOFF();
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata.");
+                UtilityPlayer.getInstance().AggiornaInformazioni(true);
+                UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+                VariabiliStatichePlayer.getInstance().setRetePresente(false);
+                aggiungeOperazione();
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata. Riprova: " + Riprova);
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, result);
             }
 
             return false;
         } else {
+            if (Riprova) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Riprovo chiamata riuscito");
+
+                RipristinoChiamate.getInstance().setTentativiEffettuati(0);
+
+                VariabiliStatichePlayer.getInstance().RimuovePrimaChiamata();
+                if (!VariabiliStatichePlayer.getInstance().getChiamate().isEmpty()) {
+                    RipristinoChiamate.getInstance().AttivaTimerChiamate(context);
+                } else {
+                    RipristinoChiamate.getInstance().RimuoveTimer();
+                }
+            }
+
             return true;
         }
     }
 
     public void CaricaBrano(String result) {
+        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+
         boolean ritorno = ControllaRitorno("Carica Brano", result);
         if (!ritorno) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Carica brano: Esco per result non valido");

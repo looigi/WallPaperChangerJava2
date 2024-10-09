@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,7 +29,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
@@ -110,6 +109,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath(mappa);
+
+                    GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
             }
         });
@@ -129,6 +130,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath(mappa);
+
+                    GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
             }
         });

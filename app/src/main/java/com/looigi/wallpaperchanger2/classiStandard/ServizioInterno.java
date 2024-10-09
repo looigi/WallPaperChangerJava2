@@ -15,6 +15,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
@@ -27,8 +28,6 @@ import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
-import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
-import com.looigi.wallpaperchanger2.utilities.MyPhoneStateListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -37,11 +36,6 @@ public class ServizioInterno extends Service {
     private Context context;
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
-    // private VolumePressed volPressed;
-    // private AudioManager mAudioManagerInterno;
-    // private ComponentName mReceiverComponentInterno;
-    private MyPhoneStateListener mPhoneStatelistener;
-    private TelephonyManager mTelephonyManager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -63,6 +57,8 @@ public class ServizioInterno extends Service {
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Start Command");
 
+        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         return START_NOT_STICKY;
     }
 
@@ -72,22 +68,14 @@ public class ServizioInterno extends Service {
         context = this;
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create");
-        /* mVolumePressed = new VolumePressed(this, new Handler(Looper.getMainLooper()));
-        getApplicationContext().getContentResolver().registerContentObserver(
-                android.provider.Settings.System.CONTENT_URI,
-                true,
-                mVolumePressed );
 
-        volPressed = new VolumePressed();
-        IntentFilter filterVP = new IntentFilter();
-        filterVP.addAction(Intent.ACTION_MEDIA_BUTTON);
-        // filterVP.setPriority(1000);
-        registerReceiver(volPressed, filterVP, Context.RECEIVER_NOT_EXPORTED); */
+        // CPU Attiva
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                VariabiliStaticheWallpaper.channelName);
+        wl.acquire();
 
-        mPhoneStatelistener = new MyPhoneStateListener();
-        mTelephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        mTelephonyManager.listen(mPhoneStatelistener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
-
+        // GESTIONE ACCENSIONE SCHERMO
         mScreenReceiver = new ScreenReceiver();
         IntentFilter filterSO = new IntentFilter();
         filterSO.addAction(Intent.ACTION_SCREEN_OFF);
@@ -95,12 +83,9 @@ public class ServizioInterno extends Service {
         filterSO.setPriority(9999);
         context.registerReceiver(mScreenReceiver, filterSO);
 
-        // CPU Attiva
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                VariabiliStaticheWallpaper.channelName);
-        wl.acquire();
-        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // GESTIONE SEGNALE
+        VariabiliStaticheStart.getInstance().setmTelephonyManager((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE));
+        VariabiliStaticheStart.getInstance().getmTelephonyManager().listen(new ControlloSegnale(), PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
         Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
         if (notificaTasti != null) {
@@ -200,6 +185,10 @@ public class ServizioInterno extends Service {
         super.onDestroy();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
+
+        if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
+            VariabiliStaticheStart.getInstance().setmTelephonyManager(null);
+        }
 
         /* if (mVolumePressed != null) {
             getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);

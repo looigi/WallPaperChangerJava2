@@ -3,13 +3,19 @@ package com.looigi.wallpaperchanger2.classiPlayer;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
+import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.WebServices.StrutturaChiamateWSPlayer;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -61,13 +67,18 @@ public class VariabiliStatichePlayer {
     public boolean mascheraNascosta = false;
     private String inizioMinuti;
     private String fineMinuti;
-    private TextView txtInformazioniPlayer;
+    // private TextView txtInformazioniPlayer;
     private int StavaSuonando = -1;
     private boolean staCaricandoBranoPregresso = false;
     private StrutturaBrano StrutturaBranoPregressoCaricata;
     private TextView txtBranoPregresso;
     private boolean haCaricatoBranoPregresso = false;
     private ImageView imgCambiaPregresso;
+    private ImageView imgCuffie;
+    private List<ImageView> imgBellezza;
+    private ChiamateWsPlayer classeChiamata;
+    private boolean retePresente = true;
+    private List<StrutturaChiamateWSPlayer> chiamate;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -99,6 +110,56 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public void RimuovePrimaChiamata() {
+        chiamate.remove(0);
+    }
+
+    public List<StrutturaChiamateWSPlayer> getChiamate() {
+        return chiamate;
+    }
+
+    public void AggiungeChiamata(StrutturaChiamateWSPlayer c) {
+        if (this.chiamate == null) {
+            this.chiamate = new ArrayList<>();
+        }
+        this.chiamate.add(c);
+    }
+    public void setChiamate(List<StrutturaChiamateWSPlayer> chiamate) {
+        this.chiamate = chiamate;
+    }
+
+    public boolean isRetePresente() {
+        return retePresente;
+    }
+
+    public void setRetePresente(boolean retePresente) {
+        this.retePresente = retePresente;
+    }
+
+    public ChiamateWsPlayer getClasseChiamata() {
+        return classeChiamata;
+    }
+
+    public void setClasseChiamata(ChiamateWsPlayer classeChiamata) {
+        this.classeChiamata = classeChiamata;
+    }
+
+    public List<ImageView> getImgBellezza() {
+        return imgBellezza;
+    }
+
+    public void setImgBellezza(List<ImageView> imgBellezza) {
+        this.imgBellezza = imgBellezza;
+    }
+
+    public ImageView getImgCuffie() {
+        return imgCuffie;
+    }
+
+    public void setImgCuffie(ImageView imgCuffie) {
+        this.imgCuffie = imgCuffie;
     }
 
     public ImageView getImgCambiaPregresso() {
@@ -149,6 +210,7 @@ public class VariabiliStatichePlayer {
         StavaSuonando = stavaSuonando;
     }
 
+    /*
     public TextView getTxtInformazioniPlayer() {
         return txtInformazioniPlayer;
     }
@@ -156,6 +218,7 @@ public class VariabiliStatichePlayer {
     public void setTxtInformazioniPlayer(TextView txtInformazioniPlayer) {
         this.txtInformazioniPlayer = txtInformazioniPlayer;
     }
+    */
 
     public String getInizioMinuti() {
         return inizioMinuti;

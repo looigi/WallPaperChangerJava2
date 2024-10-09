@@ -77,4 +77,7 @@ dependencies {
 
     implementation(libs.face.detection)
     implementation(libs.android.image.cropper)
+
+    implementation(libs.core)
+    implementation(libs.media)
 }

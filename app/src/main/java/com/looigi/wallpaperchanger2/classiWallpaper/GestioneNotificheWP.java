@@ -68,16 +68,25 @@ public class GestioneNotificheWP {
 
             if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                 String path = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine();
-                Bitmap bmImg = BitmapFactory.decodeFile(path);
-                if (contentView != null) {
-                    contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
+                if (!path.isEmpty()) {
+                    Bitmap bmImg = BitmapFactory.decodeFile(path);
+                    if (contentView != null) {
+                        contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
+
+                        contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
+                        contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
+                    }
+                } else {
+                    Bitmap imm = BitmapFactory.decodeResource(context.getResources(), R.drawable.eye);
+                    contentView.setImageViewBitmap(R.id.imgCopertina, imm);
 
                     contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
                     contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
                 }
             } else {
                 if (contentView != null) {
-                    contentView.setImageViewBitmap(R.id.imgCopertina, null);
+                    Bitmap imm = BitmapFactory.decodeResource(context.getResources(), R.drawable.eye);
+                    contentView.setImageViewBitmap(R.id.imgCopertina, imm);
 
                     contentView.setTextViewText(R.id.txtTitoloNotifica, "");
                     contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
@@ -165,13 +174,13 @@ public class GestioneNotificheWP {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgProssima, pAvanti);
 
-            /* Intent mappa = new Intent(ctx, NotificationActionService.class);
-            mappa.putExtra("DO", "mappa");
-            PendingIntent pMappa = PendingIntent.getService(ctx, 72, mappa,
+            Intent refresh = new Intent(ctx, NotificationActionService.class);
+            refresh.putExtra("DO", "refresh");
+            PendingIntent pRefresh = PendingIntent.getService(ctx, 72, refresh,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgMap, pMappa);
+            view.setOnClickPendingIntent(R.id.imgRefresh, pRefresh);
 
-            Intent switchgps = new Intent(ctx, NotificationActionService.class);
+            /* Intent switchgps = new Intent(ctx, NotificationActionService.class);
             switchgps.putExtra("DO", "gps");
             PendingIntent pSwitchGPS = PendingIntent.getService(ctx, 73, switchgps,
                     PendingIntent.FLAG_IMMUTABLE);
@@ -294,6 +303,19 @@ public class GestioneNotificheWP {
                                 UtilityWallpaper.getInstance().CambiaImmagine(context);
 
                                 GestioneNotificheWP.getInstance().AggiornaNotifica();
+                            }
+                        }, 100);
+                        break;
+
+                    case "refresh":
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                UtilityWallpaper.getInstance().Attesa(true);
+                                ChangeWallpaper c = new ChangeWallpaper(context);
+                                c.setWallpaperLocale(context,
+                                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
+                                UtilityWallpaper.getInstance().Attesa(false);
                             }
                         }, 100);
                         break;

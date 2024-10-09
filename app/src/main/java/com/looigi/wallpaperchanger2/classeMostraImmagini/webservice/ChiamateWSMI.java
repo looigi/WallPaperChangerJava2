@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiamateWSMI implements TaskDelegate {
-    private static final String NomeMaschera = "CHIAMATEWS";
+    private static final String NomeMaschera = "CHIAMATEWSIMMAGINI";
     private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS + "/";

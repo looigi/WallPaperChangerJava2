@@ -56,6 +56,18 @@
                         android:layout_height="match_parent" />
 
                     <Button
+                        android:id="@+id/btnSettingsImmagini"
+                        android:layout_width="wrap_content"
+                        android:text="Immagini"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnSettingsVideo"
+                        android:layout_width="wrap_content"
+                        android:text="Video"
+                        android:layout_height="match_parent" />
+
+                    <Button
                         android:id="@+id/btnSettingsDebug"
                         android:layout_width="wrap_content"
                         android:text="Debug"
@@ -99,6 +111,18 @@
             <include
                 android:visibility="gone"
                 layout="@layout/impostazioni_debug"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/impostazioni_immagini"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/impostazioni_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

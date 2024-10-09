@@ -1,14 +1,18 @@
 package com.looigi.wallpaperchanger2.classiPlayer;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,19 +22,43 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
-import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainPlayer extends Activity {
+    private HeadsetBroadcastReceiver mCuffieInseriteReceiver;
+    private MediaButtonIntentReceiver mButtonMediaReceiver;
+    private AudioManager mAudioManager = null;
+    private ComponentName mReceiverComponent = null;
+    private Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        context = this;
+
+        // GESTIONE INSERIMENTO CUFFIE
+        IntentFilter filter = new IntentFilter();
+        mCuffieInseriteReceiver = new HeadsetBroadcastReceiver();
+        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        this.registerReceiver(mCuffieInseriteReceiver, filter);
+
+        // GESTIONE TASTI CUFFIE
+        mButtonMediaReceiver = new MediaButtonIntentReceiver();
+        IntentFilter mediaFilter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
+        mAudioManager =  (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mReceiverComponent = new ComponentName(this, MediaButtonIntentReceiver.class);
+        mediaFilter.setPriority(2139999999);
+        registerReceiver(mButtonMediaReceiver, mediaFilter, Context.RECEIVER_NOT_EXPORTED);
 
         VariabiliStatichePlayer.getInstance().setAct(this);
         VariabiliStatichePlayer.getInstance().setContext(this);
@@ -47,9 +75,19 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setTxtInizio(findViewById(R.id.txtInizio));
         VariabiliStatichePlayer.getInstance().setTxtFine(findViewById(R.id.txtFine));
         VariabiliStatichePlayer.getInstance().setSeekBarBrano(findViewById(R.id.seekBarBrano));
-        VariabiliStatichePlayer.getInstance().setTxtInformazioniPlayer(findViewById(R.id.txtInformazioniPlayer));
+        // VariabiliStatichePlayer.getInstance().setTxtInformazioniPlayer(findViewById(R.id.txtInformazioniPlayer));
         VariabiliStatichePlayer.getInstance().setTxtBranoPregresso(findViewById(R.id.txtBranoPregresso));
         VariabiliStatichePlayer.getInstance().setImgCambiaPregresso(findViewById(R.id.imgCambiaPregresso));
+        VariabiliStatichePlayer.getInstance().setImgCuffie(findViewById(R.id.imgCuffie));
+
+        int[] bell = { R.id.imgBellezza0, R.id.imgBellezza1, R.id.imgBellezza2, R.id.imgBellezza3,
+                R.id.imgBellezza4, R.id.imgBellezza5, R.id.imgBellezza6, R.id.imgBellezza7,
+                R.id.imgBellezza8, R.id.imgBellezza9, R.id.imgBellezza10 };
+        List<ImageView> l = new ArrayList<>();
+        for (int b : bell) {
+            l.add(findViewById(b));
+        }
+        VariabiliStatichePlayer.getInstance().setImgBellezza(l);
 
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {
@@ -86,12 +124,15 @@ public class MainPlayer extends Activity {
         if (!VariabiliStatichePlayer.getInstance().isGiaPartito()) {
             VariabiliStatichePlayer.getInstance().setGiaPartito(true);
 
+            VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
             VariabiliStatichePlayer.getInstance().setStaSuonando(false);
+
+            VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
 
             VariabiliStatichePlayer.getInstance().getTxtTitolo().setText("");
             VariabiliStatichePlayer.getInstance().getTxtInizio().setText("");
             VariabiliStatichePlayer.getInstance().getTxtFine().setText("");
-            VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer().setText("");
+            // VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer().setText("");
 
             StrutturaUtenti su = new StrutturaUtenti();
             su.setId(1);
@@ -187,6 +228,19 @@ public class MainPlayer extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mCuffieInseriteReceiver != null) {
+            context.unregisterReceiver(mCuffieInseriteReceiver);
+        }
+
+        if (mButtonMediaReceiver != null) {
+            context.unregisterReceiver(mButtonMediaReceiver);
+        }
+
+        super.onDestroy();
     }
 
     @Override
