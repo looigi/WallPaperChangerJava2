@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="2dp"
+    android:background="@color/Nero"
     android:orientation="vertical"
     android:id="@+id/container_tipo_modifica_immagine"
     android:layout_height="match_parent">
@@ -12,7 +13,8 @@
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
         android:background="@drawable/bordato"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="1dp"
         android:layout_height="wrap_content">
     </TextView>
 
@@ -32,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Colori -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/layColori"
@@ -55,7 +58,8 @@
             <SeekBar
                 android:id="@+id/seekBarCont"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:thumb="@drawable/seekbar_thumb"
+                android:layout_height="55dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -70,7 +74,8 @@
             <SeekBar
                 android:id="@+id/seekBarLum"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:thumb="@drawable/seekbar_thumb"
+                android:layout_height="55dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -239,6 +244,7 @@
 
     </LinearLayout>
 
+    <!-- Salva -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/laySalvataggio"
@@ -277,6 +283,7 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Ruota -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/layRuota"
@@ -336,7 +343,8 @@
             <SeekBar
                 android:id="@+id/seekBarAngolo"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content">
+                android:thumb="@drawable/seekbar_thumb"
+                android:layout_height="55dp">
 
             </SeekBar>
         </LinearLayout>
@@ -373,6 +381,7 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Resize -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/layResize"
@@ -404,7 +413,8 @@
             <SeekBar
                 android:id="@+id/seekBarDimensioni"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content">
+                android:thumb="@drawable/seekbar_thumb"
+                android:layout_height="55dp">
 
             </SeekBar>
         </LinearLayout>

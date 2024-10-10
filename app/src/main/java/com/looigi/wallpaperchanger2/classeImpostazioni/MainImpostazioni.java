@@ -21,6 +21,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classiDetector.Impostazioni;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
@@ -31,9 +33,12 @@ import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classiGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.classiStandard.db_debug;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
@@ -84,6 +89,12 @@ public class MainImpostazioni extends Activity {
                 break;
             case "MAPPA":
                 qualeSchermata = 3;
+                break;
+            case "IMMAGINI":
+                qualeSchermata = 5;
+                break;
+            case "VIDEO":
+                qualeSchermata = 6;
                 break;
             default:
                 qualeSchermata = 0;
@@ -732,15 +743,39 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataMappa(Activity act) {
+        db_dati_gps db = new db_dati_gps(context);
+        db.CaricaImpostazioni();
+
         SwitchCompat sSegue = act.findViewById(R.id.sSegue);
         sSegue.setChecked(true);
-        segue = true;
         sSegue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                segue = sSegue.isChecked();
+                VariabiliStaticheGPS.getInstance().setSegue(sSegue.isChecked());
 
-                MainMappa.segue = segue;
+                db.ScriveImpostazioni();
+            }
+        });
+
+        SwitchCompat sSegnale = act.findViewById(R.id.sSegnale);
+        sSegnale.setChecked(true);
+        sSegnale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setMostraSegnale(sSegnale.isChecked());
+
+                db.ScriveImpostazioni();
+            }
+        });
+
+        SwitchCompat sPercorso = act.findViewById(R.id.sPercorso);
+        sPercorso.setChecked(true);
+        sPercorso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setMostraPercorso(sPercorso.isChecked());
+
+                db.ScriveImpostazioni();
             }
         });
 
@@ -796,6 +831,27 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataImmagini(Activity act) {
+        db_dati_immagini db = new db_dati_immagini(context);
+        db.CaricaImpostazioni();
+
+        EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShow);
+        String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
+        edtSecondi.setText(limite);
+        edtSecondi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        String lim = edtSecondi.getText().toString();
+                        VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(Integer.parseInt(lim));
+
+                        db_dati_immagini db = new db_dati_immagini(context);
+                        db.ScriveImpostazioni();
+                    }
+                }
+            }
+        });
+
         Button btnInviaLog = act.findViewById(R.id.btnInviaLogIM);
         Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogIM);
         Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogIM);
@@ -841,6 +897,27 @@ public class MainImpostazioni extends Activity {
         layAprePlayer = act.findViewById(R.id.layAprePlayer);
         layChiudePlayer = act.findViewById(R.id.layChiudePlayer);
         // laySettingsImpo = act.findViewById(R.id.laySettingsPlayer);
+
+        db_dati_player db = new db_dati_player(context);
+        db.CaricaImpostazioni();
+
+        EditText edtLimiteGB = act.findViewById(R.id.edtLimiteGiga);
+        String limite = String.valueOf(VariabiliStatichePlayer.getInstance().getLimiteInGb());
+        edtLimiteGB.setText(limite);
+        edtLimiteGB.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        String lim = edtLimiteGB.getText().toString();
+                        VariabiliStatichePlayer.getInstance().setLimiteInGb(Float.parseFloat(lim));
+
+                        db_dati_player db = new db_dati_player(context);
+                        db.ScriveImpostazioni();
+                    }
+                }
+            }
+        });
 
         Button btnAprePlayer = (Button) act.findViewById(R.id.btnAprePlayer);
         btnAprePlayer.setOnClickListener(new View.OnClickListener() {

@@ -68,11 +68,12 @@ public class modificaImmagine extends Activity {
     private SeekBar seekDimensioni;
     private SeekBar seekAngolo;
     private boolean nonFareRuota = false;
+    private boolean nonResizare = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.modifica_immagine);
+        setContentView(R.layout.activity_modifica_immagine);
 
         context = this;
         act = this;
@@ -267,7 +268,7 @@ public class modificaImmagine extends Activity {
         imgColori = act.findViewById(R.id.imgColori);
         seekDimensioni = act.findViewById(R.id.seekBarDimensioni);
         seekDimensioni.setMin(0);
-        seekDimensioni.setMax(200);
+        seekDimensioni.setMax(500);
         seekDimensioni.setProgress(Resize);
         txtDimensioni = act.findViewById(R.id.txtDimensioni);
         seekAngolo = act.findViewById(R.id.seekBarAngolo);
@@ -382,9 +383,11 @@ public class modificaImmagine extends Activity {
 
         imgResize2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                nonResizare = true;
                 Resize = 100;
                 seekDimensioni.setProgress(Resize);
                 vecchiaBitmap = null;
+                nonResizare = false;
 
                 AggiornaBitmap(bitmap);
 
@@ -625,18 +628,19 @@ public class modificaImmagine extends Activity {
 
             @Override
             public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
-                Resize = progress;
+                if (!nonResizare) {
+                    Resize = progress;
 
-                int vecchioX = bitmap.getWidth();
-                int vecchioY = bitmap.getHeight();
-                int nuovoX = Math.round((float) (vecchioX * Resize) / 100);
-                int nuovoY = Math.round((float) (vecchioY * Resize) / 100);
+                    int vecchioX = vecchiaBitmap.getWidth();
+                    int vecchioY = vecchiaBitmap.getHeight();
+                    int nuovoX = Math.round((float) (vecchioX * Resize) / 100);
+                    int nuovoY = Math.round((float) (vecchioY * Resize) / 100);
 
-                txtDimensioni.setText(Resize + "%: " + nuovoX + "x" + nuovoY);
+                    txtDimensioni.setText(Resize + "%: " + nuovoX + "x" + nuovoY);
 
-                bitmap = g.Resize(bitmap, nuovoX, nuovoY);
-
-                AggiornaBitmap(bitmap);
+                    bitmap = g.Resize(vecchiaBitmap, nuovoX, nuovoY);
+                    // AggiornaBitmap(bitmap);
+                }
             }
         });
 

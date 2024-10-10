@@ -91,6 +91,16 @@
 
     <ImageView
         android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:paddingStart="2dp"
+        android:id="@+id/imgOnOff"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:src="@drawable/on" />
+
+    <ImageView
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:paddingEnd="2dp"

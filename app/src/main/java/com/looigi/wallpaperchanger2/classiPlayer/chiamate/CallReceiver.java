@@ -14,6 +14,10 @@ public class CallReceiver extends GestioneChiamate {
 
     @Override
     protected void onIncomingCallStarted(String number, Date start) {
+		if (!VariabiliStatichePlayer.getInstance().isPlayerAttivo()) {
+			return;
+		}
+
 		Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 		UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Incoming Call Started: " + number);
     	if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
@@ -28,6 +32,10 @@ public class CallReceiver extends GestioneChiamate {
 
     @Override
     protected void onOutgoingCallStarted(String number, Date start) {
+		if (!VariabiliStatichePlayer.getInstance().isPlayerAttivo()) {
+			return;
+		}
+
 		Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 		UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Outgoing Call Started: " + number);
 		if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
@@ -42,6 +50,10 @@ public class CallReceiver extends GestioneChiamate {
 
     @Override
     protected void onIncomingCallEnded(String number, Date start, Date end) {
+		if (!VariabiliStatichePlayer.getInstance().isPlayerAttivo()) {
+			return;
+		}
+
 		Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 		UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Incoming Call End: " + number);
 		if (VariabiliStatichePlayer.getInstance().getStavaSuonando() == 1) {
@@ -54,6 +66,10 @@ public class CallReceiver extends GestioneChiamate {
 
     @Override
     protected void onOutgoingCallEnded(String number, Date start, Date end) {
+		if (!VariabiliStatichePlayer.getInstance().isPlayerAttivo()) {
+			return;
+		}
+
 		Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 		UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Outgoing Call Ended: " + number);
 		if (VariabiliStatichePlayer.getInstance().getStavaSuonando() == 1) {
@@ -66,6 +82,10 @@ public class CallReceiver extends GestioneChiamate {
 
     @Override
     protected void onMissedCall(String number, Date start) {
+		if (!VariabiliStatichePlayer.getInstance().isPlayerAttivo()) {
+			return;
+		}
+
 		Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 		UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "On Missed Call: " + number);
 		if (VariabiliStatichePlayer.getInstance().getStavaSuonando() == 1) {

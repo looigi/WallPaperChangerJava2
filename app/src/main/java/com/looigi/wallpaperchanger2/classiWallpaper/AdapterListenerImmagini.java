@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 }
             } else {
                 String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
-                new DownloadImage(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
+                new DownloadImageWP(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
             }
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -97,7 +96,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                     ChangeWallpaper c = new ChangeWallpaper(context);
                     if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                         UtilityWallpaper.getInstance().Attesa(true);
-                        new DownloadImage(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
+                        new DownloadImageWP(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
                     } else {
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                     }

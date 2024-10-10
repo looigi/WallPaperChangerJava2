@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
@@ -20,7 +22,9 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiGps.MainMappa;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
@@ -84,10 +88,11 @@ public class GestioneNotificheTasti {
                 // contentView.setViewVisibility(R.id.imgMap, LinearLayout.VISIBLE);
                 contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.VISIBLE);
                 Bitmap bmGps;
-                if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
-                } else {
+                if (!VariabiliStaticheGPS.getInstance().isGpsAttivo() ||
+                    VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
                     bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+                } else {
+                    bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
                 }
                 contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGps);
 
@@ -188,6 +193,12 @@ public class GestioneNotificheTasti {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
+            Intent gps = new Intent(ctx, NotificationActionServiceTasti.class);
+            gps.putExtra("DO", "gps");
+            PendingIntent pGps = PendingIntent.getService(ctx, 200, gps,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps);
+
             Intent settings = new Intent(ctx, NotificationActionServiceTasti.class);
             settings.putExtra("DO", "settings");
             PendingIntent pSettings = PendingIntent.getService(ctx, 201, settings,
@@ -317,15 +328,40 @@ public class GestioneNotificheTasti {
 
             if (action!=null) {
                 switch (action) {
+                    case "gps":
+                        boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
+                        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
+                        if (!attivo) {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICA");
+                        } else {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                        }
+                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                        break;
                     case "settings":
                         Intent iI = new Intent(context, MainImpostazioni.class);
                         iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(iI);
                         break;
                     case "detector":
-                        Intent iD = new Intent(context, MainActivityDetector.class);
-                        iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iD);
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iD = new Intent(context, MainActivityDetector.class);
+                                iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(iD);
+
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                        i2.inizializzaMaschera(
+                                                context,
+                                                VariabiliStaticheDetector.getInstance().getMainActivity());
+                                    }
+                                }, 100);
+                            }
+                        }, 500);
                         break;
                     case "wallpaper":
                         Intent iW = new Intent(context, MainWallpaper.class);

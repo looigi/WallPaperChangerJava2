@@ -2,15 +2,12 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -44,7 +41,7 @@ public class ChiamateWSMI implements TaskDelegate {
         }
 
         String Urletto="ProssimaImmagine?" +
-                "idCategoria=" + idCategoria +
+                "idCategoria=" + (idCategoria != -1 ? idCategoria : "") +
                 "&Filtro=" + Filtro +
                 "&idImmagine=" + idImmagine +
                 "&Random=" + Random;
@@ -135,6 +132,13 @@ public class ChiamateWSMI implements TaskDelegate {
         if (ritorno) {
             try {
                 List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
+                StrutturaImmaginiCategorie sicT = new StrutturaImmaginiCategorie();
+                sicT.setIdCategoria(-1);
+                sicT.setCategoria("Tutte");
+                sicT.setAlias("");
+                sicT.setTag("");
+
+                listaCategorie.add(sicT);
 
                 JSONArray jObject = new JSONArray(result);
 
@@ -208,7 +212,7 @@ public class ChiamateWSMI implements TaskDelegate {
 
                     VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
 
-                    new DownloadImage(context, si.getUrlImmagine(),
+                    new DownloadImageMI(context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());
                 }
             } catch (JSONException e) {

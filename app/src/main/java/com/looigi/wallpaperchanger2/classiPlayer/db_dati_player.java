@@ -82,6 +82,13 @@ public class db_dati_player {
                         + ");";
 
                 myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Impostazioni"
+                        + " (LimiteInBytes VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
             }
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
@@ -246,6 +253,68 @@ public class db_dati_player {
         }
     }
 
+    public int RitornaMaxIdBrano() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT coalesce(max(idBrano),0) + 1 FROM listaBrani", null);
+                if (c.getCount() > 0) {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per max id brano");
+                    c.moveToFirst();
+
+                    try {
+                        return c.getInt(0);
+                    } catch (Exception e) {
+                        return -1;
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per max id brano");
+
+                    return -1;
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db max id brano: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -1;
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return -1;
+        }
+    }
+
+    public boolean EsisteBrano(String Artista, String Album, String Brano) {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani Where Artista='" + Artista + "' And Album='" + Album + "' And Brano='" + Brano + "'", null);
+                if (c.getCount() > 0) {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per esistenza brano");
+                    c.moveToFirst();
+
+                    try {
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per esistenza brano");
+
+                    return false;
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db esistenza brano: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return false;
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return false;
+        }
+    }
+
     public Boolean ScriveUltimoBranoAscoltato(StrutturaBrano sb) {
         if (myDB != null) {
             try {
@@ -269,6 +338,56 @@ public class db_dati_player {
         }
 
         return true;
+    }
+
+    public Boolean ScriveImpostazioni() {
+        if (myDB != null) {
+            try {
+                myDB.execSQL("Delete From Impostazioni");
+
+                String sql = "INSERT INTO"
+                        + " Impostazioni"
+                        + " VALUES ("
+                        + "'" + VariabiliStatichePlayer.getInstance().getLimiteInGb() + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
+                PulisceDatiIMP();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return ScriveImpostazioni();
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public void CaricaImpostazioni() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
+                if (c.getCount() > 0) {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    c.moveToFirst();
+
+                    try {
+                        VariabiliStatichePlayer.getInstance().setLimiteInGb(Float.parseFloat(c.getString(0)));
+                    } catch (Exception e) {
+                        VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
     }
 
     public Boolean ScriveBrano(StrutturaBrano sb) {
@@ -369,6 +488,17 @@ public class db_dati_player {
                 myDB.execSQL("Drop Table listaBrani");
             } catch (Exception ignored) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db brani: " + ignored.getMessage());
+            }
+        }
+    }
+
+    public void PulisceDatiIMP() {
+        if (myDB != null) {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
+            try {
+                myDB.execSQL("Drop Table Impostazioni");
+            } catch (Exception ignored) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
             }
         }
     }

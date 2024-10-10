@@ -749,7 +749,9 @@ public class UtilityDetector {
                         VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
                     }
 
-                    VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
+                    if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
+                        VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
+                    }
 
                     /* if (NomeMultimedia.toUpperCase().contains(".DBF")) {
                         VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);

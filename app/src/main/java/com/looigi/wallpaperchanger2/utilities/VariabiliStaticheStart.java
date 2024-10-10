@@ -41,15 +41,6 @@ public class VariabiliStaticheStart {
     private boolean playerAperto = false;
     private boolean VisibileImmagini = false;
     private boolean VisibileVideo = false;
-    private TelephonyManager mTelephonyManager;
-
-    public TelephonyManager getmTelephonyManager() {
-        return mTelephonyManager;
-    }
-
-    public void setmTelephonyManager(TelephonyManager mTelephonyManager) {
-        this.mTelephonyManager = mTelephonyManager;
-    }
 
     public String getUltimoControlloRete() {
         return ultimoControlloRete;

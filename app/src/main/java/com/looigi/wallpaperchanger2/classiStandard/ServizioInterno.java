@@ -15,7 +15,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale;
+import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
@@ -36,6 +36,7 @@ public class ServizioInterno extends Service {
     private Context context;
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
+    private Intent intentSegnale;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -75,6 +76,10 @@ public class ServizioInterno extends Service {
                 VariabiliStaticheWallpaper.channelName);
         wl.acquire();
 
+        // CONTROLLO SEGNALE
+        intentSegnale = new Intent(this, ControlloSegnale2.class);
+        startService(intentSegnale);
+
         // GESTIONE ACCENSIONE SCHERMO
         mScreenReceiver = new ScreenReceiver();
         IntentFilter filterSO = new IntentFilter();
@@ -82,10 +87,6 @@ public class ServizioInterno extends Service {
         filterSO.addAction(Intent.ACTION_SCREEN_ON);
         filterSO.setPriority(9999);
         context.registerReceiver(mScreenReceiver, filterSO);
-
-        // GESTIONE SEGNALE
-        VariabiliStaticheStart.getInstance().setmTelephonyManager((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE));
-        VariabiliStaticheStart.getInstance().getmTelephonyManager().listen(new ControlloSegnale(), PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
         Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
         if (notificaTasti != null) {
@@ -186,11 +187,11 @@ public class ServizioInterno extends Service {
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
 
-        if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
+        /* if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
             VariabiliStaticheStart.getInstance().setmTelephonyManager(null);
         }
 
-        /* if (mVolumePressed != null) {
+        if (mVolumePressed != null) {
             getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);
             mVolumePressed = null;
         }
@@ -200,6 +201,10 @@ public class ServizioInterno extends Service {
             mAudioManagerInterno.unregisterMediaButtonEventReceiver(mReceiverComponentInterno);
             mReceiverComponentInterno = null;
         } */
+
+        if (intentSegnale != null) {
+            context.stopService(intentSegnale);
+        }
 
         if (mScreenReceiver != null) {
             context.unregisterReceiver(mScreenReceiver);

@@ -115,11 +115,11 @@ public class MainStart  extends Activity {
         }
 
         ImageView imgD = findViewById(R.id.imgStartDetector);
-
-        TextView txtLabelDet = findViewById(R.id.txtStartLabelDet);
+        LinearLayout layDetector = findViewById(R.id.layBarraDetector);
         if (VariabiliStaticheStart.getInstance().isDetector()) {
-            imgD.setVisibility(LinearLayout.VISIBLE);
-            txtLabelDet.setVisibility(LinearLayout.VISIBLE);
+            layDetector.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layDetector.setVisibility(LinearLayout.GONE);
         }
         imgD.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -251,10 +251,11 @@ public class MainStart  extends Activity {
         });
 
         ImageView imgM = findViewById(R.id.imgStartMappa);
-        TextView txtLabelMap = findViewById(R.id.txtStartLabelMap);
+        LinearLayout layMappa = findViewById(R.id.layBarraMappa);
         if (VariabiliStaticheStart.getInstance().isDetector()) {
-            imgM.setVisibility(LinearLayout.VISIBLE);
-            txtLabelMap.setVisibility(LinearLayout.VISIBLE);
+            layMappa.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layMappa.setVisibility(LinearLayout.GONE);
         }
         imgM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -281,11 +282,12 @@ public class MainStart  extends Activity {
         });
 
         ImageView imgI = findViewById(R.id.imgStartImmagini);
-        TextView txtLabelImm = findViewById(R.id.txtStartLabelImm);
+        LinearLayout layImmagini = findViewById(R.id.layBarraImmagini);
         if (VariabiliStaticheStart.getInstance().isDetector() &&
             VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
-            imgI.setVisibility(LinearLayout.VISIBLE);
-            txtLabelImm.setVisibility(LinearLayout.VISIBLE);
+            layImmagini.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layImmagini.setVisibility(LinearLayout.GONE);
         }
         imgI.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -312,11 +314,12 @@ public class MainStart  extends Activity {
         });
 
         ImageView imgV = findViewById(R.id.imgStartVideo);
-        TextView txtLabelVid = findViewById(R.id.txtStartLabelVid);
+        LinearLayout layVideo = findViewById(R.id.layBarraVideo);
         if (VariabiliStaticheStart.getInstance().isDetector() &&
                 VariabiliStaticheStart.getInstance().isVisibileVideo()) {
-            imgV.setVisibility(LinearLayout.VISIBLE);
-            txtLabelVid.setVisibility(LinearLayout.VISIBLE);
+            layVideo.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layVideo.setVisibility(LinearLayout.GONE);
         }
         imgV.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -361,7 +364,7 @@ public class MainStart  extends Activity {
             g.AbilitaGPS();
         }
 
-        /* Intent iP = new Intent(context, MainMostraVideo.class);
+        /* Intent iP = new Intent(context, MainImpostazioni.class);
         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(iP);
 

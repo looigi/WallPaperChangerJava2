@@ -13,11 +13,11 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import static androidx.core.content.ContextCompat.registerReceiver;
 
 public class Esecuzione {
-    private Handler handler;
     // private int errori;
     private long tmsPrecedente = -1L;
     private static final String NomeMaschera = "Esecuzione";
     private Context context;
+    private Handler handler;
     private Runnable r;
     private HandlerThread handlerThread;
 

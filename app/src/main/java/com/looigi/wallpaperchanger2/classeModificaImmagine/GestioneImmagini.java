@@ -463,11 +463,9 @@ public class GestioneImmagini {
 	}
 
 	public Bitmap Resize(Bitmap imaged, int maxWidth, int maxHeight) {
-		Bitmap image = imaged;
-
-		if (maxHeight > 0 && maxWidth > 0) {
-			int width = image.getWidth();
-			int height = image.getHeight();
+        if (maxHeight > 0 && maxWidth > 0) {
+			int width = imaged.getWidth();
+			int height = imaged.getHeight();
 			float ratioBitmap = (float) width / (float) height;
 			float ratioMax = (float) maxWidth / (float) maxHeight;
 			int finalWidth = maxWidth;
@@ -477,9 +475,12 @@ public class GestioneImmagini {
 			} else {
 				finalHeight = Math.round(((float) maxWidth / ratioBitmap));
 			}
-			return image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, false);
+			Bitmap b = Bitmap.createScaledBitmap(imaged, finalWidth, finalHeight, false);
+
+			return b;
+		} else {
+			return imaged;
 		}
-		return image;
 	}
 
 	public Bitmap CambiaContrastoLuminosita(Bitmap Immagine, float contrast, float brightness)

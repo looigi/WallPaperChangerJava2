@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,11 +25,16 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
+import com.looigi.wallpaperchanger2.classiPlayer.scan.ScanBraniNonPresentiSuDB;
+import com.looigi.wallpaperchanger2.classiPlayer.scan.ScanBraniPerLimite;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainPlayer extends Activity {
     private HeadsetBroadcastReceiver mCuffieInseriteReceiver;
@@ -63,6 +69,9 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setAct(this);
         VariabiliStatichePlayer.getInstance().setContext(this);
 
+        db_dati_player db = new db_dati_player(context);
+        db.CaricaImpostazioni();
+
         VariabiliStatichePlayer.getInstance().setMascheraNascosta(false);
 
         VariabiliStatichePlayer.getInstance().setImgAvanti(findViewById(R.id.imgAvantiPlayer));
@@ -79,6 +88,12 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setTxtBranoPregresso(findViewById(R.id.txtBranoPregresso));
         VariabiliStatichePlayer.getInstance().setImgCambiaPregresso(findViewById(R.id.imgCambiaPregresso));
         VariabiliStatichePlayer.getInstance().setImgCuffie(findViewById(R.id.imgCuffie));
+
+        ScanBraniNonPresentiSuDB s = new ScanBraniNonPresentiSuDB();
+        s.controllaCanzoniNonSalvateSuDB(context);
+
+        ScanBraniPerLimite sl = new ScanBraniPerLimite();
+        sl.controllaSpazioOccupato(context);
 
         int[] bell = { R.id.imgBellezza0, R.id.imgBellezza1, R.id.imgBellezza2, R.id.imgBellezza3,
                 R.id.imgBellezza4, R.id.imgBellezza5, R.id.imgBellezza6, R.id.imgBellezza7,
@@ -141,7 +156,6 @@ public class MainPlayer extends Activity {
             su.setPassword("");
             VariabiliStatichePlayer.getInstance().setUtente(su);
 
-            db_dati_player db = new db_dati_player(this);
             String idBrano = db.CaricaUltimoBranoAscoltato();
             StrutturaBrano sb = null;
             if (!idBrano.isEmpty()) {
@@ -158,15 +172,28 @@ public class MainPlayer extends Activity {
 
             // this.moveTaskToBack(true);
         } else {
+            // RIPRISTINO SCHERMATA
+            if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
+                VariabiliStatichePlayer.getInstance().getTxtTitolo().setText(
+                        VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano()
+                );
+            } else {
+                VariabiliStatichePlayer.getInstance().getTxtTitolo().setText(
+                        ""
+                );
+            }
             VariabiliStatichePlayer.getInstance().getTxtInizio().setText(
                     VariabiliStatichePlayer.getInstance().getInizioMinuti()
             );
-            VariabiliStatichePlayer.getInstance().setFineMinuti(
+            VariabiliStatichePlayer.getInstance().getTxtFine().setText(
                     VariabiliStatichePlayer.getInstance().getFineMinuti()
             );
             VariabiliStatichePlayer.getInstance().getSeekBarBrano().setProgress(
                     VariabiliStatichePlayer.getInstance().getSecondiPassati()
             );
+
+            Bitmap bitmap = BitmapFactory.decodeFile(VariabiliStatichePlayer.getInstance().getPathUltimaImmagine());
+            VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
         }
 
         Bitmap bmpStart;
@@ -228,10 +255,16 @@ public class MainPlayer extends Activity {
             }
         });
 
+        LinearLayout layImpostazioni = findViewById(R.id.layImpostazioniPlayerInterne);
+        layImpostazioni.setVisibility(LinearLayout.GONE);
+
+        VariabiliStatichePlayer.getInstance().setPlayerAttivo(true);
     }
 
     @Override
     protected void onDestroy() {
+        VariabiliStatichePlayer.getInstance().setPlayerAttivo(false);
+
         if (mCuffieInseriteReceiver != null) {
             context.unregisterReceiver(mCuffieInseriteReceiver);
         }

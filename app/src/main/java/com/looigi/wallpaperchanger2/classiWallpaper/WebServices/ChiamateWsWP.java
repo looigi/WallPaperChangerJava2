@@ -1,13 +1,12 @@
 package com.looigi.wallpaperchanger2.classiWallpaper.WebServices;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classiWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classiWallpaper.DownloadImageWP;
 import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 
 import java.util.ArrayList;
@@ -165,7 +164,7 @@ public class ChiamateWsWP implements TaskDelegate {
 
             VariabiliStaticheWallpaper.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
-            new DownloadImage(context, NomeImmagine, null).execute(Immagine);
+            new DownloadImageWP(context, NomeImmagine, null).execute(Immagine);
         }
     }
 

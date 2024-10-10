@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/activity_detector"
+    android:background="@color/Nero"
     tools:context=".classiWallpaper.MainWallpaper">
 
     <LinearLayout
@@ -30,6 +31,8 @@
     </LinearLayout>
 
     <TextView
+        android:padding="3dp"
+        android:textColor="@color/white"
         android:layout_below="@+id/layTitolo"
         android:id="@+id/txtTestoLog"
         android:scrollbars="vertical"

@@ -66,6 +66,14 @@ public class GestioneNotificheWP {
             setListenersTasti(contentView, context);
             setListeners(contentView);
 
+            Bitmap onOff;
+            if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
+                onOff = BitmapFactory.decodeResource(context.getResources(), R.drawable.on);
+            } else {
+                onOff = BitmapFactory.decodeResource(context.getResources(), R.drawable.off);
+            }
+            contentView.setImageViewBitmap(R.id.imgOnOff, onOff);
+
             if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                 String path = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getPathImmagine();
                 if (!path.isEmpty()) {
@@ -180,11 +188,11 @@ public class GestioneNotificheWP {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgRefresh, pRefresh);
 
-            /* Intent switchgps = new Intent(ctx, NotificationActionService.class);
-            switchgps.putExtra("DO", "gps");
-            PendingIntent pSwitchGPS = PendingIntent.getService(ctx, 73, switchgps,
+            Intent switchOnOff = new Intent(ctx, NotificationActionService.class);
+            switchOnOff.putExtra("DO", "attivo");
+            PendingIntent pSwitchOnOff = PendingIntent.getService(ctx, 73, switchOnOff,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPS, pSwitchGPS); */
+            view.setOnClickPendingIntent(R.id.imgOnOff, pSwitchOnOff);
 
         // } else {
             // // Utility.getInstance().ScriveLog("Set Listeners tasti. View NON corretta" );
@@ -349,6 +357,16 @@ public class GestioneNotificheWP {
                         } else {
                             UtilitiesGlobali.getInstance().ApreToast(this, "GPS Non attivo");
                         }
+                        break;
+
+                    case "attivo":
+                        boolean on = VariabiliStaticheWallpaper.getInstance().isOnOff();
+                        VariabiliStaticheWallpaper.getInstance().setOnOff(!on);
+
+                        db_dati_wallpaper db = new db_dati_wallpaper(context);
+                        db.ScriveImpostazioni();
+
+                        GestioneNotificheWP.getInstance().AggiornaNotifica();
                         break;
                 }
             }

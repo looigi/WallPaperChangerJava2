@@ -185,6 +185,8 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".Segnale.ControlloSegnale2" />
+
         <service android:name=".classiPlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 
         <service android:name=".classiWallpaper.GestioneNotificheWP$NotificationActionService" />

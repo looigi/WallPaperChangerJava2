@@ -345,6 +345,8 @@ public class InizializzaMascheraWallpaper {
 
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
+
                 UtilityWallpaper.getInstance().Attesa(true);
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 c.setWallpaperLocale(context,

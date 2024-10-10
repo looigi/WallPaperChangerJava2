@@ -30,6 +30,20 @@
         android:layout_height="wrap_content"
         android:text="Segue" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sSegnale"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Visualizza Segnale" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sPercorso"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Visualizza Percorso" />
+
     <View
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

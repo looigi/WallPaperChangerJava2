@@ -24,6 +24,7 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -31,6 +32,7 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -211,6 +213,9 @@ public class UtilityPlayer {
                 VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
                 VariabiliStatichePlayer.getInstance().setHaCaricatoBranoPregresso(false);
 
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveUltimoBranoAscoltato(sb);
+
                 FaiPartireTimer(context);
 
                 ScriveLog(context, NomeMaschera, "Brano caricato");
@@ -385,6 +390,9 @@ public class UtilityPlayer {
 
         ScriveLog(context, NomeMaschera, "Avanzo Brano");
 
+        VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
+        RipristinoChiamate.getInstance().RimuoveTimer();
+
         boolean cercaBranoInLocale = false;
         boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
         int livello = VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione();
@@ -405,6 +413,10 @@ public class UtilityPlayer {
                 }
             // }
         }
+
+        /* if (!Pregresso) {
+            cercaBranoInLocale = true;
+        } */
 
         if (!cercaBranoInLocale) {
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
@@ -431,15 +443,23 @@ public class UtilityPlayer {
                 ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + numeroBrano);
                 StrutturaBrano sb = db.CaricaBrano(Integer.toString(numeroBrano));
                 if (sb != null) {
-                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano());
+                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano() + ". Pregresso: " + Pregresso);
 
                     ancora = false;
-                    VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
+                    if (Pregresso) {
+                        VariabiliStatichePlayer.getInstance().setHaCaricatoBranoPregresso(true);
+                        VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(sb);
 
-                    CaricaBranoNelLettore(context);
+                        VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText(sb.getArtista() + ":" + sb.getBrano());
+                        VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
-                    VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
-                    VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
+                        CaricaBranoNelLettore(context);
+
+                        VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
+                        VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
+                    }
 
                     ok = true;
                 } else {
@@ -478,12 +498,26 @@ public class UtilityPlayer {
 
                             AggiornaInformazioni(false);
                         } else {
-                            new DownloadImage(
-                                    context,
-                                    VariabiliStatichePlayer.getInstance().getImgBrano(),
-                                    lista.get(immagine).getUrlImmagine()).execute(
-                                    lista.get(immagine).getUrlImmagine()
-                            );
+                            boolean ok = true;
+                            int level = VariabiliStaticheStart.getInstance().getLivello();
+
+                            if (!VariabiliStatichePlayer.getInstance().isRetePresente()) {
+                                ok = false;
+                            } else {
+                                // if (!wifi) {
+                                if (level <= 2) {
+                                    ok = false;
+                                }
+                                // }
+                            }
+                            if (ok) {
+                                new DownloadImage(
+                                        context,
+                                        VariabiliStatichePlayer.getInstance().getImgBrano(),
+                                        lista.get(immagine).getUrlImmagine()).execute(
+                                        lista.get(immagine).getUrlImmagine()
+                                );
+                            }
                         }
                     } else {
                         ImpostaLogoApplicazione(context);

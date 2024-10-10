@@ -3,13 +3,15 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -24,6 +26,9 @@ public class UtilityImmagini {
     private static final String NomeMaschera = "UTILITYIMMAGINI";
     private static UtilityImmagini instance = null;
     private int quantiCaricamenti = 0;
+    private Handler handler;
+    private Runnable r;
+    private HandlerThread handlerThread;
 
     private UtilityImmagini() {
     }
@@ -101,6 +106,38 @@ public class UtilityImmagini {
         }
     }
 
+    public void AttivaTimerSlideShow(Context context) {
+        handlerThread = new HandlerThread("background-thread_" +
+                VariabiliStaticheWallpaper.channelName + "_slideshow");
+        handlerThread.start();
+
+        handler = new Handler(handlerThread.getLooper());
+        r = new Runnable() {
+            public void run() {
+                RitornaProssimaImmagine(context);
+            }
+        };
+        handler.postDelayed(r, VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
+    }
+
+    public void RiattivaTimer() {
+        if (handler != null) {
+            handler.postDelayed(r, VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
+        }
+    }
+
+    public void BloccaTimerSlideShow() {
+        if (handler != null && r != null && handlerThread != null) {
+            handlerThread.quit();
+
+            handler.removeCallbacksAndMessages(null);
+
+            handler.removeCallbacks(r);
+            handler = null;
+            r = null;
+        }
+    }
+
     public void RitornaProssimaImmagine(Context context) {
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaProssimaImmagine(
@@ -121,7 +158,7 @@ public class UtilityImmagini {
             VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
             VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(s.getIdImmagine());
 
-            new DownloadImage(context, s.getUrlImmagine(),
+            new DownloadImageMI(context, s.getUrlImmagine(),
                     VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(s.getUrlImmagine());
 
             List<StrutturaImmaginiLibrary> lista = new ArrayList<>();

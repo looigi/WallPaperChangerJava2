@@ -23,6 +23,30 @@
         android:layout_height="1dp"
         android:background="@android:color/black" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="3"
+            android:text="Tempo Slideshow" />
+
+        <EditText
+            android:id="@+id/edtTempoSlideShow"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+    </LinearLayout>
 
     <View
         android:layout_marginTop="40dp"

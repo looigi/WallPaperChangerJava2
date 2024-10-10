@@ -79,6 +79,9 @@ public class VariabiliStatichePlayer {
     private ChiamateWsPlayer classeChiamata;
     private boolean retePresente = true;
     private List<StrutturaChiamateWSPlayer> chiamate;
+    private boolean playerAttivo = false;
+    private float limiteInGb = 1.5F;
+    private List<String> braniSuSD = new ArrayList<>();
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -110,6 +113,30 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public List<String> getBraniSuSD() {
+        return braniSuSD;
+    }
+
+    public void setBraniSuSD(List<String> braniSuSD) {
+        this.braniSuSD = braniSuSD;
+    }
+
+    public float getLimiteInGb() {
+        return limiteInGb;
+    }
+
+    public void setLimiteInGb(float limiteInBytes) {
+        this.limiteInGb = limiteInBytes;
+    }
+
+    public boolean isPlayerAttivo() {
+        return playerAttivo;
+    }
+
+    public void setPlayerAttivo(boolean playerAttivo) {
+        this.playerAttivo = playerAttivo;
     }
 
     public void RimuovePrimaChiamata() {

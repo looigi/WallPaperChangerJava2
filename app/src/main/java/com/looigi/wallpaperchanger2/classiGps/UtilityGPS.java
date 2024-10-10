@@ -1,8 +1,12 @@
 package com.looigi.wallpaperchanger2.classiGps;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.HandlerThread;
 
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class UtilityGPS {

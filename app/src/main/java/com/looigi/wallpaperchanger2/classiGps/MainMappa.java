@@ -51,7 +51,6 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private int vecchiDati = -1;
     private Date dataAttuale;
     private boolean primoPassaggio = true;
-    public static boolean segue = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         this.context = this;
         this.act = this;
         primoPassaggio = true;
-        segue = true;
+
+        db_dati_gps db = new db_dati_gps(context);
+        db.CaricaImpostazioni();
 
         txtMappa = act.findViewById(R.id.txtMappa);
 
@@ -294,26 +295,28 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             List<StrutturaGps> lista = new ArrayList<>();
             LatLngBounds.Builder bc = new LatLngBounds.Builder();
 
-            // Aggiunta path segnale
-            for (int i = listaGPS.size() - 1; i >= 0; i--) {
-                StrutturaGps s = listaGPS.get(i);
-                int colore = ritornaColoreSegnale(s);
+            if (VariabiliStaticheGPS.getInstance().isMostraSegnale()) {
+                // Aggiunta path segnale
+                for (int i = listaGPS.size() - 1; i >= 0; i--) {
+                    StrutturaGps s = listaGPS.get(i);
+                    int colore = ritornaColoreSegnale(s);
 
-                lista.add(s);
+                    lista.add(s);
 
-                if (vecchioColore != colore) {
-                    if (vecchioColore != -1) {
-                        AggiungePolyLineSegnale(googleMap, lista, colore);
-                        lista = new ArrayList<>();
+                    if (vecchioColore != colore) {
+                        if (vecchioColore != -1) {
+                            AggiungePolyLineSegnale(googleMap, lista, colore);
+                            lista = new ArrayList<>();
+                        }
+
+                        vecchioColore = colore;
                     }
-
-                    vecchioColore = colore;
+                    // }
                 }
-                // }
-            }
 
-            if (!lista.isEmpty()) {
-                AggiungePolyLineSegnale(googleMap, lista, vecchioColore);
+                if (!lista.isEmpty()) {
+                    AggiungePolyLineSegnale(googleMap, lista, vecchioColore);
+                }
             }
 
             /* if (!listaGPS.isEmpty()) {
@@ -332,8 +335,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
             vecchioColore = -1;
 
-            // Aggiunta path velocità
-            for (StrutturaGps s : listaGPS) {
+            if (VariabiliStaticheGPS.getInstance().isMostraPercorso()) {
+                // Aggiunta path velocità
+                for (StrutturaGps s : listaGPS) {
                 /* if (s.getLat() == -1 && s.getLon() == -1) {
                     AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
 
@@ -355,16 +359,17 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                         vecchioColore = colore;
                     }
-                // }
+                    // }
+                }
+
+                if (!lista.isEmpty()) {
+                    AggiungePolyLineVelocita(googleMap, lista, vecchioColore);
+                }
+
+                AggiungeMarkers(googleMap);
             }
 
-            if (!lista.isEmpty()) {
-                AggiungePolyLineVelocita(googleMap, lista, vecchioColore);
-            }
-
-            AggiungeMarkers(googleMap);
-
-            if (primoPassaggio || segue) {
+            if (primoPassaggio || VariabiliStaticheGPS.getInstance().isSegue()) {
                 googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {

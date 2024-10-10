@@ -8,10 +8,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import com.looigi.wallpaperchanger2.classiWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileNotFoundException;
@@ -19,7 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
     private static final String NomeMaschera = "DOWNLOADIMAGE";
     private boolean Errore;
     private String NomeImmagine;
@@ -27,16 +26,14 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     private Context context;
     private ImageView immagine;
 
-    public DownloadImage(Context context, String NomeImmagine, ImageView immagine) {
+    public DownloadImageMI(Context context, String NomeImmagine, ImageView immagine) {
         this.NomeImmagine = NomeImmagine;
         this.context = context;
         this.immagine = immagine;
 
-        if (immagine == null) {
-            UtilityWallpaper.getInstance().Attesa(true);
-        }
+        UtilityImmagini.getInstance().Attesa(true);
 
-        PercorsoDIR = context.getFilesDir() + "/Download";
+        PercorsoDIR = context.getFilesDir() + "/Immagini";
 
         UtilityWallpaper.getInstance().CreaCartelle(PercorsoDIR);
     }
@@ -61,20 +58,20 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     outStream.close();
 
                     if (immagine == null) {
-                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Immagine Scaricata");
+                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Immagine Scaricata");
                     }
                 } catch (FileNotFoundException e) {
                     if (immagine == null) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "File non esistente per il download");
 
-                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     }
                     Errore = true;
                 } catch (IOException e) {
                     if (immagine == null) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel salvataggio su download Immagine");
 
-                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     }
                     Errore = true;
                 }
@@ -85,6 +82,10 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                     @Override
                     public void run() {
                         immagine.setImageBitmap(finalMIcon1);
+
+                        if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
+                            UtilityImmagini.getInstance().RiattivaTimer();
+                        }
                     }
                 }, 100);
 
@@ -93,7 +94,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             if (immagine == null) {
                 UtilitiesGlobali.getInstance().ApreToast(context, "Errore sul download Immagine");
 
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
             }
 
             // e.printStackTrace();
@@ -105,7 +106,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         if (!Errore) {
-            if (immagine == null) {
+            /* if (immagine == null) {
                 String sNomeImmagine = NomeImmagine;
                 if (sNomeImmagine.toUpperCase().contains("HTTP:")) {
                     String[] s = sNomeImmagine.split("/");
@@ -128,13 +129,13 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 c.setWallpaperLocale(context, si);
                 // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
-            }
+            } */
         } else {
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
         }
 
         if (immagine == null) {
-            UtilityWallpaper.getInstance().Attesa(false);
+            UtilityImmagini.getInstance().Attesa(false);
         }
     }
 }

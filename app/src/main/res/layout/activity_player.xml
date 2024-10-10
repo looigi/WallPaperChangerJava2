@@ -367,4 +367,19 @@
 
     </ImageView>
 
+    <LinearLayout
+        android:id="@+id/layImpostazioniPlayerInterne"
+        android:layout_below="@+id/layStelle"
+        android:layout_above="@id/layTastiPlayer"
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/impostazioni_player_interne"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 </RelativeLayout>

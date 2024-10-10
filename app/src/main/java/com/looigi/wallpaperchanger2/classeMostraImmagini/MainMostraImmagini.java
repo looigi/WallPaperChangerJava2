@@ -2,20 +2,35 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiGps.UtilityGPS;
+import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classiWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.WebServices.ChiamateWsWP;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImage;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +60,9 @@ public class MainMostraImmagini extends Activity {
 
         VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoMI));
 
+        db_dati_immagini db = new db_dati_immagini(context);
+        db.CaricaImpostazioni();
+
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie();
 
@@ -53,6 +71,45 @@ public class MainMostraImmagini extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setImg(findViewById(R.id.imgLibrary));
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
         // ImageView imgAvanti = findViewById(R.id.imgAvantiLibrary);
+
+        ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
+        imgImposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
+
+                StrutturaImmagine src = new StrutturaImmagine();
+                src.setPathImmagine(s.getPathImmagine());
+                src.setImmagine(s.getNomeFile());
+                src.setDimensione("");
+                src.setDataImmagine(s.getDataCreazione());
+
+                ChangeWallpaper c = new ChangeWallpaper(context);
+                c.setWallpaperLocale(context, src);
+            }
+        });
+
+        ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "IMMAGINI");
+                                iP.putExtras(b);
+                                VariabiliStaticheMostraImmagini.getInstance().getCtx().startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
 
         VariabiliStaticheMostraImmagini.getInstance().getImg().setOnTouchListener(new OnSwipeTouchListener(MainMostraImmagini.this) {
             public void onSwipeTop() {
@@ -105,7 +162,7 @@ public class MainMostraImmagini extends Activity {
 
                     VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
 
-                    new DownloadImage(context, si.getUrlImmagine(),
+                    new DownloadImageMI(context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());
 
                     letto = true;
@@ -126,17 +183,40 @@ public class MainMostraImmagini extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
-                for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
-                    if (s.getCategoria().equals(Categoria)) {
-                        VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
-                        UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
-                        break;
+                if (Categoria.equals("Tutte")) {
+                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(-1);
+                    UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+                } else {
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                        if (s.getCategoria().equals(Categoria)) {
+                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
+                            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+                            break;
+                        }
                     }
                 }
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
+        ImageView imgSlideShow = findViewById(R.id.imgSlideShow);
+        imgSlideShow.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                boolean attivo = VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo();
+                attivo = !attivo;
+
+                Bitmap bmSS;
+                if (attivo) {
+                    bmSS = BitmapFactory.decodeResource(context.getResources(), R.drawable.slideshow_on);
+                    UtilityImmagini.getInstance().AttivaTimerSlideShow(context);
+                } else {
+                    bmSS = BitmapFactory.decodeResource(context.getResources(), R.drawable.slideshow_off);
+                    UtilityImmagini.getInstance().BloccaTimerSlideShow();
+                }
+                imgSlideShow.setImageBitmap(bmSS);
+            }
         });
 
         if (!letto) {

@@ -24,6 +24,7 @@ public class Acra extends Application {
                 //core configuration:
                 .withBuildConfigClass(BuildConfig.class)
                 .withReportFormat(StringFormat.JSON)
+                .withStopServicesOnCrash(true)
                 // .withLogcatArguments("-t", "100", "MyApp:D", "*:S")
                 .withPluginConfigurations(
                         new ToastConfigurationBuilder()

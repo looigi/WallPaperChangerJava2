@@ -16,7 +16,7 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati_gps {
-    private static final String NomeMaschera = "DBDATI";
+    private static final String NomeMaschera = "DBDATIGPS";
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
@@ -87,10 +87,74 @@ public class db_dati_gps {
                         "GPSAttivo VARCHAR)";
 
                 myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Impostazioni"
+                        + " (Segue VARCHAR, PathSegnale VARCHAR, PathPercorso VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
             }
         } catch (Exception e) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Errore creazione tabelle: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+        }
+    }
+
+    public Boolean ScriveImpostazioni() {
+        if (myDB != null) {
+            try {
+                myDB.execSQL("Delete From Impostazioni");
+
+                String sql = "INSERT INTO"
+                        + " Impostazioni"
+                        + " VALUES ("
+                        + "'" + (VariabiliStaticheGPS.getInstance().isSegue() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isMostraSegnale() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isMostraPercorso() ? "S" : "N") + "' "
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
+                PulisceDatiIMP();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return ScriveImpostazioni();
+            }
+        } else {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public void CaricaImpostazioni() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
+                if (c.getCount() > 0) {
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    c.moveToFirst();
+
+                    try {
+                        VariabiliStaticheGPS.getInstance().setSegue(c.getString(0).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setMostraSegnale(c.getString(1).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setMostraPercorso(c.getString(2).equals("S"));
+                    } catch (Exception e) {
+                        VariabiliStaticheGPS.getInstance().setSegue(true);
+                        VariabiliStaticheGPS.getInstance().setMostraSegnale(true);
+                        VariabiliStaticheGPS.getInstance().setMostraPercorso(true);
+                    }
+                } else {
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+                }
+            } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 
@@ -433,6 +497,17 @@ public class db_dati_gps {
                 myDB.execSQL("Drop Table Accensioni");
             } catch (Exception ignored) {
 
+            }
+        }
+    }
+
+    public void PulisceDatiIMP() {
+        if (myDB != null) {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
+            try {
+                myDB.execSQL("Drop Table Impostazioni");
+            } catch (Exception ignored) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
             }
         }
     }

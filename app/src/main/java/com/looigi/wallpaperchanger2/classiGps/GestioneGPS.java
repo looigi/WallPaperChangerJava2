@@ -187,6 +187,10 @@ public class GestioneGPS {
             context = ctx;
         }
 
+        if (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+            return;
+        }
+
         // wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
         wifi = VariabiliStaticheStart.getInstance().isCeWifi();
 

@@ -1,11 +1,15 @@
-/* package com.looigi.wallpaperchanger2.Segnale;
+package com.looigi.wallpaperchanger2.Segnale;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.IBinder;
 import android.telephony.CellSignalStrength;
 import android.telephony.PhoneStateListener;
+import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
@@ -17,21 +21,49 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import java.util.Calendar;
 import java.util.List;
 
-public class ControlloSegnale extends PhoneStateListener {
-    // private TelephonyManager mTelephonyManager;
-    // private ControlloSegnale mPhoneStatelistener;
-    // private long ultimoControllo = -1;
+public class ControlloSegnale2 extends Service {
+    private TelephonyManager mTelephonyManager;
+    private PhoneStateListener mPhoneStateListener;
 
     @Override
-    public void onSignalStrengthsChanged(SignalStrength signalStrength) {
-        super.onSignalStrengthsChanged(signalStrength);
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-        /* long ora = new Date().getTime();
-        if (ora - ultimoControllo < 10000) {
+    @Override
+    public void onCreate() {
+        mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        mPhoneStateListener = new PhoneStateListener(){
+            @Override
+            public void onSignalStrengthsChanged(SignalStrength signalStrength) {
+                CambiatoSegnale(signalStrength);
+                super.onSignalStrengthsChanged(signalStrength);
+            }
+
+            @Override
+            public void onServiceStateChanged(ServiceState serviceState) {
+                CambiatoStatoServizio(serviceState);
+                super.onServiceStateChanged(serviceState);
+            }
+        };
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //Register the listener here.
+        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS|PhoneStateListener.LISTEN_SERVICE_STATE);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private boolean vecchioWifi;
+    private String vecchioTipoConnessione;
+
+    private void CambiatoSegnale(SignalStrength signalStrength){
+        if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
             return;
         }
-        ultimoControllo = ora; * /
-
+        
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
@@ -39,6 +71,8 @@ public class ControlloSegnale extends PhoneStateListener {
         if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
             VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
         }
+
+        String tipoConnessione = "";
 
         List<CellSignalStrength> segnali = signalStrength.getCellSignalStrengths();
         if (!segnali.isEmpty()) {
@@ -52,7 +86,7 @@ public class ControlloSegnale extends PhoneStateListener {
             VariabiliStaticheStart.getInstance().setLivelloSegnaleConnessione(mSignalStrength);
             VariabiliStaticheStart.getInstance().setLivello(mLevel);
 
-            String tipoConnessione = getNetworkClass();
+            tipoConnessione = getNetworkClass();
             VariabiliStaticheStart.getInstance().setTipoConnessione(tipoConnessione);
 
             int downSpeed = 0;
@@ -88,7 +122,7 @@ public class ControlloSegnale extends PhoneStateListener {
                 testo += " - DL: " + downSpeed + " - UL: " + upSpeed;
 
                 VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer().setText(testo);
-            } * /
+            } */
         } else {
             VariabiliStaticheStart.getInstance().setLivelloSegnaleConnessione(-999);
             VariabiliStaticheStart.getInstance().setLivello(-1);
@@ -97,17 +131,30 @@ public class ControlloSegnale extends PhoneStateListener {
             VariabiliStaticheStart.getInstance().setVelocitaUpload(0);
         }
 
-        Calendar calendar = Calendar.getInstance();
-        String h = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
-        if (h.length() == 1) { h = "0" + h; };
-        String m = Integer.toString(calendar.get(Calendar.MINUTE));
-        if (m.length() == 1) { m = "0" + m; };
-        String s = Integer.toString(calendar.get(Calendar.SECOND));
-        if (s.length() == 1) { s = "0" + s; };
 
-        String quando = h + ":" + m + ":" + s;
-        VariabiliStaticheStart.getInstance().setUltimoControlloRete(quando);
-        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        if (wifi != vecchioWifi || tipoConnessione.equals(vecchioTipoConnessione)) {
+            Calendar calendar = Calendar.getInstance();
+            String h = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+            if (h.length() == 1) {
+                h = "0" + h;
+            }
+            String m = Integer.toString(calendar.get(Calendar.MINUTE));
+            if (m.length() == 1) {
+                m = "0" + m;
+            }
+            String s = Integer.toString(calendar.get(Calendar.SECOND));
+            if (s.length() == 1) {
+                s = "0" + s;
+            }
+
+            String quando = h + ":" + m + ":" + s;
+
+            VariabiliStaticheStart.getInstance().setUltimoControlloRete(quando);
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        }
+
+        vecchioWifi = wifi;
+        vecchioTipoConnessione = tipoConnessione;
     }
 
     private static String getNetworkClass() {
@@ -153,4 +200,15 @@ public class ControlloSegnale extends PhoneStateListener {
         }
         return "?";
     }
-} */
+
+    private void CambiatoStatoServizio(ServiceState serviceState){
+        // Log.d(TAG, "Service State changed! New state = "+serviceState.getState());
+    }
+
+    @Override
+    public void onDestroy() {
+        // Log.d(TAG, "Shutting down the Service");
+        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+        super.onDestroy();
+    }
+}

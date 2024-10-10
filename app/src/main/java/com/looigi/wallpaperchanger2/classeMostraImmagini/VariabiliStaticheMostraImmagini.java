@@ -43,6 +43,24 @@ public class VariabiliStaticheMostraImmagini {
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
+    private boolean slideShowAttivo = false;
+    private int secondiAttesa = 5000;
+
+    public int getSecondiAttesa() {
+        return secondiAttesa;
+    }
+
+    public void setSecondiAttesa(int secondiAttesa) {
+        this.secondiAttesa = secondiAttesa;
+    }
+
+    public boolean isSlideShowAttivo() {
+        return slideShowAttivo;
+    }
+
+    public void setSlideShowAttivo(boolean slideShowAttivo) {
+        this.slideShowAttivo = slideShowAttivo;
+    }
 
     public List<StrutturaImmagine> getListaImmagini() {
         return listaImmagini;

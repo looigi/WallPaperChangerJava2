@@ -34,6 +34,42 @@ public class VariabiliStaticheGPS {
     private GestioneMappa mappa;
     public static int quantiPuntiSumappa = 990;
     private long distanzaTotale = 0;
+    private boolean bloccatoDaTasto = false;
+    private boolean segue = true;
+    private boolean mostraSegnale = true;
+    private boolean mostraPercorso = true;
+
+    public boolean isMostraSegnale() {
+        return mostraSegnale;
+    }
+
+    public void setMostraSegnale(boolean mostraSegnale) {
+        this.mostraSegnale = mostraSegnale;
+    }
+
+    public boolean isMostraPercorso() {
+        return mostraPercorso;
+    }
+
+    public void setMostraPercorso(boolean mostraPercorso) {
+        this.mostraPercorso = mostraPercorso;
+    }
+
+    public boolean isSegue() {
+        return segue;
+    }
+
+    public void setSegue(boolean segue) {
+        this.segue = segue;
+    }
+
+    public boolean isBloccatoDaTasto() {
+        return bloccatoDaTasto;
+    }
+
+    public void setBloccatoDaTasto(boolean bloccatoDaTasto) {
+        this.bloccatoDaTasto = bloccatoDaTasto;
+    }
 
     public long getDistanzaTotale() {
         return distanzaTotale;

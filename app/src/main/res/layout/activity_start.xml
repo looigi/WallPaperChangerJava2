@@ -77,6 +77,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layBarraDetector"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
@@ -90,17 +92,15 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgStartDetector"
                     android:layout_width="50dp"
-                    android:src="@drawable/icona_cerca"
+                    android:src="@drawable/detector"
                     android:layout_height="50dp">
 
                 </ImageView>
             </LinearLayout>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txtStartLabelDet"
                 android:layout_width="0dp"
                 android:layout_weight="6"
@@ -113,6 +113,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layBarraImmagini"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
@@ -126,7 +128,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgStartImmagini"
                     android:layout_width="50dp"
                     android:src="@drawable/loovf"
@@ -136,7 +137,6 @@
             </LinearLayout>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txtStartLabelImm"
                 android:layout_width="0dp"
                 android:layout_weight="6"
@@ -149,6 +149,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layBarraVideo"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
@@ -162,7 +164,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgStartVideo"
                     android:layout_width="50dp"
                     android:src="@drawable/video2"
@@ -172,7 +173,6 @@
             </LinearLayout>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txtStartLabelVid"
                 android:layout_width="0dp"
                 android:layout_weight="6"
@@ -185,6 +185,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layBarraMappa"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
@@ -198,7 +200,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/imgStartMappa"
                     android:layout_width="50dp"
                     android:src="@drawable/map"
@@ -208,7 +209,6 @@
             </LinearLayout>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txtStartLabelMap"
                 android:layout_width="0dp"
                 android:layout_weight="6"
