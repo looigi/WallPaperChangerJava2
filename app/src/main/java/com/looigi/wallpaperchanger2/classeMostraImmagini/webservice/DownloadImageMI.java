@@ -46,10 +46,10 @@ public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new java.net.URL(urldisplay).openStream();
             mIcon11 = BitmapFactory.decodeStream(in);
 
-            if (immagine == null) {
+            // if (immagine == null) {
                 FileOutputStream outStream;
                 try {
-                    outStream = new FileOutputStream(PercorsoDIR + "/Appoggio.jpg"); // .getPathImmagine());
+                    outStream = new FileOutputStream(PercorsoDIR + "/AppoggioMI.jpg"); // .getPathImmagine());
                     if (outStream != null & mIcon11 != null) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
@@ -57,25 +57,25 @@ public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
                     outStream.flush();
                     outStream.close();
 
-                    if (immagine == null) {
+                    // if (immagine == null) {
                         UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Immagine Scaricata");
-                    }
+                    // }
                 } catch (FileNotFoundException e) {
-                    if (immagine == null) {
+                    // if (immagine == null) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "File non esistente per il download");
 
                         UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
-                    }
+                    // }
                     Errore = true;
                 } catch (IOException e) {
-                    if (immagine == null) {
+                    // if (immagine == null) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel salvataggio su download Immagine");
 
                         UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
-                    }
+                    // }
                     Errore = true;
                 }
-            } else {
+            // } else {
                 Bitmap finalMIcon1 = mIcon11;
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -89,7 +89,7 @@ public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
                     }
                 }, 100);
 
-            }
+            // }
         } catch (Exception e) {
             if (immagine == null) {
                 UtilitiesGlobali.getInstance().ApreToast(context, "Errore sul download Immagine");
@@ -134,8 +134,8 @@ public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
             UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
         }
 
-        if (immagine == null) {
+        // if (immagine == null) {
             UtilityImmagini.getInstance().Attesa(false);
-        }
+        // }
     }
 }

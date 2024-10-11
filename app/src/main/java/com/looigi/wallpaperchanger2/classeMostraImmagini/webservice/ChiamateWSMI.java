@@ -198,19 +198,7 @@ public class ChiamateWSMI implements TaskDelegate {
                     VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
                     VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
 
-                    String path1 = context.getFilesDir() + "/Immagini";
-                    UtilityWallpaper.getInstance().CreaCartelle(path1);
-                    String NomeFile = "/UltimaImmagine.txt";
-                    if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
-                        UtilityDetector.getInstance().EliminaFile(path1 + "/" + NomeFile);
-                    }
-                    UtilityDetector.getInstance().CreaFileDiTesto(path1, NomeFile, result);
-
-                    VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
-
-                    VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
-
-                    VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
+                    UtilityImmagini.getInstance().AggiungeImmagine(context, result, si);
 
                     new DownloadImageMI(context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());

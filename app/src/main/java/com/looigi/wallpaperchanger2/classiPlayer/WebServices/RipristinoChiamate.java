@@ -7,6 +7,7 @@ import android.os.HandlerThread;
 import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 
@@ -67,7 +68,7 @@ public class RipristinoChiamate {
             public void run() {
                 StrutturaChiamateWSPlayer s = VariabiliStatichePlayer.getInstance().getChiamate().get(0);
 
-                VariabiliStatichePlayer.getInstance().setRetePresente(true);
+                UtilitiesGlobali.getInstance().setRetePresente(true);
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Riprovo chiamata " + s.gettOperazione() +
                         "Tentativo: " + (tentativiEffettuati + 1));
 

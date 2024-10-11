@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classiGps;
 
 import android.content.Context;
 
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
 import java.util.ArrayList;

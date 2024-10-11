@@ -21,6 +21,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaPuntiSpegnimento;
 import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -44,6 +46,7 @@ public class GestioneGPS {
     private Handler handler1;
     private Runnable r1;
     private boolean wifi;
+    private boolean nonScriverePunti = false;
 
     public void BloccaGPS(String daDove) {
         context = UtilitiesGlobali.getInstance().tornaContextValido();
@@ -416,22 +419,38 @@ public class GestioneGPS {
 
             boolean ok = true;
 
-            float distanza = 0;
+            double distanza = 0;
 
             if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
                 StrutturaGps vecchia = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
-                float[] results = new float[1];
+
+                /* float[] results = new float[1];
                 Location.distanceBetween(
                         vecchia.getLat(),
                         vecchia.getLon(),
                         location.getLatitude(),
                         location.getLongitude(),
-                        results);
-                distanza = results[0];
-                /* if (results[0] > 75) {
+                        results); */
+
+                distanza = meterDistanceBetweenPoints(
+                        vecchia.getLat(),
+                        vecchia.getLon(),
+                        location.getLatitude(),
+                        location.getLongitude()
+                );
+
+                if (distanza > 75) {
+                    ok = false;
+                }
+
+                controlloPuntiImpostatiPerSblocco(location);
+
+                /* distanza = results[0];
+                if (results[0] > 75) {
                     ok = false;
                 } */
             }
+
             if (ok) {
                 if (location.getAccuracy() > 50) {
                     ok = false;
@@ -441,13 +460,40 @@ public class GestioneGPS {
                 }
             }
 
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
-                    location.getLatitude() + ", " + location.getLongitude());
+            if (ok) {
+                if (nonScriverePunti) {
+                    ok = false;
+                }
+            }
+            // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
+            //         location.getLatitude() + ", " + location.getLongitude());
+
+            SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
+            String currentHour = sdfO.format(calendar.getTime());
+
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            double altitude = location.getAltitude();
+            float speed = location.getSpeed();
+            float accuracy = location.getAccuracy();
+
+            StrutturaGps s = new StrutturaGps();
+            s.setLat(latitude);
+            s.setLon(longitude);
+            s.setData(currentDate);
+            s.setOra(currentHour);
+            s.setAltitude(altitude);
+            s.setSpeed(speed);
+            s.setAccuracy(accuracy);
+            s.setDistanza((float) distanza);
+            s.setWifi(wifi);
+            s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
+            s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
+            s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
+
+            VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
             if (ok) {
-                SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
-                String currentHour = sdfO.format(calendar.getTime());
-
             /* if (!ok) {
                 if (!ultimoNull) {
                     StrutturaGps s = new StrutturaGps();
@@ -468,32 +514,10 @@ public class GestioneGPS {
             } */
                 ultimoNull = false;
 
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                double altitude = location.getAltitude();
-                float speed = location.getSpeed();
-                float accuracy = location.getAccuracy();
-
-                StrutturaGps s = new StrutturaGps();
-                s.setLat(latitude);
-                s.setLon(longitude);
-                s.setData(currentDate);
-                s.setOra(currentHour);
-                s.setAltitude(altitude);
-                s.setSpeed(speed);
-                s.setAccuracy(accuracy);
-                s.setDistanza(distanza);
-                s.setWifi(wifi);
-                s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
-                s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
-                s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
-
                 VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
 
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                         "Aggiunta posizione array");
-
-                VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
                 VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
             // } else {
@@ -519,4 +543,57 @@ public class GestioneGPS {
                     "Provider disabilitato");
         }
     };
+
+    private double meterDistanceBetweenPoints(double lat_a, double lng_a, double lat_b, double lng_b) {
+        float pk = (float) (180.f/Math.PI);
+
+        double a1 = lat_a / pk;
+        double a2 = lng_a / pk;
+        double b1 = lat_b / pk;
+        double b2 = lng_b / pk;
+
+        double t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+        double t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+        double t3 = Math.sin(a1) * Math.sin(b1);
+        double tt = Math.acos(t1 + t2 + t3);
+
+        return 6366000 * tt;
+    }
+
+    private void controlloPuntiImpostatiPerSblocco(Location location) {
+        boolean fuoriDaTuttiIPunti = true;
+        String Nome = "";
+
+        for (StrutturaPuntiSpegnimento s : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
+            double distanza = meterDistanceBetweenPoints(
+                    s.getLoc().getLatitude(),
+                    s.getLoc().getLongitude(),
+                    location.getLatitude(),
+                    location.getLongitude()
+            );
+            if (distanza <= 50) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Entrato nella posizione " + s.getNome());
+
+                Nome = s.getNome();
+                fuoriDaTuttiIPunti = false;
+                break;
+            }
+        }
+
+        if (!nonScriverePunti) {
+            if (!fuoriDaTuttiIPunti) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Blocco GPS per posizione " + Nome);
+
+                nonScriverePunti = true;
+            }
+        } else {
+            if (fuoriDaTuttiIPunti) {
+                //  if (!VariabiliStaticheStart.getInstance().isCeWifi()) {
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Riabilito GPS per posizione non in punti selezionati e senza wifi");
+
+                    nonScriverePunti = false;
+                // }
+            }
+        }
+    }
 }

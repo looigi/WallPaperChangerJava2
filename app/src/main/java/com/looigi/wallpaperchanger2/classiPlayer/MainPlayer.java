@@ -10,11 +10,11 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -30,15 +30,12 @@ import com.looigi.wallpaperchanger2.classiPlayer.scan.ScanBraniPerLimite;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainPlayer extends Activity {
     private HeadsetBroadcastReceiver mCuffieInseriteReceiver;
-    private MediaButtonIntentReceiver mButtonMediaReceiver;
+    private GestioneTastiCuffie mButtonMediaReceiver;
     private AudioManager mAudioManager = null;
     private ComponentName mReceiverComponent = null;
     private Context context;
@@ -59,10 +56,10 @@ public class MainPlayer extends Activity {
         this.registerReceiver(mCuffieInseriteReceiver, filter);
 
         // GESTIONE TASTI CUFFIE
-        mButtonMediaReceiver = new MediaButtonIntentReceiver();
+        mButtonMediaReceiver = new GestioneTastiCuffie();
         IntentFilter mediaFilter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
         mAudioManager =  (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mReceiverComponent = new ComponentName(this, MediaButtonIntentReceiver.class);
+        mReceiverComponent = new ComponentName(this, GestioneTastiCuffie.class);
         mediaFilter.setPriority(2139999999);
         registerReceiver(mButtonMediaReceiver, mediaFilter, Context.RECEIVER_NOT_EXPORTED);
 
@@ -104,8 +101,35 @@ public class MainPlayer extends Activity {
         }
         VariabiliStatichePlayer.getInstance().setImgBellezza(l);
 
+        LinearLayout layImpostazioni = findViewById(R.id.layImpostazioniPlayerInterne);
+        layImpostazioni.setVisibility(LinearLayout.GONE);
+
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        layImpostazioni.setVisibility(LinearLayout.VISIBLE);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+        ImageView imgChiudeSettings = (ImageView) findViewById(R.id.imgChiusuraSettings);
+        imgChiudeSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        layImpostazioni.setVisibility(LinearLayout.GONE);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+        Button imgSettingsG = (Button) findViewById(R.id.imgSettingsGlobali);
+        imgSettingsG.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
@@ -194,6 +218,8 @@ public class MainPlayer extends Activity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(VariabiliStatichePlayer.getInstance().getPathUltimaImmagine());
             VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+
+            UtilityPlayer.getInstance().ImpostaBellezza();
         }
 
         Bitmap bmpStart;
@@ -254,9 +280,6 @@ public class MainPlayer extends Activity {
                 }
             }
         });
-
-        LinearLayout layImpostazioni = findViewById(R.id.layImpostazioniPlayerInterne);
-        layImpostazioni.setVisibility(LinearLayout.GONE);
 
         VariabiliStatichePlayer.getInstance().setPlayerAttivo(true);
     }

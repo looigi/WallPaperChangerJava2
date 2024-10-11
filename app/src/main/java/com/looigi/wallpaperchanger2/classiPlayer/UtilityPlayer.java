@@ -404,14 +404,8 @@ public class UtilityPlayer {
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
 
-        if (!VariabiliStatichePlayer.getInstance().isRetePresente()) {
+        if (!UtilitiesGlobali.getInstance().isRetePresente()) {
             cercaBranoInLocale = true;
-        } else {
-            // if (!wifi) {
-                if (level <= 2) {
-                    cercaBranoInLocale = true;
-                }
-            // }
         }
 
         /* if (!Pregresso) {
@@ -501,7 +495,7 @@ public class UtilityPlayer {
                             boolean ok = true;
                             int level = VariabiliStaticheStart.getInstance().getLivello();
 
-                            if (!VariabiliStatichePlayer.getInstance().isRetePresente()) {
+                            if (!UtilitiesGlobali.getInstance().isRetePresente()) {
                                 ok = false;
                             } else {
                                 // if (!wifi) {

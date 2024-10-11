@@ -77,7 +77,6 @@ public class VariabiliStatichePlayer {
     private ImageView imgCuffie;
     private List<ImageView> imgBellezza;
     private ChiamateWsPlayer classeChiamata;
-    private boolean retePresente = true;
     private List<StrutturaChiamateWSPlayer> chiamate;
     private boolean playerAttivo = false;
     private float limiteInGb = 1.5F;
@@ -155,14 +154,6 @@ public class VariabiliStatichePlayer {
     }
     public void setChiamate(List<StrutturaChiamateWSPlayer> chiamate) {
         this.chiamate = chiamate;
-    }
-
-    public boolean isRetePresente() {
-        return retePresente;
-    }
-
-    public void setRetePresente(boolean retePresente) {
-        this.retePresente = retePresente;
     }
 
     public ChiamateWsPlayer getClasseChiamata() {

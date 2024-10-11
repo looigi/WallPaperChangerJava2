@@ -4,8 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 
 import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaAccensioneGPS;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaPuntiSpegnimento;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -95,6 +99,11 @@ public class db_dati_gps {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE puntiDiSpegnimento (" +
+                        "lat VARCHAR, lon VARCHAR, Nome VARCHAR" +
+                        ")";
+
+                myDB.execSQL(sql);
             }
         } catch (Exception e) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -155,6 +164,110 @@ public class db_dati_gps {
             }
         } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public Boolean ScrivePuntoDiSpegnimento(String Nome, Location l) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO"
+                        + " puntiDiSpegnimento"
+                        + " VALUES ("
+                        + "'" + l.getLatitude() + "', "
+                        + "'" + l.getLongitude() + "', "
+                        + "'" + Nome.replace("'", "''") + "' "
+                        + ") ";
+                myDB.execSQL(sql);
+
+                StrutturaPuntiSpegnimento s = new StrutturaPuntiSpegnimento();
+                s.setLoc(l);
+                s.setNome(Nome);
+
+                List<StrutturaPuntiSpegnimento> ll = VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento();
+                ll.add(s);
+                VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(ll);
+            } catch (SQLException e) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db punto di spegnimento: " + e.getMessage());
+                PulisceDatiPS(context);
+                CreazioneTabelle();
+                ScrivePuntoDiSpegnimento(Nome, l);
+
+                return false;
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public void EliminaPuntoDiSpegnimento(String Nome) {
+        if (myDB != null) {
+            try {
+                String sql = "Delete From "
+                        + " puntiDiSpegnimento"
+                        + " Where Nome = '" + Nome.replace("'", "''") + "' ";
+                myDB.execSQL(sql);
+
+                List<StrutturaPuntiSpegnimento> ll = new ArrayList<>();
+                for (StrutturaPuntiSpegnimento s : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
+                    if (!s.getNome().equals(s.getNome())) {
+                        ll.add(s);
+                    }
+                }
+                VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(ll);
+            } catch (Exception e) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore eliminazione db per punti di spegnimento: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                PulisceDatiPS(context);
+                CreazioneTabelle();
+                EliminaPuntoDiSpegnimento(Nome);
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public boolean CaricaPuntiDiSpegnimento() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM puntiDiSpegnimento", null);
+                if (c.getCount() > 0) {
+                    List<StrutturaPuntiSpegnimento> lista = new ArrayList<>();
+
+                    c.moveToFirst();
+                    do {
+                        StrutturaPuntiSpegnimento s = new StrutturaPuntiSpegnimento();
+
+                        Location targetLocation = new Location("");//provider name is unnecessary
+                        targetLocation.setLatitude(Double.parseDouble(c.getString(0)));
+                        targetLocation.setLongitude(Double.parseDouble(c.getString(1)));
+                        s.setLoc(targetLocation);
+                        s.setNome(c.getString(2));
+
+                        lista.add(s);
+                    } while (c.moveToNext());
+
+                    VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(lista);
+                    return true;
+                } else {
+                    VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(new ArrayList<>());
+                    return false;
+                }
+            } catch (Exception e) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db per punti di spegnimento: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                PulisceDatiPS(context);
+                CreazioneTabelle();
+                CaricaPuntiDiSpegnimento();
+
+                return false; // "Tabella creata di nuovo: " + e.getMessage();
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(new ArrayList<>());
+            return false; // "Db Non Valido";
         }
     }
 
@@ -508,6 +621,18 @@ public class db_dati_gps {
                 myDB.execSQL("Drop Table Impostazioni");
             } catch (Exception ignored) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
+            }
+        }
+    }
+
+    public void PulisceDatiPS(Context context) {
+        // SQLiteDatabase myDB = ApreDB();
+        if (myDB != null) {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db punti di spegnimento");
+            try {
+                myDB.execSQL("Drop Table puntiDiSpegnimento");
+            } catch (Exception ignored) {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db: " + ignored.getMessage());
             }
         }
     }

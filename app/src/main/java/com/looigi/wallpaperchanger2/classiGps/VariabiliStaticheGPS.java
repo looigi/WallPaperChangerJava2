@@ -1,8 +1,14 @@
 package com.looigi.wallpaperchanger2.classiGps;
 
 import android.content.Context;
+import android.location.Location;
 import android.widget.ImageView;
 
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaAccensioneGPS;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaPuntiSpegnimento;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class VariabiliStaticheGPS {
@@ -38,6 +44,15 @@ public class VariabiliStaticheGPS {
     private boolean segue = true;
     private boolean mostraSegnale = true;
     private boolean mostraPercorso = true;
+    private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
+
+    public List<StrutturaPuntiSpegnimento> getListaPuntiDiSpegnimento() {
+        return listaPuntiDiSpegnimento;
+    }
+
+    public void setListaPuntiDiSpegnimento(List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento) {
+        this.listaPuntiDiSpegnimento = listaPuntiDiSpegnimento;
+    }
 
     public boolean isMostraSegnale() {
         return mostraSegnale;

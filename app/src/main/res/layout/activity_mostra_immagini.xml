@@ -139,6 +139,15 @@
 
     </ImageView> -->
 
+    <ImageView
+        android:id="@+id/imgScorri"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/layInfo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+    </ImageView>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoMI"
         android:src="@drawable/loading"

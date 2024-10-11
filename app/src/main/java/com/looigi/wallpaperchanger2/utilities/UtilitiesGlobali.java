@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -55,6 +56,38 @@ public class UtilitiesGlobali {
         }
 
         return instance;
+    }
+
+    private long ultimoTmsStatorete = -1;
+    private int contaStatoRete = 0;
+    private boolean reteAttiva = true;
+
+    public boolean isRetePresente() {
+        if (!reteAttiva) {
+            return false;
+        }
+
+        int level = VariabiliStaticheStart.getInstance().getLivello();
+
+        long ora = new Date().getTime();
+        if (ora - ultimoTmsStatorete >= 1000) {
+            // contaStatoRete++;
+            // if (contaStatoRete > 5) {
+            //     return false;
+            // }
+        }
+        ultimoTmsStatorete = ora;
+
+        if (level <= 2) {
+            return false;
+        } else {
+            // contaStatoRete = 0;
+            return true;
+        }
+    }
+
+    public void setRetePresente(boolean Stato) {
+        reteAttiva = Stato;
     }
 
     public void ChiudeApplicazione(Context context) {

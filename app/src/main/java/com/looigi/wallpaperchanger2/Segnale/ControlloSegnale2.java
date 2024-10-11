@@ -58,12 +58,9 @@ public class ControlloSegnale2 extends Service {
 
     private boolean vecchioWifi;
     private String vecchioTipoConnessione;
+    private int vecchioLivello;
 
     private void CambiatoSegnale(SignalStrength signalStrength){
-        if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-            return;
-        }
-        
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
@@ -73,11 +70,12 @@ public class ControlloSegnale2 extends Service {
         }
 
         String tipoConnessione = "";
+        int mLevel = 0;
 
         List<CellSignalStrength> segnali = signalStrength.getCellSignalStrengths();
         if (!segnali.isEmpty()) {
             int mSignalStrength = segnali.get(0).getDbm();
-            int mLevel = segnali.get(0).getLevel();
+            mLevel = segnali.get(0).getLevel();
             // String livello = UtilitiesGlobali.getInstance().getLevelString(mLevel);
 
             // int mSignalStrength = signalStrength.getGsmSignalStrength();
@@ -131,8 +129,8 @@ public class ControlloSegnale2 extends Service {
             VariabiliStaticheStart.getInstance().setVelocitaUpload(0);
         }
 
-
-        if (wifi != vecchioWifi || tipoConnessione.equals(vecchioTipoConnessione)) {
+        if (wifi != vecchioWifi || !tipoConnessione.equals(vecchioTipoConnessione)) {
+            // || mLevel != vecchioLivello) {
             Calendar calendar = Calendar.getInstance();
             String h = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
             if (h.length() == 1) {
@@ -154,6 +152,7 @@ public class ControlloSegnale2 extends Service {
         }
 
         vecchioWifi = wifi;
+        vecchioLivello = mLevel;
         vecchioTipoConnessione = tipoConnessione;
     }
 

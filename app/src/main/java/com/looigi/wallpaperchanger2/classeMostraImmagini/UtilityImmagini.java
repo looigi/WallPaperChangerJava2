@@ -3,15 +3,22 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
+import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -42,18 +49,23 @@ public class UtilityImmagini {
     }
 
     public void Attesa(boolean Acceso) {
-        if (Acceso) {
-            if (quantiCaricamenti == 0) {
-                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (Acceso) {
+                    if (quantiCaricamenti == 0) {
+                        VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                    }
+                    quantiCaricamenti++;
+                } else {
+                    quantiCaricamenti--;
+                    if (quantiCaricamenti < 1) {
+                        quantiCaricamenti = 0;
+                        VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                    }
+                }
             }
-            quantiCaricamenti++;
-        } else {
-            quantiCaricamenti--;
-            if (quantiCaricamenti < 1) {
-                quantiCaricamenti = 0;
-                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
-            }
-        }
+        }, 50);
     }
 
     public void VisualizzaErrore(Context context, String Errore) {
@@ -136,6 +148,22 @@ public class UtilityImmagini {
             handler = null;
             r = null;
         }
+    }
+
+    public void AggiungeImmagine(Context context, String result, StrutturaImmaginiLibrary si) {
+        String path1 = context.getFilesDir() + "/Immagini";
+        UtilityWallpaper.getInstance().CreaCartelle(path1);
+        String NomeFile = "/UltimaImmagine.txt";
+        if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
+            UtilityDetector.getInstance().EliminaFile(path1 + "/" + NomeFile);
+        }
+        UtilityDetector.getInstance().CreaFileDiTesto(path1, NomeFile, result);
+
+        VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
+
+        VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
+
+        VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
     }
 
     public void RitornaProssimaImmagine(Context context) {

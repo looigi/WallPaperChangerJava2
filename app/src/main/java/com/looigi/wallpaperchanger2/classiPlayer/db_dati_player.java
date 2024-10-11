@@ -287,7 +287,7 @@ public class db_dati_player {
     public boolean EsisteBrano(String Artista, String Album, String Brano) {
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani Where Artista='" + Artista + "' And Album='" + Album + "' And Brano='" + Brano + "'", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani Where Artista='" + Artista.replace("'", "''") + "' And Album='" + Album.replace("'", "''") + "' And Brano='" + Brano.replace("'", "''") + "'", null);
                 if (c.getCount() > 0) {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per esistenza brano");
                     c.moveToFirst();

@@ -31,6 +31,18 @@
                         android:text="Ricerche"
                         android:layout_height="match_parent" />
 
+                    <Button
+                        android:id="@+id/imgSettingsGlobali"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Impostazioni"
+                        android:src="@drawable/settings" />
+
+                    <ImageView
+                        android:id="@+id/imgChiusuraSettings"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/elimina_quadrato" />
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>

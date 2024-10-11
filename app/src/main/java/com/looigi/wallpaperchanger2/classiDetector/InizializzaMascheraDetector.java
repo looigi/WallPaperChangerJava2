@@ -135,7 +135,7 @@ public class InizializzaMascheraDetector {
             }
         }); */
 
-        ImageView imgGps = (ImageView) act.findViewById(R.id.imgGPS);
+        /* ImageView imgGps = (ImageView) act.findViewById(R.id.imgGPS);
         VariabiliStaticheGPS.getInstance().setBitmapHome(imgGps);
         Bitmap bmGps;
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
@@ -143,8 +143,7 @@ public class InizializzaMascheraDetector {
         } else {
             bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
         }
-        imgGps.setImageBitmap(bmGps);
-
+        imgGps.setImageBitmap(bmGps); */
 
         ImageView imgSettings = (ImageView) act.findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {

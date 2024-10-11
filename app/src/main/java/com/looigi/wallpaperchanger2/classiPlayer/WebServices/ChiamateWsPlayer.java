@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -364,7 +365,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         chiamataDaFare.setUrletto(Urletto);
         chiamataDaFare.setPregresso(Pregresso);
 
-        if (VariabiliStatichePlayer.getInstance().isRetePresente()) {
+        if (UtilitiesGlobali.getInstance().isRetePresente()) {
             bckAsyncTask = new LetturaWSAsincronaPlayer(
                     context,
                     NS,
@@ -584,7 +585,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
                 UtilityPlayer.getInstance().AggiornaInformazioni(true);
                 UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
-                VariabiliStatichePlayer.getInstance().setRetePresente(false);
+                UtilitiesGlobali.getInstance().setRetePresente(false);
                 aggiungeOperazione();
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata. Riprova: " + Riprova);
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, result);

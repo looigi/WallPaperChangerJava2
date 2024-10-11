@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiGps.StrutturaGps;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;

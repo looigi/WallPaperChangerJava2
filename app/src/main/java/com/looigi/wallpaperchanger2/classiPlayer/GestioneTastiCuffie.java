@@ -6,23 +6,23 @@ import android.content.Intent;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-public class MediaButtonIntentReceiver extends BroadcastReceiver {
-    public MediaButtonIntentReceiver() {
+public class GestioneTastiCuffie extends BroadcastReceiver {
+    public GestioneTastiCuffie() {
         super();
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // DA TOGLIERE
+        UtilityPlayer.getInstance().BranoAvanti(context, "", false);
+        // DA TOGLIERE
+
         String intentAction = intent.getAction();
         if (!Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
             return;
         }
         KeyEvent event = (KeyEvent) intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (event == null) {
-            // DA TOGLIERE
-            UtilityPlayer.getInstance().BranoAvanti(context, "", false);
-            // DA TOGLIERE
-
             return;
         }
         int action = event.getAction();

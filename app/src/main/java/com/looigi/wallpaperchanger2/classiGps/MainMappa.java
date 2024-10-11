@@ -2,19 +2,25 @@ package com.looigi.wallpaperchanger2.classiGps;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.telephony.CellSignalStrength;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,13 +30,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaGps;
+import com.looigi.wallpaperchanger2.classiGps.strutture.StrutturaPuntiSpegnimento;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +73,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
         db_dati_gps db = new db_dati_gps(context);
         db.CaricaImpostazioni();
+        db.CaricaPuntiDiSpegnimento();
 
         txtMappa = act.findViewById(R.id.txtMappa);
 
@@ -144,6 +155,10 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 db.EliminaPosizioni(dataOdierna);
 
                 VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
+
+                DisegnaPath(mappa);
+
+                GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
                 UtilitiesGlobali.getInstance().ApreToast(context,
                         "Eliminati dati gps per la data " + dataOdierna);
@@ -253,10 +268,102 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         if (handlerTimer == null) {
             mappa = googleMap;
+
+            mappa.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+            {
+                @Override
+                public void onMapClick(LatLng arg0)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Nome punto di spegnimento");
+
+                    final EditText input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String m_Text = input.getText().toString();
+
+                            Location targetLocation = new Location("");
+                            targetLocation.setLatitude(arg0.latitude);
+                            targetLocation.setLongitude(arg0.longitude);
+
+                            db_dati_gps db = new db_dati_gps(context);
+                            db.ScrivePuntoDiSpegnimento(m_Text, targetLocation);
+
+                            disegnaMarkersPS();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                }
+            });
+
+            mappa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(@NonNull Marker marker) {
+                    String nome = marker.getTitle();
+
+                    if (!nome.equals("Posizione Attuale")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Si vuole rimuovere il punto di spegnimento?");
+
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                db_dati_gps db = new db_dati_gps(context);
+                                db.EliminaPuntoDiSpegnimento(nome);
+
+                                disegnaMarkersPS();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+                    }
+
+                    return false;
+                }
+            });
+
             // googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+            disegnaMarkersPS();
 
             AttivaTimer(googleMap);
         }
+    }
+
+    private void disegnaMarkersPS() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (StrutturaPuntiSpegnimento loc : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
+                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.satellite_off);
+                    Bitmap b = bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 75, 75, false);
+
+                    mappa.addMarker(new MarkerOptions()
+                            .position(new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude()))
+                            .title(loc.getNome())
+                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                    );
+                }
+            }
+        }, 100);
     }
 
     private void DisegnaPath(GoogleMap googleMap) {
@@ -368,6 +475,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 AggiungeMarkers(googleMap);
             }
+
+            disegnaMarkersPS();
 
             if (primoPassaggio || VariabiliStaticheGPS.getInstance().isSegue()) {
                 googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {

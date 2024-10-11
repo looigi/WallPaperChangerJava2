@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiGps;
+package com.looigi.wallpaperchanger2.classiGps.strutture;
 
 public class StrutturaAccensioneGPS {
     private boolean SpegnimentoAttivoDomenica;

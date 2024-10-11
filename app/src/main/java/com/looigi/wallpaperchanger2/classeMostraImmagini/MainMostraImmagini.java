@@ -75,16 +75,20 @@ public class MainMostraImmagini extends Activity {
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                UtilityImmagini.getInstance().Attesa(true);
+
                 StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
 
                 StrutturaImmagine src = new StrutturaImmagine();
-                src.setPathImmagine(s.getPathImmagine());
+                src.setPathImmagine(context.getFilesDir() + "/Immagini/AppoggioMI.jpg");
                 src.setImmagine(s.getNomeFile());
                 src.setDimensione("");
                 src.setDataImmagine(s.getDataCreazione());
 
                 ChangeWallpaper c = new ChangeWallpaper(context);
                 c.setWallpaperLocale(context, src);
+
+                UtilityImmagini.getInstance().Attesa(false);
             }
         });
 
@@ -111,7 +115,8 @@ public class MainMostraImmagini extends Activity {
             }
         });
 
-        VariabiliStaticheMostraImmagini.getInstance().getImg().setOnTouchListener(new OnSwipeTouchListener(MainMostraImmagini.this) {
+        ImageView imgScorri = findViewById(R.id.imgScorri);
+        imgScorri.setOnTouchListener(new OnSwipeTouchListener(MainMostraImmagini.this) {
             public void onSwipeTop() {
                 // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Top");
             }
@@ -206,6 +211,7 @@ public class MainMostraImmagini extends Activity {
             public void onClick(View v) {
                 boolean attivo = VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo();
                 attivo = !attivo;
+                VariabiliStaticheMostraImmagini.getInstance().setSlideShowAttivo(attivo);
 
                 Bitmap bmSS;
                 if (attivo) {
