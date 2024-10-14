@@ -637,7 +637,7 @@ public class MainImpostazioni extends Activity {
                 VariabiliStaticheDetector.getInstance().setFotoSuPower(sFotoPower.isChecked());
 
                 db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
+                db.ScriveImpostazioni(context, "SET FOTO POWER");
             }
         });
         SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
@@ -664,7 +664,7 @@ public class MainImpostazioni extends Activity {
                 VariabiliStaticheDetector.getInstance().setGpsPreciso(gps);
 
                 db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
+                db.ScriveImpostazioni(context, "SET GPS PRECISO");
 
                 if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
                     VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("INIT 1");
@@ -681,44 +681,6 @@ public class MainImpostazioni extends Activity {
 
                 Impostazioni i = new Impostazioni();
                 i.ImpostaVisualizzaToast(context, sToast.isChecked());
-            }
-        });
-
-        EditText etGpsMs = (EditText) act.findViewById(R.id.edtGpsMs);
-        etGpsMs.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMs()));
-        etGpsMs.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(etGpsMs.getText().toString()));
-
-                        db_dati_detector db = new db_dati_detector(context);
-                        db.ScriveImpostazioni(context);
-
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 1");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
-                    }
-                }
-            }
-        });
-
-        EditText etGpsMeters = (EditText) act.findViewById(R.id.edtGpsMeters);
-        etGpsMeters.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMeters()));
-        etGpsMeters.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    {
-                        VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(etGpsMeters.getText().toString()));
-
-                        db_dati_detector db = new db_dati_detector(context);
-                        db.ScriveImpostazioni(context);
-
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 2");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
-                    }
-                }
             }
         });
 
@@ -754,6 +716,60 @@ public class MainImpostazioni extends Activity {
                 VariabiliStaticheGPS.getInstance().setSegue(sSegue.isChecked());
 
                 db.ScriveImpostazioni();
+            }
+        });
+
+        EditText etGpsMs = (EditText) act.findViewById(R.id.edtGpsMs);
+        etGpsMs.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMs()));
+        etGpsMs.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(etGpsMs.getText().toString()));
+
+                        db_dati_detector db = new db_dati_detector(context);
+                        db.ScriveImpostazioni(context, "SET GPS MS");
+
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 1");
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                    }
+                }
+            }
+        });
+
+        EditText etGpsMeters = (EditText) act.findViewById(R.id.edtGpsMeters);
+        etGpsMeters.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMeters()));
+        etGpsMeters.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(etGpsMeters.getText().toString()));
+
+                        db_dati_detector db = new db_dati_detector(context);
+                        db.ScriveImpostazioni(context, "SET GPS METERS");
+
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 2");
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                    }
+                }
+            }
+        });
+
+        EditText etDistanzaPS = (EditText) act.findViewById(R.id.edtMetriPS);
+        etDistanzaPS.setText(Integer.toString(VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS()));
+        etDistanzaPS.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(etDistanzaPS.getText().toString()));
+
+                        db_dati_detector db = new db_dati_detector(context);
+                        db.ScriveImpostazioni(context, "SET METRI PS");
+                    }
+                }
             }
         });
 

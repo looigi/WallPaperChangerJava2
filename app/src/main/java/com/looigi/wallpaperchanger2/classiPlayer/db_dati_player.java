@@ -96,6 +96,105 @@ public class db_dati_player {
         }
     }
 
+    public void EliminaTutto() {
+        if (myDB != null) {
+            myDB.execSQL("Delete From listaBrani");
+            myDB.execSQL("Delete From ImmaginiBrano");
+            myDB.execSQL("Delete From UltimoBrano");
+
+            CompattaDB();
+        }
+    }
+
+    public List<StrutturaBrano> CaricaTuttiIBraniLocali() {
+        List<StrutturaBrano> lista = new ArrayList<>();
+
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani Order By Artista, Album, Brano", null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    try {
+                        do {
+                            StrutturaBrano sb = new StrutturaBrano();
+                            sb.setIdBrano(Integer.valueOf(c.getString(0)));
+                            sb.setQuantiBrani(Integer.valueOf(c.getString(1)));
+                            sb.setArtista(c.getString(2));
+                            sb.setAlbum(c.getString(3));
+                            sb.setBrano(c.getString(4));
+                            sb.setAnno(c.getString(5));
+                            sb.setTraccia(c.getString(6));
+                            sb.setEstensione(c.getString(7));
+                            sb.setData(c.getString(8));
+                            sb.setDimensione(Long.valueOf(c.getString(9)));
+                            sb.setAscoltata(Integer.valueOf(c.getString(10)));
+                            sb.setBellezza(Integer.valueOf(c.getString(11)));
+                            sb.setTesto(c.getString(12));
+                            sb.setTestoTradotto(c.getString(13));
+                            sb.setUrlBrano(c.getString(14));
+                            sb.setPathBrano(c.getString(15));
+                            sb.setCartellaBrano(c.getString(16));
+                            sb.setTags(c.getString(17));
+                            sb.setTipoBrano(Integer.parseInt(c.getString(18)));
+
+                            sb.setImmagini(CaricaImmaginiBrano(sb.getIdBrano().toString()));
+
+                            lista.add(sb);
+                        } while (c.moveToNext());
+
+                        return lista;
+                    } catch (Exception e) {
+                        PulisceDatiSB();
+                        CreazioneTabelle();
+                        return CaricaTuttiIBraniLocali();
+                    }
+                } else {
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica tutti i brani");
+
+                    return lista;
+                }
+            } catch (Exception e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica tutti i brani: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                PulisceDatiSB();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return CaricaTuttiIBraniLocali();
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return lista;
+        }
+    }
+
+    public int PrendeBranoDaNumeroRiga(int numeroRiga) {
+        int ritorno = -1;
+
+        // UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani", null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    int i = 0;
+                    do {
+                        i++;
+                        if (i >= numeroRiga) {
+                            ritorno = Integer.parseInt(c.getString(0));
+                            break;
+                        }
+                    } while (c.moveToNext());
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        return ritorno;
+    }
+
     public StrutturaBrano CaricaBrano(String idBrano) {
         // UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
@@ -264,7 +363,7 @@ public class db_dati_player {
                     try {
                         return c.getInt(0);
                     } catch (Exception e) {
-                        return -1;
+                        return 0;
                     }
                 } else {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per max id brano");
@@ -275,12 +374,22 @@ public class db_dati_player {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db max id brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
 
-                return -1;
+                return 0;
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             return -1;
+        }
+    }
+
+    public void ScriveStelleBrano(String Stelle) {
+        if (myDB != null) {
+            String idBrano = String.valueOf(VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Scrive stelle brano " + idBrano + ": " + Stelle);
+            myDB.execSQL("Update listaBrani Set Bellezza='" + Stelle + "' Where idBrano=" + idBrano);
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido per scrive stelle brano");
         }
     }
 
@@ -390,6 +499,14 @@ public class db_dati_player {
         }
     }
 
+    public void EliminaImmagine(StrutturaBrano sb, StrutturaImmagini si) {
+        if (myDB != null) {
+            String Sql = "Delete From ImmaginiBrano Where idBrano='" + sb.getIdBrano() + "' And " +
+                    "PathImmagine = '" + si.getPathImmagine() + "'";
+            myDB.execSQL(Sql);
+        }
+    }
+
     public Boolean ScriveBrano(StrutturaBrano sb) {
         if (myDB != null) {
             try {
@@ -419,6 +536,21 @@ public class db_dati_player {
                 myDB.execSQL(sql);
 
                 ScriveImmaginiBrano(sb);
+
+                if (sb.getIdBrano() < 60000) {
+                    sql = "Select * From listaBrani Where " +
+                            "Artista ='" + sb.getArtista().replace("'", "''") + "' And " +
+                            "Album ='" + sb.getAlbum().replace("'", "''") + "' And " +
+                            "Brano ='" + sb.getBrano().replace("'", "''") + "' And " +
+                            "Cast(idBrano AS INTEGER) >= 60000";
+                    Cursor c = myDB.rawQuery(sql, null);
+                    if (c.getCount() > 0) {
+                        c.moveToFirst();
+
+                        String idBrano = c.getString(0);
+                        EliminaBrano(idBrano);
+                    }
+                }
             } catch (SQLException e) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
                 PulisceDatiSB();
@@ -431,6 +563,17 @@ public class db_dati_player {
         }
 
         return true;
+    }
+
+    private void EliminaBrano(String idBrano) {
+        if (myDB != null) {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Elimino brano " + idBrano);
+
+            myDB.execSQL("Delete From listaBrani Where idBrano='" + idBrano + "'");
+            myDB.execSQL("Delete From ImmaginiBrano Where idBrano='" + idBrano + "'");
+
+            CompattaDB();
+        }
     }
 
     private void ScriveImmaginiBrano(StrutturaBrano sb) {

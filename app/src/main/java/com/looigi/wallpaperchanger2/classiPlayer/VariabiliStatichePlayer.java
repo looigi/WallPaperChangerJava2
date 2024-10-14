@@ -41,7 +41,7 @@ public class VariabiliStatichePlayer {
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2.player";
     public static int NOTIFICATION_CHANNEL_ID = 4;
     public static int channelIdIntentOverlay = 152;
-    public static int SecondiCambioImmagine = 10;
+    public static int SecondiCambioImmagine = 30;
     public static int SecondiBranoPregresso= 15;
     private boolean staSuonando = false;
     public static String UrlWS = "http://looigi.no-ip.biz:1081";
@@ -77,10 +77,12 @@ public class VariabiliStatichePlayer {
     private ImageView imgCuffie;
     private List<ImageView> imgBellezza;
     private ChiamateWsPlayer classeChiamata;
-    private List<StrutturaChiamateWSPlayer> chiamate;
+    // private List<StrutturaChiamateWSPlayer> chiamate;
     private boolean playerAttivo = false;
     private float limiteInGb = 1.5F;
     private List<String> braniSuSD = new ArrayList<>();
+    private TextView txtQuanteRicerca;
+    private boolean CuffieInserite = false;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -114,6 +116,22 @@ public class VariabiliStatichePlayer {
         }
     }
 
+    public boolean isCuffieInserite() {
+        return CuffieInserite;
+    }
+
+    public void setCuffieInserite(boolean cuffieInserite) {
+        CuffieInserite = cuffieInserite;
+    }
+
+    public TextView getTxtQuanteRicerca() {
+        return txtQuanteRicerca;
+    }
+
+    public void setTxtQuanteRicerca(TextView txtQuanteRicerca) {
+        this.txtQuanteRicerca = txtQuanteRicerca;
+    }
+
     public List<String> getBraniSuSD() {
         return braniSuSD;
     }
@@ -138,6 +156,7 @@ public class VariabiliStatichePlayer {
         this.playerAttivo = playerAttivo;
     }
 
+    /*
     public void RimuovePrimaChiamata() {
         chiamate.remove(0);
     }
@@ -154,7 +173,7 @@ public class VariabiliStatichePlayer {
     }
     public void setChiamate(List<StrutturaChiamateWSPlayer> chiamate) {
         this.chiamate = chiamate;
-    }
+    } */
 
     public ChiamateWsPlayer getClasseChiamata() {
         return classeChiamata;

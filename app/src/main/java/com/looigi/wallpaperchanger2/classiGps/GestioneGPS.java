@@ -439,9 +439,9 @@ public class GestioneGPS {
                         location.getLongitude()
                 );
 
-                if (distanza > 75) {
-                    ok = false;
-                }
+                // if (distanza > 75) {
+                //     ok = false;
+                // }
 
                 controlloPuntiImpostatiPerSblocco(location);
 
@@ -571,7 +571,7 @@ public class GestioneGPS {
                     location.getLatitude(),
                     location.getLongitude()
             );
-            if (distanza <= 50) {
+            if (distanza <= VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS()) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Entrato nella posizione " + s.getNome());
 
                 Nome = s.getNome();

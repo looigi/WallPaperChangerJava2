@@ -57,7 +57,8 @@ public class db_dati_detector {
                         + " (FaiLog VARCHAR,  TipologiaScatto VARCHAR, Secondi VARCHAR, Fotocamera VARCHAR, " +
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
-                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR, FotoPower VARCHAR);";
+                        "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR, FotoPower VARCHAR, " +
+                        "MetriPS VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -82,7 +83,7 @@ public class db_dati_detector {
         }
     }
 
-    public boolean CaricaImpostazioni(Context context) {
+    public boolean CaricaImpostazioni(Context context, String daDove) {
         // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
             try {
@@ -112,12 +113,13 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(c.getString(15)));
                         VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(c.getString(16)));
                         VariabiliStaticheDetector.getInstance().setFotoSuPower(c.getString(17).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(c.getString(18)));
 
                         return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
-                        PulisceDati(context);
+                        PulisceDati(context, daDove);
                         CreazioneTabelle();
-                        CaricaImpostazioni(context);
+                        CaricaImpostazioni(context, daDove);
 
                         return false; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
                     }
@@ -143,9 +145,10 @@ public class db_dati_detector {
                     VariabiliStaticheDetector.getInstance().setGpsMs(1000);
                     VariabiliStaticheDetector.getInstance().setGpsMeters(5);
                     VariabiliStaticheDetector.getInstance().setFotoSuPower(true);
+                    VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(50);
 
                     Controlla = false;
-                    ScriveImpostazioni(context);
+                    ScriveImpostazioni(context, daDove);
                     Controlla = true;
 
                     return true; // "Impostazioni impostate da zero, correttamente. Risoluzione: " + risol;
@@ -155,10 +158,10 @@ public class db_dati_detector {
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("ERRORE Su scrittura immagini locali: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("Pulizia tabelle");
-                PulisceDati(context);
+                PulisceDati(context, daDove);
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                CaricaImpostazioni(context);
+                CaricaImpostazioni(context, daDove);
 
                 return false; // "Tabella creata di nuovo: " + e.getMessage();
             }
@@ -168,7 +171,7 @@ public class db_dati_detector {
         }
     }
 
-    public Boolean ScriveImpostazioni(Context context) {
+    public Boolean ScriveImpostazioni(Context context, String daDove) {
         if (Controlla && !VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
             return false;
@@ -176,7 +179,6 @@ public class db_dati_detector {
 
         if (myDB != null) {
             try {
-                String Imm = "";
                 myDB.execSQL("Delete From Impostazioni");
 
                 String sql = "INSERT INTO"
@@ -200,17 +202,18 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "', "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMs() + ", "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + ", "
-                        + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuPower() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuPower() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db: " + e.getMessage());
                 // Log.getInstance().ScriveLog("ERRORE Su scrittura impostazioni: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("Pulizia tabelle");
-                PulisceDati(context);
+                PulisceDati(context, daDove);
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                ScriveImpostazioni(context);
+                ScriveImpostazioni(context, daDove);
 
                 return false;
             }
@@ -228,7 +231,7 @@ public class db_dati_detector {
         }
     }
 
-    public void PulisceDati(Context context) {
+    public void PulisceDati(Context context, String daDove) {
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db");
@@ -236,6 +239,12 @@ public class db_dati_detector {
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table Impostazioni");
+
+                CompattaDB();
+
+                UtilityDetector.getInstance().VisualizzaPOPUP(
+                        "DATI DETECTOR Eliminati.\nDa operazione " + daDove, false, 0
+                );
             } catch (Exception ignored) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db: " + ignored.getMessage());
             }

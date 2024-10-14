@@ -45,6 +45,15 @@ public class VariabiliStaticheGPS {
     private boolean mostraSegnale = true;
     private boolean mostraPercorso = true;
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
+    private int DistanzaMetriPerPS = 50;
+
+    public int getDistanzaMetriPerPS() {
+        return DistanzaMetriPerPS;
+    }
+
+    public void setDistanzaMetriPerPS(int distanzaMetriPerPS) {
+        DistanzaMetriPerPS = distanzaMetriPerPS;
+    }
 
     public List<StrutturaPuntiSpegnimento> getListaPuntiDiSpegnimento() {
         return listaPuntiDiSpegnimento;

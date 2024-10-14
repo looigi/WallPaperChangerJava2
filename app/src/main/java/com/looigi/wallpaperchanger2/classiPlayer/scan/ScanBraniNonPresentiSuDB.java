@@ -6,32 +6,50 @@ import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classiPlayer.Files;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classiPlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ScanBraniNonPresentiSuDB {
-    private int maxId  = -1;
+    private int maxId  = 0;
+    private String PathImmagini;
 
-    public void controllaCanzoniNonSalvateSuDB(Context context) {
+    public void controllaCanzoniNonSalvateSuDB(Context context, boolean MostraPopup) {
+        if (MostraPopup) {
+            UtilityPlayer.getInstance().Attesa(true);
+        }
+
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(new Runnable() {
             @Override
             public void run() {
+                PathImmagini = context.getFilesDir() + "/Player/ImmaginiMusica/";
                 String path = context.getFilesDir() + "/Player/Brani";
                 db_dati_player db = new db_dati_player(context);
                 maxId = db.RitornaMaxIdBrano();
+
+                maxId += 65000;
 
                 File rootPrincipale = new File(path);
                 if (!rootPrincipale.exists()) {
                     rootPrincipale.mkdir();
                 }
                 walk(db, rootPrincipale);
+
+                if (MostraPopup) {
+                    UtilityPlayer.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Refresh effettuato");
+                }
 
                 handler.post(new Runnable() {
                     @Override
@@ -78,7 +96,8 @@ public class ScanBraniNonPresentiSuDB {
                     }
                     if (Nome.contains(".")) {
                         String[] n = Nome.split("\\.");
-                        Estensione = n[n.length - 1];
+                        Estensione = "." + n[n.length - 1];
+                        Brano = Brano.replace(Estensione, "");
                     }
 
                     boolean esiste = db.EsisteBrano(Artista, Album, Brano);
@@ -96,7 +115,7 @@ public class ScanBraniNonPresentiSuDB {
                         sb.setTraccia(Traccia);
                         sb.setEstensione(Estensione);
                         sb.setAscoltata(0);
-                        sb.setBellezza(0);
+                        sb.setBellezza(-2);
                         sb.setData(Data);
                         sb.setDimensione(Dimensione);
                         sb.setTesto("");
@@ -107,7 +126,19 @@ public class ScanBraniNonPresentiSuDB {
                         sb.setTags("");
                         sb.setTipoBrano(-1);
 
-                        sb.setImmagini(new ArrayList<>());
+                        String sPathImmagini1 = PathImmagini +
+                            Artista + "/" + Anno + "-" + Album;
+                        List<StrutturaImmagini> lista1 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini1);
+
+                        String sPathImmagini2 = PathImmagini +
+                                Artista + "/ZZZ-ImmaginiArtista";
+                        List<StrutturaImmagini> lista2 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini2);
+
+                        List<StrutturaImmagini> lista = new ArrayList<>();
+                        lista.addAll(lista1);
+                        lista.addAll(lista2);
+
+                        sb.setImmagini(lista);
 
                         db.ScriveBrano(sb);
 
@@ -116,5 +147,32 @@ public class ScanBraniNonPresentiSuDB {
                 }
             }
         }
+    }
+
+    private List<StrutturaImmagini> RitornaImmaginiBrano(String Album, String Path) {
+        File root = new File(Path);
+        File[] list = root.listFiles();
+
+        if (list == null) {
+            return new ArrayList<>();
+        }
+
+        List<StrutturaImmagini> lista = new ArrayList<>();
+
+        for (File f : list) {
+            String pathImm = f.getAbsoluteFile().getPath();
+            String nomeFile = f.getAbsoluteFile().getName();
+
+            StrutturaImmagini si = new StrutturaImmagini();
+            si.setPathImmagine(pathImm);
+            si.setAlbum(Album);
+            si.setNomeImmagine(nomeFile);
+            si.setUrlImmagine(pathImm);
+            si.setCartellaImmagine("");
+
+            lista.add(si);
+        }
+
+        return lista;
     }
 }

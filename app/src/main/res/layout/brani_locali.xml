@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layBraniLocali"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,33 +38,20 @@
                     android:id="@+id/edtFiltro"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="7"
                     android:ems="10"
                     android:inputType="text"
                     android:text="" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:gravity="center_horizontal"
                     android:layout_weight="2"
+                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgRicercaScelta"
+                        android:id="@+id/imgRicercaSceltaPL"
                         android:src="@drawable/icona_cerca"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/imgChiudeScelta"
-                        android:src="@drawable/elimina_quadrato"
                         android:layout_width="40dp"
                         android:layout_height="40dp" />
                 </LinearLayout>
@@ -71,29 +60,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="2"
+                android:orientation="horizontal"
                 android:layout_height="0dp">
 
                 <TextView
-                    android:id="@+id/txtQuanteRicerca"
-                    android:layout_width="match_parent"
-                    android:textColor="#aa0000"
-                    android:textSize="12dp"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:id="@+id/txtQuanteRicercaPL"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|left"
                     android:text=""
-                    android:layout_height="match_parent">
+                    android:textColor="#aa0000"
+                    android:textSize="12dp">
 
                 </TextView>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgRefreshBraniDB"
+                        android:src="@drawable/icona_refresh"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp">
+
+                    </ImageView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <ListView
-            android:id="@+id/lstImmagini"
+            android:id="@+id/lstBrani"
             android:layout_width="match_parent"
             android:layout_weight="8"
-            android:layout_height="0dp"
             android:dividerHeight="1dp"
-            android:listSelector="#9999EE" />
+            android:layout_height="0dp" >
+        </ListView>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -128,7 +128,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         }
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Stelle Brano " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
 
-        String Urletto="RitornaStelleBrano?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId() + "&idBrano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano();
+        String Urletto="RitornaStelleBrano?" +
+                "idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId() +
+                "&idBrano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano();
 
         TipoOperazione = "RitornaStelleBrano";
         // ControllaTempoEsecuzione = false;
@@ -138,11 +140,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TipoOperazione,
                 NS,
                 SA,
-                10000,
+                5000,
                 false,
                 true,
                 false,
                 -1);
+
     }
 
     public void RitornaListaAlbum(String Artista, String Ricerca) {
@@ -343,8 +346,10 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     public void StoppaEsecuzione() {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Blocco elaborazione per cambio brano");
-        bckAsyncTask.BloccaEsecuzione();
-        bckAsyncTask.cancel(true);
+        if (bckAsyncTask != null) {
+            bckAsyncTask.BloccaEsecuzione();
+            bckAsyncTask.cancel(true);
+        }
     }
 
     public void Esegue(String Urletto, String tOperazione,
@@ -378,8 +383,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     this,
                     Pregresso);
             bckAsyncTask.execute(Urletto);
-        } else {
-            aggiungeOperazione();
+        // } else {
+        //     aggiungeOperazione();
         }
     }
 
@@ -504,16 +509,26 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     private void fRitornaStelleBrano(String result) {
+        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+
         int Stelle;
 
         boolean ritorno = ControllaRitorno("Ritorna stelle brano", result);
         if (!ritorno) {
-            Stelle = 0;
+            Stelle = -1;
         } else {
             Stelle = Integer.parseInt(result);
+
+            db_dati_player db = new db_dati_player(context);
+            db.ScriveStelleBrano(String.valueOf(Stelle));
         }
 
         VariabiliStatichePlayer.getInstance().getUltimoBrano().setBellezza(Stelle);
+
+        UtilityPlayer.getInstance().ImpostaBellezza();
+
+        UtilityPlayer.getInstance().Attesa(false);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
     }
 
     private void RitornaArtisti(String result) {
@@ -572,28 +587,32 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         }
     }
 
-    private void aggiungeOperazione() {
+    /* private void aggiungeOperazione() {
         if (!Riprova) {
             VariabiliStatichePlayer.getInstance().AggiungeChiamata(chiamataDaFare);
 
             RipristinoChiamate.getInstance().AttivaTimerChiamate(context);
         }
-    }
+    } */
 
     private boolean ControllaRitorno(String Operazione, String result) {
         if (result.contains("ERROR:")) {
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
-                UtilityPlayer.getInstance().AggiornaInformazioni(true);
                 UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
-                UtilitiesGlobali.getInstance().setRetePresente(false);
-                aggiungeOperazione();
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata. Riprova: " + Riprova);
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, result);
+
+                if (Operazione.equals("Carica Brano")) {
+                    UtilityPlayer.getInstance().PrendeBranoInLocaleNonEsatto(context, Pregresso);
+                /* } else {
+                    UtilitiesGlobali.getInstance().setRetePresente(false);
+                    aggiungeOperazione();
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, Operazione + ": Rete non presente o timeout nella chiamata. Riprova: " + Riprova);
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, result); */
+                }
             }
 
             return false;
         } else {
-            if (Riprova) {
+            /* if (Riprova) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Riprovo chiamata riuscito");
 
                 RipristinoChiamate.getInstance().setTentativiEffettuati(0);
@@ -604,7 +623,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 } else {
                     RipristinoChiamate.getInstance().RimuoveTimer();
                 }
-            }
+            } */
 
             return true;
         }

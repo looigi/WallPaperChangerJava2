@@ -47,6 +47,7 @@ public class HeadsetBroadcastReceiver extends BroadcastReceiver {
             if (VariabiliStatichePlayer.getInstance().getImgCuffie() != null) {
                 VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.VISIBLE);
             }
+            VariabiliStatichePlayer.getInstance().setCuffieInserite(true);
             UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS", "Gestione inserimento cuffie: Cuffie Inserite");
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Cuffie inserite: " + nome + " Tipo: " + tipo);
@@ -65,6 +66,7 @@ public class HeadsetBroadcastReceiver extends BroadcastReceiver {
                 if (VariabiliStatichePlayer.getInstance().getImgCuffie() != null) {
                     VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
                 }
+                VariabiliStatichePlayer.getInstance().setCuffieInserite(false);
                 UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS", "Gestione inserimento cuffie: Cuffie Disinserite");
 
                 if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {

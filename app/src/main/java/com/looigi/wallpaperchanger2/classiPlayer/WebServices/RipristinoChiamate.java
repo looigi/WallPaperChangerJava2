@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classiPlayer.WebServices;
+/* package com.looigi.wallpaperchanger2.classiPlayer.WebServices;
 
 import android.content.Context;
 import android.os.Handler;
@@ -72,28 +72,32 @@ public class RipristinoChiamate {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Riprovo chiamata " + s.gettOperazione() +
                         "Tentativo: " + (tentativiEffettuati + 1));
 
+                if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+                    VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+                }
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, true);
+                VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+
                 switch (s.gettOperazione()) {
-                    case "RitornaProssimoBranoMobile":
-                        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
-                            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
-                        }
-
-                        ChiamateWsPlayer ws = new ChiamateWsPlayer(context, true);
-                        VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
-                        ws.RitornaBranoDaID(s.getBrano(), s.isPregresso());
-
-                        tentativiEffettuati++;
-                        tempoDiAttesa = tentativiEffettuati * 5000;
-                        if (tentativiEffettuati > 5) {
-                            tentativiEffettuati = 0;
-                            VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
-
-                            RimuoveTimer();
-                        }
+                    case "RitornaStelleBrano":
+                        // ws.RitornaStelleBrano();
                         break;
+                    case "RitornaProssimoBranoMobile":
+                        ws.RitornaBranoDaID(s.getBrano(), s.isPregresso());
+                        break;
+                }
+
+                tentativiEffettuati++;
+                tempoDiAttesa = tentativiEffettuati * 5000;
+                if (tentativiEffettuati > 5) {
+                    tentativiEffettuati = 0;
+                    VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
+
+                    RimuoveTimer();
                 }
             }
         };
         handler.postDelayed(r, tempoDiAttesa);
     }
 }
+*/

@@ -122,7 +122,7 @@ public class ServizioInterno extends Service {
             context.startActivity(iW);
 
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-            boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context);
+            boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context, "SERVIZIOINTERNO");
             VariabiliStaticheDetector.getInstance().setLetteImpostazioni(lettoD);
 
             if (VariabiliStaticheStart.getInstance().isDetector() &&

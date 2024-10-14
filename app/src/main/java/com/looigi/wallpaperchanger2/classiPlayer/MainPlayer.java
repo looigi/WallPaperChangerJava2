@@ -23,10 +23,14 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaUtenti;
+import com.looigi.wallpaperchanger2.classiPlayer.impostazioniInterne.brani_locali;
 import com.looigi.wallpaperchanger2.classiPlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classiPlayer.scan.ScanBraniPerLimite;
+import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -39,6 +43,7 @@ public class MainPlayer extends Activity {
     private AudioManager mAudioManager = null;
     private ComponentName mReceiverComponent = null;
     private Context context;
+    private Activity act;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class MainPlayer extends Activity {
         setContentView(R.layout.activity_player);
 
         context = this;
+        act = this;
 
         // GESTIONE INSERIMENTO CUFFIE
         IntentFilter filter = new IntentFilter();
@@ -87,7 +93,7 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setImgCuffie(findViewById(R.id.imgCuffie));
 
         ScanBraniNonPresentiSuDB s = new ScanBraniNonPresentiSuDB();
-        s.controllaCanzoniNonSalvateSuDB(context);
+        s.controllaCanzoniNonSalvateSuDB(context, false);
 
         ScanBraniPerLimite sl = new ScanBraniPerLimite();
         sl.controllaSpazioOccupato(context);
@@ -128,6 +134,14 @@ public class MainPlayer extends Activity {
                 handlerTimer.postDelayed(rTimer, 1000);
             }
         });
+
+        Button imgBranilocali = (Button) findViewById(R.id.btnSettingsBraniLocali);
+        imgBranilocali.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                visualizzaImpostazioniMaschera(1);
+            }
+        });
+
         Button imgSettingsG = (Button) findViewById(R.id.imgSettingsGlobali);
         imgSettingsG.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -197,6 +211,12 @@ public class MainPlayer extends Activity {
             // this.moveTaskToBack(true);
         } else {
             // RIPRISTINO SCHERMATA
+            if (VariabiliStatichePlayer.getInstance().isCuffieInserite()) {
+                VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
+            }
+
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
                 VariabiliStatichePlayer.getInstance().getTxtTitolo().setText(
                         VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano()
@@ -212,7 +232,8 @@ public class MainPlayer extends Activity {
             VariabiliStatichePlayer.getInstance().getTxtFine().setText(
                     VariabiliStatichePlayer.getInstance().getFineMinuti()
             );
-            VariabiliStatichePlayer.getInstance().getSeekBarBrano().setProgress(
+
+            UtilityPlayer.getInstance().ImpostaPosizioneBrano(
                     VariabiliStatichePlayer.getInstance().getSecondiPassati()
             );
 
@@ -281,6 +302,21 @@ public class MainPlayer extends Activity {
             }
         });
 
+        ImageView imgScorri = findViewById(R.id.imgScorriPL);
+        imgScorri.setOnTouchListener(new OnSwipeTouchListener(MainPlayer.this) {
+            public void onSwipeTop() {
+            }
+            public void onSwipeRight() {
+                UtilityPlayer.getInstance().ImpostaImmagine(context);
+            }
+            public void onSwipeLeft() {
+            }
+            public void onSwipeBottom() {
+            }
+        });
+
+        visualizzaImpostazioniMaschera(0);
+
         VariabiliStatichePlayer.getInstance().setPlayerAttivo(true);
     }
 
@@ -313,5 +349,21 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setMascheraNascosta(true);
 
         VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
+    }
+
+    private void visualizzaImpostazioniMaschera(int quale) {
+        LinearLayout layBraniLocali = act.findViewById(R.id.layBraniLocali);
+
+        layBraniLocali.setVisibility(LinearLayout.GONE);
+
+        switch(quale) {
+            case 0:
+                break;
+            case 1:
+                layBraniLocali.setVisibility(LinearLayout.VISIBLE);
+                brani_locali bl = new brani_locali(act, context);
+                bl.impostaMaschera();
+                break;
+        }
     }
 }

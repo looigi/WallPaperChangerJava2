@@ -24,7 +24,7 @@ import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classiPlayer.WebServices.ChiamateWsPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
+// import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -227,6 +227,12 @@ public class UtilityPlayer {
             ImpostaImmagine(context);
 
             AggiornaInformazioni(false);
+
+            if (sb.getBellezza() == -2) {
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+                ws.RitornaStelleBrano();
+            }
         } else {
             GestioneNotifichePlayer.getInstance().AggiornaNotifica("Brano non caricato");
         }
@@ -366,6 +372,8 @@ public class UtilityPlayer {
     }
 
     public void BranoAvanti(Context context, String Brano, boolean Pregresso) {
+        db_dati_player db = new db_dati_player(context);
+
         if (VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso() &&
                 VariabiliStatichePlayer.getInstance().getStrutturaBranoPregressoCaricata() != null) {
             // C'è un brano pregresso. Devo impostarlo
@@ -375,7 +383,6 @@ public class UtilityPlayer {
 
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano pregresso: " + sb.getBrano());
 
-            db_dati_player db = new db_dati_player(context);
             db.ScriveBrano(sb);
             db.ScriveUltimoBranoAscoltato(sb);
 
@@ -388,88 +395,137 @@ public class UtilityPlayer {
             return;
         }
 
-        ScriveLog(context, NomeMaschera, "Avanzo Brano");
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano esatto: " + Brano + ". Pregresso: " + Pregresso);
 
-        VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
-        RipristinoChiamate.getInstance().RimuoveTimer();
+        UtilityPlayer.getInstance().Attesa(false);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
 
-        boolean cercaBranoInLocale = false;
-        boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
-        int livello = VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione();
-        int level = VariabiliStaticheStart.getInstance().getLivello();
-        String tipo = VariabiliStaticheStart.getInstance().getTipoConnessione();
+        // VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
+        // RipristinoChiamate.getInstance().RimuoveTimer();
 
-        ScriveLog(context, NomeMaschera, "Avanzo Brano. WiFi: " + wifi);
-        ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello Segnale: " + livello);
-        ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
-        ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
+        if (Brano.isEmpty()) {
+            boolean cercaBranoInLocale = false;
 
-        if (!UtilitiesGlobali.getInstance().isRetePresente()) {
-            cercaBranoInLocale = true;
-        }
-
-        /* if (!Pregresso) {
-            cercaBranoInLocale = true;
-        } */
-
-        if (!cercaBranoInLocale) {
-            ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
-
-            if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
-                VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+            int random = UtilityPlayer.getInstance().GeneraNumeroRandom(5);
+            if (random == 1 || random == 3) {
+                cercaBranoInLocale = true;
             }
-            ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
-            VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
-            ws.RitornaBranoDaID(Brano, Pregresso);
-        } else {
-            ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
-
-            db_dati_player db = new db_dati_player(context);
-            int max = db.QuantiBraniInArchivio();
-            ScriveLog(context, NomeMaschera, "Avanzo Brano. Quanti brani: " + max);
-            
-            boolean ancora = true;
-            int c = 0;
-            boolean ok = false;
-            
-            while (ancora) {
-                int numeroBrano = GeneraNumeroRandom(max);
-                ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + numeroBrano);
-                StrutturaBrano sb = db.CaricaBrano(Integer.toString(numeroBrano));
-                if (sb != null) {
-                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano() + ". Pregresso: " + Pregresso);
-
-                    ancora = false;
-                    if (Pregresso) {
-                        VariabiliStatichePlayer.getInstance().setHaCaricatoBranoPregresso(true);
-                        VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(sb);
-
-                        VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText(sb.getArtista() + ":" + sb.getBrano());
-                        VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.VISIBLE);
-                    } else {
-                        VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
-
-                        CaricaBranoNelLettore(context);
-
-                        VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
-                        VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
-                    }
-
-                    ok = true;
-                } else {
-                    ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido. Riprovo: " + c);
-
-                    c++;
-                    if (c > 5) {
-                        ancora = false;
-                    }
+            if (!cercaBranoInLocale) {
+                if (!UtilitiesGlobali.getInstance().isRetePresente()) {
+                    cercaBranoInLocale = true;
                 }
             }
 
-            if (!ok) {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Impossibile rilevare brano");
+            if (cercaBranoInLocale) {
+                int quantiBrani = db.QuantiBraniInArchivio();
+                if (quantiBrani == 0) {
+                    cercaBranoInLocale = false;
+                }
+            }
+
+            if (!cercaBranoInLocale) {
+                boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
+                int livello = VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione();
+                int level = VariabiliStaticheStart.getInstance().getLivello();
+                String tipo = VariabiliStaticheStart.getInstance().getTipoConnessione();
+
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. WiFi: " + wifi);
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello Segnale: " + livello);
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Livello: " + level);
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Tipo: " + tipo);
+
+                PrendeBranoInRete(context, Brano, Pregresso);
+            } else {
+                PrendeBranoInLocaleNonEsatto(context, Pregresso);
+            }
+        } else {
+            PrendeBranoInLocaleEsatto(context, Brano);
+        }
+    }
+
+    private void PrendeBranoInLocaleEsatto(Context context, String Brano) {
+        // Imposto brano con id esatto
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + Brano);
+
+        db_dati_player db = new db_dati_player(context);
+        StrutturaBrano sb = db.CaricaBrano(Brano);
+        if (sb != null) {
+            ScriveLog(context, NomeMaschera, "Avanzo Brano con id Esatto. Preso brano " + sb.getBrano() + ".");
+
+            VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
+
+            CaricaBranoNelLettore(context);
+
+            VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
+            VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
+        } else {
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Impossibile rilevare brano " + Brano);
+        }
+    }
+
+    public void PrendeBranoInLocaleNonEsatto(Context context, boolean Pregresso) {
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
+
+        db_dati_player db = new db_dati_player(context);
+        int max = db.QuantiBraniInArchivio();
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Quanti brani: " + max);
+
+        boolean ancora = true;
+        int c = 0;
+        boolean ok = false;
+
+        while (ancora) {
+            int numeroRigaBrano = GeneraNumeroRandom(max);
+
+            int idBrano = db.PrendeBranoDaNumeroRiga(numeroRigaBrano);
+
+            ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + idBrano);
+            StrutturaBrano sb = db.CaricaBrano(Integer.toString(idBrano));
+            if (sb != null) {
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Preso brano " + sb.getBrano() + ". Pregresso: " + Pregresso);
+
+                ancora = false;
+                if (Pregresso) {
+                    VariabiliStatichePlayer.getInstance().setHaCaricatoBranoPregresso(true);
+                    VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(sb);
+
+                    VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText(sb.getArtista() + ":" + sb.getBrano());
+                    VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
+
+                    CaricaBranoNelLettore(context);
+
+                    VariabiliStatichePlayer.getInstance().getTxtBranoPregresso().setText("");
+                    VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
+                }
+
+                ok = true;
+            } else {
+                ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido. Riprovo: " + c);
+
+                c++;
+                if (c > 5) {
+                    ancora = false;
+                }
             }
         }
+
+        if (!ok) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Impossibile rilevare brano");
+        }
+    }
+
+    private void PrendeBranoInRete(Context context, String Brano, boolean Pregresso) {
+        ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
+
+        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+        }
+        ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+        VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+        ws.RitornaBranoDaID("", Pregresso);
     }
 
     public void ImpostaImmagine(Context context) {
@@ -478,39 +534,67 @@ public class UtilityPlayer {
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
                 if (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini() != null) {
                     List<StrutturaImmagini> lista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini();
-                    int immagine = GeneraNumeroRandom(lista.size() - 1);
+                    int immagine = GeneraNumeroRandom(lista.size());
                     if (immagine > -1) {
-                        String path = lista.get(immagine).getUrlImmagine();
-                        String PathImmagine = path.replace(VariabiliStatichePlayer.PercorsoBranoMP3SuURL + "/", "");
-                        PathImmagine = context.getFilesDir() + "/Player/" + PathImmagine;
-                        PathImmagine = PathImmagine.replace("\\", "/");
+                        boolean ancora = true;
 
-                        if (Files.getInstance().EsisteFile(PathImmagine)) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(PathImmagine);
-                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
-                            VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+                        while (ancora) {
+                            String path = lista.get(immagine).getUrlImmagine();
 
-                            AggiornaInformazioni(false);
-                        } else {
-                            boolean ok = true;
-                            int level = VariabiliStaticheStart.getInstance().getLivello();
-
-                            if (!UtilitiesGlobali.getInstance().isRetePresente()) {
-                                ok = false;
+                            String PathImmagine = "";
+                            if (path.toUpperCase().contains("HTTP://")) {
+                                PathImmagine = path.replace(VariabiliStatichePlayer.PercorsoBranoMP3SuURL + "/", "");
+                                PathImmagine = context.getFilesDir() + "/Player/" + PathImmagine;
+                                PathImmagine = PathImmagine.replace("\\", "/");
                             } else {
-                                // if (!wifi) {
-                                if (level <= 2) {
-                                    ok = false;
-                                }
-                                // }
+                                PathImmagine = path;
                             }
-                            if (ok) {
-                                new DownloadImage(
-                                        context,
-                                        VariabiliStatichePlayer.getInstance().getImgBrano(),
-                                        lista.get(immagine).getUrlImmagine()).execute(
-                                        lista.get(immagine).getUrlImmagine()
-                                );
+
+                            if (Files.getInstance().EsisteFile(PathImmagine)) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(PathImmagine);
+                                if (bitmap.getWidth() > 100 && bitmap.getHeight() > 100) {
+                                    ancora = false;
+
+                                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
+                                    VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+
+                                    AggiornaInformazioni(false);
+                                } else {
+                                    Files.getInstance().EliminaFileUnico(PathImmagine);
+
+                                    db_dati_player db = new db_dati_player(context);
+                                    db.EliminaImmagine(
+                                            VariabiliStatichePlayer.getInstance().getUltimoBrano(),
+                                            lista.get(immagine));
+                                }
+                            } else {
+                                boolean ok = true;
+                                int level = VariabiliStaticheStart.getInstance().getLivello();
+
+                                if (!UtilitiesGlobali.getInstance().isRetePresente()) {
+                                    ok = false;
+                                } else {
+                                    // if (!wifi) {
+                                    if (level <= 2) {
+                                        ok = false;
+                                    }
+                                    // }
+                                }
+                                if (ok) {
+                                    ancora = false;
+
+                                    new DownloadImage(
+                                            context,
+                                            VariabiliStatichePlayer.getInstance().getImgBrano(),
+                                            lista.get(immagine).getUrlImmagine()).execute(
+                                            lista.get(immagine).getUrlImmagine()
+                                    );
+                                }
+                            }
+
+                            immagine++;
+                            if (immagine > lista.size()) {
+                                immagine = 0;
                             }
                         }
                     } else {
@@ -526,8 +610,14 @@ public class UtilityPlayer {
     }
 
     public void ImpostaLogoApplicazione(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-        VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1000);
     }
 
     public void StoppaTimer() {
@@ -617,11 +707,17 @@ public class UtilityPlayer {
 
     public void ImpostaBellezza() {
         int bellezza = VariabiliStatichePlayer.getInstance().getUltimoBrano().getBellezza();
-        for (int i = 0; i <= bellezza; i++) {
-            VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito);;
-        }
-        for (int i = bellezza + 1; i <= 10; i++) {
-            VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito_vuoto);
+        if (bellezza > -1) {
+            for (int i = 0; i <= bellezza; i++) {
+                VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito);
+            }
+            for (int i = bellezza + 1; i <= 10; i++) {
+                VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito_vuoto);
+            }
+        } else {
+            for (int i = 0; i <= 10; i++) {
+                VariabiliStatichePlayer.getInstance().getImgBellezza().get(i).setImageResource(R.drawable.preferito_vuoto);
+            }
         }
     }
 

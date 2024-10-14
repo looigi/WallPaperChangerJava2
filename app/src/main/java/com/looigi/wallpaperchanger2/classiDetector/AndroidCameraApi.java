@@ -93,7 +93,7 @@ public class AndroidCameraApi extends Activity {
     }
 
     private void Attiva() {
-        if (!UtilityDetector.getInstance().LeggeImpostazioni(this)) {
+        if (!UtilityDetector.getInstance().LeggeImpostazioni(this, "ATTIVACAMERA")) {
             UtilitiesGlobali.getInstance().ApreToast(this,
                     "Impossibile leggere le impostazioni");
 

@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classiStandard.RichiestaPath;
 import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedReader;
@@ -260,8 +261,9 @@ public class UtilityDetector {
     }
 
     public void VisualizzaPOPUP(String Messaggio, final boolean Tasti, final int QualeOperazione) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(VariabiliStaticheDetector.getInstance().getContext());
-        builder.setTitle("");
+        Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setTitle("Wallpaper Changer II");
         builder.setMessage(Messaggio);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -920,9 +922,9 @@ public class UtilityDetector {
         }
     }
 
-    public boolean LeggeImpostazioni(Context context) {
+    public boolean LeggeImpostazioni(Context context, String daDove) {
         db_dati_detector db = new db_dati_detector(context);
-        boolean rit = db.CaricaImpostazioni(context);
+        boolean rit = db.CaricaImpostazioni(context, daDove);
         ScriveLog(context, NomeMaschera, "Ritorno caricamento impostazioni: " + rit);
 
         return rit;
@@ -948,17 +950,19 @@ public class UtilityDetector {
         File p = new File(Path);
         File[] list = p.listFiles();
         int q = 0;
-        for (File f : list) {
-            if (!f.getName().toUpperCase().contains("NOMEDIA")) {
-                q++;
-            }
-        }
         if (list != null) {
-            String Messaggio = "Detector. J: " + q;
+            for (File f : list) {
+                if (!f.getName().toUpperCase().contains("NOMEDIA")) {
+                    q++;
+                }
+            }
+            if (list != null) {
+                String Messaggio = "Detector. J: " + q;
 
-            GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
-        } else {
-            GestioneNotificheDetector.getInstance().AggiornaNotifica("Detector");
+                GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
+            } else {
+                GestioneNotificheDetector.getInstance().AggiornaNotifica("Detector");
+            }
         }
     }
 

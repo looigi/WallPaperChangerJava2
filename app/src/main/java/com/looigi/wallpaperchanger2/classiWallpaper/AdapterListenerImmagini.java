@@ -26,7 +26,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
         this.context = applicationContext;
         this.listaImmaginiOrig = Immagini;
         this.listaImmagini = new ArrayList();
-        VariabiliStaticheWallpaper.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: " + Integer.toString(listaImmagini.size()));
+        VariabiliStaticheWallpaper.getInstance().getTxtQuanteRicerca().setText("Immagini rilevate: 0");
         inflater = (LayoutInflater.from(applicationContext));
     }
 

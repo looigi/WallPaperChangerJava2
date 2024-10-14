@@ -63,7 +63,7 @@ public class Impostazioni {
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Scrittura impostazioni");
 
         db_dati_detector db = new db_dati_detector(context);
-        db.ScriveImpostazioni(context);
+        db.ScriveImpostazioni(context, "SALVA VALORI");
         // DBImpostazioni dbImpostazioni = new DBImpostazioni(VariabiliStatiche.getInstance().getContext());
         // dbImpostazioni.open();
         // dbImpostazioni.ScriveImpostazioni();

@@ -419,7 +419,7 @@ public class InizializzaMascheraDetector {
                 // i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni); */
 
                 db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
+                db.ScriveImpostazioni(context, "SET FRONTE");
             }
         });
 
@@ -438,7 +438,7 @@ public class InizializzaMascheraDetector {
                 // i.RiempieListaRisoluzioni(context, VariabiliStaticheDetector.getInstance().Dimensioni); */
 
                 db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context);
+                db.ScriveImpostazioni(context, "SET RETRO");
             }
         });
 

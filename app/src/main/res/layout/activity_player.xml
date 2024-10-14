@@ -183,16 +183,6 @@
 
     </TextView>
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imgCaricamentoPlayer"
-        android:src="@drawable/loading"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/layTastiPlayer"
-        android:layout_width="50dp"
-        android:layout_height="50dp">
-
-    </pl.droidsonroids.gif.GifImageView>
-
     <!--  Stelle -->
     <LinearLayout
         android:id="@+id/layStelle"
@@ -381,5 +371,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgScorriPL"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/layTastiPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+    </ImageView>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoPlayer"
+        android:src="@drawable/loading"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/layTastiPlayer"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+    </pl.droidsonroids.gif.GifImageView>
 
 </RelativeLayout>
