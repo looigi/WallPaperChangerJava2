@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/layImpostazioniPennetta"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:background="@drawable/bordato_non_trasparente"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textColor="@color/Rosso"
+        android:text="Impostazioni PENNETTA"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="3"
+            android:text="Tempo Slideshow" />
+
+        <EditText
+            android:id="@+id/edtTempoSlideShowPen"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:padding="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:text="Invia file di log"
+            android:layout_height="match_parent">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnInviaLogPen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="..."
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:padding="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:text="Pulisce file di log"
+            android:layout_height="match_parent">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnPulisceLogPen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="..."
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:padding="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:text="Visualizza file di log"
+            android:layout_height="match_parent">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnVisualizzaLogPen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="..."
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

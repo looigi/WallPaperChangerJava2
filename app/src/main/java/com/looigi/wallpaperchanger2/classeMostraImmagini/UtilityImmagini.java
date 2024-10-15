@@ -3,7 +3,6 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -11,15 +10,13 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

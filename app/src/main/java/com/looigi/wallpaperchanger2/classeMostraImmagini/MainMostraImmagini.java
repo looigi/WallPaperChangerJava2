@@ -12,25 +12,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiGps.UtilityGPS;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +53,7 @@ public class MainMostraImmagini extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(1);
         VariabiliStaticheMostraImmagini.getInstance().setRandom("S");
 
-        VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoMI));
+        VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
 
         db_dati_immagini db = new db_dati_immagini(context);
         db.CaricaImpostazioni();
@@ -116,7 +111,7 @@ public class MainMostraImmagini extends Activity {
         });
 
         ImageView imgScorri = findViewById(R.id.imgScorri);
-        imgScorri.setOnTouchListener(new OnSwipeTouchListener(MainMostraImmagini.this) {
+        imgScorri.setOnTouchListener(new OnSwipeTouchListener(context) {
             public void onSwipeTop() {
                 // UtilitiesGlobali.getInstance().ApreToast(context, "Swipe Top");
             }

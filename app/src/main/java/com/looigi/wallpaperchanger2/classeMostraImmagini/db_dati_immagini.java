@@ -5,13 +5,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaBrano;
-import com.looigi.wallpaperchanger2.classiPlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class db_dati_immagini {
     private static final String NomeMaschera = "DBIMMAGINI";

@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.canhub.cropper.CropImageView;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

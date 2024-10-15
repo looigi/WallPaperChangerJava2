@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".classiWallpaper.MainWallpaper">
+    tools:context=".classeWallpaper.MainWallpaper">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,6 +68,12 @@
                         android:layout_height="match_parent" />
 
                     <Button
+                        android:id="@+id/btnSettingsPennetta"
+                        android:layout_width="wrap_content"
+                        android:text="Pennetta"
+                        android:layout_height="match_parent" />
+
+                    <Button
                         android:id="@+id/btnSettingsDebug"
                         android:layout_width="wrap_content"
                         android:text="Debug"
@@ -123,6 +129,12 @@
             <include
                 android:visibility="gone"
                 layout="@layout/impostazioni_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/impostazioni_pennetta"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

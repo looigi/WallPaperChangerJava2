@@ -19,23 +19,24 @@ import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
-import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classiStandard.db_debug;
-import com.looigi.wallpaperchanger2.classiWallpaper.InizializzaMascheraWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.classiStandard.Permessi;
-import com.looigi.wallpaperchanger2.classiStandard.ServizioInterno;
-import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
-import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
-import com.looigi.wallpaperchanger2.classiGps.MainMappa;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classiGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classeStandard.db_debug;
+import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.classeStandard.Permessi;
+import com.looigi.wallpaperchanger2.classeStandard.ServizioInterno;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
+import com.looigi.wallpaperchanger2.classeGps.MainMappa;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -297,6 +298,38 @@ public class MainStart  extends Activity {
                     @Override
                     public void run() {
                         Intent i = new Intent(context, MainMostraImmagini.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgPe = findViewById(R.id.imgStartPennetta);
+        LinearLayout layPennetta = findViewById(R.id.layBarraPennetta);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                VariabiliStaticheStart.getInstance().isVisibilePennetta()) {
+            layPennetta.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layPennetta.setVisibility(LinearLayout.GONE);
+        }
+        imgPe.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainMostraPennetta.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }

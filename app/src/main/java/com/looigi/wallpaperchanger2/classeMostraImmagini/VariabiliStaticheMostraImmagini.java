@@ -5,7 +5,9 @@ import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.ArrayList;

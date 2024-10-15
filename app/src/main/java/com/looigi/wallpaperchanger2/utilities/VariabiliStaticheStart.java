@@ -2,13 +2,8 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.telephony.TelephonyManager;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 
 public class VariabiliStaticheStart {
     private static VariabiliStaticheStart instance = null;
@@ -41,6 +36,15 @@ public class VariabiliStaticheStart {
     private boolean playerAperto = false;
     private boolean VisibileImmagini = false;
     private boolean VisibileVideo = false;
+    private boolean VisibilePennetta = false;
+
+    public boolean isVisibilePennetta() {
+        return VisibilePennetta;
+    }
+
+    public void setVisibilePennetta(boolean visibilePennetta) {
+        VisibilePennetta = visibilePennetta;
+    }
 
     public String getUltimoControlloRete() {
         return ultimoControlloRete;

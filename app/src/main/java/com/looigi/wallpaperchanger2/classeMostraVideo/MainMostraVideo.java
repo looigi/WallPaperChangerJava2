@@ -2,27 +2,15 @@ package com.looigi.wallpaperchanger2.classeMostraVideo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.webservice.ChiamateWSV;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class MainMostraVideo extends Activity {
     private static String NomeMaschera = "MAINMOSTRAVIDEO";
@@ -98,5 +86,12 @@ public class MainMostraVideo extends Activity {
         } else {
             ws.RitornaProssimoVideo();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        act.finish();
     }
 }

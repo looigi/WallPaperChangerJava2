@@ -3,8 +3,8 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;

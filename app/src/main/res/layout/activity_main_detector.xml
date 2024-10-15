@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:id="@+id/activity_detector"
     android:background="@color/Verde_Chiaro"
-    tools:context=".classiWallpaper.MainWallpaper">
+    tools:context=".classeWallpaper.MainWallpaper">
 
     <ScrollView
         android:id="@+id/scrollViewPrincipale"

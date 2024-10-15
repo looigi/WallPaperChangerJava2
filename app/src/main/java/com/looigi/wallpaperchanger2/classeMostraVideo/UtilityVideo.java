@@ -5,12 +5,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.VideoView;
 
-import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeMostraVideo.webservice.ChiamateWSV;
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

@@ -1,21 +1,5 @@
 package com.looigi.wallpaperchanger2.notificaTasti;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Environment;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.looigi.wallpaperchanger2.classiWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classiWallpaper.StrutturaImmagine;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class VariabiliStaticheTasti {
     private static VariabiliStaticheTasti instance = null;
 

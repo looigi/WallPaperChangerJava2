@@ -16,15 +16,14 @@ import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classiStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
 import java.io.BufferedInputStream;
@@ -161,9 +160,10 @@ public class UtilitiesGlobali {
         String path5 = context.getFilesDir() + "/Log/PLAYER";
         String path6 = context.getFilesDir() + "/Log/IMMAGINI";
         String path7 = context.getFilesDir() + "/Log/VIDEO";
+        String path8 = context.getFilesDir() + "/Log/PENNETTA";
 
         if (qualeLog.isEmpty()) {
-            App = new String[] {"WallPaper", "Detector", "DB", "GPS", "Player", "Immagini", "Video"};
+            App = new String[] {"WallPaper", "Detector", "DB", "GPS", "Player", "Immagini", "Video", "Pennetta"};
             paths = new String[] {path1, path2, path3, path4, path5, path6, path7};
         } else {
             switch (qualeLog) {
@@ -190,6 +190,10 @@ public class UtilitiesGlobali {
                 case "VIDEO":
                     App = new String[] {"Video"};
                     paths = new String[] {path7};
+                    break;
+                case "PENNETTA":
+                    App = new String[] {"Pennetta"};
+                    paths = new String[] {path8};
                     break;
             }
         }

@@ -76,7 +76,7 @@
 
         <!--  -->
         <activity
-            android:name=".classiDetector.AndroidCameraApi"
+            android:name=".classeDetector.AndroidCameraApi"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:windowSoftInputMode="adjustResize" />
 
@@ -90,7 +90,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiGps.MainMappa"
+            android:name=".classePennetta.MainMostraPennetta"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classeGps.MainMappa"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
@@ -100,22 +105,22 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiPlayer.MainPlayer"
+            android:name=".classePlayer.MainPlayer"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiWallpaper.MainWallpaper"
+            android:name=".classeWallpaper.MainWallpaper"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiDetector.MainActivityDetector"
+            android:name=".classeDetector.MainActivityDetector"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiStandard.RichiestaPath"
+            android:name=".classeStandard.RichiestaPath"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -134,13 +139,13 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classiStandard.RichiestaPathImmaginiLocali"
+            android:name=".classeStandard.RichiestaPathImmaginiLocali"
             android:windowSoftInputMode="adjustResize" />
 
-        <service android:name = ".classiStandard.ServizioInterno"
+        <service android:name = ".classeStandard.ServizioInterno"
             android:foregroundServiceType="specialUse|location|camera" />
 
-        <receiver android:name=".classiPlayer.GestioneTastiCuffie"
+        <receiver android:name=".classePlayer.GestioneTastiCuffie"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="2139999999">
@@ -166,7 +171,7 @@
             </intent-filter>
         </receiver> -->
 
-        <receiver android:name=".classiPlayer.chiamate.CallReceiver"
+        <receiver android:name=".classePlayer.chiamate.CallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -176,7 +181,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".classiStandard.ScreenReceiver"
+        <receiver android:name=".classeStandard.ScreenReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -187,11 +192,11 @@
 
         <service android:name=".Segnale.ControlloSegnale2" />
 
-        <service android:name=".classiPlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
+        <service android:name=".classePlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 
-        <service android:name=".classiWallpaper.GestioneNotificheWP$NotificationActionService" />
+        <service android:name=".classeWallpaper.GestioneNotificheWP$NotificationActionService" />
 
-        <service android:name=".classiDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
+        <service android:name=".classeDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
 
         <service android:name=".notificaTasti.GestioneNotificheTasti$NotificationActionServiceTasti" />
 
@@ -212,24 +217,24 @@
         </receiver>
 
         <activity
-            android:name=".classiDetector.Receivers.Video"
+            android:name=".classeDetector.Receivers.Video"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
         <activity
-            android:name=".classiDetector.Receivers.Audio"
+            android:name=".classeDetector.Receivers.Audio"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
         <activity
-            android:name=".classiDetector.Receivers.Photo"
+            android:name=".classeDetector.Receivers.Photo"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_name" >
         </activity>
 
-        <receiver android:name=".classiDetector.Receivers.ProviderPhoto"
+        <receiver android:name=".classeDetector.Receivers.ProviderPhoto"
             android:exported="false"
             android:label="Detector Photo">
             <intent-filter >
@@ -240,7 +245,7 @@
                 android:resource="@xml/widget_settings_photo" />
         </receiver>
 
-        <receiver android:name=".classiDetector.Receivers.ProviderVideo"
+        <receiver android:name=".classeDetector.Receivers.ProviderVideo"
             android:exported="false"
             android:label="Detector Video">
             <intent-filter >
@@ -252,7 +257,7 @@
                 android:resource="@xml/widget_settings_video" />
         </receiver>
 
-        <receiver android:name=".classiDetector.Receivers.ProviderAudio"
+        <receiver android:name=".classeDetector.Receivers.ProviderAudio"
             android:exported="false"
             android:label="Detector Audio">
             <intent-filter >

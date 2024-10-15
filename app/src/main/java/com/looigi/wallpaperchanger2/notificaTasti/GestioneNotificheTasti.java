@@ -22,17 +22,20 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
-import com.looigi.wallpaperchanger2.classiDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiGps.MainMappa;
-import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeGps.MainMappa;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
+import java.util.Objects;
 
 
 public class GestioneNotificheTasti {
@@ -115,16 +118,25 @@ public class GestioneNotificheTasti {
                 contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
-            if (VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
+                    VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
                 contentView.setViewVisibility(R.id.imgImmaginiTasti, LinearLayout.VISIBLE);
             } else {
                 contentView.setViewVisibility(R.id.imgImmaginiTasti, LinearLayout.GONE);
             }
 
-            if (VariabiliStaticheStart.getInstance().isVisibileVideo()) {
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
+                    VariabiliStaticheStart.getInstance().isVisibileVideo()) {
                 contentView.setViewVisibility(R.id.imgImmaginiVideo, LinearLayout.VISIBLE);
             } else {
                 contentView.setViewVisibility(R.id.imgImmaginiVideo, LinearLayout.GONE);
+            }
+
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
+                    VariabiliStaticheStart.getInstance().isVisibilePennetta()) {
+                contentView.setViewVisibility(R.id.imgImmaginiPennetta, LinearLayout.VISIBLE);
+            } else {
+                contentView.setViewVisibility(R.id.imgImmaginiPennetta, LinearLayout.GONE);
             }
 
             boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
@@ -239,11 +251,17 @@ public class GestioneNotificheTasti {
             vid.putExtra("DO", "video");
             PendingIntent pVid = PendingIntent.getService(ctx, 207, vid,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgImmaginiTasti, pVid);
+            view.setOnClickPendingIntent(R.id.imgImmaginiVideo, pVid);
+
+            Intent pen = new Intent(ctx, NotificationActionServiceTasti.class);
+            pen.putExtra("DO", "pennetta");
+            PendingIntent pPen = PendingIntent.getService(ctx, 208, pen,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgImmaginiPennetta, pPen);
 
             Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
             uscita.putExtra("DO", "uscita");
-            PendingIntent pUscita = PendingIntent.getService(ctx, 208, uscita,
+            PendingIntent pUscita = PendingIntent.getService(ctx, 209, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
         }
@@ -319,7 +337,7 @@ public class GestioneNotificheTasti {
             // Utility.getInstance().ScriveLog("Notifica: onCreate PassaggioNotifica");
 
             try {
-                action = (String) intent.getExtras().get("DO");
+                action = (String) Objects.requireNonNull(intent.getExtras()).get("DO");
                 // Utility.getInstance().ScriveLog("Notifica: Action: " + action);
             } catch (Exception e) {
                 int a = 0;
@@ -404,6 +422,11 @@ public class GestioneNotificheTasti {
                         Intent iIm = new Intent(context, MainMostraImmagini.class);
                         iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(iIm);
+                        break;
+                    case "pennetta":
+                        Intent iPe = new Intent(context, MainMostraPennetta.class);
+                        iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iPe);
                         break;
                     case "video":
                         Intent iVi = new Intent(context, MainMostraVideo.class);

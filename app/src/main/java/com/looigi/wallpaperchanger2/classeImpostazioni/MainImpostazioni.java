@@ -23,29 +23,28 @@ import androidx.core.content.ContextCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
-import com.looigi.wallpaperchanger2.classiDetector.GestioneNotificheDetector;
-import com.looigi.wallpaperchanger2.classiDetector.Impostazioni;
-import com.looigi.wallpaperchanger2.classiDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classiDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classiDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classiGps.GestioneGPS;
-import com.looigi.wallpaperchanger2.classiGps.GestioneMappa;
-import com.looigi.wallpaperchanger2.classiGps.MainMappa;
-import com.looigi.wallpaperchanger2.classiGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classiGps.db_dati_gps;
-import com.looigi.wallpaperchanger2.classiPlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classiPlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classiStandard.RichiestaPathImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiStandard.db_debug;
-import com.looigi.wallpaperchanger2.classiWallpaper.GestioneNotificheWP;
-import com.looigi.wallpaperchanger2.classiWallpaper.ScannaDiscoPerImmaginiLocali;
-import com.looigi.wallpaperchanger2.classiWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classiWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
+import com.looigi.wallpaperchanger2.classeDetector.Impostazioni;
+import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classeStandard.RichiestaPathImmaginiLocali;
+import com.looigi.wallpaperchanger2.classeStandard.db_debug;
+import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
+import com.looigi.wallpaperchanger2.classeWallpaper.ScannaDiscoPerImmaginiLocali;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -96,6 +95,9 @@ public class MainImpostazioni extends Activity {
             case "VIDEO":
                 qualeSchermata = 6;
                 break;
+            case "PENNETTA":
+                qualeSchermata = 7;
+                break;
             default:
                 qualeSchermata = 0;
                 break;
@@ -133,6 +135,14 @@ public class MainImpostazioni extends Activity {
             btnVideo.setVisibility(LinearLayout.VISIBLE);
         } else {
             btnVideo.setVisibility(LinearLayout.GONE);
+        }
+
+        Button btnPennetta = act.findViewById(R.id.btnSettingsPennetta);
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                VariabiliStaticheStart.getInstance().isVisibilePennetta()) {
+            btnPennetta.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            btnPennetta.setVisibility(LinearLayout.GONE);
         }
 
         btnWallpaper.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +201,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        btnPennetta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 7;
+                VisualizzaSchermata(act);
+            }
+        });
+
         ImpostaSchermataWallpaper(act);
         ImpostaSchermataDetector(act);
         ImpostaSchermataMappa(act);
@@ -198,6 +216,7 @@ public class MainImpostazioni extends Activity {
         ImpostaSchermataDebug(act);
         ImpostaSchermataImmagini(act);
         ImpostaSchermataVideo(act);
+        ImpostaSchermataPennetta(act);
 
         VisualizzaSchermata(act);
     }
@@ -217,6 +236,7 @@ public class MainImpostazioni extends Activity {
         LinearLayout layDebug = act.findViewById(R.id.layImpostazioniDebug);
         LinearLayout layImmagini = act.findViewById(R.id.layImpostazioniImmagini);
         LinearLayout layVideo = act.findViewById(R.id.layImpostazioniVideo);
+        LinearLayout layPennetta = act.findViewById(R.id.layImpostazioniPennetta);
 
         layWallaper.setVisibility(LinearLayout.GONE);
         layDetector.setVisibility(LinearLayout.GONE);
@@ -225,6 +245,7 @@ public class MainImpostazioni extends Activity {
         layDebug.setVisibility(LinearLayout.GONE);
         layImmagini.setVisibility(LinearLayout.GONE);
         layVideo.setVisibility(LinearLayout.GONE);
+        layPennetta.setVisibility(LinearLayout.GONE);
 
         switch(qualeSchermata) {
             case 0:
@@ -247,6 +268,9 @@ public class MainImpostazioni extends Activity {
                 break;
             case 6:
                 layVideo.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 7:
+                layPennetta.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -884,6 +908,48 @@ public class MainImpostazioni extends Activity {
         btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilitiesGlobali.getInstance().VisualizzaLogs(context, "IMMAGINI");
+            }
+        });
+    }
+
+    private void ImpostaSchermataPennetta(Activity act) {
+        db_dati_immagini db = new db_dati_immagini(context);
+        db.CaricaImpostazioni();
+
+        EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShowPen);
+        String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
+        edtSecondi.setText(limite);
+        edtSecondi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        String lim = edtSecondi.getText().toString();
+                        VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(Integer.parseInt(lim));
+
+                        db_dati_immagini db = new db_dati_immagini(context);
+                        db.ScriveImpostazioni();
+                    }
+                }
+            }
+        });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogPen);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogPen);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogPen);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "PENNETTA");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "PENNETTA");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "PENNETTA");
             }
         });
     }

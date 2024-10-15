@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classiWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 import org.acra.ACRA;
 import org.acra.BuildConfig;
