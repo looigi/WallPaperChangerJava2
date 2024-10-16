@@ -10,7 +10,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import java.io.File;
 
 public class db_dati_video {
-    private static final String NomeMaschera = "DBVIDEO";
+    private static final String NomeMaschera = "DB_Video";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;

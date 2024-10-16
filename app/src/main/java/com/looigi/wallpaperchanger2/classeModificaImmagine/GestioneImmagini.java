@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GestioneImmagini {
-	private static final String NomeMaschera = "GESTIONEIMMAGINI";
+	private static final String NomeMaschera = "Gestione_Immagini";
 
 	public void Ruotaimmagine(String NomeFile, int Angolo) {
 		try {

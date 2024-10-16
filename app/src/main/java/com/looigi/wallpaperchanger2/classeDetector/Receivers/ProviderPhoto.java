@@ -16,7 +16,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 
 public class ProviderPhoto extends AppWidgetProvider {
-	private static final String NomeMaschera = "PROVIDERPHOTO";
+	private static final String NomeMaschera = "Provider_Photo";
 	private int appId = 111;
 	// public static String CLICKPHOTO = "CLICK_PHOTO";
 

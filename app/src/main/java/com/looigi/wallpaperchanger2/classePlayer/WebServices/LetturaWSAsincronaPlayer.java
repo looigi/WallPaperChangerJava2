@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 public class LetturaWSAsincronaPlayer extends AsyncTask<String, Integer, String>  {
-    private static final String NomeMaschera = "LETTURAWSPLAYER";
+    private static final String NomeMaschera = "Lettura_WS_Player";
     private final String NAMESPACE;
     private String METHOD_NAME = "";
     private String[] Parametri;

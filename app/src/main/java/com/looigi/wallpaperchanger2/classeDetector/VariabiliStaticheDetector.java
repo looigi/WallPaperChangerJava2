@@ -75,7 +75,7 @@ public class VariabiliStaticheDetector {
     public Integer numMultimedia;
     public Integer totImmagini;
     private MediaPlayer mp;
-    private boolean letteImpostazioni = false;
+    // private boolean letteImpostazioni = false;
     private boolean MascheraPartita = false;
     // private boolean chiudiActivity = false;
     private boolean CameraImpostata = false;
@@ -181,13 +181,13 @@ public class VariabiliStaticheDetector {
         this.errori = errori;
     }
 
-    public boolean isLetteImpostazioni() {
+    /* public boolean isLetteImpostazioni() {
         return letteImpostazioni;
     }
 
     public void setLetteImpostazioni(boolean letteImpostazioni) {
         this.letteImpostazioni = letteImpostazioni;
-    }
+    } */
 
     public MediaPlayer getMp() {
         return mp;

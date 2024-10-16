@@ -13,7 +13,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 
 public class RichiestaPathImmaginiLocali extends Activity {
-    private static String NomeMaschera = "RICHIESTAPATH";
+    private static String NomeMaschera = "Richiesta_Path_IL";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

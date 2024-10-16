@@ -14,13 +14,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class db_dati_player {
-    private static final String NomeMaschera = "DBPLAYER";
+    private static final String NomeMaschera = "DB_Player";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;
     private SQLiteDatabase myDB = null;
     private boolean Controlla = true;
     private Context context;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_player(Context context) {
         this.context = context;
@@ -51,7 +59,7 @@ public class db_dati_player {
         return  db;
     }
 
-    public void CreazioneTabelle() {
+    public boolean CreazioneTabelle() {
         try {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
@@ -88,10 +96,16 @@ public class db_dati_player {
                         + ");";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                return false;
             }
-        } catch (Exception ignored) {
-            // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
-            int a = 0;
+        } catch (Exception e) {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore creazione tabelle: " +
+                    UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+            return false;
         }
     }
 
@@ -448,7 +462,7 @@ public class db_dati_player {
         return true;
     }
 
-    public Boolean ScriveImpostazioni() {
+    public boolean ScriveImpostazioni() {
         if (myDB != null) {
             try {
                 myDB.execSQL("Delete From Impostazioni");
@@ -459,21 +473,27 @@ public class db_dati_player {
                         + "'" + VariabiliStatichePlayer.getInstance().getLimiteInGb() + "'"
                         + ") ";
                 myDB.execSQL(sql);
+
+                return true;
             } catch (SQLException e) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
-                PulisceDatiIMP();
+                // PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                CreazioneTabelle();
-                return ScriveImpostazioni();
+                // CreazioneTabelle();
+                return false;
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
-        }
 
-        return true;
+            return false;
+        }
     }
 
-    public void CaricaImpostazioni() {
+    public void ImpostaValoriDiDefault() {
+        VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
+    }
+
+    public int CaricaImpostazioni() {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
@@ -483,18 +503,29 @@ public class db_dati_player {
 
                     try {
                         VariabiliStatichePlayer.getInstance().setLimiteInGb(Float.parseFloat(c.getString(0)));
+
+                        return 0;
                     } catch (Exception e) {
-                        VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        return -4;
                     }
                 } else {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+
+                    return -3;
                 }
             } catch (Exception e) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -2;
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return -1;
         }
     }
 
@@ -634,14 +665,20 @@ public class db_dati_player {
         }
     }
 
-    public void PulisceDatiIMP() {
+    public boolean PulisceDati() {
         if (myDB != null) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
             try {
                 myDB.execSQL("Drop Table Impostazioni");
+
+                return true;
             } catch (Exception ignored) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
+
+                return false;
             }
+        } else {
+            return false;
         }
     }
 

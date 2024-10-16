@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+            		
+            <LinearLayout
+                android:id="@+id/LayPagina1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="left|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp" >
+     		
+			  	<LinearLayout
+			  	    android:id="@+id/Contenitorone"
+			  	    android:layout_width="fill_parent"
+			  	    android:layout_height="fill_parent"
+			  	    android:layout_gravity="top|center_horizontal"
+			  	    android:gravity="top|center_horizontal"
+			  	    android:orientation="vertical" >
+	     					
+					<LinearLayout
+					    android:id="@+id/layRiga1"
+					    android:layout_width="fill_parent"
+					    android:layout_height="25dp"
+					    android:orientation="horizontal"
+					    android:weightSum="2" >
+			
+			            <TextView
+			                android:id="@+id/txtTitolo1"
+			                android:layout_width="fill_parent"
+			                android:layout_height="20dp"
+			                android:layout_weight="1"
+			                android:background="@drawable/stiletextview2"
+			                android:gravity="center_horizontal|center_vertical"
+			                android:text="Rilevati"
+			                android:textColor="#DDDD00"
+			                android:textSize="14sp" />
+				               
+			            <TextView
+			                android:id="@+id/txtTitolo2"
+			                android:layout_width="fill_parent"
+			                android:layout_height="20dp"
+			                android:layout_weight="1"
+			                android:background="@drawable/stiletextview2"
+			                android:gravity="center_horizontal|center_vertical"
+			                android:text="Selezionati"
+			                android:textColor="#00DD00"
+			                android:textSize="14sp" />
+
+			        </LinearLayout>
+
+					<LinearLayout
+					    android:id="@+id/layRiga1A"
+					    android:layout_width="fill_parent"
+					    android:layout_height="match_parent"
+					    android:layout_weight="1"
+					    android:orientation="horizontal"
+					    android:weightSum="2" >
+			            
+					    <ListView
+					        android:id="@+id/lstNominativi"
+					        android:layout_width="match_parent"
+					        android:layout_height="match_parent"
+					        android:layout_marginRight="5dp"
+					        android:layout_weight="1"
+					        android:drawSelectorOnTop="true"
+					        android:scrollbarStyle="insideOverlay" >
+
+			            </ListView>
+				    
+			        	<ListView
+			        	    android:id="@+id/lstSelezionati"
+			        	    android:layout_width="match_parent"
+			        	    android:layout_height="match_parent"
+			        	    android:layout_marginRight="5dp"
+			        	    android:layout_weight="1"
+			        	    android:drawSelectorOnTop="true"
+			        	    android:scrollbarStyle="insideOverlay" >
+
+			       	    </ListView>	                                
+			    </LinearLayout>   
+                </LinearLayout>
+            </LinearLayout>
+                
+	        <LinearLayout
+	            android:id="@+id/LayOutSpazio1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="fill_parent"
+	            android:orientation="horizontal" >
+
+	            <ImageView
+	                android:id="@+id/imageView2"
+	                android:layout_width="20dp"
+		            android:layout_gravity="top"
+		            android:layout_marginTop="30dp"
+	                android:layout_height="40dp"
+	                android:src="@drawable/destra" />
+
+		        <LinearLayout
+		            android:id="@+id/LayOutSpazio12"
+		            android:layout_width="2dp"
+		            android:layout_height="fill_parent"
+		            android:background="#AAAAAA"
+		            android:orientation="horizontal" >
+		        </LinearLayout>	            
+
+	            <ImageView
+	                android:id="@+id/imageView3"
+	                android:layout_width="20dp"
+	                android:layout_height="40dp"
+	                android:layout_gravity="bottom"
+	                android:src="@drawable/sinistra" />
+			  				  	
+	        </LinearLayout>
+
+	        <LinearLayout
+	            android:id="@+id/LayPagina2"
+	            android:layout_width="fill_parent"
+	            android:layout_height="match_parent"
+	            android:layout_gravity="center_horizontal|top"
+	            android:gravity="center_vertical|top"
+	            android:orientation="vertical"
+	            android:paddingLeft="1dp"
+	            android:paddingTop="10dp" >
+		    
+			       	<LinearLayout
+			       	    android:id="@+id/layRigaSMS3"
+			       	    android:layout_width="fill_parent"
+			       	    android:layout_height="wrap_content"
+			       	    android:layout_marginBottom="5dp"
+			       	    android:background="@drawable/stiletextview2"
+			       	    android:orientation="horizontal" >
+			
+			            <TextView
+			                android:id="@+id/txtTitolo21"
+			                android:layout_width="fill_parent"
+			                android:layout_height="20dp"
+			                android:gravity="center_horizontal|center_vertical"
+			                android:text="Lista Messaggi"
+			                android:textColor="#FFFFFF"
+			                android:textSize="16sp" />
+					</LinearLayout>
+			      
+			       	<LinearLayout
+			       	    android:id="@+id/layContMessaggi"
+			       	    android:layout_width="fill_parent"
+			       	    android:layout_height="fill_parent"
+			       	    android:gravity="center_vertical|top"
+			       	    android:orientation="horizontal" >
+					
+						<ListView
+						    android:id="@+id/lstMessaggi"
+						    android:layout_width="fill_parent"
+						    android:layout_height="fill_parent"
+						    android:layout_marginLeft="5dp"
+						    android:layout_marginRight="5dp"
+						    android:layout_marginTop="5dp"
+						    android:drawSelectorOnTop="false"
+						    android:fastScrollAlwaysVisible="false"
+						    android:headerDividersEnabled="false" >
+		
+						 </ListView>	       	    
+			
+					</LinearLayout>
+			</LinearLayout>
+	        
+                
+	        <LinearLayout
+	            android:id="@+id/LayOutSpazioS1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="fill_parent"
+	            android:orientation="horizontal" >
+
+	            <ImageView
+	                android:id="@+id/imageViewS2"
+	                android:layout_width="20dp"
+		            android:layout_gravity="top"
+		            android:layout_marginTop="30dp"
+	                android:layout_height="40dp"
+	                android:src="@drawable/destra" />
+
+		        <LinearLayout
+		            android:id="@+id/LayOutSpazioS12"
+		            android:layout_width="2dp"
+		            android:layout_height="fill_parent"
+		            android:background="#AAAAAA"
+		            android:orientation="horizontal" >
+		        </LinearLayout>	            
+
+	            <ImageView
+	                android:id="@+id/imageViewS3"
+	                android:layout_width="20dp"
+	                android:layout_height="40dp"
+	                android:layout_gravity="bottom"
+	                android:src="@drawable/sinistra" />
+			  				  	
+	        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LayPagina3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="top|center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="1dp"
+                android:paddingTop="10dp" >
+
+                <LinearLayout
+		       	    android:id="@+id/layRigaSMS4"
+		       	    android:layout_width="fill_parent"
+		       	    android:layout_height="wrap_content"
+		       	    android:layout_marginBottom="5dp"
+		       	    android:background="@drawable/stiletextview2"
+		       	    android:orientation="horizontal" >
+		
+		            <TextView
+		                android:id="@+id/txtTitolo212"
+		                android:layout_width="fill_parent"
+		                android:layout_height="20dp"
+		                android:gravity="center_horizontal|center_vertical"
+		                android:text="Testo"
+		                android:textColor="#FFFFFF"
+		                android:textSize="16sp" />
+				</LinearLayout>
+								       	
+		 		<LinearLayout
+		 		    android:id="@+id/layRiga121"
+		 		    android:layout_width="fill_parent"
+		 		    android:layout_height="150dp"
+		 		    android:layout_gravity="top|center_horizontal"
+		 		    android:orientation="horizontal"
+		 		    android:paddingLeft="5dp"
+		 		    android:paddingRight="5dp" >
+		
+					<EditText
+					    android:id="@+id/txtMessaggio"
+					    android:layout_width="fill_parent"
+					    android:layout_height="match_parent"
+					    android:ems="10"
+					    android:inputType="textMultiLine"
+					    android:lines="5"
+					    android:maxLines="5"
+					    android:padding="2dp"
+					    android:textColor="#FF0000"
+					    android:textSize="18sp" />
+
+				</LinearLayout>
+					    
+		 		<LinearLayout
+				    android:id="@+id/layRiga122"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="top|center_horizontal"
+				    android:layout_margin="5dp"
+				    android:orientation="horizontal"
+				    android:paddingLeft="5dp"
+				    android:paddingRight="5dp">
+					
+					<!-- <Button
+				            android:id="@+id/cmdInvia"
+				            android:layout_width="fill_parent"
+				            android:layout_height="45dp"
+				            android:text="Invia"
+				            android:textSize="12sp" /> -->
+		
+				</LinearLayout>              	        
+	        </LinearLayout>
+	        	        		        		        
+	        <LinearLayout
+	            android:id="@+id/LayOutSpazioAS1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="fill_parent"
+	            android:orientation="horizontal" >
+
+	            <ImageView
+	                android:id="@+id/imageViewAS2"
+	                android:layout_width="20dp"
+		            android:layout_gravity="top"
+		            android:layout_marginTop="30dp"
+	                android:layout_height="40dp"
+	                android:src="@drawable/destra" />
+
+		        <LinearLayout
+		            android:id="@+id/LayOutSpazioAS12"
+		            android:layout_width="2dp"
+		            android:layout_height="fill_parent"
+		            android:background="#AAAAAA"
+		            android:orientation="horizontal" >
+		        </LinearLayout>	            
+
+	            <ImageView
+	                android:id="@+id/imageViewAS3"
+	                android:layout_width="20dp"
+	                android:layout_height="40dp"
+	                android:layout_gravity="bottom"
+	                android:src="@drawable/sinistra" />
+			  				  	
+	        </LinearLayout>
+	        
+	        <LinearLayout
+                android:id="@+id/LayPagina4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp" >
+
+		        <LinearLayout
+		            android:id="@+id/LayOutUti3"
+		            android:layout_width="fill_parent"
+		            android:layout_height="match_parent"
+		            android:gravity="top|center_horizontal"
+		            android:orientation="vertical"
+		            android:paddingBottom="50dp" >
+	
+		            <TextView
+		                android:id="@+id/txtAbout1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginTop="5dp"
+		                android:text="Onomastici V1.0"
+		                android:textColor="#AA0000"
+		                android:textSize="20dp" />
+	
+		            <TextView
+		                android:id="@+id/txtAbout21"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginTop="5dp"
+		                android:text="Looigi&apos; Soft"
+		                android:textColor="#FF0000"
+		                android:textSize="15dp" />
+	
+		            <ImageView
+		                android:id="@+id/imageView1"
+		                android:layout_width="122dp"
+		                android:layout_height="wrap_content"
+		                android:src="@drawable/io" />
+	
+		            <TextView
+		                android:id="@+id/txtAbout22"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginTop="5dp"
+		                android:text="looigi@gmail.com"
+		                android:textColor="#FFFF00"
+		                android:textSize="15dp" />
+		        </LinearLayout>
+
+           </LinearLayout>
+	   </LinearLayout>
+
+        
+   </HorizontalScrollView>
+
+</merge>

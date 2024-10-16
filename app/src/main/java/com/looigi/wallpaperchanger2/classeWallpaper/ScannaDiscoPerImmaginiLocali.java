@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, String> {
-    private static final String NomeMaschera = "SCANDISK";
+    private static final String NomeMaschera = "ScanDisk_IL";
     private List<StrutturaImmagine> imms = new ArrayList<>();
     private db_dati_wallpaper db;
     private Context context;

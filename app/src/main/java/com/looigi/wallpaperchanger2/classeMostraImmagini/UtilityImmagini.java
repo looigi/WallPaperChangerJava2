@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtilityImmagini {
-    private static final String NomeMaschera = "UTILITYIMMAGINI";
+    private static final String NomeMaschera = "Utility_Immagini";
     private static UtilityImmagini instance = null;
     private int quantiCaricamenti = 0;
     private Handler handler;

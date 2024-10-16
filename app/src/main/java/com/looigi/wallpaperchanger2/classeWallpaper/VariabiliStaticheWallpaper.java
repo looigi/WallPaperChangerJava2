@@ -57,7 +57,7 @@ public class VariabiliStaticheWallpaper {
     private TextView txtQuanteImmagini;
     private int ImmaginiOnline;
     private boolean retePresente = true;
-    private boolean letteImpostazioni = false;
+    // private boolean letteImpostazioni = false;
     private boolean offline = false;
     private StrutturaImmagine UltimaImmagine;
     private StrutturaImmagine UltimaImmaginePerLock;
@@ -214,13 +214,13 @@ public class VariabiliStaticheWallpaper {
         this.layAttesa = layAttesa;
     }
 
-    public boolean isLetteImpostazioni() {
+    /* public boolean isLetteImpostazioni() {
         return letteImpostazioni;
     }
 
     public void setLetteImpostazioni(boolean letteImpostazioni) {
         this.letteImpostazioni = letteImpostazioni;
-    }
+    } */
 
     public TextView getTxtQuanteRicerca() {
         return txtQuanteRicerca;

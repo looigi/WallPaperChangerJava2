@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -75,9 +77,53 @@ public class Esecuzione {
         }
     }
 
+    private void ControlloImpostazioni() {
+        boolean ricaricaSettaggi = false;
+
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniDebug()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Debug non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniDetector()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Detector non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniGPS()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi GPS non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniImmagini()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Immagini non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniPlayer()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Player non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniPennetta()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Pennetta non validi");
+            ricaricaSettaggi = true;
+        }
+        if (!CaricaSettaggi.getInstance().isCaricateImpostazioniWallpaper()) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Settaggi Wallpaper non validi");
+            ricaricaSettaggi = true;
+        }
+        if (ricaricaSettaggi) {
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Ricarico settaggi");
+            String ritorno = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "ESECUZIONE");
+            if (!ritorno.equals("OK")) {
+                UtilityDetector.getInstance().VisualizzaPOPUP(
+                        context, ritorno, false, -1
+                );
+            }
+        }
+    }
+
     private void Controllo() {
         VariabiliStaticheWallpaper.getInstance().setSecondiPassati(
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + 1);
+
+        ControlloImpostazioni();
 
         long tmsAttuale = System.currentTimeMillis() / 1000L;
         if (tmsPrecedente == -1L) {

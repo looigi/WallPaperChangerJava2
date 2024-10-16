@@ -53,7 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class MainImpostazioni extends Activity {
-    private static String NomeMaschera = "MAINIMPOSTAZIONI";
+    private static String NomeMaschera = "Main_Impostazioni";
     private Context context;
     private Activity act;
     private int qualeSchermata = 0;
@@ -499,7 +499,7 @@ public class MainImpostazioni extends Activity {
                     }
                 }
 
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
+                // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
@@ -606,7 +606,7 @@ public class MainImpostazioni extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setBlur(isChecked);
 
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
+                // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
 
@@ -622,7 +622,7 @@ public class MainImpostazioni extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(isChecked);
 
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
+                // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
 
@@ -730,7 +730,7 @@ public class MainImpostazioni extends Activity {
 
     private void ImpostaSchermataMappa(Activity act) {
         db_dati_gps db = new db_dati_gps(context);
-        db.CaricaImpostazioni();
+        // db.CaricaImpostazioni();
 
         SwitchCompat sSegue = act.findViewById(R.id.sSegue);
         sSegue.setChecked(true);
@@ -871,8 +871,8 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataImmagini(Activity act) {
-        db_dati_immagini db = new db_dati_immagini(context);
-        db.CaricaImpostazioni();
+        // db_dati_immagini db = new db_dati_immagini(context);
+        // db.CaricaImpostazioni();
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShow);
         String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
@@ -913,8 +913,8 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataPennetta(Activity act) {
-        db_dati_immagini db = new db_dati_immagini(context);
-        db.CaricaImpostazioni();
+        // db_dati_immagini db = new db_dati_immagini(context);
+        // db.CaricaImpostazioni();
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShowPen);
         String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
@@ -980,8 +980,8 @@ public class MainImpostazioni extends Activity {
         layChiudePlayer = act.findViewById(R.id.layChiudePlayer);
         // laySettingsImpo = act.findViewById(R.id.laySettingsPlayer);
 
-        db_dati_player db = new db_dati_player(context);
-        db.CaricaImpostazioni();
+        // db_dati_player db = new db_dati_player(context);
+        // db.CaricaImpostazioni();
 
         EditText edtLimiteGB = act.findViewById(R.id.edtLimiteGiga);
         String limite = String.valueOf(VariabiliStatichePlayer.getInstance().getLimiteInGb());

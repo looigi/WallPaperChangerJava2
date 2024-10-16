@@ -71,7 +71,7 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setContext(this);
 
         db_dati_player db = new db_dati_player(context);
-        db.CaricaImpostazioni();
+        // db.CaricaImpostazioni();
 
         VariabiliStatichePlayer.getInstance().setMascheraNascosta(false);
 
@@ -231,6 +231,10 @@ public class MainPlayer extends Activity {
                     VariabiliStatichePlayer.getInstance().getFineMinuti()
             );
 
+            VariabiliStatichePlayer.getInstance().getSeekBarBrano().setMax(
+                VariabiliStatichePlayer.getInstance().getDurataBranoInSecondi()
+            );
+
             UtilityPlayer.getInstance().ImpostaPosizioneBrano(
                     VariabiliStatichePlayer.getInstance().getSecondiPassati()
             );
@@ -339,6 +343,14 @@ public class MainPlayer extends Activity {
         super.onRestart();
 
         VariabiliStatichePlayer.getInstance().setMascheraNascosta(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        VariabiliStatichePlayer.getInstance().setMascheraNascosta(false);
+        UtilityPlayer.getInstance().ImpostaImmagine(this);
     }
 
     @Override

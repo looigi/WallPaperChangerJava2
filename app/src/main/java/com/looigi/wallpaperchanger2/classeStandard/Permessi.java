@@ -63,7 +63,11 @@ public class Permessi {
                 Manifest.permission.BLUETOOTH_CONNECT,
                 // android.Manifest.permission.BLUETOOTH_ADMIN
                 Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE
+                Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE,
+
+                // Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.GET_ACCOUNTS
         };
 
         if (!hasPermissions(context, PERMISSIONS)) {

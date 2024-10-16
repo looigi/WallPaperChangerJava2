@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainLog extends Activity {
-    private static String NomeMaschera = "MAINLOG";
+    private static String NomeMaschera = "Main_Log";
     private Context context;
     private Activity act;
 

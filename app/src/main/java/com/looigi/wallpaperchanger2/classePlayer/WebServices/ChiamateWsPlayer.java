@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ChiamateWsPlayer implements TaskDelegatePlayer {
-    private static final String NomeMaschera = "CHIAMATEWSPLAYER";
+    private static final String NomeMaschera = "CHiamate_WS_Player";
     private LetturaWSAsincronaPlayer bckAsyncTask;
 
     private final String RadiceWS = VariabiliStatichePlayer.UrlWS + "/";

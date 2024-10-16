@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -40,7 +43,9 @@ import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +65,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private int vecchiDati = -1;
     private Date dataAttuale;
     private boolean primoPassaggio = true;
+    private LatLngBounds.Builder bc;
+    private int bcs = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +77,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         this.act = this;
         primoPassaggio = true;
 
-        db_dati_gps db = new db_dati_gps(context);
-        db.CaricaImpostazioni();
-        db.CaricaPuntiDiSpegnimento();
+        // db_dati_gps db = new db_dati_gps(context);
+        // db.CaricaImpostazioni();
+        // db.CaricaPuntiDiSpegnimento();
 
         txtMappa = act.findViewById(R.id.txtMappa);
 
@@ -119,7 +126,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
-                    DisegnaPath(mappa);
+                    DisegnaPath();
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -140,7 +147,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
-                    DisegnaPath(mappa);
+                    DisegnaPath();
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -155,12 +162,71 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                DisegnaPath(mappa);
+                DisegnaPath();
 
                 GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
                 UtilitiesGlobali.getInstance().ApreToast(context,
                         "Eliminati dati gps per la data " + dataOdierna);
+            }
+        });
+
+        ImageView imgR = act.findViewById(R.id.imgMappaRefresh);
+        imgR.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DisegnaPath();
+            }
+        });
+
+        ImageView imgC = act.findViewById(R.id.imgMappaCerca);
+        imgC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Indirizzo");
+
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String Indirizzo = input.getText().toString();
+
+                        Geocoder gc = new Geocoder(context);
+                        try {
+                            List<Address> addresses = gc.getFromLocationName(
+                                    Indirizzo,
+                                    5);
+
+                            assert addresses != null;
+                            if (!addresses.isEmpty()) {
+                                Location targetLocation = new Location("");
+                                targetLocation.setLatitude(addresses.get(0).getLatitude());
+                                targetLocation.setLongitude(addresses.get(0).getLongitude());
+
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(new LatLng(targetLocation.getLatitude(),
+                                                targetLocation.getLongitude())).zoom(18).build();
+
+                                mappa.animateCamera(CameraUpdateFactory
+                                        .newCameraPosition(cameraPosition));
+                            } else {
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Nessun indirizzo rilevato");
+                            }
+                        } catch (IOException e) {
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -249,23 +315,23 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         );
     }
 
-    private void AttivaTimer(GoogleMap googleMap) {
+    private void AttivaTimer() {
         handlerTimer = new Handler(Looper.getMainLooper());
         rTimer = new Runnable() {
             public void run() {
-                DisegnaPath(googleMap);
+                DisegnaPath();
                 handlerTimer.postDelayed(rTimer, 10000);
             }
         };
 
         handlerTimer.postDelayed(rTimer, 10000);
 
-        DisegnaPath(googleMap);
+        DisegnaPath();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if (handlerTimer == null) {
+        // if (handlerTimer == null) {
             mappa = googleMap;
 
             mappa.setOnMapClickListener(new GoogleMap.OnMapClickListener()
@@ -342,18 +408,28 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
             disegnaMarkersPS();
 
-            AttivaTimer(googleMap);
-        }
+            AttivaTimer();
+        // }
     }
 
     private void disegnaMarkersPS() {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
+                boolean aggiungePunti = false;
+                if (bcs == 0) {
+                    aggiungePunti = true;
+                }
                 for (StrutturaPuntiSpegnimento loc : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
                     BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.satellite_off);
                     Bitmap b = bitmapdraw.getBitmap();
                     Bitmap smallMarker = Bitmap.createScaledBitmap(b, 75, 75, false);
+
+                    if (aggiungePunti) {
+                        LatLng ll = new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude());
+                        bc.include(ll);
+                        bcs++;
+                    }
 
                     mappa.addMarker(new MarkerOptions()
                             .position(new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude()))
@@ -365,7 +441,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         }, 100);
     }
 
-    private void DisegnaPath(GoogleMap googleMap) {
+    private void DisegnaPath() {
         if (VariabiliStaticheGPS.getInstance().getMappa() == null) {
             Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
             if (ctx != null) {
@@ -388,18 +464,18 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
         txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
 
-        if (listaGPS.isEmpty()) {
-            googleMap.clear();
-        }
+        // if (listaGPS.isEmpty()) {
+            mappa.clear();
+        // }
 
-        if (!listaGPS.isEmpty() && vecchiDati != listaGPS.size()) {
-            googleMap.clear();
+        // if (!listaGPS.isEmpty() && vecchiDati != listaGPS.size()) {
+            // mappa.clear();
 
             vecchiDati = listaGPS.size();
 
             int vecchioColore = -1;
             List<StrutturaGps> lista = new ArrayList<>();
-            LatLngBounds.Builder bc = new LatLngBounds.Builder();
+            StrutturaGps ultimoPunto = null;
 
             if (VariabiliStaticheGPS.getInstance().isMostraSegnale()) {
                 // Aggiunta path segnale
@@ -411,7 +487,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     if (vecchioColore != colore) {
                         if (vecchioColore != -1) {
-                            AggiungePolyLineSegnale(googleMap, lista, colore);
+                            AggiungePolyLineSegnale(mappa, lista, colore);
                             lista = new ArrayList<>();
                         }
 
@@ -421,7 +497,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
 
                 if (!lista.isEmpty()) {
-                    AggiungePolyLineSegnale(googleMap, lista, vecchioColore);
+                    AggiungePolyLineSegnale(mappa, lista, vecchioColore);
                 }
             }
 
@@ -439,11 +515,15 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 );
             } */
 
+            bc = new LatLngBounds.Builder();
             vecchioColore = -1;
+            bcs = 0;
 
             if (VariabiliStaticheGPS.getInstance().isMostraPercorso()) {
                 // Aggiunta path velocità
                 for (StrutturaGps s : listaGPS) {
+                    ultimoPunto = s;
+
                 /* if (s.getLat() == -1 && s.getLon() == -1) {
                     AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
 
@@ -451,6 +531,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 } else { */
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
+                    bcs++;
 
                     float speed = Math.round(s.getSpeed()) * 3.5F;
                     int colore = ritornaColoreVelocita(speed);
@@ -459,7 +540,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     if (vecchioColore != colore) {
                         if (vecchioColore != -1) {
-                            AggiungePolyLineVelocita(googleMap, lista, colore);
+                            AggiungePolyLineVelocita(mappa, lista, colore);
                             lista = new ArrayList<>();
                         }
 
@@ -469,25 +550,39 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
 
                 if (!lista.isEmpty()) {
-                    AggiungePolyLineVelocita(googleMap, lista, vecchioColore);
+                    AggiungePolyLineVelocita(mappa, lista, vecchioColore);
                 }
 
-                AggiungeMarkers(googleMap);
+                AggiungeMarkers(mappa);
             }
 
             disegnaMarkersPS();
 
-            if (primoPassaggio || VariabiliStaticheGPS.getInstance().isSegue()) {
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            if (primoPassaggio) {
+                int finalBcs = bcs;
+                mappa.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                        if (finalBcs > 0) {
+                            mappa.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                        }
                     }
                 });
 
                 primoPassaggio = false;
             }
-        }
+
+            if (VariabiliStaticheGPS.getInstance().isSegue()) {
+                if (ultimoPunto != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(ultimoPunto.getLat(),
+                                    ultimoPunto.getLon())).build();
+
+                    mappa.animateCamera(CameraUpdateFactory
+                            .newCameraPosition(cameraPosition));
+                }
+            }
+        // }
     }
 
     private void AggiungeMarkers(GoogleMap googleMap) {
@@ -511,11 +606,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (handlerTimer != null) {
+                /* if (handlerTimer != null) {
                     handlerTimer.removeCallbacks(rTimer);
                     rTimer = null;
                     handlerTimer = null;
-                }
+                } */
                 this.finish();
 
                 return false;
@@ -524,5 +619,19 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         super.onKeyDown(keyCode, event);
 
         return false;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        disegnaMarkersPS();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        disegnaMarkersPS();
     }
 }

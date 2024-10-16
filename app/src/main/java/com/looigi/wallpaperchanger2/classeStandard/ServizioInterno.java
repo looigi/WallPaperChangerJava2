@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -30,7 +33,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class ServizioInterno extends Service {
-    private static final String NomeMaschera = "SERVIZIOINTERNO";
+    private static final String NomeMaschera = "Servizio_Interno";
     private Context context;
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
@@ -103,14 +106,14 @@ public class ServizioInterno extends Service {
             e.startServizio1();
 
             // PARTENZA MASCHERE
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
+            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
             db_dati_wallpaper db = new db_dati_wallpaper(context);
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
-            db.CreazioneTabelle();
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-            boolean letto = db.LeggeImpostazioni();
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
-            VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(letto);
+            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
+            // db.CreazioneTabelle();
+            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            // boolean letto = db.LeggeImpostazioni();
+            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
+            // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(letto);
 
             db_dati_detector dbD = new db_dati_detector(context);
             dbD.CreazioneTabelle();
@@ -119,9 +122,9 @@ public class ServizioInterno extends Service {
             iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(iW);
 
-            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
-            boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context, "SERVIZIOINTERNO");
-            VariabiliStaticheDetector.getInstance().setLetteImpostazioni(lettoD);
+            // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            // boolean lettoD = UtilityDetector.getInstance().LeggeImpostazioni(context, "SERVIZIOINTERNO");
+            // VariabiliStaticheDetector.getInstance().setLetteImpostazioni(lettoD);
 
             if (VariabiliStaticheStart.getInstance().isDetector() &&
                     !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
@@ -160,6 +163,22 @@ public class ServizioInterno extends Service {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
                 }
             }
+
+            if (VariabiliStaticheStart.getInstance().isDetector()) {
+                // db_dati_gps db2 = new db_dati_gps(context);
+                // db2.CaricaAccensioni(context);
+
+                // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+
+                GestioneGPS g = new GestioneGPS();
+                VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
+                g.AbilitaTimer(context);
+                g.AbilitaGPS();
+            }
+
+            Intent iO = new Intent(context, MainOnomastici.class);
+            iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(iO);
 
             // PARTENZA MASCHERE
         } else {

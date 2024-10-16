@@ -10,13 +10,21 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import java.io.File;
 
 public class db_dati_pennetta {
-    private static final String NomeMaschera = "DBIMMAGINIPEN";
+    private static final String NomeMaschera = "DB_Immagini_PEN";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;
     private SQLiteDatabase myDB = null;
     private boolean Controlla = true;
     private Context context;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_pennetta(Context context) {
         this.context = context;
@@ -47,7 +55,7 @@ public class db_dati_pennetta {
         return  db;
     }
 
-    public void CreazioneTabelle() {
+    public boolean CreazioneTabelle() {
         try {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
@@ -56,10 +64,15 @@ public class db_dati_pennetta {
                         + ");";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                return false;
             }
-        } catch (Exception ignored) {
-            // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
-            int a = 0;
+        } catch (Exception e) {
+            UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Errore su creazione tabelle: " + e.getMessage());
+
+            return false;
         }
     }
 
@@ -76,7 +89,7 @@ public class db_dati_pennetta {
                 myDB.execSQL(sql);
             } catch (SQLException e) {
                 UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
-                PulisceDatiIMP();
+                // PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
                 return ScriveImpostazioni();
@@ -88,7 +101,11 @@ public class db_dati_pennetta {
         return true;
     }
 
-    public void CaricaImpostazioni() {
+    public void ImpostaValoriDiDefault() {
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(5000);
+    }
+
+    public int CaricaImpostazioni() {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
@@ -98,18 +115,29 @@ public class db_dati_pennetta {
 
                     try {
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(Integer.parseInt(c.getString(0)));
+
+                        return 0;
                     } catch (Exception e) {
-                        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(5000);
+                        UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Errore try db carica impostazioni: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        return -4;
                     }
                 } else {
                     UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+
+                    return -3;
                 }
             } catch (Exception e) {
                 UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -2;
             }
         } else {
             UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return -1;
         }
     }
 
@@ -120,14 +148,20 @@ public class db_dati_pennetta {
         }
     }
 
-    public void PulisceDatiIMP() {
+    public boolean PulisceDati() {
         if (myDB != null) {
             UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
             try {
                 myDB.execSQL("Drop Table Impostazioni");
+
+                return true;
             } catch (Exception ignored) {
                 UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
+
+                return false;
             }
+        } else {
+            return false;
         }
     }
 }

@@ -41,7 +41,7 @@ import java.util.zip.ZipOutputStream;
 import static androidx.core.app.ActivityCompat.finishAffinity;
 
 public class UtilitiesGlobali {
-    private static final String NomeMaschera = "UTILITIESGLOBALI";
+    private static final String NomeMaschera = "Utilities_Globali";
     private static UtilitiesGlobali instance = null;
     private String[] App = new String[0];
     private String[] paths = new String[0];
@@ -121,11 +121,13 @@ public class UtilitiesGlobali {
 
         int quanti = 0;
         for (String p : paths) {
-            File directory = new File(p);
-            File[] filesW = directory.listFiles();
-            quanti += filesW.length;
-            for (File f : filesW) {
-                f.delete();
+            if (!p.contains("/DB")) {
+                File directory = new File(p);
+                File[] filesW = directory.listFiles();
+                quanti += filesW.length;
+                for (File f : filesW) {
+                    f.delete();
+                }
             }
         }
 

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtilityPennetta {
-    private static final String NomeMaschera = "UTILITYIMMAGINIPEN";
+    private static final String NomeMaschera = "Utility_Immagini_PEN";
     private static UtilityPennetta instance = null;
     private int quantiCaricamenti = 0;
     private Handler handler;

@@ -39,7 +39,7 @@ import java.util.Objects;
 
 
 public class GestioneNotificheTasti {
-    private static final String nomeMaschera = "GESTIONENOTIFICHEWALLPAPER";
+    private static final String nomeMaschera = "Gestione_Notifiche_Wallpaper";
     private NotificationManager manager;
     private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;

@@ -16,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
@@ -30,13 +32,13 @@ import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeStandard.Permessi;
 import com.looigi.wallpaperchanger2.classeStandard.ServizioInterno;
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -46,9 +48,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainStart  extends Activity {
-    private static String NomeMaschera = "MAINSTART";
+    private static String NomeMaschera = "Main_Start";
     private Context context;
     private Activity act;
+    private LinearLayout laySplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,30 +84,35 @@ public class MainStart  extends Activity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
             }
-
-            if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
-                StartActivities();
-            }
         }
 
-        LinearLayout laySplash = findViewById(R.id.laySplash);
+        laySplash = findViewById(R.id.laySplash);
         laySplash.setVisibility(LinearLayout.VISIBLE);
 
-        Handler handlerTimer = new Handler(Looper.getMainLooper());
-        Runnable rTimer = new Runnable() {
-            public void run() {
-                laySplash.setVisibility(LinearLayout.GONE);
-                impostaSchermata();
+        String ritorno = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "MAIN");
+        if (!ritorno.equals("OK")) {
+            UtilityDetector.getInstance().VisualizzaPOPUP(
+                    context, ritorno, false, -1
+            );
+        } else {
+            if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                StartActivities();
+
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        laySplash.setVisibility(LinearLayout.GONE);
+
+                        impostaSchermata();
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 3000);
             }
-        };
-        handlerTimer.postDelayed(rTimer, 5000);
+        }
     }
 
     private void impostaSchermata() {
         LinearLayout layStart = findViewById(R.id.layStart);
-
-        db_debug db = new db_debug(context);
-        db.CaricaImpostazioni();
 
         if (VariabiliStaticheStart.getInstance().isDetector()) {
             GestioneMappa m = new GestioneMappa(this);
@@ -176,6 +184,33 @@ public class MainStart  extends Activity {
                                         VariabiliStaticheWallpaper.getInstance().getMainActivity());
                             }
                         }, 500);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgO = findViewById(R.id.imgStartOnomastici);
+        imgO.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        VariabiliStaticheStart.getInstance().setPlayerAperto(true);
+
+                        Intent iO = new Intent(context, MainOnomastici.class);
+                        iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iO);
                     }
                 }, 500);
 
@@ -385,21 +420,9 @@ public class MainStart  extends Activity {
             }
         });
 
-        if (VariabiliStaticheStart.getInstance().isDetector()) {
-            db_dati_gps db2 = new db_dati_gps(context);
-            db2.CaricaAccensioni(context);
-
-            // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
-
-            GestioneGPS g = new GestioneGPS();
-            VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
-            g.AbilitaTimer(context);
-            g.AbilitaGPS();
-        }
-
-        /* Intent iP = new Intent(context, MainImpostazioni.class);
-        iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(iP);
+        /* Intent iO = new Intent(context, MainOnomastici.class);
+        iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(iO);
 
         Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
 
@@ -424,6 +447,8 @@ public class MainStart  extends Activity {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
+                laySplash.setVisibility(LinearLayout.GONE);
+
                 StartActivities();
             }
         };
@@ -431,16 +456,18 @@ public class MainStart  extends Activity {
     }
 
     private void StartActivities() {
-        VariabiliStaticheWallpaper.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
-        startForegroundService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
+        if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
+            VariabiliStaticheWallpaper.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
+            startForegroundService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
 
-        VariabiliStaticheStart.getInstance().setGiaPartito(true);
-        // WALLPAPER Parte nel servizio
+            VariabiliStaticheStart.getInstance().setGiaPartito(true);
+            // WALLPAPER Parte nel servizio
 
-        // DETECTOR PARTE IN WALLPAPER DOPO LA LETTURA DELLE VARIABILI SALVATE PER CAPIRE
-        // SE SI DEVE APRIRE (InizializzaMaschera)
+            // DETECTOR PARTE IN WALLPAPER DOPO LA LETTURA DELLE VARIABILI SALVATE PER CAPIRE
+            // SE SI DEVE APRIRE (InizializzaMaschera)
 
-        this.finish();
+            this.finish();
+        }
     }
 
     /*

@@ -6,7 +6,7 @@ import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class UtilityGPS {
-    private static final String NomeMaschera = "UTILITY";
+    private static final String NomeMaschera = "Utility_GPS";
 
     private static UtilityGPS instance = null;
 

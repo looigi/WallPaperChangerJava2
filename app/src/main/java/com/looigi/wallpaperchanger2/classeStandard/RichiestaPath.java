@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class RichiestaPath extends Activity {
-    private static String NomeMaschera = "RICHIESTAPATH";
+    private static String NomeMaschera = "Richiesta_Path";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

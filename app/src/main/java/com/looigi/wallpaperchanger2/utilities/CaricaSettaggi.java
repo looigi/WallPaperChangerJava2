@@ -1,0 +1,368 @@
+package com.looigi.wallpaperchanger2.utilities;
+
+import android.content.Context;
+
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
+import com.looigi.wallpaperchanger2.classeStandard.db_debug;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
+
+import java.util.ArrayList;
+
+public class CaricaSettaggi {
+    private static final String NomeMaschera = "CaricaSettaggi";
+
+    private static CaricaSettaggi instance = null;
+
+    private CaricaSettaggi() {
+    }
+
+    public static CaricaSettaggi getInstance() {
+        if (instance == null) {
+            instance = new CaricaSettaggi();
+        }
+
+        return instance;
+    }
+
+    private boolean caricateImpostazioniDebug = false;
+    private boolean caricateImpostazioniDetector = false;
+    private boolean caricateImpostazioniGPS = false;
+    private boolean caricateImpostazioniImmagini = false;
+    private boolean caricateImpostazioniPennetta = false;
+    private boolean caricateImpostazioniPlayer = false;
+    private boolean caricateImpostazioniWallpaper = false;
+
+    public boolean isCaricateImpostazioniDebug() {
+        return caricateImpostazioniDebug;
+    }
+
+    public void setCaricateImpostazioniDebug(boolean caricateImpostazioniDebug) {
+        this.caricateImpostazioniDebug = caricateImpostazioniDebug;
+    }
+
+    public boolean isCaricateImpostazioniDetector() {
+        return caricateImpostazioniDetector;
+    }
+
+    public void setCaricateImpostazioniDetector(boolean caricateImpostazioniDetector) {
+        this.caricateImpostazioniDetector = caricateImpostazioniDetector;
+    }
+
+    public boolean isCaricateImpostazioniGPS() {
+        return caricateImpostazioniGPS;
+    }
+
+    public void setCaricateImpostazioniGPS(boolean caricateImpostazioniGPS) {
+        this.caricateImpostazioniGPS = caricateImpostazioniGPS;
+    }
+
+    public boolean isCaricateImpostazioniImmagini() {
+        return caricateImpostazioniImmagini;
+    }
+
+    public void setCaricateImpostazioniImmagini(boolean caricateImpostazioniImmagini) {
+        this.caricateImpostazioniImmagini = caricateImpostazioniImmagini;
+    }
+
+    public boolean isCaricateImpostazioniPennetta() {
+        return caricateImpostazioniPennetta;
+    }
+
+    public void setCaricateImpostazioniPennetta(boolean caricateImpostazioniPennetta) {
+        this.caricateImpostazioniPennetta = caricateImpostazioniPennetta;
+    }
+
+    public boolean isCaricateImpostazioniPlayer() {
+        return caricateImpostazioniPlayer;
+    }
+
+    public void setCaricateImpostazioniPlayer(boolean caricateImpostazioniPlayer) {
+        this.caricateImpostazioniPlayer = caricateImpostazioniPlayer;
+    }
+
+    public boolean isCaricateImpostazioniWallpaper() {
+        return caricateImpostazioniWallpaper;
+    }
+
+    public void setCaricateImpostazioniWallpaper(boolean caricateImpostazioniWallpaper) {
+        this.caricateImpostazioniWallpaper = caricateImpostazioniWallpaper;
+    }
+
+    public void ScriveLog(Context context, String Maschera, String Log) {
+        /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {
+            generaPath(context);
+        } */
+
+        if (context != null) {
+            if (VariabiliStaticheStart.getInstance().getLog() == null) {
+                LogInterno l = new LogInterno(context, true);
+                VariabiliStaticheStart.getInstance().setLog(l);
+            }
+
+            /* if (!UtilityDetector.getInstance().EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) {
+                VariabiliStaticheStart.getInstance().getLog().PulisceFileDiLog();
+            }
+
+            if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
+                    VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("CaricaSettaggi", Maschera,  Log);
+            // }
+        } else {
+
+        }
+    }
+
+    public String CaricaImpostazioniGlobali(Context context, String daDove) {
+        ScriveLog(context, NomeMaschera, "Inizio lettura impostazioni");
+
+        String ritorno = "OK";
+
+        db_debug dbDeb = new db_debug(context);
+        caricateImpostazioniDebug = true;
+        if (dbDeb.DbAperto()) {
+            if (dbDeb.CreazioneTabelle()) {
+                int ritDet = dbDeb.CaricaImpostazioni();
+                if (ritDet == -3 || ritDet == -4) {
+                    dbDeb.ImpostaValoriDiDefault();
+                    if (dbDeb.PulisceDati()) {
+                        if (dbDeb.CreazioneTabelle()) {
+                            if (!dbDeb.ScriveImpostazioni()) {
+                                ritorno = "Errore salvataggio impostazioni Debug";
+                                caricateImpostazioniDebug = false;
+                            } else {
+                                dbDeb.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle Debug 2";
+                            caricateImpostazioniDebug = false;
+                        }
+                    } else {
+                        ritorno = "Errore pulizia tabelle Debug";
+                        caricateImpostazioniDebug = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Debug 1";
+                caricateImpostazioniDebug = false;
+            }
+        } else {
+            ritorno = "Errore db non aperto Debug";
+            caricateImpostazioniDebug = false;
+        }
+
+        caricateImpostazioniDetector = true;
+        db_dati_detector dbDet = new db_dati_detector(context);
+        if (dbDet.DbAperto()) {
+            if (dbDet.CreazioneTabelle()) {
+                int ritDet = dbDet.CaricaImpostazioni();
+                if (ritDet == -3 || ritDet == -4) {
+                    dbDet.ImpostaValoriDiDefault();
+                    if (dbDet.PulisceDati(context, daDove)) {
+                        if (dbDet.CreazioneTabelle()) {
+                            if (!dbDet.ScriveImpostazioni(context, daDove)) {
+                                ritorno = "Errore salvataggio impostazioni Detector";
+                                caricateImpostazioniDetector = false;
+                            } else {
+                                dbDet.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle Detector 2";
+                            caricateImpostazioniDetector = false;
+                        }
+                    } else {
+                        ritorno = "Errore pulizia tabelle Detector";
+                        caricateImpostazioniDetector = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Detector 1";
+                caricateImpostazioniDetector = false;
+            }
+        } else {
+            ritorno = "Errore db non aperto Detector";
+            caricateImpostazioniDetector = false;
+        }
+
+        caricateImpostazioniGPS = true;
+        db_dati_gps dbGPS = new db_dati_gps(context);
+        if (dbGPS.DbAperto()) {
+            if (dbGPS.CreazioneTabelle()) {
+                int ritGPS = dbGPS.CaricaImpostazioni();
+                if (ritGPS == -3 || ritGPS == -4) {
+                    dbGPS.ImpostaValoriDiDefault();
+                    if (dbGPS.PulisceDati()) {
+                        if (dbGPS.CreazioneTabelle()) {
+                            if (!dbGPS.ScriveImpostazioni()) {
+                                ritorno = "Errore salvataggio impostazioni GPS";
+                                caricateImpostazioniGPS = false;
+                            } else {
+                                dbGPS.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle GPS 2";
+                            caricateImpostazioniGPS = false;
+                        }
+                    } else {
+                        ritorno = "Errore pulizia tabelle GPS";
+                        caricateImpostazioniGPS = false;
+                    }
+                }
+            } else {
+                ritorno ="Errore creazione tabelle GPS 1";
+                caricateImpostazioniGPS = false;
+            }
+
+            int ritGP2 = dbGPS.CaricaPuntiDiSpegnimento();
+            if (ritGP2 != 0) {
+                VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(new ArrayList<>());
+            }
+        } else {
+            ritorno ="Errore db non aperto GPS";
+            caricateImpostazioniGPS = false;
+        }
+
+        caricateImpostazioniImmagini = true;
+        db_dati_immagini dbImm = new db_dati_immagini(context);
+        if (dbImm.DbAperto()) {
+            if (dbImm.CreazioneTabelle()) {
+                int ritImm = dbImm.CaricaImpostazioni();
+                if (ritImm == -3 || ritImm == -4) {
+                    dbImm.ImpostaValoriDiDefault();
+                    if (dbImm.PulisceDati()) {
+                        if (dbImm.CreazioneTabelle()) {
+                            if (!dbImm.ScriveImpostazioni()) {
+                                ritorno ="Errore salvataggio impostazioni Immagini";
+                                caricateImpostazioniImmagini = false;
+                            } else {
+                                dbImm.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle Immagini 2";
+                            caricateImpostazioniImmagini = false;
+                        }
+                    } else {
+                        ritorno ="Errore pulizia tabelle Immagini";
+                        caricateImpostazioniImmagini = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Immagini 1";
+                caricateImpostazioniImmagini = false;
+            }
+        } else {
+            ritorno ="Errore db non aperto Immagini";
+            caricateImpostazioniImmagini = false;
+        }
+
+        caricateImpostazioniPennetta = true;
+        db_dati_pennetta dbPen = new db_dati_pennetta(context);
+        if (dbPen.DbAperto()) {
+            if (dbPen.CreazioneTabelle()) {
+                int ritPen = dbPen.CaricaImpostazioni();
+                if (ritPen == -3 || ritPen == -4) {
+                    dbPen.ImpostaValoriDiDefault();
+                    if (dbPen.PulisceDati()) {
+                        if (dbPen.CreazioneTabelle()) {
+                            if (!dbPen.ScriveImpostazioni()) {
+                                ritorno ="Errore salvataggio impostazioni Pennetta";
+                                caricateImpostazioniPennetta = false;
+                            } else {
+                                dbPen.CompattaDB();
+                            }
+                        } else {
+                            ritorno ="Errore creazione tabelle Pennetta 2";
+                            caricateImpostazioniPennetta = false;
+                        }
+                    } else {
+                        ritorno ="Errore pulizia tabelle Pennetta";
+                        caricateImpostazioniPennetta = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Pennetta 1";
+                caricateImpostazioniPennetta = false;
+            }
+        } else {
+            ritorno = "Errore db non aperto Pennetta";
+            caricateImpostazioniPennetta = false;
+        }
+
+        caricateImpostazioniPlayer = true;
+        db_dati_player dbPlay = new db_dati_player(context);
+        if (dbPlay.DbAperto()) {
+            if (dbPlay.CreazioneTabelle()) {
+                int ritPlay = dbPlay.CaricaImpostazioni();
+                if (ritPlay == -3 || ritPlay == -4) {
+                    dbPlay.ImpostaValoriDiDefault();
+                    if (dbPlay.PulisceDati()) {
+                        if (dbPlay.CreazioneTabelle()) {
+                            if (!dbPlay.ScriveImpostazioni()) {
+                                ritorno = "Errore salvataggio impostazioni Player";
+                                caricateImpostazioniPlayer = false;
+                            } else {
+                                dbPlay.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle Player 2";
+                            caricateImpostazioniPlayer = false;
+                        }
+                    } else {
+                        ritorno = "Errore pulizia tabelle Player";
+                        caricateImpostazioniPlayer = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Player 1";
+                caricateImpostazioniPlayer = false;
+            }
+        } else {
+            ritorno = "Errore db non aperto Player";
+            caricateImpostazioniPlayer = false;
+        }
+
+        caricateImpostazioniWallpaper = true;
+        db_dati_wallpaper dbW = new db_dati_wallpaper(context);
+        if (dbW.DbAperto()) {
+            if (dbW.CreazioneTabelle()) {
+                int ritW = dbW.LeggeImpostazioni();
+                if (ritW == -2 || ritW == -3) {
+                    if (dbW.PulisceDati()) {
+                        if (dbW.CreazioneTabelle()) {
+                            if (!dbW.ScriveImpostazioni()) {
+                                ritorno = "Errore salvataggio impostazioni Wallpaper";
+                                caricateImpostazioniWallpaper = false;
+                            } else {
+                                dbW.CompattaDB();
+                            }
+                        } else {
+                            ritorno = "Errore creazione tabelle Wallpaper 2";
+                            caricateImpostazioniWallpaper = false;
+                        }
+                    } else {
+                        ritorno = "Errore pulizia tabelle Wallpaper";
+                        caricateImpostazioniWallpaper = false;
+                    }
+                }
+            } else {
+                ritorno = "Errore creazione tabelle Wallpaper 1";
+                caricateImpostazioniWallpaper = false;
+            }
+        } else {
+            ritorno = "Errore apertura db Wallpaper";
+            caricateImpostazioniWallpaper = false;
+        }
+
+        ScriveLog(context, NomeMaschera, "Fine lettura impostazioni: " + ritorno);
+
+        return ritorno;
+    }
+}

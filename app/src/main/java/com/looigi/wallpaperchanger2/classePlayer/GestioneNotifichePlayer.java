@@ -27,7 +27,7 @@ public class GestioneNotifichePlayer {
     private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;
     private Context context;
-    private static final String nomeMaschera = "GESTIONENOTIFICHEPLAYER";
+    private static final String nomeMaschera = "Gestione_Notifiche_Player";
     private String Brano = "";
 
     private static final GestioneNotifichePlayer ourInstance = new GestioneNotifichePlayer();

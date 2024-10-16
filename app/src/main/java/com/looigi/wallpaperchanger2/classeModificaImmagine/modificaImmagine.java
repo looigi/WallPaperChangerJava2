@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class modificaImmagine extends Activity {
-    private static String NomeMaschera = "MODIFICAIMMAGINE";
+    private static String NomeMaschera = "Modifica_Immagine";
     private Context context;
     private Activity act;
     private CropImageView crop;

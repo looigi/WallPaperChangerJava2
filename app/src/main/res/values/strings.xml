@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WallPaper Changer II</string>
     <string name="toast_crash_report">Errore in WallPaper Changer II</string>
+    <string name="widget_name">OnoWidget</string>
 </resources>

@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class InizializzaMascheraDetector {
-    private static final String NomeMaschera = "INITMASCHERA";
+    private static final String NomeMaschera = "Init_Maschera";
     private Long datella1 = null;
     // private boolean Criptata = false;
 
@@ -332,7 +332,7 @@ public class InizializzaMascheraDetector {
                 Impostazioni i = new Impostazioni();
                 i.ImpostaAutoScatto(context, et);
 
-                UtilityDetector.getInstance().VisualizzaPOPUP("Saved", false, 0);
+                UtilityDetector.getInstance().VisualizzaPOPUP(context, "Saved", false, 0);
             }
         });
 
@@ -472,7 +472,7 @@ public class InizializzaMascheraDetector {
                 Impostazioni i = new Impostazioni();
                 i.ImpostaNumScatti(context, t);
 
-                UtilityDetector.getInstance().VisualizzaPOPUP("Saved", false, 0);
+                UtilityDetector.getInstance().VisualizzaPOPUP(context, "Saved", false, 0);
             }
         });
 
@@ -753,7 +753,7 @@ public class InizializzaMascheraDetector {
                 if (appo < 0) appo = 0;
                 VariabiliStaticheDetector.getInstance().numMultimedia = appo;
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
-                UtilityDetector.getInstance().VisualizzaPOPUP("File multimediale eliminato", false, 0);
+                UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
 
                 UtilityDetector.getInstance().ContaFiles(context);
             }

@@ -14,11 +14,19 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati_wallpaper {
-    private static final String NomeMaschera = "DBDATI";
+    private static final String NomeMaschera = "DB_Dati_Wallpaper";
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
-    private boolean Controlla = true;
+    // private boolean Controlla = true;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_wallpaper(Context context) {
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Instanzio db dati");
@@ -59,11 +67,7 @@ public class db_dati_wallpaper {
         return  db;
     }
 
-    public void CreazioneTabelle() {
-        if (myDB == null) {
-            ApreDB();
-        }
-
+    public boolean CreazioneTabelle() {
         try {
             // SQLiteDatabase myDB = ApreDB();
             if (myDB != null) {
@@ -78,10 +82,18 @@ public class db_dati_wallpaper {
                         + "ListaImmaginiLocali "
                         + " (ImmagineNome VARCHAR, ImmaginePath VARCHAR, Data VARCHAR, Dimensione VARCHAR);";
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"DB Non valido");
+
+                return false;
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella creazione delle tabelle: " +
-                    UtilityWallpaper.getInstance().PrendeErroreDaException(ignored));
+                    UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+
+            return false;
         }
     }
 
@@ -162,11 +174,11 @@ public class db_dati_wallpaper {
         return true;
     }
 
-    public Boolean ScriveImpostazioni() {
-        if (Controlla && !VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
+    public boolean ScriveImpostazioni() {
+        /* if (Controlla && !VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
             return false;
-        }
+        } */
 
         if (myDB != null) {
             try {
@@ -204,26 +216,25 @@ public class db_dati_wallpaper {
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isEffetti() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
+
+                return true;
             } catch (SQLException e) {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Su scrittura impostazioni: " +
                         UtilityWallpaper.getInstance().PrendeErroreDaException(e));
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Pulizia tabelle");
-                PulisceDati();
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Creazione tabelle");
-                CreazioneTabelle();
-                ScriveImpostazioni();
+                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Pulizia tabelle");
+                // PulisceDati();
+                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Creazione tabelle");
+                // CreazioneTabelle();
+                // ScriveImpostazioni();
 
                 return false;
             }
+        } else {
+            return false;
         }
-
-        return true;
     }
 
-    public boolean LeggeImpostazioni() {
-        if (myDB == null) {
-            ApreDB();
-        }
+    public int LeggeImpostazioni() {
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             try {
@@ -262,27 +273,34 @@ public class db_dati_wallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Solo Volti: " + VariabiliStaticheWallpaper.getInstance().isSoloVolti());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Effetti: " + VariabiliStaticheWallpaper.getInstance().isEffetti());
-                } else {
-                    Controlla = false;
-                    boolean scritti = ScriveImpostazioni();
-                    Controlla = true;
-                    return scritti;
-                }
-                c.close();
-            } catch (Exception e) {
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Nella lettura delle impostazioni: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
-                PulisceDati();
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
-                CreazioneTabelle();
 
-                return LeggeImpostazioni();
+                    c.close();
+
+                    return 0;
+                } else {
+                    // Controlla = false;
+                    // boolean scritti = ScriveImpostazioni();
+                    // Controlla = true;
+                    c.close();
+
+                    return -3;
+                }
+            } catch (Exception e) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                        "ERRORE Nella lettura delle impostazioni: " +
+                                UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
+                // PulisceDati();
+                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
+                // CreazioneTabelle();
+
+                return -2;
             }
         } else {
-            return false;
-        }
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE DB Non valido");
 
-        return true;
+            return -1;
+        }
     }
 
     public void CompattaDB() {
@@ -292,16 +310,20 @@ public class db_dati_wallpaper {
         }
     }
 
-    public void PulisceDati() {
+    public boolean PulisceDati() {
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             // myDB.execSQL("Delete From Utente");
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table Impostazioni");
-            } catch (Exception ignored) {
 
+                return true;
+            } catch (Exception ignored) {
+                return false;
             }
+        } else {
+            return false;
         }
     }
 

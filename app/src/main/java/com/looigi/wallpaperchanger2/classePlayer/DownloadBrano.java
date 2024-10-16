@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DownloadBrano extends AsyncTask<String, String, String> {
-    private static final String NomeMaschera = "DOWNLOADBRANOPLAYER";
+    private static final String NomeMaschera = "Download_Brano_Player";
     private StrutturaBrano sb;
     // private boolean bloccatoCiclo = false;
     // private boolean skippatoBrano = false;

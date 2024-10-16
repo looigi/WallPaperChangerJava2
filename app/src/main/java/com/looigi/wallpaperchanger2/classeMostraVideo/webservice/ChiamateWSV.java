@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiamateWSV implements TaskDelegate {
-    private static final String NomeMaschera = "CHIAMATEWSVIDEO";
+    private static final String NomeMaschera = "CHiamate_WS_Video";
     private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheVideo.UrlWS + "/";

@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DownloadImageMI extends AsyncTask<String, Void, Bitmap> {
-    private static final String NomeMaschera = "DOWNLOADIMAGE";
+    private static final String NomeMaschera = "Download_Image_MI";
     private boolean Errore;
     private String NomeImmagine;
     private String PercorsoDIR = "";

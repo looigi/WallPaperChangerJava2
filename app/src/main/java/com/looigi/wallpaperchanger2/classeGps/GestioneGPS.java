@@ -33,14 +33,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class GestioneGPS {
-    private static final String NomeMaschera = "GESTIONEGPS";
+    private static final String NomeMaschera = "Gestione_GPS";
     private LocationManager locationManager;
     private Context context;
-    private boolean ultimoNull = false;
+    // private boolean ultimoNull = false;
     // private HandlerThread handlerThreadAccensione;
     // private Handler handlerAccensione;
     // private Runnable rAccensione;
-    private long ultimoTSLocation = -1;
+    // private long ultimoTSLocation = -1;
     // private boolean statoAttivo = true;
     private HandlerThread handlerThread1;
     private Handler handler1;
@@ -75,8 +75,8 @@ public class GestioneGPS {
             locationManager.removeUpdates(locationListenerGPS);
         }
 
-        db_dati_gps db = new db_dati_gps(context);
-        db.ScriveAccensioni(context);
+        // db_dati_gps db = new db_dati_gps(context);
+        // db.ScriveAccensioni(context);
 
         Bitmap bmGps;
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
@@ -337,7 +337,7 @@ public class GestioneGPS {
 
         GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-        ultimoTSLocation = new Date().getTime();
+        // ultimoTSLocation = new Date().getTime();
         VariabiliStaticheGPS.getInstance().setCoordinateAttuali(null);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -395,7 +395,7 @@ public class GestioneGPS {
 
         ControlloAccSpegn(context);
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS ABilitato");
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Abilitato");
     }
 
     LocationListener locationListenerGPS = new LocationListener() {
@@ -409,7 +409,7 @@ public class GestioneGPS {
             SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
             String currentDate = sdfD.format(calendar.getTime());
 
-            ultimoTSLocation = new Date().getTime();
+            // ultimoTSLocation = new Date().getTime();
 
             if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() == null) {
                 db_dati_gps db = new db_dati_gps(context);
@@ -512,14 +512,16 @@ public class GestioneGPS {
             } else {
                 ultimoNull = false;
             } */
-                ultimoNull = false;
+                // ultimoNull = false;
 
-                VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
+                if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
+                    VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
 
-                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Aggiunta posizione array");
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                            "Aggiunta posizione array: " + s.getLat() + " " + s.getLon());
 
-                VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
+                    VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
+                }
             // } else {
                 // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
                 //         location.getLatitude() + ", " + location.getLongitude() + " NON Valida");

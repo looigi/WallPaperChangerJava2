@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 public class UtilityPlayer {
-    private static final String NomeMaschera = "UTILITYPLAYER";
+    private static final String NomeMaschera = "Utility_Player";
     private static UtilityPlayer instance = null;
     private int quantiCaricamenti = 0;
     private int SecondiPassati = 0;
@@ -520,7 +520,7 @@ public class UtilityPlayer {
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
                 if (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini() != null) {
                     List<StrutturaImmagini> lista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini();
-                    int immagine = GeneraNumeroRandom(lista.size());
+                    int immagine = GeneraNumeroRandom(lista.size() - 1);
                     if (immagine > -1) {
                         boolean ancora = true;
 

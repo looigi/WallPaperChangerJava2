@@ -20,11 +20,19 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 public class db_dati_gps {
-    private static final String NomeMaschera = "DBDATIGPS";
+    private static final String NomeMaschera = "DB_Dati_GPS";
     private String PathDB = "";
     private final SQLiteDatabase myDB;
     private Context context;
     private boolean Riprova = false;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_gps(Context context) {
         this.context = context;
@@ -62,11 +70,7 @@ public class db_dati_gps {
         return  db;
     }
 
-    public void CreazioneTabelle() {
-        if (myDB == null) {
-            ApreDB();
-        }
-
+    public boolean CreazioneTabelle() {
         try {
             // SQLiteDatabase myDB = ApreDB();
             if (myDB != null) {
@@ -99,15 +103,25 @@ public class db_dati_gps {
 
                 myDB.execSQL(sql);
 
-                sql = "CREATE TABLE puntiDiSpegnimento (" +
+                sql = "CREATE TABLE IF NOT EXISTS " +
+                        "puntiDiSpegnimento (" +
                         "lat VARCHAR, lon VARCHAR, Nome VARCHAR" +
                         ")";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "DB Non Valido");
+
+                return false;
             }
         } catch (Exception e) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Errore creazione tabelle: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+
+            return false;
         }
     }
 
@@ -124,21 +138,29 @@ public class db_dati_gps {
                         + "'" + (VariabiliStaticheGPS.getInstance().isMostraPercorso() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
+
+                return true;
             } catch (SQLException e) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
-                PulisceDatiIMP();
+                // PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                CreazioneTabelle();
-                return ScriveImpostazioni();
+                // CreazioneTabelle();
+                return false;
             }
         } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
-        }
 
-        return true;
+            return false;
+        }
     }
 
-    public void CaricaImpostazioni() {
+    public void ImpostaValoriDiDefault() {
+        VariabiliStaticheGPS.getInstance().setSegue(true);
+        VariabiliStaticheGPS.getInstance().setMostraSegnale(true);
+        VariabiliStaticheGPS.getInstance().setMostraPercorso(true);
+    }
+
+    public int CaricaImpostazioni() {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
@@ -150,24 +172,32 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setSegue(c.getString(0).equals("S"));
                         VariabiliStaticheGPS.getInstance().setMostraSegnale(c.getString(1).equals("S"));
                         VariabiliStaticheGPS.getInstance().setMostraPercorso(c.getString(2).equals("S"));
+
+                        return 0;
                     } catch (Exception e) {
-                        VariabiliStaticheGPS.getInstance().setSegue(true);
-                        VariabiliStaticheGPS.getInstance().setMostraSegnale(true);
-                        VariabiliStaticheGPS.getInstance().setMostraPercorso(true);
+                        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore try db carica impostazioni: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        return -4;
                     }
                 } else {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+
+                    return -3;
                 }
             } catch (Exception e) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -2;
             }
         } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            return -1;
         }
     }
 
-    public Boolean ScrivePuntoDiSpegnimento(String Nome, Location l) {
+    public boolean ScrivePuntoDiSpegnimento(String Nome, Location l) {
         if (myDB != null) {
             try {
                 String sql = "INSERT INTO"
@@ -228,7 +258,7 @@ public class db_dati_gps {
         }
     }
 
-    public boolean CaricaPuntiDiSpegnimento() {
+    public int CaricaPuntiDiSpegnimento() {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM puntiDiSpegnimento", null);
@@ -249,25 +279,27 @@ public class db_dati_gps {
                     } while (c.moveToNext());
 
                     VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(lista);
-                    return true;
+
+                    return 0;
                 } else {
                     VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(new ArrayList<>());
-                    return false;
+
+                    return -3;
                 }
             } catch (Exception e) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db per punti di spegnimento: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
-                PulisceDatiPS(context);
-                CreazioneTabelle();
-                CaricaPuntiDiSpegnimento();
+                // PulisceDatiPS(context);
+                // CreazioneTabelle();
+                // CaricaPuntiDiSpegnimento();
 
-                return false; // "Tabella creata di nuovo: " + e.getMessage();
+                return -2; // "Tabella creata di nuovo: " + e.getMessage();
             }
         } else {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             VariabiliStaticheGPS.getInstance().setListaPuntiDiSpegnimento(new ArrayList<>());
-            return false; // "Db Non Valido";
+            return -1; // "Db Non Valido";
         }
     }
 
@@ -588,16 +620,20 @@ public class db_dati_gps {
         }
     }
 
-    public void PulisceDati() {
+    public boolean PulisceDati() {
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             // myDB.execSQL("Delete From Utente");
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table posizioni");
-            } catch (Exception ignored) {
 
+                return true;
+            } catch (Exception ignored) {
+                return false;
             }
+        } else {
+            return false;
         }
     }
 

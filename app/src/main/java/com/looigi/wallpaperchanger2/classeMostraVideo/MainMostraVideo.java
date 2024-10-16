@@ -13,7 +13,7 @@ import com.looigi.wallpaperchanger2.classeMostraVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class MainMostraVideo extends Activity {
-    private static String NomeMaschera = "MAINMOSTRAVIDEO";
+    private static String NomeMaschera = "Main_Mostra_Video";
     private Context context;
     private Activity act;
 

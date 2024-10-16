@@ -35,6 +35,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -49,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AndroidCameraApi extends Activity {
-    private static String NomeMaschera = "CAMERA2";
+    private static String NomeMaschera = "Camera2";
     private static final String TAG = "AndroidCameraApi";
     private TextureView textureView;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -93,7 +94,8 @@ public class AndroidCameraApi extends Activity {
     }
 
     private void Attiva() {
-        if (!UtilityDetector.getInstance().LeggeImpostazioni(this, "ATTIVACAMERA")) {
+        String rit = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "AndroidCamera");
+        if (!rit.equals("OK")) {
             UtilitiesGlobali.getInstance().ApreToast(this,
                     "Impossibile leggere le impostazioni");
 

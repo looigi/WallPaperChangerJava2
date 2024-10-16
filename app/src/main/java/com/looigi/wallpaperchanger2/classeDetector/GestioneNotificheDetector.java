@@ -26,7 +26,7 @@ public class GestioneNotificheDetector {
     private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;
     private Context context;
-    private static final String nomeMaschera = "GESTIONENOTIFICHEDETECTOR";
+    private static final String nomeMaschera = "Gestione_Notifiche_Detector";
     private String Messaggio = "";
 
     private static final GestioneNotificheDetector ourInstance = new GestioneNotificheDetector();

@@ -104,10 +104,24 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/imgMappaRefresh"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icona_refresh">
+                </ImageView>
+
+                <ImageView
                     android:id="@+id/imgMappaElimina"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/elimina">
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/imgMappaCerca"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icona_cerca">
                 </ImageView>
 
                 <ImageView

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-    private static final String NomeMaschera = "DOWNLOADIMAGEPLAYER";
+    private static final String NomeMaschera = "Download_Immagine_Player";
     private ImageView bmImage;
     private String Immagine;
     private String PathImmagine;

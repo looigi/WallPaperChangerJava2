@@ -10,7 +10,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import java.util.Date;
 
 public class CallReceiver extends GestioneChiamate {
-	private static final String NomeMaschera = "CALLRECEIVER";
+	private static final String NomeMaschera = "Call_Receiver";
 
     @Override
     protected void onIncomingCallStarted(String number, Date start) {

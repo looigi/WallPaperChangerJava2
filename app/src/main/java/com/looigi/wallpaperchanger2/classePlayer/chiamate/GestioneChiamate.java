@@ -12,7 +12,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import java.util.Date;
 
 public abstract class GestioneChiamate extends BroadcastReceiver {
-    private static final String NomeMaschera = "GESTIONECHIAMATE";
+    private static final String NomeMaschera = "Gestione_Chiamate";
 
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
     static PhonecallStartEndDetector listener;

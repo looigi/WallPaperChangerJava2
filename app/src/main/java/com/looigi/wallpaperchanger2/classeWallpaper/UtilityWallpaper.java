@@ -24,7 +24,7 @@ import java.io.StringWriter;
 import java.util.Random;
 
 public class UtilityWallpaper {
-    private static final String NomeMaschera = "UTILITY";
+    private static final String NomeMaschera = "Utility_Wallpaper";
     private ProgressDialog progressDialog;
 
     private static UtilityWallpaper instance = null;

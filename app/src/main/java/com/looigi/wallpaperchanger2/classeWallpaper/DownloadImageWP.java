@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DownloadImageWP extends AsyncTask<String, Void, Bitmap> {
-    private static final String NomeMaschera = "DOWNLOADIMAGE";
+    private static final String NomeMaschera = "Download_Immagine_Wallpaper";
     private boolean Errore;
     private String NomeImmagine;
     private String PercorsoDIR = "";

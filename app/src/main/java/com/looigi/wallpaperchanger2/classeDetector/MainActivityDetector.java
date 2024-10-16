@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.looigi.wallpaperchanger2.R;
 
 public class MainActivityDetector extends Activity {
-    private static String NomeMaschera = "MAINACTIVITY";
+    private static String NomeMaschera = "Main_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class MainActivityDetector extends Activity {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();
             i.inizializzaMaschera(this, this);
 
-            if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
+            /* if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
                 Toast.makeText(this,
                         VariabiliStaticheDetector.channelName + ": Uscita per mancanza di impostazioni 1",
                         Toast.LENGTH_LONG).show();
@@ -36,7 +36,7 @@ public class MainActivityDetector extends Activity {
                 // finish();
                 VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                 // System.exit(-1);
-            }
+            } */
 
             // VariabiliStaticheDetector.getInstance().ChiudeActivity(false);
 
@@ -80,10 +80,10 @@ public class MainActivityDetector extends Activity {
         VariabiliStaticheDetector.getInstance().setMainActivity(this);
         VariabiliStaticheDetector.getInstance().setContext(this);
 
-        if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
+        // if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();
             i.inizializzaMaschera(this, this);
-        }
+        // }
 
         /* if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {
             Handler handlerTimer;

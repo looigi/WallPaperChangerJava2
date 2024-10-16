@@ -14,7 +14,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class Photo extends Activity {
-	private static String NomeMaschera = "PHOTO";
+	private static String NomeMaschera = "Photo";
 
 	// private static Context context;
 	private Handler handlerTimer;

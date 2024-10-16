@@ -55,8 +55,8 @@ public class MainMostraImmagini extends Activity {
 
         VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
 
-        db_dati_immagini db = new db_dati_immagini(context);
-        db.CaricaImpostazioni();
+        // db_dati_immagini db = new db_dati_immagini(context);
+        // db.CaricaImpostazioni();
 
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie();

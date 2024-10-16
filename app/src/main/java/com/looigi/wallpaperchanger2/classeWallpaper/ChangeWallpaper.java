@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ChangeWallpaper {
-	private static final String NomeMaschera = "CHANGEWALLPAPER";
+	private static final String NomeMaschera = "Change_Wallpaper";
 	private final int BordoX = 10;
 	private final int BordoY = 10;
 	private int SchermoX;

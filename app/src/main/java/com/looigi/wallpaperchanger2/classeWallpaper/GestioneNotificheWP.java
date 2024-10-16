@@ -25,7 +25,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificheWP {
-    private static final String nomeMaschera = "GESTIONENOTIFICHEWALLPAPER";
+    private static final String nomeMaschera = "Gestione_Notifiche_Wallpaper";
     private NotificationManager manager;
     private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;

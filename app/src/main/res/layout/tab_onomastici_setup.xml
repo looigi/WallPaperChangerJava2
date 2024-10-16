@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+   	<LinearLayout
+   	    android:id="@+id/Contenitorone5"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="fill_parent"
+   	    android:gravity="center_horizontal"
+   	    android:orientation="vertical"
+   	    android:padding="5dp" >
+
+   	    <TextView
+   	        android:id="@+id/txtTitoloTraspSfondo"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:text="Trasparenza sfondo widget" />
+
+   	    <SeekBar
+   	        android:id="@+id/BarraColoreWidget"
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content" />
+
+   	    <LinearLayout
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content"
+   	        android:gravity="center_horizontal" >
+
+   	        <TextView
+   	            android:id="@+id/txtColoreSfondoWidget"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="Colore sfondo widget" />
+
+   	        <Button
+   	            android:id="@+id/cmdColoreSfondoWidget"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="->" />
+
+   	        <TextView
+   	            android:id="@+id/txtColore1"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="Esempio" />
+
+   	    </LinearLayout>
+
+   	    <TextView
+   	        android:id="@+id/txtTitoloTraspTesto"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:layout_marginTop="10dp"
+   	        android:text="Trasparenza testo" />
+
+   	    <SeekBar
+   	        android:id="@+id/BarraColoreWidgetTesto"
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content" />
+   	    
+   	    <LinearLayout
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content"
+   	        android:gravity="center_horizontal" >
+
+   	        <TextView
+   	            android:id="@+id/txtColoreTestoWidget"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="Colore testo widget" />
+
+   	        <Button
+   	            android:id="@+id/cmdColoreTestoWidget"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="->" />
+
+   	        <TextView
+   	            android:id="@+id/txtColore2"
+   	            android:layout_width="wrap_content"
+   	            android:layout_height="wrap_content"
+   	            android:text="Esempio" />
+
+   	    </LinearLayout>
+
+   	    <LinearLayout
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content"
+   	        android:layout_marginTop="5dp"
+   	        android:gravity="center_vertical"
+   	        android:padding="5dp"
+   	        android:weightSum="2" >
+
+   	        <LinearLayout
+   	            android:layout_width="match_parent"
+   	            android:layout_height="match_parent"
+   	            android:layout_weight="1"
+   	            android:gravity="center_horizontal"
+   	            android:orientation="vertical"
+   	            android:padding="2dp" >
+
+   	            <ImageView
+   	                android:id="@+id/imgItaliano"
+   	                android:layout_width="40dp"
+   	                android:layout_height="40dp"
+   	                android:src="@drawable/italiano" />
+
+   	            <TextView
+   	                android:id="@+id/txtTestoTastoPT"
+   	                android:layout_width="wrap_content"
+   	                android:layout_height="wrap_content"
+   	                android:layout_weight="1"
+   	                android:gravity="center_horizontal"
+   	                android:text="Italiano"
+   	                android:textColor="#AA0000" />
+   	        </LinearLayout>
+
+   	        <LinearLayout
+   	            android:layout_width="match_parent"
+   	            android:layout_height="match_parent"
+   	            android:layout_weight="1"
+   	            android:gravity="center_horizontal"
+   	            android:orientation="vertical"
+   	            android:padding="2dp" >
+
+   	            <ImageView
+   	                android:id="@+id/imgInglese"
+   	                android:layout_width="40dp"
+   	                android:layout_height="40dp"
+   	                android:src="@drawable/inglese" />
+
+   	            <TextView
+   	                android:id="@+id/txtTestoTastoUsc"
+   	                android:layout_width="wrap_content"
+   	                android:layout_height="wrap_content"
+   	                android:layout_weight="1"
+   	                android:gravity="center_horizontal"
+   	                android:text="English"
+   	                android:textColor="#AA0000" />
+   	        </LinearLayout>
+   	    </LinearLayout>
+
+   	</LinearLayout>
+    
+</merge>

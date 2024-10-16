@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiamateWSMI implements TaskDelegate {
-    private static final String NomeMaschera = "CHIAMATEWSIMMAGINI";
+    private static final String NomeMaschera = "Chiamate_WS_Immagini";
     private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS + "/";

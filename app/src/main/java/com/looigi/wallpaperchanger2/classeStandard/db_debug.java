@@ -12,12 +12,20 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import java.io.File;
 
 public class db_debug {
-    private static final String NomeMaschera = "DBDEBUG";
+    private static final String NomeMaschera = "DB_Debug";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;
     private SQLiteDatabase myDB = null;
     private Context context;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_debug(Context context) {
         this.context = context;
@@ -48,7 +56,7 @@ public class db_debug {
         return  db;
     }
 
-    public void CreazioneTabelle() {
+    public boolean CreazioneTabelle() {
         try {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
@@ -56,14 +64,22 @@ public class db_debug {
                         + " (Attivo VARCHAR);";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                return false;
             }
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
-            int a = 0;
+            return false;
         }
     }
 
-    public void CaricaImpostazioni() {
+    public void ImpostaValoriDiDefault() {
+        VariabiliStaticheStart.getInstance().setLogAttivo(true);
+    }
+
+    public int CaricaImpostazioni() {
         // UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
             try {
@@ -73,14 +89,20 @@ public class db_debug {
                     c.moveToFirst();
                     
                     VariabiliStaticheStart.getInstance().setLogAttivo(c.getString(0).equals("S"));
+
+                    return 0;
+                } else {
+                    return -3;
                 }
             } catch (Exception ignored) {
-
+                return -2;
             }
+        } else {
+            return -1;
         }
     }
     
-    public Boolean ScriveImpostazioni() {
+    public boolean ScriveImpostazioni() {
         if (myDB != null) {
             try {
                 myDB.execSQL("Delete From Debug");
@@ -91,18 +113,19 @@ public class db_debug {
                         + "'" + (VariabiliStaticheStart.getInstance().isLogAttivo() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
+
+                return true;
             } catch (SQLException e) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db debug per impostazioni: " + e.getMessage());
-                PulisceDati();
+                // PulisceDati();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                CreazioneTabelle();
-                return ScriveImpostazioni();
+                // CreazioneTabelle();
+                return false;
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            return false;
         }
-
-        return true;
     }
 
     public void CompattaDB() {
@@ -112,14 +135,18 @@ public class db_debug {
         }
     }
 
-    public void PulisceDati() {
+    public boolean PulisceDati() {
         if (myDB != null) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db debug");
             try {
                 myDB.execSQL("Drop Table Debug");
+                return true;
             } catch (Exception ignored) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db debug: " + ignored.getMessage());
+                return false;
             }
+        } else {
+            return false;
         }
     }
 }

@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class UtilityDetector {
-    private static final String NomeMaschera = "UTILITY";
+    private static final String NomeMaschera = "Utility";
 
     private static UtilityDetector instance = null;
 
@@ -260,13 +260,16 @@ public class UtilityDetector {
         }
     }
 
-    public void VisualizzaPOPUP(String Messaggio, final boolean Tasti, final int QualeOperazione) {
+    public void VisualizzaPOPUP(Context context, String Messaggio, final boolean Tasti, final int QualeOperazione) {
         Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setTitle("Wallpaper Changer II");
         builder.setMessage(Messaggio);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                if (QualeOperazione == -1) {
+                    UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
+                }
             }
         });
         if (Tasti) {
@@ -922,13 +925,13 @@ public class UtilityDetector {
         }
     }
 
-    public boolean LeggeImpostazioni(Context context, String daDove) {
+    /* public boolean LeggeImpostazioni(Context context, String daDove) {
         db_dati_detector db = new db_dati_detector(context);
         boolean rit = db.CaricaImpostazioni(context, daDove);
         ScriveLog(context, NomeMaschera, "Ritorno caricamento impostazioni: " + rit);
 
         return rit;
-    }
+    } */
 
     public void CreaCartelle(String Origine, String Cartella) {
         for (int i = 1; i < Cartella.length(); i++) {

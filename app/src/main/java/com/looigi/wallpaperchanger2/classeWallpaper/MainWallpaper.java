@@ -10,7 +10,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeStandard.ServizioInterno;
 
 public class MainWallpaper extends Activity {
-    private static String NomeMaschera = "MAINACTIVITYWP";
+    private static String NomeMaschera = "Main_Activity_Wallpaper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

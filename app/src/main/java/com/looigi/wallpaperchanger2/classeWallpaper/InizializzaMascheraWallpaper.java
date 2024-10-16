@@ -24,7 +24,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class InizializzaMascheraWallpaper {
-    private static final String NomeMaschera = "INITMASCHERA";
+    private static final String NomeMaschera = "Init_Maschera_Wallpaper";
     private Long controlloLongPress = null;
 
     public void inizializzaMaschera(Context context, Activity view) {
@@ -48,10 +48,10 @@ public class InizializzaMascheraWallpaper {
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
         VariabiliStaticheWallpaper.getInstance().setTxtQuanteImmagini(txtQuante);
 
-        if (!VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
+        /* if (!VariabiliStaticheWallpaper.getInstance().isLetteImpostazioni()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Mancanza di impostazioni");
             UtilitiesGlobali.getInstance().ApreToast(context, VariabiliStaticheWallpaper.channelName + ": Mancanza di impostazioni");
-        }
+        } */
 
         ImpostaOggetti(context, view);
 
@@ -319,7 +319,7 @@ public class InizializzaMascheraWallpaper {
                     switchLock.setEnabled(false); */
                 }
 
-                VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
+                // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }

@@ -5,19 +5,30 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 
 import java.io.File;
 
 public class db_dati_detector {
-    private static final String NomeMaschera = "DBDATI";
+    private static final String NomeMaschera = "DB_Dati_Detector";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;
     private SQLiteDatabase myDB = null;
     private boolean Controlla = true;
+    private Context context;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_detector(Context context) {
+        this.context = context;
         PathDB = UtilityDetector.getInstance().PrendePathDB(context);
 
         File f = new File(PathDB);
@@ -45,7 +56,7 @@ public class db_dati_detector {
         return  db;
     }
 
-    public void CreazioneTabelle() {
+    public boolean CreazioneTabelle() {
         try {
             // SQLiteDatabase myDB = ApreDB();
             if (myDB != null) {
@@ -73,14 +84,47 @@ public class db_dati_detector {
                         ")";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,
+                        "DB Non Valido");
+
+                return false;
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su impostazione valori: " +
+                    UtilityDetector.getInstance().PrendeErroreDaException(e));
+
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
-            int a = 0;
+            return false;
         }
     }
 
-    public boolean CaricaImpostazioni(Context context, String daDove) {
+    public void ImpostaValoriDiDefault() {
+        VariabiliStaticheDetector.getInstance().setFaiLog(true);
+        VariabiliStaticheDetector.getInstance().setTipologiaScatto(2);
+        VariabiliStaticheDetector.getInstance().setSecondi(3);
+        VariabiliStaticheDetector.getInstance().setFotocamera(1);
+        // VariabiliStaticheDetector.getInstance().setRisoluzione(risol);
+        VariabiliStaticheDetector.getInstance().setRisoluzione("");
+        VariabiliStaticheDetector.getInstance().setEstensione(2);
+        VariabiliStaticheDetector.getInstance().setVibrazione(true);
+        VariabiliStaticheDetector.getInstance().setNumeroScatti(3);
+        VariabiliStaticheDetector.getInstance().setAnteprima("S");
+        VariabiliStaticheDetector.getInstance().setOrientamento(0);
+        VariabiliStaticheDetector.getInstance().setLingua("ITALIANO");
+        VariabiliStaticheDetector.getInstance().setDimensioniThumbs(70);
+        VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(50);
+        VariabiliStaticheDetector.getInstance().setVisualizzaToast(true);
+        VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
+        VariabiliStaticheDetector.getInstance().setGpsMs(1000);
+        VariabiliStaticheDetector.getInstance().setGpsMeters(5);
+        VariabiliStaticheDetector.getInstance().setFotoSuPower(true);
+        VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(50);
+    }
+
+    public int CaricaImpostazioni() {
         // UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
             try {
@@ -112,15 +156,22 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setFotoSuPower(c.getString(17).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(c.getString(18)));
 
-                        return true; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
+                        return 0; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
-                        PulisceDati(context, daDove);
-                        CreazioneTabelle();
-                        CaricaImpostazioni(context, daDove);
+                        UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su impostazione valori: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+                        // PulisceDati(context, daDove);
+                        // CreazioneTabelle();
+                        // CaricaImpostazioni(context, daDove);
 
-                        return false; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
+                        return -4; //  "ERROR: " + UtilityDetector.getInstance().PrendeErroreDaException(e);
                     }
                 } else {
+                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db. Imposto default");
+
+                    return -3;
+                }
+                /* else {
                     UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db. Imposto default");
 
                     VariabiliStaticheDetector.getInstance().setFaiLog(true);
@@ -149,30 +200,31 @@ public class db_dati_detector {
                     Controlla = true;
 
                     return true; // "Impostazioni impostate da zero, correttamente. Risoluzione: " + risol;
-                }
+                } */
             } catch (Exception e) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("ERRORE Su scrittura immagini locali: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("Pulizia tabelle");
-                PulisceDati(context, daDove);
+                // PulisceDati(context, daDove);
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                CreazioneTabelle();
-                CaricaImpostazioni(context, daDove);
+                // CreazioneTabelle();
+                // CaricaImpostazioni(context, daDove);
 
-                return false; // "Tabella creata di nuovo: " + e.getMessage();
+                return -2; // "Tabella creata di nuovo: " + e.getMessage();
             }
         } else {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
-            return false; // "Db Non Valido";
+
+            return -1; // "Db Non Valido";
         }
     }
 
-    public Boolean ScriveImpostazioni(Context context, String daDove) {
-        if (Controlla && !VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
+    public boolean ScriveImpostazioni(Context context, String daDove) {
+        /* if (Controlla && !VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Impostazioni non lette. Non effettuo il salvataggio");
             return false;
-        }
+        } */
 
         if (myDB != null) {
             try {
@@ -203,22 +255,24 @@ public class db_dati_detector {
                         + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "' "
                         + ") ";
                 myDB.execSQL(sql);
+
+                return true;
             } catch (SQLException e) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db: " + e.getMessage());
                 // Log.getInstance().ScriveLog("ERRORE Su scrittura impostazioni: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // Log.getInstance().ScriveLog("Pulizia tabelle");
-                PulisceDati(context, daDove);
+                // PulisceDati(context, daDove);
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                CreazioneTabelle();
-                ScriveImpostazioni(context, daDove);
+                // CreazioneTabelle();
+                // ScriveImpostazioni(context, daDove);
 
                 return false;
             }
         } else {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
-        }
 
-        return true;
+            return false;
+        }
     }
 
     public void CompattaDB() {
@@ -228,7 +282,7 @@ public class db_dati_detector {
         }
     }
 
-    public void PulisceDati(Context context, String daDove) {
+    public boolean PulisceDati(Context context, String daDove) {
         // SQLiteDatabase myDB = ApreDB();
         if (myDB != null) {
             UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db");
@@ -239,12 +293,18 @@ public class db_dati_detector {
 
                 CompattaDB();
 
-                UtilityDetector.getInstance().VisualizzaPOPUP(
-                        "DATI DETECTOR Eliminati.\nDa operazione " + daDove, false, 0
-                );
+                // UtilityDetector.getInstance().VisualizzaPOPUP(
+                //         context, "DATI DETECTOR Eliminati.\nDa operazione " + daDove, false, 0
+                // );
+
+                return true;
             } catch (Exception ignored) {
                 UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db: " + ignored.getMessage());
+
+                return false;
             }
+        } else {
+            return false;
         }
     }
 }

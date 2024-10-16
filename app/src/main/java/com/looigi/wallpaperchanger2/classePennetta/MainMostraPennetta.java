@@ -55,8 +55,8 @@ public class MainMostraPennetta extends Activity {
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
 
-        db_dati_pennetta db = new db_dati_pennetta(context);
-        db.CaricaImpostazioni();
+        // db_dati_pennetta db = new db_dati_pennetta(context);
+        // db.CaricaImpostazioni();
 
         ChiamateWSPEN ws = new ChiamateWSPEN(context);
         ws.RitornaCategorie();

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >			
+		
+     <LinearLayout
+         android:id="@+id/ContHome1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:gravity="center_horizontal|center_vertical"
+	     android:orientation="vertical" >
+
+	     <LinearLayout
+	         android:id="@+id/ContHome2"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:gravity="center_horizontal|center_vertical"
+	         android:orientation="vertical" >
+	          
+		    <LinearLayout
+	         android:id="@+id/ContHome20"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:paddingLeft="5dp"
+	         android:paddingRight="5dp"
+	         android:paddingTop="1dp"
+	         android:paddingBottom="1dp"
+	         android:layout_marginBottom="10dp"
+	         android:background="@drawable/stiletextviewnero"
+	         android:gravity="center_horizontal|center_vertical"
+	         android:orientation="vertical" >		
+
+	         	<ImageView
+	         	    android:id="@+id/imageView1"
+	         	    android:paddingTop="2dp"
+	         	    android:paddingBottom="2dp"
+	         	    android:paddingLeft="2dp"
+	         	    android:paddingRight="2dp"
+	         	    android:layout_width="240dp"
+	         	    android:layout_height="240dp"
+	         	    android:layout_marginBottom="10dp" />
+
+			</LinearLayout>
+			
+		    <LinearLayout
+	         android:id="@+id/ContHome21"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_marginLeft="20dp"
+	         android:layout_marginRight="20dp"
+	         android:background="@drawable/stiletextview"
+	         android:gravity="center_horizontal|center_vertical"
+	         android:orientation="vertical" >		
+	                          
+			    <TextView
+			        android:id="@+id/txtSanto"
+			        android:layout_width="fill_parent"
+			        android:layout_height="45dp"
+			        android:layout_gravity="center_vertical"
+			        android:gravity="center_horizontal"
+			        android:text="txtSanto"
+			        android:textColor="#AA0000"
+			        android:textSize="40sp" />
+			
+			    <TextView
+			        android:id="@+id/txtGiorno"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:text="txtGiorno"
+			        android:textColor="#000000"
+			        android:textSize="18sp" />
+			    	                                
+			    <TextView
+			        android:id="@+id/txtNumSettimana"
+			        android:layout_width="291dp"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:hint="12sp"
+			        android:text="txtNumSettimana"
+			        android:textColor="#000000"
+			        android:textSize="17sp"
+			        android:textStyle="italic" />
+			
+			    <TextView
+			        android:id="@+id/txtRicorrenze"
+			        android:layout_width="fill_parent"
+			        android:layout_height="40dp"
+			        android:gravity="center_horizontal|center_vertical"
+			        android:text="Rilevati"
+			        android:textColor="#444444"
+			        android:textSize="22sp" />
+			   </LinearLayout>		                                              
+		</LinearLayout> 
+				
+	     <!--  Sezione dell'ads
+	     <LinearLayout
+	             android:id="@+id/layoutAdview"
+	             android:layout_width="fill_parent"
+	             android:layout_height="wrap_content"
+	             android:orientation="vertical"
+	             android:background="#000000" >
+	
+		    <TextView
+		        android:id="@+id/txtAdView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textAppearance="?android:attr/textAppearanceSmall"
+		        android:textColor="#00AAAA"
+		        android:layout_gravity="center_horizontal"
+		        android:text="" />
+		</LinearLayout> -->
+		
+	</LinearLayout>
+    
+</merge>

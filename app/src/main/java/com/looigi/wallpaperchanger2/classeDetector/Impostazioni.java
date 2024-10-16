@@ -5,7 +5,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class Impostazioni {
-    private static final String NomeMaschera = "IMPOSTAZIONI";
+    private static final String NomeMaschera = "Impostazioni";
 
     /* public void PrendeRisoluzioni(Context context) {
         GBTakePictureNoPreview c = new GBTakePictureNoPreview();
