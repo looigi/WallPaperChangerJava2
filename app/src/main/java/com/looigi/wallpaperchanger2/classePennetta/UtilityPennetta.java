@@ -12,8 +12,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
-import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImagePEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -182,8 +182,15 @@ public class UtilityPennetta {
             VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(s.getCategoria());
             VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(s.getIdImmagine());
 
-            new DownloadImagePEN(context, s.getUrlImmagine(),
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(s.getUrlImmagine());
+            DownloadImmaginePEN d = new DownloadImmaginePEN();
+            d.EsegueChiamata(
+                    context,
+                    s.getUrlImmagine(),
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                    s.getUrlImmagine()
+            );
+            // new DownloadImagePEN(context, s.getUrlImmagine(),
+            //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(s.getUrlImmagine());
 
             List<StrutturaImmaginiLibrary> lista = new ArrayList<>();
             for (int i = 0; i < ultima; i++) {

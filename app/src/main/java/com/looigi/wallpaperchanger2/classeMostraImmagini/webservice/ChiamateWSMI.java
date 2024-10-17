@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ChiamateWSMI implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini";
-    private LetturaWSAsincrona bckAsyncTask;
+    // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS + "/";
     private String ws = "newLooVF.asmx/";
@@ -52,7 +52,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                35000,
+                5000,
                 ApriDialog);
     }
 
@@ -67,7 +67,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                35000,
+                10000,
                 ApriDialog);
     }
 
@@ -81,7 +81,19 @@ public class ChiamateWSMI implements TaskDelegate {
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
 
-        bckAsyncTask = new LetturaWSAsincrona(
+        InterrogazioneWSMI i = new InterrogazioneWSMI();
+        i.EsegueChiamata(
+                context,
+                NS,
+                Timeout,
+                SOAP_ACTION,
+                tOperazione,
+                ApriDialog,
+                Urletto,
+                TimeStampAttuale,
+                this
+        );
+        /* bckAsyncTask = new LetturaWSAsincrona(
                 context,
                 NS,
                 Timeout,
@@ -91,7 +103,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 Urletto,
                 TimeStampAttuale,
                 this);
-        bckAsyncTask.execute(Urletto);
+        bckAsyncTask.execute(Urletto); */
     }
 
     @Override
@@ -111,7 +123,10 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     public void StoppaEsecuzione() {
-        bckAsyncTask.cancel(true);
+        // bckAsyncTask.cancel(true);
+        if (VariabiliStaticheMostraImmagini.getInstance().getClasseChiamata() != null) {
+            VariabiliStaticheMostraImmagini.getInstance().getClasseChiamata().BloccaEsecuzione();
+        }
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
@@ -181,8 +196,8 @@ public class ChiamateWSMI implements TaskDelegate {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        // } else {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -198,15 +213,21 @@ public class ChiamateWSMI implements TaskDelegate {
 
                     UtilityImmagini.getInstance().AggiungeImmagine(context, result, si);
 
-                    new DownloadImageMI(context, si.getUrlImmagine(),
-                            VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());
+                    DownloadImmagineMI d = new DownloadImmagineMI();
+                    d.EsegueChiamata(
+                            context, si.getUrlImmagine(),
+                            VariabiliStaticheMostraImmagini.getInstance().getImg(),
+                            si.getUrlImmagine()
+                    );
+                    // new DownloadImageMI(context, si.getUrlImmagine(),
+                    //         VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());
                 }
             } catch (JSONException e) {
 
             }
             // Utility.getInstance().VisualizzaMessaggio(result);
-        } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        // } else {
+        //     UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 }

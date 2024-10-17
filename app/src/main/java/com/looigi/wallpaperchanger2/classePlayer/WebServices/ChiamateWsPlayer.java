@@ -1,9 +1,10 @@
 package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
 import android.content.Context;
+import android.text.style.ClickableSpan;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePlayer.DownloadBrano;
+import com.looigi.wallpaperchanger2.classePlayer.DownloadCanzone;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaPreferiti;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private static final String NomeMaschera = "CHiamate_WS_Player";
-    private LetturaWSAsincronaPlayer bckAsyncTask;
+    // private LetturaWSAsincronaPlayer bckAsyncTask;
 
     private final String RadiceWS = VariabiliStatichePlayer.UrlWS + "/";
     private final String ws = "wsMobile.asmx/";
@@ -32,7 +33,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private boolean Pregresso = false;
     private String Brano = "";
     private boolean Riprova = false;
-    private StrutturaChiamateWSPlayer chiamataDaFare;
+    // private StrutturaChiamateWSPlayer chiamataDaFare;
 
     public ChiamateWsPlayer(Context context, boolean Riprova) {
         this.context = context;
@@ -121,8 +122,10 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     public void RitornaStelleBrano() {
         if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
+            VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
             return;
         }
+
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Stelle Brano " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
 
         String Urletto="RitornaStelleBrano?" +
@@ -343,9 +346,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     public void StoppaEsecuzione() {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Blocco elaborazione per cambio brano");
-        if (bckAsyncTask != null) {
-            bckAsyncTask.BloccaEsecuzione();
-            bckAsyncTask.cancel(true);
+        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+        UtilityPlayer.getInstance().Attesa(false);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+
+        if (VariabiliStatichePlayer.getInstance().getClasseInterrogazione() != null) {
+            VariabiliStatichePlayer.getInstance().getClasseInterrogazione().BloccaEsecuzione();
         }
     }
 
@@ -357,7 +363,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         UtilityPlayer.getInstance().Attesa(true);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso(tOperazione + (Pregresso ? "Pregresso" : ""));
 
-        chiamataDaFare = new StrutturaChiamateWSPlayer();
+        /* chiamataDaFare = new StrutturaChiamateWSPlayer();
         chiamataDaFare.setBrano(Brano);
         chiamataDaFare.setNS(NS);
         chiamataDaFare.setTimeout(Timeout);
@@ -365,10 +371,24 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         chiamataDaFare.settOperazione(tOperazione);
         chiamataDaFare.setApriDialog(ApriDialog);
         chiamataDaFare.setUrletto(Urletto);
-        chiamataDaFare.setPregresso(Pregresso);
+        chiamataDaFare.setPregresso(Pregresso); */
 
         if (UtilitiesGlobali.getInstance().isRetePresente()) {
-            bckAsyncTask = new LetturaWSAsincronaPlayer(
+            InterrogazioneWSPlayer i = new InterrogazioneWSPlayer();
+            VariabiliStatichePlayer.getInstance().setClasseInterrogazione(i);
+            i.EsegueChiamata(
+                    context,
+                    NS,
+                    Timeout,
+                    SOAP_ACTION,
+                    tOperazione,
+                    ApriDialog,
+                    Urletto,
+                    "0", // TimeStampAttuale,
+                    this,
+                    Pregresso
+            );
+            /* bckAsyncTask = new LetturaWSAsincronaPlayer(
                     context,
                     NS,
                     Timeout,
@@ -379,14 +399,22 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     "0", // TimeStampAttuale,
                     this,
                     Pregresso);
-            bckAsyncTask.execute(Urletto);
+            bckAsyncTask.execute(Urletto); */
         // } else {
         //     aggiungeOperazione();
+        } else {
+            VariabiliStatichePlayer.getInstance().setClasseInterrogazione(null);
+            VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+            UtilityPlayer.getInstance().Attesa(false);
+            UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
         }
     }
 
     @Override
     public void TaskCompletionResult(String result) {
+        VariabiliStatichePlayer.getInstance().setClasseInterrogazione(null);
+        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
         UtilityPlayer.getInstance().Attesa(false);
        /* boolean Ok = true;
 
@@ -406,7 +434,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             }
         } */
 
-        boolean Scoda = true;
+        // boolean Scoda = true;
 
         // if (Ok) {
             switch (TipoOperazione) {
@@ -506,8 +534,6 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     private void fRitornaStelleBrano(String result) {
-        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
-
         int Stelle;
 
         boolean ritorno = ControllaRitorno("Ritorna stelle brano", result);
@@ -627,8 +653,6 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void CaricaBrano(String result) {
-        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
-
         boolean ritorno = ControllaRitorno("Carica Brano", result);
         if (!ritorno) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Carica brano: Esco per result non valido");
@@ -831,7 +855,10 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             if (!UtilityDetector.getInstance().EsisteFile(s.getPathBrano())) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Scarico il brano in locale");
-                new DownloadBrano(context, s, Pregresso).execute(s.getUrlBrano());
+                DownloadCanzone d = new DownloadCanzone();
+                VariabiliStatichePlayer.getInstance().setDownCanzone(d);
+                d.EsegueDownload(context, s, Pregresso);
+                // new DownloadBrano(context, s, Pregresso).execute(s.getUrlBrano());
             } else {
                 if (!Pregresso) {
                     if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {

@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classePlayer;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
@@ -23,11 +24,16 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.brani_locali;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniPerLimite;
+import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -107,6 +113,35 @@ public class MainPlayer extends Activity {
 
         LinearLayout layImpostazioni = findViewById(R.id.layImpostazioniPlayerInterne);
         layImpostazioni.setVisibility(LinearLayout.GONE);
+
+        ImageView imgImposta = findViewById(R.id.imgImpostaWP);
+        imgImposta.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (VariabiliStatichePlayer.getInstance().getPathUltimaImmagine() != null) {
+                    UtilityPlayer.getInstance().Attesa(true);
+
+                    String Path = VariabiliStatichePlayer.getInstance().getPathUltimaImmagine();
+                    String[] N = Path.split("/");
+                    String Nome = N[N.length - 1];
+                    String Data = Files.getInstance().DataFile(Path).toString();
+                    long Dimensione = Files.getInstance().DimensioniFile(Path);
+
+                    StrutturaImmagine src = new StrutturaImmagine();
+                    src.setPathImmagine(Path);
+                    src.setImmagine(Nome);
+                    src.setDimensione(String.valueOf(Dimensione));
+                    src.setDataImmagine(Data);
+
+                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    c.setWallpaperLocale(context, src);
+
+                    UtilityPlayer.getInstance().Attesa(false);
+                }
+
+                return false;
+            }
+        });
 
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {

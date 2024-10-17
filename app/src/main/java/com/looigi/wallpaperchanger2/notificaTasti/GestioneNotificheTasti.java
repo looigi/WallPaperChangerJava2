@@ -410,10 +410,10 @@ public class GestioneNotificheTasti {
                         } else {
                             VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 
-                            GestioneNotifichePlayer.getInstance().RimuoviNotifica();
-
                             UtilityPlayer.getInstance().PressionePlay(context, false);
                             UtilityPlayer.getInstance().ChiudeActivity(true);
+
+                            GestioneNotifichePlayer.getInstance().RimuoviNotifica();
                         }
 
                         GestioneNotificheTasti.getInstance().AggiornaNotifica();

@@ -985,13 +985,21 @@ public class UtilityDetector {
     } */
 
     public String PrendePath(Context context) {
-        String Path = context.getFilesDir() + "/DataBase/";
+        Context c = context;
+        if (c == null) {
+            c = UtilitiesGlobali.getInstance().tornaContextValido();
+        }
+        String Path = c.getFilesDir() + "/DataBase/";
 
         return Path;
     }
 
     public String PrendePathDB(Context context) {
-        String Path = context.getFilesDir() + "/DB/";
+        Context c = context;
+        if (c == null) {
+            c = UtilitiesGlobali.getInstance().tornaContextValido();
+        }
+        String Path = c.getFilesDir() + "/DB/";
 
         return Path;
     }

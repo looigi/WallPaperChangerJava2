@@ -103,6 +103,14 @@
                 android:gravity="right"
                 android:layout_height="wrap_content">
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sSegue"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="Segue" />
+
                 <ImageView
                     android:id="@+id/imgMappaRefresh"
                     android:layout_width="40dp"

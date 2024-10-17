@@ -20,8 +20,8 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
-import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImagePEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -165,8 +165,15 @@ public class MainMostraPennetta extends Activity {
 
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
 
-                new DownloadImagePEN(context, path,
-                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
+                DownloadImmaginePEN d = new DownloadImmaginePEN();
+                d.EsegueChiamata(
+                        context,
+                        path,
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                        path
+                );
+                // new DownloadImagePEN(context, path,
+                //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
 
                 letto = true;
                 /* JSONObject jObject = null;

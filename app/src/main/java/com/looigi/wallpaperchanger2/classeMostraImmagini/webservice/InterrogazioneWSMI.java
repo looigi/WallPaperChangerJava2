@@ -1,10 +1,11 @@
-package com.looigi.wallpaperchanger2.classePennetta.webservice;
+package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -15,13 +16,15 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
-    private static final String NomeMaschera = "Lettura_WS_Immagini_PEN";
-    private final String NAMESPACE;
+public class InterrogazioneWSMI {
+    private static final String NomeMaschera = "Lettura_WS_Immagini";
+    private String NAMESPACE;
     private String METHOD_NAME = "";
     private String[] Parametri;
-    private final Integer Timeout;
+    private Integer Timeout;
     private String SOAP_ACTION;
     private Boolean Errore;
     private String result="";
@@ -29,17 +32,18 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
     private Integer QuantiTentativi;
     private Integer Tentativo;
     private String messErrore="";
-    private final String tOperazione;
-    private final String TimeStampAttuale;
+    private String tOperazione;
+    private String TimeStampAttuale;
     private TaskDelegate delegate;
     private boolean ApriDialog;
     private Context context;
+    private boolean isCancelled;
 
-    public LetturaWSAsincrona(Context context, String NAMESPACE, int TimeOut,
-                              String SOAP_ACTION, String tOperazione,
-                              boolean ApriDialog, String Urletto,
-                              String TimeStampAttuale,
-                              TaskDelegate delegate) {
+    public void EsegueChiamata(Context context, String NAMESPACE, int TimeOut,
+                               String SOAP_ACTION, String tOperazione,
+                               boolean ApriDialog, String Urletto,
+                               String TimeStampAttuale,
+                               TaskDelegate delegate) {
         this.context = context;
         this.NAMESPACE = NAMESPACE;
         this.Timeout = TimeOut;
@@ -52,6 +56,27 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
         this.QuantiTentativi = 3;
         this.Tentativo = 0;
         this.delegate = delegate;
+        this.isCancelled = false;
+
+        // UtilityImmagini.getInstance().ApriDialog(ApriDialog, this.tOperazione);
+        SplittaCampiUrletto(this.Urletto);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Esecuzione();
+                TermineEsecuzione();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                    }
+                });
+            }
+        });
     }
 
     private void SplittaCampiUrletto(String Cosa) {
@@ -98,28 +123,12 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
         }
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        UtilityWallpaper.getInstance().ApriDialog(ApriDialog, this.tOperazione);
-        SplittaCampiUrletto(this.Urletto);
-    }
-
-    @Override
-    protected void onPostExecute(String p) {
-        super.onPostExecute(p);
-
-        ControllaFineCiclo();
-    }
-
-    @Override
-    protected String doInBackground(String... strings) {
-        if (!VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Operazione di rete " + tOperazione + " non possibile: Rete non presente");
+    private void Esecuzione() {
+        /* if (!VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Operazione di rete " + tOperazione + " non possibile: Rete non presente");
             Errore = true;
             result = "ERROR: Rete non presente";
-        } else {
+        } else { */
             Errore = false;
             result = "";
 
@@ -137,7 +146,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                             Valore = Parametri[i].substring(pos + 1, Parametri[i].length());
                         }
                         Request.addProperty(Parametro, Valore);
-                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Parametro " + Parametro + ": " + Valore);
+                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Parametro " + Parametro + ": " + Valore);
                     }
                 }
             }
@@ -152,7 +161,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
             HttpTransportSE aht = null;
             messErrore = "";
 
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Urletto: " + Urletto);
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Urletto: " + Urletto);
 
             try {
                 soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -161,7 +170,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                 aht = new HttpTransportSE(Urletto, Timeout);
                 aht.call(SOAP_ACTION, soapEnvelope);
 
-                if (isCancelled()) {
+                if (isCancelled) {
                     messErrore = "ESCI";
                 }
             } catch (SocketTimeoutException e) {
@@ -169,7 +178,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                     Errore = false;
                 } else {
                     Errore = true;
-                    messErrore = UtilityWallpaper.getInstance().PrendeErroreDaException(e);
+                    messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
                     if (messErrore != null) {
                         messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
                     } else {
@@ -178,20 +187,20 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                     result = "ERROR: " + messErrore;
                     messErrore = result;
 
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore di socket su ws per operazione " + tOperazione + ": " + messErrore);
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore di socket su ws per operazione " + tOperazione + ": " + messErrore);
                 }
             } catch (IOException e) {
                 Errore = true;
-                messErrore = UtilityWallpaper.getInstance().PrendeErroreDaException(e);
+                messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
                 if (messErrore != null)
                     messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
                 result = "ERROR: " + messErrore;
                 messErrore = result;
 
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore di I/O su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore di I/O su ws per operazione " + tOperazione + ": " + messErrore);
             } catch (XmlPullParserException e) {
                 Errore = true;
-                messErrore = UtilityWallpaper.getInstance().PrendeErroreDaException(e);
+                messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
                 if (messErrore != null) {
                     messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
                 } else {
@@ -200,25 +209,25 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                 result = "ERRORE: " + messErrore;
                 messErrore = result;
 
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore di parsing su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore di parsing su ws per operazione " + tOperazione + ": " + messErrore);
             } catch (Exception e) {
                 Errore = true;
-                messErrore = UtilityWallpaper.getInstance().PrendeErroreDaException(e);
+                messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
                 if (messErrore != null)
                     messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
                 result = "ERROR: " + messErrore;
                 messErrore = result;
 
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore generico su ws per operazione " + tOperazione + ": " + messErrore);
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore generico su ws per operazione " + tOperazione + ": " + messErrore);
             }
-            if (!Errore && !isCancelled()) {
+            if (!Errore && !isCancelled) {
                 try {
                     result = "" + soapEnvelope.getResponse();
 
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Lettura ok su ws per operazione " + tOperazione);
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Lettura ok su ws per operazione " + tOperazione);
                 } catch (SoapFault e) {
                     Errore = true;
-                    messErrore = UtilityWallpaper.getInstance().PrendeErroreDaException(e);
+                    messErrore = UtilityDetector.getInstance().PrendeErroreDaException(e);
                     if (messErrore != null) {
                         messErrore = messErrore.toUpperCase().replace("LOOIGI.NO-IP.BIZ", "Web Service");
                     } else {
@@ -227,7 +236,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                     result = "ERROR: " + messErrore;
                     messErrore = result;
 
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore SoapFault su ws per operazione " + tOperazione + ": " + messErrore);
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore SoapFault su ws per operazione " + tOperazione + ": " + messErrore);
                 }
             } else {
                 int a = 0;
@@ -238,18 +247,16 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
             if (soapEnvelope != null) {
                 soapEnvelope = null;
             }
-            if (isCancelled()) {
+            if (isCancelled) {
                 messErrore = "ESCI";
 
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Richiesta uscita da ws su operazione " + tOperazione + ": " + messErrore);
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Richiesta uscita da ws su operazione " + tOperazione + ": " + messErrore);
             }
-        }
-
-        return null;
+        // }
     }
 
-    private void ControllaFineCiclo() {
-        UtilityWallpaper.getInstance().ChiudeDialog();
+    private void TermineEsecuzione() {
+        // UtilityImmagini.getInstance().ChiudeDialog();
 
         if (!messErrore.equals("ESCI")) {
             String Ritorno = result;
@@ -258,12 +265,12 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                 messErrore = Ritorno;
                 Errore = true;
 
-                if (VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
+                // if (VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
                     // OggettiAVideo.getInstance().getImgIndietro().setVisibility(LinearLayout.VISIBLE);
                     // OggettiAVideo.getInstance().getImgAvanti().setVisibility(LinearLayout.VISIBLE);
                     // OggettiAVideo.getInstance().getImgPlay().setVisibility(LinearLayout.VISIBLE);
 
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Su Lettura Asincrona: " + messErrore);
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "ERRORE Su Lettura Asincrona: " + messErrore);
 
                     /* if (VariabiliGlobali.getInstance().isScreenOn()) {
                         DialogMessaggio.getInstance().show(
@@ -276,18 +283,22 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                     } */
 
                     delegate.TaskCompletionResult(result);
-                }
+                // }
             } else {
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Avviso per termine chiamata su operazione " + tOperazione);
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Avviso per termine chiamata su operazione " + tOperazione);
 
                 delegate.TaskCompletionResult(result);
             }
         } else {
             // Uscito
 
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Uscita da ws su operazione " + tOperazione);
 
             delegate.TaskCompletionResult(result);
         }
+    }
+
+    public void BloccaEsecuzione() {
+        isCancelled = true;
     }
 }

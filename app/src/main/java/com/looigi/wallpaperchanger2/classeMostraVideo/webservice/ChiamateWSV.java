@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ChiamateWSV implements TaskDelegate {
     private static final String NomeMaschera = "CHiamate_WS_Video";
-    private LetturaWSAsincrona bckAsyncTask;
+    //private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheVideo.UrlWS + "/";
     private String ws = "newLooVF.asmx/";
@@ -71,7 +71,19 @@ public class ChiamateWSV implements TaskDelegate {
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
 
-        bckAsyncTask = new LetturaWSAsincrona(
+        InterrogazioneWSV i = new InterrogazioneWSV();
+        i.EsegueChiamata(
+                context,
+                NS,
+                Timeout,
+                SOAP_ACTION,
+                tOperazione,
+                ApriDialog,
+                Urletto,
+                TimeStampAttuale,
+                this
+        );
+        /* bckAsyncTask = new LetturaWSAsincrona(
                 context,
                 NS,
                 Timeout,
@@ -81,7 +93,7 @@ public class ChiamateWSV implements TaskDelegate {
                 Urletto,
                 TimeStampAttuale,
                 this);
-        bckAsyncTask.execute(Urletto);
+        bckAsyncTask.execute(Urletto); */
     }
 
     @Override
@@ -99,7 +111,7 @@ public class ChiamateWSV implements TaskDelegate {
     }
 
     public void StoppaEsecuzione() {
-        bckAsyncTask.cancel(true);
+        // bckAsyncTask.cancel(true);
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {

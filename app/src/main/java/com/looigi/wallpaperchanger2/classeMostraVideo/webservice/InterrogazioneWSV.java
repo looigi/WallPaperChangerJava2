@@ -1,7 +1,8 @@
 package com.looigi.wallpaperchanger2.classeMostraVideo.webservice;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -15,13 +16,16 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
+public class InterrogazioneWSV {
+    private boolean isCancelled;
     private static final String NomeMaschera = "Lettura_WS_Video";
-    private final String NAMESPACE;
+    private String NAMESPACE;
     private String METHOD_NAME = "";
     private String[] Parametri;
-    private final Integer Timeout;
+    private Integer Timeout;
     private String SOAP_ACTION;
     private Boolean Errore;
     private String result="";
@@ -29,17 +33,18 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
     private Integer QuantiTentativi;
     private Integer Tentativo;
     private String messErrore="";
-    private final String tOperazione;
-    private final String TimeStampAttuale;
+    private String tOperazione;
+    private String TimeStampAttuale;
     private TaskDelegate delegate;
     private boolean ApriDialog;
     private Context context;
 
-    public LetturaWSAsincrona(Context context, String NAMESPACE, int TimeOut,
-                              String SOAP_ACTION, String tOperazione,
-                              boolean ApriDialog, String Urletto,
-                              String TimeStampAttuale,
-                              TaskDelegate delegate) {
+    public void EsegueChiamata(Context context, String NAMESPACE, int TimeOut,
+                               String SOAP_ACTION, String tOperazione,
+                               boolean ApriDialog, String Urletto,
+                               String TimeStampAttuale,
+                               TaskDelegate delegate) {
+        isCancelled = false;
         this.context = context;
         this.NAMESPACE = NAMESPACE;
         this.Timeout = TimeOut;
@@ -52,6 +57,27 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
         this.QuantiTentativi = 3;
         this.Tentativo = 0;
         this.delegate = delegate;
+
+        UtilityWallpaper.getInstance().ApriDialog(ApriDialog, this.tOperazione);
+        SplittaCampiUrletto(this.Urletto);
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Esecuzione();
+                TermineEsecuzione();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                    }
+                });
+            }
+        });
     }
 
     private void SplittaCampiUrletto(String Cosa) {
@@ -98,23 +124,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
         }
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        UtilityWallpaper.getInstance().ApriDialog(ApriDialog, this.tOperazione);
-        SplittaCampiUrletto(this.Urletto);
-    }
-
-    @Override
-    protected void onPostExecute(String p) {
-        super.onPostExecute(p);
-
-        ControllaFineCiclo();
-    }
-
-    @Override
-    protected String doInBackground(String... strings) {
+    private void Esecuzione() {
         if (!VariabiliStaticheWallpaper.getInstance().isRetePresente()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Operazione di rete " + tOperazione + " non possibile: Rete non presente");
             Errore = true;
@@ -161,7 +171,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
                 aht = new HttpTransportSE(Urletto, Timeout);
                 aht.call(SOAP_ACTION, soapEnvelope);
 
-                if (isCancelled()) {
+                if (isCancelled) {
                     messErrore = "ESCI";
                 }
             } catch (SocketTimeoutException e) {
@@ -211,7 +221,7 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
 
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore generico su ws per operazione " + tOperazione + ": " + messErrore);
             }
-            if (!Errore && !isCancelled()) {
+            if (!Errore && !isCancelled) {
                 try {
                     result = "" + soapEnvelope.getResponse();
 
@@ -238,17 +248,15 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
             if (soapEnvelope != null) {
                 soapEnvelope = null;
             }
-            if (isCancelled()) {
+            if (isCancelled) {
                 messErrore = "ESCI";
 
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Richiesta uscita da ws su operazione " + tOperazione + ": " + messErrore);
             }
         }
-
-        return null;
     }
 
-    private void ControllaFineCiclo() {
+    private void TermineEsecuzione() {
         UtilityWallpaper.getInstance().ChiudeDialog();
 
         if (!messErrore.equals("ESCI")) {
@@ -289,5 +297,9 @@ public class LetturaWSAsincrona extends AsyncTask<String, Integer, String>  {
 
             delegate.TaskCompletionResult(result);
         }
+    }
+
+    public void BloccaEsecuzione() {
+        isCancelled = true;
     }
 }

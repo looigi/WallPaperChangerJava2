@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -178,6 +179,18 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        SwitchCompat sSegue = act.findViewById(R.id.sSegue);
+        sSegue.setChecked(VariabiliStaticheGPS.getInstance().isSegue());
+        sSegue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setSegue(sSegue.isChecked());
+
+                db_dati_gps db = new db_dati_gps(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         ImageView imgC = act.findViewById(R.id.imgMappaCerca);
         imgC.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -296,7 +309,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         );
     }
 
-    private void AggiungePolyLineSegnale(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
+    private void AggiungePolyLineSegnale(List<StrutturaGps> lista, int colore) {
         LatLng[] path = new LatLng[lista.size()];
         int c = 0;
 
@@ -307,7 +320,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
 
-        Polyline polylineSegnale = googleMap.addPolyline(new PolylineOptions()
+        Polyline polylineSegnale = mappa.addPolyline(new PolylineOptions()
                 .clickable(true)
                 .add(path)
                 .width(20)
@@ -487,7 +500,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     if (vecchioColore != colore) {
                         if (vecchioColore != -1) {
-                            AggiungePolyLineSegnale(mappa, lista, colore);
+                            AggiungePolyLineSegnale(lista, colore);
                             lista = new ArrayList<>();
                         }
 
@@ -497,7 +510,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
 
                 if (!lista.isEmpty()) {
-                    AggiungePolyLineSegnale(mappa, lista, vecchioColore);
+                    AggiungePolyLineSegnale(lista, vecchioColore);
                 }
             }
 
@@ -576,7 +589,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 if (ultimoPunto != null) {
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(ultimoPunto.getLat(),
-                                    ultimoPunto.getLon())).build();
+                                    ultimoPunto.getLon())).zoom(18).build();
 
                     mappa.animateCamera(CameraUpdateFactory
                             .newCameraPosition(cameraPosition));

@@ -89,11 +89,8 @@ public class AndroidCameraApi extends Activity {
         setContentView(R.layout.camera);
 
         act = this;
+        context = this;
 
-        Attiva();
-    }
-
-    private void Attiva() {
         String rit = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "AndroidCamera");
         if (!rit.equals("OK")) {
             UtilitiesGlobali.getInstance().ApreToast(this,
@@ -102,6 +99,10 @@ public class AndroidCameraApi extends Activity {
             return;
         }
 
+        Attiva();
+    }
+
+    private void Attiva() {
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);

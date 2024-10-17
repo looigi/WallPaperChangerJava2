@@ -732,17 +732,6 @@ public class MainImpostazioni extends Activity {
         db_dati_gps db = new db_dati_gps(context);
         // db.CaricaImpostazioni();
 
-        SwitchCompat sSegue = act.findViewById(R.id.sSegue);
-        sSegue.setChecked(true);
-        sSegue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VariabiliStaticheGPS.getInstance().setSegue(sSegue.isChecked());
-
-                db.ScriveImpostazioni();
-            }
-        });
-
         EditText etGpsMs = (EditText) act.findViewById(R.id.edtGpsMs);
         etGpsMs.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMs()));
         etGpsMs.setOnFocusChangeListener(new View.OnFocusChangeListener() {

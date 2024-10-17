@@ -190,7 +190,7 @@
             </intent-filter>
         </receiver> -->
 
-        <receiver android:name=".classePlayer.chiamate.CallReceiver"
+        <receiver android:name=".classePlayer.chiamateTelefoniche.CallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />

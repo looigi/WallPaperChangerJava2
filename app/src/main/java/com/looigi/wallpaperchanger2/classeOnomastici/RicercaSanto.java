@@ -83,7 +83,9 @@ public class RicercaSanto {
 	    		} catch (Exception ignored) {
 	    			
 	    		}
-	    		c.close();
+				if (c != null) {
+					c.close();
+				}
 	    		
 	    		if (Quanti==0) {
 		    		tRitorno.setText("");

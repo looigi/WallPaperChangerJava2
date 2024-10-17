@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class GestioneDB {
 	// private String DB_PATH = "/data/data/com.looigi.onomastici4/databases/";
@@ -131,7 +133,7 @@ public class GestioneDB {
 		try {
 			InputStream myInput = VariabiliStaticheOnomastici.getInstance().getAssets().open("Onomastici.db");
 	    	String outFileName = DB_PATH + DB_NAME;
-	    	OutputStream myOutput = new FileOutputStream(outFileName);
+	    	OutputStream myOutput = Files.newOutputStream(Paths.get(outFileName));
 	    	byte[] buffer = new byte[1024];
 	    	int length;
 	    	while ((length = myInput.read(buffer))>0){

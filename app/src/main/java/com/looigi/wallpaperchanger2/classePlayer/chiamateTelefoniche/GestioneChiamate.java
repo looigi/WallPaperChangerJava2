@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer.chiamate;
+package com.looigi.wallpaperchanger2.classePlayer.chiamateTelefoniche;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

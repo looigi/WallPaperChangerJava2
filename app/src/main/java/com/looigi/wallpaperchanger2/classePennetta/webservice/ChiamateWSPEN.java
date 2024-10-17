@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ChiamateWSPEN implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_PEN";
-    private LetturaWSAsincrona bckAsyncTask;
+    // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmaginiPennetta.UrlWS + "/";
     private String ws = "newLooVF.asmx/";
@@ -45,7 +45,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                35000,
+                5000,
                 ApriDialog);
     }
 
@@ -60,7 +60,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                35000,
+                10000,
                 ApriDialog);
     }
 
@@ -74,7 +74,19 @@ public class ChiamateWSPEN implements TaskDelegate {
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
 
-        bckAsyncTask = new LetturaWSAsincrona(
+        InterrogazioneWSPEN i = new InterrogazioneWSPEN();
+        i.EsegueChiamata(
+                context,
+                NS,
+                Timeout,
+                SOAP_ACTION,
+                tOperazione,
+                ApriDialog,
+                Urletto,
+                TimeStampAttuale,
+                this
+        );
+        /* bckAsyncTask = new LetturaWSAsincrona(
                 context,
                 NS,
                 Timeout,
@@ -84,7 +96,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 Urletto,
                 TimeStampAttuale,
                 this);
-        bckAsyncTask.execute(Urletto);
+        bckAsyncTask.execute(Urletto); */
     }
 
     @Override
@@ -104,7 +116,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void StoppaEsecuzione() {
-        bckAsyncTask.cancel(true);
+        // bckAsyncTask.cancel(true);
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
@@ -187,8 +199,8 @@ public class ChiamateWSPEN implements TaskDelegate {
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }
-        } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        // } else {
+        //     UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -207,8 +219,16 @@ public class ChiamateWSPEN implements TaskDelegate {
 
             VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
 
-            new DownloadImagePEN(context, path,
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
+            DownloadImmaginePEN d = new DownloadImmaginePEN();
+            d.EsegueChiamata(
+                    context,
+                    path,
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                    path
+            );
+            // new DownloadImagePEN(context, path,
+            //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
+
             /* try {
                 JSONObject jObject = new JSONObject(result);
                 StrutturaImmaginiLibrary si = UtilityPennetta.getInstance().prendeStruttura(jObject);
@@ -225,8 +245,8 @@ public class ChiamateWSPEN implements TaskDelegate {
 
             } */
             // Utility.getInstance().VisualizzaMessaggio(result);
-        } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        // } else {
+        //     UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 }

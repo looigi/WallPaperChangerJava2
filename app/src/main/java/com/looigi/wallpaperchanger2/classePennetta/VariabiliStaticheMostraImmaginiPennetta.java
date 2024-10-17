@@ -33,6 +33,7 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private Context ctx;
     public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
     public static final String PathUrl = "http://looigi.no-ip.biz:1085/Materiale/Pennetta/";
+    public static final int TimeoutImmagine = 5;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;
     private String Categoria;

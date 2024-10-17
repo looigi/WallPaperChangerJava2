@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -183,8 +183,14 @@ public class UtilityImmagini {
             VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
             VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(s.getIdImmagine());
 
-            new DownloadImageMI(context, s.getUrlImmagine(),
-                    VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(s.getUrlImmagine());
+            DownloadImmagineMI d = new DownloadImmagineMI();
+            d.EsegueChiamata(
+                    context, s.getUrlImmagine(),
+                    VariabiliStaticheMostraImmagini.getInstance().getImg(),
+                    s.getUrlImmagine()
+            );
+            // new DownloadImageMI(context, s.getUrlImmagine(),
+            //         VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(s.getUrlImmagine());
 
             List<StrutturaImmaginiLibrary> lista = new ArrayList<>();
             for (int i = 0; i < ultima; i++) {

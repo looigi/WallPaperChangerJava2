@@ -21,10 +21,11 @@ import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImma
 import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImmagineMI;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImageMI;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 
 import org.json.JSONException;
@@ -70,20 +71,25 @@ public class MainMostraImmagini extends Activity {
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityImmagini.getInstance().Attesa(true);
+                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
+                    UtilityImmagini.getInstance().Attesa(true);
 
-                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
+                    StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
 
-                StrutturaImmagine src = new StrutturaImmagine();
-                src.setPathImmagine(context.getFilesDir() + "/Immagini/AppoggioMI.jpg");
-                src.setImmagine(s.getNomeFile());
-                src.setDimensione("");
-                src.setDataImmagine(s.getDataCreazione());
+                    String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
+                    long Dimensione = Files.getInstance().DimensioniFile(Path);
 
-                ChangeWallpaper c = new ChangeWallpaper(context);
-                c.setWallpaperLocale(context, src);
+                    StrutturaImmagine src = new StrutturaImmagine();
+                    src.setPathImmagine(Path);
+                    src.setImmagine(s.getNomeFile());
+                    src.setDimensione(String.valueOf(Dimensione));
+                    src.setDataImmagine(s.getDataCreazione());
 
-                UtilityImmagini.getInstance().Attesa(false);
+                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    c.setWallpaperLocale(context, src);
+
+                    UtilityImmagini.getInstance().Attesa(false);
+                }
             }
         });
 
@@ -162,8 +168,14 @@ public class MainMostraImmagini extends Activity {
 
                     VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
 
-                    new DownloadImageMI(context, si.getUrlImmagine(),
-                            VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());
+                    DownloadImmagineMI d = new DownloadImmagineMI();
+                    d.EsegueChiamata(
+                            context, si.getUrlImmagine(),
+                            VariabiliStaticheMostraImmagini.getInstance().getImg(),
+                            si.getUrlImmagine()
+                    );
+                    /* new DownloadImageMI(context, si.getUrlImmagine(),
+                            VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine()); */
 
                     letto = true;
                 } catch (JSONException ignored) {

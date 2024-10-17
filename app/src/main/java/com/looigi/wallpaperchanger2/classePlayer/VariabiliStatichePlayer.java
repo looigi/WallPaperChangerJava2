@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.InterrogazioneWSPlayer;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class VariabiliStatichePlayer {
     public static int channelIdIntentOverlay = 152;
     public static int SecondiCambioImmagine = 30;
     public static int SecondiBranoPregresso= 15;
+    public static final int TimeoutImmagine = 5;
+    public static final int TimeoutBrano = 45;
     private boolean staSuonando = false;
     public static String UrlWS = "http://looigi.no-ip.biz:1081";
     private StrutturaUtenti Utente;
@@ -81,6 +84,9 @@ public class VariabiliStatichePlayer {
     private List<String> braniSuSD = new ArrayList<>();
     private TextView txtQuanteRicerca;
     private boolean CuffieInserite = false;
+    private InterrogazioneWSPlayer ClasseInterrogazione;
+    private DownloadCanzone DownCanzone;
+    private DownloadImmagine DownImmagine;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -112,6 +118,30 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public DownloadImmagine getDownImmagine() {
+        return DownImmagine;
+    }
+
+    public void setDownImmagine(DownloadImmagine downImmagine) {
+        DownImmagine = downImmagine;
+    }
+
+    public DownloadCanzone getDownCanzone() {
+        return DownCanzone;
+    }
+
+    public void setDownCanzone(DownloadCanzone downCanzone) {
+        DownCanzone = downCanzone;
+    }
+
+    public InterrogazioneWSPlayer getClasseInterrogazione() {
+        return ClasseInterrogazione;
+    }
+
+    public void setClasseInterrogazione(InterrogazioneWSPlayer classeInterrogazione) {
+        ClasseInterrogazione = classeInterrogazione;
     }
 
     public boolean isCuffieInserite() {

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.InterrogazioneWSMI;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
@@ -33,6 +34,7 @@ public class VariabiliStaticheMostraImmagini {
     private Context ctx;
     public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
     public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
+    public static final int TimeoutImmagine = 5;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;
     private int idCategoria;
@@ -47,6 +49,15 @@ public class VariabiliStaticheMostraImmagini {
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private boolean slideShowAttivo = false;
     private int secondiAttesa = 5000;
+    private InterrogazioneWSMI ClasseChiamata;
+
+    public InterrogazioneWSMI getClasseChiamata() {
+        return ClasseChiamata;
+    }
+
+    public void setClasseChiamata(InterrogazioneWSMI classeChiamata) {
+        ClasseChiamata = classeChiamata;
+    }
 
     public int getSecondiAttesa() {
         return secondiAttesa;
