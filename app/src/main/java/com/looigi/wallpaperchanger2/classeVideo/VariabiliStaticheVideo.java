@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraVideo;
+package com.looigi.wallpaperchanger2.classeVideo;
 
 import android.app.Activity;
 import android.content.Context;

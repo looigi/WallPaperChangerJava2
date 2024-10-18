@@ -1,15 +1,14 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
+package com.looigi.wallpaperchanger2.classeImmagini.webservice;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 
 import org.json.JSONArray;
 import org.json.JSONException;

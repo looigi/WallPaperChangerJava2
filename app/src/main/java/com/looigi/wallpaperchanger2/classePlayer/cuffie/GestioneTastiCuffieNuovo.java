@@ -26,8 +26,11 @@ public class GestioneTastiCuffieNuovo extends Service {
         @Override
         public void onPlay() {
             super.onPlay();
+
             UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                     "Premuto Play");
+
+            UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), true);
         }
 
         @Override
@@ -35,6 +38,8 @@ public class GestioneTastiCuffieNuovo extends Service {
             super.onPause();
             UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                     "Premuto Pause");
+
+            UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
         }
 
         @Override
@@ -42,6 +47,8 @@ public class GestioneTastiCuffieNuovo extends Service {
             super.onSkipToNext();
             UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                     "Premuto Next");
+
+            UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false);
         }
 
         @Override
@@ -49,6 +56,8 @@ public class GestioneTastiCuffieNuovo extends Service {
             super.onSkipToPrevious();
             UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                     "Premuto Previous");
+
+            // UtilityPlayer.getInstance().(getApplicationContext(), "", false);
         }
 
         @Override
@@ -56,6 +65,8 @@ public class GestioneTastiCuffieNuovo extends Service {
             super.onStop();
             UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                     "Premuto Stop");
+
+            UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
         }
 
         @Override

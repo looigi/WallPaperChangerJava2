@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/Nero"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/laySpinner"
+        android:background="@drawable/bordato"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Categoria"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <Spinner
+                android:id="@+id/spnCategorie"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="4"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Filtro"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/edtFiltroFilms"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgCerca"
+                    android:src="@drawable/icona_cerca"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtTitoloFilm"
+            android:textColor="@color/Rosso"
+            android:gravity="center_horizontal"
+            android:textSize="16sp"
+            android:lines="1"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/laySpinner"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+        </VideoView>
+    </LinearLayout>
+
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/pbVideoLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ProgressBar>
+</RelativeLayout>

@@ -21,8 +21,10 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.Impostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -33,8 +35,8 @@ import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
-import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
@@ -102,6 +104,9 @@ public class MainImpostazioni extends Activity {
             case "PENNETTA":
                 qualeSchermata = 7;
                 break;
+            case "FILMS":
+                qualeSchermata = 8;
+                break;
             default:
                 qualeSchermata = 0;
                 break;
@@ -110,6 +115,7 @@ public class MainImpostazioni extends Activity {
         Button btnWallpaper = act.findViewById(R.id.btnSettingsWallpaper);
         Button btnPlayer = act.findViewById(R.id.btnSettingsPlayer);
         Button btnDebug = act.findViewById(R.id.btnSettingsDebug);
+        Button btnFilms = act.findViewById(R.id.btnSettingsFilms);
 
         Button btnDetector = act.findViewById(R.id.btnSettingsDetector);
         if (VariabiliStaticheStart.getInstance().isDetector()) {
@@ -213,6 +219,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        btnFilms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 8;
+                VisualizzaSchermata(act);
+            }
+        });
+
         ImpostaSchermataWallpaper(act);
         ImpostaSchermataDetector(act);
         ImpostaSchermataMappa(act);
@@ -221,6 +235,7 @@ public class MainImpostazioni extends Activity {
         ImpostaSchermataImmagini(act);
         ImpostaSchermataVideo(act);
         ImpostaSchermataPennetta(act);
+        ImpostaSchermataFilms(act);
 
         VisualizzaSchermata(act);
     }
@@ -241,6 +256,7 @@ public class MainImpostazioni extends Activity {
         LinearLayout layImmagini = act.findViewById(R.id.layImpostazioniImmagini);
         LinearLayout layVideo = act.findViewById(R.id.layImpostazioniVideo);
         LinearLayout layPennetta = act.findViewById(R.id.layImpostazioniPennetta);
+        LinearLayout layFilms = act.findViewById(R.id.layImpostazioniFilms);
 
         layWallaper.setVisibility(LinearLayout.GONE);
         layDetector.setVisibility(LinearLayout.GONE);
@@ -250,6 +266,7 @@ public class MainImpostazioni extends Activity {
         layImmagini.setVisibility(LinearLayout.GONE);
         layVideo.setVisibility(LinearLayout.GONE);
         layPennetta.setVisibility(LinearLayout.GONE);
+        layFilms.setVisibility(LinearLayout.GONE);
 
         switch(qualeSchermata) {
             case 0:
@@ -275,6 +292,9 @@ public class MainImpostazioni extends Activity {
                 break;
             case 7:
                 layPennetta.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 8:
+                layFilms.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -1093,6 +1113,38 @@ public class MainImpostazioni extends Activity {
         btnInviaLog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilitiesGlobali.getInstance().CondividiLogs(context, "");
+            }
+        });
+    }
+
+    private void ImpostaSchermataFilms(Activity act) {
+        SwitchCompat swcRandom = (SwitchCompat) act.findViewById(R.id.sRandomF);
+        swcRandom.setChecked(VariabiliStaticheVideo.getInstance().getRandom().equals("S"));
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheFilms.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogF);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogF);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogF);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "FILMS");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "FILMS");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "FILMS");
             }
         });
     }

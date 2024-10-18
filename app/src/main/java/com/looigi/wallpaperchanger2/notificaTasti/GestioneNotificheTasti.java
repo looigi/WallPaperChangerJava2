@@ -19,9 +19,10 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
-import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
+import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -248,13 +249,13 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgOnomasticiTasti, pOno);
 
-            /* Intent imm = new Intent(ctx, NotificationActionServiceTasti.class);
-            imm.putExtra("DO", "immagini");
-            PendingIntent pImm = PendingIntent.getService(ctx, 206, imm,
+            Intent film = new Intent(ctx, NotificationActionServiceTasti.class);
+            film.putExtra("DO", "films");
+            PendingIntent pFilm = PendingIntent.getService(ctx, 206, film,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgImmaginiTasti, pImm);
+            view.setOnClickPendingIntent(R.id.imgFilmsTasti, pFilm);
 
-            Intent vid = new Intent(ctx, NotificationActionServiceTasti.class);
+            /* Intent vid = new Intent(ctx, NotificationActionServiceTasti.class);
             vid.putExtra("DO", "video");
             PendingIntent pVid = PendingIntent.getService(ctx, 207, vid,
                     PendingIntent.FLAG_IMMUTABLE);
@@ -448,6 +449,11 @@ public class GestioneNotificheTasti {
                             Intent iVi = new Intent(context, MainMostraVideo.class);
                             iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(iVi);
+                            break;
+                        case "films":
+                            Intent iF = new Intent(context, MainMostraFilms.class);
+                            iF.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iF);
                             break;
                         case "uscita":
                             UtilitiesGlobali.getInstance().ChiudeApplicazione(context);

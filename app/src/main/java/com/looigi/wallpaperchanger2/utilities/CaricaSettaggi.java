@@ -2,17 +2,16 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.content.Context;
 
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
-import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeStandard.db_debug;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 
 import java.util.ArrayList;
@@ -41,6 +40,15 @@ public class CaricaSettaggi {
     private boolean caricateImpostazioniPlayer = false;
     private boolean caricateImpostazioniWallpaper = false;
     private boolean caricateImpostazioniVideo = false;
+    private boolean caricateImpostazioniFilms = false;
+
+    public boolean isCaricateImpostazioniFilms() {
+        return caricateImpostazioniFilms;
+    }
+
+    public void setCaricateImpostazioniFilms(boolean caricateImpostazioniFilms) {
+        this.caricateImpostazioniFilms = caricateImpostazioniFilms;
+    }
 
     public boolean isCaricateImpostazioniVideo() {
         return caricateImpostazioniVideo;
@@ -343,6 +351,39 @@ public class CaricaSettaggi {
             } else {
                 ritorno = "Errore db non aperto Video";
                 caricateImpostazioniVideo = false;
+            }
+
+            caricateImpostazioniFilms = true;
+            db_dati_films dbFilms = new db_dati_films(context);
+            if (dbFilms.DbAperto()) {
+                if (dbFilms.CreazioneTabelle()) {
+                    int ritFilms = dbFilms.CaricaImpostazioni();
+                    if (ritFilms == -3 || ritFilms == -4) {
+                        dbFilms.ImpostaValoriDiDefault();
+                        if (dbFilms.PulisceDati()) {
+                            if (dbFilms.CreazioneTabelle()) {
+                                if (!dbFilms.ScriveImpostazioni()) {
+                                    ritorno = "Errore salvataggio impostazioni Films";
+                                    caricateImpostazioniFilms = false;
+                                } else {
+                                    dbFilms.CompattaDB();
+                                }
+                            } else {
+                                ritorno = "Errore creazione tabelle Films 2";
+                                caricateImpostazioniFilms = false;
+                            }
+                        } else {
+                            ritorno = "Errore pulizia tabelle Films";
+                            caricateImpostazioniFilms = false;
+                        }
+                    }
+                } else {
+                    ritorno = "Errore creazione tabelle Films 1";
+                    caricateImpostazioniFilms = false;
+                }
+            } else {
+                ritorno = "Errore db non aperto Films";
+                caricateImpostazioniFilms = false;
             }
 
             caricateImpostazioniPlayer = true;

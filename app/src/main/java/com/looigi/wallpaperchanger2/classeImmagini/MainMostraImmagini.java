@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini;
+package com.looigi.wallpaperchanger2.classeImmagini;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,11 +17,11 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImmagineMI;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;

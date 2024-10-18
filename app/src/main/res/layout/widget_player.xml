@@ -5,11 +5,11 @@
     android:layout_gravity="center_horizontal|center_horizontal"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="horizontal" >
-	
+
     <ImageView
-        android:id="@+id/imgVideo"
+        android:id="@+id/imgPlayer"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/video" />
+        android:src="@drawable/player" />
 		
 </LinearLayout>

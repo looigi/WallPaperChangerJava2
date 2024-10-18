@@ -14,8 +14,8 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;

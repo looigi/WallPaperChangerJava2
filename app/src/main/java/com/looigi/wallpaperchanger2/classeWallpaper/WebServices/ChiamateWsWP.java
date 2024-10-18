@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;

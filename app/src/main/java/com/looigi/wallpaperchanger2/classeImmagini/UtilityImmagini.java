@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini;
+package com.looigi.wallpaperchanger2.classeImmagini;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.DownloadImmagineMI;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;

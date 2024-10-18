@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini;
+package com.looigi.wallpaperchanger2.classeImmagini;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.os.Looper;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.webservice.InterrogazioneWSMI;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 

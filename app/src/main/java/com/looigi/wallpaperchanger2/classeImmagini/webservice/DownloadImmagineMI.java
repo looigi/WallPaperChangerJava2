@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
+package com.looigi.wallpaperchanger2.classeImmagini.webservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,9 +8,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;

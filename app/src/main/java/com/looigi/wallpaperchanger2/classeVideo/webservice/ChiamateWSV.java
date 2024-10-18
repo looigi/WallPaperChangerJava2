@@ -1,21 +1,20 @@
-package com.looigi.wallpaperchanger2.classeMostraVideo.webservice;
+package com.looigi.wallpaperchanger2.classeVideo.webservice;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 
-import com.looigi.wallpaperchanger2.classeMostraVideo.UtilityVideo;
-import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChiamateWSV implements TaskDelegate {
-    private static final String NomeMaschera = "CHiamate_WS_Video";
+    private static final String NomeMaschera = "Chiamate_WS_Video";
     //private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheVideo.UrlWS + "/";

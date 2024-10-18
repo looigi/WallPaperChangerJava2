@@ -49,7 +49,8 @@ public class GestioneGPS {
     private boolean nonScriverePunti = false;
 
     public void BloccaGPS(String daDove) {
-        context = UtilitiesGlobali.getInstance().tornaContextValido();
+        // TOLTO PER TEST
+       /* context = UtilitiesGlobali.getInstance().tornaContextValido();
         if (context == null) {
             return;
         }
@@ -67,7 +68,7 @@ public class GestioneGPS {
             handlerAccensione.removeCallbacks(rAccensione);
             handlerAccensione = null;
             rAccensione = null;
-        } */
+        } * /
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Bloccato da " + daDove);
 
@@ -90,7 +91,7 @@ public class GestioneGPS {
 
         GestioneNotificheWP.getInstance().AggiornaNotifica();
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove);
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove); */
     }
 
     public void ChiudeMaschera() {
@@ -398,7 +399,8 @@ public class GestioneGPS {
             alert.show();
         } */
 
-        ControlloAccSpegn(context);
+        // TOLTO PER TEST
+        // ControlloAccSpegn(context);
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Abilitato");
     }
@@ -474,7 +476,8 @@ public class GestioneGPS {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
                     location.getLatitude() + ", " + location.getLongitude() + ". Wifi: " +
                     VariabiliStaticheStart.getInstance().isCeWifi() + ". Abilitato: " +
-                    VariabiliStaticheGPS.getInstance().isGpsAttivo());
+                    VariabiliStaticheGPS.getInstance().isGpsAttivo() + ". NON Scrittura: " + nonScriverePunti +
+                    ". OK: " + ok);
 
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
@@ -524,12 +527,12 @@ public class GestioneGPS {
 
                 if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                     VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
-
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
-
-                    VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
                 }
+
+                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                //         "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
+
+                VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
             // } else {
                 // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
                 //         location.getLatitude() + ", " + location.getLongitude() + " NON Valida");

@@ -17,17 +17,14 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
-import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
-import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classeStandard.db_debug;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeStandard.Permessi;
@@ -37,7 +34,6 @@ import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -211,6 +207,31 @@ public class MainStart  extends Activity {
                         Intent iO = new Intent(context, MainOnomastici.class);
                         iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(iO);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgF = findViewById(R.id.imgStartFilms);
+        imgF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent iF = new Intent(context, MainMostraFilms.class);
+                        iF.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iF);
                     }
                 }, 500);
 

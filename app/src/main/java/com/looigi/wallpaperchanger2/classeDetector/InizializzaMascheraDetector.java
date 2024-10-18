@@ -24,14 +24,14 @@ import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
+import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.modificaImmagine;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;

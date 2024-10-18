@@ -91,6 +91,7 @@ public class ServizioInterno extends Service {
         filterSO.setPriority(9999);
         context.registerReceiver(mScreenReceiver, filterSO);
 
+        // GESTIONE TASTI CUFFIE
         intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
         startService(intentCuffie);
 

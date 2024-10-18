@@ -56,6 +56,12 @@
                         android:layout_height="match_parent" />
 
                     <Button
+                        android:id="@+id/btnSettingsFilms"
+                        android:layout_width="wrap_content"
+                        android:text="Films"
+                        android:layout_height="match_parent" />
+
+                    <Button
                         android:id="@+id/btnSettingsImmagini"
                         android:layout_width="wrap_content"
                         android:text="Immagini"
@@ -135,6 +141,12 @@
             <include
                 android:visibility="gone"
                 layout="@layout/impostazioni_pennetta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/impostazioni_films"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

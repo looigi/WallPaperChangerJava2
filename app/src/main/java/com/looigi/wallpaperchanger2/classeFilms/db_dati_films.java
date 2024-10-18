@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraVideo;
+package com.looigi.wallpaperchanger2.classeFilms;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,13 +6,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 
 import java.io.File;
 
-public class db_dati_video {
-    private static final String NomeMaschera = "DB_Video";
+public class db_dati_films {
+    private static final String NomeMaschera = "DB_Films";
 
     // private final String PathDB = VariabiliStatiche.getInstance().getPercorsoDIR()+"/DB/";
     private String PathDB;
@@ -28,7 +28,7 @@ public class db_dati_video {
         }
     }
 
-    public db_dati_video(Context context) {
+    public db_dati_films(Context context) {
         this.context = context;
         PathDB = UtilityDetector.getInstance().PrendePathDB(context);
 
@@ -47,7 +47,7 @@ public class db_dati_video {
         UtilityDetector.getInstance().CreaCartelle(PathDB, "DB");
 
         try {
-            String nomeDB = "dati_video.db";
+            String nomeDB = "dati_Films.db";
             db = context.openOrCreateDatabase(
                     PathDB + nomeDB, 0, null);
         } catch (Exception e) {
@@ -68,8 +68,8 @@ public class db_dati_video {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
-                        + "UltimoVideo"
-                        + " (video VARCHAR);";
+                        + "UltimoFilms"
+                        + " (Films VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -83,63 +83,63 @@ public class db_dati_video {
         }
     }
 
-    public String CaricaVideo() {
+    public String CaricaFilms() {
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM UltimoVideo", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM UltimoFilms", null);
                 if (c.getCount() > 0) {
-                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per ultimo video");
+                    UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per ultimo Films");
                     c.moveToFirst();
 
                     try {
-                        VariabiliStaticheVideo.getInstance().setUltimoLink(c.getString(0));
+                        VariabiliStaticheFilms.getInstance().setUltimoLink(c.getString(0));
 
-                        return VariabiliStaticheVideo.getInstance().getUltimoLink();
+                        return VariabiliStaticheFilms.getInstance().getUltimoLink();
                     } catch (Exception e) {
                         PulisceDatiV();
                         CreazioneTabelle();
-                        return CaricaVideo();
+                        return CaricaFilms();
                     }
                 } else {
-                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per ultimo video. Imposto default");
+                    UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per ultimo Films. Imposto default");
 
                     return "";
                 }
             } catch (Exception e) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db ultimo video: " +
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db ultimo Films: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
                 PulisceDatiV();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                return CaricaVideo();
+                return CaricaFilms();
             }
         } else {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             return "";
         }
     }
 
-    public Boolean ScriveUltimoVideo() {
+    public Boolean ScriveUltimoFilms() {
         if (myDB != null) {
             try {
-                myDB.execSQL("Delete From UltimoVideo");
+                myDB.execSQL("Delete From UltimoFilms");
 
                 String sql = "INSERT INTO"
-                        + " UltimoVideo"
+                        + " UltimoFilms"
                         + " VALUES ("
-                        + "'" + VariabiliStaticheVideo.getInstance().getUltimoLink().replace("'", "''") + "'"
+                        + "'" + VariabiliStaticheFilms.getInstance().getUltimoLink().replace("'", "''") + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo video: " + e.getMessage());
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo Films: " + e.getMessage());
                 PulisceDatiV();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
-                return ScriveUltimoVideo();
+                return ScriveUltimoFilms();
             }
         } else {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
 
         return true;
@@ -153,25 +153,25 @@ public class db_dati_video {
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " VALUES ("
-                        + "'" + VariabiliStaticheVideo.getInstance().getRandom() + "'"
+                        + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
                 // PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
                 return ScriveImpostazioni();
             }
         } else {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
 
         return true;
     }
 
     public void ImpostaValoriDiDefault() {
-        VariabiliStaticheVideo.getInstance().setRandom("S");
+        VariabiliStaticheFilms.getInstance().setRandom("S");
     }
 
     public int CaricaImpostazioni() {
@@ -179,32 +179,32 @@ public class db_dati_video {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
                 if (c.getCount() > 0) {
-                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
                     c.moveToFirst();
 
                     try {
-                        VariabiliStaticheVideo.getInstance().setRandom(c.getString(0));
+                        VariabiliStaticheFilms.getInstance().setRandom(c.getString(0));
 
                         return 0;
                     } catch (Exception e) {
-                        UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore try db carica impostazioni: " +
+                        UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore try db carica impostazioni: " +
                                 UtilityDetector.getInstance().PrendeErroreDaException(e));
 
                         return -4;
                     }
                 } else {
-                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+                    UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
 
                     return -3;
                 }
             } catch (Exception e) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
 
                 return -2;
             }
         } else {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             return -1;
         }
@@ -212,13 +212,13 @@ public class db_dati_video {
 
     public boolean PulisceDati() {
         if (myDB != null) {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
             try {
                 myDB.execSQL("Drop Table Impostazioni");
 
                 return true;
             } catch (Exception ignored) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
 
                 return false;
             }
@@ -236,11 +236,11 @@ public class db_dati_video {
 
     public void PulisceDatiV() {
         if (myDB != null) {
-            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db ultimo video");
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db ultimo Films");
             try {
-                myDB.execSQL("Drop Table UltimoVideo");
+                myDB.execSQL("Drop Table UltimoFilms");
             } catch (Exception ignored) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db ultimo video: " + ignored.getMessage());
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db ultimo Films: " + ignored.getMessage());
             }
         }
     }

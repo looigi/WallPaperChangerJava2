@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraVideo;
+package com.looigi.wallpaperchanger2.classeFilms;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -6,20 +6,20 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.MediaController;
 
-import com.looigi.wallpaperchanger2.classeMostraVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-public class UtilityVideo {
-    private static UtilityVideo instance = null;
+public class UtilityFilms {
+    private static UtilityFilms instance = null;
 
-    private UtilityVideo() {
+    private UtilityFilms() {
     }
 
-    public static UtilityVideo getInstance() {
+    public static UtilityFilms getInstance() {
         if (instance == null) {
-            instance = new UtilityVideo();
+            instance = new UtilityFilms();
         }
 
         return instance;
@@ -43,31 +43,31 @@ public class UtilityVideo {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("VIDEO", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Films", Maschera,  Log);
             // }
         } else {
 
         }
     }
 
-    public void ImpostaVideo() {
-        Context context = VariabiliStaticheVideo.getInstance().getContext();
+    public void ImpostaFilms() {
+        Context context = VariabiliStaticheFilms.getInstance().getContext();
         if (context == null) {
             context = UtilitiesGlobali.getInstance().tornaContextValido();
         }
         try {
-            String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+            String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
-            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+            VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
             MediaController mediaController = new MediaController(context);
-            mediaController.setAnchorView(VariabiliStaticheVideo.getInstance().getVideoView());
+            mediaController.setAnchorView(VariabiliStaticheFilms.getInstance().getFilmsView());
             Context finalContext = context;
             mediaController.setPrevNextListeners(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Handle next click here
-                    ChiamateWSV ws = new ChiamateWSV(finalContext);
-                    ws.RitornaProssimoVideo();
+                    ChiamateWSF ws = new ChiamateWSF(finalContext);
+                    ws.RitornaProssimoFilms();
                 }
             }, new View.OnClickListener() {
                 @Override
@@ -75,24 +75,24 @@ public class UtilityVideo {
                     //Handle previous click here
                 }
             });
-            Uri video = Uri.parse(link);
-            VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(mediaController);
-            VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
-            VariabiliStaticheVideo.getInstance().getVideoView().start();
-            VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            Uri Films = Uri.parse(link);
+            VariabiliStaticheFilms.getInstance().getFilmsView().setMediaController(mediaController);
+            VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(Films);
+            VariabiliStaticheFilms.getInstance().getFilmsView().start();
+            VariabiliStaticheFilms.getInstance().getFilmsView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
 
                     return false;
                 }
             });
-            VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            VariabiliStaticheFilms.getInstance().getFilmsView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     // mediaController.show(0);
 
-                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraImmagini.strutture;
+package com.looigi.wallpaperchanger2.classeImmagini.strutture;
 
 public class StrutturaImmaginiCategorie {
     private int idCategoria;

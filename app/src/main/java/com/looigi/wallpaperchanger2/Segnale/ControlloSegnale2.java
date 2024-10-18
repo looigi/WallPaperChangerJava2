@@ -66,7 +66,8 @@ public class ControlloSegnale2 extends Service {
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
         VariabiliStaticheStart.getInstance().setCeWifi(wifi);
         if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-            VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+            // TOLTO PER TEST
+            // VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
         }
 
         String tipoConnessione = "";

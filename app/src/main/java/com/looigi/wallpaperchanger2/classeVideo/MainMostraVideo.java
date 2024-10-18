@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeMostraVideo;
+package com.looigi.wallpaperchanger2.classeVideo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeMostraVideo.webservice.ChiamateWSV;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 
 public class MainMostraVideo extends Activity {
     private static String NomeMaschera = "Main_Mostra_Video";
@@ -85,7 +84,8 @@ public class MainMostraVideo extends Activity {
         if (!url.isEmpty()) {
             UtilityVideo.getInstance().ImpostaVideo();
         } else {
-            ws.RitornaProssimoVideo();
+            ChiamateWSV ws2 = new ChiamateWSV(context);
+            ws2.RitornaProssimoVideo();
         }
     }
 

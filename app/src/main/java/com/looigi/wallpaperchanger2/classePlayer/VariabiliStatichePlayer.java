@@ -92,6 +92,7 @@ public class VariabiliStatichePlayer {
     private long SpazioOccupato;
     private long SpazioMassimo;
     private boolean settingsAperte = false;
+    private boolean nonMostrareToast = false;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -123,6 +124,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public boolean isNonMostrareToast() {
+        return nonMostrareToast;
+    }
+
+    public void setNonMostrareToast(boolean nonMostrareToast) {
+        this.nonMostrareToast = nonMostrareToast;
     }
 
     public boolean isSettingsAperte() {

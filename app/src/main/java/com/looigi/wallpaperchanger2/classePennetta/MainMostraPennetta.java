@@ -150,33 +150,34 @@ public class MainMostraPennetta extends Activity {
             if (u != null) {
                 String[] uu = u.split("§");
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(uu[2]);
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(Integer.parseInt(uu[1]));
-                String path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + uu[0];
+                if (uu.length > 2) {
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(uu[2]);
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(Integer.parseInt(uu[1]));
+                    String path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + uu[0];
 
-                StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary();
-                s.setUrlImmagine(path);
-                s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
-                s.setNomeFile(uu[0]);
-                s.setDataCreazione("");
+                    StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary();
+                    s.setUrlImmagine(path);
+                    s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
+                    s.setNomeFile(uu[0]);
+                    s.setDataCreazione("");
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().AggiungeCaricata();
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().AggiungeCaricata();
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().ScriveInfoImmagine(s);
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().ScriveInfoImmagine(s);
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
 
-                DownloadImmaginePEN d = new DownloadImmaginePEN();
-                d.EsegueChiamata(
-                        context,
-                        path,
-                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
-                        path
-                );
-                // new DownloadImagePEN(context, path,
-                //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
+                    DownloadImmaginePEN d = new DownloadImmaginePEN();
+                    d.EsegueChiamata(
+                            context,
+                            path,
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                            path
+                    );
+                    // new DownloadImagePEN(context, path,
+                    //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
 
-                letto = true;
+                    letto = true;
                 /* JSONObject jObject = null;
                 try {
                     jObject = new JSONObject(u);
@@ -197,6 +198,7 @@ public class MainMostraPennetta extends Activity {
                     letto = true;
                 } catch (JSONException ignored) {
                 } */
+                }
             }
         }
 
