@@ -21,6 +21,7 @@ public class VariabiliStaticheOnomastici {
         return instance;
     }
 
+    public static final String UrlImmagini = "http://looigi.no-ip.biz:1085/";
     private ContentResolver Rubrica;
     private AssetManager Assets;
     private Context context;

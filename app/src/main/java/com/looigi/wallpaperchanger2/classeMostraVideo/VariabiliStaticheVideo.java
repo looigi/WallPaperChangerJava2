@@ -23,6 +23,7 @@ public class VariabiliStaticheVideo {
 
     public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
     public static final String PathUrl = "http://looigi.no-ip.biz:1085/Materiale/RobettaVaria/";
+    private String Random = "S";
     private String UltimoLink;
     private VideoView videoView;
     private ProgressBar pbLoading;
@@ -32,6 +33,23 @@ public class VariabiliStaticheVideo {
     private String Categoria = "";
     private Spinner spnCategorie;
     private TextView txtTitolo;
+    private int idUltimoVideo = -1;
+
+    public int getIdUltimoVideo() {
+        return idUltimoVideo;
+    }
+
+    public void setIdUltimoVideo(int idUltimoVideo) {
+        this.idUltimoVideo = idUltimoVideo;
+    }
+
+    public String getRandom() {
+        return Random;
+    }
+
+    public void setRandom(String random) {
+        Random = random;
+    }
 
     public TextView getTxtTitolo() {
         return txtTitolo;

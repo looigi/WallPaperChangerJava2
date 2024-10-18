@@ -16,8 +16,8 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.Receivers.Audio;
-import com.looigi.wallpaperchanger2.classeDetector.Receivers.Video;
+import com.looigi.wallpaperchanger2.classeDetector.widgets.Audio;
+import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

@@ -68,6 +68,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private boolean primoPassaggio = true;
     private LatLngBounds.Builder bc;
     private int bcs = 0;
+    private final int livelloZoomStandard = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +222,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                                 CameraPosition cameraPosition = new CameraPosition.Builder()
                                         .target(new LatLng(targetLocation.getLatitude(),
-                                                targetLocation.getLongitude())).zoom(18).build();
+                                                targetLocation.getLongitude())).zoom(livelloZoomStandard).build();
 
                                 mappa.animateCamera(CameraUpdateFactory
                                         .newCameraPosition(cameraPosition));
@@ -589,7 +590,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 if (ultimoPunto != null) {
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(ultimoPunto.getLat(),
-                                    ultimoPunto.getLon())).zoom(18).build();
+                                    ultimoPunto.getLon())).zoom(livelloZoomStandard).build();
 
                     mappa.animateCamera(CameraUpdateFactory
                             .newCameraPosition(cameraPosition));

@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePlayer.AdapterListenerBrani;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
@@ -29,6 +30,14 @@ public class brani_locali {
     public void impostaMaschera() {
         db_dati_player db = new db_dati_player(context);
         List<StrutturaBrano> lista = db.CaricaTuttiIBraniLocali();
+        long spazioOccupato = 0;
+        for (StrutturaBrano l : lista) {
+            spazioOccupato += (Files.getInstance().DimensioniFile(l.getPathBrano()) * 1024L);
+        }
+        VariabiliStatichePlayer.getInstance().setSpazioOccupato(spazioOccupato);
+        float lim = VariabiliStatichePlayer.getInstance().getLimiteInGb();
+        long limiteSpazio = (long) (lim * 1024 * 1024 * 1024);
+        VariabiliStatichePlayer.getInstance().setSpazioMassimo(limiteSpazio);
 
         VariabiliStatichePlayer.getInstance().setTxtQuanteRicerca(act.findViewById(R.id.txtQuanteRicercaPL));
 

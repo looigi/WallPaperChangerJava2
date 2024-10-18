@@ -1,10 +1,13 @@
 package com.looigi.wallpaperchanger2.classeWallpaper.WebServices;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
-import com.looigi.wallpaperchanger2.classeWallpaper.DownloadImageWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -14,7 +17,7 @@ import java.util.List;
 
 
 public class ChiamateWsWP implements TaskDelegate {
-    private LetturaWSAsincrona bckAsyncTask;
+    // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = "http://www.wsloovf.looigi.it/";
     private String TipoOperazione = "";
@@ -67,7 +70,18 @@ public class ChiamateWsWP implements TaskDelegate {
 
         UtilityWallpaper.getInstance().Attesa(true);
 
-        bckAsyncTask = new LetturaWSAsincrona(
+        InterrogazioneWSWP i = new InterrogazioneWSWP();
+        i.EsegueChiamata(
+                NS,
+                Timeout,
+                SOAP_ACTION,
+                tOperazione,
+                ApriDialog,
+                Urletto,
+                "0", // TimeStampAttuale,
+                this
+        );
+        /* bckAsyncTask = new LetturaWSAsincrona(
                 NS,
                 Timeout,
                 SOAP_ACTION,
@@ -76,21 +90,27 @@ public class ChiamateWsWP implements TaskDelegate {
                 Urletto,
                 "0", // TimeStampAttuale,
                 this);
-        bckAsyncTask.execute(Urletto);
+        bckAsyncTask.execute(Urletto); */
     }
 
     @Override
     public void TaskCompletionResult(String result) {
-        UtilityWallpaper.getInstance().Attesa(false);
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                UtilityWallpaper.getInstance().Attesa(false);
 
-        switch (TipoOperazione) {
-            case "TornaProssimaImmagine":
-                fTornaProssimaImmagine(result);
-                break;
-            case "TornaImmagini":
-                fTornaImmagini(result);
-                break;
-        }
+                switch (TipoOperazione) {
+                    case "TornaProssimaImmagine":
+                        fTornaProssimaImmagine(result);
+                        break;
+                    case "TornaImmagini":
+                        fTornaImmagini(result);
+                        break;
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
@@ -128,6 +148,7 @@ public class ChiamateWsWP implements TaskDelegate {
             VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(VariabiliStaticheWallpaper.getInstance().getAdapterImmagini());
 
             VariabiliStaticheWallpaper.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
+
         }
     }
 
@@ -164,11 +185,13 @@ public class ChiamateWsWP implements TaskDelegate {
 
             VariabiliStaticheWallpaper.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
-            new DownloadImageWP(context, NomeImmagine, null).execute(Immagine);
+            DownloadImmagineWP d = new DownloadImmagineWP();
+            d.EsegueChiamata(context, NomeImmagine, null, Immagine);
+            // new DownloadImageWP(context, NomeImmagine, null).execute(Immagine);
         }
     }
 
     public void StoppaEsecuzione() {
-        bckAsyncTask.cancel(true);
+        // bckAsyncTask.cancel(true);
     }
 }

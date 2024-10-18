@@ -65,9 +65,9 @@ public class GestioneNotifichePlayer {
 
             Bitmap bmpStart;
             if (!VariabiliStatichePlayer.getInstance().isStaSuonando()) {
-                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.play);
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_suona);
             } else {
-                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.pausa);
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
             }
             contentView.setImageViewBitmap(R.id.imgPlayStopBarra, bmpStart);
 

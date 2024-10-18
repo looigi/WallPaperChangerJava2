@@ -7,6 +7,7 @@ import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeMostraImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
@@ -39,6 +40,15 @@ public class CaricaSettaggi {
     private boolean caricateImpostazioniPennetta = false;
     private boolean caricateImpostazioniPlayer = false;
     private boolean caricateImpostazioniWallpaper = false;
+    private boolean caricateImpostazioniVideo = false;
+
+    public boolean isCaricateImpostazioniVideo() {
+        return caricateImpostazioniVideo;
+    }
+
+    public void setCaricateImpostazioniVideo(boolean caricateImpostazioniVideo) {
+        this.caricateImpostazioniVideo = caricateImpostazioniVideo;
+    }
 
     public boolean isCaricateImpostazioniDebug() {
         return caricateImpostazioniDebug;
@@ -300,6 +310,39 @@ public class CaricaSettaggi {
             } else {
                 ritorno = "Errore db non aperto Pennetta";
                 caricateImpostazioniPennetta = false;
+            }
+
+            caricateImpostazioniVideo = true;
+            db_dati_video dbVid = new db_dati_video(context);
+            if (dbVid.DbAperto()) {
+                if (dbVid.CreazioneTabelle()) {
+                    int ritVid = dbVid.CaricaImpostazioni();
+                    if (ritVid == -3 || ritVid == -4) {
+                        dbVid.ImpostaValoriDiDefault();
+                        if (dbVid.PulisceDati()) {
+                            if (dbVid.CreazioneTabelle()) {
+                                if (!dbVid.ScriveImpostazioni()) {
+                                    ritorno = "Errore salvataggio impostazioni Video";
+                                    caricateImpostazioniVideo = false;
+                                } else {
+                                    dbVid.CompattaDB();
+                                }
+                            } else {
+                                ritorno = "Errore creazione tabelle Video 2";
+                                caricateImpostazioniVideo = false;
+                            }
+                        } else {
+                            ritorno = "Errore pulizia tabelle Video";
+                            caricateImpostazioniVideo = false;
+                        }
+                    }
+                } else {
+                    ritorno = "Errore creazione tabelle Video 1";
+                    caricateImpostazioniVideo = false;
+                }
+            } else {
+                ritorno = "Errore db non aperto Video";
+                caricateImpostazioniVideo = false;
             }
 
             caricateImpostazioniPlayer = true;

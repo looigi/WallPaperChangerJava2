@@ -1,11 +1,14 @@
 package com.looigi.wallpaperchanger2.classeMostraVideo.webservice;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ArrayAdapter;
 
 import com.looigi.wallpaperchanger2.classeMostraVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -16,12 +19,12 @@ public class ChiamateWSV implements TaskDelegate {
     //private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheVideo.UrlWS + "/";
-    private String ws = "newLooVF.asmx/";
-    private String NS="http://newLooVF.org/";
-    private String SA="http://newLooVF.org/";
+    private final String ws = "newLooVF.asmx/";
+    private final String NS="http://newLooVF.org/";
+    private final String SA="http://newLooVF.org/";
     private String TipoOperazione = "";
-    private Context context;
-    private boolean ApriDialog = false;
+    private final Context context;
+    private final boolean ApriDialog = false;
 
     public ChiamateWSV(Context context) {
         this.context = context;
@@ -33,7 +36,9 @@ public class ChiamateWSV implements TaskDelegate {
 
         String Urletto="RitornaProssimoVideo?" +
                 "Categoria=" + Categoria.replace("\\", "§") +
-                "&Filtro=" + Filtro;
+                "&Filtro=" + Filtro +
+                "&Random=" + VariabiliStaticheVideo.getInstance().getRandom() +
+                "&pUltimoVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo();
 
         TipoOperazione = "RitornaProssimoVideo";
         // ControllaTempoEsecuzione = false;
@@ -98,16 +103,22 @@ public class ChiamateWSV implements TaskDelegate {
 
     @Override
     public void TaskCompletionResult(String result) {
-        UtilityVideo.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-        switch (TipoOperazione) {
-            case "RitornaProssimoVideo":
-                fRitornaProssimoVideo(result);
-                break;
-            case "RitornaCategorie":
-                fRitornaCategorie(result);
-                break;
-        }
+                switch (TipoOperazione) {
+                    case "RitornaProssimoVideo":
+                        fRitornaProssimoVideo(result);
+                        break;
+                    case "RitornaCategorie":
+                        fRitornaCategorie(result);
+                        break;
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public void StoppaEsecuzione() {
@@ -146,10 +157,22 @@ public class ChiamateWSV implements TaskDelegate {
     private void fRitornaProssimoVideo(String result) {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
         if (ritorno) {
-            String url = VariabiliStaticheVideo.PathUrl + result;
+            String url ="";
+            int id = -1;
+            if (result.contains("§")) {
+                String[] p = result.split("§");
+                url = VariabiliStaticheVideo.PathUrl + p[0];
+                id = Integer.parseInt(p[1]);
+            } else {
+                url = VariabiliStaticheVideo.PathUrl + result;
+            }
+
             VariabiliStaticheVideo.getInstance().setUltimoLink(url);
+            VariabiliStaticheVideo.getInstance().setIdUltimoVideo(id);
+
             String[] u = result.split("/");
             String res = u[u.length -1];
+            res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
             VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res);
 
             db_dati_video db = new db_dati_video(context);

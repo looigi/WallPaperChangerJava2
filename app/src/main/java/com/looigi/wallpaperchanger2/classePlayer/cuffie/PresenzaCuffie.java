@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer;
+package com.looigi.wallpaperchanger2.classePlayer.cuffie;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -11,9 +11,11 @@ import android.widget.LinearLayout;
 
 import androidx.core.app.ActivityCompat;
 
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-public class HeadsetBroadcastReceiver extends BroadcastReceiver {
+public class PresenzaCuffie extends BroadcastReceiver {
     private int StavaSuonando = -1;
 
     @Override

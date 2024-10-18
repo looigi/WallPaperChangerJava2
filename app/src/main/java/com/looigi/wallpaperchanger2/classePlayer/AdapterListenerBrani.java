@@ -1,19 +1,32 @@
 package com.looigi.wallpaperchanger2.classePlayer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +35,17 @@ public class AdapterListenerBrani extends BaseAdapter {
     private List<StrutturaBrano> listaBraniOrig;
     private List<StrutturaBrano> listaBrani;
     private LayoutInflater inflater;
+    private String Filtro;
 
     public AdapterListenerBrani(Context applicationContext, List<StrutturaBrano> Brani) {
         this.context = applicationContext;
         this.listaBraniOrig = Brani;
         this.listaBrani = new ArrayList();
+        long sO = VariabiliStatichePlayer.getInstance().getSpazioOccupato() / 1024L;
+        long sT = VariabiliStatichePlayer.getInstance().getSpazioMassimo() / 1024L;
         VariabiliStatichePlayer.getInstance().getTxtQuanteRicerca().setText("Brani rilevati: 0"
-                + "/" + Integer.toString(listaBraniOrig.size()));
+                + "/" + Integer.toString(listaBraniOrig.size()) +
+                " Spazio: " + sO + "/" + sT);
         inflater = (LayoutInflater.from(applicationContext));
     }
 
@@ -48,6 +65,7 @@ public class AdapterListenerBrani extends BaseAdapter {
     }
 
     public void updateData(String Filtro) {
+        this.Filtro = Filtro;
         listaBrani = new ArrayList<>();
 
         notifyDataSetChanged();
@@ -70,8 +88,11 @@ public class AdapterListenerBrani extends BaseAdapter {
                 listaBrani.add(listaBraniOrig.get(i));
             }
         }
+        long sO = VariabiliStatichePlayer.getInstance().getSpazioOccupato() / 1024L;
+        long sT = VariabiliStatichePlayer.getInstance().getSpazioMassimo() / 1024L;
         VariabiliStatichePlayer.getInstance().getTxtQuanteRicerca().setText("Brani rilevati: " +
-                Integer.toString(listaBrani.size()) + "/" + Integer.toString(listaBraniOrig.size()));
+                Integer.toString(listaBrani.size()) + "/" + Integer.toString(listaBraniOrig.size()) +
+                " Spazio: " + sO + "/" + sT);
 
         notifyDataSetChanged();
     }
@@ -131,6 +152,37 @@ public class AdapterListenerBrani extends BaseAdapter {
                 public void onClick(View v) {
                     int idBrano = listaBrani.get(i).getIdBrano();
                     UtilityPlayer.getInstance().BranoAvanti(context, String.valueOf(idBrano), false);
+                }
+            });
+
+            ImageView imgElimina = view.findViewById(R.id.imgEliminaBrano);
+            imgElimina.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Si vuole eliminare il brano ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String Path = listaBrani.get(i).getPathBrano();
+                            if (Files.getInstance().EliminaFileUnico(Path)) {
+                                db_dati_player db = new db_dati_player(context);
+                                db.EliminaBrano(String.valueOf(listaBrani.get(i).getIdBrano()));
+                                listaBrani.remove(i);
+                                updateData(Filtro);
+                            } else {
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Files non eliminato");
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
                 }
             });
 

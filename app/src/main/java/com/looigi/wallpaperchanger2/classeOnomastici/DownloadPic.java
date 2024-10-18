@@ -25,8 +25,8 @@ import java.util.List;
 
 public class DownloadPic {
 	private String Directory = "";
-	private String NomeFiletto="";
-	private String FileDaDownloadare="";
+	private String NomeFiletto = "";
+	private String FileDaDownloadare = "";
 	private GestioneDB GestDB;
 	private GestioneRubrica GestRubr;
 	private ContentResolver Rubrica;
@@ -35,7 +35,7 @@ public class DownloadPic {
 	// private ProgressDialog mProgressDialog;
 	private Activity act;
 
-    public void startDownload(Activity act, Context context) {
+	public void startDownload(Activity act, Context context) {
 		this.context = context;
 		this.act = act;
 		/* mProgressDialog = new ProgressDialog(DownloadPic.this);
@@ -44,136 +44,56 @@ public class DownloadPic {
 		mProgressDialog.setMax(100);
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); */
 
-		DownloadFile downloadFile = new DownloadFile(this);
-		downloadFile.execute(FileDaDownloadare);
+		DownloadImmagineSanto d = new DownloadImmagineSanto();
+		d.EsegueChiamata(
+				this,
+				ScaricaImmagine,
+				FileDaDownloadare,
+				Directory,
+				NomeFiletto,
+				GestRubr,
+				Rubrica,
+				GestDB
+		);
+		// DownloadFile downloadFile = new DownloadFile(this);
+		// downloadFile.execute(FileDaDownloadare);
 	}
 
 	public void updateWidget() {
-		WidgetOnomastici w=new WidgetOnomastici();
-		Intent intent=act.getIntent();
+		WidgetOnomastici w = new WidgetOnomastici();
+		Intent intent = act.getIntent();
 		w.onReceive(VariabiliStaticheOnomastici.getInstance().getContext(), intent);
-    }
+	}
 
 	public void setImmagine(ImageView NomeImm) {
 		VariabiliStaticheOnomastici.getInstance().setImgView(NomeImm);
 	}
-	    
+
 	public void setScarica(boolean SiNo) {
-		ScaricaImmagine=SiNo;
+		ScaricaImmagine = SiNo;
 	}
-	
+
 	public void setRubrica(ContentResolver Rubr) {
-		Rubrica=Rubr;
+		Rubrica = Rubr;
 	}
-	
+
 	public void setGestioneRubrica(GestioneRubrica Rubrica) {
-		GestRubr=Rubrica;
+		GestRubr = Rubrica;
 	}
-    
+
 	public void setGestioneDB(GestioneDB NomeDb) {
-		GestDB=NomeDb;
+		GestDB = NomeDb;
 	}
-	
+
 	public void setDirectory(String NomeDir) {
 		Directory = NomeDir;
 	}
-	
+
 	public void setFileDaDown(String NomeFileURL) {
 		FileDaDownloadare = NomeFileURL;
 	}
-	
+
 	public void setFiletto(String NomeFile) {
 		NomeFiletto = NomeFile;
 	}
-	
-	private class DownloadFile extends AsyncTask<String, Integer, String> {
-		private DownloadPic d;
-
-		public DownloadFile(DownloadPic d) {
-			this.d = d;
-		}
-
-		@Override
-	    protected String doInBackground(String... sUrl) {
-	    	if (ScaricaImmagine) {
-		        try {
-		            URL url = new URL(sUrl[0]);
-		            URLConnection connection = url.openConnection();
-		            connection.connect();
-		            // this will be useful so that you can show a typical 0-100% progress bar
-		            int fileLength = connection.getContentLength();
-	
-		            // download the file
-		            InputStream input = new BufferedInputStream(url.openStream());
-		            OutputStream output = new FileOutputStream(Directory+"/"+NomeFiletto);
-	
-		            byte data[] = new byte[1024];
-		            long total = 0;
-		            int count;
-		            while ((count = input.read(data)) != -1) {
-		                total += count;
-		                // publishing the progress....
-		                publishProgress((int) (total * 100 / fileLength));
-		                output.write(data, 0, count);
-		            }
-	
-		            output.flush();
-		            output.close();
-		            input.close();
-		        } catch (Exception ignored) {
-		        }
-	    	}
-
-			d.updateWidget();
-
-	        // Scarica la lista dei nomi per farla leggere al widget
-	        int Quanti=0;
-	        
-	        List<String> Lista=GestRubr.RitornaTuttiINomi(Rubrica);
-	    	SQLiteDatabase myDB= GestDB.ApreDB();
-	        myDB.execSQL("Create Table If Not Exists Rubrica(Nome Varchar(100));");
-	        try {
-	            String Sql="SELECT Count(*) FROM Rubrica;";
-	    		Cursor c = myDB.rawQuery(Sql , null);
-	    		c.moveToFirst();
-	    		Quanti=c.getInt(0);
-	    		c.close();
-		        if (Quanti!=Lista.size()) {
-			    	myDB.execSQL("Delete From Rubrica;");
-			        for (int i=0;i<Lista.size();i++) {
-			        	myDB.execSQL("Insert Into Rubrica Values ('"+Lista.get(i).replace("'", "''")+"');");
-			        }
-		        }
-		    } catch (Exception ignored) {
-	        	
-	        }
-
-	        GestDB.ChiudeDB(myDB);
-	        // Scarica la lista dei nomi per farla leggere al widget
-	        
-	        return null;
-	    }
-	
-	    /* @Override
-	    protected void onPreExecute() {
-	        super.onPreExecute();
-	        mProgressDialog.show();
-	    } */
-	
-	    @Override
-	    protected void onProgressUpdate(Integer... progress) {
-	        super.onProgressUpdate(progress);
-	        
-	        try {
-		        PrendeSantoClass ps=new PrendeSantoClass();
-		        if (ps.fileExistsInSD(NomeFiletto, Directory)) {
-					VariabiliStaticheOnomastici.getInstance().getImgView().setImageBitmap(BitmapFactory.decodeFile(Directory+"/"+NomeFiletto));
-					// Widgets1.settaImmagineWidget();
-		        }
-	        } catch (Exception ignored) {
-	        	
-	        }
-	    }
-	}
-    
 }

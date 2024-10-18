@@ -6,6 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 
 import java.io.File;
 
@@ -17,6 +19,14 @@ public class db_dati_video {
     private SQLiteDatabase myDB = null;
     private boolean Controlla = true;
     private Context context;
+
+    public boolean DbAperto() {
+        if (myDB != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public db_dati_video(Context context) {
         this.context = context;
@@ -47,18 +57,29 @@ public class db_dati_video {
         return  db;
     }
 
-    public void CreazioneTabelle() {
+    public boolean CreazioneTabelle() {
         try {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Impostazioni"
+                        + " (Random VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
                         + "UltimoVideo"
                         + " (video VARCHAR);";
 
                 myDB.execSQL(sql);
+
+                return true;
+            } else {
+                return false;
             }
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
-            int a = 0;
+            return false;
         }
     }
 
@@ -122,6 +143,88 @@ public class db_dati_video {
         }
 
         return true;
+    }
+
+    public Boolean ScriveImpostazioni() {
+        if (myDB != null) {
+            try {
+                myDB.execSQL("Delete From Impostazioni");
+
+                String sql = "INSERT INTO"
+                        + " Impostazioni"
+                        + " VALUES ("
+                        + "'" + VariabiliStaticheVideo.getInstance().getRandom() + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
+                // PulisceDatiIMP();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                return ScriveImpostazioni();
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return true;
+    }
+
+    public void ImpostaValoriDiDefault() {
+        VariabiliStaticheVideo.getInstance().setRandom("S");
+    }
+
+    public int CaricaImpostazioni() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
+                if (c.getCount() > 0) {
+                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    c.moveToFirst();
+
+                    try {
+                        VariabiliStaticheVideo.getInstance().setRandom(c.getString(0));
+
+                        return 0;
+                    } catch (Exception e) {
+                        UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore try db carica impostazioni: " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                        return -4;
+                    }
+                } else {
+                    UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Riga non rilevata su db per carica impostazioni");
+
+                    return -3;
+                }
+            } catch (Exception e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db carica impostazioni: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+
+                return -2;
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return -1;
+        }
+    }
+
+    public boolean PulisceDati() {
+        if (myDB != null) {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db impostazioni");
+            try {
+                myDB.execSQL("Drop Table Impostazioni");
+
+                return true;
+            } catch (Exception ignored) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db impostazioni: " + ignored.getMessage());
+
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public void CompattaDB() {

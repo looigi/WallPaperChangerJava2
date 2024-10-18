@@ -33,6 +33,10 @@ import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classeMostraVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeMostraVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
@@ -862,6 +866,17 @@ public class MainImpostazioni extends Activity {
     private void ImpostaSchermataImmagini(Activity act) {
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
+        SwitchCompat swcRandom = (SwitchCompat) act.findViewById(R.id.sRandomIMM);
+        swcRandom.setChecked(VariabiliStaticheMostraImmagini.getInstance().getRandom().equals("S"));
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmagini.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShow);
         String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
@@ -904,6 +919,16 @@ public class MainImpostazioni extends Activity {
     private void ImpostaSchermataPennetta(Activity act) {
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
+        SwitchCompat swcRandom = (SwitchCompat) act.findViewById(R.id.sRandomPEN);
+        swcRandom.setChecked(VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom().equals("S"));
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveImpostazioni();
+            }
+        });
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShowPen);
         String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
@@ -944,6 +969,17 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataVideo(Activity act) {
+        SwitchCompat swcRandom = (SwitchCompat) act.findViewById(R.id.sRandomV);
+        swcRandom.setChecked(VariabiliStaticheVideo.getInstance().getRandom().equals("S"));
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         Button btnInviaLog = act.findViewById(R.id.btnInviaLogVD);
         Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogVD);
         Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogVD);

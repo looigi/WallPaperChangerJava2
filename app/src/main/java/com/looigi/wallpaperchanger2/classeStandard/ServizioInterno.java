@@ -18,6 +18,7 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
+import com.looigi.wallpaperchanger2.classePlayer.cuffie.GestioneTastiCuffieNuovo;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -38,6 +39,7 @@ public class ServizioInterno extends Service {
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
+    private Intent intentCuffie;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -88,6 +90,9 @@ public class ServizioInterno extends Service {
         filterSO.addAction(Intent.ACTION_SCREEN_ON);
         filterSO.setPriority(9999);
         context.registerReceiver(mScreenReceiver, filterSO);
+
+        intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
+        startService(intentCuffie);
 
         Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
         if (notificaTasti != null) {
@@ -218,6 +223,10 @@ public class ServizioInterno extends Service {
             mAudioManagerInterno.unregisterMediaButtonEventReceiver(mReceiverComponentInterno);
             mReceiverComponentInterno = null;
         } */
+
+        if (intentCuffie != null) {
+            context.stopService(intentCuffie);
+        }
 
         if (intentSegnale != null) {
             context.stopService(intentSegnale);

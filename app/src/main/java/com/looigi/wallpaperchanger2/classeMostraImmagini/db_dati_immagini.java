@@ -60,7 +60,7 @@ public class db_dati_immagini {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (LimiteInBytes VARCHAR"
+                        + " (LimiteInBytes VARCHAR, Random VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -84,7 +84,8 @@ public class db_dati_immagini {
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " VALUES ("
-                        + "'" + VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa() + "'"
+                        + "'" + VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa() + "',"
+                        + "'" + VariabiliStaticheMostraImmagini.getInstance().getRandom() + "'"
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -105,6 +106,7 @@ public class db_dati_immagini {
 
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(5000);
+        VariabiliStaticheMostraImmagini.getInstance().setRandom("S");
     }
 
     public int CaricaImpostazioni() {
@@ -117,6 +119,7 @@ public class db_dati_immagini {
 
                     try {
                         VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(Integer.parseInt(c.getString(0)));
+                        VariabiliStaticheMostraImmagini.getInstance().setRandom(c.getString(1));
 
                         return 0;
                     } catch (Exception e) {

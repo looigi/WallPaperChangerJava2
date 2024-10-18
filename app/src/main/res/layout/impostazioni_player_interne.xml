@@ -37,11 +37,10 @@
                         android:text="Br. Locali"
                         android:layout_height="match_parent" />
 
-                    <Button
+                    <ImageView
                         android:id="@+id/imgSettingsGlobali"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Imp. globali"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/settings" />
 
                     <ImageView

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeDetector.Receivers;
+package com.looigi.wallpaperchanger2.classeDetector.widgets;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,21 +9,20 @@ import android.widget.RemoteViews;
 
 import com.looigi.wallpaperchanger2.R;
 
-public class ProviderAudio extends AppWidgetProvider {
+public class ProviderVideo extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+	    RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_video);
 
-	    RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_audio);
-	    Intent configIntent = new Intent(context, Audio.class);
-
+	    Intent configIntent = new Intent(context, Video.class);
 	    PendingIntent configPendingIntent = PendingIntent.getActivity(
 				context,
 				0,
 				configIntent,
                 PendingIntent.FLAG_IMMUTABLE);
 
-	    remoteViews.setOnClickPendingIntent(R.id.imgAudio, configPendingIntent);
+	    remoteViews.setOnClickPendingIntent(R.id.imgVideo, configPendingIntent);
 	    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);

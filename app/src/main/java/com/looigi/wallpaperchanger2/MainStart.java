@@ -317,7 +317,7 @@ public class MainStart  extends Activity {
             }
         });
 
-        ImageView imgI = findViewById(R.id.imgStartImmagini);
+        /* ImageView imgI = findViewById(R.id.imgStartImmagini);
         LinearLayout layImmagini = findViewById(R.id.layBarraImmagini);
         if (VariabiliStaticheStart.getInstance().isDetector() &&
             VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
@@ -411,7 +411,7 @@ public class MainStart  extends Activity {
                     }
                 }, 100);
             }
-        });
+        }); */
 
         ImageView imgU = findViewById(R.id.imgStartUScita);
         imgU.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,8 @@ package com.looigi.wallpaperchanger2.classePennetta;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -182,10 +184,17 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     }
 
     public void ScriveInfoImmagine(StrutturaImmaginiLibrary si) {
-        if (si != null && VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo() != null) {
-            String testo = si.getNomeFile(); // + "\nSize: " + si.getDimensioniImmagine();
-            // testo += " Dim.: B." + si.getDimensioneFile();
-            VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText(testo);
-        }
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (si != null && VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo() != null) {
+                    String testo = VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() + ": " +
+                            si.getNomeFile(); // + "\nSize: " + si.getDimensioniImmagine();
+                    // testo += " Dim.: B." + si.getDimensioneFile();
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText(testo);
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 }

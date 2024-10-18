@@ -50,6 +50,9 @@ public class ScanBraniNonPresentiSuDB {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Refresh effettuato");
                 }
 
+                ScanBraniNonPresentiSuSD s = new ScanBraniNonPresentiSuSD();
+                s.EsegueOperazione(context);
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

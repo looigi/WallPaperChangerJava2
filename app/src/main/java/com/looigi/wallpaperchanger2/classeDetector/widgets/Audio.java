@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeDetector.Receivers;
+package com.looigi.wallpaperchanger2.classeDetector.widgets;
 
 import android.app.Activity;
 import android.content.Context;

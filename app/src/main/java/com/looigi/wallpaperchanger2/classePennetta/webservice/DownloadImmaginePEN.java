@@ -79,7 +79,7 @@ public class DownloadImmaginePEN {
     private void AttivaTimer() {
         secondiPassati = 0;
 
-        handlerThread = new HandlerThread("background-thread_" +
+        handlerThread = new HandlerThread("background-thread_PEN_" +
                 VariabiliStaticheWallpaper.channelName);
         handlerThread.start();
 
@@ -189,7 +189,7 @@ public class DownloadImmaginePEN {
     }
 
     private void TermineEsecuzione() {
-
+        UtilityPennetta.getInstance().Attesa(false);
     }
 
     public void BloccaEsecuzione() {

@@ -43,11 +43,11 @@ public class PrendeSantoClass {
 		    NomeMese[12]=new String("December");
 		} else {
 		    Giorni[1]=new String("Domenica");
-		    Giorni[2]=new String("Luned?");
-		    Giorni[3]=new String("Marted?");
-		    Giorni[4]=new String("Mercoled?");
-		    Giorni[5]=new String("Gioved?");
-		    Giorni[6]=new String("Venerd?");
+		    Giorni[2]=new String("Lunedì");
+		    Giorni[3]=new String("Martedì");
+		    Giorni[4]=new String("Mercoledì");
+		    Giorni[5]=new String("Giovedì");
+		    Giorni[6]=new String("Venerdì");
 		    Giorni[7]=new String("Sabato");
 
 		    NomeMese[1]=new String("Gennaio");
@@ -198,7 +198,7 @@ public class PrendeSantoClass {
 
 		a.setDirectory(PercorsoDIR);
 		a.setFiletto(NomeFile+EstensioneFile);
-		a.setFileDaDown("http://looigi.ddns.net:1051/Onomastici/"+NomeFile+EstensioneWeb);
+		a.setFileDaDown(VariabiliStaticheOnomastici.UrlImmagini + "Onomastici/"+NomeFile+EstensioneWeb);
 		a.setGestioneDB(varDB);
 		a.setGestioneRubrica(Rubr);
 		a.setRubrica(VariabiliStaticheOnomastici.getInstance().getRubrica());

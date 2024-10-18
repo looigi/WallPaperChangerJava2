@@ -148,19 +148,25 @@ public class UtilityImmagini {
     }
 
     public void AggiungeImmagine(Context context, String result, StrutturaImmaginiLibrary si) {
-        String path1 = context.getFilesDir() + "/Immagini";
-        UtilityWallpaper.getInstance().CreaCartelle(path1);
-        String NomeFile = "/UltimaImmagine.txt";
-        if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
-            UtilityDetector.getInstance().EliminaFile(path1 + "/" + NomeFile);
-        }
-        UtilityDetector.getInstance().CreaFileDiTesto(path1, NomeFile, result);
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                String path1 = context.getFilesDir() + "/Immagini";
+                UtilityWallpaper.getInstance().CreaCartelle(path1);
+                String NomeFile = "/UltimaImmagine.txt";
+                if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
+                    UtilityDetector.getInstance().EliminaFile(path1 + "/" + NomeFile);
+                }
+                UtilityDetector.getInstance().CreaFileDiTesto(path1, NomeFile, result);
 
-        VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
+                VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
 
-        VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
+                VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
 
-        VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
+                VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public void RitornaProssimaImmagine(Context context) {

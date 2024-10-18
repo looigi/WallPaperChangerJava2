@@ -59,8 +59,9 @@ public class Permessi {
                 Manifest.permission.BLUETOOTH,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.CHANGE_NETWORK_STATE,
-                // Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                //// Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.MODIFY_AUDIO_SETTINGS,
                 // android.Manifest.permission.BLUETOOTH_ADMIN
                 Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                 Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE,

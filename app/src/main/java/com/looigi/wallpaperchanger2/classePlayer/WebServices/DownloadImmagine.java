@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer;
+package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +9,9 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.ImageView;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeMostraImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.FileNotFoundException;

@@ -2,6 +2,8 @@ package com.looigi.wallpaperchanger2.classeMostraImmagini;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -192,10 +194,16 @@ public class VariabiliStaticheMostraImmagini {
     }
 
     public void ScriveInfoImmagine(StrutturaImmaginiLibrary si) {
-        if (si != null && VariabiliStaticheMostraImmagini.getInstance().getTxtInfo() != null) {
-            String testo = si.getNomeFile() + "\nSize: " + si.getDimensioniImmagine();
-            testo += " Dim.: B." + si.getDimensioneFile();
-            VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText(testo);
-        }
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (si != null && VariabiliStaticheMostraImmagini.getInstance().getTxtInfo() != null) {
+                    String testo = si.getNomeFile() + "\nSize: " + si.getDimensioniImmagine();
+                    testo += " Dim.: B." + si.getDimensioneFile();
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText(testo);
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 }

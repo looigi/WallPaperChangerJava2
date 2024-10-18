@@ -90,7 +90,31 @@
    	        android:layout_marginTop="5dp"
    	        android:gravity="center_vertical"
    	        android:padding="5dp"
-   	        android:weightSum="2" >
+   	        android:weightSum="3" >
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:gravity="center_horizontal"
+				android:orientation="vertical"
+				android:padding="2dp" >
+
+				<ImageView
+					android:id="@+id/imgPulisceDB"
+					android:layout_width="40dp"
+					android:layout_height="40dp"
+					android:src="@drawable/elimina" />
+
+				<TextView
+					android:id="@+id/txtEliminaDB"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:gravity="center_horizontal"
+					android:text="Refresh DB"
+					android:textColor="#AA0000" />
+			</LinearLayout>
 
    	        <LinearLayout
    	            android:layout_width="match_parent"

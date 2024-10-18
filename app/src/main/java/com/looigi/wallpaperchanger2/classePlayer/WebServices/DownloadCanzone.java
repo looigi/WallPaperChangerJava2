@@ -1,21 +1,24 @@
-package com.looigi.wallpaperchanger2.classePlayer;
+package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.classeMostraImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -97,6 +100,9 @@ public class DownloadCanzone {
 
                     long total = 0;
 
+                    long dimensione = sb.getDimensione() * 1024;
+                    int vecchioPerc = -1;
+
                     while ((count = input.read(data)) != -1 && !isCancelled) {
                         total += count;
                         // publishing the progress....
@@ -105,6 +111,11 @@ public class DownloadCanzone {
 
                         // writing data to file
                         output.write(data, 0, count);
+
+                        int perc = Math.round(((float) total / dimensione) * 100);
+                        if (perc != vecchioPerc) {
+                            UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download brano: " + s.getBrano() + " " + perc + "%");
+                        }
                     }
 
                     if (!isCancelled) {

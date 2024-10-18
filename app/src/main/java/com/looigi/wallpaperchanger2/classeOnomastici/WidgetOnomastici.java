@@ -152,9 +152,10 @@ public class WidgetOnomastici extends AppWidgetProvider {
 
 			Calendar Oggi = Calendar.getInstance();
 			int Mese=Oggi.get(Calendar.MONTH)+1;
+			int Giorno2=Oggi.get(Calendar.DAY_OF_MONTH);
 
 			String PercorsoDIR = context.getFilesDir() + "/Onomastici";
-			String NomeFile="Imm_"+Giorno+"_"+Mese;
+			String NomeFile="Imm_"+Giorno2+"_"+Mese;
 			String EstensioneFile=".jpg";
 			String sNomeFile = PercorsoDIR + "/" + NomeFile + EstensioneFile;
 

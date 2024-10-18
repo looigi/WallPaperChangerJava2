@@ -35,6 +35,7 @@ public class VariabiliStaticheWallpaper {
     public static String channelName = "WallPaperChangerII";
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
     public static int NOTIFICATION_CHANNEL_ID = 2;
+    public static final int TimeoutImmagine = 5;
     public static int channelIdIntentOverlay = 152;
     // private String NomeFileDiLog = "";
     private Intent servizioForeground;

@@ -1,7 +1,10 @@
 package com.looigi.wallpaperchanger2.classePennetta.webservice;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
@@ -21,12 +24,12 @@ public class ChiamateWSPEN implements TaskDelegate {
     // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmaginiPennetta.UrlWS + "/";
-    private String ws = "newLooVF.asmx/";
-    private String NS="http://newLooVF.org/";
-    private String SA="http://newLooVF.org/";
+    private final String ws = "newLooVF.asmx/";
+    private final String NS="http://newLooVF.org/";
+    private final String SA="http://newLooVF.org/";
     private String TipoOperazione = "";
-    private Context context;
-    private boolean ApriDialog = false;
+    private final Context context;
+    private final boolean ApriDialog = false;
 
     public ChiamateWSPEN(Context context) {
         this.context = context;
@@ -35,7 +38,9 @@ public class ChiamateWSPEN implements TaskDelegate {
     public void RitornaProssimaImmagine(String Categoria, String Filtro) {
         String Urletto="RitornaProssimoPennetta?" +
                 "Categoria=" + Categoria +
-                "&Filtro=" + Filtro;
+                "&Filtro=" + Filtro +
+                "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
+                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine();
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -101,18 +106,24 @@ public class ChiamateWSPEN implements TaskDelegate {
 
     @Override
     public void TaskCompletionResult(String result) {
-        UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-        UtilityPennetta.getInstance().Attesa(false);
+                UtilityPennetta.getInstance().Attesa(false);
 
-        switch (TipoOperazione) {
-            case "ProssimaImmagine":
-                fProssimaImmagine(result);
-                break;
-            case "RitornaCategorie":
-                fRitornaCategorie(result);
-                break;
-        }
+                switch (TipoOperazione) {
+                    case "ProssimaImmagine":
+                        fProssimaImmagine(result);
+                        break;
+                    case "RitornaCategorie":
+                        fRitornaCategorie(result);
+                        break;
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public void StoppaEsecuzione() {
@@ -207,9 +218,20 @@ public class ChiamateWSPEN implements TaskDelegate {
     private void fProssimaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
         if (ritorno) {
-            String path =  VariabiliStaticheMostraImmaginiPennetta.PathUrl + result;
+            String path = "";
+            int id = -1;
+            if (result.contains("§")) {
+                String[] p = result.split("§");
+                path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + p[0];
+                id = Integer.parseInt(p[1]);
+            } else {
+                path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + result;
+            }
+
+            VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(id);
 
             StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary();
+            s.setIdImmagine(id);
             s.setUrlImmagine(path);
             s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
             s.setNomeFile(result);

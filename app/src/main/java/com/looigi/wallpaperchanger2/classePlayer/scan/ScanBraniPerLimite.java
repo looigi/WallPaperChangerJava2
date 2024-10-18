@@ -18,7 +18,7 @@ public class ScanBraniPerLimite {
     private List<String> lista;
 
     public void controllaSpazioOccupato(Context context) {
-        Spazio = 0;
+        /* Spazio = 0;
         lista = new ArrayList<>();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -53,7 +53,7 @@ public class ScanBraniPerLimite {
                     }
                 });
             }
-        });
+        }); */
     }
 
     private void walk(File root) {

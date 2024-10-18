@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeDetector.Receivers;
+package com.looigi.wallpaperchanger2.classeDetector.widgets;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;

@@ -60,13 +60,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="2"
+                android:weightSum="8"
                 android:orientation="horizontal"
                 android:layout_height="0dp">
 
                 <TextView
                     android:id="@+id/txtQuanteRicercaPL"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="7"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|left"
                     android:text=""
@@ -78,7 +79,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:layout_height="wrap_content">
 
                     <ImageView

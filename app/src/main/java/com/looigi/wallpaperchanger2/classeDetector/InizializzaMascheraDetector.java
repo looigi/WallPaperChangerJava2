@@ -25,7 +25,7 @@ import android.widget.VideoView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeMostraVideo.MainMostraVideo;
-import com.looigi.wallpaperchanger2.classeDetector.Receivers.Video;
+import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
@@ -93,8 +93,10 @@ public class InizializzaMascheraDetector {
 
         // View fgmMappa = (View) act.findViewById(R.id.map);
 
-        TextView txtCoords = (TextView) act.findViewById(R.id.txtCoords);
-        VariabiliStaticheDetector.getInstance().setTxtCoords(txtCoords);
+        if (act != null) {
+            TextView txtCoords = (TextView) act.findViewById(R.id.txtCoords);
+            VariabiliStaticheDetector.getInstance().setTxtCoords(txtCoords);
+        }
 
         PrendeModelloTelefono p = new PrendeModelloTelefono();
         String modello = p.getDeviceName();

@@ -1,6 +1,8 @@
 package com.looigi.wallpaperchanger2.classeMostraImmagini.webservice;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ArrayAdapter;
 
 import com.looigi.wallpaperchanger2.classeMostraImmagini.strutture.StrutturaImmaginiCategorie;
@@ -108,18 +110,24 @@ public class ChiamateWSMI implements TaskDelegate {
 
     @Override
     public void TaskCompletionResult(String result) {
-        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-        UtilityImmagini.getInstance().Attesa(false);
+                UtilityImmagini.getInstance().Attesa(false);
 
-        switch (TipoOperazione) {
-            case "ProssimaImmagine":
-                fProssimaImmagine(result);
-                break;
-            case "RitornaCategorie":
-                fRitornaCategorie(result);
-                break;
-        }
+                switch (TipoOperazione) {
+                    case "ProssimaImmagine":
+                        fProssimaImmagine(result);
+                        break;
+                    case "RitornaCategorie":
+                        fRitornaCategorie(result);
+                        break;
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public void StoppaEsecuzione() {
@@ -196,6 +204,7 @@ public class ChiamateWSMI implements TaskDelegate {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
+
         // } else {
             // UtilitiesGlobali.getInstance().ApreToast(context, result);
         }

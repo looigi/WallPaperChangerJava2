@@ -595,7 +595,7 @@ public class db_dati_player {
         return true;
     }
 
-    private void EliminaBrano(String idBrano) {
+    public void EliminaBrano(String idBrano) {
         if (myDB != null) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Elimino brano " + idBrano);
 

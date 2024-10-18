@@ -93,7 +93,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                         CaricaSantoDelGiorno();
 
                         // Gestione click su lista rilevati
-                        final ListView lvR=(ListView) findViewById(R.id.lstNominativi);
+                        /* final ListView lvR=(ListView) findViewById(R.id.lstNominativi);
                         lvR.setClickable(true);
                         lvR.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -111,10 +111,10 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                                 }
                                 AggiornaListe();
                             }
-                        });
+                        }); */
 
                         // Gestione click su lista selezionati
-                        final ListView lvS=(ListView) findViewById(R.id.lstSelezionati);
+                        /* final ListView lvS=(ListView) findViewById(R.id.lstSelezionati);
                         lvS.setClickable(true);
                         lvS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -132,10 +132,10 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                                 }
                                 AggiornaListe();
                             }
-                        });
+                        }); */
 
                         // Gestione click su lista messaggi
-                        final ListView lvM=(ListView) findViewById(R.id.lstMessaggi);
+                        /* final ListView lvM=(ListView) findViewById(R.id.lstMessaggi);
                         lvM.setClickable(true);
                         lvM.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -155,6 +155,15 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
                                 Messaggio=o;
                                 ImpostaMessaggio();
+                            }
+                        }); */
+
+                        ImageView imgPulisceDB=(ImageView) findViewById(R.id.imgPulisceDB);
+                        imgPulisceDB.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                GestioneDB db = new GestioneDB(context);
+                                db.EliminaDB(tRoutine, tErrore, "DaTasto", tChiamante);
                             }
                         });
 
@@ -408,6 +417,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         return calendar.getTime();
     }
 
+    /*
     private void InviaSMS() {
         int NumMessaggi=0;
 
@@ -470,7 +480,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 toast.show();
 
 				/* Button cmdInvia = (Button) findViewById(R.id.cmdInvia);
-				cmdInvia.setEnabled(false); */
+				cmdInvia.setEnabled(false); * /
             }
         }
 
@@ -498,26 +508,27 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             toast.show();
         }
     }
+    */
 
     private void SistemaSchermata() {
         String[] Titoli;
-        Titoli=new String[6];
+        Titoli=new String[5];
         Titoli[1]="Home";
         Titoli[2]="Info";
-        Titoli[4]="Sms";
+        // Titoli[4]="Sms";
         Titoli[3]="Search";
-        Titoli[5]="Setup";
+        Titoli[4]="Setup";
 
         TabHost tabHost = (TabHost) findViewById(R.id.myTabHost);
         tabHost.setup();
         tabHost.addTab(tabHost.newTabSpec("tabview1").setContent(R.id.tabview1).setIndicator(Titoli[1]));
         tabHost.addTab(tabHost.newTabSpec("tabview2").setContent(R.id.tabview2).setIndicator(Titoli[2]));
         tabHost.addTab(tabHost.newTabSpec("tabview3").setContent(R.id.tabview3).setIndicator(Titoli[3]));
-        tabHost.addTab(tabHost.newTabSpec("tabview4").setContent(R.id.tabview4).setIndicator(Titoli[4]));
-        tabHost.addTab(tabHost.newTabSpec("tabview5").setContent(R.id.tabview5).setIndicator(Titoli[5]));
+        // tabHost.addTab(tabHost.newTabSpec("tabview4").setContent(R.id.tabview4).setIndicator(Titoli[4]));
+        tabHost.addTab(tabHost.newTabSpec("tabview5").setContent(R.id.tabview5).setIndicator(Titoli[4]));
 
         TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
-        for (int i=0;i<5;i++) {
+        for (int i=0;i<4;i++) {
             View tabView = tw.getChildTabViewAt(i);
             TextView tv = (TextView)tabView.findViewById(android.R.id.title);
             tv.setText(Titoli[i+1]);
@@ -622,7 +633,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
     }
 
     private void AggiornaListe(){
-        String NomiR[];
+        /* String NomiR[];
         NomiR=new String[nomiRilevati.size()];
 
         int i=0;
@@ -639,11 +650,11 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             NomiS[i]=nomiSelezionati.get(i);
         }
         ListView listaS=(ListView) findViewById(R.id.lstSelezionati);
-        RiempieLista(listaS, NomiS);
+        RiempieLista(listaS, NomiS); */
     }
 
     private void CaricaMessaggi() {
-        GestioneDB varDB=new GestioneDB(context);
+        /* GestioneDB varDB=new GestioneDB(context);
 
         TextView tErrore=(TextView) findViewById(R.id.txtSanto);
         TextView tRoutine=(TextView) findViewById(R.id.txtGiorno);
@@ -682,11 +693,11 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             MessaggiS[i]=listaMessaggi.get(i);
         }
         ListView listaM=(ListView) findViewById(R.id.lstMessaggi);
-        RiempieListaMessaggi(listaM, MessaggiS);
+        RiempieListaMessaggi(listaM, MessaggiS); */
     }
 
     private void RiempieListaMessaggi(ListView Lista, String Mess[]) {
-        ArrayList<Messaggi> personListR=new ArrayList<Messaggi>();
+        /* ArrayList<Messaggi> personListR=new ArrayList<Messaggi>();
         Messaggi [] people={};
 
         people=new Messaggi[Mess.length];
@@ -711,7 +722,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 R.layout.listview_messaggi,
                 from,
                 to);
-        Lista.setAdapter(adapter);
+        Lista.setAdapter(adapter); */
     }
 
     private void LeggeNomiRubrica(String Sinonimi) {
@@ -898,10 +909,10 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             tCT="Widget text color";
             tC1="Example";
             tC2="Example";
-            tT1="Detected";
+            /* tT1="Detected";
             tT2="Selected";
             tT21="Messages list";
-            tT212="Text";
+            tT212="Text"; */
             cI="Send";
         } else {
             tR1="Ricerca Santo";
@@ -914,10 +925,10 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             tCT="Colore testo widget";
             tC1="Esempio";
             tC2="Esempio";
-            tT1="Rilevati";
+            /* tT1="Rilevati";
             tT2="Selezionati";
             tT21="Lista messaggi";
-            tT212="Testo";
+            tT212="Testo"; */
             cI="Invia";
         }
 
@@ -951,7 +962,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         TextView tc2=(TextView) findViewById(R.id.txtColore2);
         tc2.setText(tC2);
 
-        TextView tt1=(TextView) findViewById(R.id.txtTitolo1);
+        /* TextView tt1=(TextView) findViewById(R.id.txtTitolo1);
         tt1.setText(tT1);
 
         TextView tt2=(TextView) findViewById(R.id.txtTitolo2);
@@ -961,7 +972,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         tt21.setText(tT21);
 
         TextView tt212=(TextView) findViewById(R.id.txtTitolo212);
-        tt212.setText(tT212);
+        tt212.setText(tT212); */
 
         CaricaSantoDelGiorno();
 

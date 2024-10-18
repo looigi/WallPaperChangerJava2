@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadCanzone;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.InterrogazioneWSPlayer;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
@@ -87,6 +89,9 @@ public class VariabiliStatichePlayer {
     private InterrogazioneWSPlayer ClasseInterrogazione;
     private DownloadCanzone DownCanzone;
     private DownloadImmagine DownImmagine;
+    private long SpazioOccupato;
+    private long SpazioMassimo;
+    private boolean settingsAperte = false;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -118,6 +123,30 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public boolean isSettingsAperte() {
+        return settingsAperte;
+    }
+
+    public void setSettingsAperte(boolean settingsAperte) {
+        this.settingsAperte = settingsAperte;
+    }
+
+    public long getSpazioOccupato() {
+        return SpazioOccupato;
+    }
+
+    public void setSpazioOccupato(long spazioOccupato) {
+        SpazioOccupato = spazioOccupato;
+    }
+
+    public long getSpazioMassimo() {
+        return SpazioMassimo;
+    }
+
+    public void setSpazioMassimo(long spazioMassimo) {
+        SpazioMassimo = spazioMassimo;
     }
 
     public DownloadImmagine getDownImmagine() {

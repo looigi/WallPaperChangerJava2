@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
@@ -118,7 +119,7 @@ public class GestioneNotificheTasti {
                 contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
-            if (VariabiliStaticheStart.getInstance().isDetector() &&
+            /* if (VariabiliStaticheStart.getInstance().isDetector() &&
                     VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
                 contentView.setViewVisibility(R.id.imgImmaginiTasti, LinearLayout.VISIBLE);
             } else {
@@ -137,7 +138,7 @@ public class GestioneNotificheTasti {
                 contentView.setViewVisibility(R.id.imgImmaginiPennetta, LinearLayout.VISIBLE);
             } else {
                 contentView.setViewVisibility(R.id.imgImmaginiPennetta, LinearLayout.GONE);
-            }
+            } */
 
             boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
             String testo = (wifi ? "WiFi" : "Mobile");
@@ -241,7 +242,13 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgPlayerTasti, pPlayer);
 
-            Intent imm = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent ono = new Intent(ctx, NotificationActionServiceTasti.class);
+            ono.putExtra("DO", "onomastici");
+            PendingIntent pOno = PendingIntent.getService(ctx, 207, ono,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgOnomasticiTasti, pOno);
+
+            /* Intent imm = new Intent(ctx, NotificationActionServiceTasti.class);
             imm.putExtra("DO", "immagini");
             PendingIntent pImm = PendingIntent.getService(ctx, 206, imm,
                     PendingIntent.FLAG_IMMUTABLE);
@@ -257,7 +264,7 @@ public class GestioneNotificheTasti {
             pen.putExtra("DO", "pennetta");
             PendingIntent pPen = PendingIntent.getService(ctx, 208, pen,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgImmaginiPennetta, pPen);
+            view.setOnClickPendingIntent(R.id.imgImmaginiPennetta, pPen); */
 
             Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
             uscita.putExtra("DO", "uscita");
@@ -345,97 +352,107 @@ public class GestioneNotificheTasti {
             }
 
             if (action!=null) {
-                switch (action) {
-                    case "gps":
-                        boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
-                        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
-                        if (!attivo) {
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICA");
-                        } else {
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
-                        }
-                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
-                        break;
-                    case "settings":
-                        Intent iI = new Intent(context, MainImpostazioni.class);
-                        iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iI);
-                        break;
-                    case "detector":
-                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent iD = new Intent(context, MainActivityDetector.class);
-                                iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(iD);
-
-                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
-                                        i2.inizializzaMaschera(
-                                                context,
-                                                VariabiliStaticheDetector.getInstance().getMainActivity());
-                                    }
-                                }, 100);
+                if (context == null) {
+                    context = UtilitiesGlobali.getInstance().tornaContextValido();
+                }
+                if (context != null) {
+                    switch (action) {
+                        case "gps":
+                            boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
+                            VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
+                            if (!attivo) {
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICA");
+                            } else {
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
                             }
-                        }, 500);
-                        break;
-                    case "wallpaper":
-                        Intent iW = new Intent(context, MainWallpaper.class);
-                        iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iW);
-                        break;
-                    case "mappa":
-                        Intent iM = new Intent(context, MainMappa.class);
-                        iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iM);
-                        break;
-                    case "player":
-                        if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {
-                            VariabiliStaticheStart.getInstance().setPlayerAperto(true);
+                            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                            break;
+                        case "settings":
+                            Intent iI = new Intent(context, MainImpostazioni.class);
+                            iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iI);
+                            break;
+                        case "detector":
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent iD = new Intent(context, MainActivityDetector.class);
+                                    iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(iD);
 
-                            Intent iP = new Intent(context, MainPlayer.class);
-                            iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(iP);
+                                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                            i2.inizializzaMaschera(
+                                                    context,
+                                                    VariabiliStaticheDetector.getInstance().getMainActivity());
+                                        }
+                                    }, 100);
+                                }
+                            }, 500);
+                            break;
+                        case "onomastici":
+                            Intent iO = new Intent(context, MainOnomastici.class);
+                            iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iO);
+                            break;
+                        case "wallpaper":
+                            Intent iW = new Intent(context, MainWallpaper.class);
+                            iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iW);
+                            break;
+                        case "mappa":
+                            Intent iM = new Intent(context, MainMappa.class);
+                            iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iM);
+                            break;
+                        case "player":
+                            if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {
+                                VariabiliStaticheStart.getInstance().setPlayerAperto(true);
 
-                            Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
-                            if (notificaPlayer != null) {
-                                // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
+                                Intent iP = new Intent(context, MainPlayer.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(iP);
 
-                                GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+                                Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
+                                if (notificaPlayer != null) {
+                                    // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
 
-                                UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
+                                    GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+
+                                    UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
+                                }
+                            } else {
+                                VariabiliStaticheStart.getInstance().setPlayerAperto(false);
+
+                                UtilityPlayer.getInstance().PressionePlay(context, false);
+                                UtilityPlayer.getInstance().ChiudeActivity(true);
+
+                                GestioneNotifichePlayer.getInstance().RimuoviNotifica();
                             }
-                        } else {
-                            VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 
-                            UtilityPlayer.getInstance().PressionePlay(context, false);
-                            UtilityPlayer.getInstance().ChiudeActivity(true);
-
-                            GestioneNotifichePlayer.getInstance().RimuoviNotifica();
-                        }
-
-                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
-                        break;
-                    case "immagini":
-                        Intent iIm = new Intent(context, MainMostraImmagini.class);
-                        iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iIm);
-                        break;
-                    case "pennetta":
-                        Intent iPe = new Intent(context, MainMostraPennetta.class);
-                        iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iPe);
-                        break;
-                    case "video":
-                        Intent iVi = new Intent(context, MainMostraVideo.class);
-                        iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(iVi);
-                        break;
-                    case "uscita":
-                        UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
-                        break;
+                            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                            break;
+                        case "immagini":
+                            Intent iIm = new Intent(context, MainMostraImmagini.class);
+                            iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iIm);
+                            break;
+                        case "pennetta":
+                            Intent iPe = new Intent(context, MainMostraPennetta.class);
+                            iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iPe);
+                            break;
+                        case "video":
+                            Intent iVi = new Intent(context, MainMostraVideo.class);
+                            iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iVi);
+                            break;
+                        case "uscita":
+                            UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
+                            break;
+                    }
                 }
             }
 

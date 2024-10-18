@@ -100,7 +100,7 @@
 		                 	 									                                	                              			                                	                             	    
 				</LinearLayout>
 	
-				<!-- Sezione degli sms -->
+				<!-- Sezione degli sms
 				<LinearLayout
 		            android:orientation="vertical"
 		            android:layout_width="fill_parent"
@@ -112,7 +112,7 @@
 						android:layout_height="wrap_content"
 						android:layout_width="fill_parent"
 						layout="@layout/tab_onomastici_utility" />
-				</LinearLayout>
+				</LinearLayout> -->
 	
 				<!-- Sezione del setup -->
 				<LinearLayout

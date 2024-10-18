@@ -75,6 +75,7 @@ public class MainMostraVideo extends Activity {
         if (!url.isEmpty()) {
             String[] u = url.split("/");
             String res = u[u.length - 1];
+            res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
             VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res);
         }
 

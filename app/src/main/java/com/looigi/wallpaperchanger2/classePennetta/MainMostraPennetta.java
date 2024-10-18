@@ -51,7 +51,7 @@ public class MainMostraPennetta extends Activity {
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria("");
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltro("");
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(1);
-        VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom("S");
+        // VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom("S");
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
 
@@ -150,7 +150,8 @@ public class MainMostraPennetta extends Activity {
             if (u != null) {
                 String[] uu = u.split("§");
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(uu[1]);
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(uu[2]);
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(Integer.parseInt(uu[1]));
                 String path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + uu[0];
 
                 StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary();

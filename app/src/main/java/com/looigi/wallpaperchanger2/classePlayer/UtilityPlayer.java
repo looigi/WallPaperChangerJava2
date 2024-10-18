@@ -1,24 +1,21 @@
 package com.looigi.wallpaperchanger2.classePlayer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 // import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -120,12 +117,12 @@ public class UtilityPlayer {
 
             if (Acceso) {
                 VariabiliStatichePlayer.getInstance().getMp().start();
-                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.pausa);
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
                 FaiRipartireTimer();
                 VariabiliStatichePlayer.getInstance().setStaSuonando(true);
             } else {
                 VariabiliStatichePlayer.getInstance().getMp().pause();
-                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.play);
+                bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_suona);
                 FermaTimer();
                 VariabiliStatichePlayer.getInstance().setStaSuonando(false);
             }
@@ -370,16 +367,6 @@ public class UtilityPlayer {
     public void BranoAvanti(Context context, String Brano, boolean Pregresso) {
         db_dati_player db = new db_dati_player(context);
 
-        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
-            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
-        }
-        if (VariabiliStatichePlayer.getInstance().getDownCanzone() != null) {
-            VariabiliStatichePlayer.getInstance().getDownCanzone().BloccaEsecuzione();
-        }
-        if (VariabiliStatichePlayer.getInstance().getDownImmagine() != null) {
-            VariabiliStatichePlayer.getInstance().getDownImmagine().BloccaEsecuzione();
-        }
-
         if (VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso() &&
                 VariabiliStatichePlayer.getInstance().getStrutturaBranoPregressoCaricata() != null) {
             // C'è un brano pregresso. Devo impostarlo
@@ -405,6 +392,18 @@ public class UtilityPlayer {
 
         UtilityPlayer.getInstance().Attesa(false);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+
+        ImpostaLogoApplicazione(context);
+
+        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+        }
+        if (VariabiliStatichePlayer.getInstance().getDownCanzone() != null) {
+            VariabiliStatichePlayer.getInstance().getDownCanzone().BloccaEsecuzione();
+        }
+        if (VariabiliStatichePlayer.getInstance().getDownImmagine() != null) {
+            VariabiliStatichePlayer.getInstance().getDownImmagine().BloccaEsecuzione();
+        }
 
         // VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
         // RipristinoChiamate.getInstance().RimuoveTimer();

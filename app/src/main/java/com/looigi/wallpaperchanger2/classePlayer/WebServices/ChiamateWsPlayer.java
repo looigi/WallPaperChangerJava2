@@ -1,10 +1,10 @@
 package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
 import android.content.Context;
-import android.text.style.ClickableSpan;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePlayer.DownloadCanzone;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaPreferiti;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ChiamateWsPlayer implements TaskDelegatePlayer {
-    private static final String NomeMaschera = "CHiamate_WS_Player";
+    private static final String NomeMaschera = "Chiamate_WS_Player";
     // private LetturaWSAsincronaPlayer bckAsyncTask;
 
     private final String RadiceWS = VariabiliStatichePlayer.UrlWS + "/";
@@ -128,9 +128,11 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Stelle Brano " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano());
 
-        String Urletto="RitornaStelleBrano?" +
+        String Urletto="RitornaStelleBranoDaBrano?" +
                 "idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId() +
-                "&idBrano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano();
+                "&Artista=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista() +
+                "&Album=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum() +
+                "&Brano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano();
 
         TipoOperazione = "RitornaStelleBrano";
         // ControllaTempoEsecuzione = false;
@@ -412,48 +414,55 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     @Override
     public void TaskCompletionResult(String result) {
-        VariabiliStatichePlayer.getInstance().setClasseInterrogazione(null);
-        VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
-        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
-        UtilityPlayer.getInstance().Attesa(false);
-       /* boolean Ok = true;
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                VariabiliStatichePlayer.getInstance().setClasseInterrogazione(null);
+                VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
+                UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+                UtilityPlayer.getInstance().Attesa(false);
+               /* boolean Ok = true;
 
-        if (ControllaTempoEsecuzione) {
-            if (differenza > 30) {
-                // Ci ha messo troppo tempo
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Troppo tempo a rispondere: " + differenza);
+                if (ControllaTempoEsecuzione) {
+                    if (differenza > 30) {
+                        // Ci ha messo troppo tempo
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Troppo tempo a rispondere: " + differenza);
 
-                UtilityPlayer.getInstance().ImpostaStatoReteOFF();
-                accesoStatoReteMancante = true;
-            } else {
-                if (accesoStatoReteMancante) {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Ripristino stato rete");
-                    accesoStatoReteMancante = false;
-                    UtilityPlayer.getInstance().ImpostaStatoReteON();
+                        UtilityPlayer.getInstance().ImpostaStatoReteOFF();
+                        accesoStatoReteMancante = true;
+                    } else {
+                        if (accesoStatoReteMancante) {
+                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". Ripristino stato rete");
+                            accesoStatoReteMancante = false;
+                            UtilityPlayer.getInstance().ImpostaStatoReteON();
+                        }
+                    }
+                } */
+
+                        // boolean Scoda = true;
+
+                        // if (Ok) {
+                switch (TipoOperazione) {
+                    case "RitornaStelleBrano":
+                        fRitornaStelleBrano(result);
+                        break;
+                    case "RitornaArtisti":
+                        RitornaArtisti(result);
+                        break;
+                    case "RitornaProssimoBranoMobile":
+                        CaricaBrano(result);
+                        break;
+                    case "ScaricaTesto":
+                        fAggiornaTesto(result);
+                        break;
+                    case "RitornaBrani":
+                        fRitornaBrani(result);
+                        break;
                 }
             }
-        } */
+        };
+        handlerTimer.postDelayed(rTimer, 100);
 
-        // boolean Scoda = true;
-
-        // if (Ok) {
-            switch (TipoOperazione) {
-                case "RitornaStelleBrano":
-                    fRitornaStelleBrano(result);
-                    break;
-                case "RitornaArtisti":
-                    RitornaArtisti(result);
-                    break;
-                case "RitornaProssimoBranoMobile":
-                    CaricaBrano(result);
-                    break;
-                case "ScaricaTesto":
-                    fAggiornaTesto(result);
-                    break;
-                case "RitornaBrani":
-                    fRitornaBrani(result);
-                    break;
-            }
     }
 
     private void fAggiornaTesto(String result) {

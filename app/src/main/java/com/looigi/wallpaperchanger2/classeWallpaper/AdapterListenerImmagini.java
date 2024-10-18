@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.DownloadImmagineWP;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,17 +88,21 @@ public class AdapterListenerImmagini extends BaseAdapter {
                 }
             } else {
                 String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
-                new DownloadImageWP(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
+                DownloadImmagineWP d = new DownloadImmagineWP();
+                d.EsegueChiamata(context, NomeImmagine, imgImmagine, PathImmagine2);
+                // new DownloadImageWP(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
             }
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(listaImmagini.get(i));
 
-                    ChangeWallpaper c = new ChangeWallpaper(context);
                     if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                         UtilityWallpaper.getInstance().Attesa(true);
-                        new DownloadImageWP(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
+                        DownloadImmagineWP d = new DownloadImmagineWP();
+                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null, listaImmagini.get(i).getPathImmagine());
+                        // new DownloadImageWP(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
                     } else {
+                        ChangeWallpaper c = new ChangeWallpaper(context);
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                     }
                 }

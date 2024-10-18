@@ -76,7 +76,7 @@ public class DownloadImmagineMI {
     private void AttivaTimer() {
         secondiPassati = 0;
 
-        handlerThread = new HandlerThread("background-thread_" +
+        handlerThread = new HandlerThread("background-thread_MI_" +
                 VariabiliStaticheWallpaper.channelName);
         handlerThread.start();
 

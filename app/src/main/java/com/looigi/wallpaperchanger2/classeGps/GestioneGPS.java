@@ -191,16 +191,20 @@ public class GestioneGPS {
         }
 
         if (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+            UtilityGPS.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto");
             return;
         }
 
         // wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
         wifi = VariabiliStaticheStart.getInstance().isCeWifi();
 
-        UtilityGPS.getInstance().ScriveLog(
+        /* UtilityGPS.getInstance().ScriveLog(
                 context,
                 NomeMaschera,
-                "Controllo disattivazione/attivazione. Controllo wifi connesso: " + wifi);
+                "Controllo disattivazione/attivazione. Controllo wifi connesso: " + wifi); */
 
         if (wifi) {
             if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
@@ -216,7 +220,7 @@ public class GestioneGPS {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Riattivo per WiFi non attivo.\nControllo impostazioni.");
+                        "Controllo disattivazione/attivazione. Riattivo per WiFi non attivo");
 
                 AbilitaGPS();
             }
@@ -343,6 +347,7 @@ public class GestioneGPS {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Abilita GPS. ESCO PER PERMESSI NULLI");
             return;
         }
 
@@ -465,8 +470,11 @@ public class GestioneGPS {
                     ok = false;
                 }
             }
-            // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
-            //         location.getLatitude() + ", " + location.getLongitude());
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
+                    location.getLatitude() + ", " + location.getLongitude() + ". Wifi: " +
+                    VariabiliStaticheStart.getInstance().isCeWifi() + ". Abilitato: " +
+                    VariabiliStaticheGPS.getInstance().isGpsAttivo());
 
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
@@ -518,7 +526,7 @@ public class GestioneGPS {
                     VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
 
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Aggiunta posizione array: " + s.getLat() + " " + s.getLon());
+                            "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
 
                     VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
                 }

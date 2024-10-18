@@ -48,6 +48,13 @@
 
     </LinearLayout>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sRandomIMM"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Random" />
+
     <View
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
