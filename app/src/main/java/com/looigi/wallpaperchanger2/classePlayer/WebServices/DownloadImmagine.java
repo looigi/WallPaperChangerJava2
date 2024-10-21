@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,7 +60,7 @@ public class DownloadImmagine {
             @Override
             public void run() {
                 Errore = false;
-                String urldisplay = PathImmagine;
+                String urldisplay = Immagine;
                 urldisplay = urldisplay.replace("\\", "/");
                 Bitmap mIcon11 = null;
                 try {
@@ -68,44 +69,51 @@ public class DownloadImmagine {
                         mIcon11 = BitmapFactory.decodeStream(in);
 
                         if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
-                            bmImage.setImageBitmap(mIcon11);
+                            Bitmap finalMIcon1 = mIcon11;
 
-                            BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
-                            Bitmap bitmap = drawable.getBitmap();
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bmImage.setImageBitmap(finalMIcon1);
 
-                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "URL per salvataggio immagine: " + Immagine);
-                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Creo cartelle per salvataggio immagine: " + CartellaImmagine);
-                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Path salvataggio immagine: " + PathImmagine);
-                            Files.getInstance().CreaCartelle(CartellaImmagine); // .getCartellaImmagine());
-                            PathImmagine = PathImmagine.replace("\\", "/");
-                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
+                                    BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
+                                    Bitmap bitmap = drawable.getBitmap();
 
-                            FileOutputStream outStream;
-                            try {
-                                outStream = new FileOutputStream(PathImmagine); // .getPathImmagine());
-                                if (bitmap != null) {
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                                }
-                                /* 100 to keep full quality of the image */
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "URL per salvataggio immagine: " + Immagine);
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Creo cartelle per salvataggio immagine: " + CartellaImmagine);
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Path salvataggio immagine: " + PathImmagine);
+                                    Files.getInstance().CreaCartelle(CartellaImmagine); // .getCartellaImmagine());
+                                    PathImmagine = PathImmagine.replace("\\", "/");
+                                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
 
-                                outStream.flush();
-                                outStream.close();
+                                    FileOutputStream outStream;
+                                    try {
+                                        outStream = new FileOutputStream(PathImmagine); // .getPathImmagine());
+                                        if (bitmap != null) {
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                                        }
+                                        /* 100 to keep full quality of the image */
 
-                                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                                        "Immagine Scaricata: " + PathImmagine);
-                            } catch (FileNotFoundException e) {
-                                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                        outStream.flush();
+                                        outStream.close();
+
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                                "Immagine Scaricata: " + PathImmagine);
+                                    } catch (IOException e) {
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                                "Errore nel salvataggio su download Immagine: " + e.getMessage());
+
+                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                        /* } catch (IOException e) {
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                         "Errore nel salvataggio su download Immagine: " + e.getMessage());
 
-                                VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
-                        /* } catch (IOException e) {
-                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                                    "Errore nel salvataggio su download Immagine: " + e.getMessage());
-
-                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context); */
-                            }
+                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context); */
+                                    }
+                                }
+                            }, 100);
                         } else {
                             //     UtilityPlayer.getInstance().ImpostaImmagine(context);
                             UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);

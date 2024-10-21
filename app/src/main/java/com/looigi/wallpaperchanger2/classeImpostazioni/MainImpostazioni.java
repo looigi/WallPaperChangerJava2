@@ -23,6 +23,9 @@ import androidx.core.content.ContextCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
+import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -31,10 +34,11 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
@@ -44,8 +48,9 @@ import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classeStandard.RichiestaPathImmaginiLocali;
-import com.looigi.wallpaperchanger2.classeStandard.db_debug;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.utilities.RichiestaPathImmaginiLocali;
+import com.looigi.wallpaperchanger2.classeAvvio.db_debug;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.ScannaDiscoPerImmaginiLocali;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -360,10 +365,12 @@ public class MainImpostazioni extends Activity {
                                 public void run() {
                                     txtDetector.setVisibility(LinearLayout.VISIBLE);
 
-                                    GestioneGPS g = new GestioneGPS();
+                                    /* GestioneGPS g = new GestioneGPS();
                                     VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
                                     g.AbilitaTimer(context);
-                                    g.AbilitaGPS();
+                                    g.AbilitaGPS(); */
+                                    VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(context, ServizioDiAvvioGPS.class));
+                                    startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
 
                                     GestioneMappa m = new GestioneMappa(context);
                                     Calendar calendar = Calendar.getInstance();
@@ -371,6 +378,7 @@ public class MainImpostazioni extends Activity {
                                     String dataOdierna = sdfD.format(calendar.getTime());
                                     m.LeggePunti(dataOdierna);
                                     VariabiliStaticheGPS.getInstance().setMappa(m);
+                                    GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
                                     /* LayoutInflater inflater = (LayoutInflater.from(context));
                                     View viewDetector = inflater.inflate(R.layout.barra_notifica_detector, null);
@@ -404,6 +412,8 @@ public class MainImpostazioni extends Activity {
 
                             VariabiliStaticheGPS.getInstance().getMappa().ChiudeMaschera();
                             VariabiliStaticheGPS.getInstance().setMappa(null);
+
+                            GestioneNotificaGPS.getInstance().RimuoviNotifica();
 
                             VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("LONG CLICK");
                             VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
@@ -897,6 +907,13 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        ImageView imgRefresh = act.findViewById(R.id.imgRefreshImmagini);
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSMI ws = new ChiamateWSMI(context);
+                ws.RefreshImmagini();
+            }
+        });
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShow);
         String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
@@ -968,6 +985,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        ImageView imgRefresh = act.findViewById(R.id.imgRefreshPennetta);
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSPEN ws = new ChiamateWSPEN(context);
+                ws.RefreshImmagini();
+            }
+        });
+
         Button btnInviaLog = act.findViewById(R.id.btnInviaLogPen);
         Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogPen);
         Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogPen);
@@ -997,6 +1022,14 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_video db = new db_dati_video(context);
                 db.ScriveImpostazioni();
+            }
+        });
+
+        ImageView imgRefresh = act.findViewById(R.id.imgRefreshVideo);
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSV ws = new ChiamateWSV(context);
+                ws.RefreshVideo();
             }
         });
 
@@ -1126,6 +1159,14 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
+            }
+        });
+
+        ImageView imgRefresh = act.findViewById(R.id.imgRefreshFilms);
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSF ws = new ChiamateWSF(context);
+                ws.RefreshFilms();
             }
         });
 

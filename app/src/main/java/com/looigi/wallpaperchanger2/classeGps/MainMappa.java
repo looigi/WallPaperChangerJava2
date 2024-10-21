@@ -468,6 +468,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 if (VariabiliStaticheGPS.getInstance().getMappa() == null) {
                     return;
+                } else {
+                    GestioneNotificaGPS.getInstance().AggiornaNotifica();
                 }
             } else {
                 return;

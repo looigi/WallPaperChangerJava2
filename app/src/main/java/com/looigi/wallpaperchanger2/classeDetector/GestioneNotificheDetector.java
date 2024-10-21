@@ -305,7 +305,7 @@ public class GestioneNotificheDetector {
                 }
             }
 
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         @Override

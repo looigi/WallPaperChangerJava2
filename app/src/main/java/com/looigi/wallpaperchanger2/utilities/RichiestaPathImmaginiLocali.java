@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
 import android.content.Intent;

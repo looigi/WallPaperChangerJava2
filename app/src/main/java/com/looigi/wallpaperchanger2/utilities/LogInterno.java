@@ -1,10 +1,8 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileWriter;

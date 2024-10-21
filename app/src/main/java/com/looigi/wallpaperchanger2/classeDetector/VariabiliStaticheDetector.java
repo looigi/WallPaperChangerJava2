@@ -82,8 +82,9 @@ public class VariabiliStaticheDetector {
     private boolean GpsPreciso = false;
     private int GpsMeters = 10;
     private int GpsMs = 3000;
-    private boolean giaPartito = false;
+    // private boolean giaPartito = false;
     // private Button btnLayModificaImmagine;
+    private boolean riaperturaSenzaReimpostazione = false;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -94,13 +95,21 @@ public class VariabiliStaticheDetector {
         }
     }
 
-    public boolean isGiaPartito() {
+    public boolean isRiaperturaSenzaReimpostazione() {
+        return riaperturaSenzaReimpostazione;
+    }
+
+    public void setRiaperturaSenzaReimpostazione(boolean riaperturaSenzaReimpostazione) {
+        this.riaperturaSenzaReimpostazione = riaperturaSenzaReimpostazione;
+    }
+
+    /* public boolean isGiaPartito() {
         return giaPartito;
     }
 
     public void setGiaPartito(boolean giaPartito) {
         this.giaPartito = giaPartito;
-    }
+    } */
 
     public boolean isFotoSuPower() {
         return FotoSuPower;

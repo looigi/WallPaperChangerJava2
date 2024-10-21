@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.os.Looper;
 import com.looigi.wallpaperchanger2.classeDetector.AndroidCameraApi;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeAvvio.Esecuzione;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.Objects;
 

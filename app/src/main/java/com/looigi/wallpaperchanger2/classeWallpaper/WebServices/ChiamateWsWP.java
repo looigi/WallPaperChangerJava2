@@ -179,8 +179,9 @@ public class ChiamateWsWP implements TaskDelegate {
             Immagine = VariabiliStaticheWallpaper.PercorsoImmagineSuURL + Immagine;
             String[] cc = Immagine.split("/");
             String NomeImmagine = cc[cc.length - 1];
-            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + quanteImmagini);
-
+            if (VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini() != null) {
+                VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + quanteImmagini);
+            }
             VariabiliStaticheWallpaper.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
             DownloadImmagineWP d = new DownloadImmagineWP();

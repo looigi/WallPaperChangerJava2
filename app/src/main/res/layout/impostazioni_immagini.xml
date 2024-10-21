@@ -55,6 +55,35 @@
         android:layout_height="wrap_content"
         android:text="Random" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_weight="4"
+            android:text="Aggiorna Immagini" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgRefreshImmagini"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icona_refresh"
+                >
+            </ImageView>
+        </LinearLayout>
+    </LinearLayout>
+
     <View
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"

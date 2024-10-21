@@ -66,6 +66,24 @@ public class ChiamateWSF implements TaskDelegate {
                 ApriDialog);
     }
 
+    public void RefreshFilms() {
+        String Urletto="RefreshFilms";
+
+        TipoOperazione = "RefreshFilms?" +
+                "Completo=";
+        // ControllaTempoEsecuzione = false;
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Refresh films lanciato");
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                250000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
@@ -115,6 +133,9 @@ public class ChiamateWSF implements TaskDelegate {
                     case "RitornaCategorie":
                         fRitornaCategorie(result);
                         break;
+                    case "RefreshFilms":
+                        fRefreshFilms(result);
+                        break;
                 }
             }
         };
@@ -133,6 +154,13 @@ public class ChiamateWSF implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRefreshFilms(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Refresh Films", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -172,6 +200,10 @@ public class ChiamateWSF implements TaskDelegate {
 
             String[] u = result.split("/");
             String res = u[u.length -1];
+            if (res.contains("§")) {
+                String[] r = res.split("§");
+                res = r[0];
+            }
             res = VariabiliStaticheFilms.getInstance().getIdUltimoFilms() + ": " + res;
             VariabiliStaticheFilms.getInstance().getTxtTitolo().setText(res);
 

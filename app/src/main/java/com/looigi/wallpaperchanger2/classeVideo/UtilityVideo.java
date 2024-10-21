@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
-import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

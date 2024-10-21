@@ -10,8 +10,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
-import com.looigi.wallpaperchanger2.classeStandard.db_debug;
+import com.looigi.wallpaperchanger2.classeAvvio.db_debug;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 
 import java.util.ArrayList;

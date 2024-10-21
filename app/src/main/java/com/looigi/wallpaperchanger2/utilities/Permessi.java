@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -41,6 +41,7 @@ public class Permessi {
                 Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                // Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                 android.Manifest.permission.ACCESS_WIFI_STATE,
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.FOREGROUND_SERVICE,

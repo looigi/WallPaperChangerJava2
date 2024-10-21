@@ -2,8 +2,7 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-
-import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
+import android.content.Intent;
 
 public class VariabiliStaticheStart {
     private static VariabiliStaticheStart instance = null;
@@ -37,6 +36,24 @@ public class VariabiliStaticheStart {
     private boolean VisibileImmagini = false;
     private boolean VisibileVideo = false;
     private boolean VisibilePennetta = false;
+    private Intent servizioForeground;
+    private Intent servizioForegroundGPS;
+
+    public Intent getServizioForeground() {
+        return servizioForeground;
+    }
+
+    public void setServizioForeground(Intent servizioForeground) {
+        this.servizioForeground = servizioForeground;
+    }
+
+    public Intent getServizioForegroundGPS() {
+        return servizioForegroundGPS;
+    }
+
+    public void setServizioForegroundGPS(Intent servizioForegroundGPS) {
+        this.servizioForegroundGPS = servizioForegroundGPS;
+    }
 
     public boolean isVisibilePennetta() {
         return VisibilePennetta;

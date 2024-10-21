@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCa
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +73,24 @@ public class ChiamateWSMI implements TaskDelegate {
                 ApriDialog);
     }
 
+    public void RefreshImmagini() {
+        String Urletto="RefreshImmagini";
+
+        TipoOperazione = "RefreshImmagini?" +
+            "idCategoria=" + VariabiliStaticheMostraImmagini.getInstance().getIdCategoria();
+        // ControllaTempoEsecuzione = false;
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Refresh immagini lanciato");
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                250000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
@@ -117,6 +136,9 @@ public class ChiamateWSMI implements TaskDelegate {
                 UtilityImmagini.getInstance().Attesa(false);
 
                 switch (TipoOperazione) {
+                    case "RefreshImmagini":
+                        fRefreshImmagini(result);
+                        break;
                     case "ProssimaImmagine":
                         fProssimaImmagine(result);
                         break;
@@ -144,6 +166,13 @@ public class ChiamateWSMI implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRefreshImmagini(String result) {
+        boolean ritorno = ControllaRitorno("Refresh Immagini", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 

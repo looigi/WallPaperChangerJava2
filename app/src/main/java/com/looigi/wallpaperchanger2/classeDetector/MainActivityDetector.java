@@ -81,8 +81,14 @@ public class MainActivityDetector extends Activity {
         VariabiliStaticheDetector.getInstance().setContext(this);
 
         // if (!VariabiliStaticheDetector.getInstance().isLetteImpostazioni()) {
+
+        if (!VariabiliStaticheDetector.getInstance().isRiaperturaSenzaReimpostazione()) {
             InizializzaMascheraDetector i = new InizializzaMascheraDetector();
             i.inizializzaMaschera(this, this);
+
+            VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(false);
+        }
+
         // }
 
         /* if (VariabiliStaticheDetector.getInstance().isChiudiActivity()) {

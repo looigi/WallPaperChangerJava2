@@ -451,6 +451,8 @@ public class modificaImmagine extends Activity {
 
         btnChiude.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(true);
+
                 bitmap = null;
                 crop = null;
                 img = null;

@@ -20,7 +20,6 @@ import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -99,9 +98,14 @@ public class UtilitiesGlobali {
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
-        if (VariabiliStaticheWallpaper.getInstance().getServizioForeground() != null) {
-            context.stopService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
-            VariabiliStaticheWallpaper.getInstance().setServizioForeground(null);
+        if (VariabiliStaticheStart.getInstance().getServizioForeground() != null) {
+            context.stopService(VariabiliStaticheStart.getInstance().getServizioForeground());
+            VariabiliStaticheStart.getInstance().setServizioForeground(null);
+        }
+
+        if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
+            context.stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+            VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
         }
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");

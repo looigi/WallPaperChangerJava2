@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeStandard.ServizioInterno;
+import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
 
 public class MainWallpaper extends Activity {
     private static String NomeMaschera = "Main_Activity_Wallpaper";

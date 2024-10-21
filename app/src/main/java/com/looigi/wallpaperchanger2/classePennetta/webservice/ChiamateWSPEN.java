@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
@@ -69,6 +70,24 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
+    public void RefreshImmagini() {
+        String Urletto="RefreshImmagini";
+
+        TipoOperazione = "RefreshPennetta?" +
+                "Completo=";
+        // ControllaTempoEsecuzione = false;
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Refresh immagini lanciato");
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                250000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
@@ -120,6 +139,9 @@ public class ChiamateWSPEN implements TaskDelegate {
                     case "RitornaCategorie":
                         fRitornaCategorie(result);
                         break;
+                    case "RefreshImmagini":
+                        fRefreshImmagini(result);
+                        break;
                 }
             }
         };
@@ -138,6 +160,13 @@ public class ChiamateWSPEN implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRefreshImmagini(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Refresh Immagini", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 

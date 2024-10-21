@@ -1,8 +1,9 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.classeAvvio;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
@@ -160,7 +161,12 @@ public class Esecuzione {
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri;
         if (VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio() != null) {
-            VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimoCambio);
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(prossimoCambio);
+                }
+            }, 100);
         }
 
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {

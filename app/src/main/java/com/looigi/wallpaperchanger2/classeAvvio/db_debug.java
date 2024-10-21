@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.classeAvvio;
 
 import android.content.Context;
 import android.database.Cursor;

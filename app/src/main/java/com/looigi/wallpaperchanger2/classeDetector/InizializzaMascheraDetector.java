@@ -34,6 +34,7 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.modificaImmagine;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
@@ -46,6 +47,11 @@ public class InizializzaMascheraDetector {
     // private boolean Criptata = false;
 
     public void inizializzaMaschera(Context context, Activity act) {
+        if (act == null) {
+            riapreTuttoDetector();
+            return;
+        }
+
         UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,"onStartCommand Service");
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create. Creazione Tabelle");
@@ -815,7 +821,30 @@ public class InizializzaMascheraDetector {
 
     private int qualeSchermata = 0;
 
+    private void riapreTuttoDetector() {
+        Context context = UtilitiesGlobali.getInstance().tornaContextValido();
+
+        Intent i = new Intent(context, MainActivityDetector.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                i2.inizializzaMaschera(
+                        context,
+                        VariabiliStaticheDetector.getInstance().getMainActivity());
+            }
+        }, 100);
+    }
+
     private void SistemaSchermata(Activity act) {
+        if (act == null) {
+            riapreTuttoDetector();
+            return;
+        }
+
         Button btnHome = act.findViewById(R.id.btnMenuHome);
         Button btnEstensione = act.findViewById(R.id.btnMenuEstensione);
         // Button btnImpostazioni = act.findViewById(R.id.btnMenuImpostazioni);
@@ -887,6 +916,11 @@ public class InizializzaMascheraDetector {
     }
 
     private void VisualizzaSchermata(Activity act) {
+        if (act == null) {
+            riapreTuttoDetector();
+            return;
+        }
+
         LinearLayout layHome = act.findViewById(R.id.container_home);
         LinearLayout layEstensione = act.findViewById(R.id.container_tipo_estensione);
         LinearLayout layImpostazioni = act.findViewById(R.id.lay_impostazioni_detector);
@@ -1075,6 +1109,11 @@ public class InizializzaMascheraDetector {
     */
 
     private void ImpostaInfo(Activity act) {
+        if (act == null) {
+            riapreTuttoDetector();
+            return;
+        }
+
         String Messaggio="";
 
         /* if (VariabiliStaticheDetector.getInstance().getLingua().equals("INGLESE")) {
@@ -1161,6 +1200,11 @@ public class InizializzaMascheraDetector {
     }
 
     private void CaricaSpinnerOrientamento(Context context, Activity act) {
+        if (act == null) {
+            riapreTuttoDetector();
+            return;
+        }
+
         String[] Cartell=new String[5];
         Cartell[0]=Integer.toString(VariabiliStaticheDetector.getInstance().getOrientamento());
         Cartell[1]="0";

@@ -28,12 +28,11 @@ public class VariabiliStaticheGPS {
     private StrutturaGps CoordinateAttuali;
     private GestioneGPS gestioneGPS;
     private boolean gpsAttivo = true;
-    public static int attesaControlloGPS = 1;
-    // private int oraGpsAccensione = 16;
-    // private int minutiGpsAccensione = 5;
-    // private int oraGpsSpengimento = 7;
-    // private int minutiGpsSpengimento = 30;
-    // private int minutiDiAttesaGpsPrimaDelloSpengimento = 3;
+    private Context context;
+    private int idNotifica = 111119;
+    public static String channelName = "WallPaperChangerII_GPS";
+    public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
+    public static int NOTIFICATION_CHANNEL_ID = 9;
     private StrutturaAccensioneGPS accensioneGPS;
     private ImageView bitmapHome;
     private GestioneMappa mappa;
@@ -45,6 +44,14 @@ public class VariabiliStaticheGPS {
     private boolean mostraPercorso = true;
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
     private int DistanzaMetriPerPS = 50;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public int getDistanzaMetriPerPS() {
         return DistanzaMetriPerPS;

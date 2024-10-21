@@ -49,15 +49,14 @@ public class GestioneGPS {
     private boolean nonScriverePunti = false;
 
     public void BloccaGPS(String daDove) {
-        // TOLTO PER TEST
-       /* context = UtilitiesGlobali.getInstance().tornaContextValido();
+        context = UtilitiesGlobali.getInstance().tornaContextValido();
         if (context == null) {
             return;
         }
 
         // statoAttivo = false;
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
         /* if (handlerThreadAccensione != null) {
             handlerThreadAccensione.stop();
@@ -68,7 +67,7 @@ public class GestioneGPS {
             handlerAccensione.removeCallbacks(rAccensione);
             handlerAccensione = null;
             rAccensione = null;
-        } * /
+        } */
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Bloccato da " + daDove);
 
@@ -89,9 +88,9 @@ public class GestioneGPS {
             VariabiliStaticheGPS.getInstance().getBitmapHome().setImageBitmap(bmGps);
         }
 
-        GestioneNotificheWP.getInstance().AggiornaNotifica();
+        GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove); */
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove);
     }
 
     public void ChiudeMaschera() {
@@ -340,7 +339,8 @@ public class GestioneGPS {
         VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        GestioneNotificaGPS.getInstance().AggiornaNotifica();
+        // GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
         // ultimoTSLocation = new Date().getTime();
         VariabiliStaticheGPS.getInstance().setCoordinateAttuali(null);
@@ -533,6 +533,8 @@ public class GestioneGPS {
                 //         "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
 
                 VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
+
+                GestioneNotificaGPS.getInstance().AggiornaNotifica();
             // } else {
                 // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
                 //         location.getLatitude() + ", " + location.getLongitude() + " NON Valida");

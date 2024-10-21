@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
+import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -27,8 +29,8 @@ import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.classeStandard.Permessi;
-import com.looigi.wallpaperchanger2.classeStandard.ServizioInterno;
+import com.looigi.wallpaperchanger2.utilities.Permessi;
+import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -117,6 +119,7 @@ public class MainStart  extends Activity {
             String dataOdierna = sdfD.format(calendar.getTime());
             m.LeggePunti(dataOdierna);
             VariabiliStaticheGPS.getInstance().setMappa(m);
+            GestioneNotificaGPS.getInstance().AggiornaNotifica();
         }
 
         ImageView imgD = findViewById(R.id.imgStartDetector);
@@ -154,6 +157,7 @@ public class MainStart  extends Activity {
                     public void run() {
                         // act.finish();
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
                     }
                 }, 100);
             }
@@ -189,6 +193,7 @@ public class MainStart  extends Activity {
                         act.finish();
                         VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
                     }
                 }, 100);
             }
@@ -216,6 +221,7 @@ public class MainStart  extends Activity {
                         act.finish();
                         VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
                     }
                 }, 100);
             }
@@ -241,6 +247,7 @@ public class MainStart  extends Activity {
                         act.finish();
                         VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
                     }
                 }, 100);
             }
@@ -277,6 +284,7 @@ public class MainStart  extends Activity {
                         act.finish();
                         VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                         VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
                     }
                 }, 100);
             }
@@ -478,8 +486,8 @@ public class MainStart  extends Activity {
 
     private void StartActivities() {
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
-            VariabiliStaticheWallpaper.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
-            startForegroundService(VariabiliStaticheWallpaper.getInstance().getServizioForeground());
+            VariabiliStaticheStart.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
+            startForegroundService(VariabiliStaticheStart.getInstance().getServizioForeground());
 
             VariabiliStaticheStart.getInstance().setGiaPartito(true);
             // WALLPAPER Parte nel servizio

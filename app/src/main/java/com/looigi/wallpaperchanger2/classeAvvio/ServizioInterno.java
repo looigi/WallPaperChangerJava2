@@ -1,21 +1,32 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.classeAvvio;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener2;
+import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+
 import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePlayer.cuffie.GestioneTastiCuffieNuovo;
@@ -30,9 +41,13 @@ import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.util.Date;
+
+// implements SensorEventListener2
 public class ServizioInterno extends Service {
     private static final String NomeMaschera = "Servizio_Interno";
     private Context context;
@@ -40,6 +55,13 @@ public class ServizioInterno extends Service {
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
     private Intent intentCuffie;
+
+    /* private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private float lastAcc = 0.0f;
+    private float acceleration = 0.0f;
+    private float totAcc = 0.0f;
+    private boolean onEvent = false; */
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -63,7 +85,7 @@ public class ServizioInterno extends Service {
 
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @SuppressLint({"ForegroundServiceType", "WakelockTimeout"})
@@ -94,6 +116,13 @@ public class ServizioInterno extends Service {
         // GESTIONE TASTI CUFFIE
         intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
         startService(intentCuffie);
+
+        // SENSORI DI MOVIMENTO
+        /* mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        lastAcc=SensorManager.GRAVITY_EARTH;
+        acceleration=SensorManager.GRAVITY_EARTH;
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL); */
 
         Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
         if (notificaTasti != null) {
@@ -170,16 +199,21 @@ public class ServizioInterno extends Service {
                 }
             }
 
-            if (VariabiliStaticheStart.getInstance().isDetector()) {
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
+                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
                 // db_dati_gps db2 = new db_dati_gps(context);
                 // db2.CaricaAccensioni(context);
 
                 // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
 
-                GestioneGPS g = new GestioneGPS();
+                /* GestioneGPS g = new GestioneGPS();
                 VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
                 g.AbilitaTimer(context);
-                g.AbilitaGPS();
+                g.AbilitaGPS(); */
+
+                VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(this, ServizioDiAvvioGPS.class));
+                startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
             }
 
             Intent iO = new Intent(context, MainOnomastici.class);
@@ -225,6 +259,11 @@ public class ServizioInterno extends Service {
             mReceiverComponentInterno = null;
         } */
 
+        if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
+            stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+            VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
+        }
+
         if (intentCuffie != null) {
             context.stopService(intentCuffie);
         }
@@ -237,6 +276,10 @@ public class ServizioInterno extends Service {
             context.unregisterReceiver(mScreenReceiver);
         }
 
+        // if (mSensorManager != null) {
+        //     mSensorManager.unregisterListener(this);
+        // }
+
         if (wl != null) {
             wl.release();
         }
@@ -246,40 +289,156 @@ public class ServizioInterno extends Service {
         }
     }
 
-    /* public static class VolumePressed extends BroadcastReceiver {
-        private static final String NomeMaschera = "VOLUMEPRESSED";
+    // SENSORI
+    /* private long ultimoSpostamento = -1;
+    private long spostamentoAttuale = -1;
+    private Handler handler;
+    private Runnable r;
+    private HandlerThread handlerThread;
+    private int conta = 0;
+    private boolean timerAttivo = false;
 
-        public VolumePressed() {
-            super();
+    @Override
+    public void onFlushCompleted(Sensor sensor) {
+    }
 
-            UtilityWallpaper.getInstance().ScriveLog(
-                    VariabiliStaticheStart.getInstance().getMainActivity(),
-                    NomeMaschera,
-                    "Instanziamento");
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (VariabiliStaticheStart.getInstance().isCeWifi() ||
+            VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+            return;
         }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String intentAction = intent.getAction();
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Azione: " + intentAction);
+        // if (!onEvent) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            acceleration = x*x+y*y+z*z;
+            float diff = acceleration - lastAcc;
+            totAcc = diff*acceleration;
 
-            if (!Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
-                return;
+            if (totAcc>3000) {
+                spostamentoAttuale = new Date().getTime();
+
+                // Prende la data dell'ultimo spostamento
+                if (!timerAttivo) {
+                    // Abbiamo un timer fermo. Controllo se devo accendere
+                    if (spostamentoAttuale - ultimoSpostamento < 3000) {
+                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                                "Movimento: " + totAcc + ". Timer Attivo: " + timerAttivo);
+
+                        // L'ultimo spostamento è inferiore a 1 secondo fa
+                        conta++;
+
+                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                                "Incremento movimento per timer non attivo: " + conta);
+
+                        if (conta >= 5) {
+                            // Ci sono stati spostamenti continui negli ultimi 15 secondi. Abilito il GPS
+                            // se non è attivo
+                            conta = 0;
+
+                            UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                                    "Arrivato a 15 secondi continui. Attivo GPS e timer");
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+
+                            // Attivo il timer per vedere se ci siamo fermati
+                            AttivaTimerMovimento();
+                        }
+                    } else {
+                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                                "Resetto contatore. Spostamenti da più di tre secondi");
+
+                        // L'ultimo spostamento è superiore a 3 secondi fa. Resetto il contatore
+                        conta = 0;
+                    }
+                }
+                ultimoSpostamento = spostamentoAttuale;
             }
 
-            KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-            if (event == null) {
-                return;
-            }
+            lastAcc = acceleration;
+        // }
+    }
 
-            int action = event.getAction();
-            if (action == KeyEvent.ACTION_DOWN) {
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "ACTION DOWN");
+    private void DisattivaTimerMovimento() {
+        timerAttivo = false;
+        conta = 0;
 
-                Toast.makeText(context, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
-            }
+        if (handler != null && r != null && handlerThread != null) {
+            handlerThread.quit();
 
-            abortBroadcast();
+            handler.removeCallbacksAndMessages(null);
+
+            handler.removeCallbacks(r);
+            handler = null;
+            r = null;
         }
+    }
+
+    private void AttivaTimerMovimento() {
+        if (handlerThread != null || handler != null || r != null) {
+            return;
+        }
+
+        timerAttivo = true;
+        conta = 0;
+
+        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore", "Attivo timer");
+
+        handlerThread = new HandlerThread("background-thread_Sensore_" +
+                VariabiliStaticheWallpaper.channelName);
+        handlerThread.start();
+
+        handler = new Handler(handlerThread.getLooper());
+        r = new Runnable() {
+            public void run() {
+                long diff = spostamentoAttuale - ultimoSpostamento;
+
+                UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                        "Controllo ultimo movimento: " + diff);
+
+                boolean ok = true;
+                // Siamo in movimento. Controllo l'ultimo spostamento
+                if (diff >= 10000) {
+                    conta++;
+
+                    UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                            "Incremento movimento: " + conta);
+
+                    if (conta >= 3) {
+                        ok = false;
+
+                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                                "Ultimo movimento superiore a 30 secondi. Blocco GPS");
+
+                        // La differenza fra l'ultimo spostamento e l'attuale è superiore a 10 secondi * 3 volte.
+                        // Vuol dire che non ci siamo mossi dall'ultimo controllo.
+                        // Disattivo il timer
+
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("SENSORE");
+                        DisattivaTimerMovimento();
+                    } else {
+
+                    }
+                } else {
+                    UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                            "Tempo inferiore a 10 secondi. Azzero contatore");
+
+                    ultimoSpostamento = spostamentoAttuale;
+                }
+
+                if (ok) {
+                    if (handler != null) {
+                        handler.postDelayed(this, 10000);
+                    }
+                }
+            }
+        };
+        handler.postDelayed(r, 10000);
+    }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     } */
 }

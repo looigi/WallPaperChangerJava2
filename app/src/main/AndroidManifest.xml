@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -67,6 +68,8 @@
         android:theme="@style/Theme.wallpaperchanger2"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         tools:targetApi="31">
 
         <activity
@@ -130,7 +133,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeStandard.RichiestaPath"
+            android:name=".utilities.RichiestaPath"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -154,11 +157,14 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeStandard.RichiestaPathImmaginiLocali"
+            android:name=".utilities.RichiestaPathImmaginiLocali"
             android:windowSoftInputMode="adjustResize" />
 
-        <service android:name = ".classeStandard.ServizioInterno"
+        <service android:name = ".classeAvvio.ServizioInterno"
             android:foregroundServiceType="specialUse|location|camera" />
+
+        <service android:name = ".classeGps.ServizioDiAvvioGPS"
+            android:foregroundServiceType="location" />
 
         <!-- <receiver android:name=".classePlayer.cuffie.GestioneTastiCuffie"
             android:enabled="true"
@@ -224,7 +230,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".classeStandard.ScreenReceiver"
+        <receiver android:name=".utilities.ScreenReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

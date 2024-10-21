@@ -91,7 +91,8 @@ public class GestioneNotificheTasti {
 
             if (VariabiliStaticheStart.getInstance().isDetector()) {
                 // contentView.setViewVisibility(R.id.imgMap, LinearLayout.VISIBLE);
-                contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.VISIBLE);
+
+                /* contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.VISIBLE);
                 Bitmap bmGps;
                 if (!VariabiliStaticheGPS.getInstance().isGpsAttivo() ||
                     VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
@@ -111,13 +112,13 @@ public class GestioneNotificheTasti {
                 } else {
                     contentView.setTextViewText(R.id.txtPunti,
                             "Punti: 0\nDist.: 0");
-                }
+                } */
             } else {
                 // contentView.setViewVisibility(R.id.imgMap, LinearLayout.GONE);
-                contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.GONE);
+                // contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgDetectorTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgMappaTasti, LinearLayout.GONE);
-                contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
+                // contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
             /* if (VariabiliStaticheStart.getInstance().isDetector() &&
@@ -207,11 +208,11 @@ public class GestioneNotificheTasti {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            Intent gps = new Intent(ctx, NotificationActionServiceTasti.class);
+            /* Intent gps = new Intent(ctx, NotificationActionServiceTasti.class);
             gps.putExtra("DO", "gps");
             PendingIntent pGps = PendingIntent.getService(ctx, 200, gps,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps);
+            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps); */
 
             Intent settings = new Intent(ctx, NotificationActionServiceTasti.class);
             settings.putExtra("DO", "settings");
@@ -358,7 +359,7 @@ public class GestioneNotificheTasti {
                 }
                 if (context != null) {
                     switch (action) {
-                        case "gps":
+                        /* case "gps":
                             boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
                             VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
                             if (!attivo) {
@@ -367,7 +368,7 @@ public class GestioneNotificheTasti {
                                 VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
                             }
                             GestioneNotificheTasti.getInstance().AggiornaNotifica();
-                            break;
+                            break; */
                         case "settings":
                             Intent iI = new Intent(context, MainImpostazioni.class);
                             iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -462,7 +463,7 @@ public class GestioneNotificheTasti {
                 }
             }
 
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         @Override

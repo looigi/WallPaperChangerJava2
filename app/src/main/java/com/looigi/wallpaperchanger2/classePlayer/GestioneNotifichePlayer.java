@@ -260,7 +260,7 @@ public class GestioneNotifichePlayer {
                 }
             }
 
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         @Override

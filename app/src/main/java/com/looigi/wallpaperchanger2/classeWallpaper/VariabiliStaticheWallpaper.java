@@ -38,7 +38,6 @@ public class VariabiliStaticheWallpaper {
     public static final int TimeoutImmagine = 5;
     public static int channelIdIntentOverlay = 152;
     // private String NomeFileDiLog = "";
-    private Intent servizioForeground;
     // private String PercorsoDIRLog = "";
     public static int secondiDiAttesaContatore = 10;
     private boolean staPartendo = true;
@@ -502,7 +501,6 @@ public class VariabiliStaticheWallpaper {
     public void setPercorsoDIRLog(String percorsoDIRLog) {
         PercorsoDIRLog = percorsoDIRLog;
     }
-    */
 
     public Intent getServizioForeground() {
         return servizioForeground;
@@ -511,6 +509,7 @@ public class VariabiliStaticheWallpaper {
     public void setServizioForeground(Intent servizioForeground) {
         this.servizioForeground = servizioForeground;
     }
+    */
 
     public Activity getMainActivity() {
         return mainActivity;

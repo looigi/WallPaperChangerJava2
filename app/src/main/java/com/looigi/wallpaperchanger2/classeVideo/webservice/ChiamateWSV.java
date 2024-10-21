@@ -66,6 +66,24 @@ public class ChiamateWSV implements TaskDelegate {
                 ApriDialog);
     }
 
+    public void RefreshVideo() {
+        String Urletto="RefreshVideo";
+
+        TipoOperazione = "RefreshVideo?" +
+                "Completo=";
+        // ControllaTempoEsecuzione = false;
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Refresh video lanciato");
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                250000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
@@ -114,6 +132,9 @@ public class ChiamateWSV implements TaskDelegate {
                     case "RitornaCategorie":
                         fRitornaCategorie(result);
                         break;
+                    case "RefreshVideo":
+                        fRefreshVideo(result);
+                        break;
                 }
             }
         };
@@ -122,6 +143,13 @@ public class ChiamateWSV implements TaskDelegate {
 
     public void StoppaEsecuzione() {
         // bckAsyncTask.cancel(true);
+    }
+
+    private void fRefreshVideo(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Refresh Video", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
@@ -171,6 +199,10 @@ public class ChiamateWSV implements TaskDelegate {
 
             String[] u = result.split("/");
             String res = u[u.length -1];
+            if (res.contains("§")) {
+                String[] r = res.split("§");
+                res = r[0];
+            }
             res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
             VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res);
 

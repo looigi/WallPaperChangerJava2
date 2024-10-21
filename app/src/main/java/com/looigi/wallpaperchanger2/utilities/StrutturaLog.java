@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeStandard;
+package com.looigi.wallpaperchanger2.utilities;
 
 public class StrutturaLog {
     private String Data;

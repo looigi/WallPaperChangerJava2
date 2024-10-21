@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
+
+    <!-- <ImageView
+        android:id="@+id/imgCopertina"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher" /> -->
+
+    <LinearLayout
+        android:id="@+id/layBarraNotifica"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtTitolo"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:padding="2dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:tag="tabCaption"
+            android:text="GPS"
+            android:textColor="@color/design_default_color_primary"
+            android:shadowColor="#ff000000"
+            android:textStyle="bold"
+            android:shadowDy="2"
+            android:shadowDx="2"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgSwitchGPSTasti"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/satellite" />
+
+        <TextView
+            android:id="@+id/txtPunti"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_height="wrap_content"
+            android:text="Punti: 0\nDistanza: 0">
+
+        </TextView>
+
+    </LinearLayout>
+
+</RelativeLayout>

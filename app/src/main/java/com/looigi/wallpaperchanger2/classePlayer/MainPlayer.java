@@ -396,7 +396,9 @@ public class MainPlayer extends Activity {
             UtilityPlayer.getInstance().ImpostaImmagine(this);
             VariabiliStatichePlayer.getInstance().setMascheraNascosta(true);
 
-            VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
+            if (VariabiliStaticheStart.getInstance().getMainActivity() != null) {
+                VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
+            }
         }
     }
 

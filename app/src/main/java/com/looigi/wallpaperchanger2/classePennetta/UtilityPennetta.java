@@ -14,7 +14,7 @@ import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
-import com.looigi.wallpaperchanger2.classeStandard.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -51,14 +51,18 @@ public class UtilityPennetta {
             public void run() {
                 if (Acceso) {
                     if (quantiCaricamenti == 0) {
-                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                        if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento() != null) {
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                        }
                     }
                     quantiCaricamenti++;
                 } else {
                     quantiCaricamenti--;
                     if (quantiCaricamenti < 1) {
                         quantiCaricamenti = 0;
-                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                        if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento() != null) {
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                        }
                     }
                 }
             }

@@ -370,7 +370,7 @@ public class GestioneNotificheWP {
                 }
             }
 
-            return START_NOT_STICKY;
+            return START_STICKY;
         }
 
         @Override

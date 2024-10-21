@@ -7,7 +7,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/txtSegnale"
             android:textColor="@color/Rosso"
@@ -17,6 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
+
+        <!-- <TextView
+            android:id="@+id/txtPunti"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Punti: 0\nDist.: 0">
+
+        </TextView> -->
     </LinearLayout>
 
     <LinearLayout
@@ -24,6 +36,7 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content">
 
+        <!--
         <ImageView
             android:id="@+id/imgSwitchGPSTasti"
             android:layout_marginStart="5dp"
@@ -31,6 +44,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/satellite" />
+        -->
 
         <ImageView
             android:id="@+id/imgSettingsTasti"
@@ -69,17 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/txtPunti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:gravity="left"
-            android:text="Punti: 0\nDist.: 0">
-
-        </TextView>
 
         <ImageView
             android:id="@+id/imgOnomasticiTasti"
