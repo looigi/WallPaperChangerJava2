@@ -37,17 +37,23 @@
                         android:text="Br. Locali"
                         android:layout_height="match_parent" />
 
+                    <Button
+                        android:id="@+id/btnSettingsBrano"
+                        android:layout_width="wrap_content"
+                        android:text="Brano"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/btnSettingsImmagine"
+                        android:layout_width="wrap_content"
+                        android:text="Sfondo"
+                        android:layout_height="match_parent" />
+
                     <ImageView
                         android:id="@+id/imgSettingsGlobali"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/settings" />
-
-                    <ImageView
-                        android:id="@+id/imgImpostaWP"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/eye" />
 
                     <ImageView
                         android:id="@+id/imgChiusuraSettings"
@@ -68,7 +74,22 @@
             android:layout_height="0dp">
 
             <include
+                layout="@layout/ricerche_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
                 layout="@layout/brani_locali"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/sfondo_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/brano_player"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

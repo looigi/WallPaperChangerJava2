@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <!-- <LinearLayout
             android:layout_width="0dp"
@@ -30,8 +30,8 @@
         <LinearLayout
             android:id="@+id/layWidget"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:padding="2dp"
-            android:layout_height="wrap_content"
             android:weightSum="10"
             android:background="#88AAAAAA"
             android:orientation="horizontal" >
@@ -43,8 +43,9 @@
 
                 <ImageView
                     android:id="@+id/imgSantoWidget"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp">
+                    android:src="@drawable/onomastici"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 </ImageView>
             </LinearLayout>

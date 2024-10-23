@@ -103,8 +103,32 @@ public class AndroidCameraApi extends Activity {
     }
 
     private void Attiva() {
-        textureView = (TextureView) findViewById(R.id.textureView);
-        assert textureView != null;
+        if (act == null) {
+            UtilitiesGlobali.getInstance().ApreToast(this,
+                    "ACT NULLA");
+
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Attiva: Act NULLA");
+
+            act.finish();
+            return;
+        }
+
+        textureView = (TextureView) act.findViewById(R.id.textureViewCamera);
+        if (textureView == null) {
+            UtilitiesGlobali.getInstance().ApreToast(this,
+                    "Texture View NULLA");
+
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Attiva: Texture View NULLA");
+
+            act.finish();
+            return;
+        }
         textureView.setSurfaceTextureListener(textureListener);
 
         sEstensione = "dbf";
@@ -171,6 +195,8 @@ public class AndroidCameraApi extends Activity {
 
                             // CAMERA NON ATTIVATA IN TEMPO
                             handlerTimer.removeCallbacks(this);
+
+                            act.finish();
                         } else {
                             handlerTimer.postDelayed(this, 150);
                         }
@@ -291,7 +317,6 @@ public class AndroidCameraApi extends Activity {
                 mBackgroundThread = null;
                 mBackgroundHandler = null;
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -300,6 +325,7 @@ public class AndroidCameraApi extends Activity {
         if (null == cameraDevice) {
             // Log.e(TAG, "cameraDevice is null");
             UtilitiesGlobali.getInstance().ApreToast(this, "Oggetto C nullo");
+            act.finish();
             return;
         }
 

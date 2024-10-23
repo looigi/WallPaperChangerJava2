@@ -60,7 +60,7 @@ public class db_dati_pennetta {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (LimiteInBytes VARCHAR, Random VARCHAR"
+                        + " (LimiteInBytes VARCHAR, Random VARCHAR, SettingsAperto VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -85,7 +85,8 @@ public class db_dati_pennetta {
                         + " Impostazioni"
                         + " VALUES ("
                         + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getSecondiAttesa() + "',"
-                        + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() + "'"
+                        + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() + "',"
+                        + "'" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isSettingsAperto() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -105,6 +106,7 @@ public class db_dati_pennetta {
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(5000);
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom("S");
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSettingsAperto(true);
     }
 
     public int CaricaImpostazioni() {
@@ -118,6 +120,7 @@ public class db_dati_pennetta {
                     try {
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(Integer.parseInt(c.getString(0)));
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom(c.getString(1));
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSettingsAperto(c.getString(2).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

@@ -52,7 +52,7 @@ public class RichiestaPathImmaginiLocali extends Activity {
             db_dati_wallpaper db = new db_dati_wallpaper(this);
             db.ScriveImpostazioni();
 
-            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this);
+            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(this, null);
             bckLeggeImmaginiLocali.execute();
         }
         finish();

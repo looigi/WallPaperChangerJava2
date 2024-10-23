@@ -359,12 +359,14 @@
 
     <LinearLayout
         android:id="@+id/layImpostazioniPlayerInterne"
-        android:layout_below="@+id/layStelle"
-        android:layout_above="@id/layTastiPlayer"
-        android:layout_centerInParent="true"
-        android:padding="5dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/layTastiPlayer"
+        android:layout_below="@+id/layStelle"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="2dp"
+        android:padding="5dp">
 
         <include
             layout="@layout/impostazioni_player_interne"

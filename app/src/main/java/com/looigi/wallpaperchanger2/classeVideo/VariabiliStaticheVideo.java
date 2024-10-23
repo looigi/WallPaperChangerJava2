@@ -34,6 +34,15 @@ public class VariabiliStaticheVideo {
     private Spinner spnCategorie;
     private TextView txtTitolo;
     private int idUltimoVideo = -1;
+    private boolean SettingsAperto = true;
+
+    public boolean isSettingsAperto() {
+        return SettingsAperto;
+    }
+
+    public void setSettingsAperto(boolean settingsAperto) {
+        SettingsAperto = settingsAperto;
+    }
 
     public int getIdUltimoVideo() {
         return idUltimoVideo;

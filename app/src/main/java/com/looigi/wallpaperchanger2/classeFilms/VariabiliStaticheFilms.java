@@ -36,6 +36,15 @@ public class VariabiliStaticheFilms {
     private Spinner spnCategorie;
     private TextView txtTitolo;
     private int idUltimoFilms = -1;
+    private boolean SettingsAperto = true;
+
+    public boolean isSettingsAperto() {
+        return SettingsAperto;
+    }
+
+    public void setSettingsAperto(boolean settingsAperto) {
+        SettingsAperto = settingsAperto;
+    }
 
     public int getIdUltimoFilms() {
         return idUltimoFilms;

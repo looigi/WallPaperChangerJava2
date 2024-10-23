@@ -122,7 +122,8 @@ public class AdapterListenerBrani extends BaseAdapter {
                         Files.getInstance().EliminaFileUnico(PathImmagine2);
 
                         db_dati_player db = new db_dati_player(context);
-                        db.EliminaImmagine(listaBrani.get(i), s);
+                        db.EliminaImmagineFisica(listaBrani.get(i).getArtista(),
+                                s.getPathImmagine());
                     }
                 }
             }

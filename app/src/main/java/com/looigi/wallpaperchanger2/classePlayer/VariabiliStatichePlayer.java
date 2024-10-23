@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadCanzone;
@@ -93,6 +94,8 @@ public class VariabiliStatichePlayer {
     private long SpazioMassimo;
     private boolean settingsAperte = false;
     private boolean nonMostrareToast = false;
+    private StrutturaImmagini immagineImpostata;
+    private ImageView imgSfondoSettings;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -124,6 +127,22 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ImageView getImgSfondoSettings() {
+        return imgSfondoSettings;
+    }
+
+    public void setImgSfondoSettings(ImageView imgSfondoSettings) {
+        this.imgSfondoSettings = imgSfondoSettings;
+    }
+
+    public StrutturaImmagini getImmagineImpostata() {
+        return immagineImpostata;
+    }
+
+    public void setImmagineImpostata(StrutturaImmagini immagineImpostata) {
+        this.immagineImpostata = immagineImpostata;
     }
 
     public boolean isNonMostrareToast() {

@@ -44,6 +44,15 @@ public class VariabiliStaticheGPS {
     private boolean mostraPercorso = true;
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
     private int DistanzaMetriPerPS = 50;
+    private ImageView imgMappa;
+
+    public ImageView getImgMappa() {
+        return imgMappa;
+    }
+
+    public void setImgMappa(ImageView imgMappa) {
+        this.imgMappa = imgMappa;
+    }
 
     public Context getContext() {
         return context;

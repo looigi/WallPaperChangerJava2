@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
@@ -20,6 +21,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class ChiamateWSPEN implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_PEN";
     // private LetturaWSAsincrona bckAsyncTask;
@@ -31,9 +34,14 @@ public class ChiamateWSPEN implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
+    private GifImageView imgAttesa;
 
     public ChiamateWSPEN(Context context) {
         this.context = context;
+    }
+
+    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+        this.imgAttesa = imgAttesa;
     }
 
     public void RitornaProssimaImmagine(String Categoria, String Filtro) {
@@ -67,6 +75,21 @@ public class ChiamateWSPEN implements TaskDelegate {
                 NS,
                 SA,
                 10000,
+                ApriDialog);
+    }
+
+    public void EliminaImmagine(String id) {
+        String Urletto="EliminaImmagine";
+
+        TipoOperazione = "EliminaImmaginePennetta?idImmagine=" + id;
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
                 ApriDialog);
     }
 
@@ -142,6 +165,13 @@ public class ChiamateWSPEN implements TaskDelegate {
                     case "RefreshImmagini":
                         fRefreshImmagini(result);
                         break;
+                    case "EliminaImmagine":
+                        fEliminaImmagine(result);
+                        break;
+                }
+
+                if (imgAttesa != null) {
+                    imgAttesa.setVisibility(LinearLayout.GONE);
                 }
             }
         };
@@ -160,6 +190,16 @@ public class ChiamateWSPEN implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fEliminaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Elimina Immagine", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
+            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
         }
     }
 

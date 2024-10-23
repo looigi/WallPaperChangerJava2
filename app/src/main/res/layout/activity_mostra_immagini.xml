@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/laySpinner"
+        android:id="@+id/laySettaggiMI"
         android:background="@drawable/bordato"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -14,13 +14,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="3"
+            android:weightSum="8"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="Categoria"
                 android:layout_height="wrap_content">
 
@@ -29,8 +29,23 @@
             <Spinner
                 android:id="@+id/spnCategorie"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshCategorieMI"
+                    android:src="@drawable/icona_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp">
+
+                </ImageView>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -53,72 +68,56 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    </LinearLayout>
-
-    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
-        android:layout_below="@+id/laySpinner"
-        android:layout_above="@id/layInfo"
-        android:layout_alignParentStart="true"
-        android:id="@+id/imgLibrary"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile>
-
-    <LinearLayout
-        android:id="@+id/layInfo"
-        android:layout_width="match_parent"
-        android:weightSum="9"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/txtInfoImmagine"
             android:gravity="center_horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bordato">
+            android:layout_width="match_parent"
+            android:textColor="@color/Rosso"
+            android:layout_height="wrap_content">
 
         </TextView>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:gravity="end"
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginEnd="5dp"
+                android:id="@+id/imgEliminaMI"
+                android:src="@drawable/elimina"
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_marginEnd="5dp"
+                android:id="@+id/imgShareWallpaper"
+                android:src="@drawable/share"
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_marginEnd="5dp"
                 android:id="@+id/imgImpostaWallpaper"
                 android:src="@drawable/eye"
                 android:layout_width="30dp"
                 android:layout_height="30dp">
 
             </ImageView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginEnd="5dp"
                 android:id="@+id/imgSlideShow"
                 android:src="@drawable/slideshow_off"
                 android:layout_width="30dp"
                 android:layout_height="30dp">
 
             </ImageView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgSettings"
@@ -129,6 +128,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+        android:layout_below="@+id/laySettaggiMI"
+        android:layout_alignParentStart="true"
+        android:id="@+id/imgLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile>
     <!--
     <ImageView
         android:id="@+id/imgAvantiLibrary"
@@ -142,21 +150,29 @@
 
     <ImageView
         android:id="@+id/imgScorri"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/layInfo"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
     </ImageView>
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imgCaricamentoPEN"
+        android:id="@+id/imgCaricamentoMI"
         android:src="@drawable/loading"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/layInfo"
-        android:layout_width="50dp"
-        android:layout_height="50dp">
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
 
     </pl.droidsonroids.gif.GifImageView>
+
+    <ImageView
+        android:id="@+id/imgLinguettaMI"
+        android:layout_width="140dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/laySettaggiMI"
+        android:src="@drawable/linguetta1">
+
+    </ImageView>
 
 </RelativeLayout>

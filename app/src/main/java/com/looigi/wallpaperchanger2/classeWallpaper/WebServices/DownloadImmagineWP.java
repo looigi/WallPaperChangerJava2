@@ -127,13 +127,14 @@ public class DownloadImmagineWP {
         Bitmap mIcon11 = null;
         try {
             in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
-
+            if (in != null) {
+                mIcon11 = BitmapFactory.decodeStream(in);
+            }
             if (immagine == null) {
                 FileOutputStream outStream;
                 try {
                     outStream = new FileOutputStream(PercorsoDIR + "/Appoggio.jpg"); // .getPathImmagine());
-                    if (outStream != null & mIcon11 != null) {
+                    if (mIcon11 != null) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
 

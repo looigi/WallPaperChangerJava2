@@ -63,6 +63,8 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class MainImpostazioni extends Activity {
     private static String NomeMaschera = "Main_Impostazioni";
     private Context context;
@@ -72,6 +74,7 @@ public class MainImpostazioni extends Activity {
     private Long controlloLongPress = null;
     private LinearLayout layAprePlayer;
     private LinearLayout layChiudePlayer;
+    private GifImageView imgAttesa;
     // private LinearLayout laySettingsImpo;
 
     @Override
@@ -81,6 +84,9 @@ public class MainImpostazioni extends Activity {
 
         context = this;
         act = this;
+
+        imgAttesa = findViewById(R.id.imgCaricamentoSettings);
+        imgAttesa.setVisibility(LinearLayout.GONE);
 
         Bundle b = getIntent().getExtras();
         String value = "";
@@ -524,7 +530,7 @@ public class MainImpostazioni extends Activity {
                             int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
                             VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
                         } else {
-                            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
+                            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, imgAttesa);
                             bckLeggeImmaginiLocali.execute();
                         }
                     } else {
@@ -555,7 +561,9 @@ public class MainImpostazioni extends Activity {
         ImageView imgRefreshLocale = (ImageView) act.findViewById(R.id.imgRefreshLocale);
         imgRefreshLocale.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
+                ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, imgAttesa);
                 bckLeggeImmaginiLocali.execute();
             }
         });
@@ -910,7 +918,10 @@ public class MainImpostazioni extends Activity {
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshImmagini);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
                 ChiamateWSMI ws = new ChiamateWSMI(context);
+                ws.ImpostaImgAttesa(imgAttesa);
                 ws.RefreshImmagini();
             }
         });
@@ -988,7 +999,10 @@ public class MainImpostazioni extends Activity {
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshPennetta);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
                 ChiamateWSPEN ws = new ChiamateWSPEN(context);
+                ws.ImpostaImgAttesa(imgAttesa);
                 ws.RefreshImmagini();
             }
         });
@@ -1028,7 +1042,10 @@ public class MainImpostazioni extends Activity {
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshVideo);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
                 ChiamateWSV ws = new ChiamateWSV(context);
+                ws.ImpostaImgAttesa(imgAttesa);
                 ws.RefreshVideo();
             }
         });
@@ -1165,7 +1182,10 @@ public class MainImpostazioni extends Activity {
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshFilms);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
                 ChiamateWSF ws = new ChiamateWSF(context);
+                ws.ImpostaImgAttesa(imgAttesa);
                 ws.RefreshFilms();
             }
         });

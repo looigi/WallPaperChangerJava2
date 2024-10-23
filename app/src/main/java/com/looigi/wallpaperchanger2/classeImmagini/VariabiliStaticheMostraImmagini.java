@@ -52,6 +52,15 @@ public class VariabiliStaticheMostraImmagini {
     private boolean slideShowAttivo = false;
     private int secondiAttesa = 5000;
     private InterrogazioneWSMI ClasseChiamata;
+    private boolean SettingsAperto = true;
+
+    public boolean isSettingsAperto() {
+        return SettingsAperto;
+    }
+
+    public void setSettingsAperto(boolean settingsAperto) {
+        SettingsAperto = settingsAperto;
+    }
 
     public InterrogazioneWSMI getClasseChiamata() {
         return ClasseChiamata;

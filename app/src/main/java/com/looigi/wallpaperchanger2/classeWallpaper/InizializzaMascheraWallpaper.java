@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -17,11 +19,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+
+import java.io.File;
 
 public class InizializzaMascheraWallpaper {
     private static final String NomeMaschera = "Init_Maschera_Wallpaper";
@@ -63,7 +70,7 @@ public class InizializzaMascheraWallpaper {
             if (!letteImmagini) {
                 // if (VariabiliGlobali.getInstance().isOffline()) {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini in locale non rilevate... Scanno...");
-                ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context);
+                ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, null);
                 bckLeggeImmaginiLocali.execute();
                 // }
             } else {
@@ -255,6 +262,30 @@ public class InizializzaMascheraWallpaper {
                 return false;
             }
         }); */
+
+        ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
+        imgCondividi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Path = context.getFilesDir() + "/Download/Appoggio.jpg";
+                if (Files.getInstance().EsisteFile(Path)) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(Path);
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i, "Share wallpaper"));
+                }
+            }
+        });
 
         ImageView imgCambiaSubito = (ImageView) view.findViewById(R.id.imgCambiaSubito);
         ImageView imgRefresh = (ImageView) view.findViewById(R.id.imgRefresh);

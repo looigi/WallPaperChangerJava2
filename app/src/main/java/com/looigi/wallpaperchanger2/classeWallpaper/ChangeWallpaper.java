@@ -288,8 +288,8 @@ public class ChangeWallpaper {
 														bitmap,
 														inizioVisoX,
 														inizioVisoY,
-														larghezzaViso - inizioVisoX,
-														altezzaViso - inizioVisoY
+														larghezzaImmagine - inizioVisoX,
+														altezzaImmagine - inizioVisoY
 												);
 
 												/* bmpAppoggio = Bitmap.createScaledBitmap(

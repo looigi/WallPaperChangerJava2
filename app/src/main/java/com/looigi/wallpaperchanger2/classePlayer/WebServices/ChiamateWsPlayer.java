@@ -40,6 +40,29 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         this.Riprova = Riprova;
     }
 
+    public void EliminaImmagine(String Artista, String Album, String Immagine) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Elimina Immagine Artista " + Artista + ": " + Immagine);
+
+        String Urletto="EliminaImmagine?" +
+                "Artista=" + Artista +
+                "&Album=" + Album +
+                "&Immagine=" + Immagine;
+
+        TipoOperazione = "EliminaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                5000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
     public void RitornaImmaginiArtista(String Artista) {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna Immagini Artista");
 
@@ -443,11 +466,17 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                         // if (Ok) {
                 switch (TipoOperazione) {
+                    case "EliminaImmagine":
+                        fEliminaImmagine(result);
+                        break;
                     case "RitornaStelleBrano":
                         fRitornaStelleBrano(result);
                         break;
                     case "RitornaArtisti":
                         RitornaArtisti(result);
+                        break;
+                    case "RitornaImmaginiArtista":
+                        fRitornaImmaginiArtista(result);
                         break;
                     case "RitornaProssimoBranoMobile":
                         CaricaBrano(result);
@@ -463,6 +492,15 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         };
         handlerTimer.postDelayed(rTimer, 100);
 
+    }
+    private void fEliminaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Elimina Immagine", result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
+        }
     }
 
     private void fAggiornaTesto(String result) {
@@ -484,6 +522,67 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             // db_dati db = new db_dati();
             // db.aggiornaTestoBrano(VariabiliGlobali.getInstance().getIdTesto(), testo);
+        }
+    }
+
+    private void fRitornaImmaginiArtista(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna immagini artista", result);
+        if (!ritorno) {
+            // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
+        } else {
+            db_dati_player db = new db_dati_player(context);
+            // Sabaton;ZZZ-ImmaginiArtista;070629_Peace_And_Love_2007-480.jpg§Sabaton;ZZZ-ImmaginiArtista;11564-12192012123241.jpg
+            List<StrutturaImmagini> ListaImmagini = db.CaricaImmaginiBrano(
+                    VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista()
+            );
+            String[] lista = result.split("§");
+            int quante = 0;
+            for (String l : lista) {
+                String[] Campi = l.split(";");
+                String Artista = Campi[0];
+                String Album = Campi[1];
+                String Immagine = Campi[2];
+
+                boolean ok = true;
+
+                for (StrutturaImmagini li : ListaImmagini) {
+                    if (li.getArtista().equals(Artista) &&
+                            li.getAlbum().equals(Album) &&
+                            li.getNomeImmagine().equals(Immagine)) {
+                        ok = false;
+                        break;
+                    }
+                }
+
+                if (ok) {
+                    StrutturaImmagini Imm = new StrutturaImmagini();
+                    Imm.setArtista(Artista);
+                    Imm.setAlbum(Album);
+                    Imm.setNomeImmagine(Immagine);
+
+                    String UrlImmagine = VariabiliStatichePlayer.PercorsoBranoMP3SuURL +
+                            "/ImmaginiMusica/" + Artista + "/" + Album + "/" +
+                            Immagine;
+                    Imm.setUrlImmagine(UrlImmagine);
+
+                    String PathImmagine = context.getFilesDir() + "/Player/" +
+                            "/ImmaginiMusica/" + Artista + "/" + Album + "/" +
+                            Immagine;
+                    Imm.setPathImmagine(PathImmagine);
+
+                    String CartellaImmagine = context.getFilesDir() + "/Player/" +
+                            "/ImmaginiMusica/" + Artista + "/" + Album;
+                    Imm.setCartellaImmagine(CartellaImmagine);
+
+                    ListaImmagini.add(Imm);
+
+                    db.ScriveImmagineBrano(Artista, Imm);
+
+                    quante++;
+                }
+            }
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagini aggiunte: " + quante);
         }
     }
 
@@ -749,36 +848,54 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 s.setEsisteBranoSuDisco(false);
             }
 
-            List<StrutturaImmagini> ListaImmagini;
-            ListaImmagini = new ArrayList<>();
+            db_dati_player db = new db_dati_player(context);
+            List<StrutturaImmagini> ListaImmagini = db.CaricaImmaginiBrano(DatiBrano[3]);
             String ImmagineDaImpostare = "";
             StrutturaImmagini StruttImmDaImpostare = new StrutturaImmagini();
             for (int i = 0; i < Immagini.length; i++) {
                 if (!Immagini[i].isEmpty()) {
                     String[] Imm2 = Immagini[i].split(";", -1);
-                    StrutturaImmagini Imm = new StrutturaImmagini();
-                /* if (Imm2[2].toUpperCase().contains("COVER_")) {
-                    Imm.setAlbum(Imm2[1]);
-                } else {
-                } */
-                    Imm.setAlbum(Imm2[1]);
-                    Imm.setNomeImmagine(Imm2[2]);
 
-                    String UrlImmagine = VariabiliStatichePlayer.PercorsoBranoMP3SuURL +
-                            "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1] + "/" +
-                            Imm2[2];
-                    Imm.setUrlImmagine(UrlImmagine);
+                    boolean ok = true;
 
-                    String PathImmagine = context.getFilesDir() + "/Player/" +
-                            "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1] + "/" +
-                            Imm2[2];
-                    Imm.setPathImmagine(PathImmagine);
+                    for (StrutturaImmagini li : ListaImmagini) {
+                        if (li.getArtista().equals(DatiBrano[3]) &&
+                                li.getAlbum().equals(Imm2[1]) &&
+                                li.getNomeImmagine().equals(Imm2[2])) {
+                            ok = false;
+                            break;
+                        }
+                    }
 
-                    String CartellaImmagine = context.getFilesDir() + "/Player/" +
-                            "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1];
-                    Imm.setCartellaImmagine(CartellaImmagine);
+                    if (ok) {
+                        StrutturaImmagini Imm = new StrutturaImmagini();
+                        /* if (Imm2[2].toUpperCase().contains("COVER_")) {
+                            Imm.setAlbum(Imm2[1]);
+                        } else {
+                        } */
 
-                    ListaImmagini.add(Imm);
+                        Imm.setArtista(DatiBrano[3]);
+                        Imm.setAlbum(Imm2[1]);
+                        Imm.setNomeImmagine(Imm2[2]);
+
+                        String UrlImmagine = VariabiliStatichePlayer.PercorsoBranoMP3SuURL +
+                                "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1] + "/" +
+                                Imm2[2];
+                        Imm.setUrlImmagine(UrlImmagine);
+
+                        String PathImmagine = context.getFilesDir() + "/Player/" +
+                                "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1] + "/" +
+                                Imm2[2];
+                        Imm.setPathImmagine(PathImmagine);
+
+                        String CartellaImmagine = context.getFilesDir() + "/Player/" +
+                                "/ImmaginiMusica/" + DatiBrano[3] + "/" + Imm2[1];
+                        Imm.setCartellaImmagine(CartellaImmagine);
+
+                        ListaImmagini.add(Imm);
+
+                        db.ScriveImmagineBrano(DatiBrano[3], Imm);
+                    }
                 }
             }
             int immagine = -1;
@@ -871,7 +988,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             } else {
                 if (!Pregresso) {
                     if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
-                        db_dati_player db = new db_dati_player(context);
+                        // db_dati_player db = new db_dati_player(context);
                         db.ScriveBrano(s);
                         db.ScriveUltimoBranoAscoltato(s);
 

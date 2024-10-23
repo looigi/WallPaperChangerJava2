@@ -6,11 +6,15 @@ androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
 core = "1.13.1"
 faceDetection = "16.1.7"
+googleApiClientAndroid = "1.22.0"
+googleApiServicesDrive = "v3-rev75-1.22.0"
+guava = "27.0.1-android"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 ksoap2Android = "3.6.2"
+listenablefuture = "9999.0-empty-to-avoid-conflict-with-guava"
 material = "1.12.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
@@ -19,6 +23,7 @@ androidMail = "1.6.7"
 media = "1.7.0"
 photoview = "2.0.0"
 picasso = "2.8"
+playServicesAuth = "21.2.0"
 playServicesMaps = "19.0.0"
 playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
@@ -33,11 +38,15 @@ android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", v
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 core = { module = "androidx.core:core", version.ref = "core" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
+google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
+google-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "googleApiServicesDrive" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 ksoap2-android = { module = "com.google.code.ksoap2-android:ksoap2-android", version.ref = "ksoap2Android" }
+listenablefuture = { module = "com.google.guava:listenablefuture", version.ref = "listenablefuture" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version = "1.9.2" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -46,6 +55,7 @@ android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "a
 media = { module = "androidx.media:media", version.ref = "media" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }

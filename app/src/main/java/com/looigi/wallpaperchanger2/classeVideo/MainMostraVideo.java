@@ -2,19 +2,27 @@ package com.looigi.wallpaperchanger2.classeVideo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 
 public class MainMostraVideo extends Activity {
     private static String NomeMaschera = "Main_Mostra_Video";
     private Context context;
     private Activity act;
+    private boolean SettaggiAperti = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,73 @@ public class MainMostraVideo extends Activity {
 
         VariabiliStaticheVideo.getInstance().setContext(context);
         VariabiliStaticheVideo.getInstance().setAct(act);
+
+        SettaggiAperti = VariabiliStaticheVideo.getInstance().isSettingsAperto();
+        ImageView imgLinguetta = findViewById(R.id.imgLinguettaVideo);
+        LinearLayout laySettaggi = findViewById(R.id.laySettaggiVideo);
+        if (SettaggiAperti) {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            1));
+        }
+
+        imgLinguetta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SettaggiAperti = !SettaggiAperti;
+                VariabiliStaticheVideo.getInstance().setSettingsAperto(SettaggiAperti);
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+
+                if (!SettaggiAperti) {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    1));
+                } else {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT));
+                }
+            }
+        });
+
+        ImageView imgRefreshCat = findViewById(R.id.imgRefreshCategorieVideo);
+        imgRefreshCat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSV c = new ChiamateWSV(context);
+                c.RitornaCategorie();
+            }
+        });
+
+        ImageView imgSettings = (ImageView) findViewById(R.id.imgSettingsVideo);
+        imgSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent iP = new Intent(VariabiliStaticheVideo.getInstance().getContext(), MainImpostazioni.class);
+                                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle b = new Bundle();
+                                b.putString("qualeSettaggio", "VIDEO");
+                                iP.putExtras(b);
+                                VariabiliStaticheVideo.getInstance().getContext().startActivity(iP);
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
 
         VariabiliStaticheVideo.getInstance().setVideoView(findViewById(R.id.videoView));
         VariabiliStaticheVideo.getInstance().setPbLoading(findViewById(R.id.pbVideoLoading));
@@ -41,6 +116,13 @@ public class MainMostraVideo extends Activity {
 
                 ChiamateWSV ws = new ChiamateWSV(context);
                 ws.RitornaProssimoVideo();
+            }
+        });
+
+        ImageView imgScreenShot = findViewById(R.id.imgScreenshot);
+        imgScreenShot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityVideo.getInstance().takeScreenshot(context);
             }
         });
 

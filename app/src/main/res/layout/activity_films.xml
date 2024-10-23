@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/laySpinner"
+        android:id="@+id/laySettaggiFilms"
         android:background="@drawable/bordato"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -14,13 +14,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="3"
+            android:weightSum="8"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="Categoria"
                 android:layout_height="wrap_content">
 
@@ -29,13 +29,28 @@
             <Spinner
                 android:id="@+id/spnCategorie"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshCategorieFilms"
+                    android:src="@drawable/icona_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp">
+
+                </ImageView>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="4"
+            android:weightSum="6"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
@@ -50,13 +65,13 @@
             <EditText
                 android:id="@+id/edtFiltroFilms"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
+                android:layout_weight="2"
+                android:gravity="end|center_vertical"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -66,11 +81,25 @@
                     android:layout_height="40dp">
 
                 </ImageView>
+
+                <ImageView
+                    android:id="@+id/imgScreenshot"
+                    android:src="@drawable/screenshot"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/imgSettingsFilms"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/settings" />
             </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtTitoloFilm"
+            android:id="@+id/txtTitoloFilms"
             android:textColor="@color/Rosso"
             android:gravity="center_horizontal"
             android:textSize="16sp"
@@ -83,7 +112,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_below="@+id/laySpinner"
+        android:layout_below="@+id/laySettaggiFilms"
         android:layout_height="match_parent"
         android:gravity="center">
 
@@ -103,4 +132,14 @@
         android:layout_height="wrap_content">
 
     </ProgressBar>
+
+    <ImageView
+        android:id="@+id/imgLinguettaFilms"
+        android:layout_width="140dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/laySettaggiFilms"
+        android:src="@drawable/linguetta1">
+
+    </ImageView>
 </RelativeLayout>

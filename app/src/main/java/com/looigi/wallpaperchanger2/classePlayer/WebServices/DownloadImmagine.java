@@ -76,6 +76,10 @@ public class DownloadImmagine {
                                 public void run() {
                                     bmImage.setImageBitmap(finalMIcon1);
 
+                                    if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(finalMIcon1);
+                                    }
+
                                     BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
                                     Bitmap bitmap = drawable.getBitmap();
 

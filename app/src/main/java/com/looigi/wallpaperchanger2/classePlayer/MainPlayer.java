@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -26,7 +25,7 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.cuffie.PresenzaCuffie;
-import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.brani_locali;
+import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.impostazioni_player_interne;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniPerLimite;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -111,31 +110,7 @@ public class MainPlayer extends Activity {
         layImpostazioni = findViewById(R.id.layImpostazioniPlayerInterne);
         layImpostazioni.setVisibility(LinearLayout.GONE);
 
-        ImageView imgImposta = findViewById(R.id.imgImpostaWP);
-        imgImposta.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (VariabiliStatichePlayer.getInstance().getPathUltimaImmagine() != null) {
-                    UtilityPlayer.getInstance().Attesa(true);
-
-                    String Path = VariabiliStatichePlayer.getInstance().getPathUltimaImmagine();
-                    String[] N = Path.split("/");
-                    String Nome = N[N.length - 1];
-                    String Data = Files.getInstance().DataFile(Path).toString();
-                    long Dimensione = Files.getInstance().DimensioniFile(Path);
-
-                    StrutturaImmagine src = new StrutturaImmagine();
-                    src.setPathImmagine(Path);
-                    src.setImmagine(Nome);
-                    src.setDimensione(String.valueOf(Dimensione));
-                    src.setDataImmagine(Data);
-
-                    ChangeWallpaper c = new ChangeWallpaper(context);
-                    c.setWallpaperLocale(context, src);
-
-                    UtilityPlayer.getInstance().Attesa(false);
-                }
-            }
-        });
+        VariabiliStatichePlayer.getInstance().setImgSfondoSettings(act.findViewById(R.id.imgSfondoSettings));
 
         VariabiliStatichePlayer.getInstance().setSettingsAperte(false);
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
@@ -161,13 +136,6 @@ public class MainPlayer extends Activity {
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 1000);
-            }
-        });
-
-        Button imgBranilocali = (Button) findViewById(R.id.btnSettingsBraniLocali);
-        imgBranilocali.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                visualizzaImpostazioniMaschera(1);
             }
         });
 
@@ -233,6 +201,8 @@ public class MainPlayer extends Activity {
                 VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
                 UtilityPlayer.getInstance().CaricaBranoNelLettore(this);
+
+                // UtilityPlayer.getInstance().ImpostaImmagine(context);
             } else {
                 UtilityPlayer.getInstance().BranoAvanti(this, "", false);
             }
@@ -349,7 +319,8 @@ public class MainPlayer extends Activity {
             }
         });
 
-        visualizzaImpostazioniMaschera(0);
+        impostazioni_player_interne i = new impostazioni_player_interne(act, context);
+        i.impostaMaschera();
 
         VariabiliStatichePlayer.getInstance().setPlayerAttivo(true);
     }
@@ -399,22 +370,6 @@ public class MainPlayer extends Activity {
             if (VariabiliStaticheStart.getInstance().getMainActivity() != null) {
                 VariabiliStaticheStart.getInstance().getMainActivity().moveTaskToBack(true);
             }
-        }
-    }
-
-    private void visualizzaImpostazioniMaschera(int quale) {
-        LinearLayout layBraniLocali = act.findViewById(R.id.layBraniLocali);
-
-        layBraniLocali.setVisibility(LinearLayout.GONE);
-
-        switch(quale) {
-            case 0:
-                break;
-            case 1:
-                layBraniLocali.setVisibility(LinearLayout.VISIBLE);
-                brani_locali bl = new brani_locali(act, context);
-                bl.impostaMaschera();
-                break;
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="40dp"
     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
 
     <!-- <ImageView
@@ -11,7 +11,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher" /> -->
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/layBarraNotifica"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -39,7 +39,7 @@
             android:shadowDx="2"
             android:textSize="16sp" />
 
-    </LinearLayout>
+    </LinearLayout> -->
 
     <LinearLayout
         android:layout_alignParentBottom="true"

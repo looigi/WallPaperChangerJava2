@@ -62,14 +62,14 @@ public class db_dati_films {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "UltimoFilms"
-                        + " (Films VARCHAR);";
+                        + " (Films VARCHAR, idFilm VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -93,6 +93,7 @@ public class db_dati_films {
 
                     try {
                         VariabiliStaticheFilms.getInstance().setUltimoLink(c.getString(0));
+                        VariabiliStaticheFilms.getInstance().setIdUltimoFilms(Integer.parseInt(c.getString(1)));
 
                         return VariabiliStaticheFilms.getInstance().getUltimoLink();
                     } catch (Exception e) {
@@ -128,7 +129,8 @@ public class db_dati_films {
                 String sql = "INSERT INTO"
                         + " UltimoFilms"
                         + " VALUES ("
-                        + "'" + VariabiliStaticheFilms.getInstance().getUltimoLink().replace("'", "''") + "'"
+                        + "'" + VariabiliStaticheFilms.getInstance().getUltimoLink().replace("'", "''") + "', "
+                        + "'" + VariabiliStaticheFilms.getInstance().getIdUltimoFilms() + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -153,7 +155,8 @@ public class db_dati_films {
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " VALUES ("
-                        + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "'"
+                        + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "',"
+                        + "'" + (VariabiliStaticheFilms.getInstance().isSettingsAperto() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -172,6 +175,7 @@ public class db_dati_films {
 
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheFilms.getInstance().setRandom("S");
+        VariabiliStaticheFilms.getInstance().setSettingsAperto(true);
     }
 
     public int CaricaImpostazioni() {
@@ -184,6 +188,7 @@ public class db_dati_films {
 
                     try {
                         VariabiliStaticheFilms.getInstance().setRandom(c.getString(0));
+                        VariabiliStaticheFilms.getInstance().setSettingsAperto(c.getString(1).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

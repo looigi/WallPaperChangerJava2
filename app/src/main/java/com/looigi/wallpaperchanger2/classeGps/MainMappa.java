@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,19 +40,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeGps.MappeSalvate.MainMappeSalvate;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
@@ -90,6 +98,59 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
         dataOdierna = sdfD.format(calendar.getTime());
+
+        ImageView imgMappeSalvate = (ImageView) act.findViewById(R.id.imgMappeSalvate);
+        imgMappeSalvate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iO = new Intent(context, MainMappeSalvate.class);
+                iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iO);
+           }
+        });
+
+        ImageView imgScattaFotoMappa = (ImageView) act.findViewById(R.id.imgScattaFotoMappa);
+        imgScattaFotoMappa.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View v) {
+               GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+                   Bitmap bitmap;
+
+                   @Override
+                   public void onSnapshotReady(Bitmap snapshot) {
+                       bitmap = snapshot;
+
+                       Calendar calendar = Calendar.getInstance();
+                       String day = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)).trim();
+                       String month = String.valueOf(calendar.get(Calendar.MONTH + 1)).trim();
+                       String year = String.valueOf(calendar.get(Calendar.YEAR)).trim();
+                       String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)).trim();
+                       String minuti = String.valueOf(calendar.get(Calendar.MINUTE)).trim();
+                       String secondi = String.valueOf(calendar.get(Calendar.SECOND)).trim();
+                       if (day.length() == 1) { day = "0" + day; }
+                       if (month.length() == 1) { month = "0" + month; }
+                       if (hour.length() == 1) { hour = "0" + hour; }
+                       if (minuti.length() == 1) { minuti = "0" + minuti; }
+                       if (secondi.length() == 1) { secondi = "0" + secondi; }
+
+                       String Path = context.getFilesDir() + "/Mappe/";
+                       String Nome = year + "_" + month + "_" + day + " " + hour + "_" + minuti + "_" + secondi + ".png";
+                       Files.getInstance().CreaCartelle(Path);
+                       Path += Nome;
+                       try {
+                           FileOutputStream out = new FileOutputStream(Path);
+                           bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                           UtilitiesGlobali.getInstance().ApreToast(context, "Mappa salvata: " + Nome);
+                       } catch (Exception e) {
+                           UtilitiesGlobali.getInstance().ApreToast(context,
+                                   "Errore salvataggio mappa: " +
+                                           UtilityDetector.getInstance().PrendeErroreDaException(e));
+                       }
+                   }
+               };
+
+               mappa.snapshot(callback);
+           }
+       });
 
         ImageView imgSettings = (ImageView) act.findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {

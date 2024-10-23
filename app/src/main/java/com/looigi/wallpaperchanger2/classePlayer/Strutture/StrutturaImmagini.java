@@ -1,11 +1,20 @@
 package com.looigi.wallpaperchanger2.classePlayer.Strutture;
 
 public class StrutturaImmagini {
+    private String Artista;
     private String Album;
     private String NomeImmagine;
     private String UrlImmagine;
     private String PathImmagine;
     private String CartellaImmagine;
+
+    public String getArtista() {
+        return Artista;
+    }
+
+    public void setArtista(String artista) {
+        Artista = artista;
+    }
 
     public String getAlbum() {
         return Album;

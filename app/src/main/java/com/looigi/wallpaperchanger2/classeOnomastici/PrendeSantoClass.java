@@ -43,11 +43,11 @@ public class PrendeSantoClass {
 		    NomeMese[12]=new String("December");
 		} else {
 		    Giorni[1]=new String("Domenica");
-		    Giorni[2]=new String("Lunedì");
-		    Giorni[3]=new String("Martedì");
-		    Giorni[4]=new String("Mercoledì");
-		    Giorni[5]=new String("Giovedì");
-		    Giorni[6]=new String("Venerdì");
+		    Giorni[2]=new String("Lunedi");
+		    Giorni[3]=new String("Martedi");
+		    Giorni[4]=new String("Mercoledi");
+		    Giorni[5]=new String("Giovedi");
+		    Giorni[6]=new String("Venerdi");
 		    Giorni[7]=new String("Sabato");
 
 		    NomeMese[1]=new String("Gennaio");

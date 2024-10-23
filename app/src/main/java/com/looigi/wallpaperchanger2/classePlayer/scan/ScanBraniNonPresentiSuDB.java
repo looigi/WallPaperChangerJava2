@@ -143,6 +143,7 @@ public class ScanBraniNonPresentiSuDB {
                         sb.setImmagini(lista);
 
                         db.ScriveBrano(sb);
+                        db.ScriveImmaginiBrano(sb);
 
                         maxId++;
                     }

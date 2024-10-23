@@ -81,7 +81,7 @@ public class db_dati_player {
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "ImmaginiBrano"
-                        + " (idBrano VARCHAR, Album VARCHAR,"
+                        + " (Artista VARCHAR, Album VARCHAR,"
                         + " NomeImmagine VARCHAR,"
                         + " UrlImmagine VARCHAR,"
                         + " PathImmagine VARCHAR,"
@@ -119,6 +119,14 @@ public class db_dati_player {
         }
     }
 
+    public void EliminaImmagineFisica(String Artista, String Immagine) {
+        if (myDB != null) {
+            myDB.execSQL("Delete From ImmaginiBrano Where Artista='" + Artista.replace("'", "''") + "' And NomeImmagine='" + Immagine.replace("'", "''") + "'");
+
+            CompattaDB();
+        }
+    }
+
     public List<StrutturaBrano> CaricaTuttiIBraniLocali() {
         List<StrutturaBrano> lista = new ArrayList<>();
 
@@ -151,7 +159,7 @@ public class db_dati_player {
                             sb.setTags(c.getString(17));
                             sb.setTipoBrano(Integer.parseInt(c.getString(18)));
 
-                            sb.setImmagini(CaricaImmaginiBrano(sb.getIdBrano().toString()));
+                            sb.setImmagini(CaricaImmaginiBrano(sb.getArtista().toString()));
 
                             lista.add(sb);
                         } while (c.moveToNext());
@@ -239,7 +247,7 @@ public class db_dati_player {
                         sb.setTags(c.getString(17));
                         sb.setTipoBrano(Integer.parseInt(c.getString(18)));
 
-                        sb.setImmagini(CaricaImmaginiBrano(sb.getIdBrano().toString()));
+                        sb.setImmagini(CaricaImmaginiBrano(sb.getArtista().toString()));
 
                         return sb;
                     } catch (Exception e) {
@@ -267,18 +275,19 @@ public class db_dati_player {
         }
     }
 
-    private List<StrutturaImmagini> CaricaImmaginiBrano(String idBrano) {
+    public List<StrutturaImmagini> CaricaImmaginiBrano(String Artista) {
         List<StrutturaImmagini> lista = new ArrayList<>();
 
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM ImmaginiBrano Where idBrano=" + idBrano, null);
+                Cursor c = myDB.rawQuery("SELECT * FROM ImmaginiBrano Where Artista='" + Artista + "'", null);
                 if (c.getCount() > 0) {
                     c.moveToFirst();
 
                     try {
                         do {
                             StrutturaImmagini i = new StrutturaImmagini();
+                            i.setArtista(c.getString(0));
                             i.setAlbum(c.getString(1));
                             i.setNomeImmagine(c.getString(2));
                             i.setUrlImmagine(c.getString(3));
@@ -529,13 +538,13 @@ public class db_dati_player {
         }
     }
 
-    public void EliminaImmagine(StrutturaBrano sb, StrutturaImmagini si) {
+    /* public void EliminaImmagine(StrutturaBrano sb, StrutturaImmagini si) {
         if (myDB != null) {
             String Sql = "Delete From ImmaginiBrano Where idBrano='" + sb.getIdBrano() + "' And " +
                     "PathImmagine = '" + si.getPathImmagine() + "'";
             myDB.execSQL(Sql);
         }
-    }
+    } */
 
     public Boolean ScriveBrano(StrutturaBrano sb) {
         if (myDB != null) {
@@ -565,7 +574,7 @@ public class db_dati_player {
                         + ") ";
                 myDB.execSQL(sql);
 
-                ScriveImmaginiBrano(sb);
+                // ScriveImmaginiBrano(sb);
 
                 if (sb.getIdBrano() < 60000) {
                     sql = "Select * From listaBrani Where " +
@@ -606,12 +615,12 @@ public class db_dati_player {
         }
     }
 
-    private void ScriveImmaginiBrano(StrutturaBrano sb) {
+    public void ScriveImmaginiBrano(StrutturaBrano sb) {
         if (myDB != null) {
             try {
                 // myDB.execSQL("Delete From ImmaginiUltimoBrano");
 
-                String idBrano = sb.getIdBrano().toString();
+                String Artista = sb.getArtista().toString();
 
                 List<StrutturaImmagini> lista = sb.getImmagini();
                 List<StrutturaImmagini> nuovaLista = new ArrayList<>();
@@ -623,7 +632,7 @@ public class db_dati_player {
                         String sql = "INSERT INTO"
                                 + " ImmaginiBrano"
                                 + " VALUES ("
-                                + "'" + idBrano + "', "
+                                + "'" + Artista.replace("'", "''") + "', "
                                 + "'" + i.getAlbum().replace("'", "''") + "', "
                                 + "'" + i.getNomeImmagine().replace("'", "''") + "', "
                                 + "'" + i.getUrlImmagine().replace("'", "''") + "', "
@@ -636,11 +645,40 @@ public class db_dati_player {
 
                 sb.setImmagini(nuovaLista);
             } catch (SQLException e) {
-                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per ultimo brano: " + e.getMessage());
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per scrittura immagini: " + e.getMessage());
                 PulisceDatiSBI();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
                 ScriveImmaginiBrano(sb);
+            }
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public void ScriveImmagineBrano(String Artista, StrutturaImmagini immagine) {
+        if (myDB != null) {
+            try {
+                String imm = immagine.getUrlImmagine().toUpperCase();
+                if (imm.contains(".JPG") || imm.contains(".JPEG") || imm.contains(".PNG")) {
+                    String sql = "INSERT INTO"
+                            + " ImmaginiBrano"
+                            + " VALUES ("
+                            + "'" + Artista + "', "
+                            + "'" + immagine.getAlbum().replace("'", "''") + "', "
+                            + "'" + immagine.getNomeImmagine().replace("'", "''") + "', "
+                            + "'" + immagine.getUrlImmagine().replace("'", "''") + "', "
+                            + "'" + immagine.getPathImmagine().replace("'", "''") + "', "
+                            + "'" + immagine.getCartellaImmagine().replace("'", "''") + "' "
+                            + ") ";
+                    myDB.execSQL(sql);
+                }
+            } catch (SQLException e) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per aggiunta immagine: " + e.getMessage());
+                PulisceDatiSBI();
+                // Log.getInstance().ScriveLog("Creazione tabelle");
+                CreazioneTabelle();
+                ScriveImmagineBrano(Artista, immagine);
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");

@@ -5,15 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
@@ -22,7 +27,9 @@ import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
+import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -31,9 +38,12 @@ import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+
 public class MainMostraImmagini extends Activity {
     private Context context;
     private Activity act;
+    private boolean SettaggiAperti = false;
 
     public MainMostraImmagini() {
     }
@@ -54,7 +64,7 @@ public class MainMostraImmagini extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(1);
         VariabiliStaticheMostraImmagini.getInstance().setRandom("S");
 
-        VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
+        VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoMI));
 
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
@@ -67,6 +77,58 @@ public class MainMostraImmagini extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setImg(findViewById(R.id.imgLibrary));
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
         // ImageView imgAvanti = findViewById(R.id.imgAvantiLibrary);
+
+        SettaggiAperti = VariabiliStaticheMostraImmagini.getInstance().isSettingsAperto();
+        ImageView imgLinguetta = findViewById(R.id.imgLinguettaMI);
+        LinearLayout laySettaggi = findViewById(R.id.laySettaggiMI);
+        if (SettaggiAperti) {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            1));
+        }
+        imgLinguetta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SettaggiAperti = !SettaggiAperti;
+                VariabiliStaticheMostraImmagini.getInstance().setSettingsAperto(SettaggiAperti);
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+
+                if (!SettaggiAperti) {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    1));
+                } else {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT));
+                }
+            }
+        });
+
+        ImageView imgElimina = findViewById(R.id.imgEliminaMI);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String id = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getIdImmagine());
+                ChiamateWSMI c = new ChiamateWSMI(context);
+                c.EliminaImmagine(id);
+            }
+        });
+
+        ImageView imgRefreshCat = findViewById(R.id.imgRefreshCategorieMI);
+        imgRefreshCat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSMI c = new ChiamateWSMI(context);
+                c.RitornaCategorie();
+            }
+        });
 
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +151,31 @@ public class MainMostraImmagini extends Activity {
                     c.setWallpaperLocale(context, src);
 
                     UtilityImmagini.getInstance().Attesa(false);
+                }
+            }
+        });
+
+        ImageView imgShare = findViewById(R.id.imgShareWallpaper);
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
+                    String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
+
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(Path);
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getNomeFile());
+                    i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM,uri);
+                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i,"Share immagine"));
                 }
             }
         });

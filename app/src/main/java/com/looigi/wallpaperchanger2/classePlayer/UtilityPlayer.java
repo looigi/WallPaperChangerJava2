@@ -215,6 +215,8 @@ public class UtilityPlayer {
 
             AggiornaInformazioni(false);
 
+            GestioneNotifichePlayer.getInstance().AggiornaNotifica(sb.getBrano());
+
             if (sb.getBellezza() == -2) {
                 ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
                 VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
@@ -539,15 +541,21 @@ public class UtilityPlayer {
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
                 if (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini() != null) {
                     List<StrutturaImmagini> lista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini();
+                    if (lista.isEmpty()) {
+                        db_dati_player db = new db_dati_player(context);
+                        lista = db. CaricaImmaginiBrano(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
+                    }
+
                     final int[] immagine = {GeneraNumeroRandom(lista.size() - 1)};
                     if (immagine[0] > -1) {
                         Handler handlerTimer = new Handler(Looper.getMainLooper());
+                        List<StrutturaImmagini> finalLista = lista;
                         Runnable rTimer = new Runnable() {
                             public void run() {
                                 boolean ancora = true;
 
                                 while (ancora) {
-                                    String path = lista.get(immagine[0]).getUrlImmagine();
+                                    String path = finalLista.get(immagine[0]).getUrlImmagine();
 
                                     String PathImmagine = "";
                                     if (path.toUpperCase().contains("HTTP://")) {
@@ -566,15 +574,22 @@ public class UtilityPlayer {
 
                                                 VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
                                                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+                                                VariabiliStatichePlayer.getInstance().setImmagineImpostata(finalLista.get(immagine[0]));
+
+                                                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
 
                                                 AggiornaInformazioni(false);
                                             } else {
                                                 Files.getInstance().EliminaFileUnico(PathImmagine);
 
+                                                VariabiliStatichePlayer.getInstance().setImmagineImpostata(null);
+
                                                 db_dati_player db = new db_dati_player(context);
-                                                db.EliminaImmagine(
-                                                        VariabiliStatichePlayer.getInstance().getUltimoBrano(),
-                                                        lista.get(immagine[0]));
+                                                db.EliminaImmagineFisica(
+                                                        finalLista.get(immagine[0]).getAlbum(),
+                                                        finalLista.get(immagine[0]).getNomeImmagine());
+
+                                                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(null);
                                             }
                                         }
                                     } else {
@@ -583,16 +598,21 @@ public class UtilityPlayer {
 
                                         if (!UtilitiesGlobali.getInstance().isRetePresente()) {
                                             ok = false;
+                                            ImpostaLogoApplicazione(context);
+                                            VariabiliStatichePlayer.getInstance().setImmagineImpostata(null);
+                                            ancora = false;
                                         }
                                         if (ok) {
                                             ancora = false;
+
+                                            VariabiliStatichePlayer.getInstance().setImmagineImpostata(finalLista.get(immagine[0]));
 
                                             DownloadImmagine d = new DownloadImmagine();
                                             VariabiliStatichePlayer.getInstance().setDownImmagine(d);
                                             d. EsegueDownload(
                                                     context,
                                                     VariabiliStatichePlayer.getInstance().getImgBrano(),
-                                                    lista.get(immagine[0]).getUrlImmagine()
+                                                    finalLista.get(immagine[0]).getUrlImmagine()
                                             );
                                     /* new DownloadImage(
                                             context,
@@ -604,7 +624,7 @@ public class UtilityPlayer {
                                     }
 
                                     immagine[0]++;
-                                    if (immagine[0] > lista.size() - 1) {
+                                    if (immagine[0] > finalLista.size() - 1) {
                                         immagine[0] = 0;
                                     }
                                 }
@@ -612,12 +632,15 @@ public class UtilityPlayer {
                         };
                         handlerTimer.postDelayed(rTimer, 1000);
                     } else {
+                        VariabiliStatichePlayer.getInstance().setImmagineImpostata(null);
                         ImpostaLogoApplicazione(context);
                     }
                 } else {
+                    VariabiliStatichePlayer.getInstance().setImmagineImpostata(null);
                     ImpostaLogoApplicazione(context);
                 }
             } else {
+                VariabiliStatichePlayer.getInstance().setImmagineImpostata(null);
                 ImpostaLogoApplicazione(context);
             }
         }
@@ -629,6 +652,7 @@ public class UtilityPlayer {
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
             }
         };
         handlerTimer.postDelayed(rTimer, 1000);

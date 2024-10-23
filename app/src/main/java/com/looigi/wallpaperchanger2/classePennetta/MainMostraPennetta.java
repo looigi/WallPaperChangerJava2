@@ -5,17 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
@@ -30,9 +37,12 @@ import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+
 public class MainMostraPennetta extends Activity {
     private Context context;
     private Activity act;
+    private boolean SettaggiAperti = false;
 
     public MainMostraPennetta() {
     }
@@ -67,6 +77,82 @@ public class MainMostraPennetta extends Activity {
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
         // ImageView imgAvanti = findViewById(R.id.imgAvantiLibrary);
 
+        SettaggiAperti = VariabiliStaticheMostraImmaginiPennetta.getInstance().isSettingsAperto();
+        ImageView imgLinguetta = findViewById(R.id.imgLinguettaPEN);
+        LinearLayout laySettaggi = findViewById(R.id.laySettaggiPEN);
+        if (SettaggiAperti) {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            laySettaggi.setLayoutParams(
+                    new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            1));
+        }
+
+        imgLinguetta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SettaggiAperti = !SettaggiAperti;
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setSettingsAperto(SettaggiAperti);
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveImpostazioni();
+
+                if (!SettaggiAperti) {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    1));
+                } else {
+                    laySettaggi.setLayoutParams(
+                            new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT));
+                }
+            }
+        });
+
+        ImageView imgElimina = findViewById(R.id.imgEliminaPennetta);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String id = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getIdImmagine());
+                ChiamateWSPEN c = new ChiamateWSPEN(context);
+                c.EliminaImmagine(id);
+            }
+        });
+
+        ImageView imgRefreshCat = findViewById(R.id.imgRefreshCategoriePEN);
+        imgRefreshCat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSPEN c = new ChiamateWSPEN(context);
+                c.RitornaCategorie();
+            }
+        });
+
+        ImageView imgShare = findViewById(R.id.imgSharePennetta);
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT,VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM,uri);
+                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i,"Share immagine pennetta"));
+                }
+            }
+        });
+
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -87,7 +173,7 @@ public class MainMostraPennetta extends Activity {
             }
         });
 
-        ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
+        ImageView imgSettings = (ImageView) findViewById(R.id.imgSettingsPEN);
         imgSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());

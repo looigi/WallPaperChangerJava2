@@ -2,20 +2,26 @@ package com.looigi.wallpaperchanger2.classeWallpaper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, String> {
     private static final String NomeMaschera = "ScanDisk_IL";
     private List<StrutturaImmagine> imms = new ArrayList<>();
     private db_dati_wallpaper db;
     private Context context;
+    private GifImageView imgAttesa;
 
-    public ScannaDiscoPerImmaginiLocali(Context context) {
+    public ScannaDiscoPerImmaginiLocali(Context context, GifImageView imgAttesa) {
         this.context = context;
+        this.imgAttesa = imgAttesa;
+
         imms = new ArrayList<>();
     }
 
@@ -39,6 +45,9 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
         VariabiliStaticheWallpaper.getInstance().setListaImmagini(imms);
         if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
             VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + imms.size());
+        }
+        if (imgAttesa != null) {
+            imgAttesa.setVisibility(LinearLayout.GONE);
         }
 
         // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);

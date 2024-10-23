@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
@@ -12,6 +13,8 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ChiamateWSF implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Films";
@@ -24,9 +27,14 @@ public class ChiamateWSF implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
+    private GifImageView imgAttesa;
 
     public ChiamateWSF(Context context) {
         this.context = context;
+    }
+
+    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+        this.imgAttesa = imgAttesa;
     }
 
     public void RitornaProssimoFilms() {
@@ -136,6 +144,10 @@ public class ChiamateWSF implements TaskDelegate {
                     case "RefreshFilms":
                         fRefreshFilms(result);
                         break;
+                }
+
+                if (imgAttesa != null) {
+                    imgAttesa.setVisibility(LinearLayout.GONE);
                 }
             }
         };

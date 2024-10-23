@@ -50,6 +50,15 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private boolean slideShowAttivo = false;
     private int secondiAttesa = 5000;
+    private boolean settingsAperto = true;
+
+    public boolean isSettingsAperto() {
+        return settingsAperto;
+    }
+
+    public void setSettingsAperto(boolean settingsAperto) {
+        this.settingsAperto = settingsAperto;
+    }
 
     public int getSecondiAttesa() {
         return secondiAttesa;
