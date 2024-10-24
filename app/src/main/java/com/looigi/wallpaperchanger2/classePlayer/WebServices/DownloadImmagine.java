@@ -10,8 +10,10 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -71,6 +73,7 @@ public class DownloadImmagine {
                         if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
                             Bitmap finalMIcon1 = mIcon11;
 
+                            String finalUrldisplay = urldisplay;
                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -78,6 +81,22 @@ public class DownloadImmagine {
 
                                     if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
                                         VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(finalMIcon1);
+                                        String[] n = PathImmagine.split("/");
+                                        String NomeImmagine = n[n.length - 1];
+                                        String Cartella = PathImmagine.replace(NomeImmagine, "");
+
+                                        StrutturaImmagini s = new StrutturaImmagini();
+                                        s.setPathImmagine(PathImmagine);
+                                        s.setNomeImmagine(NomeImmagine);
+                                        s.setCartellaImmagine(Cartella);
+                                        s.setArtista(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
+                                        s.setAlbum(VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum());
+                                        s.setUrlImmagine(finalUrldisplay);
+
+                                        VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
+                                        VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
+                                        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                                                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
                                     }
 
                                     BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
@@ -187,6 +206,7 @@ public class DownloadImmagine {
                         in = null;
                     }
                     UtilityPlayer.getInstance().Attesa(false);
+                    UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {

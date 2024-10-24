@@ -92,7 +92,7 @@ public class db_dati_player {
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (LimiteInBytes VARCHAR"
+                        + " (LimiteInBytes VARCHAR, CambiaImmagini VARCHAR, TempoCambioImmagine VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -479,7 +479,9 @@ public class db_dati_player {
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " VALUES ("
-                        + "'" + VariabiliStatichePlayer.getInstance().getLimiteInGb() + "'"
+                        + "'" + VariabiliStatichePlayer.getInstance().getLimiteInGb() + "',"
+                        + "'" + (VariabiliStatichePlayer.getInstance().isCambiaImmagine() ? "S" : "N") + "',"
+                        + "'" + VariabiliStatichePlayer.getInstance().getTempoCambioImmagine() + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -500,6 +502,8 @@ public class db_dati_player {
 
     public void ImpostaValoriDiDefault() {
         VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
+        VariabiliStatichePlayer.getInstance().setCambiaImmagine(true);
+        VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(5000);
     }
 
     public int CaricaImpostazioni() {
@@ -512,6 +516,8 @@ public class db_dati_player {
 
                     try {
                         VariabiliStatichePlayer.getInstance().setLimiteInGb(Float.parseFloat(c.getString(0)));
+                        VariabiliStatichePlayer.getInstance().setCambiaImmagine(c.getString(1).equals("S"));
+                        VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(Integer.parseInt(c.getString(2)));
 
                         return 0;
                     } catch (Exception e) {

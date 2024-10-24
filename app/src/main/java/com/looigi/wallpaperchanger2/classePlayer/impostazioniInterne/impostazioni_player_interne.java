@@ -3,6 +3,8 @@ package com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.view.View;
@@ -11,11 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
@@ -23,6 +29,7 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -174,6 +181,73 @@ public class impostazioni_player_interne {
             }
         });
 
+        ImageView imgIndietro = act.findViewById(R.id.imgIndietroSfondoPlayer);
+        imgIndietro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
+                if (n - 1 > 0) {
+                    n--;
+                } else {
+                    n = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1;
+                }
+                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
+                ImpostaImmagine();
+            }
+        });
+
+        ImageView imgAvanti = act.findViewById(R.id.imgAvantiSfondoPlayer);
+        imgAvanti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
+                if (n + 1 <= VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1) {
+                    n++;
+                } else {
+                    n = 0;
+                }
+                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
+                ImpostaImmagine();
+            }
+        });
+
+        LinearLayout layTempoCambio = act.findViewById(R.id.layTempoCambio);
+        VariabiliStatichePlayer.getInstance().setTxtNumeroImmagine(act.findViewById(R.id.txtNumeroImmagine));
+        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("");
+
+        SwitchCompat swcCambiaImmagine = act.findViewById(R.id.sCambiaImmagine);
+        swcCambiaImmagine.setChecked(VariabiliStatichePlayer.getInstance().isCambiaImmagine());
+        if (VariabiliStatichePlayer.getInstance().isCambiaImmagine()) {
+            layTempoCambio.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layTempoCambio.setVisibility(LinearLayout.GONE);
+        }
+        swcCambiaImmagine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setCambiaImmagine(swcCambiaImmagine.isChecked());
+                if (VariabiliStatichePlayer.getInstance().isCambiaImmagine()) {
+                    layTempoCambio.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layTempoCambio.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        EditText edtTempoCambio = act.findViewById(R.id.edtTempoCambio);
+        edtTempoCambio.setText(Integer.toString(VariabiliStatichePlayer.getInstance().getTempoCambioImmagine()));
+        edtTempoCambio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(Integer.parseInt(edtTempoCambio.getText().toString()));
+
+                    db_dati_player db = new db_dati_player(context);
+                    db.ScriveImpostazioni();
+                }
+            }
+        });
+
         ImageView imgElimina = act.findViewById(R.id.imgEliminaSfondo);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -232,6 +306,35 @@ public class impostazioni_player_interne {
                 }
             }
         });
+    }
+
+    private void ImpostaImmagine() {
+        int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
+        StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().get(n);
+        Bitmap bitmap = null;
+        if (Files.getInstance().EsisteFile(s.getPathImmagine())) {
+            bitmap = BitmapFactory.decodeFile(s.getPathImmagine());
+        } else {
+            if (!UtilitiesGlobali.getInstance().isRetePresente()) {
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+            } else {
+                DownloadImmagine d = new DownloadImmagine();
+                VariabiliStatichePlayer.getInstance().setDownImmagine(d);
+                d. EsegueDownload(
+                        context,
+                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
+                        s.getUrlImmagine()
+                );
+            }
+        }
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+        }
+
+        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+
+        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
+                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
     }
 
     private void visualizzaImpostazioniMaschera(int quale) {

@@ -3,419 +3,463 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_alignParentTop="true"
-        android:id="@+id/layStart"
+    <ScrollView
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="20dp"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartWallpaper"
-                    android:layout_width="50dp"
-                    android:src="@drawable/eye"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Wallpaper"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartPlayer"
-                    android:layout_width="50dp"
-                    android:src="@drawable/player"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="LooWebPlayer"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartOnomastici"
-                    android:layout_width="50dp"
-                    android:src="@drawable/onomastici"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Onomastici"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartFilms"
-                    android:layout_width="50dp"
-                    android:src="@drawable/video2"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Films"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/layBarraDetector"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartDetector"
-                    android:layout_width="50dp"
-                    android:src="@drawable/detector"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtStartLabelDet"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Detector"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <!-- <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/layBarraImmagini"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartImmagini"
-                    android:layout_width="50dp"
-                    android:src="@drawable/loovf"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtStartLabelImm"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Immagini"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/layBarraPennetta"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartPennetta"
-                    android:layout_width="50dp"
-                    android:src="@drawable/pennetta"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtStartLabelPen"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Pennetta"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/layBarraVideo"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartVideo"
-                    android:layout_width="50dp"
-                    android:src="@drawable/video2"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtStartLabelVid"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Video"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout> -->
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/layBarraMappa"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartMappa"
-                    android:layout_width="50dp"
-                    android:src="@drawable/map"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtStartLabelMap"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Mappa"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartSettings"
-                    android:layout_width="50dp"
-                    android:src="@drawable/settings"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Impostazioni"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:weightSum="8">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgStartUScita"
-                    android:layout_width="50dp"
-                    android:src="@drawable/shutdown"
-                    android:layout_height="50dp">
-
-                </ImageView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:layout_marginTop="10dp"
-                android:textSize="16dp"
-                android:text="Uscita"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/laySplash"
-        android:visibility="gone"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bordato_colorato"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|center_vertical"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtStartTitolo"
-            android:textSize="47dp"
-            android:gravity="center_horizontal"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="WallPaper\nChanger 2.0">
+            android:orientation="vertical">
 
-        </TextView>
+            <LinearLayout
+                android:layout_alignParentTop="true"
+                android:id="@+id/layStart"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginTop="20dp"
-            android:layout_width="105dp"
-            android:layout_height="105dp"
-            android:src="@drawable/icona_lancio">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
 
-        </ImageView>
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartWallpaper"
+                            android:layout_width="50dp"
+                            android:src="@drawable/eye"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Wallpaper"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartPlayer"
+                            android:layout_width="50dp"
+                            android:src="@drawable/player"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="LooWebPlayer"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartOnomastici"
+                            android:layout_width="50dp"
+                            android:src="@drawable/onomastici"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Onomastici"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartPassword"
+                            android:layout_width="50dp"
+                            android:src="@drawable/password"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Password"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartFilms"
+                            android:layout_width="50dp"
+                            android:src="@drawable/video2"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Films"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layBarraDetector"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartDetector"
+                            android:layout_width="50dp"
+                            android:src="@drawable/detector"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartLabelDet"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Detector"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <!-- <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layBarraImmagini"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartImmagini"
+                            android:layout_width="50dp"
+                            android:src="@drawable/loovf"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartLabelImm"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Immagini"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layBarraPennetta"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartPennetta"
+                            android:layout_width="50dp"
+                            android:src="@drawable/pennetta"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartLabelPen"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Pennetta"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layBarraVideo"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartVideo"
+                            android:layout_width="50dp"
+                            android:src="@drawable/video2"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartLabelVid"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Video"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout> -->
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layBarraMappa"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartMappa"
+                            android:layout_width="50dp"
+                            android:src="@drawable/map"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartLabelMap"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Mappa"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartSettings"
+                            android:layout_width="50dp"
+                            android:src="@drawable/settings"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Impostazioni"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgStartUScita"
+                            android:layout_width="50dp"
+                            android:src="@drawable/shutdown"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:text="Uscita"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/laySplash"
+                android:visibility="gone"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/bordato_colorato"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtStartTitolo"
+                    android:textSize="47dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WallPaper\nChanger 2.0">
+
+                </TextView>
+
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:src="@drawable/icona_lancio">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

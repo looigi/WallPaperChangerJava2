@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +33,8 @@ public class UtilityPlayer {
     private int SecondiPassati = 0;
     private Runnable runTimer;
     private Handler handlerTimer;
+    private Runnable runTimerChiusura;
+    private Handler handlerTimerChiusura;
     private int SecondiPassatiCambioImmagine;
 
     private UtilityPlayer() {
@@ -575,8 +578,10 @@ public class UtilityPlayer {
                                                 VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
                                                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
                                                 VariabiliStatichePlayer.getInstance().setImmagineImpostata(finalLista.get(immagine[0]));
+                                                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(immagine[0]);
 
                                                 VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+                                                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size() - 1));
 
                                                 AggiornaInformazioni(false);
                                             } else {
@@ -589,6 +594,8 @@ public class UtilityPlayer {
                                                         finalLista.get(immagine[0]).getAlbum(),
                                                         finalLista.get(immagine[0]).getNomeImmagine());
 
+                                                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(0);
+                                                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (finalLista.size() - 1));
                                                 VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(null);
                                             }
                                         }
@@ -652,10 +659,54 @@ public class UtilityPlayer {
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
-                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(0);
+                if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+                }
             }
         };
         handlerTimer.postDelayed(rTimer, 1000);
+    }
+
+    public void FaiPartireTimerChiusura(Context context) {
+        if (handlerTimerChiusura != null) {
+            handlerTimerChiusura.removeCallbacks(runTimerChiusura);
+            runTimerChiusura = null;
+        }
+
+        handlerTimerChiusura = new Handler(Looper.getMainLooper());
+        handlerTimerChiusura.postDelayed(runTimerChiusura = new Runnable() {
+            @Override
+            public void run() {
+                long ora = new Date().getTime();
+                long diff = ora - VariabiliStatichePlayer.getInstance().getUltimaOperazioneTS();
+                if (diff > 60000 * 5) {
+                    ChiudePlayer(context);
+                } else {
+                    handlerTimerChiusura.postDelayed(this, 60000);
+                }
+            }
+        }, 60000);
+    }
+
+    public void StoppaTimerChiusura() {
+        if (handlerTimerChiusura != null) {
+            handlerTimerChiusura.removeCallbacks(runTimerChiusura);
+            runTimerChiusura = null;
+        }
+    }
+
+    private void ChiudePlayer(Context context) {
+        PressionePlay(context, false);
+
+        StoppaTimerChiusura();
+        StoppaTimer();
+
+        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+        VariabiliStatichePlayer.getInstance().ChiudeActivity(true);
     }
 
     public void StoppaTimer() {
@@ -691,13 +742,16 @@ public class UtilityPlayer {
                     VariabiliStatichePlayer.getInstance().setInizioMinuti(min);
 
                     SecondiPassatiCambioImmagine++;
-                    if (SecondiPassatiCambioImmagine >= VariabiliStatichePlayer.SecondiCambioImmagine) {
+                    if (SecondiPassatiCambioImmagine >= VariabiliStatichePlayer.getInstance().getTempoCambioImmagine()) {
                         SecondiPassatiCambioImmagine = 0;
 
-                        ImpostaImmagine(context);
+                        if (VariabiliStatichePlayer.getInstance().isCambiaImmagine()) {
+                            ImpostaImmagine(context);
+                        }
                     }
 
-                    if (SecondiPassati > VariabiliStatichePlayer.SecondiBranoPregresso && !VariabiliStatichePlayer.getInstance().isStaCaricandoBranoPregresso() &&
+                    if (SecondiPassati > VariabiliStatichePlayer.SecondiBranoPregresso &&
+                            !VariabiliStatichePlayer.getInstance().isStaCaricandoBranoPregresso() &&
                         !VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso()) {
                         VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 

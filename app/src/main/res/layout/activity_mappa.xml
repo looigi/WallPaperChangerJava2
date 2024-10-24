@@ -80,80 +80,58 @@
         <LinearLayout
             android:id="@+id/layTasti"
             android:layout_width="match_parent"
-            android:weightSum="4"
+            android:gravity="right"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content">
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sSegue"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="Segue" />
 
-                <!-- <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/sSegue"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Segue" /> -->
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgMappeSalvate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/mappe">
+            </ImageView>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:gravity="right"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgMappaRefresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icona_refresh">
+            </ImageView>
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/sSegue"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:text="Segue" />
+            <ImageView
+                android:id="@+id/imgScattaFotoMappa"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/screenshot">
+            </ImageView>
 
-                <ImageView
-                    android:id="@+id/imgMappeSalvate"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/mappe">
-                </ImageView>
+            <ImageView
+                android:id="@+id/imgMappaElimina"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/elimina">
+            </ImageView>
 
-                <ImageView
-                    android:id="@+id/imgMappaRefresh"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/icona_refresh">
-                </ImageView>
+            <ImageView
+                android:id="@+id/imgMappaCerca"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icona_cerca">
+            </ImageView>
 
-                <ImageView
-                    android:id="@+id/imgScattaFotoMappa"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/screenshot">
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgMappaElimina"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/elimina">
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgMappaCerca"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/icona_cerca">
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgSettings"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/settings" />
-
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/settings" />
         </LinearLayout>
     </RelativeLayout>
 

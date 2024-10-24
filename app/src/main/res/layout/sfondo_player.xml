@@ -6,129 +6,200 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtNumeroImmagine"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="Immagine">
+
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imgSfondoSettings"
-            android:layout_width="200dp"
-            android:layout_height="200dp">
+            android:id="@+id/imgIndietroSfondoPlayer"
+            android:src="@drawable/indietro"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
 
         </ImageView>
+
+        <ImageView
+            android:id="@+id/imgSfondoSettings"
+            android:layout_width="250dp"
+            android:layout_height="250dp">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgAvantiSfondoPlayer"
+            android:src="@drawable/avanti"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+        </ImageView>
+
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:weightSum="8"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="7"
-            android:gravity="center_vertical"
-            android:text="Imposta come Sfondo"
-            android:layout_height="match_parent">
-
-        </TextView>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:gravity="end"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgImpostaWP"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/eye" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="8"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:text="Imposta come Sfondo"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgImpostaWP"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/eye" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sCambiaImmagine"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Slideshow Immagini" />
+
+            <LinearLayout
+                android:id="@+id/layTempoCambio"
+                android:layout_width="match_parent"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Secondi al Cambio"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edtTempoCambio"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:inputType="number"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="8"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:text="Elimina"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgEliminaSfondo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/elimina" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="8"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:text="Condividi"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgCondividiSfondo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/share" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="8"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:text="Refresh Immagini"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgRefreshImmagini"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icona_refresh" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="8"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="7"
-            android:gravity="center_vertical"
-            android:text="Elimina"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:gravity="end"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/imgEliminaSfondo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/elimina" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="8"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="7"
-            android:gravity="center_vertical"
-            android:text="Condividi"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/imgCondividiSfondo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/share" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="8"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="7"
-            android:gravity="center_vertical"
-            android:text="Refresh Immagini"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/imgRefreshImmagini"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icona_refresh" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

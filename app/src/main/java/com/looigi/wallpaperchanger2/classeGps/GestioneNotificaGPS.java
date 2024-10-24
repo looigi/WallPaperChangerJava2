@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -69,6 +70,14 @@ public class GestioneNotificaGPS {
                 bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
             }
             contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGps);
+
+            if (!VariabiliStaticheGPS.getInstance().isNonScriverePunti() &&
+                VariabiliStaticheGPS.getInstance().isGpsAttivo() &&
+                !VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                contentView.setViewVisibility(R.id.imgAreaPS, LinearLayout.VISIBLE);
+            } else {
+                contentView.setViewVisibility(R.id.imgAreaPS, LinearLayout.GONE);
+            }
 
             if (VariabiliStaticheGPS.getInstance().getMappa() != null &&
                     VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti() != null) {

@@ -3,11 +3,11 @@
 	android:initialLayout="@layout/widget_photo"
 	android:updatePeriodMillis="0"
 	android:previewImage="@drawable/photo"
-	android:minWidth="60dp"
-	android:minHeight="60dp"
+	android:minWidth="70dp"
+	android:minHeight="70dp"
 	android:targetCellWidth="1"
 	android:targetCellHeight="1"
-	android:minResizeWidth="60dp"
-	android:minResizeHeight="60dp"
+	android:minResizeWidth="70dp"
+	android:minResizeHeight="70dp"
 	android:resizeMode="none">
 </appwidget-provider>

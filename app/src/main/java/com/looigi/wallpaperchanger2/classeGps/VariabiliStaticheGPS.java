@@ -45,6 +45,15 @@ public class VariabiliStaticheGPS {
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
     private int DistanzaMetriPerPS = 50;
     private ImageView imgMappa;
+    private boolean NonScriverePunti = false;
+
+    public boolean isNonScriverePunti() {
+        return NonScriverePunti;
+    }
+
+    public void setNonScriverePunti(boolean nonScriverePunti) {
+        NonScriverePunti = nonScriverePunti;
+    }
 
     public ImageView getImgMappa() {
         return imgMappa;

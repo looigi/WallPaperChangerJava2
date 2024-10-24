@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.media.session.MediaButtonReceiver;
 
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class GestioneTastiCuffieNuovo extends Service {
     private static final String NomeMaschera = "Gestione_Tasti_Cuffie_Nuovo";
@@ -26,38 +28,21 @@ public class GestioneTastiCuffieNuovo extends Service {
         @Override
         public void onPlay() {
             super.onPlay();
-
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
-                    "Premuto Play");
-
-            UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), true);
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
-                    "Premuto Pause");
-
-            UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
         }
 
         @Override
         public void onSkipToNext() {
             super.onSkipToNext();
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
-                    "Premuto Next");
-
-            UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false);
         }
 
         @Override
         public void onSkipToPrevious() {
             super.onSkipToPrevious();
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
-                    "Premuto Previous");
-
-            // UtilityPlayer.getInstance().(getApplicationContext(), "", false);
         }
 
         @Override
@@ -93,29 +78,58 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 // code for fast forward
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                                // code for next
+                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                        "Premuto Next");
+
+                                UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false);
+
+                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto NEXT");
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                                // code for play/pause
-                                // Toast.makeText(getApplication(),"Play Button is pressed!",Toast.LENGTH_SHORT).show();
+                                if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
+                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                            "Premuto Pause");
+
+                                    UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
+
+                                    UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PAUSE");
+                                } else {
+                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                            "Premuto Play");
+
+                                    UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), true);
+
+                                    UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PLAY");
+                                }
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                                // code for previous
+                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                        "Premuto Previous");
+
+                                // UtilityPlayer.getInstance().(getApplicationContext(), "", false);
+
+                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PREVIOUS");
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_REWIND:
                                 // code for rewind
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_STOP:
-                                // code for stop
-                                // Toast.makeText(getApplication(),"Stop Button is pressed!",Toast.LENGTH_SHORT).show();
-                                return true;
+                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                        "Premuto Stop");
 
+                                UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
+
+                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto STOP");
+                                return true;
                         }
                         return false;
 
                     }
                     if (action == KeyEvent.ACTION_UP) {
-
+                        UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto ACTION UP");
+                    }
+                    if (action == KeyEvent.ACTION_DOWN) {
+                        UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto ACTION DOWN");
                     }
                 }
             }

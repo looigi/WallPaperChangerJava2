@@ -46,7 +46,7 @@ public class GestioneGPS {
     private Handler handler1;
     private Runnable r1;
     private boolean wifi;
-    private boolean nonScriverePunti = false;
+    // private boolean nonScriverePunti = false;
 
     public void BloccaGPS(String daDove) {
         context = UtilitiesGlobali.getInstance().tornaContextValido();
@@ -468,7 +468,7 @@ public class GestioneGPS {
             }
 
             if (ok) {
-                if (nonScriverePunti) {
+                if (VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
                     ok = false;
                 }
             }
@@ -476,7 +476,7 @@ public class GestioneGPS {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
                     location.getLatitude() + ", " + location.getLongitude() + ". Wifi: " +
                     VariabiliStaticheStart.getInstance().isCeWifi() + ". Abilitato: " +
-                    VariabiliStaticheGPS.getInstance().isGpsAttivo() + ". NON Scrittura: " + nonScriverePunti +
+                    VariabiliStaticheGPS.getInstance().isGpsAttivo() + ". NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() +
                     ". OK: " + ok);
 
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
@@ -595,19 +595,23 @@ public class GestioneGPS {
             }
         }
 
-        if (!nonScriverePunti) {
+        if (!VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
             if (!fuoriDaTuttiIPunti) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Blocco GPS per posizione " + Nome);
 
-                nonScriverePunti = true;
+                VariabiliStaticheGPS.getInstance().setNonScriverePunti(true);
+
+                GestioneNotificaGPS.getInstance().AggiornaNotifica();
             }
         } else {
             if (fuoriDaTuttiIPunti) {
                 //  if (!VariabiliStaticheStart.getInstance().isCeWifi()) {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Riabilito GPS per posizione non in punti selezionati e senza wifi");
 
-                    nonScriverePunti = false;
+                VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
                 // }
+
+                GestioneNotificaGPS.getInstance().AggiornaNotifica();
             }
         }
     }

@@ -100,7 +100,7 @@
 		                 	 									                                	                              			                                	                             	    
 				</LinearLayout>
 	
-				<!-- Sezione degli sms
+				<!-- Sezione degli sms -->
 				<LinearLayout
 		            android:orientation="vertical"
 		            android:layout_width="fill_parent"
@@ -111,9 +111,23 @@
 						android:id="@+id/container_header_lyt4"  
 						android:layout_height="wrap_content"
 						android:layout_width="fill_parent"
-						layout="@layout/tab_onomastici_utility" />
-				</LinearLayout> -->
-	
+						layout="@layout/tab_onomastici_messaggi" />
+				</LinearLayout>
+
+				<!-- Sezione dei compleanni -->
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:id="@+id/tabview6" >
+
+					<include
+						android:id="@+id/container_header_lyt6"
+						android:layout_height="wrap_content"
+						android:layout_width="fill_parent"
+						layout="@layout/tab_onomastici_compleanni" />
+				</LinearLayout>
+
 				<!-- Sezione del setup -->
 				<LinearLayout
 		            android:orientation="vertical"

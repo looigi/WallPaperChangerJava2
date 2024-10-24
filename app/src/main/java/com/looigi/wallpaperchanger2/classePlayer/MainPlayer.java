@@ -35,6 +35,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainPlayer extends Activity {
@@ -116,6 +117,8 @@ public class MainPlayer extends Activity {
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
@@ -129,6 +132,8 @@ public class MainPlayer extends Activity {
         ImageView imgChiudeSettings = (ImageView) findViewById(R.id.imgChiusuraSettings);
         imgChiudeSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
@@ -142,6 +147,8 @@ public class MainPlayer extends Activity {
         ImageView imgSettingsG = (ImageView) findViewById(R.id.imgSettingsGlobali);
         imgSettingsG.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
@@ -208,6 +215,8 @@ public class MainPlayer extends Activity {
             }
 
             // this.moveTaskToBack(true);
+            VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+            UtilityPlayer.getInstance().FaiPartireTimerChiusura(context);
         } else {
             // RIPRISTINO SCHERMATA
             if (VariabiliStatichePlayer.getInstance().isCuffieInserite()) {
@@ -256,6 +265,8 @@ public class MainPlayer extends Activity {
 
         VariabiliStatichePlayer.getInstance().getImgAvanti().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 UtilityPlayer.getInstance().StoppaTimer();
 
                 UtilityPlayer.getInstance().BranoAvanti(
@@ -266,17 +277,22 @@ public class MainPlayer extends Activity {
 
         VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 UtilityPlayer.getInstance().RicaricaPregresso();
             }
         });
 
         VariabiliStatichePlayer.getInstance().getImgIndietro().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
             }
         });
 
         VariabiliStatichePlayer.getInstance().getImgPlayStop().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 boolean acceso = VariabiliStatichePlayer.getInstance().isStaSuonando();
                 acceso = !acceso;
                 Context context = UtilitiesGlobali.getInstance().tornaContextValido();
@@ -300,6 +316,8 @@ public class MainPlayer extends Activity {
                 // TODO Auto-generated method stub
 
                 if (fromUser) {
+                    VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                     UtilityPlayer.getInstance().ImpostaPosizioneBrano(progress);
                 }
             }
@@ -310,9 +328,13 @@ public class MainPlayer extends Activity {
             public void onSwipeTop() {
             }
             public void onSwipeRight() {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 UtilityPlayer.getInstance().ImpostaImmagine(context);
             }
             public void onSwipeLeft() {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 UtilityPlayer.getInstance().ImpostaImmagine(context);
             }
             public void onSwipeBottom() {

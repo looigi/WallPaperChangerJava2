@@ -728,6 +728,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
     private boolean ControllaRitorno(String Operazione, String result) {
         if (result.contains("ERROR:")) {
+            UtilityPlayer.getInstance().Attesa(false);
+            UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
                 UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
 

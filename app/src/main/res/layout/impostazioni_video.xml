@@ -17,123 +17,133 @@
 
     </TextView>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sRandomV"
-        android:textColor="@color/black"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Random" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_weight="4"
-            android:text="Aggiorna Video" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgRefreshVideo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icona_refresh"
-                >
-            </ImageView>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sRandomV"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Random" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_weight="4"
+                    android:text="Aggiorna Video" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgRefreshVideo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icona_refresh"
+                        >
+                    </ImageView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:padding="5dp"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:text="Invia file di log"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnInviaLogVD"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="..."
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:padding="5dp"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:text="Pulisce file di log"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnPulisceLogVD"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="..."
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:padding="5dp"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:text="Visualizza file di log"
+                    android:layout_height="match_parent">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnVisualizzaLogVD"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="..."
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:padding="5dp"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:text="Invia file di log"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <Button
-            android:id="@+id/btnInviaLogVD"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="..."
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:padding="5dp"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginStart="5dp"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:text="Pulisce file di log"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <Button
-            android:id="@+id/btnPulisceLogVD"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="..."
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="5"
-        android:padding="5dp"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_marginStart="5dp"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:text="Visualizza file di log"
-            android:layout_height="match_parent">
-
-        </TextView>
-
-        <Button
-            android:id="@+id/btnVisualizzaLogVD"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="..."
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

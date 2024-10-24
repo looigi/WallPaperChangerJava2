@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -256,13 +257,13 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgFilmsTasti, pFilm);
 
-            /* Intent vid = new Intent(ctx, NotificationActionServiceTasti.class);
-            vid.putExtra("DO", "video");
-            PendingIntent pVid = PendingIntent.getService(ctx, 207, vid,
+            Intent pwd = new Intent(ctx, NotificationActionServiceTasti.class);
+            pwd.putExtra("DO", "password");
+            PendingIntent pPwd = PendingIntent.getService(ctx, 208, pwd,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgImmaginiVideo, pVid);
+            view.setOnClickPendingIntent(R.id.imgPasswordTasti, pPwd);
 
-            Intent pen = new Intent(ctx, NotificationActionServiceTasti.class);
+            /* Intent pen = new Intent(ctx, NotificationActionServiceTasti.class);
             pen.putExtra("DO", "pennetta");
             PendingIntent pPen = PendingIntent.getService(ctx, 208, pen,
                     PendingIntent.FLAG_IMMUTABLE);
@@ -408,6 +409,11 @@ public class GestioneNotificheTasti {
                             Intent iM = new Intent(context, MainMappa.class);
                             iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(iM);
+                            break;
+                        case "password":
+                            Intent iPa = new Intent(context, MainPassword.class);
+                            iPa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iPa);
                             break;
                         case "player":
                             if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {

@@ -43,7 +43,7 @@ public class VariabiliStatichePlayer {
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2.player";
     public static int NOTIFICATION_CHANNEL_ID = 4;
     public static int channelIdIntentOverlay = 152;
-    public static int SecondiCambioImmagine = 30;
+    // public static int SecondiCambioImmagine = 30;
     public static int SecondiBranoPregresso= 15;
     public static final int TimeoutImmagine = 5;
     public static final int TimeoutBrano = 45;
@@ -95,7 +95,12 @@ public class VariabiliStatichePlayer {
     private boolean settingsAperte = false;
     private boolean nonMostrareToast = false;
     private StrutturaImmagini immagineImpostata;
+    private int idImmagineImpostata;
     private ImageView imgSfondoSettings;
+    private boolean CambiaImmagine = true;
+    private int TempoCambioImmagine = 30;
+    private TextView txtNumeroImmagine;
+    private long ultimaOperazioneTS;
 
     // RICERCHE
     private int StelleDaRicercare = 7;
@@ -127,6 +132,46 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public long getUltimaOperazioneTS() {
+        return ultimaOperazioneTS;
+    }
+
+    public void setUltimaOperazioneTS(long ultimaOperazioneTS) {
+        this.ultimaOperazioneTS = ultimaOperazioneTS;
+    }
+
+    public TextView getTxtNumeroImmagine() {
+        return txtNumeroImmagine;
+    }
+
+    public void setTxtNumeroImmagine(TextView txtNumeroImmagine) {
+        this.txtNumeroImmagine = txtNumeroImmagine;
+    }
+
+    public int getIdImmagineImpostata() {
+        return idImmagineImpostata;
+    }
+
+    public void setIdImmagineImpostata(int idImmagineImpostata) {
+        this.idImmagineImpostata = idImmagineImpostata;
+    }
+
+    public int getTempoCambioImmagine() {
+        return TempoCambioImmagine;
+    }
+
+    public void setTempoCambioImmagine(int tempoCambioImmagine) {
+        TempoCambioImmagine = tempoCambioImmagine;
+    }
+
+    public boolean isCambiaImmagine() {
+        return CambiaImmagine;
+    }
+
+    public void setCambiaImmagine(boolean cambiaImmagine) {
+        CambiaImmagine = cambiaImmagine;
     }
 
     public ImageView getImgSfondoSettings() {

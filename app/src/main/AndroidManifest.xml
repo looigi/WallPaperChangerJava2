@@ -94,6 +94,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classePassword.MainPassword"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeGps.MappeSalvate.MainMappeSalvate"
             android:windowSoftInputMode="adjustResize" />
 

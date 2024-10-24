@@ -512,23 +512,25 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
     private void SistemaSchermata() {
         String[] Titoli;
-        Titoli=new String[5];
+        Titoli=new String[7];
         Titoli[1]="Home";
         Titoli[2]="Info";
-        // Titoli[4]="Sms";
         Titoli[3]="Search";
         Titoli[4]="Setup";
+        Titoli[5]="Messaggi";
+        Titoli[6]="Compleanni";
 
         TabHost tabHost = (TabHost) findViewById(R.id.myTabHost);
         tabHost.setup();
         tabHost.addTab(tabHost.newTabSpec("tabview1").setContent(R.id.tabview1).setIndicator(Titoli[1]));
         tabHost.addTab(tabHost.newTabSpec("tabview2").setContent(R.id.tabview2).setIndicator(Titoli[2]));
         tabHost.addTab(tabHost.newTabSpec("tabview3").setContent(R.id.tabview3).setIndicator(Titoli[3]));
-        // tabHost.addTab(tabHost.newTabSpec("tabview4").setContent(R.id.tabview4).setIndicator(Titoli[4]));
         tabHost.addTab(tabHost.newTabSpec("tabview5").setContent(R.id.tabview5).setIndicator(Titoli[4]));
+        tabHost.addTab(tabHost.newTabSpec("tabview4").setContent(R.id.tabview4).setIndicator(Titoli[5]));
+        tabHost.addTab(tabHost.newTabSpec("tabview6").setContent(R.id.tabview5).setIndicator(Titoli[6]));
 
         TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
-        for (int i=0;i<4;i++) {
+        for (int i=0;i<6;i++) {
             View tabView = tw.getChildTabViewAt(i);
             TextView tv = (TextView)tabView.findViewById(android.R.id.title);
             tv.setText(Titoli[i+1]);
@@ -604,12 +606,14 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         int i=0;
         for (i=0;i<Nomi.length;i++) {
             Nomello=Nomi[i];
-            if (Nomello.contains("@")) {
-                people[i]= new Person(Nomi[i], R.drawable.mail);
-            } else {
-                people[i]= new Person(Nomi[i], R.drawable.utente);
+            if (Nomello != null) {
+                if (Nomello.contains("@")) {
+                    people[i] = new Person(Nomi[i], R.drawable.mail);
+                } else {
+                    people[i] = new Person(Nomi[i], R.drawable.utente);
+                }
+                personListR.add(people[i]);
             }
-            personListR.add(people[i]);
         }
 
         ArrayList<HashMap<String, Object>> data=new ArrayList<HashMap<String,Object>>();
@@ -633,6 +637,10 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
     }
 
     private void AggiornaListe(){
+        ListView listaR=(ListView) findViewById(R.id.lstNomi);
+        String[] NomiR=new String[nomiRilevati.size()];
+        RiempieLista(listaR, NomiR);
+
         /* String NomiR[];
         NomiR=new String[nomiRilevati.size()];
 
@@ -654,7 +662,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
     }
 
     private void CaricaMessaggi() {
-        /* GestioneDB varDB=new GestioneDB(context);
+        /*GestioneDB varDB=new GestioneDB(context);
 
         TextView tErrore=(TextView) findViewById(R.id.txtSanto);
         TextView tRoutine=(TextView) findViewById(R.id.txtGiorno);
@@ -740,7 +748,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             while (Santo.contains("/")) {
                 Santo2=Santo.substring(0,Santo.indexOf("/")-1).trim().toUpperCase().replace("'","''");
                 Santi.add(Santo2);
-                Santo=Santo.substring(Santo.indexOf("/")+1,Santo.length());
+                Santo=Santo.substring(Santo.indexOf("/")+1);
             }
             Santi.add(Santo.trim().toUpperCase());
         } else {
@@ -752,20 +760,20 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             while (Sinonimi.contains("/")) {
                 Santo2=Sinonimi.substring(0,Sinonimi.indexOf("/")-1).trim().toUpperCase().replace("'","''");
                 Santi.add(Santo2);
-                Sinonimi=Sinonimi.substring(Sinonimi.indexOf("/")+1,Sinonimi.length());
+                Sinonimi=Sinonimi.substring(Sinonimi.indexOf("/")+1);
             }
             Santi.add(Sinonimi.trim().toUpperCase());
         } else {
-            if (Sinonimi != null && Sinonimi.length()>0) {
+            if (Sinonimi != null && !Sinonimi.isEmpty()) {
                 Santi.add(Sinonimi.trim().toUpperCase());
             }
         }
 
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        assert cur != null;
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
-
                 try {
                     id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
                     name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)).toUpperCase().trim();

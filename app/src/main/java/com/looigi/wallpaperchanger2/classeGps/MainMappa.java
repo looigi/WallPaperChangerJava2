@@ -33,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -48,6 +49,7 @@ import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegniment
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -353,41 +355,57 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void AggiungePolyLineVelocita(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
-        LatLng[] path = new LatLng[lista.size()];
-        int c = 0;
-
-        for (StrutturaGps l : lista) {
-            if (c < lista.size()) {
-                path[c] = new LatLng(l.getLat(), l.getLon());
-                c++;
-            }
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
         }
 
-        Polyline polylineVelocita = googleMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(path)
-                .width(10)
-                .color(colore)
-        );
+        try {
+            LatLng[] path = new LatLng[lista.size()];
+            int c = 0;
+
+            for (StrutturaGps l : lista) {
+                if (c < lista.size()) {
+                    path[c] = new LatLng(l.getLat(), l.getLon());
+                    c++;
+                }
+            }
+
+            Polyline polylineVelocita = googleMap.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .add(path)
+                    .width(10)
+                    .color(colore)
+            );
+        } catch (Exception ignored) {
+
+        }
     }
 
     private void AggiungePolyLineSegnale(List<StrutturaGps> lista, int colore) {
-        LatLng[] path = new LatLng[lista.size()];
-        int c = 0;
-
-        for (StrutturaGps l : lista) {
-            if (c < lista.size()) {
-                path[c] = new LatLng(l.getLat(), l.getLon());
-                c++;
-            }
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
         }
 
-        Polyline polylineSegnale = mappa.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(path)
-                .width(20)
-                .color(colore)
-        );
+        try {
+            LatLng[] path = new LatLng[lista.size()];
+            int c = 0;
+
+            for (StrutturaGps l : lista) {
+                if (c < lista.size()) {
+                    path[c] = new LatLng(l.getLat(), l.getLon());
+                    c++;
+                }
+            }
+
+            Polyline polylineSegnale = mappa.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .add(path)
+                    .width(20)
+                    .color(colore)
+            );
+        } catch (Exception ignored) {
+
+        }
     }
 
     private void AttivaTimer() {
@@ -488,26 +506,33 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void disegnaMarkersPS() {
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
+        }
+
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                boolean aggiungePunti = false;
-                if (bcs == 0) {
-                    aggiungePunti = true;
-                }
+                boolean aggiungePunti = (bcs == 0);
                 for (StrutturaPuntiSpegnimento loc : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
-                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.satellite_off);
-                    Bitmap b = bitmapdraw.getBitmap();
+                    BitmapDrawable bitmapDraw = (BitmapDrawable) getResources().getDrawable(R.drawable.satellite_off);
+                    Bitmap b = bitmapDraw.getBitmap();
                     Bitmap smallMarker = Bitmap.createScaledBitmap(b, 75, 75, false);
 
+                    LatLng ll = new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude());
                     if (aggiungePunti) {
-                        LatLng ll = new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude());
                         bc.include(ll);
                         bcs++;
                     }
 
+                    mappa.addCircle(new CircleOptions()
+                            .center(ll)
+                            .radius(VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS())
+                            .strokeWidth(0f)
+                            .fillColor(0x440000FF));
+                    
                     mappa.addMarker(new MarkerOptions()
-                            .position(new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude()))
+                            .position(ll)
                             .title(loc.getNome())
                             .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
                     );
@@ -517,6 +542,10 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void DisegnaPath() {
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
+        }
+
         if (VariabiliStaticheGPS.getInstance().getMappa() == null) {
             Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
             if (ctx != null) {
@@ -663,6 +692,10 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void AggiungeMarkers(GoogleMap googleMap) {
+        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
+        }
+
         StrutturaGps s = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
         if (s != null) {
             int height = 120;
