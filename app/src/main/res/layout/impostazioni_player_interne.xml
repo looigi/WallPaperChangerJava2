@@ -34,7 +34,7 @@
                     <Button
                         android:id="@+id/btnSettingsBraniLocali"
                         android:layout_width="wrap_content"
-                        android:text="Br. Locali"
+                        android:text="Brani Locali"
                         android:layout_height="match_parent" />
 
                     <Button

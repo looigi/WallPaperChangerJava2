@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaAccensioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
+import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class VariabiliStaticheGPS {
     private boolean mostraPercorso = true;
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
     private int DistanzaMetriPerPS = 50;
-    private ImageView imgMappa;
+    private ImmagineZoomabile imgMappa;
     private boolean NonScriverePunti = false;
 
     public boolean isNonScriverePunti() {
@@ -55,11 +56,11 @@ public class VariabiliStaticheGPS {
         NonScriverePunti = nonScriverePunti;
     }
 
-    public ImageView getImgMappa() {
+    public ImmagineZoomabile getImgMappa() {
         return imgMappa;
     }
 
-    public void setImgMappa(ImageView imgMappa) {
+    public void setImgMappa(ImmagineZoomabile imgMappa) {
         this.imgMappa = imgMappa;
     }
 

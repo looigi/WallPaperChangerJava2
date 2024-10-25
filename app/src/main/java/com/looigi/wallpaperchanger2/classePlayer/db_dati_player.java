@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 
 import java.io.File;
@@ -97,6 +98,17 @@ public class db_dati_player {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Ricerche"
+                        + " ("
+                        + "Random VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
+                        + "Testo VARCHAR, TestoNon VARCHAR, Preferiti VARCHAR, PreferitiElimina VARCHAR, "
+                        + "AndOrPref VARCHAR, Tags VARCHAR, TagsElimina VARCHAR, AndOrTags VARCHAR, "
+                        + "DataSuperiore VARCHAR, DataInferiore VARCHAR, DataSuperioreTesto VARCHAR, DataInferioreTesto VARCHAR "
+                        + ");";
+
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 return false;
@@ -124,6 +136,92 @@ public class db_dati_player {
             myDB.execSQL("Delete From ImmaginiBrano Where Artista='" + Artista.replace("'", "''") + "' And NomeImmagine='" + Immagine.replace("'", "''") + "'");
 
             CompattaDB();
+        }
+    }
+
+    public int CaricaRicerche() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Ricerche", null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    VariabiliStatichePlayer.getInstance().setRandom(c.getString(0).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(Integer.parseInt(c.getString(1)));
+                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(c.getString(2).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(c.getString(3).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare(c.getString(4));
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare(c.getString(5));
+                    VariabiliStatichePlayer.getInstance().setPreferiti(c.getString(6));
+                    VariabiliStatichePlayer.getInstance().setPreferitiElimina(c.getString(7));
+                    VariabiliStatichePlayer.getInstance().setAndOrPref(c.getString(8).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setPreferitiTags(c.getString(9));
+                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags(c.getString(10));
+                    VariabiliStatichePlayer.getInstance().setAndOrTags(c.getString(11).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataSuperiore(c.getString(12).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataInferiore(c.getString(13).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore(c.getString(14));
+                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore(c.getString(15));
+
+                    return 0;
+                } else {
+                    VariabiliStatichePlayer.getInstance().setRandom(true);
+                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(8);
+                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(true);
+                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(false);
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare("");
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare("");
+                    VariabiliStatichePlayer.getInstance().setPreferiti("");
+                    VariabiliStatichePlayer.getInstance().setPreferitiElimina("");
+                    VariabiliStatichePlayer.getInstance().setAndOrPref(true);
+                    VariabiliStatichePlayer.getInstance().setPreferitiTags("");
+                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags("");
+                    VariabiliStatichePlayer.getInstance().setAndOrTags(true);
+                    VariabiliStatichePlayer.getInstance().setDataSuperiore(false);
+                    VariabiliStatichePlayer.getInstance().setDataInferiore(false);
+                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore("");
+                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore("");
+
+                    ScriveRicerca();
+
+                    return 0;
+                }
+            } catch (Exception e) {
+                PulisceDatiRic();
+                CreazioneTabelle();
+                return CaricaRicerche();
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    public void ScriveRicerca() {
+        if (myDB != null) {
+            String sql = "Delete From Ricerche";
+            myDB.execSQL(sql);
+
+            sql = "Insert Into Ricerche Values ("
+                    + "'" + (VariabiliStatichePlayer.getInstance().isRandom() ? "S" : "N") + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getStelleDaRicercare()  + "', "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N") + "' , "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N") + "' , "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferiti()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina()  + "', "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags()  + "', "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N")  + "', "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isDataSuperiore() ? "S" : "N")  + "', "
+                    + "'" + (VariabiliStatichePlayer.getInstance().isDataInferiore() ? "S" : "N")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTxtDataSuperiore()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTxtDataInferiore()  + "' "
+                    + ")";
+            myDB.execSQL(sql);
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido per scrive ricerca");
         }
     }
 
@@ -196,7 +294,10 @@ public class db_dati_player {
         // UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Controllo apertura db");
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM listaBrani", null);
+                StrutturaFiltroBrano s = UtilityPlayer.getInstance().CreaDatiFiltrobrani();
+
+                String sql = "SELECT * FROM listaBrani " + s.getWhere();
+                Cursor c = myDB.rawQuery(sql, null);
                 if (c.getCount() > 0) {
                     c.moveToFirst();
 
@@ -214,6 +315,29 @@ public class db_dati_player {
         }
 
         return ritorno;
+    }
+
+    public int PrendeBranoDaDati(StrutturaBrano sb) {
+        if (myDB != null) {
+            try {
+                String sql = "SELECT idBrano FROM listaBrani Where " +
+                        "Artista='" + sb.getArtista().replace("'", "''") + "' And " +
+                        "Album='" + sb.getAlbum().replace("'", "''") + "' And " +
+                        "Brano='" + sb.getBrano().replace("'", "''") + "'";
+                Cursor c = myDB.rawQuery(sql, null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    return Integer.parseInt(c.getString(0));
+                } else {
+                    return -1;
+                }
+            } catch (Exception e) {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
     }
 
     public StrutturaBrano CaricaBrano(String idBrano) {
@@ -346,7 +470,10 @@ public class db_dati_player {
     public int QuantiBraniInArchivio() {
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT Count(*) FROM listaBrani", null);
+                StrutturaFiltroBrano s = UtilityPlayer.getInstance().CreaDatiFiltrobrani();
+                String sql = "SELECT Count(*) FROM listaBrani " + s.getWhere();
+
+                Cursor c = myDB.rawQuery(sql , null);
                 if (c.getCount() > 0) {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per conteggio brani");
                     c.moveToFirst();
@@ -733,6 +860,17 @@ public class db_dati_player {
                 myDB.execSQL("Drop Table ImmaginiBrano");
             } catch (Exception ignored) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db immagini brano: " + ignored.getMessage());
+            }
+        }
+    }
+
+    public void PulisceDatiRic() {
+        if (myDB != null) {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Pulizia dati db ricerche");
+            try {
+                myDB.execSQL("Drop Table Ricerche");
+            } catch (Exception ignored) {
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore pulizia dati db ricerche: " + ignored.getMessage());
             }
         }
     }

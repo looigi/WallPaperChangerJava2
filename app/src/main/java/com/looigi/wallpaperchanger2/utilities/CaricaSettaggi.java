@@ -409,6 +409,11 @@ public class CaricaSettaggi {
                             caricateImpostazioniPlayer = false;
                         }
                     }
+
+                    int ritPlayR = dbPlay.CaricaRicerche();
+                    if (ritPlayR < 0) {
+                        ritorno = "Errore ricerche Player 2";
+                    }
                 } else {
                     ritorno = "Errore creazione tabelle Player 1";
                     caricateImpostazioniPlayer = false;

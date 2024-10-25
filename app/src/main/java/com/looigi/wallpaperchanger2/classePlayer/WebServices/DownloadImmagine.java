@@ -13,11 +13,8 @@ import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,10 +90,13 @@ public class DownloadImmagine {
                                         s.setAlbum(VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum());
                                         s.setUrlImmagine(finalUrldisplay);
 
-                                        VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
-                                        VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
-                                        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                                                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                                        // VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
+                                        // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
+                                        if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                                            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
+                                                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                                                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                                        }
                                     }
 
                                     BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
@@ -119,6 +119,10 @@ public class DownloadImmagine {
 
                                         outStream.flush();
                                         outStream.close();
+
+                                        VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
+
+                                        UtilityPlayer.getInstance().AggiornaInformazioni(false);
 
                                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Immagine Scaricata: " + PathImmagine);

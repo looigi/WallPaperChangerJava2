@@ -95,14 +95,19 @@ public class VariabiliStatichePlayer {
     private boolean settingsAperte = false;
     private boolean nonMostrareToast = false;
     private StrutturaImmagini immagineImpostata;
-    private int idImmagineImpostata;
+    private int idImmagineImpostata = -1;
     private ImageView imgSfondoSettings;
     private boolean CambiaImmagine = true;
     private int TempoCambioImmagine = 30;
     private TextView txtNumeroImmagine;
     private long ultimaOperazioneTS;
+    private boolean ceImmaginePerModifica = false;
+    private StrutturaImmagini immagineVisualizzataPerModifica;
+    private TextView txtNomeImmaginePerModifica;
+    private List<Integer> idBraniAscoltati;
 
     // RICERCHE
+    private boolean Random = true;
     private int StelleDaRicercare = 7;
     private boolean StelleSuperiori = true;
     private boolean RicercaMaiAscoltata = false;
@@ -123,6 +128,7 @@ public class VariabiliStatichePlayer {
     private String TxtDataSuperiore = "";
     private boolean DataInferiore = false;
     private String TxtDataInferiore = "";
+    private int idUltimoBrano;
     // RICERCHE
 
     public void ChiudeActivity(boolean Finish) {
@@ -132,6 +138,54 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public List<Integer> getIdBraniAscoltati() {
+        return idBraniAscoltati;
+    }
+
+    public void setIdBraniAscoltati(List<Integer> idBraniAscoltati) {
+        this.idBraniAscoltati = idBraniAscoltati;
+    }
+
+    public int getIdUltimoBrano() {
+        return idUltimoBrano;
+    }
+
+    public void setIdUltimoBrano(int idUltimoBrano) {
+        this.idUltimoBrano = idUltimoBrano;
+    }
+
+    public boolean isRandom() {
+        return Random;
+    }
+
+    public void setRandom(boolean random) {
+        Random = random;
+    }
+
+    public TextView getTxtNomeImmaginePerModifica() {
+        return txtNomeImmaginePerModifica;
+    }
+
+    public void setTxtNomeImmaginePerModifica(TextView txtNomeImmaginePerModifica) {
+        this.txtNomeImmaginePerModifica = txtNomeImmaginePerModifica;
+    }
+
+    public StrutturaImmagini getImmagineVisualizzataPerModifica() {
+        return immagineVisualizzataPerModifica;
+    }
+
+    public void setImmagineVisualizzataPerModifica(StrutturaImmagini immagineVisualizzataPerModifica) {
+        this.immagineVisualizzataPerModifica = immagineVisualizzataPerModifica;
+    }
+
+    public boolean isCeImmaginePerModifica() {
+        return ceImmaginePerModifica;
+    }
+
+    public void setCeImmaginePerModifica(boolean ceImmaginePerModifica) {
+        this.ceImmaginePerModifica = ceImmaginePerModifica;
     }
 
     public long getUltimaOperazioneTS() {

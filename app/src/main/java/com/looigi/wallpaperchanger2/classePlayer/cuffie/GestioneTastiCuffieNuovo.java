@@ -81,7 +81,9 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                                         "Premuto Next");
 
-                                UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false);
+                                UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
+
+                                UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false, true);
 
                                 UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto NEXT");
                                 return true;
@@ -106,7 +108,10 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                                         "Premuto Previous");
 
-                                // UtilityPlayer.getInstance().(getApplicationContext(), "", false);
+                                UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
+
+                                UtilityPlayer.getInstance().IndietroBrano(
+                                        VariabiliStatichePlayer.getInstance().getContext());
 
                                 UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PREVIOUS");
                                 return true;

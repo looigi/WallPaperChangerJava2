@@ -239,6 +239,8 @@ public class db_dati_gps {
                         + " Where Nome = '" + Nome.replace("'", "''") + "' ";
                 myDB.execSQL(sql);
 
+                CompattaDB();
+
                 List<StrutturaPuntiSpegnimento> ll = new ArrayList<>();
                 for (StrutturaPuntiSpegnimento s : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
                     if (!s.getNome().equals(s.getNome())) {
@@ -492,14 +494,12 @@ public class db_dati_gps {
     }
 
     public void EliminaPosizioni(String Data) {
-        if (myDB == null) {
-            ApreDB();
-        }
-
         if (myDB != null) {
             try {
                 String sql = "DELETE FROM posizioni Where data = '" + Data + "'";
                 myDB.execSQL(sql);
+
+                CompattaDB();
             } catch (Exception e) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                         "Errore eliminazione dati: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
@@ -508,10 +508,6 @@ public class db_dati_gps {
     }
 
     public List<StrutturaGps> RitornaPosizioni(String Data) {
-        if (myDB == null) {
-            ApreDB();
-        }
-
         List<StrutturaGps> lista = new ArrayList<>();
 
         if (myDB != null) {
@@ -564,10 +560,6 @@ public class db_dati_gps {
     }
 
     public StrutturaGps RitornaUltimaPosizione(String Data) {
-        if (myDB == null) {
-            ApreDB();
-        }
-
         StrutturaGps lista = null;
 
         if (myDB != null) {

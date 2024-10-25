@@ -22,6 +22,8 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.util.Date;
+
 public class GestioneNotifichePlayer {
     private NotificationManager manager;
     private NotificationCompat.Builder notificationBuilder;
@@ -218,6 +220,8 @@ public class GestioneNotifichePlayer {
             }
 
             if (action != null) {
+                VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
                 switch (action) {
                     case "Apre":
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -246,16 +250,21 @@ public class GestioneNotifichePlayer {
                         }, 100);
                         break;
                     case "Indietro":
+                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
+
+                        UtilityPlayer.getInstance().IndietroBrano(
+                                VariabiliStatichePlayer.getInstance().getContext());
                         break;
                     case "PlayStop":
                         boolean acceso = VariabiliStatichePlayer.getInstance().isStaSuonando();
+
                         UtilityPlayer.getInstance().PressionePlay(this, !acceso);
                         break;
                     case "Avanti":
-                        UtilityPlayer.getInstance().StoppaTimer();
+                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
 
                         UtilityPlayer.getInstance().BranoAvanti(
-                                VariabiliStatichePlayer.getInstance().getContext(), "", false);
+                                VariabiliStatichePlayer.getInstance().getContext(), "", false, true);
                         break;
                 }
             }

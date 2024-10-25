@@ -113,6 +113,11 @@ public class MainPlayer extends Activity {
 
         VariabiliStatichePlayer.getInstance().setImgSfondoSettings(act.findViewById(R.id.imgSfondoSettings));
 
+        VariabiliStatichePlayer.getInstance().setTxtNumeroImmagine(act.findViewById(R.id.txtNumeroImmagine));
+        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("");
+        VariabiliStatichePlayer.getInstance().setTxtNomeImmaginePerModifica(act.findViewById(R.id.txtNomeImmagine));
+        VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText("");
+
         VariabiliStatichePlayer.getInstance().setSettingsAperte(false);
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
         imgSettings.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +127,15 @@ public class MainPlayer extends Activity {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
+                        if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
+                                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                            VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
+                                    VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
+                            );
+                        }
+
                         VariabiliStatichePlayer.getInstance().setSettingsAperte(true);
                         layImpostazioni.setVisibility(LinearLayout.VISIBLE);
                     }
@@ -211,7 +225,7 @@ public class MainPlayer extends Activity {
 
                 // UtilityPlayer.getInstance().ImpostaImmagine(context);
             } else {
-                UtilityPlayer.getInstance().BranoAvanti(this, "", false);
+                UtilityPlayer.getInstance().BranoAvanti(this, "", false, false);
             }
 
             // this.moveTaskToBack(true);
@@ -271,7 +285,7 @@ public class MainPlayer extends Activity {
 
                 UtilityPlayer.getInstance().BranoAvanti(
                         VariabiliStatichePlayer.getInstance().getContext(), "",
-                        false);
+                        false, true);
             }
         });
 
@@ -286,6 +300,8 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().getImgIndietro().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStatichePlayer.getInstance().setUltimaOperazioneTS(new Date().getTime());
+
+                UtilityPlayer.getInstance().IndietroBrano(context);
             }
         });
 

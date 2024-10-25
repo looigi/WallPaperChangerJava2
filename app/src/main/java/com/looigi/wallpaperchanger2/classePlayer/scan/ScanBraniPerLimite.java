@@ -43,7 +43,7 @@ public class ScanBraniPerLimite {
                 if (Spazio > Limite) {
                     // PULIZIA.. Troppo spazio occupato
                     PuliziaBraniEccedentiLoSpazio p = new PuliziaBraniEccedentiLoSpazio();
-                    p.pulisceBrani(context, Spazio, lista);
+                    // p.pulisceBrani(context, Spazio, lista);
                 }
 
                 handler.post(new Runnable() {

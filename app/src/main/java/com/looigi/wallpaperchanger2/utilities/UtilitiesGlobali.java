@@ -76,7 +76,7 @@ public class UtilitiesGlobali {
         }
         ultimoTmsStatorete = ora;
 
-        if (level <= 2) {
+        if (level <= 2 && !VariabiliStaticheStart.getInstance().isCeWifi()) {
             return false;
         } else {
             // contaStatoRete = 0;

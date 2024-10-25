@@ -152,7 +152,7 @@ public class AdapterListenerBrani extends BaseAdapter {
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     int idBrano = listaBrani.get(i).getIdBrano();
-                    UtilityPlayer.getInstance().BranoAvanti(context, String.valueOf(idBrano), false);
+                    UtilityPlayer.getInstance().BranoAvanti(context, String.valueOf(idBrano), false, false);
                 }
             });
 

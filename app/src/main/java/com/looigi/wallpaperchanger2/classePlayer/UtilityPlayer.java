@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 // import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
@@ -22,6 +23,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -183,7 +185,7 @@ public class UtilityPlayer {
 
                         StoppaTimer();
 
-                        BranoAvanti(context, "", false);
+                        BranoAvanti(context, "", false, false);
                     }
                 }
             });
@@ -205,6 +207,8 @@ public class UtilityPlayer {
 
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveUltimoBranoAscoltato(sb);
+
+                AggiungeBranoAllaListaAscoltati(context, sb);
 
                 FaiPartireTimer(context);
 
@@ -369,7 +373,43 @@ public class UtilityPlayer {
         handlerTimer.postDelayed(rTimer, 50);
     }
 
-    public void BranoAvanti(Context context, String Brano, boolean Pregresso) {
+    public void ResettaCampi(Context context) {
+        Attesa(false);
+        AggiornaOperazioneInCorso("");
+
+        StoppaTimer();
+
+        ImpostaLogoApplicazione(context);
+
+        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+        }
+        if (VariabiliStatichePlayer.getInstance().getDownCanzone() != null) {
+            VariabiliStatichePlayer.getInstance().getDownCanzone().BloccaEsecuzione();
+        }
+        if (VariabiliStatichePlayer.getInstance().getDownImmagine() != null) {
+            VariabiliStatichePlayer.getInstance().getDownImmagine().BloccaEsecuzione();
+        }
+    }
+
+    public void IndietroBrano(Context context) {
+        if (VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().size() > 1) {
+            int idBrano = VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().get(
+                    VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().size() - 2
+            );
+            VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().remove(
+                    VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().size() - 1
+            );
+
+            ScriveLog(context, NomeMaschera, "Indietro Brano: " + idBrano);
+
+            ResettaCampi(context);
+
+            PrendeBranoInLocaleEsatto(context, String.valueOf(idBrano));
+        }
+    }
+
+    public void BranoAvanti(Context context, String Brano, boolean Pregresso, boolean VieneDaTasto) {
         db_dati_player db = new db_dati_player(context);
 
         if (VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso() &&
@@ -395,20 +435,7 @@ public class UtilityPlayer {
 
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano esatto: " + Brano + ". Pregresso: " + Pregresso);
 
-        UtilityPlayer.getInstance().Attesa(false);
-        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
-
-        ImpostaLogoApplicazione(context);
-
-        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
-            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
-        }
-        if (VariabiliStatichePlayer.getInstance().getDownCanzone() != null) {
-            VariabiliStatichePlayer.getInstance().getDownCanzone().BloccaEsecuzione();
-        }
-        if (VariabiliStatichePlayer.getInstance().getDownImmagine() != null) {
-            VariabiliStatichePlayer.getInstance().getDownImmagine().BloccaEsecuzione();
-        }
+        ResettaCampi(context);
 
         // VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
         // RipristinoChiamate.getInstance().RimuoveTimer();
@@ -416,8 +443,9 @@ public class UtilityPlayer {
         if (Brano.isEmpty()) {
             boolean cercaBranoInLocale = false;
 
+            int quantiBrani = db.QuantiBraniInArchivio();
             int random = UtilityPlayer.getInstance().GeneraNumeroRandom(5);
-            if (random == 1 || random == 3) {
+            if (random == 1 || random == 3 || (VieneDaTasto && quantiBrani > 0)) {
                 cercaBranoInLocale = true;
             }
             if (!cercaBranoInLocale) {
@@ -427,7 +455,6 @@ public class UtilityPlayer {
             }
 
             if (cercaBranoInLocale) {
-                int quantiBrani = db.QuantiBraniInArchivio();
                 if (quantiBrani == 0) {
                     cercaBranoInLocale = false;
                 }
@@ -486,9 +513,19 @@ public class UtilityPlayer {
         boolean ok = false;
 
         while (ancora) {
-            int numeroRigaBrano = GeneraNumeroRandom(max);
+            int numeroRigaBrano = 0;
+            if (VariabiliStatichePlayer.getInstance().isRandom()) {
+                numeroRigaBrano = GeneraNumeroRandom(max);
+            } else {
+                numeroRigaBrano = VariabiliStatichePlayer.getInstance().getIdUltimoBrano();
+                numeroRigaBrano++;
+                if (numeroRigaBrano > max) {
+                    numeroRigaBrano = 0;
+                }
+            }
 
             int idBrano = db.PrendeBranoDaNumeroRiga(numeroRigaBrano);
+            VariabiliStatichePlayer.getInstance().setIdUltimoBrano(idBrano);
 
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano " + idBrano);
             StrutturaBrano sb = db.CaricaBrano(Integer.toString(idBrano));
@@ -547,6 +584,11 @@ public class UtilityPlayer {
                     if (lista.isEmpty()) {
                         db_dati_player db = new db_dati_player(context);
                         lista = db. CaricaImmaginiBrano(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
+                        if (lista.isEmpty()) {
+                            ChiamateWsPlayer c = new ChiamateWsPlayer(context, false);
+                            c.RitornaImmaginiArtista(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
+                            return;
+                        }
                     }
 
                     final int[] immagine = {GeneraNumeroRandom(lista.size() - 1)};
@@ -579,9 +621,14 @@ public class UtilityPlayer {
                                                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
                                                 VariabiliStatichePlayer.getInstance().setImmagineImpostata(finalLista.get(immagine[0]));
                                                 VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(immagine[0]);
+                                                VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(finalLista.get(immagine[0]));
 
-                                                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
-                                                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size() - 1));
+                                                if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                                                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+                                                }
+                                                if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                                                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size() - 1));
+                                                }
 
                                                 AggiornaInformazioni(false);
                                             } else {
@@ -594,9 +641,14 @@ public class UtilityPlayer {
                                                         finalLista.get(immagine[0]).getAlbum(),
                                                         finalLista.get(immagine[0]).getNomeImmagine());
 
-                                                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(0);
-                                                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (finalLista.size() - 1));
-                                                VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(null);
+                                                VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
+                                                // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(0);
+                                                // if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                                                //     VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (finalLista.size() - 1));
+                                                // }
+                                                if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                                                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(null);
+                                                }
                                             }
                                         }
                                     } else {
@@ -613,6 +665,8 @@ public class UtilityPlayer {
                                             ancora = false;
 
                                             VariabiliStatichePlayer.getInstance().setImmagineImpostata(finalLista.get(immagine[0]));
+                                            VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(finalLista.get(immagine[0]));
+                                            VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(immagine[0]);
 
                                             DownloadImmagine d = new DownloadImmagine();
                                             VariabiliStatichePlayer.getInstance().setDownImmagine(d);
@@ -659,7 +713,7 @@ public class UtilityPlayer {
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
-                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(0);
+                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(-1);
                 if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
                     VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
                 }
@@ -683,8 +737,10 @@ public class UtilityPlayer {
             public void run() {
                 long ora = new Date().getTime();
                 long diff = ora - VariabiliStatichePlayer.getInstance().getUltimaOperazioneTS();
-                if (diff > 60000 * 5) {
-                    ChiudePlayer(context);
+                if (diff >= 60000 * 5) {
+                    if (!VariabiliStatichePlayer.getInstance().isStaSuonando()) {
+                        ChiudePlayer(context);
+                    }
                 } else {
                     handlerTimerChiusura.postDelayed(this, 60000);
                 }
@@ -755,7 +811,7 @@ public class UtilityPlayer {
                         !VariabiliStatichePlayer.getInstance().isHaCaricatoBranoPregresso()) {
                         VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 
-                        BranoAvanti(context, "", true);
+                        BranoAvanti(context, "", true, false);
                     }
                 }
 
@@ -784,7 +840,7 @@ public class UtilityPlayer {
             VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
             VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(true);
 
-            BranoAvanti(context, "", true);
+            BranoAvanti(context, "", true, false);
         }
     }
 
@@ -815,4 +871,212 @@ public class UtilityPlayer {
         }
     }
 
+    public StrutturaFiltroBrano CreaDatiFiltrobrani() {
+        StrutturaFiltroBrano s = new StrutturaFiltroBrano();
+        String Where = "";
+
+        String Stelle = Integer.toString(VariabiliStatichePlayer.getInstance().getStelleDaRicercare());
+        String StelleSuperiori = VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N";
+        String MaiAscoltata = VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N";
+        if (!VariabiliStatichePlayer.getInstance().isRicercaStelle()) {
+            Stelle = "";
+            StelleSuperiori = "";
+        } else {
+            if (MaiAscoltata.equals("S")) {
+                Stelle = "0";
+                StelleSuperiori = "";
+            }
+        }
+
+        if (MaiAscoltata.equals("S")) {
+            Where += "Cast(Bellezza As Integer) <= 0 And ";
+        } else {
+            if (!Stelle.isEmpty()) {
+                if (StelleSuperiori.equals("S")) {
+                    Where +="Cast(Bellezza As Integer) >= " + Stelle + " And ";
+                } else {
+                    Where +="Cast(Bellezza As Integer) = " + Stelle + " And ";
+                }
+            }
+        }
+
+        String Testo = VariabiliStatichePlayer.getInstance().getTestoDaRicercare();
+        String TestoNon = VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare();
+        if (!VariabiliStatichePlayer.getInstance().isRicercaTesto()) {
+            Testo = "";
+            TestoNon = "";
+        }
+
+        if (!Testo.isEmpty()) {
+            Where += "(";
+            Where += "Artista Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%' Or ";
+            Where += "Album Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%' Or ";
+            Where += "Brano Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%'";
+            // Where += "Testo Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%' Or ";
+            Where += ") And ";
+        }
+        if (!TestoNon.isEmpty()) {
+            Where += "(";
+            Where += "Artista Not Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%' And ";
+            Where += "Album Not Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%' And ";
+            Where += "Brano Not Like '%" + Testo.toUpperCase().trim().replace("'", "''") + "%'";
+            Where += ") And ";
+            // Where += "Testo Not Like '%" + TestoNon.toUpperCase().trim().replace("'", "''") + "%' And ";
+        }
+
+        String Preferiti = VariabiliStatichePlayer.getInstance().getPreferiti();
+        String PreferitiElimina = VariabiliStatichePlayer.getInstance().getPreferitiElimina();
+        String AndOrPref = VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N";
+        if (!VariabiliStatichePlayer.getInstance().isRicercaPreferiti()) {
+            Preferiti = "";
+            PreferitiElimina = "";
+            AndOrPref = "";
+        }
+
+        if (!Preferiti.isEmpty()) {
+            String[] p;
+            if (Preferiti.contains(";")) {
+                p = Preferiti.split(";");
+            } else {
+                p = new String[]{Preferiti};
+            }
+            String ClausolaAndOr = "";
+            if (AndOrPref.equals("S")) {
+                ClausolaAndOr = "And";
+            } else {
+                ClausolaAndOr = "Or ";
+            }
+            String pWhere = "";
+            for (String pp : p) {
+                pWhere += "Artista = '" + pp.replace("'", "''") + "' " + ClausolaAndOr + " ";
+            }
+            if (!pWhere.isEmpty()) {
+                pWhere = pWhere.substring(0, pWhere.length() - 4);
+                Where += " (" + pWhere + ") And ";
+            }
+        }
+
+        if (!PreferitiElimina.isEmpty()) {
+            String[] p;
+            if (PreferitiElimina.contains(";")) {
+                p = PreferitiElimina.split(";");
+            } else {
+                p = new String[]{PreferitiElimina};
+            }
+            String pWhere = "";
+            for (String pp : p) {
+                pWhere += "Artista <> '" + pp.replace("'", "''") + "' And ";
+            }
+            if (!pWhere.isEmpty()) {
+                pWhere = pWhere.substring(0, pWhere.length() - 4);
+                Where += " (" + pWhere + ") And ";
+            }
+        }
+
+        String Tags = VariabiliStatichePlayer.getInstance().getPreferitiTags();
+        String TagsElimina = VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags();
+        String AndOrTags = VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N";
+        if (!VariabiliStatichePlayer.getInstance().isRicercaTags()) {
+            Tags = "";
+            TagsElimina = "";
+            AndOrTags = "";
+        }
+
+        if (!Tags.isEmpty()) {
+            String[] p;
+            if (Tags.contains(";")) {
+                p = Tags.split(";");
+            } else {
+                p = new String[]{Tags};
+            }
+            String ClausolaAndOr = "";
+            if (AndOrTags.equals("S")) {
+                ClausolaAndOr = "And";
+            } else {
+                ClausolaAndOr = "Or ";
+            }
+            String pWhere = "";
+            for (String pp : p) {
+                pWhere += "Artista = '" + pp.replace("'", "''") + "' " + ClausolaAndOr + " ";
+            }
+            if (!pWhere.isEmpty()) {
+                pWhere = pWhere.substring(0, pWhere.length() - 4);
+                Where += " (" + pWhere + ") And ";
+            }
+        }
+
+        if (!TagsElimina.isEmpty()) {
+            String[] p;
+            if (TagsElimina.contains(";")) {
+                p = TagsElimina.split(";");
+            } else {
+                p = new String[]{TagsElimina};
+            }
+            String pWhere = "";
+            for (String pp : p) {
+                pWhere += "Artista <> '" + pp.replace("'", "''") + "' And ";
+            }
+            if (!pWhere.isEmpty()) {
+                pWhere = pWhere.substring(0, pWhere.length() - 4);
+                Where += " (" + pWhere + ") And ";
+            }
+        }
+
+        String DataSuperiore = "";
+        String DataInferiore = "";
+
+        if (VariabiliStatichePlayer.getInstance().isDate()) {
+            if (VariabiliStatichePlayer.getInstance().isDataSuperiore()) {
+                if (!VariabiliStatichePlayer.getInstance().getTxtDataSuperiore().isEmpty()) {
+                    DataSuperiore = VariabiliStatichePlayer.getInstance().getTxtDataSuperiore();
+                }
+            }
+
+            if (VariabiliStatichePlayer.getInstance().isDataInferiore()) {
+                if (!VariabiliStatichePlayer.getInstance().getTxtDataInferiore().isEmpty()) {
+                    DataInferiore = VariabiliStatichePlayer.getInstance().getTxtDataInferiore();
+                }
+            }
+        }
+
+        int idUltimoBrano;
+        if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
+            idUltimoBrano = VariabiliStatichePlayer.getInstance().getUltimoBrano().getIdBrano();
+        } else {
+            idUltimoBrano = 1;
+        }
+
+        if (!Where.isEmpty()) {
+            Where = "Where " + Where.substring(0, Where.length() - 4);
+        }
+
+        s.setStelle(Stelle);
+        s.setStelleSuperiori(StelleSuperiori);
+        s.setMaiAscoltata(MaiAscoltata);
+        s.setTesto(Testo);
+        s.setTestoNon(TestoNon);
+        s.setPreferiti(Preferiti);
+        s.setPreferitiElimina(PreferitiElimina);
+        s.setAndOrPref(AndOrPref);
+        s.setTags(Tags);
+        s.setTagsElimina(TagsElimina);
+        s.setAndOrTags(AndOrTags);
+        s.setDataSuperiore(DataSuperiore);
+        s.setDataInferiore(DataInferiore);
+        s.setIdUltimoBrano(idUltimoBrano);
+        s.setWhere(Where);
+
+        return s;
+    }
+
+    private void AggiungeBranoAllaListaAscoltati(Context context, StrutturaBrano sb) {
+        db_dati_player db = new db_dati_player(context);
+        int idBrano = db.PrendeBranoDaDati(sb);
+        if (idBrano > -1) {
+            if (VariabiliStatichePlayer.getInstance().getIdBraniAscoltati() == null) {
+                VariabiliStatichePlayer.getInstance().setIdBraniAscoltati(new ArrayList<>());
+            }
+            VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().add(idBrano);
+        }
+    }
 }
