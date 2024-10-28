@@ -33,6 +33,13 @@
                 android:layout_height="wrap_content"
                 android:text="Random" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchBarraFilm"
+                android:layout_width="match_parent"
+                android:textColor="#0000CC"
+                android:text="Barra controlli visibile"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="5"

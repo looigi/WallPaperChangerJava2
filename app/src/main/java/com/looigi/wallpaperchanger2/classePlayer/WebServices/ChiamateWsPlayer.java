@@ -5,10 +5,15 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBraniOnline;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
-import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaPreferiti;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
@@ -239,24 +244,44 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 -1);
     }
 
-    public void RitornaListaArtisti(boolean ApreDialog) {
+    public void RitornaListaArtisti(boolean EsegueRefresh) {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Artisti");
 
-        String Urletto="RitornaArtisti";
+        boolean esegueQuery = true;
 
-        TipoOperazione = "RitornaArtisti";
-        // ControllaTempoEsecuzione = true;
+        if (!EsegueRefresh) {
+            db_dati_player db = new db_dati_player(context);
+            List<StrutturaArtisti> lista = db.CaricaArtisti();
 
-        Esegue(
-                RadiceWS + ws + Urletto,
-                TipoOperazione,
-                NS,
-                SA,
-                50000,
-                ApreDialog,
-                true,
-                false,
-                -1);
+            if (!lista.isEmpty()) {
+                AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
+                VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+
+                esegueQuery = false;
+
+                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                        "Ritorno artisti effettuato da DB");
+            }
+        }
+
+        if (esegueQuery) {
+            String Urletto = "RitornaArtisti";
+
+            TipoOperazione = "RitornaArtisti";
+            // ControllaTempoEsecuzione = true;
+
+            Esegue(
+                    RadiceWS + ws + Urletto,
+                    TipoOperazione,
+                    NS,
+                    SA,
+                    50000,
+                    true,
+                    true,
+                    false,
+                    -1);
+        }
     }
 
     private long lastCall = -1;
@@ -416,6 +441,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                         break;
                     case "RitornaArtisti":
                         RitornaArtisti(result);
+                        break;
+                    case "RitornaListaBraniAlbumArtista":
+                        RitornaListaBraniAlbumArtista(result);
+                        break;
+                    case "RitornaListaAlbumArtista":
+                        RitornaListaAlbumArtista(result);
                         break;
                     case "RitornaImmaginiArtista":
                         fRitornaImmaginiArtista(result);
@@ -623,33 +654,18 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private void RitornaArtisti(String result) {
         boolean ritorno = ControllaRitorno("Ritorna Artisti", result);
         if (!ritorno) {
-            // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
         } else {
-            // Files.getInstance().EliminaFile(VariabiliStatichePlayer.getInstance().getPercorsoDIR() + "/Liste", "ListaArtisti.txt");
-            // Files.getInstance().ScriveFile(VariabiliStatichePlayer.getInstance().getPercorsoDIR() + "/Liste", "ListaArtisti.txt", result);
-
-            RitornaArtisti2(result);
-        }
-    }
-
-    public void RitornaArtisti2(String result) {
-        boolean ritorno = ControllaRitorno("Ritorna Artisti 2", result);
-        if (!ritorno) {
-            // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
-        } else {
-            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti");
-
             String[] Globale = result.split("§", -1);
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti -> " + Globale.length);
 
+            List<StrutturaArtisti> lista = new ArrayList<>();
             for (int i = 0; i < Globale.length; i++) {
                 if (!Globale[i].trim().replace("\n", "").isEmpty()) {
                     try {
                         String[] dati = Globale[i].split("\\|", -1);
                         String Artista = dati[0];
                         String Immagine = dati[1];
-                        // String UrlImmagine = VariabiliStatichePlayer.getInstance().getPercorsoBranoMP3SuSD() +
-                        //         "/ImmaginiMusica" + Immagine;
+
                         List<String> listaTags = new ArrayList<>();
                         if (!dati[2].isEmpty()) {
                             String[] Tags = dati[2].split("%", -1);
@@ -660,19 +676,133 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                             }
                         }
 
-                        StrutturaPreferiti sa = new StrutturaPreferiti();
+                        StrutturaArtisti sa = new StrutturaArtisti();
                         sa.setNomeArtista(Artista);
                         sa.setTags(listaTags);
                         sa.setImmagine(Immagine);
 
-                        // VariabiliStatichePlayer.getInstance().AggiungeArtista(sa);
+                        lista.add(sa);
                     } catch (Exception ignored) {
                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti. Errore su parse (" + Globale[i] + "): " +
                                 UtilityDetector.getInstance().PrendeErroreDaException(ignored));
                     }
                 }
             }
+
+            db_dati_player db = new db_dati_player(context);
+            db.ScriveArtisti(lista);
+
+            AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
+            VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
+            VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti effettuato");
+        }
+    }
+
+    private void RitornaListaAlbumArtista(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Album Artista", result);
+        if (!ritorno) {
+            // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
+        } else {
+            // Tarja Turunen;2005;One Angel's Dream§
+
+            String[] Globale = result.split("§", -1);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                    "Ritorno album artista -> " + Globale.length);
+
+            List<StrutturaAlbum> lista = new ArrayList<>();
+            for (int i = 0; i < Globale.length; i++) {
+                if (!Globale[i].trim().replace("\n", "").isEmpty()) {
+                    try {
+                        String[] dati = Globale[i].split(";", -1);
+                        String Artista = dati[0];
+                        String Anno = dati[1];
+                        String Album = dati[2];
+
+                        StrutturaAlbum sa = new StrutturaAlbum();
+                        sa.setArtista(Artista);
+                        sa.setAnno(Anno);
+                        sa.setAlbum(Album);
+
+                        lista.add(sa);
+                        // VariabiliStatichePlayer.getInstance().AggiungeArtista(sa);
+                    } catch (Exception ignored) {
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                "Ritorno album artista. Errore su parse (" + Globale[i] + "): " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(ignored));
+                    }
+                }
+            }
+
+            AdapterListenerAlbum customAdapterA = new AdapterListenerAlbum(context, lista);
+            VariabiliStatichePlayer.getInstance().getLstAlbum().setAdapter(customAdapterA);
+
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno album artista effettuato");
+        }
+    }
+
+    private void RitornaListaBraniAlbumArtista(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Brani Album Artista", result);
+        if (!ritorno) {
+            // UtilityPlayer.getInstance().VisualizzaMessaggio(result);
+        } else {
+            // Tarja Turunen;One Angel's Dream;0;Sadness In The Night (feat Tar;4628;2005
+
+            String[] Globale = result.split("§", -1);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                    "Ritorno brani album artista -> " + Globale.length);
+
+            List<StrutturaBrano> lista = new ArrayList<>();
+            for (int i = 0; i < Globale.length; i++) {
+                if (!Globale[i].trim().replace("\n", "").isEmpty()) {
+                    try {
+                        String[] dati = Globale[i].split(";", -1);
+                        String Artista = dati[0];
+                        String Album = dati[1];
+                        String Traccia = dati[2];
+                        String Brano = dati[3];
+                        String idBrano = dati[4];
+                        String Anno = dati[5];
+
+                        StrutturaBrano sa = new StrutturaBrano();
+                        sa.setAlbum(Album);
+                        sa.setArtista(Artista);
+                        sa.setAnno(Anno);
+                        sa.setBrano(Brano);
+                        sa.setTraccia(Traccia);
+                        sa.setIdBrano(Integer.valueOf(idBrano));
+                        sa.setAscoltata(0);
+                        sa.setBellezza(-2);
+                        sa.setCartellaBrano("");
+                        sa.setData("");
+                        sa.setDimensione(0L);
+                        sa.setEsisteBranoSuDisco(false);
+                        sa.setEstensione("");
+                        sa.setPathBrano("");
+                        sa.setImmagini(new ArrayList<>());
+                        sa.setQuantiBrani(-1);
+                        sa.setTags("");
+                        sa.setTesto("");
+                        sa.setTestoTradotto("");
+                        sa.setTipoBrano(0);
+                        sa.setUrlBrano("");
+
+                        lista.add(sa);
+                        // VariabiliStatichePlayer.getInstance().AggiungeArtista(sa);
+                    } catch (Exception ignored) {
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                "Ritorno brano album artisti. Errore su parse (" + Globale[i] + "): " +
+                                UtilityDetector.getInstance().PrendeErroreDaException(ignored));
+                    }
+                }
+            }
+
+            AdapterListenerBraniOnline customAdapterA = new AdapterListenerBraniOnline(context, lista);
+            VariabiliStatichePlayer.getInstance().getLstBrani().setAdapter(customAdapterA);
+
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                    "Ritorno brano album artisti effettuato");
         }
     }
 

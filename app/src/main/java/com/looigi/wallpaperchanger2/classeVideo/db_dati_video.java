@@ -60,7 +60,7 @@ public class db_dati_video {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -154,7 +154,8 @@ public class db_dati_video {
                         + " Impostazioni"
                         + " VALUES ("
                         + "'" + VariabiliStaticheVideo.getInstance().getRandom() + "',"
-                        + "'" + (VariabiliStaticheVideo.getInstance().isSettingsAperto() ? "S" : "N") + "'"
+                        + "'" + (VariabiliStaticheVideo.getInstance().isSettingsAperto() ? "S" : "N") + "',"
+                        + "'" + (VariabiliStaticheVideo.getInstance().isBarraVisibile() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -174,6 +175,7 @@ public class db_dati_video {
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheVideo.getInstance().setRandom("S");
         VariabiliStaticheVideo.getInstance().setSettingsAperto(true);
+        VariabiliStaticheVideo.getInstance().setBarraVisibile(true);
     }
 
     public int CaricaImpostazioni() {
@@ -187,6 +189,7 @@ public class db_dati_video {
                     try {
                         VariabiliStaticheVideo.getInstance().setRandom(c.getString(0));
                         VariabiliStaticheVideo.getInstance().setSettingsAperto(c.getString(1).equals("S"));
+                        VariabiliStaticheVideo.getInstance().setBarraVisibile(c.getString(2).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

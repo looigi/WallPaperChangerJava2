@@ -62,7 +62,7 @@ public class db_dati_films {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -156,7 +156,8 @@ public class db_dati_films {
                         + " Impostazioni"
                         + " VALUES ("
                         + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "',"
-                        + "'" + (VariabiliStaticheFilms.getInstance().isSettingsAperto() ? "S" : "N") + "'"
+                        + "'" + (VariabiliStaticheFilms.getInstance().isSettingsAperto() ? "S" : "N") + "',"
+                        + "'" + (VariabiliStaticheFilms.getInstance().isBarraVisibile() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -176,6 +177,7 @@ public class db_dati_films {
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheFilms.getInstance().setRandom("S");
         VariabiliStaticheFilms.getInstance().setSettingsAperto(true);
+        VariabiliStaticheFilms.getInstance().setBarraVisibile(true);
     }
 
     public int CaricaImpostazioni() {
@@ -189,6 +191,7 @@ public class db_dati_films {
                     try {
                         VariabiliStaticheFilms.getInstance().setRandom(c.getString(0));
                         VariabiliStaticheFilms.getInstance().setSettingsAperto(c.getString(1).equals("S"));
+                        VariabiliStaticheFilms.getInstance().setBarraVisibile(c.getString(2).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

@@ -20,7 +20,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classePlayer.AdapterListenerBrani;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
@@ -53,6 +54,8 @@ public class impostazioni_player_interne {
         imgRicerche.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 visualizzaImpostazioniMaschera(0);
+
+                ImpostazioniMascheraRicerca();
             }
         });
 
@@ -62,6 +65,15 @@ public class impostazioni_player_interne {
                 visualizzaImpostazioniMaschera(1);
 
                 imposta_brani_locali();
+            }
+        });
+
+        Button imgBraniOnLine = (Button) act.findViewById(R.id.btnSettingsBraniRemoti);
+        imgBraniOnLine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                visualizzaImpostazioniMaschera(4);
+
+                impostazioniMascheraBraniOnLine();
             }
         });
 
@@ -84,6 +96,8 @@ public class impostazioni_player_interne {
         });
 
         visualizzaImpostazioniMaschera(0);
+
+        ImpostazioniMascheraRicerca();
     }
 
     public void imposta_brani_locali() {
@@ -126,6 +140,19 @@ public class impostazioni_player_interne {
         });
     }
 
+    private void ImpostazioniMascheraRicerca() {
+        SwitchCompat swcRandom = act.findViewById(R.id.sRandom);
+        swcRandom.setChecked(VariabiliStatichePlayer.getInstance().isRandom());
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRandom(swcRandom.isChecked());
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+            }
+        });
+    }
+
     private void impostazioniMascheraBrano() {
         ImageView imgCondividi = act.findViewById(R.id.imgCondividiBrano);
         imgCondividi.setOnClickListener(new View.OnClickListener() {
@@ -152,8 +179,8 @@ public class impostazioni_player_interne {
     }
 
     private void impostazioniMascheraSfondo() {
-        ImageView imgImposta = act.findViewById(R.id.imgImpostaWP);
-        imgImposta.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgImposta(act.findViewById(R.id.imgImpostaWP));
+        VariabiliStatichePlayer.getInstance().getImgImposta().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStatichePlayer.getInstance().getPathUltimaImmagine() != null) {
                     UtilityPlayer.getInstance().Attesa(true);
@@ -178,8 +205,8 @@ public class impostazioni_player_interne {
             }
         });
 
-        ImageView imgIndietro = act.findViewById(R.id.imgIndietroSfondoPlayer);
-        imgIndietro.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgIndietroSfondo(act.findViewById(R.id.imgIndietroSfondoPlayer));
+        VariabiliStatichePlayer.getInstance().getImgIndietroSfondo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
                 if (n - 1 > 0) {
@@ -192,8 +219,8 @@ public class impostazioni_player_interne {
             }
         });
 
-        ImageView imgAvanti = act.findViewById(R.id.imgAvantiSfondoPlayer);
-        imgAvanti.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgAvantiSfondo(act.findViewById(R.id.imgAvantiSfondoPlayer));
+        VariabiliStatichePlayer.getInstance().getImgAvantiSfondo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
                 if (n + 1 <= VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1) {
@@ -243,8 +270,8 @@ public class impostazioni_player_interne {
             }
         });
 
-        ImageView imgElimina = act.findViewById(R.id.imgEliminaSfondo);
-        imgElimina.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgEliminaSfondo(act.findViewById(R.id.imgEliminaSfondo));
+        VariabiliStatichePlayer.getInstance().getImgEliminaSfondo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!VariabiliStatichePlayer.getInstance().isCeImmaginePerModifica()) {
                     return;
@@ -273,8 +300,8 @@ public class impostazioni_player_interne {
             }
         });
 
-        ImageView imgRefreshImmagini = act.findViewById(R.id.imgRefreshImmagini);
-        imgRefreshImmagini.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgRefreshImmagini(act.findViewById(R.id.imgRefreshImmagini));
+        VariabiliStatichePlayer.getInstance().getImgRefreshImmagini().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String Artista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista();
 
@@ -283,8 +310,8 @@ public class impostazioni_player_interne {
             }
         });
 
-        ImageView imgCondividi = act.findViewById(R.id.imgCondividiSfondo);
-        imgCondividi.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePlayer.getInstance().setImgCondividi(act.findViewById(R.id.imgCondividiSfondo));
+        VariabiliStatichePlayer.getInstance().getImgCondividi().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!VariabiliStatichePlayer.getInstance().isCeImmaginePerModifica()) {
                     return;
@@ -313,6 +340,37 @@ public class impostazioni_player_interne {
         });
     }
 
+    private void impostazioniMascheraBraniOnLine() {
+        VariabiliStatichePlayer.getInstance().setLstArtisti(act.findViewById(R.id.lstListaArtisti));
+        VariabiliStatichePlayer.getInstance().setLstAlbum(act.findViewById(R.id.lstListaAlbum));
+        VariabiliStatichePlayer.getInstance().setLstBrani(act.findViewById(R.id.lstListaBrani));
+
+        EditText edtArtista = act.findViewById(R.id.edtFiltroArtisti);
+        ImageView imgRicercaScelta = (ImageView) act.findViewById(R.id.imgFiltroArtisti);
+        imgRicercaScelta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Artista = edtArtista.getText().toString();
+                if (VariabiliStatichePlayer.getInstance().getCustomAdapterA() != null) {
+                    VariabiliStatichePlayer.getInstance().getCustomAdapterA().updateData(Artista);
+                }
+            }
+        });
+
+        ImageView imgRefreshArtisti = (ImageView) act.findViewById(R.id.imgRefreshArtisti);
+        imgRefreshArtisti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                ws.RitornaListaArtisti(true);
+
+                VariabiliStatichePlayer.getInstance().getLstAlbum().setAdapter(null);
+                VariabiliStatichePlayer.getInstance().getLstBrani().setAdapter(null);
+            }
+        });
+
+        ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+        ws.RitornaListaArtisti(false);
+    }
+
     private void ImpostaImmagine() {
         if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
             return;
@@ -325,47 +383,49 @@ public class impostazioni_player_interne {
         Runnable rTimer = new Runnable() {
             public void run() {
                 int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
-                StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().get(n);
-                VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(s);
-                String path = s.getPathImmagine();
-                path = path.replace("//", "/");
-                Bitmap bitmap = null;
-                VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(false);
-                boolean visibile = true;
-                if (Files.getInstance().EsisteFile(path)) {
-                    bitmap = BitmapFactory.decodeFile(path);
-                    VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
-                } else {
-                    if (!UtilitiesGlobali.getInstance().isRetePresente()) {
-                        // bitmap = null;
-                        visibile = false;
-                        VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
+                if (n < VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()) {
+                    StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().get(n);
+                    VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(s);
+                    String path = s.getPathImmagine();
+                    path = path.replace("//", "/");
+                    Bitmap bitmap = null;
+                    VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(false);
+                    boolean visibile = true;
+                    if (Files.getInstance().EsisteFile(path)) {
+                        bitmap = BitmapFactory.decodeFile(path);
+                        VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
                     } else {
-                        DownloadImmagine d = new DownloadImmagine();
-                        VariabiliStatichePlayer.getInstance().setDownImmagine(d);
-                        d. EsegueDownload(
-                                context,
-                                VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
-                                s.getUrlImmagine()
-                        );
+                        if (!UtilitiesGlobali.getInstance().isRetePresente()) {
+                            // bitmap = null;
+                            visibile = false;
+                            VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
+                        } else {
+                            DownloadImmagine d = new DownloadImmagine();
+                            VariabiliStatichePlayer.getInstance().setDownImmagine(d);
+                            d.EsegueDownload(
+                                    context,
+                                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
+                                    s.getUrlImmagine()
+                            );
+                        }
                     }
-                }
                 /* if (bitmap == null) {
                     bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 } */
 
-                if (visibile) {
-                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
-                } else {
-                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.GONE);
-                }
+                    if (visibile) {
+                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+                    } else {
+                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.GONE);
+                    }
 
-                VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
-                        VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
-                );
-                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
-                        "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                    VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
+                            VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
+                    );
+                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
+                            "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                }
             }
         };
         handlerTimer.postDelayed(rTimer, 50);
@@ -376,10 +436,14 @@ public class impostazioni_player_interne {
         LinearLayout layBraniLocali = act.findViewById(R.id.layBraniLocali);
         LinearLayout layRicerche = act.findViewById(R.id.layRicerchePlayer);
         LinearLayout laySfondoPlayer = act.findViewById(R.id.laySfondoPlayer);
+        LinearLayout layBraniOnLine = act.findViewById(R.id.layBraniOnLine);
+        LinearLayout layBranoPlayer = act.findViewById(R.id.layBranoPlayer);
 
         layBraniLocali.setVisibility(LinearLayout.GONE);
         layRicerche.setVisibility(LinearLayout.GONE);
         laySfondoPlayer.setVisibility(LinearLayout.GONE);
+        layBraniOnLine.setVisibility(LinearLayout.GONE);
+        layBranoPlayer.setVisibility(LinearLayout.GONE);
 
         switch(quale) {
             case 0:
@@ -390,6 +454,12 @@ public class impostazioni_player_interne {
                 break;
             case 2:
                 laySfondoPlayer.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 3:
+                layBranoPlayer.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 4:
+                layBraniOnLine.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }

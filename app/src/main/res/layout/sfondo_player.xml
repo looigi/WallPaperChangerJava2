@@ -6,52 +6,89 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtNumeroImmagine"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:text="Immagine">
-
-    </TextView>
-
-    <TextView
-        android:id="@+id/txtNomeImmagine"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:text="Immagine">
-
-    </TextView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgIndietroSfondoPlayer"
-            android:src="@drawable/indietro"
-            android:layout_width="40dp"
-            android:layout_height="40dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:layout_height="wrap_content">
 
-        </ImageView>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
 
-        <ImageView
+                <ImageView
+                    android:id="@+id/imgIndietroSfondoPlayer"
+                    android:src="@drawable/indietro"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtNumeroImmagine"
+                    android:layout_width="match_parent"
+                    android:lines="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:text="Immagine">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/txtNomeImmagine"
+                    android:layout_width="match_parent"
+                    android:lines="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:text="Immagine">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAvantiSfondoPlayer"
+                    android:src="@drawable/avanti"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
             android:id="@+id/imgSfondoSettings"
-            android:layout_width="250dp"
-            android:layout_height="250dp">
+            android:layout_width="match_parent"
+            android:layout_height="350dp" />
 
-        </ImageView>
+        <!-- <ImageView
+            android:id="@+id/imgSfondoSettings"
+            android:layout_width="300dp"
+            android:layout_height="300dp">
 
-        <ImageView
-            android:id="@+id/imgAvantiSfondoPlayer"
-            android:src="@drawable/avanti"
-            android:layout_width="40dp"
-            android:layout_height="40dp">
+        </ImageView> -->
 
-        </ImageView>
 
     </LinearLayout>
 
@@ -91,8 +128,6 @@
                         android:src="@drawable/eye" />
                 </LinearLayout>
             </LinearLayout>
-
-
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sCambiaImmagine"

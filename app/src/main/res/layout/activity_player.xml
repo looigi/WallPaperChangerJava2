@@ -171,18 +171,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtOperazionePlayer"
-        android:layout_above="@+id/layTastiPlayer"
-        android:layout_width="wrap_content"
-        android:padding="3dp"
-        android:layout_margin="2dp"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:layout_height="wrap_content"
-        android:lines="1">
-
-    </TextView>
-
     <!--  Stelle -->
     <LinearLayout
         android:id="@+id/layStelle"
@@ -383,13 +371,24 @@
 
     </ImageView>
 
+    <TextView
+        android:id="@+id/txtOperazionePlayer"
+        android:layout_width="wrap_content"
+        android:padding="3dp"
+        android:layout_below="@id/imgCaricamentoPlayer"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_height="wrap_content"
+        android:lines="1">
+
+    </TextView>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoPlayer"
         android:src="@drawable/loading"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/layTastiPlayer"
-        android:layout_width="50dp"
-        android:layout_height="50dp">
+        android:layout_centerInParent="true"
+        android:layout_width="150dp"
+        android:layout_height="150dp">
 
     </pl.droidsonroids.gif.GifImageView>
 

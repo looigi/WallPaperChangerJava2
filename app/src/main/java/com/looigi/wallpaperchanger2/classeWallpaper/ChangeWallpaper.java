@@ -47,7 +47,8 @@ public class ChangeWallpaper {
 		} else {
 			SchermoX = -1;
 			SchermoY = -1;
-			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+					"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
 
 			/* if (context != null) {
 				Intent mStartActivity = new Intent(context, MainWallpaper.class);
@@ -229,11 +230,11 @@ public class ChangeWallpaper {
 												if (r1.top < inizioVisoY) {
 													inizioVisoY = r1.top;
 												}
-												if (r1.right > larghezzaViso) {
-													larghezzaViso = r1.right;
+												if (r1.right - r1.left > larghezzaViso) {
+													larghezzaViso = r1.right - r1.left;
 												}
-												if (r1.bottom > altezzaViso) {
-													altezzaViso = r1.bottom;
+												if (r1.bottom - r1.top > altezzaViso) {
+													altezzaViso = r1.bottom - r1.top;
 												}
 											}
 
@@ -265,7 +266,7 @@ public class ChangeWallpaper {
 												inizioVisoX = 0;
 											}
 
-											larghezzaViso += (int) (larghezzaImmagine * VariabiliStaticheWallpaper.percAumentoX);
+											larghezzaViso += (int) (larghezzaImmagine * (VariabiliStaticheWallpaper.percAumentoX * 2)) ;
 											if (larghezzaViso + inizioVisoX > larghezzaImmagine) {
 												larghezzaViso = larghezzaImmagine - inizioVisoX;
 											}
@@ -288,11 +289,19 @@ public class ChangeWallpaper {
 														bitmap,
 														inizioVisoX,
 														inizioVisoY,
+														larghezzaViso,
+														altezzaViso
+												);
+
+												/* bmpAppoggio = Bitmap.createBitmap(
+														bitmap,
+														inizioVisoX,
+														inizioVisoY,
 														larghezzaImmagine - inizioVisoX,
 														altezzaImmagine - inizioVisoY
 												);
 
-												/* bmpAppoggio = Bitmap.createScaledBitmap(
+												bmpAppoggio = Bitmap.createScaledBitmap(
 														bmpAppoggio,
 														SchermoX,
 														SchermoY,

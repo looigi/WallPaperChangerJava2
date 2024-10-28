@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
@@ -96,7 +98,7 @@ public class VariabiliStatichePlayer {
     private boolean nonMostrareToast = false;
     private StrutturaImmagini immagineImpostata;
     private int idImmagineImpostata = -1;
-    private ImageView imgSfondoSettings;
+    private ImmagineZoomabile imgSfondoSettings;
     private boolean CambiaImmagine = true;
     private int TempoCambioImmagine = 30;
     private TextView txtNumeroImmagine;
@@ -105,6 +107,16 @@ public class VariabiliStatichePlayer {
     private StrutturaImmagini immagineVisualizzataPerModifica;
     private TextView txtNomeImmaginePerModifica;
     private List<Integer> idBraniAscoltati;
+    private ListView lstArtisti;
+    private ListView lstAlbum;
+    private ListView lstBrani;
+    private AdapterListenerArtisti customAdapterA;
+    private ImageView imgImposta;
+    private ImageView imgIndietroSfondo;
+    private ImageView imgAvantiSfondo;
+    private ImageView imgEliminaSfondo;
+    private ImageView imgRefreshImmagini;
+    private ImageView imgCondividi;
 
     // RICERCHE
     private boolean Random = true;
@@ -138,6 +150,86 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ImageView getImgCondividi() {
+        return imgCondividi;
+    }
+
+    public void setImgCondividi(ImageView imgCondividi) {
+        this.imgCondividi = imgCondividi;
+    }
+
+    public ImageView getImgRefreshImmagini() {
+        return imgRefreshImmagini;
+    }
+
+    public void setImgRefreshImmagini(ImageView imgRefreshImmagini) {
+        this.imgRefreshImmagini = imgRefreshImmagini;
+    }
+
+    public ImageView getImgEliminaSfondo() {
+        return imgEliminaSfondo;
+    }
+
+    public void setImgEliminaSfondo(ImageView imgEliminaSfondo) {
+        this.imgEliminaSfondo = imgEliminaSfondo;
+    }
+
+    public ImageView getImgAvantiSfondo() {
+        return imgAvantiSfondo;
+    }
+
+    public void setImgAvantiSfondo(ImageView imgAvantiSfondo) {
+        this.imgAvantiSfondo = imgAvantiSfondo;
+    }
+
+    public ImageView getImgIndietroSfondo() {
+        return imgIndietroSfondo;
+    }
+
+    public void setImgIndietroSfondo(ImageView imgIndietroSfondo) {
+        this.imgIndietroSfondo = imgIndietroSfondo;
+    }
+
+    public ImageView getImgImposta() {
+        return imgImposta;
+    }
+
+    public void setImgImposta(ImageView imgImposta) {
+        this.imgImposta = imgImposta;
+    }
+
+    public AdapterListenerArtisti getCustomAdapterA() {
+        return customAdapterA;
+    }
+
+    public void setCustomAdapterA(AdapterListenerArtisti customAdapterA) {
+        this.customAdapterA = customAdapterA;
+    }
+
+    public ListView getLstAlbum() {
+        return lstAlbum;
+    }
+
+    public void setLstAlbum(ListView lstAlbum) {
+        this.lstAlbum = lstAlbum;
+    }
+
+    public ListView getLstArtisti() {
+        return lstArtisti;
+    }
+
+    public void setLstArtisti(ListView lstArtisti) {
+        this.lstArtisti = lstArtisti;
+    }
+
+    public ListView getLstBrani() {
+        return lstBrani;
+    }
+
+    public void setLstBrani(ListView lstBrani) {
+        this.lstBrani = lstBrani;
     }
 
     public List<Integer> getIdBraniAscoltati() {
@@ -228,11 +320,11 @@ public class VariabiliStatichePlayer {
         CambiaImmagine = cambiaImmagine;
     }
 
-    public ImageView getImgSfondoSettings() {
+    public ImmagineZoomabile getImgSfondoSettings() {
         return imgSfondoSettings;
     }
 
-    public void setImgSfondoSettings(ImageView imgSfondoSettings) {
+    public void setImgSfondoSettings(ImmagineZoomabile imgSfondoSettings) {
         this.imgSfondoSettings = imgSfondoSettings;
     }
 

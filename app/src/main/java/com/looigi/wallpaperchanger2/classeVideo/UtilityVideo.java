@@ -6,7 +6,10 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
@@ -22,6 +25,7 @@ import java.io.IOException;
 
 public class UtilityVideo {
     private static UtilityVideo instance = null;
+    private MediaController mediaController = null;
 
     private UtilityVideo() {
     }
@@ -107,10 +111,18 @@ public class UtilityVideo {
             String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
 
             VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
-            MediaController mediaController = new MediaController(context);
-            mediaController.setAnchorView(VariabiliStaticheVideo.getInstance().getVideoView());
+            mediaController = new MediaController(context) {
+                @Override
+                public void hide()
+                {
+                    mediaController.show();
+                }
+
+            };
+            VariabiliStaticheVideo.getInstance().setMediaController(mediaController);
+            VariabiliStaticheVideo.getInstance().getMediaController().setAnchorView(VariabiliStaticheVideo.getInstance().getVideoView());
             Context finalContext = context;
-            mediaController.setPrevNextListeners(new View.OnClickListener() {
+            VariabiliStaticheVideo.getInstance().getMediaController().setPrevNextListeners(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Handle next click here
@@ -124,9 +136,11 @@ public class UtilityVideo {
                 }
             });
             Uri video = Uri.parse(link);
-            VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(mediaController);
+            VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
+                    VariabiliStaticheVideo.getInstance().getMediaController());
             VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
             VariabiliStaticheVideo.getInstance().getVideoView().start();
+
             VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -138,8 +152,6 @@ public class UtilityVideo {
             VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    // mediaController.show(0);
-
                     VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
                 }
             });
@@ -148,6 +160,17 @@ public class UtilityVideo {
                 public void onCompletion(MediaPlayer mediaPlayer) {
                 }
             });
+
+            /* if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
+                // BARRA Visibile
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(
+                new Runnable() {
+                    public void run() {
+                        VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                    }
+                }, 500);
+            } */
         } catch (Exception e) {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();

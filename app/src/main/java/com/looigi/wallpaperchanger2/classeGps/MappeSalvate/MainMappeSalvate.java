@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classePlayer.AdapterListenerBrani;
 
 import java.io.File;
 import java.util.ArrayList;

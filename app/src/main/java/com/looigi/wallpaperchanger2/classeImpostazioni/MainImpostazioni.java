@@ -1050,6 +1050,27 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcBarraVideo = act.findViewById(R.id.switchBarraVideo);
+        swcBarraVideo.setChecked(VariabiliStaticheVideo.getInstance().isBarraVisibile());
+        swcBarraVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().setBarraVisibile(swcBarraVideo.isChecked());
+
+                if (swcBarraVideo.isChecked()) {
+                    // BARRA sempre visibile
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                                }
+                            }, 100);
+                }
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         Button btnInviaLog = act.findViewById(R.id.btnInviaLogVD);
         Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogVD);
         Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogVD);
@@ -1174,6 +1195,27 @@ public class MainImpostazioni extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheFilms.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
 
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
+        SwitchCompat swcBarraFilm = act.findViewById(R.id.switchBarraFilm);
+        swcBarraFilm.setChecked(VariabiliStaticheFilms.getInstance().isBarraVisibile());
+        swcBarraFilm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheFilms.getInstance().setBarraVisibile(swcBarraFilm.isChecked());
+
+                if (swcBarraFilm.isChecked()) {
+                    // BARRA sempre visibile
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    VariabiliStaticheFilms.getInstance().getMediaController().show(0);
+                                }
+                            }, 100);
+                }
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
             }

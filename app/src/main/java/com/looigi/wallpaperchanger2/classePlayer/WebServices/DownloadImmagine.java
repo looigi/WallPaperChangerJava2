@@ -34,6 +34,7 @@ public class DownloadImmagine {
 
     public void EsegueDownload(Context context, ImageView bmImage, String Immagine) {
         UtilityPlayer.getInstance().Attesa(true);
+        UtilityPlayer.getInstance().ImpostaTastiSfondo(false);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download immagine");
 
         this.context = context;
@@ -127,6 +128,8 @@ public class DownloadImmagine {
                                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Immagine Scaricata: " + PathImmagine);
                                     } catch (IOException e) {
+                                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Errore nel salvataggio su download Immagine: " + e.getMessage());
 
@@ -142,13 +145,19 @@ public class DownloadImmagine {
                                 }
                             }, 100);
                         } else {
+                            UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                             //     UtilityPlayer.getInstance().ImpostaImmagine(context);
                             UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
                         }
                     } else {
+                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                         UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
                     }
                 } catch (Exception e) {
+                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                     UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
 
                     // e.printStackTrace();
@@ -165,12 +174,15 @@ public class DownloadImmagine {
 
                     VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
 
+                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                     UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
                 }
 
                 VariabiliStatichePlayer.getInstance().setDownImmagine(null);
                 UtilityPlayer.getInstance().Attesa(false);
                 UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+                UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
                 handler.post(new Runnable() {
                     @Override
@@ -191,7 +203,7 @@ public class DownloadImmagine {
         secondiPassati = 0;
 
         handlerThread = new HandlerThread("background-thread_" +
-                VariabiliStaticheWallpaper.channelName);
+                VariabiliStatichePlayer.channelName);
         handlerThread.start();
 
         handler = new Handler(handlerThread.getLooper());
@@ -199,7 +211,8 @@ public class DownloadImmagine {
             public void run() {
                 secondiPassati++;
                 if (secondiPassati > VariabiliStatichePlayer.TimeoutImmagine) {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Timeout per Immagine Scaricata");
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                            "Timeout per Immagine Scaricata");
 
                     if (in != null) {
                         try {

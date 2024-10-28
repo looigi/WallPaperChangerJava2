@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.MediaController;
 
@@ -22,6 +24,7 @@ import java.io.IOException;
 
 public class UtilityFilms {
     private static UtilityFilms instance = null;
+    private MediaController mediaController = null;
 
     private UtilityFilms() {
     }
@@ -107,10 +110,18 @@ public class UtilityFilms {
             String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
             VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
-            MediaController mediaController = new MediaController(context);
-            mediaController.setAnchorView(VariabiliStaticheFilms.getInstance().getFilmsView());
+            mediaController = new MediaController(context) {
+                @Override
+                public void hide()
+                {
+                    mediaController.show();
+                }
+
+            };
+            VariabiliStaticheFilms.getInstance().setMediaController(mediaController);
+            VariabiliStaticheFilms.getInstance().getMediaController().setAnchorView(VariabiliStaticheFilms.getInstance().getFilmsView());
             Context finalContext = context;
-            mediaController.setPrevNextListeners(new View.OnClickListener() {
+            VariabiliStaticheFilms.getInstance().getMediaController().setPrevNextListeners(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Handle next click here
@@ -124,7 +135,8 @@ public class UtilityFilms {
                 }
             });
             Uri Films = Uri.parse(link);
-            VariabiliStaticheFilms.getInstance().getFilmsView().setMediaController(mediaController);
+            VariabiliStaticheFilms.getInstance().getFilmsView().setMediaController(
+                    VariabiliStaticheFilms.getInstance().getMediaController());
             VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(Films);
             VariabiliStaticheFilms.getInstance().getFilmsView().start();
             VariabiliStaticheFilms.getInstance().getFilmsView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -143,6 +155,17 @@ public class UtilityFilms {
                     VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
                 }
             });
+
+            if (VariabiliStaticheFilms.getInstance().isBarraVisibile()) {
+                // BARRA Visibile
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                VariabiliStaticheFilms.getInstance().getMediaController().show(0);
+                            }
+                        }, 500);
+            }
         } catch (Exception e) {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();

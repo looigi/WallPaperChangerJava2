@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificaGPS {
     private static final String nomeMaschera = "Gestione_Notifiche_GPS";
@@ -72,6 +73,7 @@ public class GestioneNotificaGPS {
             contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGps);
 
             if (!VariabiliStaticheGPS.getInstance().isNonScriverePunti() &&
+                !VariabiliStaticheStart.getInstance().isCeWifi() &&
                 VariabiliStaticheGPS.getInstance().isGpsAttivo() &&
                 !VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
                 contentView.setViewVisibility(R.id.imgAreaPS, LinearLayout.VISIBLE);

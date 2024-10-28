@@ -2,7 +2,7 @@ package com.looigi.wallpaperchanger2.classePlayer.Strutture;
 
 import java.util.List;
 
-public class StrutturaPreferiti {
+public class StrutturaArtisti {
     private String NomeArtista;
     private String Immagine;
     private List<String> Tags;

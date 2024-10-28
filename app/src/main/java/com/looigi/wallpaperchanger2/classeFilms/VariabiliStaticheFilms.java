@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeFilms;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,6 +38,24 @@ public class VariabiliStaticheFilms {
     private TextView txtTitolo;
     private int idUltimoFilms = -1;
     private boolean SettingsAperto = true;
+    private boolean barraVisibile = true;
+    private MediaController mediaController;
+
+    public MediaController getMediaController() {
+        return mediaController;
+    }
+
+    public void setMediaController(MediaController mediaController) {
+        this.mediaController = mediaController;
+    }
+
+    public boolean isBarraVisibile() {
+        return barraVisibile;
+    }
+
+    public void setBarraVisibile(boolean barraVisibile) {
+        this.barraVisibile = barraVisibile;
+    }
 
     public boolean isSettingsAperto() {
         return SettingsAperto;

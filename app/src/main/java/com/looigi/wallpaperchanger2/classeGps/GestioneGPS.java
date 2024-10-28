@@ -450,7 +450,9 @@ public class GestioneGPS {
                 //     ok = false;
                 // }
 
-                controlloPuntiImpostatiPerSblocco(location);
+                if (!VariabiliStaticheStart.getInstance().isCeWifi()) {
+                    controlloPuntiImpostatiPerSblocco(location);
+                }
 
                 /* distanza = results[0];
                 if (results[0] > 75) {
@@ -576,7 +578,7 @@ public class GestioneGPS {
     }
 
     private void controlloPuntiImpostatiPerSblocco(Location location) {
-        boolean fuoriDaTuttiIPunti = true;
+        boolean DentroPuntoDiSpegnimento = false;
         String Nome = "";
 
         for (StrutturaPuntiSpegnimento s : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
@@ -586,27 +588,31 @@ public class GestioneGPS {
                     location.getLatitude(),
                     location.getLongitude()
             );
+
             if (distanza <= VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS()) {
-                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Entrato nella posizione " + s.getNome());
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Entrato nella posizione " + s.getNome());
 
                 Nome = s.getNome();
-                fuoriDaTuttiIPunti = false;
+                DentroPuntoDiSpegnimento = true;
                 break;
             }
         }
 
         if (!VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
-            if (!fuoriDaTuttiIPunti) {
-                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Blocco GPS per posizione " + Nome);
+            if (DentroPuntoDiSpegnimento) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Blocco GPS per posizione " + Nome);
 
                 VariabiliStaticheGPS.getInstance().setNonScriverePunti(true);
 
                 GestioneNotificaGPS.getInstance().AggiornaNotifica();
             }
         } else {
-            if (fuoriDaTuttiIPunti) {
+            if (!DentroPuntoDiSpegnimento) {
                 //  if (!VariabiliStaticheStart.getInstance().isCeWifi()) {
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Riabilito GPS per posizione non in punti selezionati e senza wifi");
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                            "Riabilito GPS per posizione non in punti selezionati e senza wifi");
 
                 VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
                 // }

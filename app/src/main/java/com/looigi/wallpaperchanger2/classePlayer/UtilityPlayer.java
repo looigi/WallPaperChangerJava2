@@ -713,9 +713,11 @@ public class UtilityPlayer {
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
-                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(-1);
+                // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(-1);
                 if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine 0/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
+                            VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                            "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
                 }
                 if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
@@ -1078,5 +1080,39 @@ public class UtilityPlayer {
             }
             VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().add(idBrano);
         }
+    }
+
+    public void ImpostaTastiSfondo(boolean Accesi) {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                boolean visibile;
+
+                if (Accesi) {
+                    visibile = true; // LinearLayout.VISIBLE;
+                } else {
+                    visibile = false; // LinearLayout.GONE;
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgCondividi() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgCondividi().setEnabled(visibile);
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgRefreshImmagini() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgRefreshImmagini().setEnabled(visibile);
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgEliminaSfondo() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgEliminaSfondo().setEnabled(visibile);
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgAvantiSfondo() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgAvantiSfondo().setEnabled(visibile);
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgIndietroSfondo() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgIndietroSfondo().setEnabled(visibile);
+                }
+                if (VariabiliStatichePlayer.getInstance().getImgImposta() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgImposta().setEnabled(visibile);
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 }

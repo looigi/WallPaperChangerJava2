@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,6 +77,13 @@ public class db_dati_player {
                         + " Data VARCHAR, Dimensione VARCHAR, Ascoltata VARCHAR, Bellezza VARCHAR,"
                         + "Testo VARCHAR, TestoTradotto VARCHAR, UrlBrano VARCHAR, PathBrano VARCHAR,"
                         + "CartellaBrano VARCHAR, Tags VARCHAR, TipoBrano VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Artisti"
+                        + " (Artista VARCHAR, Tags VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -193,6 +201,59 @@ public class db_dati_player {
             }
         } else {
             return -1;
+        }
+    }
+
+    public void ScriveArtisti(List<StrutturaArtisti> lista) {
+        if (myDB != null) {
+            String sql = "Delete From Artisti";
+            myDB.execSQL(sql);
+
+            for (StrutturaArtisti s : lista) {
+                String Tags = "";
+                for (String t : s.getTags()) {
+                    Tags += t + ";";
+                }
+                sql = "Insert Into Artisti Values (" +
+                        "'" + s.getNomeArtista().replace("'", "''") + "', " +
+                        "'" + Tags.replace("'", "''") + "' " +
+                        ")";
+                myDB.execSQL(sql);
+            }
+        }
+    }
+
+    public List<StrutturaArtisti> CaricaArtisti() {
+        if (myDB != null) {
+            try {
+                List<StrutturaArtisti> s = new ArrayList<>();
+
+                String sql = "SELECT * FROM Artisti";
+                Cursor c = myDB.rawQuery(sql, null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    do {
+                        StrutturaArtisti sa = new StrutturaArtisti();
+                        sa.setNomeArtista(c.getString(0));
+                        String Tags = c.getString(1);
+                        List<String> t = new ArrayList<>();
+                        String[] tt = Tags.split(";");
+                        for (String ttt : tt) {
+                            t.add(ttt);
+                        }
+                        sa.setTags(t);
+
+                        s.add(sa);
+                    } while (c.moveToNext());
+                }
+
+                return s;
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 
