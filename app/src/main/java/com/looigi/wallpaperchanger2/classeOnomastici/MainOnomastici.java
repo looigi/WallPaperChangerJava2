@@ -1,7 +1,6 @@
 package com.looigi.wallpaperchanger2.classeOnomastici;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +8,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,28 +28,39 @@ import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.CampiRitornoSanti;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class MainOnomastici extends Activity implements ColorPickerDialog.OnColorChangedListener {
     private List<String> nomiRilevati=new ArrayList<String>();
     private List<String> nomiRilevatiNormale=new ArrayList<String>();
-    private List<String> nomiSelezionati=new ArrayList<String>();
+    // private List<String> nomiSelezionati=new ArrayList<String>();
     private List<String> listaMessaggi=new ArrayList<String>();
     private boolean PulisceDB=false;
-    private String Messaggio="";
+    // private String Messaggio="";
     //private AdView adView;
     private TextView tv1;
     private TextView tv2;
     private int QualeColore=-1;
     private Context context;
+    private String MessaggioSelezionato;
+    private String NomeSelezionato;
+    private Activity act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,8 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         boolean Continua=true;
 
         context = this;
+        act = this;
+
         VariabiliStaticheOnomastici.getInstance().setContext(this);
         VariabiliStaticheOnomastici.getInstance().setRubrica(getContentResolver());
         VariabiliStaticheOnomastici.getInstance().setAssets(this.getAssets());
@@ -167,7 +180,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                             }
                         });
 
-                        ImageView imgItaliano=(ImageView) findViewById(R.id.imgItaliano);
+                        /* ImageView imgItaliano=(ImageView) findViewById(R.id.imgItaliano);
                         imgItaliano.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -187,7 +200,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
                                 ImpostaCampiTestoPerLingua();
                             }
-                        });
+                        }); */
 
                         Button cmdRicercaSanto = (Button) findViewById(R.id.cmdRicNome);
                         cmdRicercaSanto.setOnClickListener(new View.OnClickListener() {
@@ -200,11 +213,11 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                                     TextView tRitorno=(TextView) findViewById(R.id.txtSantiRilevati);
                                     int Quanti=rSanto.EffettuaRicercaSanto(context, tRitorno, rSanto1);
                                     if (Quanti==0) {
-                                        if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+                                        /* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
                                             tRitorno.setText("No Holy detected");
-                                        } else {
+                                        } else { */
                                             tRitorno.setText("Nessun Santo rilevato");
-                                        }
+                                        // }
                                     }
                                 }
                             }
@@ -224,11 +237,11 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                                 TextView tRitorno=(TextView) findViewById(R.id.txtSantiRilevatiData);
                                 int Quanti=rSanto.RicercaSantoPerData(context, tRitorno, Giorno, Mese);
                                 if (Quanti==0) {
-                                    if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+                                    /* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
                                         tRitorno.setText("No Holy detected");
-                                    } else {
+                                    } else { */
                                         tRitorno.setText("Nessun Santo rilevato");
-                                    }
+                                    // }
                                 }
                             }
                         });
@@ -527,7 +540,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         tabHost.addTab(tabHost.newTabSpec("tabview3").setContent(R.id.tabview3).setIndicator(Titoli[3]));
         tabHost.addTab(tabHost.newTabSpec("tabview5").setContent(R.id.tabview5).setIndicator(Titoli[4]));
         tabHost.addTab(tabHost.newTabSpec("tabview4").setContent(R.id.tabview4).setIndicator(Titoli[5]));
-        tabHost.addTab(tabHost.newTabSpec("tabview6").setContent(R.id.tabview5).setIndicator(Titoli[6]));
+        tabHost.addTab(tabHost.newTabSpec("tabview6").setContent(R.id.tabview6).setIndicator(Titoli[6]));
 
         TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
         for (int i=0;i<6;i++) {
@@ -626,7 +639,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             data.add(personMap);
         }
         String[] from={"image","name"};
-        int[] to={R.id.personImage,R.id.personName};
+        int[] to = {R.id.personImage, R.id.personName};
         SimpleAdapter adapter=new SimpleAdapter(
                 getApplicationContext(),
                 data,
@@ -634,11 +647,23 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 from,
                 to);
         Lista.setAdapter(adapter);
+        Lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NomeSelezionato = Nomi[position];
+                disegnaMessaggio();
+            }
+        });
     }
 
     private void AggiornaListe(){
         ListView listaR=(ListView) findViewById(R.id.lstNomi);
         String[] NomiR=new String[nomiRilevati.size()];
+        int i = 0;
+        for (String n : nomiRilevati) {
+            NomiR[i] = n;
+            i++;
+        }
         RiempieLista(listaR, NomiR);
 
         /* String NomiR[];
@@ -662,6 +687,34 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
     }
 
     private void CaricaMessaggi() {
+        GestioneDB varDB=new GestioneDB(context);
+        listaMessaggi=new ArrayList<String>();
+        String Sql="SELECT Messaggio FROM Messaggi Order By NumMess;";
+        TextView tErrore=(TextView) findViewById(R.id.txtSanto);
+        TextView tRoutine=(TextView) findViewById(R.id.txtGiorno);
+        TextView tChiamante=(TextView) findViewById(R.id.txtNumSettimana);
+        SQLiteDatabase myDB= varDB.ApreDB(tRoutine, tErrore,"CaricaMessaggi",tChiamante);
+        Cursor c = myDB.rawQuery(Sql , null);
+        c.moveToFirst();
+        do {
+            String Mess=c.getString(0);
+            listaMessaggi.add(Mess);
+        } while (c.moveToNext());
+        c.close();
+
+        varDB.ChiudeDB(myDB,tRoutine, tErrore, "CaricaMessaggi", tChiamante);
+
+
+        String MessaggiS[];
+        MessaggiS=new String[listaMessaggi.size()];
+        int i=0;
+
+        for (i=0;i<listaMessaggi.size();i++) {
+            MessaggiS[i]=listaMessaggi.get(i);
+        }
+        ListView listaM=(ListView) findViewById(R.id.lstMessaggi);
+        RiempieListaMessaggi(listaM, MessaggiS);
+
         /*GestioneDB varDB=new GestioneDB(context);
 
         TextView tErrore=(TextView) findViewById(R.id.txtSanto);
@@ -705,7 +758,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
     }
 
     private void RiempieListaMessaggi(ListView Lista, String Mess[]) {
-        /* ArrayList<Messaggi> personListR=new ArrayList<Messaggi>();
+        ArrayList<Messaggi> personListR=new ArrayList<Messaggi>();
         Messaggi [] people={};
 
         people=new Messaggi[Mess.length];
@@ -730,7 +783,14 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 R.layout.listview_messaggi,
                 from,
                 to);
-        Lista.setAdapter(adapter); */
+        Lista.setAdapter(adapter);
+        Lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MessaggioSelezionato = Mess[position];
+                disegnaMessaggio();
+            }
+        });
     }
 
     private void LeggeNomiRubrica(String Sinonimi) {
@@ -800,7 +860,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
         // varDB.ChiudeDB(myDB);
 
-        boolean Visibile=true;
+        // boolean Visibile=true;
 
         TextView dRicorrenze = (TextView) findViewById(R.id.txtRicorrenze);
         if (Quale>0) {
@@ -808,14 +868,22 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 	        ListView listaNomi=(ListView) findViewById(R.id.lstNominativi);
 			listaNomi.setAdapter(adapter); */
 
-            if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+            /* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
                 dRicorrenze.setText("Recurrences detected: " + Quale);
-            } else {
-                dRicorrenze.setText("Ricorrenze rilevate: " + Quale);
-            }
+            } else { */
+                String rico = "Ricorrenze rilevate: " + Quale;
+                if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
+                    rico += "\nCompleanni: " + VariabiliStaticheOnomastici.getInstance().getCompleanni().size();
+                }
+                dRicorrenze.setText(rico);
+            // }
         } else {
-            dRicorrenze.setText("");
-            Visibile=false;
+            if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
+                dRicorrenze.setText("");
+            } else {
+                dRicorrenze.setText("Compleanni: " + VariabiliStaticheOnomastici.getInstance().getCompleanni().size());
+            }
+            // Visibile=false;
         }
 
         AggiornaListe();
@@ -906,7 +974,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         String tT212;
         String cI;
 
-        if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+        /* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
             tR1="Saint search";
             cR1="Search";
             tR2="Saint search by date";
@@ -920,9 +988,9 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             /* tT1="Detected";
             tT2="Selected";
             tT21="Messages list";
-            tT212="Text"; */
+            tT212="Text"; * /
             cI="Send";
-        } else {
+        } else { */
             tR1="Ricerca Santo";
             cR1="Ricerca";
             tR2="Ricerca per data";
@@ -938,7 +1006,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
             tT21="Lista messaggi";
             tT212="Testo"; */
             cI="Invia";
-        }
+        // }
 
         Button cr1=(Button) findViewById(R.id.cmdRicNome);
         cr1.setText(cR1);
@@ -984,8 +1052,45 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
         CaricaSantoDelGiorno();
 
+        GestioneCompleanni g = new GestioneCompleanni(act, context);
+        VariabiliStaticheOnomastici.getInstance().ScriveCompleanni(act);
+
+        ImageView imgInviaMmessaggioOnomastico = act.findViewById(R.id.imgCondividiMessaggio);
+        imgInviaMmessaggioOnomastico.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText edtMessaggio = act.findViewById(R.id.edtMessaggio);
+                String Messaggio = edtMessaggio.getText().toString();
+                if (Messaggio.isEmpty()) {
+                    UtilityWallpaper.getInstance().VisualizzaMessaggio("Messaggio vuoto");
+                } else {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    Intent txtIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    txtIntent .setType("text/plain");
+                    txtIntent .putExtra(android.content.Intent.EXTRA_SUBJECT, "looigi@gmail.com");
+                    txtIntent .putExtra(android.content.Intent.EXTRA_TEXT, Messaggio);
+                    startActivity(Intent.createChooser(txtIntent ,"Share"));
+                }
+            }
+        });
+
         WidgetOnomastici w=new WidgetOnomastici();
         Intent intent=this.getIntent();
         w.onReceive(VariabiliStaticheOnomastici.getInstance().getContext(), intent);
+    }
+
+    private void disegnaMessaggio() {
+        EditText edtMessagio = act.findViewById(R.id.edtMessaggio);
+        String sMessaggio = MessaggioSelezionato;
+        if (sMessaggio != null) {
+            if (NomeSelezionato != null) {
+                sMessaggio = sMessaggio.replace("%1", NomeSelezionato);
+            }
+
+            edtMessagio.setText(sMessaggio);
+        } else {
+            edtMessagio.setText("");
+        }
     }
 }

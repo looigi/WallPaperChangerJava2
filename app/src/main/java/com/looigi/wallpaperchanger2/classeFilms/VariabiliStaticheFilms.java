@@ -40,6 +40,15 @@ public class VariabiliStaticheFilms {
     private boolean SettingsAperto = true;
     private boolean barraVisibile = true;
     private MediaController mediaController;
+    private int NumeroFrames = 10;
+
+    public int getNumeroFrames() {
+        return NumeroFrames;
+    }
+
+    public void setNumeroFrames(int numeroFrames) {
+        NumeroFrames = numeroFrames;
+    }
 
     public MediaController getMediaController() {
         return mediaController;

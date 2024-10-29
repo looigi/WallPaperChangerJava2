@@ -14,7 +14,7 @@ public class DBLocaleOnomastici {
     	try {
 			myDB = VariabiliStaticheOnomastici.getInstance().getContext().openOrCreateDatabase("DatiLocali", 0, null);
 			myDB.execSQL("CREATE TABLE IF NOT EXISTS Opzioni (Tipo text, Trasparenza int, Rosso int, Verde int, Blu int);");
-			myDB.execSQL("CREATE TABLE IF NOT EXISTS Lingua (Lingua Text);");
+			// myDB.execSQL("CREATE TABLE IF NOT EXISTS Lingua (Lingua Text);");
 			myDB.close();
     	} catch(Exception ignored) {
 
@@ -25,7 +25,7 @@ public class DBLocaleOnomastici {
 		}
 	}
 	   
-	public void SalvaLingua(Context context, String Lingua) {
+	/* public void SalvaLingua(Context context, String Lingua) {
 		SQLiteDatabase myDB= null;
     	
 		myDB = context.openOrCreateDatabase("DatiLocali", 0, null);
@@ -38,7 +38,7 @@ public class DBLocaleOnomastici {
 	   	myDB.close();
 
 		VariabiliStaticheOnomastici.getInstance().setLingua(Lingua);
-	}
+	} */
 
 	public DatiColori PrendeOpzioni(Context context) {
 		DatiColori dc=new DatiColori();
@@ -103,14 +103,14 @@ public class DBLocaleOnomastici {
 		dc.setVerdeT(VerdeT);
 		dc.setBluT(BluT);
 		
-	   	Sql="SELECT * FROM Lingua;";
+	   	/* Sql="SELECT * FROM Lingua;";
 		c = myDB.rawQuery(Sql , null);
 		c.moveToFirst();
 		try {
 			String Ritorno2;
 			
 			Ritorno2=c.getString(0);
-			VariabiliStaticheOnomastici.getInstance().setLingua(Ritorno2);
+			// VariabiliStaticheOnomastici.getInstance().setLingua(Ritorno2);
 		} catch (Exception e) {
 		   	Sql="Delete From Lingua";
 		   	myDB.execSQL(Sql);
@@ -120,7 +120,7 @@ public class DBLocaleOnomastici {
 
 			VariabiliStaticheOnomastici.getInstance().setLingua("INGLESE");
 		}
-		c.close();
+		c.close(); */
 
 		myDB.close();
 

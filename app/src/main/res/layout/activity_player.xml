@@ -177,9 +177,10 @@
         android:layout_below="@id/layIntestazionePlayer"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:weightSum="12"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -333,6 +334,23 @@
                 android:layout_gravity="center"
                 android:background="@drawable/preferito_vuoto" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/txtpercentuale"
+                android:text="100%"
+                android:lines="1"
+                android:textColor="@color/Bianco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
@@ -375,6 +393,7 @@
         android:id="@+id/txtOperazionePlayer"
         android:layout_width="wrap_content"
         android:padding="3dp"
+        android:textColor="@color/Blue"
         android:layout_below="@id/imgCaricamentoPlayer"
         android:layout_centerInParent="true"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"

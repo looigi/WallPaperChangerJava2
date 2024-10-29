@@ -62,7 +62,7 @@ public class db_dati_films {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR, NumeroFrames VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -157,7 +157,8 @@ public class db_dati_films {
                         + " VALUES ("
                         + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "',"
                         + "'" + (VariabiliStaticheFilms.getInstance().isSettingsAperto() ? "S" : "N") + "',"
-                        + "'" + (VariabiliStaticheFilms.getInstance().isBarraVisibile() ? "S" : "N") + "'"
+                        + "'" + (VariabiliStaticheFilms.getInstance().isBarraVisibile() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheFilms.getInstance().getNumeroFrames() + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -178,6 +179,7 @@ public class db_dati_films {
         VariabiliStaticheFilms.getInstance().setRandom("S");
         VariabiliStaticheFilms.getInstance().setSettingsAperto(true);
         VariabiliStaticheFilms.getInstance().setBarraVisibile(true);
+        VariabiliStaticheFilms.getInstance().setNumeroFrames(10);
     }
 
     public int CaricaImpostazioni() {
@@ -192,6 +194,7 @@ public class db_dati_films {
                         VariabiliStaticheFilms.getInstance().setRandom(c.getString(0));
                         VariabiliStaticheFilms.getInstance().setSettingsAperto(c.getString(1).equals("S"));
                         VariabiliStaticheFilms.getInstance().setBarraVisibile(c.getString(2).equals("S"));
+                        VariabiliStaticheFilms.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
 
                         return 0;
                     } catch (Exception e) {

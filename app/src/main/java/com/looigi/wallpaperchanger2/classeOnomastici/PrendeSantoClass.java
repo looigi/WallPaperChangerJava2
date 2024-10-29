@@ -20,7 +20,7 @@ public class PrendeSantoClass {
     public CampiRitornoSanti PrendeSanto(Activity act, Context context, String Modalita) {
     	String Immagine="";
     	
-		if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+		/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 		    Giorni[1]=new String("Sunday");
 		    Giorni[2]=new String("Monday");
 		    Giorni[3]=new String("Tuesday");
@@ -41,7 +41,7 @@ public class PrendeSantoClass {
 		    NomeMese[10]=new String("October");
 		    NomeMese[11]=new String("November");
 		    NomeMese[12]=new String("December");
-		} else {
+		} else { */
 		    Giorni[1]=new String("Domenica");
 		    Giorni[2]=new String("Lunedi");
 		    Giorni[3]=new String("Martedi");
@@ -62,7 +62,7 @@ public class PrendeSantoClass {
 		    NomeMese[10]=new String("Ottobre");
 		    NomeMese[11]=new String("Novembre");
 		    NomeMese[12]=new String("Dicembre");
-		}
+		// }
 	    
 	    CampiRitornoSanti Ritorno=new CampiRitornoSanti();
     	
@@ -129,34 +129,34 @@ public class PrendeSantoClass {
 			String StringaGiorno;
 			String Dati;
 			
-			if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+			/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 				StringaGiorno=Giorni[GiornoSett]+ " " + Giorno + " " + NomeMese[Mese] + " " + Anno;
 				Dati="Week: " + NumSettimana + "\nDay of the year: " + NumGiorno;
-			} else {
+			} else { */
 				StringaGiorno=Giorni[GiornoSett]+ " " + Giorno + " " + NomeMese[Mese] + " " + Anno;
 				Dati="Settimana: " + NumSettimana + "\nGiorno dell'anno: " + NumGiorno;
-			}
+			// }
 
 			if (Modalita==null) {
 				Immagine=ControllaEsistenzaImmagine(act, context, Giorno, Mese);
 			}
 			
 			Ritorno.setCampo1(Santo);
-			if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+			/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 				Ritorno.setCampo2(DescSantoIngl);
-			} else {
+			} else { */
 				Ritorno.setCampo2(DescSanto);
-			}
+			// }
 			Ritorno.setCampo3(StringaGiorno);
 			Ritorno.setCampo4(Dati);
 			Ritorno.setCampo5(Immagine);
 			Ritorno.setCampo6(Sinonimo);
 	    } else {
-			if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+			/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 		    	Ritorno.setCampo1("ERROR");
-			} else {
+			} else { */
 		    	Ritorno.setCampo1("ERRORE");
-			}
+			// }
 	    }
         
 		return Ritorno;

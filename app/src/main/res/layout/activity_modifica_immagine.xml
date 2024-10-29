@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:padding="2dp"
     android:background="@color/Nero"
+    android:keepScreenOn="true"
     android:orientation="vertical"
     android:id="@+id/container_tipo_modifica_immagine"
     android:layout_height="match_parent">
@@ -72,6 +73,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:text="Luminosità"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
 
             <SeekBar
@@ -262,6 +264,7 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:textColor="@color/Blue"
             android:layout_height="wrap_content"
             android:text="Modalità salvataggio">
 
@@ -313,6 +316,7 @@
 
                 <TextView
                     android:layout_width="0dp"
+                    android:textColor="@color/Blue"
                     android:layout_weight="3"
                     android:gravity="left"
                     android:layout_height="wrap_content"
@@ -323,6 +327,7 @@
                 <EditText
                     android:id="@+id/txtAngolo"
                     android:layout_width="0dp"
+                    android:textColor="@color/Blue"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
                 </EditText>
@@ -341,7 +346,6 @@
                         android:src="@drawable/icona_cerca" />
                 </LinearLayout>
             </LinearLayout>
-
 
             <SeekBar
                 android:id="@+id/seekBarAngolo"
@@ -406,6 +410,7 @@
             <TextView
                 android:gravity="center_horizontal"
                 android:id="@+id/txtDimensioni"
+                android:textColor="@color/Blue"
                 android:layout_width="match_parent"
                 android:lines="1"
                 android:layout_height="wrap_content"

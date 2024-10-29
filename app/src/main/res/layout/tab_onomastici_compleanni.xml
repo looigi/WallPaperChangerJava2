@@ -1,6 +1,359 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >			
+    android:layout_height="match_parent" >
 
+    <LinearLayout
+        android:id="@+id/menuCompleanni"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnRicercaCompleanni"
+                    android:layout_width="wrap_content"
+                    android:text="Ricerca"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/btnInvioCompleanni"
+                    android:layout_width="wrap_content"
+                    android:text="Messaggi"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/menuCompleanni"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layRicercheCompleanno"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textColor="@color/Rosso"
+                android:text="Ricerche"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="8"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/edtRicercheCompleanno"
+                        android:layout_width="0dp"
+                        android:layout_weight="7"
+                        android:layout_height="match_parent">
+
+                    </EditText>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgAggiungeCompleanno"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icona_aggiunge">
+
+                        </ImageView>
+
+                        <ImageView
+                            android:id="@+id/imgCercaCompleanno"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icona_cerca">
+
+                        </ImageView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lstRicercaCompleanni"
+                android:layout_width="match_parent"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_weight="4"
+                android:padding="2dp"
+                android:layout_margin="2dp"
+                android:layout_height="0dp">
+
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layMessaggiCompleanno"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:weightSum="5"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textColor="@color/Rosso"
+                android:text="Messaggi"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:weightSum="8"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/edtMessaggioCompleanno"
+                        android:layout_width="0dp"
+                        android:layout_weight="7"
+                        android:layout_height="match_parent">
+
+                    </EditText>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgCondividiMessaggioCompleanno"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/share">
+
+                        </ImageView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lstCompleanni"
+                android:layout_width="match_parent"
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+                android:layout_weight="4"
+                android:padding="2dp"
+                android:layout_margin="2dp"
+                android:layout_height="0dp">
+
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layInserimentoCompleanno"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bordato_colorato">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/Rosso"
+            android:text="Nuovo Compleanno"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Nominativo"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edtNomeCompleanno"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:weightSum="12"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Giorno"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/edtGiornoCompleanno"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Mese"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/edtMeseCompleanno"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Anno"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/edtAnnoCompleanno"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content">
+
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgSalvaCompleanno"
+                        android:src="@drawable/icona_salva"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp">
+
+                    </ImageView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAnnullaCompleanno"
+                        android:src="@drawable/elimina_quadrato"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp">
+
+                    </ImageView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

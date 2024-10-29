@@ -60,7 +60,7 @@ public class db_dati_video {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR, NumeroFrames VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -155,11 +155,13 @@ public class db_dati_video {
                         + " VALUES ("
                         + "'" + VariabiliStaticheVideo.getInstance().getRandom() + "',"
                         + "'" + (VariabiliStaticheVideo.getInstance().isSettingsAperto() ? "S" : "N") + "',"
-                        + "'" + (VariabiliStaticheVideo.getInstance().isBarraVisibile() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheVideo.getInstance().isBarraVisibile() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheVideo.getInstance().getNumeroFrames() + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
-                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore su scrittura db per impostazioni: " + e.getMessage());
                 // PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
                 CreazioneTabelle();
@@ -176,6 +178,7 @@ public class db_dati_video {
         VariabiliStaticheVideo.getInstance().setRandom("S");
         VariabiliStaticheVideo.getInstance().setSettingsAperto(true);
         VariabiliStaticheVideo.getInstance().setBarraVisibile(true);
+        VariabiliStaticheVideo.getInstance().setNumeroFrames(10);
     }
 
     public int CaricaImpostazioni() {
@@ -190,6 +193,7 @@ public class db_dati_video {
                         VariabiliStaticheVideo.getInstance().setRandom(c.getString(0));
                         VariabiliStaticheVideo.getInstance().setSettingsAperto(c.getString(1).equals("S"));
                         VariabiliStaticheVideo.getInstance().setBarraVisibile(c.getString(2).equals("S"));
+                        VariabiliStaticheVideo.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
 
                         return 0;
                     } catch (Exception e) {

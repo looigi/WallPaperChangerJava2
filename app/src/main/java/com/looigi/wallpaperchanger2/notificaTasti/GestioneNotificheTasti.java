@@ -19,6 +19,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
@@ -263,11 +264,11 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgPasswordTasti, pPwd);
 
-            /* Intent pen = new Intent(ctx, NotificationActionServiceTasti.class);
-            pen.putExtra("DO", "pennetta");
-            PendingIntent pPen = PendingIntent.getService(ctx, 208, pen,
+            Intent bac = new Intent(ctx, NotificationActionServiceTasti.class);
+            bac.putExtra("DO", "backup");
+            PendingIntent pBac = PendingIntent.getService(ctx, 209, bac,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgImmaginiPennetta, pPen); */
+            view.setOnClickPendingIntent(R.id.imgBackupTasti, pBac);
 
             Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
             uscita.putExtra("DO", "uscita");
@@ -404,6 +405,11 @@ public class GestioneNotificheTasti {
                             Intent iW = new Intent(context, MainWallpaper.class);
                             iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(iW);
+                            break;
+                        case "backup":
+                            Intent iB = new Intent(context, MainBackup.class);
+                            iB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iB);
                             break;
                         case "mappa":
                             Intent iM = new Intent(context, MainMappa.class);

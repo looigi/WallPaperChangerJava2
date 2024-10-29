@@ -130,6 +130,13 @@ public class MainMostraFilms extends Activity {
             }
         });
 
+        ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliF);
+        imgScreenShotM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityFilms.getInstance().takeScreenShotMultipli(context);
+            }
+        });
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheFilms.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -178,6 +185,14 @@ public class MainMostraFilms extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        if (VariabiliStaticheFilms.getInstance().getFilmsView() != null) {
+            VariabiliStaticheFilms.getInstance().getFilmsView().stopPlayback();
+            VariabiliStaticheFilms.getInstance().getFilmsView().clearAnimation();
+            VariabiliStaticheFilms.getInstance().getFilmsView().suspend(); // clears media player
+            VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(null);
+            VariabiliStaticheFilms.getInstance().setFilmsView(null);
+        }
 
         act.finish();
     }

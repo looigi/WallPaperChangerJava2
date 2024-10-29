@@ -117,6 +117,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgEliminaSfondo;
     private ImageView imgRefreshImmagini;
     private ImageView imgCondividi;
+    private TextView txtPercentuale;
 
     // RICERCHE
     private boolean Random = true;
@@ -150,6 +151,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public TextView getTxtPercentuale() {
+        return txtPercentuale;
+    }
+
+    public void setTxtPercentuale(TextView txtPercentuale) {
+        this.txtPercentuale = txtPercentuale;
     }
 
     public ImageView getImgCondividi() {

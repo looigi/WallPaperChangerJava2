@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
@@ -39,6 +40,7 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
+import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
@@ -1039,6 +1041,22 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        EditText edtNumFrames = (EditText) act.findViewById(R.id.edtNumFramesV);
+        edtNumFrames.setText(Integer.toString(VariabiliStaticheVideo.getInstance().getNumeroFrames()));
+        edtNumFrames.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheVideo.getInstance().setNumeroFrames(Integer.parseInt(edtNumFrames.getText().toString()));
+
+                        db_dati_video db = new db_dati_video(context);
+                        db.ScriveImpostazioni();
+                    }
+                }
+            }
+        });
+
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshVideo);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1062,7 +1080,13 @@ public class MainImpostazioni extends Activity {
                     handler.postDelayed(
                             new Runnable() {
                                 public void run() {
-                                    VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                                    VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
+                                    VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
+                                    VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
+                                    VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(null);
+                                    VariabiliStaticheVideo.getInstance().setVideoView(null);
+
+                                    UtilityVideo.getInstance().ImpostaVideo();
                                 }
                             }, 100);
                 }
@@ -1200,6 +1224,22 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        EditText edtNumFrames = (EditText) act.findViewById(R.id.edtNumFramesF);
+        edtNumFrames.setText(Integer.toString(VariabiliStaticheFilms.getInstance().getNumeroFrames()));
+        edtNumFrames.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheFilms.getInstance().setNumeroFrames(Integer.parseInt(edtNumFrames.getText().toString()));
+
+                        db_dati_films db = new db_dati_films(context);
+                        db.ScriveImpostazioni();
+                    }
+                }
+            }
+        });
+
         SwitchCompat swcBarraFilm = act.findViewById(R.id.switchBarraFilm);
         swcBarraFilm.setChecked(VariabiliStaticheFilms.getInstance().isBarraVisibile());
         swcBarraFilm.setOnClickListener(new View.OnClickListener() {
@@ -1207,12 +1247,17 @@ public class MainImpostazioni extends Activity {
                 VariabiliStaticheFilms.getInstance().setBarraVisibile(swcBarraFilm.isChecked());
 
                 if (swcBarraFilm.isChecked()) {
-                    // BARRA sempre visibile
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(
                             new Runnable() {
                                 public void run() {
-                                    VariabiliStaticheFilms.getInstance().getMediaController().show(0);
+                                    VariabiliStaticheFilms.getInstance().getFilmsView().stopPlayback();
+                                    VariabiliStaticheFilms.getInstance().getFilmsView().clearAnimation();
+                                    VariabiliStaticheFilms.getInstance().getFilmsView().suspend(); // clears media player
+                                    VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(null);
+                                    VariabiliStaticheFilms.getInstance().setFilmsView(null);
+
+                                    UtilityFilms.getInstance().ImpostaFilms();
                                 }
                             }, 100);
                 }

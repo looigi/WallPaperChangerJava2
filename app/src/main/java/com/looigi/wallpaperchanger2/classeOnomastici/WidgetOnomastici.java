@@ -47,10 +47,10 @@ public class WidgetOnomastici extends AppWidgetProvider {
     	// VariabiliStatiche.getInstance().setWidgetContext(context);
         // VariabiliStatiche.getInstance().setAppWidgetManager(appWidgetManager);
         // VariabiliStatiche.getInstance().setAppWidgetIds(appWidgetIds);
-        String Lingua=""+VariabiliStaticheOnomastici.getInstance().getLingua();
-    	if (Lingua.equals("")) {
-    		Lingua="ITALIANO";
-    	}
+        // String Lingua=""+VariabiliStaticheOnomastici.getInstance().getLingua();
+    	// if (Lingua.equals("")) {
+    	// 	Lingua="ITALIANO";
+    	// }
     	
     	DatiColori dc = null;
     	
@@ -142,12 +142,23 @@ public class WidgetOnomastici extends AppWidgetProvider {
     		rv.setTextViewText(R.id.txtWSanto, s+AppoSanto);
     		rv.setTextViewText(R.id.txtWData,  Giorno);
             if (Quanti>0) {
-        		if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+        		/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
         			Ritorno=" There are recurrences in address book: "+Quanti+" ";
-        		} else {
-        			Ritorno=" Ci sono ricorrenze in rubrica: "+Quanti+" ";
-        		}
-            }
+        		} else { */
+				String rico = "Ricorrenze rilevate: " + Quanti;
+				if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
+					rico += "\nCompleanni: " + VariabiliStaticheOnomastici.getInstance().getCompleanni().size();
+				}
+
+				Ritorno=rico; // " Ci sono ricorrenze in rubrica: "+Quanti+" ";
+        		// }
+            } else {
+				String rico = "";
+				if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
+					rico = "Compleanni: " + VariabiliStaticheOnomastici.getInstance().getCompleanni().size();
+				}
+				Ritorno=rico;
+			}
             rv.setTextViewText(R.id.txtWRilevati,  Ritorno);
 
 			Calendar Oggi = Calendar.getInstance();

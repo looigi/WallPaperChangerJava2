@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.R;
@@ -22,6 +23,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -207,6 +209,18 @@ public class UtilityPlayer {
 
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveUltimoBranoAscoltato(sb);
+
+                String Immagine = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(
+                        context, sb.getArtista());
+
+                Bitmap bitmap;
+                if (Immagine.isEmpty()) {
+                    bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                } else {
+                    bitmap = BitmapFactory.decodeFile(Immagine);
+                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(Immagine);
+                }
+                VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
                 AggiungeBranoAllaListaAscoltati(context, sb);
 
@@ -444,7 +458,7 @@ public class UtilityPlayer {
             boolean cercaBranoInLocale = false;
 
             int quantiBrani = db.QuantiBraniInArchivio();
-            int random = UtilityPlayer.getInstance().GeneraNumeroRandom(5);
+            int random = UtilityPlayer.getInstance().GeneraNumeroRandom(6);
             if (random == 1 || random == 3 || (VieneDaTasto && quantiBrani > 0)) {
                 cercaBranoInLocale = true;
             }
@@ -733,21 +747,24 @@ public class UtilityPlayer {
             runTimerChiusura = null;
         }
 
+        int secondiDiAttesa = 60;
+        int minutiPrimaDellaChiusuraAutomatica = 5;
+
         handlerTimerChiusura = new Handler(Looper.getMainLooper());
         handlerTimerChiusura.postDelayed(runTimerChiusura = new Runnable() {
             @Override
             public void run() {
                 long ora = new Date().getTime();
                 long diff = ora - VariabiliStatichePlayer.getInstance().getUltimaOperazioneTS();
-                if (diff >= 60000 * 5) {
+                if (diff >= ((secondiDiAttesa * 1000) * minutiPrimaDellaChiusuraAutomatica)) {
                     if (!VariabiliStatichePlayer.getInstance().isStaSuonando()) {
                         ChiudePlayer(context);
                     }
                 } else {
-                    handlerTimerChiusura.postDelayed(this, 60000);
+                    handlerTimerChiusura.postDelayed(this, (secondiDiAttesa * 1000));
                 }
             }
-        }, 60000);
+        }, (secondiDiAttesa * 1000));
     }
 
     public void StoppaTimerChiusura() {
@@ -764,7 +781,38 @@ public class UtilityPlayer {
         StoppaTimer();
 
         GestioneNotifichePlayer.getInstance().RimuoviNotifica();
-        VariabiliStatichePlayer.getInstance().ChiudeActivity(true);
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                VariabiliStatichePlayer.getInstance().ChiudeActivity(true);
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1000);
+    }
+
+    public String PrendeImmagineArtistaACaso(Context context, String Artista) {
+        String Path = context.getFilesDir() + "/Player/ImmaginiMusica/";
+        String PathImmagini = Path + Artista + "/ZZZ-ImmaginiArtista";
+        File root = new File(PathImmagini);
+        File[] list = root.listFiles();
+
+        if (list == null) {
+            return "";
+        }
+
+        List<String> Nomi = new ArrayList<>();
+        for (File f : list) {
+            if (f.isDirectory()) {
+            } else {
+                String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
+                Nomi.add(Filetto);
+            }
+        }
+
+        int n = UtilityPlayer.getInstance().GeneraNumeroRandom(Nomi.size() - 1);
+
+        return Nomi.get(n);
     }
 
     public void StoppaTimer() {

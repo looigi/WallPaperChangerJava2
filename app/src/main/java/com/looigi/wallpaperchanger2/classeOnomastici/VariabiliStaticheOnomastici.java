@@ -1,11 +1,20 @@
 package com.looigi.wallpaperchanger2.classeOnomastici;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
+import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VariabiliStaticheOnomastici {
     private static VariabiliStaticheOnomastici instance = null;
@@ -30,9 +39,84 @@ public class VariabiliStaticheOnomastici {
     public String BRIGHTNESS_PREFERENCE_KEY = "brightness";
     public String COLOR_PREFERENCE_KEY = "color";
     private DatiColori ColorWidget;
-    private String Lingua="";
-     private ImageView imgView;
-     private boolean partito = false;
+    // private String Lingua="";
+    private ImageView imgView;
+    private boolean partito = false;
+    private List<StrutturaCompleanno> Compleanni;
+    private LinearLayout layInsComp;
+    private EditText edtNomeCompleanno;
+    private EditText edtGiornoCompleanno;
+    private EditText edtMeseCompleanno;
+    private EditText edtAnnoCompleanno;
+    private int idModifica = -1;
+
+    public void ScriveCompleanni(Activity act) {
+        ListView lstCompleanni = act.findViewById(R.id.lstCompleanni);
+        if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
+            AdapterListenerCompleanni customAdapterA = new AdapterListenerCompleanni(context,
+                    VariabiliStaticheOnomastici.getInstance().getCompleanni());
+            lstCompleanni.setAdapter(customAdapterA);
+        }
+    }
+
+    public int getIdModifica() {
+        return idModifica;
+    }
+
+    public void setIdModifica(int idModifica) {
+        this.idModifica = idModifica;
+    }
+
+    public EditText getEdtAnnoCompleanno() {
+        return edtAnnoCompleanno;
+    }
+
+    public void setEdtAnnoCompleanno(EditText edtAnnoCompleanno) {
+        this.edtAnnoCompleanno = edtAnnoCompleanno;
+    }
+
+    public EditText getEdtGiornoCompleanno() {
+        return edtGiornoCompleanno;
+    }
+
+    public void setEdtGiornoCompleanno(EditText edtGiornoCompleanno) {
+        this.edtGiornoCompleanno = edtGiornoCompleanno;
+    }
+
+    public EditText getEdtMeseCompleanno() {
+        return edtMeseCompleanno;
+    }
+
+    public void setEdtMeseCompleanno(EditText edtMeseCompleanno) {
+        this.edtMeseCompleanno = edtMeseCompleanno;
+    }
+
+    public EditText getEdtNomeCompleanno() {
+        return edtNomeCompleanno;
+    }
+
+    public void setEdtNomeCompleanno(EditText edtNomeCompleanno) {
+        this.edtNomeCompleanno = edtNomeCompleanno;
+    }
+
+    public LinearLayout getLayInsComp() {
+        return layInsComp;
+    }
+
+    public void setLayInsComp(LinearLayout layInsComp) {
+        this.layInsComp = layInsComp;
+    }
+
+    public List<StrutturaCompleanno> getCompleanni() {
+        if (Compleanni == null) {
+            Compleanni = new ArrayList<>();
+        }
+        return Compleanni;
+    }
+
+    public void setCompleanni(List<StrutturaCompleanno> compleanni) {
+        Compleanni = compleanni;
+    }
 
     public boolean isPartito() {
         return partito;
@@ -117,11 +201,11 @@ public class VariabiliStaticheOnomastici {
         ColorWidget = colorWidget;
     }
 
-    public String getLingua() {
+    /* public String getLingua() {
         return Lingua;
     }
 
     public void setLingua(String lingua) {
         Lingua = lingua;
-    }
+    } */
 }

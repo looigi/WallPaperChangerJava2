@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.MediaController;
 
@@ -62,8 +63,53 @@ public class UtilityFilms {
         }
     }
 
+    public void takeScreenShotMultipli(Context context) {
+        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        VariabiliStaticheFilms.getInstance().getFilmsView().pause();
+
+        String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(link);
+        int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
+        int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
+        int quale = 0;
+
+        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+        UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+        String[] n = link.split("/");
+        String nn = n[n.length - 1];
+        String[] e = nn.split("\\.");
+        String est = e[e.length - 1];
+        nn = nn.replace("." + est, "");
+        int conta = 0;
+
+        for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
+            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+            String sconta = String.format("%03d", conta);
+            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                conta++;
+                sconta = String.format("%03d", conta);
+                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+            }
+            String Dest = Cartella + nomeFile;
+            try (FileOutputStream out = new FileOutputStream(Dest)) {
+                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                quale++;
+                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale  + "/" +
+                        VariabiliStaticheFilms.getInstance().getNumeroFrames() + " acquisita");
+            } catch (IOException ignored) {
+            }
+        }
+        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+    }
+
     public void takeScreenshot(Context context) {
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        VariabiliStaticheFilms.getInstance().getFilmsView().pause();
+
         try {
             String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
@@ -110,14 +156,37 @@ public class UtilityFilms {
             String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
             VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
-            mediaController = new MediaController(context) {
-                @Override
-                public void hide()
-                {
-                    mediaController.show();
-                }
+            if (VariabiliStaticheFilms.getInstance().isBarraVisibile()) {
+                mediaController = new MediaController(context) {
+                    @Override
+                    public void show() {
+                        show(0);
+                    }
 
-            };
+                    @Override
+                    public void show(int timeout) {
+                        super.show(0);
+                    }
+                };
+            } else {
+                mediaController = new MediaController(context);
+            }
+            mediaController.addOnUnhandledKeyEventListener((v, event) -> {
+                //Handle BACK button
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
+                {
+                    if (VariabiliStaticheFilms.getInstance().getFilmsView() != null) {
+                        VariabiliStaticheFilms.getInstance().getFilmsView().stopPlayback();
+                        VariabiliStaticheFilms.getInstance().getFilmsView().clearAnimation();
+                        VariabiliStaticheFilms.getInstance().getFilmsView().suspend(); // clears media player
+                        VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(null);
+                    }
+
+                    VariabiliStaticheFilms.getInstance().getAct().finish();
+                }
+                return true;
+            });
+
             VariabiliStaticheFilms.getInstance().setMediaController(mediaController);
             VariabiliStaticheFilms.getInstance().getMediaController().setAnchorView(VariabiliStaticheFilms.getInstance().getFilmsView());
             Context finalContext = context;

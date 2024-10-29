@@ -92,7 +92,7 @@ public class AdapterListenerArtisti extends BaseAdapter {
 
         if (i < listaArtisti.size()) {
             String NomeArtista = listaArtisti.get(i).getNomeArtista();
-            String Immagine = PrendeImmagineArtista(NomeArtista);
+            String Immagine = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(context, NomeArtista);
 
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
             Bitmap bitmap;
@@ -120,28 +120,5 @@ public class AdapterListenerArtisti extends BaseAdapter {
         }
 
         return view;
-    }
-
-    private String PrendeImmagineArtista(String Artista) {
-        String PathImmagini = Path + Artista + "/ZZZ-ImmaginiArtista";
-        File root = new File(PathImmagini);
-        File[] list = root.listFiles();
-
-        if (list == null) {
-            return "";
-        }
-
-        List<String> Nomi = new ArrayList<>();
-        for (File f : list) {
-            if (f.isDirectory()) {
-            } else {
-                String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
-                Nomi.add(Filetto);
-            }
-        }
-
-        int n = UtilityPlayer.getInstance().GeneraNumeroRandom(Nomi.size() - 1);
-
-        return Nomi.get(n);
     }
 }

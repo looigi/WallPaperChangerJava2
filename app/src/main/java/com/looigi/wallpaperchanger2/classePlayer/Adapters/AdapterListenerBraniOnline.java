@@ -19,6 +19,7 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -62,23 +63,24 @@ public class AdapterListenerBraniOnline extends BaseAdapter {
             String Album = listaBrani.get(i).getAlbum();
             String Traccia = listaBrani.get(i).getTraccia();
 
-            ImageView imgElimina = view.findViewById(R.id.imgEliminaBrano);
+            /* ImageView imgElimina = view.findViewById(R.id.imgEliminaBrano);
             imgElimina.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole eliminare il brano ?");
+                    builder.setTitle("Si vuole eliminare l'eventuale brano in locale ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            /* String Path = listaBrani.get(i).getPathBrano();
+                            String Path = listaBrani.get(i).getPathBrano();
                             if (Files.getInstance().EliminaFileUnico(Path)) {
                                 db_dati_player db = new db_dati_player(context);
                                 db.EliminaBrano(String.valueOf(listaBrani.get(i).getIdBrano()));
                                 listaBrani.remove(i);
-                                updateData(Filtro);
+
+                                notifyDataSetChanged();
                             } else {
                                 UtilitiesGlobali.getInstance().ApreToast(context, "Files non eliminato");
-                            } */
+                            }
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -90,6 +92,26 @@ public class AdapterListenerBraniOnline extends BaseAdapter {
 
                     builder.show();
 
+                }
+            }); */
+
+            ImageView imgSuona = view.findViewById(R.id.imgSuonaBrano);
+            imgSuona.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    StrutturaBrano s = listaBrani.get(i);
+                    if (Files.getInstance().EsisteFile(s.getPathBrano())) {
+                        VariabiliStatichePlayer.getInstance().setUltimoBrano(s);
+
+                        UtilityPlayer.getInstance().CaricaBranoNelLettore(context);
+                    } else {
+                        if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
+                            VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
+                        }
+                        ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                        VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+
+                        ws.RitornaBranoDaID(String.valueOf(s.getIdBrano()), false);
+                    }
                 }
             });
 

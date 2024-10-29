@@ -13,7 +13,7 @@ public class RicercaSanto {
     	int Quanti=0;
     	String NomeMese[]=new String[13];
 
-		if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+		/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 		    NomeMese[1]=new String("January");
 		    NomeMese[2]=new String("February");
 		    NomeMese[3]=new String("March");
@@ -26,7 +26,7 @@ public class RicercaSanto {
 		    NomeMese[10]=new String("October");
 		    NomeMese[11]=new String("November");
 		    NomeMese[12]=new String("December");
-		} else {
+		} else { */
 		    NomeMese[1]=new String("Gennaio");
 		    NomeMese[2]=new String("Febbraio");
 		    NomeMese[3]=new String("Marzo");
@@ -39,16 +39,16 @@ public class RicercaSanto {
 		    NomeMese[10]=new String("Ottobre");
 		    NomeMese[11]=new String("Novembre");
 		    NomeMese[12]=new String("Dicembre");
-		}
+		// }
 
 		String Ricerca = rSanto.getText().toString();
 		if (Ricerca.length()==0) {
 			Toast toast;
-			if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+			/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 				toast=Toast.makeText(VariabiliStaticheOnomastici.getInstance().getContext(),"Insert a name to search",Toast.LENGTH_LONG);
-			} else {
+			} else { */
 				toast=Toast.makeText(VariabiliStaticheOnomastici.getInstance().getContext(),"Immettere un nome da ricercare",Toast.LENGTH_LONG);
-			}
+			// }
 			toast.show();			
 		} else {
 	        GestioneDB varDB=new GestioneDB(context);
@@ -103,7 +103,7 @@ public class RicercaSanto {
     	int Quanti=0;
     	String NomeMese[]=new String[13];
 
-		if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
+		/* if (VariabiliStaticheOnomastici.getInstance().getLingua().equals("INGLESE")) {
 		    NomeMese[1]=new String("January");
 		    NomeMese[2]=new String("February");
 		    NomeMese[3]=new String("March");
@@ -116,7 +116,7 @@ public class RicercaSanto {
 		    NomeMese[10]=new String("October");
 		    NomeMese[11]=new String("November");
 		    NomeMese[12]=new String("December");
-		} else {
+		} else { */
 		    NomeMese[1]=new String("Gennaio");
 		    NomeMese[2]=new String("Febbraio");
 		    NomeMese[3]=new String("Marzo");
@@ -129,7 +129,7 @@ public class RicercaSanto {
 		    NomeMese[10]=new String("Ottobre");
 		    NomeMese[11]=new String("Novembre");
 		    NomeMese[12]=new String("Dicembre");
-		}
+		// }
 
         GestioneDB varDB=new GestioneDB(context);
        	

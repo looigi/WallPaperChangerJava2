@@ -420,9 +420,12 @@ public class impostazioni_player_interne {
                         VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.GONE);
                     }
 
-                    VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
-                            VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
-                    );
+                    if (VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica() != null &&
+                            VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica() != null) {
+                        VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
+                                VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
+                        );
+                    }
                     VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
                             "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
                 }

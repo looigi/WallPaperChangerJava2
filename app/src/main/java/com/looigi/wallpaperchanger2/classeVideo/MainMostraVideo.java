@@ -126,6 +126,13 @@ public class MainMostraVideo extends Activity {
             }
         });
 
+        ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliV);
+        imgScreenShotM.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityVideo.getInstance().takeScreenShotMultipli(context);
+            }
+        });
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheVideo.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -174,6 +181,14 @@ public class MainMostraVideo extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+            VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
+            VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
+            VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
+            VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(null);
+            VariabiliStaticheVideo.getInstance().setVideoView(null);
+        }
 
         act.finish();
     }

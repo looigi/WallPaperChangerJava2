@@ -192,6 +192,8 @@ public class MainPlayer extends Activity {
             VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
         }
 
+        VariabiliStatichePlayer.getInstance().setTxtPercentuale(findViewById(R.id.txtpercentuale));
+
         if (!VariabiliStatichePlayer.getInstance().isGiaPartito()) {
             VariabiliStatichePlayer.getInstance().setGiaPartito(true);
 

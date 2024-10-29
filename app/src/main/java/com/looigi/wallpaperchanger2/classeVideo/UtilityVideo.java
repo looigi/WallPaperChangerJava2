@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -63,8 +65,53 @@ public class UtilityVideo {
         }
     }
 
+    public void takeScreenShotMultipli(Context context) {
+        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        VariabiliStaticheVideo.getInstance().getVideoView().pause();
+
+        String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(link);
+        int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
+        int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
+        int quale = 0;
+
+        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+        UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+        String[] n = link.split("/");
+        String nn = n[n.length - 1];
+        String[] e = nn.split("\\.");
+        String est = e[e.length - 1];
+        nn = nn.replace("." + est, "");
+        int conta = 0;
+
+        for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
+            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+            String sconta = String.format("%03d", conta);
+            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                conta++;
+                sconta = String.format("%03d", conta);
+                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+            }
+            String Dest = Cartella + nomeFile;
+            try (FileOutputStream out = new FileOutputStream(Dest)) {
+                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                quale++;
+                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
+                        VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita");
+            } catch (IOException ignored) {
+            }
+        }
+        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+    }
+
     public void takeScreenshot(Context context) {
         VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        VariabiliStaticheVideo.getInstance().getVideoView().pause();
+
         try {
             String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
 
@@ -110,67 +157,97 @@ public class UtilityVideo {
         try {
             String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
 
-            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
-            mediaController = new MediaController(context) {
-                @Override
-                public void hide()
-                {
-                    mediaController.show();
-                }
-
-            };
-            VariabiliStaticheVideo.getInstance().setMediaController(mediaController);
-            VariabiliStaticheVideo.getInstance().getMediaController().setAnchorView(VariabiliStaticheVideo.getInstance().getVideoView());
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
             Context finalContext = context;
-            VariabiliStaticheVideo.getInstance().getMediaController().setPrevNextListeners(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Handle next click here
-                    ChiamateWSV ws = new ChiamateWSV(finalContext);
-                    ws.RitornaProssimoVideo();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Handle previous click here
-                }
-            });
-            Uri video = Uri.parse(link);
-            VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
-                    VariabiliStaticheVideo.getInstance().getMediaController());
-            VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
-            VariabiliStaticheVideo.getInstance().getVideoView().start();
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+                    if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
+                        mediaController = new MediaController(finalContext) {
+                            @Override
+                            public void show() {
+                                show(0);
+                            }
 
-            VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
-
-                    return false;
-                }
-            });
-            VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
-                }
-            });
-            VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                }
-            });
-
-            /* if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
-                // BARRA Visibile
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(
-                new Runnable() {
-                    public void run() {
-                        VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                            @Override
+                            public void show(int timeout) {
+                                super.show(0);
+                            }
+                        };
+                    } else {
+                        mediaController = new MediaController(finalContext);
                     }
-                }, 500);
-            } */
+                    mediaController.addOnUnhandledKeyEventListener((v, event) -> {
+                        //Handle BACK button
+                        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
+                        {
+                            if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                                VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
+                                VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
+                                VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
+                                VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(null);
+                            }
+
+                            VariabiliStaticheVideo.getInstance().getAct().finish();
+                        }
+                        return true;
+                    });
+
+                    VariabiliStaticheVideo.getInstance().setMediaController(mediaController);
+                    VariabiliStaticheVideo.getInstance().getMediaController().setAnchorView(VariabiliStaticheVideo.getInstance().getVideoView());
+                    VariabiliStaticheVideo.getInstance().getMediaController().setPrevNextListeners(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Handle next click here
+                            ChiamateWSV ws = new ChiamateWSV(finalContext);
+                            ws.RitornaProssimoVideo();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Handle previous click here
+                        }
+                    });
+                    Uri video = Uri.parse(link);
+                    VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
+                            VariabiliStaticheVideo.getInstance().getMediaController());
+                    VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
+                    VariabiliStaticheVideo.getInstance().getVideoView().start();
+
+                    VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                        @Override
+                        public boolean onError(MediaPlayer mp, int what, int extra) {
+                            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+
+                            return false;
+                        }
+                    });
+                    VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                        }
+                    });
+                    VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                        }
+                    });
+
+                    /* if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
+                        // BARRA Visibile
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                            }
+                        }, 500);
+                    } */
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+
         } catch (Exception e) {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
