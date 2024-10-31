@@ -181,6 +181,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Debug";
                 caricateImpostazioniDebug = false;
             }
+            dbDeb.ChiudeDB();
 
             caricateImpostazioniDetector = true;
             db_dati_detector dbDet = new db_dati_detector(context);
@@ -214,6 +215,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Detector";
                 caricateImpostazioniDetector = false;
             }
+            dbDet.ChiudeDB();
 
             caricateImpostazioniGPS = true;
             db_dati_gps dbGPS = new db_dati_gps(context);
@@ -252,6 +254,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto GPS";
                 caricateImpostazioniGPS = false;
             }
+            dbGPS.ChiudeDB();
 
             caricateImpostazioniImmagini = true;
             db_dati_immagini dbImm = new db_dati_immagini(context);
@@ -285,6 +288,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Immagini";
                 caricateImpostazioniImmagini = false;
             }
+            dbImm.ChiudeDB();
 
             caricateImpostazioniPennetta = true;
             db_dati_pennetta dbPen = new db_dati_pennetta(context);
@@ -318,6 +322,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Pennetta";
                 caricateImpostazioniPennetta = false;
             }
+            dbPen.ChiudeDB();
 
             caricateImpostazioniVideo = true;
             db_dati_video dbVid = new db_dati_video(context);
@@ -351,6 +356,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Video";
                 caricateImpostazioniVideo = false;
             }
+            dbVid.ChiudeDB();
 
             caricateImpostazioniFilms = true;
             db_dati_films dbFilms = new db_dati_films(context);
@@ -384,6 +390,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Films";
                 caricateImpostazioniFilms = false;
             }
+            dbFilms.ChiudeDB();
 
             caricateImpostazioniPlayer = true;
             db_dati_player dbPlay = new db_dati_player(context);
@@ -422,6 +429,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore db non aperto Player";
                 caricateImpostazioniPlayer = false;
             }
+            dbPlay.ChiudeDB();
 
             caricateImpostazioniWallpaper = true;
             db_dati_wallpaper dbW = new db_dati_wallpaper(context);
@@ -454,6 +462,7 @@ public class CaricaSettaggi {
                 ritorno = "Errore apertura db Wallpaper";
                 caricateImpostazioniWallpaper = false;
             }
+            dbW.ChiudeDB();
 
             ScriveLog(context, NomeMaschera, "Fine lettura impostazioni: " + ritorno);
         } else {

@@ -8,8 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -29,22 +30,18 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
-import androidx.core.content.FileProvider;
-
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.DBLocaleOnomastici;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.CampiRitornoSanti;
-import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainOnomastici extends Activity implements ColorPickerDialog.OnColorChangedListener {
     private List<String> nomiRilevati=new ArrayList<String>();
@@ -103,6 +100,8 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 } else {
                     Continua=varDB.ControllaDB(tRoutine, tErrore, "onCreate", tChiamante);
                     if (Continua) {
+                        CreaTabellaRubrica();
+
                         CaricaSantoDelGiorno();
 
                         // Gestione click su lista rilevati
@@ -1053,7 +1052,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         CaricaSantoDelGiorno();
 
         GestioneCompleanni g = new GestioneCompleanni(act, context);
-        VariabiliStaticheOnomastici.getInstance().ScriveCompleanni(act);
+        VariabiliStaticheOnomastici.getInstance().ScriveCompleanniDelGiorno(act);
 
         ImageView imgInviaMmessaggioOnomastico = act.findViewById(R.id.imgCondividiMessaggio);
         imgInviaMmessaggioOnomastico.setOnClickListener(new View.OnClickListener() {
@@ -1061,7 +1060,8 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
                 EditText edtMessaggio = act.findViewById(R.id.edtMessaggio);
                 String Messaggio = edtMessaggio.getText().toString();
                 if (Messaggio.isEmpty()) {
-                    UtilityWallpaper.getInstance().VisualizzaMessaggio("Messaggio vuoto");
+                    UtilityWallpaper.getInstance().VisualizzaMessaggio(act,
+                            "Messaggio vuoto");
                 } else {
                     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                     StrictMode.setVmPolicy(builder.build());
@@ -1092,5 +1092,51 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         } else {
             edtMessagio.setText("");
         }
+    }
+
+    private void CreaTabellaRubrica() {
+        // GestioneDB GestDB=new GestioneDB(context);
+        // Scarica la lista dei nomi per farla leggere al widget
+        // int Quanti=0;
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+             @Override
+             public void run() {
+                 GestioneRubrica GestRubr=new GestioneRubrica();
+
+                 List<String> Lista = GestRubr.RitornaTuttiINomi(context,
+                         VariabiliStaticheOnomastici.getInstance().getRubrica());
+
+                 handler.post(new Runnable() {
+                     @Override
+                     public void run() {
+                         //UI Thread work here
+                     }
+                 });
+             }
+        });
+
+        /* SQLiteDatabase myDB= GestDB.ApreDB();
+        myDB.execSQL("Create Table If Not Exists Rubrica(Nome Varchar(100));");
+        try {
+            String Sql="SELECT Count(*) FROM Rubrica;";
+            Cursor c = myDB.rawQuery(Sql , null);
+            c.moveToFirst();
+            Quanti=c.getInt(0);
+            c.close();
+            if (Quanti!=Lista.size()) {
+                myDB.execSQL("Delete From Rubrica;");
+                for (int i=0;i<Lista.size();i++) {
+                    myDB.execSQL("Insert Into Rubrica Values ('"+Lista.get(i).replace("'", "''")+"');");
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+
+        GestDB.ChiudeDB(myDB); */
     }
 }

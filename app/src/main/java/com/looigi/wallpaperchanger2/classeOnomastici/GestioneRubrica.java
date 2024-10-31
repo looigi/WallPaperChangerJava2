@@ -2,12 +2,16 @@ package com.looigi.wallpaperchanger2.classeOnomastici;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+
+import com.looigi.wallpaperchanger2.classeOnomastici.db.db_dati_compleanni;
+import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,23 +113,46 @@ public class GestioneRubrica {
 
         return photo;
     }
-    
-	public List<String> RitornaTuttiINomi(ContentResolver Rubrica){
+
+	public List<String> RitornaTuttiINomi(Context context, ContentResolver Rubrica){
 		List<String> nomiRilevati=new ArrayList<String>();  
         String name1="";
-        String Nomi[] = null;
+        // String Nomi[] = null;
         		
         Cursor cursor = Rubrica.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 		if (cursor.getCount() > 0)
 		{
+			db_dati_compleanni db = new db_dati_compleanni(context);
 		    while (cursor.moveToNext()) {
 	            name1 = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-	            nomiRilevati.add(name1);
+
+				String Nome = "";
+				String Cognome = "";
+
+				if (name1.contains(" ")) {
+					String[] n = name1.split(" ");
+					Nome = n[0];
+					Cognome = name1.replace(Nome + " ", "");
+				} else {
+					Nome = name1;
+				}
+
+				StrutturaCompleanno s = new StrutturaCompleanno();
+				s.setCognome(Cognome);
+				s.setNome(Nome);
+				s.setGiorno(0);
+				s.setMese(0);
+				s.setAnno(0);
+
+				db.ScriveCompleanno(s);
+
+				nomiRilevati.add(name1);
 		    }
+			db.ChiudeDB();
 		}
-		cursor.close(); 
-		
-        return nomiRilevati;
+		cursor.close();
+
+		return nomiRilevati;
 	}
 }
 

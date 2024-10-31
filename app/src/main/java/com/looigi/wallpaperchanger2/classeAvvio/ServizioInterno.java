@@ -1,10 +1,12 @@
 package com.looigi.wallpaperchanger2.classeAvvio;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
@@ -41,6 +44,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -74,14 +78,14 @@ public class ServizioInterno extends Service {
 
         // Utility.getInstance().stopService(context);
 
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "onConfigurationChanged: " + newConfig.uiMode);
+        ScriveLog(context, NomeMaschera, "---onConfigurationChanged---: " + newConfig.uiMode);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Start Command");
+        ScriveLog(context, NomeMaschera, "---Start Command---");
 
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -93,7 +97,7 @@ public class ServizioInterno extends Service {
     public void onCreate() {
         context = this;
 
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Create");
+        ScriveLog(context, NomeMaschera, "---On Create---");
 
         // CPU Attiva
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -134,24 +138,25 @@ public class ServizioInterno extends Service {
         // VariabiliStatiche.getInstance().setNotifica(GestioneNotifiche.getInstance().StartNotifica(this));
         if (notifica != null) {
             startForeground(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notifica);
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+            ScriveLog(context, NomeMaschera, "Notifica instanziata");
             GestioneNotificheWP.getInstance().AggiornaNotifica();
 
             Esecuzione e = new Esecuzione(context);
             e.startServizio1();
 
             // PARTENZA MASCHERE
-            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Apro db");
-            db_dati_wallpaper db = new db_dati_wallpaper(context);
-            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creo tabelle");
+            // ScriveLog(context, NomeMaschera, "Apro db");
+            // db_dati_wallpaper db = new db_dati_wallpaper(context);
+            // ScriveLog(context, NomeMaschera,"Creo tabelle");
             // db.CreazioneTabelle();
-            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Leggo impostazioni");
+            // ScriveLog(context, NomeMaschera,"Leggo impostazioni");
             // boolean letto = db.LeggeImpostazioni();
-            // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
+            // ScriveLog(context, NomeMaschera,"Impostazioni lette: " + letto);
             // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(letto);
 
-            db_dati_detector dbD = new db_dati_detector(context);
+            /* db_dati_detector dbD = new db_dati_detector(context);
             dbD.CreazioneTabelle();
+            dbD.ChiudeDB(); */
 
             Intent iW = new Intent(context, MainWallpaper.class);
             iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -191,11 +196,13 @@ public class ServizioInterno extends Service {
 
                 Notification notificaDetector = GestioneNotificheDetector.getInstance().StartNotifica(context);
                 if (notificaDetector != null) {
-                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera, "Notifica instanziata");
+                    UtilityDetector.getInstance().ScriveLog(context, NomeMaschera,
+                            "Notifica instanziata");
 
                     UtilityDetector.getInstance().ContaFiles(context);
 
-                    UtilitiesGlobali.getInstance().ApreToast(context, "Detector Partito");
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Detector Partito");
                 }
             }
 
@@ -222,42 +229,15 @@ public class ServizioInterno extends Service {
 
             // PARTENZA MASCHERE
         } else {
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");
-            Toast.makeText(this, "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla", Toast.LENGTH_SHORT).show();
+            ScriveLog(context, NomeMaschera,
+                    "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");
+            Toast.makeText(this,
+                    "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void ChiudeTutto() {
-        GestioneNotificheWP.getInstance().RimuoviNotifica();
-
-        if (mScreenReceiver != null) {
-            unregisterReceiver(mScreenReceiver);
-        }
-
-        stopForeground(true);
-        stopSelf();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "On Destroy");
-
-        /* if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
-            VariabiliStaticheStart.getInstance().setmTelephonyManager(null);
-        }
-
-        if (mVolumePressed != null) {
-            getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);
-            mVolumePressed = null;
-        }
-
-        if (mAudioManagerInterno != null) {
-            // unregisterReceiver(volPressed);
-            mAudioManagerInterno.unregisterMediaButtonEventReceiver(mReceiverComponentInterno);
-            mReceiverComponentInterno = null;
-        } */
+        ScriveLog(context, NomeMaschera, "Chiudo tutto");
 
         if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
             stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
@@ -283,6 +263,37 @@ public class ServizioInterno extends Service {
         if (wl != null) {
             wl.release();
         }
+
+        GestioneNotificheWP.getInstance().RimuoviNotifica();
+
+        if (mScreenReceiver != null) {
+            unregisterReceiver(mScreenReceiver);
+        }
+
+        stopForeground(true);
+        stopSelf();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        ScriveLog(context, NomeMaschera, "---On Destroy---");
+
+        /* if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
+            VariabiliStaticheStart.getInstance().setmTelephonyManager(null);
+        }
+
+        if (mVolumePressed != null) {
+            getApplicationContext().getContentResolver().unregisterContentObserver(mVolumePressed);
+            mVolumePressed = null;
+        }
+
+        if (mAudioManagerInterno != null) {
+            // unregisterReceiver(volPressed);
+            mAudioManagerInterno.unregisterMediaButtonEventReceiver(mReceiverComponentInterno);
+            mReceiverComponentInterno = null;
+        } */
 
         if (VariabiliStaticheWallpaper.getInstance().isSbragaTutto()) {
             ChiudeTutto();
@@ -324,13 +335,13 @@ public class ServizioInterno extends Service {
                 if (!timerAttivo) {
                     // Abbiamo un timer fermo. Controllo se devo accendere
                     if (spostamentoAttuale - ultimoSpostamento < 3000) {
-                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                        ScriveLog(context, "Sensore",
                                 "Movimento: " + totAcc + ". Timer Attivo: " + timerAttivo);
 
                         // L'ultimo spostamento è inferiore a 1 secondo fa
                         conta++;
 
-                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                        ScriveLog(context, "Sensore",
                                 "Incremento movimento per timer non attivo: " + conta);
 
                         if (conta >= 5) {
@@ -338,7 +349,7 @@ public class ServizioInterno extends Service {
                             // se non è attivo
                             conta = 0;
 
-                            UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                            ScriveLog(context, "Sensore",
                                     "Arrivato a 15 secondi continui. Attivo GPS e timer");
 
                             VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
@@ -347,7 +358,7 @@ public class ServizioInterno extends Service {
                             AttivaTimerMovimento();
                         }
                     } else {
-                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                        ScriveLog(context, "Sensore",
                                 "Resetto contatore. Spostamenti da più di tre secondi");
 
                         // L'ultimo spostamento è superiore a 3 secondi fa. Resetto il contatore
@@ -384,7 +395,7 @@ public class ServizioInterno extends Service {
         timerAttivo = true;
         conta = 0;
 
-        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore", "Attivo timer");
+        ScriveLog(context, "Sensore", "Attivo timer");
 
         handlerThread = new HandlerThread("background-thread_Sensore_" +
                 VariabiliStaticheWallpaper.channelName);
@@ -395,7 +406,7 @@ public class ServizioInterno extends Service {
             public void run() {
                 long diff = spostamentoAttuale - ultimoSpostamento;
 
-                UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                ScriveLog(context, "Sensore",
                         "Controllo ultimo movimento: " + diff);
 
                 boolean ok = true;
@@ -403,13 +414,13 @@ public class ServizioInterno extends Service {
                 if (diff >= 10000) {
                     conta++;
 
-                    UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                    ScriveLog(context, "Sensore",
                             "Incremento movimento: " + conta);
 
                     if (conta >= 3) {
                         ok = false;
 
-                        UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                        ScriveLog(context, "Sensore",
                                 "Ultimo movimento superiore a 30 secondi. Blocco GPS");
 
                         // La differenza fra l'ultimo spostamento e l'attuale è superiore a 10 secondi * 3 volte.
@@ -422,7 +433,7 @@ public class ServizioInterno extends Service {
 
                     }
                 } else {
-                    UtilityWallpaper.getInstance().ScriveLog(context, "Sensore",
+                    ScriveLog(context, "Sensore",
                             "Tempo inferiore a 10 secondi. Azzero contatore");
 
                     ultimoSpostamento = spostamentoAttuale;
@@ -441,4 +452,50 @@ public class ServizioInterno extends Service {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     } */
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        ScriveLog(context, NomeMaschera, "---On Low Memory---");
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ChiudeTutto();
+            }
+        }, 50);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ScriveLog(context, NomeMaschera, "Lancio nuova istanza");
+
+                Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
+                if (act == null) {
+                    act = UtilitiesGlobali.getInstance().tornaActivityValida();
+                }
+                if (act != null) {
+                    Intent it = new Intent();
+                    it.setComponent(new ComponentName(act,
+                            MainStart.class.getName()));
+                    it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    act.startActivity(it);
+                }
+            }
+        }, 100);
+    }
+
+    private void ScriveLog(Context context, String Maschera, String Log) {
+        if (context != null) {
+            if (VariabiliStaticheStart.getInstance().getLog() == null) {
+                LogInterno l = new LogInterno(context, false);
+                VariabiliStaticheStart.getInstance().setLog(l);
+            }
+
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Servizio", Maschera,  Log);
+        } else {
+
+        }
+    }
 }

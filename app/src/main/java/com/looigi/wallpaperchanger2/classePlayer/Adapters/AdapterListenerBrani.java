@@ -119,6 +119,7 @@ public class AdapterListenerBrani extends BaseAdapter {
                         db_dati_player db = new db_dati_player(context);
                         db.EliminaImmagineFisica(listaBrani.get(i).getArtista(),
                                 s.getPathImmagine());
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -165,6 +166,7 @@ public class AdapterListenerBrani extends BaseAdapter {
                                 db.EliminaBrano(String.valueOf(listaBrani.get(i).getIdBrano()));
                                 listaBrani.remove(i);
                                 updateData(Filtro);
+                                db.ChiudeDB();
                             } else {
                                 UtilitiesGlobali.getInstance().ApreToast(context, "Files non eliminato");
                             }
@@ -178,7 +180,6 @@ public class AdapterListenerBrani extends BaseAdapter {
                     });
 
                     builder.show();
-
                 }
             });
 

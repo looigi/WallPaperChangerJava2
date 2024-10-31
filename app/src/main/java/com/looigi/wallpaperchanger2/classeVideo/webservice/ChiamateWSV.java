@@ -220,6 +220,7 @@ public class ChiamateWSV implements TaskDelegate {
 
             db_dati_video db = new db_dati_video(context);
             db.ScriveUltimoVideo();
+            db.ChiudeDB();
 
             UtilityVideo.getInstance().ImpostaVideo();
         } else {

@@ -20,6 +20,8 @@ import java.util.concurrent.Executors;
 public class ScanBraniNonPresentiSuDB {
     private int maxId  = 0;
     private String PathImmagini;
+    private int AggiuntiBrani = 0;
+    private int AggiunteImmagini = 0;
 
     public void controllaCanzoniNonSalvateSuDB(Context context, boolean MostraPopup) {
         if (MostraPopup) {
@@ -34,24 +36,37 @@ public class ScanBraniNonPresentiSuDB {
             public void run() {
                 PathImmagini = context.getFilesDir() + "/Player/ImmaginiMusica/";
                 String path = context.getFilesDir() + "/Player/Brani";
+
                 db_dati_player db = new db_dati_player(context);
                 maxId = db.RitornaMaxIdBrano();
 
                 maxId += 65000;
+                AggiuntiBrani = 0;
+                AggiunteImmagini = 0;
 
                 File rootPrincipale = new File(path);
                 if (!rootPrincipale.exists()) {
                     rootPrincipale.mkdir();
                 }
-                walk(db, rootPrincipale);
+                walk(db, rootPrincipale, "BRANI");
+
+                rootPrincipale = new File(PathImmagini);
+                if (!rootPrincipale.exists()) {
+                    rootPrincipale.mkdir();
+                }
+                walk(db, rootPrincipale, "IMMAGINI");
 
                 if (MostraPopup) {
                     UtilityPlayer.getInstance().Attesa(false);
-                    UtilitiesGlobali.getInstance().ApreToast(context, "Refresh effettuato");
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Brani aggiunti a DB: " + AggiuntiBrani + "\n" +
+                            "Immagini aggiunte a DB: " + AggiunteImmagini);
                 }
 
                 ScanBraniNonPresentiSuSD s = new ScanBraniNonPresentiSuSD();
-                s.EsegueOperazione(context);
+                s.EsegueOperazione(context, MostraPopup);
+
+                db.ChiudeDB();
 
                 handler.post(new Runnable() {
                     @Override
@@ -63,7 +78,7 @@ public class ScanBraniNonPresentiSuDB {
         });
     }
 
-    private void walk(db_dati_player db, File root) {
+    private void walk(db_dati_player db, File root, String Cosa) {
         File[] list = root.listFiles();
 
         if (list == null) {
@@ -72,80 +87,106 @@ public class ScanBraniNonPresentiSuDB {
 
         for (File f : list) {
             if (f.isDirectory()) {
-                walk(db, f);
+                walk(db, f, Cosa);
             } else {
                 String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
                 String Nome = f.getAbsoluteFile().getName(); // Questo contiene solo il nome del file
-                if (Nome.toUpperCase().contains(".MP3") || Nome.toUpperCase().contains(".WMA")) {
-                    String[] Parti = Filetto.split("/");
+                if (Cosa.equals("BRANI")) {
+                    if (Nome.toUpperCase().contains(".MP3") || Nome.toUpperCase().contains(".WMA")) {
+                        String[] Parti = Filetto.split("/");
 
-                    String Artista = Parti[8];
-                    String Album = Parti[9];
-                    String Brano = Parti[10];
-                    String Anno = "0000";
-                    String Traccia = "00";
-                    String Estensione = "";
+                        String Artista = Parti[8];
+                        String Album = Parti[9];
+                        String Brano = Parti[10];
+                        String Anno = "0000";
+                        String Traccia = "00";
+                        String Estensione = "";
 
-                    if (Album.contains("-")) {
-                        String[] a = Album.split("-");
-                        Anno = a[0];
-                        Album = a[1];
+                        if (Album.contains("-")) {
+                            String[] a = Album.split("-");
+                            Anno = a[0];
+                            Album = a[1];
+                        }
+                        if (Brano.contains("-")) {
+                            String[] a = Brano.split("-");
+                            Traccia = a[0];
+                            Brano = a[1];
+                        }
+                        if (Nome.contains(".")) {
+                            String[] n = Nome.split("\\.");
+                            Estensione = "." + n[n.length - 1];
+                            Brano = Brano.replace(Estensione, "");
+                        }
+
+                        boolean esiste = db.EsisteBrano(Artista, Album, Brano);
+                        if (!esiste) {
+                            String Data = String.valueOf(Files.getInstance().DataFile(Filetto));
+                            long Dimensione = Files.getInstance().DimensioniFile(Filetto);
+
+                            StrutturaBrano sb = new StrutturaBrano();
+                            sb.setIdBrano(maxId);
+                            sb.setQuantiBrani(-1);
+                            sb.setArtista(Artista);
+                            sb.setAlbum(Album);
+                            sb.setBrano(Brano);
+                            sb.setAnno(Anno);
+                            sb.setTraccia(Traccia);
+                            sb.setEstensione(Estensione);
+                            sb.setAscoltata(0);
+                            sb.setBellezza(-2);
+                            sb.setData(Data);
+                            sb.setDimensione(Dimensione);
+                            sb.setTesto("");
+                            sb.setTestoTradotto("");
+                            sb.setUrlBrano("");
+                            sb.setPathBrano(Filetto);
+                            sb.setCartellaBrano("");
+                            sb.setTags("");
+                            sb.setTipoBrano(-1);
+
+                            String sPathImmagini1 = PathImmagini +
+                                    Artista + "/" + Anno + "-" + Album;
+                            List<StrutturaImmagini> lista1 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini1);
+
+                            String sPathImmagini2 = PathImmagini +
+                                    Artista + "/ZZZ-ImmaginiArtista";
+                            List<StrutturaImmagini> lista2 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini2);
+
+                            List<StrutturaImmagini> lista = new ArrayList<>();
+                            lista.addAll(lista1);
+                            lista.addAll(lista2);
+
+                            sb.setImmagini(lista);
+
+                            db.ScriveBrano(sb);
+                            db.ScriveImmaginiBrano(sb);
+
+                            maxId++;
+
+                            AggiuntiBrani++;
+                        }
                     }
-                    if (Brano.contains("-")) {
-                        String[] a = Brano.split("-");
-                        Traccia = a[0];
-                        Brano = a[1];
-                    }
-                    if (Nome.contains(".")) {
-                        String[] n = Nome.split("\\.");
-                        Estensione = "." + n[n.length - 1];
-                        Brano = Brano.replace(Estensione, "");
-                    }
+                } else {
+                    if (Nome.toUpperCase().contains(".JPG") || Nome.toUpperCase().contains(".JPEG") ||
+                            Nome.toUpperCase().contains(".BMP") || Nome.toUpperCase().contains(".PNG") ||
+                            Nome.toUpperCase().contains(".GIF")) {
 
-                    boolean esiste = db.EsisteBrano(Artista, Album, Brano);
-                    if (!esiste) {
-                        String Data = String.valueOf(Files.getInstance().DataFile(Filetto));
-                        long Dimensione = Files.getInstance().DimensioniFile(Filetto);
+                        String NomeImmagine = Filetto.replace(PathImmagini, "");
+                        String[] n = NomeImmagine.split("/");
 
-                        StrutturaBrano sb = new StrutturaBrano();
-                        sb.setIdBrano(maxId);
-                        sb.setQuantiBrani(-1);
-                        sb.setArtista(Artista);
-                        sb.setAlbum(Album);
-                        sb.setBrano(Brano);
-                        sb.setAnno(Anno);
-                        sb.setTraccia(Traccia);
-                        sb.setEstensione(Estensione);
-                        sb.setAscoltata(0);
-                        sb.setBellezza(-2);
-                        sb.setData(Data);
-                        sb.setDimensione(Dimensione);
-                        sb.setTesto("");
-                        sb.setTestoTradotto("");
-                        sb.setUrlBrano("");
-                        sb.setPathBrano(Filetto);
-                        sb.setCartellaBrano("");
-                        sb.setTags("");
-                        sb.setTipoBrano(-1);
+                        StrutturaImmagini s = new StrutturaImmagini();
+                        s.setArtista(n[0]);
+                        s.setCartellaImmagine(n[1]);
+                        s.setNomeImmagine(n[2]);
+                        s.setAlbum(n[1]);
+                        s.setPathImmagine(Filetto);
+                        s.setUrlImmagine(Filetto);
 
-                        String sPathImmagini1 = PathImmagini +
-                            Artista + "/" + Anno + "-" + Album;
-                        List<StrutturaImmagini> lista1 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini1);
+                        if (!db.EsisteImmagineBrano(s)) {
+                            db.ScriveImmagineBrano(n[0], s);
 
-                        String sPathImmagini2 = PathImmagini +
-                                Artista + "/ZZZ-ImmaginiArtista";
-                        List<StrutturaImmagini> lista2 = RitornaImmaginiBrano(Anno + "-" + Album, sPathImmagini2);
-
-                        List<StrutturaImmagini> lista = new ArrayList<>();
-                        lista.addAll(lista1);
-                        lista.addAll(lista2);
-
-                        sb.setImmagini(lista);
-
-                        db.ScriveBrano(sb);
-                        db.ScriveImmaginiBrano(sb);
-
-                        maxId++;
+                            AggiunteImmagini++;
+                        }
                     }
                 }
             }

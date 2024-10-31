@@ -41,6 +41,24 @@ public class VariabiliStaticheFilms {
     private boolean barraVisibile = true;
     private MediaController mediaController;
     private int NumeroFrames = 10;
+    private boolean staAcquisendoVideo = false;
+    private boolean entratoNelCampoDiTesto = false;
+
+    public boolean isEntratoNelCampoDiTesto() {
+        return entratoNelCampoDiTesto;
+    }
+
+    public void setEntratoNelCampoDiTesto(boolean entratoNelCampoDiTesto) {
+        this.entratoNelCampoDiTesto = entratoNelCampoDiTesto;
+    }
+
+    public boolean isStaAcquisendoVideo() {
+        return staAcquisendoVideo;
+    }
+
+    public void setStaAcquisendoVideo(boolean staAcquisendoVideo) {
+        this.staAcquisendoVideo = staAcquisendoVideo;
+    }
 
     public int getNumeroFrames() {
         return NumeroFrames;

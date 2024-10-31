@@ -149,6 +149,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/imgCondividiImmagine"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/share" />
+
+        <ImageView
             android:id="@+id/imgModificaImmagine"
             android:layout_width="40dp"
             android:layout_height="40dp"

@@ -1,35 +1,23 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.web;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 
-import com.looigi.wallpaperchanger2.R;
-
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
+import com.looigi.wallpaperchanger2.classeOnomastici.GestioneRubrica;
+import com.looigi.wallpaperchanger2.classeOnomastici.VariabiliStaticheOnomastici;
+import com.looigi.wallpaperchanger2.classeOnomastici.WidgetOnomastici;
 
 public class DownloadPic {
 	private String Directory = "";
 	private String NomeFiletto = "";
 	private String FileDaDownloadare = "";
-	private GestioneDB GestDB;
-	private GestioneRubrica GestRubr;
-	private ContentResolver Rubrica;
+	// private GestioneDB GestDB;
+	// private GestioneRubrica GestRubr;
+	// private ContentResolver Rubrica;
 	private boolean ScaricaImmagine;
 	private Context context;
 	// private ProgressDialog mProgressDialog;
@@ -46,14 +34,12 @@ public class DownloadPic {
 
 		DownloadImmagineSanto d = new DownloadImmagineSanto();
 		d.EsegueChiamata(
+				context,
 				this,
 				ScaricaImmagine,
 				FileDaDownloadare,
 				Directory,
-				NomeFiletto,
-				GestRubr,
-				Rubrica,
-				GestDB
+				NomeFiletto
 		);
 		// DownloadFile downloadFile = new DownloadFile(this);
 		// downloadFile.execute(FileDaDownloadare);
@@ -73,7 +59,7 @@ public class DownloadPic {
 		ScaricaImmagine = SiNo;
 	}
 
-	public void setRubrica(ContentResolver Rubr) {
+	/* public void setRubrica(ContentResolver Rubr) {
 		Rubrica = Rubr;
 	}
 
@@ -83,7 +69,7 @@ public class DownloadPic {
 
 	public void setGestioneDB(GestioneDB NomeDb) {
 		GestDB = NomeDb;
-	}
+	} */
 
 	public void setDirectory(String NomeDir) {
 		Directory = NomeDir;

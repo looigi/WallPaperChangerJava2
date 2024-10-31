@@ -45,6 +45,13 @@ public class db_dati_player {
         myDB = ApreDB();
     }
 
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
+    }
+
     private SQLiteDatabase ApreDB() {
         SQLiteDatabase db = null;
 
@@ -850,15 +857,45 @@ public class db_dati_player {
         }
     }
 
+    public boolean EsisteImmagineBrano(StrutturaImmagini s) {
+        if (myDB != null) {
+            try {
+                String imm = s.getUrlImmagine().toUpperCase();
+                if (imm.contains(".JPG") || imm.contains(".JPEG") || imm.contains(".PNG")
+                        || imm.contains(".BMP") || imm.contains(".GIF")) {
+                    String sql = "Select * From "
+                            + "ImmaginiBrano "
+                            + "Where "
+                            + "Artista='" + s.getArtista().replace("'","''") + "' And "
+                            + "Album='" + s.getAlbum().replace("'", "''") + "' And "
+                            + "NomeImmagine='" + s.getNomeImmagine().replace("'", "''") + "'";
+                    Cursor c = myDB.rawQuery(sql, null);
+                    if (c.getCount() > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } catch (SQLException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void ScriveImmagineBrano(String Artista, StrutturaImmagini immagine) {
         if (myDB != null) {
             try {
                 String imm = immagine.getUrlImmagine().toUpperCase();
-                if (imm.contains(".JPG") || imm.contains(".JPEG") || imm.contains(".PNG")) {
-                    String sql = "INSERT INTO"
-                            + " ImmaginiBrano"
-                            + " VALUES ("
-                            + "'" + Artista + "', "
+                if (imm.contains(".JPG") || imm.contains(".JPEG") || imm.contains(".PNG")
+                        || imm.contains(".BMP") || imm.contains(".GIF")) {
+                    String sql = "INSERT INTO "
+                            + "ImmaginiBrano "
+                            + "VALUES ("
+                            + "'" + Artista.replace("'", "''") + "', "
                             + "'" + immagine.getAlbum().replace("'", "''") + "', "
                             + "'" + immagine.getNomeImmagine().replace("'", "''") + "', "
                             + "'" + immagine.getUrlImmagine().replace("'", "''") + "', "
@@ -869,10 +906,9 @@ public class db_dati_player {
                 }
             } catch (SQLException e) {
                 UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per aggiunta immagine: " + e.getMessage());
-                PulisceDatiSBI();
-                // Log.getInstance().ScriveLog("Creazione tabelle");
+                /* PulisceDatiSBI();
                 CreazioneTabelle();
-                ScriveImmagineBrano(Artista, immagine);
+                ScriveImmagineBrano(Artista, immagine); */
             }
         } else {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");

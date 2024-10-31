@@ -42,6 +42,8 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
     protected void onPostExecute(String p) {
         super.onPostExecute(p);
 
+        db.ChiudeDB();
+
         VariabiliStaticheWallpaper.getInstance().setListaImmagini(imms);
         if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
             VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + imms.size());

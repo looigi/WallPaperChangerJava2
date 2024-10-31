@@ -365,6 +365,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_wallpaper db = new db_dati_wallpaper(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
 
                         // GestioneNotifiche.getInstance().AggiornaNotifica();
                         if (isD) {
@@ -459,6 +460,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
         btnPiuMinuti.setOnClickListener(new View.OnClickListener() {
@@ -485,6 +487,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -496,6 +499,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -507,6 +511,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -544,6 +549,7 @@ public class MainImpostazioni extends Activity {
                 // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -612,6 +618,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -622,6 +629,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -641,6 +649,7 @@ public class MainImpostazioni extends Activity {
                 }
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -653,6 +662,7 @@ public class MainImpostazioni extends Activity {
                 // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
 
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
                 // ChangeWallpaper c = new ChangeWallpaper(context);
@@ -669,6 +679,7 @@ public class MainImpostazioni extends Activity {
                 // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
 
                 // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
                 // ChangeWallpaper c = new ChangeWallpaper(context);
@@ -706,6 +717,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context, "SET FOTO POWER");
+                db.ChiudeDB();
             }
         });
         SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
@@ -733,6 +745,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context, "SET GPS PRECISO");
+                db.ChiudeDB();
 
                 if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
                     VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("INIT 1");
@@ -773,9 +786,6 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataMappa(Activity act) {
-        db_dati_gps db = new db_dati_gps(context);
-        // db.CaricaImpostazioni();
-
         EditText etGpsMs = (EditText) act.findViewById(R.id.edtGpsMs);
         etGpsMs.setText(Integer.toString(VariabiliStaticheDetector.getInstance().getGpsMs()));
         etGpsMs.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -787,6 +797,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_detector db = new db_dati_detector(context);
                         db.ScriveImpostazioni(context, "SET GPS MS");
+                        db.ChiudeDB();
 
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 1");
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
@@ -806,6 +817,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_detector db = new db_dati_detector(context);
                         db.ScriveImpostazioni(context, "SET GPS METERS");
+                        db.ChiudeDB();
 
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 2");
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
@@ -825,6 +837,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_detector db = new db_dati_detector(context);
                         db.ScriveImpostazioni(context, "SET METRI PS");
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -837,7 +850,9 @@ public class MainImpostazioni extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheGPS.getInstance().setMostraSegnale(sSegnale.isChecked());
 
+                db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -848,7 +863,9 @@ public class MainImpostazioni extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheGPS.getInstance().setMostraPercorso(sPercorso.isChecked());
 
+                db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -914,6 +931,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_immagini db = new db_dati_immagini(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -941,6 +959,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_immagini db = new db_dati_immagini(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -977,6 +996,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_pennetta db = new db_dati_pennetta(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -991,8 +1011,9 @@ public class MainImpostazioni extends Activity {
                         String lim = edtSecondi.getText().toString();
                         VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(Integer.parseInt(lim));
 
-                        db_dati_immagini db = new db_dati_immagini(context);
+                        db_dati_pennetta db = new db_dati_pennetta(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -1038,6 +1059,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_video db = new db_dati_video(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -1052,6 +1074,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_video db = new db_dati_video(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -1090,8 +1113,10 @@ public class MainImpostazioni extends Activity {
                                 }
                             }, 100);
                 }
+
                 db_dati_video db = new db_dati_video(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -1136,6 +1161,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_player db = new db_dati_player(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -1194,6 +1220,7 @@ public class MainImpostazioni extends Activity {
 
                 db_debug db = new db_debug(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -1221,6 +1248,7 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -1235,6 +1263,7 @@ public class MainImpostazioni extends Activity {
 
                         db_dati_films db = new db_dati_films(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
                     }
                 }
             }
@@ -1261,8 +1290,10 @@ public class MainImpostazioni extends Activity {
                                 }
                             }, 100);
                 }
+
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 

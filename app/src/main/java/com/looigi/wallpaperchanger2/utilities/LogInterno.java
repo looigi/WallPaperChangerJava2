@@ -137,6 +137,7 @@ public class LogInterno {
 					if (!lista.isEmpty()) {
 						handler.postDelayed(this, 100);
 					} else {
+						handler.removeCallbacksAndMessages(this);
 						handler.removeCallbacks(this);
 						handler = null;
 					}

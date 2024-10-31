@@ -98,6 +98,7 @@ public class MainMostraImmagini extends Activity {
                 VariabiliStaticheMostraImmagini.getInstance().setSettingsAperto(SettaggiAperti);
                 db_dati_immagini db = new db_dati_immagini(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
 
                 if (!SettaggiAperti) {
                     laySettaggi.setLayoutParams(

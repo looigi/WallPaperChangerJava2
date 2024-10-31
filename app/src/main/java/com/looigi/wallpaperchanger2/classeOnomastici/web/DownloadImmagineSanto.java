@@ -1,13 +1,16 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.web;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
+import com.looigi.wallpaperchanger2.classeOnomastici.GestioneRubrica;
+
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -25,21 +28,16 @@ public class DownloadImmagineSanto {
     private String Url;
     private String Directory;
     private String NomeFiletto;
-    private GestioneRubrica GestRubr;
-    private ContentResolver Rubrica;
-    private GestioneDB GestDB;
+    // private GestioneRubrica GestRubr;
+    // private ContentResolver Rubrica;
 
-    public void EsegueChiamata(DownloadPic d, boolean ScaricaImmagine, String Url,
-                               String Directory, String NomeFiletto, GestioneRubrica GestRubr,
-                               ContentResolver Rubrica, GestioneDB GestDB) {
+    public void EsegueChiamata(Context context, DownloadPic d, boolean ScaricaImmagine, String Url,
+                               String Directory, String NomeFiletto) {
         this.d = d;
         this.ScaricaImmagine = ScaricaImmagine;
         this.Url = Url;
         this.Directory = Directory;
         this.NomeFiletto = NomeFiletto;
-        this.GestRubr = GestRubr;
-        this.Rubrica = Rubrica;
-        this.GestDB = GestDB;
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -47,7 +45,7 @@ public class DownloadImmagineSanto {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                Esecuzione();
+                Esecuzione(context);
                 // BloccaTimer();
                 // TermineEsecuzione();
 
@@ -62,7 +60,7 @@ public class DownloadImmagineSanto {
 
     }
 
-    private void Esecuzione() {
+    private void Esecuzione(Context context) {
         if (ScaricaImmagine) {
             try {
                 URL url = new URL(Url);
@@ -93,30 +91,6 @@ public class DownloadImmagineSanto {
         }
 
         d.updateWidget();
-
-        // Scarica la lista dei nomi per farla leggere al widget
-        int Quanti=0;
-
-        List<String> Lista=GestRubr.RitornaTuttiINomi(Rubrica);
-        SQLiteDatabase myDB= GestDB.ApreDB();
-        myDB.execSQL("Create Table If Not Exists Rubrica(Nome Varchar(100));");
-        try {
-            String Sql="SELECT Count(*) FROM Rubrica;";
-            Cursor c = myDB.rawQuery(Sql , null);
-            c.moveToFirst();
-            Quanti=c.getInt(0);
-            c.close();
-            if (Quanti!=Lista.size()) {
-                myDB.execSQL("Delete From Rubrica;");
-                for (int i=0;i<Lista.size();i++) {
-                    myDB.execSQL("Insert Into Rubrica Values ('"+Lista.get(i).replace("'", "''")+"');");
-                }
-            }
-        } catch (Exception ignored) {
-
-        }
-
-        GestDB.ChiudeDB(myDB);
         // Scarica la lista dei nomi per farla leggere al widget
     }
 }

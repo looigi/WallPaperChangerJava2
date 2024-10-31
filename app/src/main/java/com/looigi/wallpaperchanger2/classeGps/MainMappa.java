@@ -19,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,12 +46,9 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
@@ -83,7 +78,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mappa);
+        setContentView(R.layout.activity_main_mappa);
 
         this.context = this;
         this.act = this;
@@ -224,6 +219,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             public void onClick(View v) {
                 db_dati_gps db = new db_dati_gps(context);
                 db.EliminaPosizioni(dataOdierna);
+                db.ChiudeDB();
 
                 VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
@@ -252,6 +248,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -450,6 +447,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                             db_dati_gps db = new db_dati_gps(context);
                             db.ScrivePuntoDiSpegnimento(m_Text, targetLocation);
+                            db.ChiudeDB();
 
                             disegnaMarkersPS();
                         }
@@ -479,6 +477,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                             public void onClick(DialogInterface dialog, int which) {
                                 db_dati_gps db = new db_dati_gps(context);
                                 db.EliminaPuntoDiSpegnimento(nome);
+                                db.ChiudeDB();
 
                                 disegnaMarkersPS();
                             }

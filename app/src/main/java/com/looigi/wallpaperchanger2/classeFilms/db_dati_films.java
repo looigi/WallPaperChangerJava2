@@ -41,6 +41,13 @@ public class db_dati_films {
         myDB = ApreDB();
     }
 
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
+    }
+
     private SQLiteDatabase ApreDB() {
         SQLiteDatabase db = null;
 
@@ -73,6 +80,12 @@ public class db_dati_films {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Snapshots "
+                        + "(id VARCHAR);";
+
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 return false;
@@ -80,6 +93,44 @@ public class db_dati_films {
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
             return false;
+        }
+    }
+
+    public boolean VedeSnapshot(String id) {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Snapshots Where id=" + id, null);
+                if (c.getCount() > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db snapshots: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                return false;
+            }
+        } else {
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return false;
+        }
+    }
+
+    public void ScriveSnapshot(String id) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO"
+                        + "Snapshots "
+                        + " VALUES ("
+                        + "'" + id + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per snapshot: " + e.getMessage());
+            }
+        } else {
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 

@@ -10,24 +10,35 @@
 		
 	<TabHost
 	    android:id="@+id/myTabHost"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" >
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
 	        	    
 		<LinearLayout
 	        android:id="@+id/myLayout"
 	        android:orientation="vertical"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent">
-		
-			<TabWidget
-			    android:id="@android:id/tabs"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_gravity="top"
-			    android:background="#555555"
-			    android:gravity="top|center_vertical" >
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent">
 
-			</TabWidget>
+			<HorizontalScrollView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" >
+
+					<TabWidget
+						android:id="@android:id/tabs"
+						android:layout_height="wrap_content"
+						android:layout_width="wrap_content"
+						android:layout_gravity="top"
+						android:background="#555555"
+						android:gravity="top|center_vertical" >
+
+					</TabWidget>
+				</LinearLayout>
+			</HorizontalScrollView>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -49,7 +60,7 @@
                         android:padding="3dp" >
                     </RelativeLayout> -->
 
-                  	<include
+					<include
 					    android:id="@+id/container_header_lyt1"  
 					    android:layout_height="wrap_content"
 					    android:layout_width="fill_parent"

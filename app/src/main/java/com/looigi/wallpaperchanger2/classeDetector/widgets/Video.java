@@ -112,6 +112,7 @@ public class Video extends Activity implements Callback {
 				VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
 				VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
+				handlerTimer.removeCallbacksAndMessages(rTimer);
 				handlerTimer.removeCallbacks(rTimer);
 				rTimer = null;
 			}

@@ -154,6 +154,7 @@ public class DownloadCanzone {
                                         db_dati_player db = new db_dati_player(context);
                                         db.ScriveBrano(sb);
                                         db.ScriveUltimoBranoAscoltato(sb);
+                                        db.ChiudeDB();
 
                                         VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 

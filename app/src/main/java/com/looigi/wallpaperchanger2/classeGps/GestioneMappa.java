@@ -28,6 +28,8 @@ public class GestioneMappa {
         listaGPS = togliePuntiEccessivi(listaGPS);
 
         calcolaDistanza();
+
+        db.ChiudeDB();
     }
 
     public void ChiudeMaschera() {

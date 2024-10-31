@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
+
 public class RicercaSanto {
 	
 	public int EffettuaRicercaSanto(Context context, TextView tRitorno, EditText rSanto) {

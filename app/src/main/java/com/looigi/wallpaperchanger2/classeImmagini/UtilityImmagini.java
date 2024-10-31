@@ -108,7 +108,7 @@ public class UtilityImmagini {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("IMMAGINI", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Immagini", Maschera,  Log);
             // }
         } else {
 

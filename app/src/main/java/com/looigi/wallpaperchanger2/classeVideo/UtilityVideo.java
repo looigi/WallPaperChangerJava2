@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -58,7 +60,7 @@ public class UtilityVideo {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("VIDEO", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Video", Maschera,  Log);
             // }
         } else {
 
@@ -66,87 +68,126 @@ public class UtilityVideo {
     }
 
     public void takeScreenShotMultipli(Context context) {
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        if (VariabiliStaticheVideo.getInstance().isStaAcquisendoVideo()) {
+            UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
+            return;
+        }
+        VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(true);
+
+        Attesa(true);
         VariabiliStaticheVideo.getInstance().getVideoView().pause();
 
-        String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(link);
-        int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
-        int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
-        int quale = 0;
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(link);
+                int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
+                int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
+                int quale = 0;
 
-        String Cartella = UtilityDetector.getInstance().PrendePath(context);
-        UtilityWallpaper.getInstance().CreaCartelle(Cartella);
-        UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
-        String[] n = link.split("/");
-        String nn = n[n.length - 1];
-        String[] e = nn.split("\\.");
-        String est = e[e.length - 1];
-        nn = nn.replace("." + est, "");
-        int conta = 0;
+                String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+                UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+                String[] n = link.split("/");
+                String nn = n[n.length - 1];
+                String[] e = nn.split("\\.");
+                String est = e[e.length - 1];
+                nn = nn.replace("." + est, "");
+                int conta = 0;
 
-        for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
-            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
-            String sconta = String.format("%03d", conta);
-            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
-            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
-                conta++;
-                sconta = String.format("%03d", conta);
-                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
+                    Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+                    String sconta = String.format("%03d", conta);
+                    String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                        conta++;
+                        sconta = String.format("%03d", conta);
+                        nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    }
+                    String Dest = Cartella + nomeFile;
+                    try (FileOutputStream out = new FileOutputStream(Dest)) {
+                        thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        quale++;
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
+                                VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita");
+                    } catch (IOException ignored) {
+                    }
+                }
+
+                VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(false);
+                Attesa(false);
             }
-            String Dest = Cartella + nomeFile;
-            try (FileOutputStream out = new FileOutputStream(Dest)) {
-                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+        }, 500);
+    }
 
-                quale++;
-                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
-                        VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita");
-            } catch (IOException ignored) {
+    public void Attesa(boolean bAttesa) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (bAttesa) {
+                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+                } else {
+                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                }
             }
-        }
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+        }, 10);
     }
 
     public void takeScreenshot(Context context) {
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        if (VariabiliStaticheVideo.getInstance().isStaAcquisendoVideo()) {
+            UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
+            return;
+        }
+        VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(true);
+
+        Attesa(true);
         VariabiliStaticheVideo.getInstance().getVideoView().pause();
 
-        try {
-            String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
 
-            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            mmr.setDataSource(link);
-            int secondi = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition() * 1000;
-            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                    mmr.setDataSource(link);
+                    int secondi = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition() * 1000;
+                    Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
 
-            String Cartella = UtilityDetector.getInstance().PrendePath(context);
-            UtilityWallpaper.getInstance().CreaCartelle(Cartella);
-            UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
-            String[] n = link.split("/");
-            String nn = n[n.length - 1];
-            String[] e = nn.split("\\.");
-            String est = e[e.length - 1];
-            nn = nn.replace("." + est, "");
-            int conta = 1;
-            String sconta = String.format("%03d", conta);
-            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
-            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
-                conta++;
-                sconta = String.format("%03d", conta);
-                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                    UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+                    UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+                    String[] n = link.split("/");
+                    String nn = n[n.length - 1];
+                    String[] e = nn.split("\\.");
+                    String est = e[e.length - 1];
+                    nn = nn.replace("." + est, "");
+                    int conta = 1;
+                    String sconta = String.format("%03d", conta);
+                    String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                        conta++;
+                        sconta = String.format("%03d", conta);
+                        nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    }
+                    String Dest = Cartella + nomeFile;
+                    try (FileOutputStream out = new FileOutputStream(Dest)) {
+                        thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagine acquisita");
+                    } catch (IOException ignored) {
+                    }
+                } catch (Throwable e) {
+                    // e.printStackTrace();
+                }
+
+                VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(false);
+                Attesa(false);
             }
-            String Dest = Cartella + nomeFile;
-            try (FileOutputStream out = new FileOutputStream(Dest)) {
-                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine acquisita");
-            } catch (IOException ignored) {
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+        }, 500);
     }
 
     public void ImpostaVideo() {
@@ -161,7 +202,8 @@ public class UtilityVideo {
             Context finalContext = context;
             Runnable rTimer = new Runnable() {
                 public void run() {
-                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+                    Attesa(true);
+
                     if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
                         mediaController = new MediaController(finalContext) {
                             @Override
@@ -181,14 +223,16 @@ public class UtilityVideo {
                         //Handle BACK button
                         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
                         {
-                            if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
-                                VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
-                                VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
-                                VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
-                                VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(null);
-                            }
+                            if (!VariabiliStaticheVideo.getInstance().isEntratoNelCampoDiTesto()) {
+                                if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                                    VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
+                                    VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
+                                    VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
+                                    VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(null);
+                                }
 
-                            VariabiliStaticheVideo.getInstance().getAct().finish();
+                                VariabiliStaticheVideo.getInstance().getAct().finish();
+                            }
                         }
                         return true;
                     });
@@ -217,7 +261,7 @@ public class UtilityVideo {
                     VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
                         @Override
                         public boolean onError(MediaPlayer mp, int what, int extra) {
-                            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                            Attesa(false);
 
                             return false;
                         }
@@ -225,7 +269,7 @@ public class UtilityVideo {
                     VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+                            Attesa(false);
                         }
                     });
                     VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

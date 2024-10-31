@@ -16,7 +16,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class db_dati_wallpaper {
     private static final String NomeMaschera = "DB_Dati_Wallpaper";
     private String PathDB = "";
-    private final SQLiteDatabase myDB;
+    private SQLiteDatabase myDB;
     private Context context;
     // private boolean Controlla = true;
 
@@ -45,6 +45,13 @@ public class db_dati_wallpaper {
         }
 
         myDB = ApreDB();
+    }
+
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
     }
 
     private SQLiteDatabase ApreDB() {

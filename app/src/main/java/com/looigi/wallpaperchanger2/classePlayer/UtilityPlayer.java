@@ -111,7 +111,7 @@ public class UtilityPlayer {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("PLAYER", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Player", Maschera,  Log);
             // }
         } else {
 
@@ -209,17 +209,10 @@ public class UtilityPlayer {
 
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveUltimoBranoAscoltato(sb);
+                db.ChiudeDB();
 
-                String Immagine = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(
+                Bitmap bitmap = PrendeImmagineArtistaACaso(
                         context, sb.getArtista());
-
-                Bitmap bitmap;
-                if (Immagine.isEmpty()) {
-                    bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-                } else {
-                    bitmap = BitmapFactory.decodeFile(Immagine);
-                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(Immagine);
-                }
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
                 AggiungeBranoAllaListaAscoltati(context, sb);
@@ -231,8 +224,6 @@ public class UtilityPlayer {
                 ScriveLog(context, NomeMaschera, "Errore caricamento brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
-
-            ImpostaImmagine(context);
 
             AggiornaInformazioni(false);
 
@@ -387,13 +378,15 @@ public class UtilityPlayer {
         handlerTimer.postDelayed(rTimer, 50);
     }
 
-    public void ResettaCampi(Context context) {
+    public void ResettaCampi(Context context, boolean Pregresso) {
         Attesa(false);
         AggiornaOperazioneInCorso("");
 
-        StoppaTimer();
+        if (!Pregresso) {
+            StoppaTimer();
+        }
 
-        ImpostaLogoApplicazione(context);
+        // ImpostaLogoApplicazione(context);
 
         if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
             VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
@@ -417,7 +410,7 @@ public class UtilityPlayer {
 
             ScriveLog(context, NomeMaschera, "Indietro Brano: " + idBrano);
 
-            ResettaCampi(context);
+            ResettaCampi(context, false);
 
             PrendeBranoInLocaleEsatto(context, String.valueOf(idBrano));
         }
@@ -449,7 +442,7 @@ public class UtilityPlayer {
 
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano esatto: " + Brano + ". Pregresso: " + Pregresso);
 
-        ResettaCampi(context);
+        ResettaCampi(context, Pregresso);
 
         // VariabiliStatichePlayer.getInstance().setChiamate(new ArrayList<>());
         // RipristinoChiamate.getInstance().RimuoveTimer();
@@ -458,8 +451,8 @@ public class UtilityPlayer {
             boolean cercaBranoInLocale = false;
 
             int quantiBrani = db.QuantiBraniInArchivio();
-            int random = UtilityPlayer.getInstance().GeneraNumeroRandom(6);
-            if (random == 1 || random == 3 || (VieneDaTasto && quantiBrani > 0)) {
+            int random = UtilityPlayer.getInstance().GeneraNumeroRandom(10);
+            if (random == 1 || random == 3) { // || (VieneDaTasto && quantiBrani > 0)) {
                 cercaBranoInLocale = true;
             }
             if (!cercaBranoInLocale) {
@@ -469,7 +462,7 @@ public class UtilityPlayer {
             }
 
             if (cercaBranoInLocale) {
-                if (quantiBrani == 0) {
+                if (quantiBrani < 10) {
                     cercaBranoInLocale = false;
                 }
             }
@@ -492,6 +485,7 @@ public class UtilityPlayer {
         } else {
             PrendeBranoInLocaleEsatto(context, Brano);
         }
+        db.ChiudeDB();
     }
 
     private void PrendeBranoInLocaleEsatto(Context context, String Brano) {
@@ -513,6 +507,7 @@ public class UtilityPlayer {
             ScriveLog(context, NomeMaschera, "Avanzo Brano. Brano non valido");
             UtilitiesGlobali.getInstance().ApreToast(context, "Impossibile rilevare brano " + Brano);
         }
+        db.ChiudeDB();
     }
 
     public void PrendeBranoInLocaleNonEsatto(Context context, boolean Pregresso) {
@@ -576,6 +571,7 @@ public class UtilityPlayer {
         if (!ok) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Impossibile rilevare brano");
         }
+        db.ChiudeDB();
     }
 
     private void PrendeBranoInRete(Context context, String Brano, boolean Pregresso) {
@@ -589,7 +585,7 @@ public class UtilityPlayer {
         ws.RitornaBranoDaID("", Pregresso);
     }
 
-    public void ImpostaImmagine(Context context) {
+    public void ImpostaImmagine(Context context, int idImmagine) {
         if (!VariabiliStatichePlayer.getInstance().isMascheraNascosta() &&
                 VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
@@ -603,9 +599,15 @@ public class UtilityPlayer {
                             c.RitornaImmaginiArtista(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
                             return;
                         }
+                        db.ChiudeDB();
                     }
 
-                    final int[] immagine = {GeneraNumeroRandom(lista.size() - 1)};
+                    final int[] immagine = new int[1];
+                    if (idImmagine == -1) {
+                        immagine[0] = GeneraNumeroRandom(lista.size() - 1);
+                    } else {
+                        immagine[0] = idImmagine;
+                    }
                     if (immagine[0] > -1) {
                         Handler handlerTimer = new Handler(Looper.getMainLooper());
                         List<StrutturaImmagini> finalLista = lista;
@@ -663,6 +665,7 @@ public class UtilityPlayer {
                                                 if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
                                                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(null);
                                                 }
+                                                db.ChiudeDB();
                                             }
                                         }
                                     } else {
@@ -743,6 +746,7 @@ public class UtilityPlayer {
 
     public void FaiPartireTimerChiusura(Context context) {
         if (handlerTimerChiusura != null) {
+            handlerTimerChiusura.removeCallbacksAndMessages(runTimerChiusura);
             handlerTimerChiusura.removeCallbacks(runTimerChiusura);
             runTimerChiusura = null;
         }
@@ -791,32 +795,79 @@ public class UtilityPlayer {
         handlerTimer.postDelayed(rTimer, 1000);
     }
 
-    public String PrendeImmagineArtistaACaso(Context context, String Artista) {
+    public Bitmap PrendeImmagineArtistaACaso(Context context, String Artista) {
         String Path = context.getFilesDir() + "/Player/ImmaginiMusica/";
         String PathImmagini = Path + Artista + "/ZZZ-ImmaginiArtista";
         File root = new File(PathImmagini);
         File[] list = root.listFiles();
+        Bitmap bitmap = null;
 
         if (list == null) {
-            return "";
-        }
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+        } else {
+            List<String> Nomi = new ArrayList<>();
 
-        List<String> Nomi = new ArrayList<>();
-        for (File f : list) {
-            if (f.isDirectory()) {
-            } else {
-                String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
-                Nomi.add(Filetto);
+            for (File f : list) {
+                if (!f.isDirectory()) {
+                    String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
+                    Nomi.add(Filetto);
+                }
+            }
+
+            int n = UtilityPlayer.getInstance().GeneraNumeroRandom(Nomi.size());
+
+            boolean ancora = true;
+            boolean presa = false;
+            int quanti = 0;
+
+            while (ancora) {
+                String Nome = "";
+
+                if (n > 0 && n < Nomi.size()) {
+                    Nome = Nomi.get(n);
+                }
+
+                if (Nome.isEmpty()) {
+                    // ImpostaImmagine(context, -1);
+                    n++;
+                    if (n >= Nomi.size()) {
+                        n = 0;
+                    }
+                    quanti++;
+                    if (quanti > 10) {
+                        ancora = false;
+                    }
+                } else {
+                    if (Files.getInstance().EsisteFile(Nome)) {
+                        bitmap = BitmapFactory.decodeFile(Nome);
+                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(Nome);
+
+                        presa = true;
+                        ancora = false;
+                    } else {
+                        n++;
+                        if (n >= Nomi.size()) {
+                            n = 0;
+                        }
+                        quanti++;
+                        if (quanti > 10) {
+                            ancora = false;
+                        }
+                    }
+                }
+            }
+
+            if (!presa) {
+                ImpostaImmagine(context, -1);
             }
         }
 
-        int n = UtilityPlayer.getInstance().GeneraNumeroRandom(Nomi.size() - 1);
-
-        return Nomi.get(n);
+        return bitmap;
     }
 
     public void StoppaTimer() {
         if (handlerTimer != null) {
+            handlerTimer.removeCallbacksAndMessages(runTimer);
             handlerTimer.removeCallbacks(runTimer);
             runTimer = null;
         }
@@ -830,7 +881,9 @@ public class UtilityPlayer {
         SecondiPassatiCambioImmagine = 0;
 
         if (handlerTimer != null) {
-            handlerTimer.removeCallbacks(runTimer);
+            // handlerTimer.removeCallbacks(runTimer);
+            handlerTimer.removeCallbacksAndMessages(null);
+            handlerTimer.removeCallbacks(null);
             runTimer = null;
         }
 
@@ -852,7 +905,7 @@ public class UtilityPlayer {
                         SecondiPassatiCambioImmagine = 0;
 
                         if (VariabiliStatichePlayer.getInstance().isCambiaImmagine()) {
-                            ImpostaImmagine(context);
+                            ImpostaImmagine(context, -1);
                         }
                     }
 
@@ -863,6 +916,8 @@ public class UtilityPlayer {
 
                         BranoAvanti(context, "", true, false);
                     }
+                } else {
+                    int a = 0;
                 }
 
                 handlerTimer.postDelayed(this, 1000);
@@ -1128,6 +1183,7 @@ public class UtilityPlayer {
             }
             VariabiliStatichePlayer.getInstance().getIdBraniAscoltati().add(idBrano);
         }
+        db.ChiudeDB();
     }
 
     public void ImpostaTastiSfondo(boolean Accesi) {

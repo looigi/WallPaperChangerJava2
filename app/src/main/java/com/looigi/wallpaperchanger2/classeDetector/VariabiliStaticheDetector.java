@@ -71,6 +71,7 @@ public class VariabiliStaticheDetector {
     // private boolean StoScattando = false;
     public boolean MascheraImmaginiMostrata = false;
     private ImageView imgModificaImmagine;
+    private ImageView imgCondividiImmagine;
     private List<String> Immagini;
     public Integer numMultimedia;
     public Integer totImmagini;
@@ -93,6 +94,14 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public ImageView getImgCondividiImmagine() {
+        return imgCondividiImmagine;
+    }
+
+    public void setImgCondividiImmagine(ImageView imgCondividiImmagine) {
+        this.imgCondividiImmagine = imgCondividiImmagine;
     }
 
     public boolean isRiaperturaSenzaReimpostazione() {

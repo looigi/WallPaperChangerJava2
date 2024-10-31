@@ -39,7 +39,7 @@ public class UtilityGPS {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("GPS", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Gps", Maschera,  Log);
             // }
         } else {
 

@@ -5,9 +5,11 @@ import android.icu.util.UniversalTimeScale;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,7 +65,15 @@ public class ScanBraniPerLimite {
 
                 int pe = Math.round(((float) Spazio / Limite) * 100);
                 String perc = pe + "%";
-                VariabiliStatichePlayer.getInstance().getTxtPercentuale().setText(perc);
+                VariabiliStatichePlayer.getInstance().setPerc(pe);
+                if (VariabiliStatichePlayer.getInstance().getTxtPercentuale() != null) {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            VariabiliStatichePlayer.getInstance().getTxtPercentuale().setText(perc);
+                        }
+                    }, 10);
+                }
 
                 if (Spazio > Limite) {
                     // PULIZIA.. Troppo spazio occupato
@@ -113,7 +123,8 @@ public class ScanBraniPerLimite {
                     } else {
                         listaImmagini.add(Filetto);
                     }
-                    Spazio += dimensioni;
+
+                    Spazio += (dimensioni * 1024);
                 }
             }
         }

@@ -4,6 +4,108 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/activity_detector"
-    android:background="@color/Nero"
     tools:context=".classeWallpaper.MainWallpaper">
+
+    <LinearLayout
+        android:weightSum="8"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:padding="2dp"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Effettua backup"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnBackup"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="..."
+                    android:layout_height="wrap_content">
+
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:padding="2dp"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Effettua restore"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnRestore"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="..."
+                    android:layout_height="wrap_content">
+
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:padding="2dp"
+            android:layout_margin="2dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="6">
+
+            <TextView
+                android:id="@+id/txtBackupSelezionato"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Rosso"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <ListView
+                android:id="@+id/lstBackups"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </ListView>
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>

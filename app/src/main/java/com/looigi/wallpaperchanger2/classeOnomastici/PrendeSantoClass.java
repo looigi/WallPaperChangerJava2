@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
 import android.widget.ImageView;
 
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.CampiRitornoSanti;
+import com.looigi.wallpaperchanger2.classeOnomastici.web.DownloadPic;
 
 import java.io.File;
 import java.util.Calendar;
@@ -192,16 +193,14 @@ public class PrendeSantoClass {
     		Esiste=false;
     	} 
     	
-        GestioneDB varDB=new GestioneDB(context);
-        GestioneRubrica Rubr=new GestioneRubrica();
 		DownloadPic a = new DownloadPic();
 
 		a.setDirectory(PercorsoDIR);
 		a.setFiletto(NomeFile+EstensioneFile);
 		a.setFileDaDown(VariabiliStaticheOnomastici.UrlImmagini + "Onomastici/"+NomeFile+EstensioneWeb);
-		a.setGestioneDB(varDB);
-		a.setGestioneRubrica(Rubr);
-		a.setRubrica(VariabiliStaticheOnomastici.getInstance().getRubrica());
+		// a.setGestioneDB(varDB);
+		// a.setGestioneRubrica(Rubr);
+		// a.setRubrica(VariabiliStaticheOnomastici.getInstance().getRubrica());
 		a.setImmagine(imgView);
     	if (!Esiste) {
     		a.setScarica(true);

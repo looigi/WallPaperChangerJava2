@@ -40,6 +40,13 @@ public class db_debug {
         myDB = ApreDB();
     }
 
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
+    }
+
     private SQLiteDatabase ApreDB() {
         SQLiteDatabase db = null;
 

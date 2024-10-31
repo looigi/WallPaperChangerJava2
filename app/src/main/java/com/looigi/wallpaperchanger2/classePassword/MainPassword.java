@@ -27,7 +27,7 @@ public class MainPassword extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_password);
+        setContentView(R.layout.activity_main_password);
 
         this.context = this;
         this.act = this;

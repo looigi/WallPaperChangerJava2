@@ -32,7 +32,7 @@ public class RunServiceOnBoot extends android.app.Service {
     @Override
     public void onDestroy() {
         if (handler != null) {
-            handler.removeCallbacks(runnable);
+            handler.removeCallbacksAndMessages(runnable);
         }
         super.onDestroy();
     }

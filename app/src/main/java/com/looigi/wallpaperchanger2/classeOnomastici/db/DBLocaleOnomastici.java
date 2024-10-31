@@ -1,9 +1,10 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.db;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.looigi.wallpaperchanger2.classeOnomastici.VariabiliStaticheOnomastici;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
 
 public class DBLocaleOnomastici {

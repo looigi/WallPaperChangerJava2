@@ -82,6 +82,7 @@ public class InizializzaMascheraWallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco inutili: OnLine");
                 }
             }
+            db.ChiudeDB();
         }
 
         VariabiliStaticheWallpaper.getInstance().setePartito(false);
@@ -353,6 +354,7 @@ public class InizializzaMascheraWallpaper {
                 // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 

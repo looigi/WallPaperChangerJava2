@@ -103,6 +103,7 @@ public class impostazioni_player_interne {
     public void imposta_brani_locali() {
         db_dati_player db = new db_dati_player(context);
         List<StrutturaBrano> lista = db.CaricaTuttiIBraniLocali();
+        db.ChiudeDB();
 
         long spazioOccupato = 0;
         for (StrutturaBrano l : lista) {
@@ -133,6 +134,7 @@ public class impostazioni_player_interne {
             public void onClick(View v) {
                 db_dati_player db = new db_dati_player(context);
                 db.EliminaTutto();
+                db.ChiudeDB();
 
                 ScanBraniNonPresentiSuDB s = new ScanBraniNonPresentiSuDB();
                 s.controllaCanzoniNonSalvateSuDB(context, true);
@@ -149,6 +151,7 @@ public class impostazioni_player_interne {
 
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveRicerca();
+                db.ChiudeDB();
             }
         });
     }
@@ -253,6 +256,7 @@ public class impostazioni_player_interne {
 
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 
@@ -266,6 +270,7 @@ public class impostazioni_player_interne {
 
                     db_dati_player db = new db_dati_player(context);
                     db.ScriveImpostazioni();
+                    db.ChiudeDB();
                 }
             }
         });
@@ -285,6 +290,7 @@ public class impostazioni_player_interne {
                         if (s != null) {
                             db_dati_player db = new db_dati_player(context);
                             db.EliminaImmagineFisica(s.getArtista(), s.getNomeImmagine());
+                            db.ChiudeDB();
                         }
 
                         if (Files.getInstance().EsisteFile(path)) {

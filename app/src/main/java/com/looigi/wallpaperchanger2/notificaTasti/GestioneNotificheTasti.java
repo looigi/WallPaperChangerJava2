@@ -272,7 +272,7 @@ public class GestioneNotificheTasti {
 
             Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
             uscita.putExtra("DO", "uscita");
-            PendingIntent pUscita = PendingIntent.getService(ctx, 209, uscita,
+            PendingIntent pUscita = PendingIntent.getService(ctx, 210, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
         }

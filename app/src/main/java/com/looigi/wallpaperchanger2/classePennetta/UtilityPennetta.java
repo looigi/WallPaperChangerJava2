@@ -112,7 +112,7 @@ public class UtilityPennetta {
 
             if (EsisteFile(VariabiliStaticheStart.getInstance().getPercorsoDIRLog() + "/" +
                     VariabiliStaticheDetector.getInstance().getNomeFileDiLog())) { */
-            VariabiliStaticheStart.getInstance().getLog().ScriveLog("PENNETTA", Maschera,  Log);
+            VariabiliStaticheStart.getInstance().getLog().ScriveLog("Pennetta", Maschera,  Log);
             // }
         } else {
 

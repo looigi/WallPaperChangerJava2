@@ -288,17 +288,22 @@ public class UtilityDetector {
     }
 
     public void VisualizzaToast(Context context, String Messaggio, boolean Lungo) {
-        if (VariabiliStaticheDetector.getInstance().isVisualizzaToast()) {
-            int come = -1;
-            if (Lungo) {
-                come = Toast.LENGTH_LONG;
-            } else {
-                come = Toast.LENGTH_SHORT;
-            }
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (VariabiliStaticheDetector.getInstance().isVisualizzaToast()) {
+                    int come = -1;
+                    if (Lungo) {
+                        come = Toast.LENGTH_LONG;
+                    } else {
+                        come = Toast.LENGTH_SHORT;
+                    }
 
-            Toast toast = Toast.makeText(context, Messaggio, come);
-            toast.show();
-        }
+                    Toast toast = Toast.makeText(context, Messaggio, come);
+                    toast.show();
+                }
+            }
+        }, 100);
     }
 
     public String RitornaRisoluzioneMassima(List<String> Risoluzioni) {
@@ -423,35 +428,37 @@ public class UtilityDetector {
         if (files != null) {
             for (File f : files) {
                 String n = f.getName();
-                if (n.toUpperCase().contains(".JPG")) {
-                    n = n.substring(0, n.indexOf("."));
-                    n += ".dbf";
+                if (!n.toUpperCase().contains("FRAMES_")) {
+                    if (n.toUpperCase().contains(".JPG")) {
+                        n = n.substring(0, n.indexOf("."));
+                        n += ".dbf";
 
-                    File to = new File(Path, n);
-                    f.renameTo(to);
-                    addKeyToFile(Path, n);
+                        File to = new File(Path, n);
+                        f.renameTo(to);
+                        addKeyToFile(Path, n);
 
-                    cambiate++;
-                }
-                if (n.toUpperCase().contains(".MP4")) {
-                    n = n.substring(0, n.indexOf("."));
-                    n += ".dbv";
+                        cambiate++;
+                    }
+                    if (n.toUpperCase().contains(".MP4")) {
+                        n = n.substring(0, n.indexOf("."));
+                        n += ".dbv";
 
-                    File to = new File(Path, n);
-                    f.renameTo(to);
-                    addKeyToFile(Path, n);
+                        File to = new File(Path, n);
+                        f.renameTo(to);
+                        addKeyToFile(Path, n);
 
-                    cambiate++;
-                }
-                if (n.toUpperCase().contains(".3GP")) {
-                    n = n.substring(0, n.indexOf("."));
-                    n += ".dba";
+                        cambiate++;
+                    }
+                    if (n.toUpperCase().contains(".3GP")) {
+                        n = n.substring(0, n.indexOf("."));
+                        n += ".dba";
 
-                    File to = new File(Path, n);
-                    f.renameTo(to);
-                    addKeyToFile(Path, n);
+                        File to = new File(Path, n);
+                        f.renameTo(to);
+                        addKeyToFile(Path, n);
 
-                    cambiate++;
+                        cambiate++;
+                    }
                 }
             }
         }
@@ -757,6 +764,9 @@ public class UtilityDetector {
                     if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
                         VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
                     }
+                    if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                        VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.VISIBLE);
+                    }
 
                     /* if (NomeMultimedia.toUpperCase().contains(".DBF")) {
                         VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
@@ -789,6 +799,9 @@ public class UtilityDetector {
                         if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
                             VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
                         }
+                        if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                            VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
+                        }
 
                         if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
                             VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
@@ -808,6 +821,10 @@ public class UtilityDetector {
 
                             if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
                                 VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
+                            }
+
+                            if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                                VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
                             }
 
                             if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {

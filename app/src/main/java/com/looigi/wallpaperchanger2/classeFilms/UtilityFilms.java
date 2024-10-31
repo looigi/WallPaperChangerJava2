@@ -63,88 +63,127 @@ public class UtilityFilms {
         }
     }
 
+    public void Attesa(boolean bAttesa) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (bAttesa) {
+                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+                } else {
+                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
+                }
+            }
+        }, 10);
+    }
+
     public void takeScreenShotMultipli(Context context) {
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        if (VariabiliStaticheFilms.getInstance().isStaAcquisendoVideo()) {
+            UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
+            return;
+        }
+        VariabiliStaticheFilms.getInstance().setStaAcquisendoVideo(true);
+
+        Attesa(true);
         VariabiliStaticheFilms.getInstance().getFilmsView().pause();
 
-        String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(link);
-        int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
-        int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
-        int quale = 0;
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(link);
+                int tempoTotale = VariabiliStaticheFilms.getInstance().getFilmsView().getDuration() * 1000;
+                int ogniSecondi = tempoTotale / VariabiliStaticheFilms.getInstance().getNumeroFrames();
+                int quale = 0;
 
-        String Cartella = UtilityDetector.getInstance().PrendePath(context);
-        UtilityWallpaper.getInstance().CreaCartelle(Cartella);
-        UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
-        String[] n = link.split("/");
-        String nn = n[n.length - 1];
-        String[] e = nn.split("\\.");
-        String est = e[e.length - 1];
-        nn = nn.replace("." + est, "");
-        int conta = 0;
+                String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+                UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+                String[] n = link.split("/");
+                String nn = n[n.length - 1];
+                String[] e = nn.split("\\.");
+                String est = e[e.length - 1];
+                nn = nn.replace("." + est, "");
+                int conta = 0;
 
-        for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
-            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
-            String sconta = String.format("%03d", conta);
-            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
-            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
-                conta++;
-                sconta = String.format("%03d", conta);
-                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                for (int secondi = 0; secondi <= tempoTotale; secondi += ogniSecondi) {
+                    Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+                    String sconta = String.format("%03d", conta);
+                    String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                        conta++;
+                        sconta = String.format("%03d", conta);
+                        nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    }
+                    String Dest = Cartella + nomeFile;
+                    try (FileOutputStream out = new FileOutputStream(Dest)) {
+                        thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        quale++;
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
+                                VariabiliStaticheFilms.getInstance().getNumeroFrames() + " acquisita");
+                    } catch (IOException ignored) {
+                    }
+                }
+
+                VariabiliStaticheFilms.getInstance().setStaAcquisendoVideo(false);
+                Attesa(false);
             }
-            String Dest = Cartella + nomeFile;
-            try (FileOutputStream out = new FileOutputStream(Dest)) {
-                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                quale++;
-                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale  + "/" +
-                        VariabiliStaticheFilms.getInstance().getNumeroFrames() + " acquisita");
-            } catch (IOException ignored) {
-            }
-        }
-        VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
+        }, 500);
     }
 
     public void takeScreenshot(Context context) {
-        VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+        if (VariabiliStaticheFilms.getInstance().isStaAcquisendoVideo()) {
+            UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
+            return;
+        }
+        VariabiliStaticheFilms.getInstance().setStaAcquisendoVideo(true);
+
+        Attesa(true);
         VariabiliStaticheFilms.getInstance().getFilmsView().pause();
 
-        try {
-            String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
-            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            mmr.setDataSource(link);
-            int secondi = VariabiliStaticheFilms.getInstance().getFilmsView().getCurrentPosition() * 1000;
-            Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
+                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                    mmr.setDataSource(link);
+                    int secondi = VariabiliStaticheFilms.getInstance().getFilmsView().getCurrentPosition() * 1000;
+                    Bitmap thummbnailBitmap = mmr.getFrameAtTime(secondi);
 
-            String Cartella = UtilityDetector.getInstance().PrendePath(context);
-            UtilityWallpaper.getInstance().CreaCartelle(Cartella);
-            UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
-            String[] n = link.split("/");
-            String nn = n[n.length - 1];
-            String[] e = nn.split("\\.");
-            String est = e[e.length - 1];
-            nn = nn.replace("." + est, "");
-            int conta = 1;
-            String sconta = String.format("%03d", conta);
-            String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
-            while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
-                conta++;
-                sconta = String.format("%03d", conta);
-                nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                    UtilityWallpaper.getInstance().CreaCartelle(Cartella);
+                    UtilityDetector.getInstance().ControllaFileNoMedia(Cartella);
+                    String[] n = link.split("/");
+                    String nn = n[n.length - 1];
+                    String[] e = nn.split("\\.");
+                    String est = e[e.length - 1];
+                    nn = nn.replace("." + est, "");
+                    int conta = 1;
+                    String sconta = String.format("%03d", conta);
+                    String nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    while (Files.getInstance().EsisteFile(Cartella + nomeFile)) {
+                        conta++;
+                        sconta = String.format("%03d", conta);
+                        nomeFile = "Frame_" + nn + "_" + sconta + ".jpg";
+                    }
+                    String Dest = Cartella + nomeFile;
+                    try (FileOutputStream out = new FileOutputStream(Dest)) {
+                        thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagine acquisita");
+                    } catch (IOException ignored) {
+                    }
+                } catch (Throwable e) {
+                    // e.printStackTrace();
+                }
+
+                VariabiliStaticheFilms.getInstance().setStaAcquisendoVideo(false);
+                Attesa(false);
             }
-            String Dest = Cartella + nomeFile;
-            try (FileOutputStream out = new FileOutputStream(Dest)) {
-                thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                UtilitiesGlobali.getInstance().ApreToast(context, "Immagine acquisita");
-            } catch (IOException ignored) {
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
+        }, 500);
     }
 
     public void ImpostaFilms() {
@@ -155,7 +194,7 @@ public class UtilityFilms {
         try {
             String link = VariabiliStaticheFilms.getInstance().getUltimoLink();
 
-            VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.VISIBLE);
+            Attesa(true);
             if (VariabiliStaticheFilms.getInstance().isBarraVisibile()) {
                 mediaController = new MediaController(context) {
                     @Override
@@ -175,14 +214,16 @@ public class UtilityFilms {
                 //Handle BACK button
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
                 {
-                    if (VariabiliStaticheFilms.getInstance().getFilmsView() != null) {
-                        VariabiliStaticheFilms.getInstance().getFilmsView().stopPlayback();
-                        VariabiliStaticheFilms.getInstance().getFilmsView().clearAnimation();
-                        VariabiliStaticheFilms.getInstance().getFilmsView().suspend(); // clears media player
-                        VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(null);
-                    }
+                    if (!VariabiliStaticheVideo.getInstance().isEntratoNelCampoDiTesto()) {
+                        if (VariabiliStaticheFilms.getInstance().getFilmsView() != null) {
+                            VariabiliStaticheFilms.getInstance().getFilmsView().stopPlayback();
+                            VariabiliStaticheFilms.getInstance().getFilmsView().clearAnimation();
+                            VariabiliStaticheFilms.getInstance().getFilmsView().suspend(); // clears media player
+                            VariabiliStaticheFilms.getInstance().getFilmsView().setVideoURI(null);
+                        }
 
-                    VariabiliStaticheFilms.getInstance().getAct().finish();
+                        VariabiliStaticheFilms.getInstance().getAct().finish();
+                    }
                 }
                 return true;
             });
@@ -211,7 +252,7 @@ public class UtilityFilms {
             VariabiliStaticheFilms.getInstance().getFilmsView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
+                    Attesa(false);
 
                     return false;
                 }
@@ -221,7 +262,7 @@ public class UtilityFilms {
                 public void onPrepared(MediaPlayer mp) {
                     // mediaController.show(0);
 
-                    VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
+                    Attesa(false);
                 }
             });
 

@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeFilms;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,14 +14,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
-import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraFilms extends Activity {
     private static String NomeMaschera = "Main_Mostra_Films";
@@ -31,7 +34,7 @@ public class MainMostraFilms extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_films);
+        setContentView(R.layout.activity_main_films);
 
         context = this;
         act = this;
@@ -60,6 +63,7 @@ public class MainMostraFilms extends Activity {
                 VariabiliStaticheFilms.getInstance().setSettingsAperto(SettaggiAperti);
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
 
                 if (!SettaggiAperti) {
                     laySettaggi.setLayoutParams(
@@ -106,12 +110,23 @@ public class MainMostraFilms extends Activity {
             }
         });
 
-        VariabiliStaticheFilms.getInstance().setFilmsView(findViewById(R.id.videoView));
-        VariabiliStaticheFilms.getInstance().setPbLoading(findViewById(R.id.pbVideoLoading));
+        VariabiliStaticheFilms.getInstance().setFilmsView(findViewById(R.id.videoViewFilms));
+        VariabiliStaticheFilms.getInstance().setPbLoading(findViewById(R.id.pbFilmsLoading));
         VariabiliStaticheFilms.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloFilms));
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheFilms.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
         EditText txtFiltro = findViewById(R.id.edtFiltroFilms);
+        txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(false);
+                } else {
+                    VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(true);
+                }
+            }
+        });
+
         ImageView imgCerca = findViewById(R.id.imgCerca);
         imgCerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -126,14 +141,62 @@ public class MainMostraFilms extends Activity {
         ImageView imgScreenShot = findViewById(R.id.imgScreenshot);
         imgScreenShot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityFilms.getInstance().takeScreenshot(context);
+                String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
+                db_dati_films db = new db_dati_films(context);
+                if (db.VedeSnapshot(id)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.ScriveSnapshot(id);
+                            UtilityFilms.getInstance().takeScreenshot(context);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                } else {
+                    db.ScriveSnapshot(id);
+                    UtilityFilms.getInstance().takeScreenshot(context);
+                }
+                db.ChiudeDB();
             }
         });
 
         ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliF);
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityFilms.getInstance().takeScreenShotMultipli(context);
+                String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
+                db_dati_films db = new db_dati_films(context);
+                if (db.VedeSnapshot(id)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.ScriveSnapshot(id);
+                            UtilityFilms.getInstance().takeScreenShotMultipli(context);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                } else {
+                    db.ScriveSnapshot(id);
+                    UtilityFilms.getInstance().takeScreenShotMultipli(context);
+                }
+                db.ChiudeDB();
             }
         });
 
@@ -163,6 +226,7 @@ public class MainMostraFilms extends Activity {
 
         db_dati_films db = new db_dati_films(context);
         String url = db.CaricaFilms();
+        db.ChiudeDB();
 
         if (!url.isEmpty()) {
             String[] u = url.split("/");

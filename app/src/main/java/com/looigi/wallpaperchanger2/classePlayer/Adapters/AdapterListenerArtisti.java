@@ -92,15 +92,20 @@ public class AdapterListenerArtisti extends BaseAdapter {
 
         if (i < listaArtisti.size()) {
             String NomeArtista = listaArtisti.get(i).getNomeArtista();
-            String Immagine = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(context, NomeArtista);
-
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
+
+            /* String Immagine = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(context, NomeArtista);
+
             Bitmap bitmap;
             if (Immagine.isEmpty()) {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
             } else {
                 bitmap = BitmapFactory.decodeFile(Immagine);
             }
+            imgImmagine.setImageBitmap(bitmap); */
+
+            Bitmap bitmap = UtilityPlayer.getInstance().PrendeImmagineArtistaACaso(
+                    context, NomeArtista);
             imgImmagine.setImageBitmap(bitmap);
 
             view.setOnClickListener(new View.OnClickListener() {

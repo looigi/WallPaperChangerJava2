@@ -221,6 +221,7 @@ public class ChiamateWSF implements TaskDelegate {
 
             db_dati_films db = new db_dati_films(context);
             db.ScriveUltimoFilms();
+            db.ChiudeDB();
 
             UtilityFilms.getInstance().ImpostaFilms();
         } else {

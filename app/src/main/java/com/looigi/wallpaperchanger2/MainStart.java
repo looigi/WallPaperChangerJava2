@@ -26,6 +26,7 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
@@ -55,7 +56,7 @@ public class MainStart  extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_main_start);
 
         context = this;
         act = this;

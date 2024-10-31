@@ -250,7 +250,7 @@ public class GestioneNotifichePlayer {
                         }, 100);
                         break;
                     case "Indietro":
-                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
+                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext(), false);
 
                         UtilityPlayer.getInstance().IndietroBrano(
                                 VariabiliStatichePlayer.getInstance().getContext());
@@ -261,7 +261,7 @@ public class GestioneNotifichePlayer {
                         UtilityPlayer.getInstance().PressionePlay(this, !acceso);
                         break;
                     case "Avanti":
-                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext());
+                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext(), false);
 
                         UtilityPlayer.getInstance().BranoAvanti(
                                 VariabiliStatichePlayer.getInstance().getContext(), "", false, true);

@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeVideo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
+import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 
@@ -27,7 +32,7 @@ public class MainMostraVideo extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video);
+        setContentView(R.layout.activity_main_video);
 
         context = this;
         act = this;
@@ -56,6 +61,7 @@ public class MainMostraVideo extends Activity {
                 VariabiliStaticheVideo.getInstance().setSettingsAperto(SettaggiAperti);
                 db_dati_video db = new db_dati_video(context);
                 db.ScriveImpostazioni();
+                db.ChiudeDB();
 
                 if (!SettaggiAperti) {
                     laySettaggi.setLayoutParams(
@@ -108,6 +114,17 @@ public class MainMostraVideo extends Activity {
         VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheVideo.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
         EditText txtFiltro = findViewById(R.id.edtFiltroVideo);
+        txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    VariabiliStaticheVideo.getInstance().setEntratoNelCampoDiTesto(false);
+                } else {
+                    VariabiliStaticheVideo.getInstance().setEntratoNelCampoDiTesto(true);
+                }
+            }
+        });
+
         ImageView imgCerca = findViewById(R.id.imgCerca);
         imgCerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -122,14 +139,62 @@ public class MainMostraVideo extends Activity {
         ImageView imgScreenShot = findViewById(R.id.imgScreenshot);
         imgScreenShot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityVideo.getInstance().takeScreenshot(context);
+                String id = String.valueOf(VariabiliStaticheVideo.getInstance().getIdUltimoVideo());
+                db_dati_video db = new db_dati_video(context);
+                if (db.VedeSnapshot(id)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.ScriveSnapshot(id);
+                            UtilityVideo.getInstance().takeScreenshot(context);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                } else {
+                    db.ScriveSnapshot(id);
+                    UtilityVideo.getInstance().takeScreenshot(context);
+                }
+                db.ChiudeDB();
             }
         });
 
         ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliV);
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityVideo.getInstance().takeScreenShotMultipli(context);
+                String id = String.valueOf(VariabiliStaticheVideo.getInstance().getIdUltimoVideo());
+                db_dati_video db = new db_dati_video(context);
+                if (db.VedeSnapshot(id)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.ScriveSnapshot(id);
+                            UtilityVideo.getInstance().takeScreenShotMultipli(context);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                } else {
+                    db.ScriveSnapshot(id);
+                    UtilityVideo.getInstance().takeScreenShotMultipli(context);
+                }
+                db.ChiudeDB();
             }
         });
 
@@ -159,6 +224,7 @@ public class MainMostraVideo extends Activity {
 
         db_dati_video db = new db_dati_video(context);
         String url = db.CaricaVideo();
+        db.ChiudeDB();
 
         if (!url.isEmpty()) {
             String[] u = url.split("/");

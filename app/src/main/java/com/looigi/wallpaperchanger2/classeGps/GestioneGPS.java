@@ -95,6 +95,7 @@ public class GestioneGPS {
 
     public void ChiudeMaschera() {
         if (handler1 != null) {
+            handler1.removeCallbacksAndMessages(r1);
             handler1.removeCallbacks(r1);
             handler1 = null;
             handlerThread1 = null;
@@ -422,6 +423,7 @@ public class GestioneGPS {
                 db_dati_gps db = new db_dati_gps(context);
                 VariabiliStaticheGPS.getInstance().setCoordinateAttuali(
                         db.RitornaUltimaPosizione(currentDate));
+                db.ChiudeDB();
             }
 
             boolean ok = true;

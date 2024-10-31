@@ -252,6 +252,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (!EsegueRefresh) {
             db_dati_player db = new db_dati_player(context);
             List<StrutturaArtisti> lista = db.CaricaArtisti();
+            db.ChiudeDB();
 
             if (!lista.isEmpty()) {
                 AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
@@ -480,7 +481,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             }
             VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
 
-            UtilityPlayer.getInstance().ImpostaImmagine(context);
+            UtilityPlayer.getInstance().ImpostaImmagine(context, n);
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
         }
@@ -568,10 +569,11 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             VariabiliStatichePlayer.getInstance().getUltimoBrano().setImmagini(ListaImmagini);
 
             if (VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() == -1) {
-                UtilityPlayer.getInstance().ImpostaImmagine(context);
+                UtilityPlayer.getInstance().ImpostaImmagine(context, -1);
             }
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagini aggiunte: " + quante);
+            db.ChiudeDB();
         }
     }
 
@@ -641,6 +643,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             db_dati_player db = new db_dati_player(context);
             db.ScriveStelleBrano(String.valueOf(Stelle));
+            db.ChiudeDB();
         }
 
         VariabiliStatichePlayer.getInstance().getUltimoBrano().setBellezza(Stelle);
@@ -691,6 +694,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             db_dati_player db = new db_dati_player(context);
             db.ScriveArtisti(lista);
+            db.ChiudeDB();
 
             AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
             VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
@@ -941,7 +945,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             db_dati_player db = new db_dati_player(context);
             List<StrutturaImmagini> ListaImmagini = db.CaricaImmaginiBrano(DatiBrano[3]);
-            if (ListaImmagini.isEmpty()) {
+            if (ListaImmagini.isEmpty() && !Pregresso) {
                 ChiamateWsPlayer c = new ChiamateWsPlayer(context, false);
                 c.RitornaImmaginiArtista(s.getArtista());
             }
@@ -1083,7 +1087,6 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             } else {
                 if (!Pregresso) {
                     if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
-                        // db_dati_player db = new db_dati_player(context);
                         db.ScriveBrano(s);
                         db.ScriveUltimoBranoAscoltato(s);
 
@@ -1095,6 +1098,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(s);
                 }
             }
+            db.ChiudeDB();
         }
     }
 }

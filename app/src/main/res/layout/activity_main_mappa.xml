@@ -46,6 +46,7 @@
                 android:id="@+id/txtMappa"
                 android:gravity="center_horizontal"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="6"
                 android:layout_height="wrap_content">
 

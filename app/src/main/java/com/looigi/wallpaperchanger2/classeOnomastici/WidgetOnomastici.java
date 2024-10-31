@@ -13,10 +13,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.DBLocaleOnomastici;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.CampiRitornoSanti;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
 import com.looigi.wallpaperchanger2.classePlayer.Files;

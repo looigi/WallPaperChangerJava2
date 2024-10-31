@@ -6,6 +6,7 @@ public class StrutturaCompleanno {
     private int Mese;
     private int Anno;
     private String Nome;
+    private String Cognome;
 
     public int getId() {
         return id;
@@ -13,6 +14,14 @@ public class StrutturaCompleanno {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCognome() {
+        return Cognome;
+    }
+
+    public void setCognome(String cognome) {
+        Cognome = cognome;
     }
 
     public int getAnno() {

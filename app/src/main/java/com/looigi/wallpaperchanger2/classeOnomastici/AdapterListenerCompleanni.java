@@ -2,8 +2,6 @@ package com.looigi.wallpaperchanger2.classeOnomastici;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +13,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOnomastici.db.db_dati_compleanni;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
-import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdapterListenerCompleanni extends BaseAdapter {
@@ -58,7 +54,9 @@ public class AdapterListenerCompleanni extends BaseAdapter {
 
         if (i < listaCompleanni.size()) {
             String Nome = listaCompleanni.get(i).getNome();
+            String Cognome = listaCompleanni.get(i).getCognome();
             String Anno = String.valueOf(listaCompleanni.get(i).getAnno());
+            int Eta = CalcolaEta(listaCompleanni.get(i));
 
             ImageView imgModifica = view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
@@ -69,15 +67,26 @@ public class AdapterListenerCompleanni extends BaseAdapter {
                     VariabiliStaticheOnomastici.getInstance().getEdtNomeCompleanno().setText(
                             listaCompleanni.get(i).getNome()
                     );
-                    VariabiliStaticheOnomastici.getInstance().getEdtGiornoCompleanno().setText(
-                            Integer.toString(listaCompleanni.get(i).getGiorno())
+                    VariabiliStaticheOnomastici.getInstance().getEdtCognomeCompleanno().setText(
+                            listaCompleanni.get(i).getCognome()
                     );
-                    VariabiliStaticheOnomastici.getInstance().getEdtMeseCompleanno().setText(
-                            Integer.toString(listaCompleanni.get(i).getMese())
-                    );
-                    VariabiliStaticheOnomastici.getInstance().getEdtAnnoCompleanno().setText(
-                            Integer.toString(listaCompleanni.get(i).getAnno())
-                    );
+                    VariabiliStaticheOnomastici.getInstance().getEdtNomeCompleanno().setEnabled(false);
+                    VariabiliStaticheOnomastici.getInstance().getEdtCognomeCompleanno().setEnabled(false);
+                    if (listaCompleanni.get(i).getGiorno() != 0) {
+                        VariabiliStaticheOnomastici.getInstance().getEdtGiornoCompleanno().setText(
+                                Integer.toString(listaCompleanni.get(i).getGiorno())
+                        );
+                    }
+                    if (listaCompleanni.get(i).getMese() != 0) {
+                        VariabiliStaticheOnomastici.getInstance().getEdtMeseCompleanno().setText(
+                                Integer.toString(listaCompleanni.get(i).getMese())
+                        );
+                    }
+                    if (listaCompleanni.get(i).getAnno() != 0) {
+                        VariabiliStaticheOnomastici.getInstance().getEdtAnnoCompleanno().setText(
+                                Integer.toString(listaCompleanni.get(i).getAnno())
+                        );
+                    }
 
                     VariabiliStaticheOnomastici.getInstance().getLayInsComp().setVisibility(LinearLayout.VISIBLE);
                 }
@@ -93,6 +102,7 @@ public class AdapterListenerCompleanni extends BaseAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             db_dati_compleanni db = new db_dati_compleanni(context);
                             db.EliminaCompleanno(listaCompleanni.get(i));
+                            db.ChiudeDB();
 
                             notifyDataSetChanged();
                         }
@@ -110,11 +120,71 @@ public class AdapterListenerCompleanni extends BaseAdapter {
 
             TextView tNome = (TextView) view.findViewById(R.id.txtNome);
             tNome.setText(Nome);
+            tNome.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String Nominativo = listaCompleanni.get(i).getNome() + " " +
+                            listaCompleanni.get(i).getCognome();
+                    VariabiliStaticheOnomastici.getInstance().getTxtNomeSceltoCompleanno().setText(
+                            Nominativo
+                    );
+                }
+            });
+
+            TextView tCognome = (TextView) view.findViewById(R.id.txtCognome);
+            tCognome.setText(Cognome);
+            tCognome.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String Nominativo = listaCompleanni.get(i).getNome() + " " +
+                            listaCompleanni.get(i).getCognome();
+                    VariabiliStaticheOnomastici.getInstance().getTxtNomeSceltoCompleanno().setText(
+                            Nominativo
+                    );
+                }
+            });
 
             TextView tAnno = (TextView) view.findViewById(R.id.txtAnno);
             tAnno.setText(Anno);
+
+            TextView tEta = (TextView) view.findViewById(R.id.txtEta);
+            if (Eta > -1) {
+                tEta.setText(Integer.toString(Eta));
+            } else {
+                tEta.setText("");
+            }
         }
 
         return view;
+    }
+
+    private int CalcolaEta(StrutturaCompleanno s) {
+        if (s.getGiorno() == 0 || s.getMese() == 0 || s.getAnno() == 0) {
+            return -1;
+        }
+
+        Calendar Oggi = Calendar.getInstance();
+        int Giorno=Oggi.get(Calendar.DAY_OF_MONTH);
+        int Mese=Oggi.get(Calendar.MONTH)+1;
+        int Anno=Oggi.get(Calendar.YEAR);
+
+        int GiornoNascita=s.getGiorno();
+        int MeseNascita=s.getMese();
+        int AnnoNascita=s.getAnno();
+
+        int diff = 0;
+        if (Mese > MeseNascita) {
+            diff = Anno - AnnoNascita;
+        } else {
+            if (Mese == MeseNascita) {
+                if (Giorno >= GiornoNascita) {
+                    diff = Anno - AnnoNascita;
+                } else {
+                    diff = (Anno - AnnoNascita) - 1;
+                }
+            } else {
+                diff = (Anno - AnnoNascita) - 1;
+            }
+        }
+
+        return diff;
     }
 }

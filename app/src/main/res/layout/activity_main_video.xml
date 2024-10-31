@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/laySettaggiFilms"
+        android:id="@+id/laySettaggiVideo"
         android:background="@drawable/bordato"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imgRefreshCategorieFilms"
+                    android:id="@+id/imgRefreshCategorieVideo"
                     android:src="@drawable/icona_refresh"
                     android:layout_width="30dp"
                     android:layout_height="30dp">
@@ -63,7 +63,7 @@
             </TextView>
 
             <EditText
-                android:id="@+id/edtFiltroFilms"
+                android:id="@+id/edtFiltroVideo"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content" />
@@ -91,7 +91,7 @@
                 </ImageView>
 
                 <ImageView
-                    android:id="@+id/imgScreenshotMultipliF"
+                    android:id="@+id/imgScreenshotMultipliV"
                     android:src="@drawable/screenshot_multipli"
                     android:layout_width="40dp"
                     android:layout_height="40dp">
@@ -99,7 +99,7 @@
                 </ImageView>
 
                 <ImageView
-                    android:id="@+id/imgSettingsFilms"
+                    android:id="@+id/imgSettingsVideo"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/settings" />
@@ -107,7 +107,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtTitoloFilms"
+            android:id="@+id/txtTitoloVideo"
             android:textColor="@color/Rosso"
             android:gravity="center_horizontal"
             android:textSize="16sp"
@@ -120,7 +120,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_below="@+id/laySettaggiFilms"
+        android:layout_below="@+id/laySettaggiVideo"
         android:layout_height="match_parent"
         android:gravity="center">
 
@@ -136,17 +136,17 @@
     <ProgressBar
         android:layout_centerInParent="true"
         android:id="@+id/pbVideoLoading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="150dp"
+        android:layout_height="150dp">
 
     </ProgressBar>
 
     <ImageView
-        android:id="@+id/imgLinguettaFilms"
+        android:id="@+id/imgLinguettaVideo"
         android:layout_width="140dp"
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/laySettaggiFilms"
+        android:layout_below="@+id/laySettaggiVideo"
         android:src="@drawable/linguetta1">
 
     </ImageView>

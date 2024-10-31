@@ -202,6 +202,7 @@ public class ChangeWallpaper {
 							Runnable r1 = new Runnable() {
 								public void run() {
 									if (!VariabiliStaticheWallpaper.getInstance().isStaPrendendoVolto()) {
+										handler1.removeCallbacksAndMessages(this);
 										handler1.removeCallbacks(this);
 
 										List<Rect> r = VariabiliStaticheWallpaper.getInstance().getQuadratiFaccia();
@@ -400,6 +401,7 @@ public class ChangeWallpaper {
 		// Notifica.getInstance().AggiornaNotifica();
 		db_dati_wallpaper db = new db_dati_wallpaper(context);
 		db.ScriveImpostazioni();
+		db.ChiudeDB();
 	}
 
 		private void setWallpaperLocaleEsegue(Context context, Bitmap bitmap) {

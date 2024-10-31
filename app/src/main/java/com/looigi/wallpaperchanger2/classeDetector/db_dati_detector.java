@@ -40,6 +40,13 @@ public class db_dati_detector {
         myDB = ApreDB(context);
     }
 
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
+    }
+
     private SQLiteDatabase ApreDB(Context context) {
         SQLiteDatabase db = null;
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class VariabiliStaticheGPS {
     private static VariabiliStaticheGPS instance = null;
-    private db_dati_gps db;
+    // private db_dati_gps db;
 
     private VariabiliStaticheGPS() {
     }
@@ -217,13 +217,19 @@ public class VariabiliStaticheGPS {
     }
 
     public void AggiungeGPS(Context context, StrutturaGps s) {
-        if (db == null) {
+        db_dati_gps db = new db_dati_gps(context);
+        /* if (db == null) {
             db = new db_dati_gps(context);
-        }
+        } */
         db.AggiungePosizione(s);
+        db.ChiudeDB();
     }
 
     public List<StrutturaGps> RitornaPercorsoGPS(String Data) {
-        return db.RitornaPosizioni(Data);
+        db_dati_gps db = new db_dati_gps(context);
+        List<StrutturaGps> lista = db.RitornaPosizioni(Data);
+        db.ChiudeDB();
+
+        return lista;
     }
 }

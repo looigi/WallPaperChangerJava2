@@ -1,12 +1,13 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeOnomastici.VariabiliStaticheOnomastici;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

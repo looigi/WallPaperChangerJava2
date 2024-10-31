@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class db_dati_gps {
     private static final String NomeMaschera = "DB_Dati_GPS";
     private String PathDB = "";
-    private final SQLiteDatabase myDB;
+    private SQLiteDatabase myDB;
     private Context context;
     private boolean Riprova = false;
 
@@ -50,6 +50,13 @@ public class db_dati_gps {
         }
 
         myDB = ApreDB();
+    }
+
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
     }
 
     private SQLiteDatabase ApreDB() {

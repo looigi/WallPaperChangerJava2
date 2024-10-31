@@ -64,6 +64,7 @@ public class Impostazioni {
 
         db_dati_detector db = new db_dati_detector(context);
         db.ScriveImpostazioni(context, "SALVA VALORI");
+        db.ChiudeDB();
         // DBImpostazioni dbImpostazioni = new DBImpostazioni(VariabiliStatiche.getInstance().getContext());
         // dbImpostazioni.open();
         // dbImpostazioni.ScriveImpostazioni();

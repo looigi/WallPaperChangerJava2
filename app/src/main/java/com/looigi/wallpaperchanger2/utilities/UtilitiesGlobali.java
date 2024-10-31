@@ -162,15 +162,18 @@ public class UtilitiesGlobali {
         String path1 = context.getFilesDir() + "/Log/WallPaper";
         String path2 = context.getFilesDir() + "/Log/Detector";
         String path3 = context.getFilesDir() + "/DB";
-        String path4 = context.getFilesDir() + "/Log/GPS";
-        String path5 = context.getFilesDir() + "/Log/PLAYER";
-        String path6 = context.getFilesDir() + "/Log/IMMAGINI";
-        String path7 = context.getFilesDir() + "/Log/VIDEO";
-        String path8 = context.getFilesDir() + "/Log/PENNETTA";
+        String path4 = context.getFilesDir() + "/Log/Gps";
+        String path5 = context.getFilesDir() + "/Log/Player";
+        String path6 = context.getFilesDir() + "/Log/Immagini";
+        String path7 = context.getFilesDir() + "/Log/Video";
+        String path8 = context.getFilesDir() + "/Log/Pennetta";
+        String path9 = context.getFilesDir() + "/Log/Films";
+        String path10 = context.getFilesDir() + "/Log/Servizio";
 
         if (qualeLog.isEmpty()) {
-            App = new String[] {"WallPaper", "Detector", "DB", "GPS", "Player", "Immagini", "Video", "Pennetta"};
-            paths = new String[] {path1, path2, path3, path4, path5, path6, path7};
+            App = new String[] {"WallPaper", "Detector", "DB", "GPS", "Player",
+                    "Immagini", "Video", "Pennetta", "Films", "Servizio"};
+            paths = new String[] {path1, path2, path3, path4, path5, path6, path7, path8, path9};
         } else {
             switch (qualeLog) {
                 case "WALLPAPER":
@@ -200,6 +203,14 @@ public class UtilitiesGlobali {
                 case "PENNETTA":
                     App = new String[] {"Pennetta"};
                     paths = new String[] {path8};
+                    break;
+                case "FILMS":
+                    App = new String[] {"Films"};
+                    paths = new String[] {path9};
+                    break;
+                case "SERVIZIO":
+                    App = new String[] {"Servizio"};
+                    paths = new String[] {path10};
                     break;
             }
         }
@@ -363,7 +374,7 @@ public class UtilitiesGlobali {
                 act.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(context,
-                                VariabiliStaticheWallpaper.channelName + ": " + messaggio,
+                                messaggio,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -118,6 +118,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgRefreshImmagini;
     private ImageView imgCondividi;
     private TextView txtPercentuale;
+    private int Perc;
 
     // RICERCHE
     private boolean Random = true;
@@ -151,6 +152,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public int getPerc() {
+        return Perc;
+    }
+
+    public void setPerc(int perc) {
+        Perc = perc;
     }
 
     public TextView getTxtPercentuale() {

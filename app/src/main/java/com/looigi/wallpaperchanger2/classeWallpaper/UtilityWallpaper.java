@@ -120,8 +120,8 @@ public class UtilityWallpaper {
         }
     }
 
-    public void VisualizzaMessaggio(String Messaggio) {
-        VariabiliStaticheWallpaper.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+    public void VisualizzaMessaggio(Activity context, String Messaggio) {
+        context.runOnUiThread(new Runnable() {
             public void run() {
                 AlertDialog alertDialog = new AlertDialog.Builder(VariabiliStaticheWallpaper.getInstance().getMainActivity()).create();
                 alertDialog.setTitle("Messaggio " + VariabiliStaticheWallpaper.channelName);

@@ -3,9 +3,11 @@ package com.looigi.wallpaperchanger2.classeDetector;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,8 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import androidx.core.content.FileProvider;
+
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.DatiMemoria;
@@ -425,6 +431,7 @@ public class InizializzaMascheraDetector {
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context, "SET FRONTE");
+                db.ChiudeDB();
             }
         });
 
@@ -444,6 +451,7 @@ public class InizializzaMascheraDetector {
 
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context, "SET RETRO");
+                db.ChiudeDB();
             }
         });
 
@@ -687,6 +695,7 @@ public class InizializzaMascheraDetector {
 
         // ImageView btnCrop = (ImageView) act.findViewById(R.id.imgCrop);
         VariabiliStaticheDetector.getInstance().setImgModificaImmagine(act.findViewById(R.id.imgModificaImmagine));
+        VariabiliStaticheDetector.getInstance().setImgCondividiImmagine(act.findViewById(R.id.imgCondividiImmagine));
 
         btnIndietro.setVisibility(LinearLayout.VISIBLE);
         btnAvanti.setVisibility(LinearLayout.VISIBLE);
@@ -700,6 +709,33 @@ public class InizializzaMascheraDetector {
                 Intent i = new Intent(context, modificaImmagine.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
+            }
+        });
+
+        VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                String NomeImmagine = Cartella + VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+                String NomeImmagineSolo = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+
+                if (Files.getInstance().EsisteFile(NomeImmagine)) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(NomeImmagine);
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, NomeImmagineSolo);
+                    i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i, "Share immagine"));
+                }
+
             }
         });
 

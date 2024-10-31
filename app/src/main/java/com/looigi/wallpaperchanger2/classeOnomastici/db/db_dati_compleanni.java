@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -42,6 +42,13 @@ public class db_dati_compleanni {
         myDB = ApreDB();
     }
 
+    public void ChiudeDB() {
+        if (myDB != null) {
+            myDB.close();
+            myDB = null;
+        }
+    }
+
     private SQLiteDatabase ApreDB() {
         SQLiteDatabase db = null;
 
@@ -63,7 +70,7 @@ public class db_dati_compleanni {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Compleanni"
-                        + " (id NUMBER, Giorno VARCHAR, MESE VARCHAR, Anno VARCHAR, Nome VARCHAR"
+                        + " (id NUMBER, Giorno VARCHAR, MESE VARCHAR, Anno VARCHAR, Nome VARCHAR, Cognome VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -84,7 +91,7 @@ public class db_dati_compleanni {
             try {
                 int id = 0;
 
-                Cursor c = myDB.rawQuery("SELECT Coalesce(Max(id), 0)+1 FROM Compleanni", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM Compleanni Where Nome='" + s.getNome().replace("'", "''") + "' And Cognome='"+ s.getCognome().replace("'", "''") + "'", null);
                 if (c.getCount() > 0) {
                     // UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
                     c.moveToFirst();
@@ -93,6 +100,15 @@ public class db_dati_compleanni {
                 }
                 c.close();
 
+                Cursor c2 = myDB.rawQuery("SELECT Coalesce(Max(id), 0)+1 FROM Compleanni", null);
+                if (c2.getCount() > 0) {
+                    // UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    c2.moveToFirst();
+
+                    id = c2.getInt(0);
+                }
+                c2.close();
+
                 String sql = "INSERT INTO"
                         + " Compleanni"
                         + " VALUES ("
@@ -100,7 +116,8 @@ public class db_dati_compleanni {
                         + "'" + s.getGiorno() + "',"
                         + "'" + s.getMese() + "',"
                         + "'" + s.getAnno() + "',"
-                        + "'" + s.getNome().replace("'", "''") + "' "
+                        + "'" + s.getNome().replace("'", "''") + "', "
+                        + "'" + s.getCognome().replace("'", "''") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -126,7 +143,8 @@ public class db_dati_compleanni {
                         + "Giorno='" + s.getGiorno() + "',"
                         + "Mese='" + s.getMese() + "',"
                         + "Anno='" + s.getAnno() + "',"
-                        + "Nome='" + s.getNome().replace("'", "''") + "' "
+                        + "Nome='" + s.getNome().replace("'", "''") + "', "
+                        + "Cognome='" + s.getCognome().replace("'", "''") + "' "
                         + "Where id=" + s.getId();
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -177,6 +195,7 @@ public class db_dati_compleanni {
                             s.setMese(Integer.parseInt(c.getString(2)));
                             s.setAnno(Integer.parseInt(c.getString(3)));
                             s.setNome(c.getString(4));
+                            s.setCognome(c.getString(5));
 
                             lista.add(s);
                         } while (c.moveToNext());
@@ -215,6 +234,7 @@ public class db_dati_compleanni {
                             s.setMese(Integer.parseInt(c.getString(2)));
                             s.setAnno(Integer.parseInt(c.getString(3)));
                             s.setNome(c.getString(4));
+                            s.setCognome(c.getString(5));
 
                             lista.add(s);
                         } while (c.moveToNext());

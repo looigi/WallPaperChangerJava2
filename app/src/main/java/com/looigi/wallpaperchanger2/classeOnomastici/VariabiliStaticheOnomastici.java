@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
@@ -45,18 +46,45 @@ public class VariabiliStaticheOnomastici {
     private List<StrutturaCompleanno> Compleanni;
     private LinearLayout layInsComp;
     private EditText edtNomeCompleanno;
+    private EditText edtCognomeCompleanno;
     private EditText edtGiornoCompleanno;
     private EditText edtMeseCompleanno;
     private EditText edtAnnoCompleanno;
     private int idModifica = -1;
+    private TextView txtNomeSceltoCompleanno;
 
-    public void ScriveCompleanni(Activity act) {
+    public void ScriveCompleanniDelGiorno(Activity act) {
         ListView lstCompleanni = act.findViewById(R.id.lstCompleanni);
         if (!VariabiliStaticheOnomastici.getInstance().getCompleanni().isEmpty()) {
             AdapterListenerCompleanni customAdapterA = new AdapterListenerCompleanni(context,
                     VariabiliStaticheOnomastici.getInstance().getCompleanni());
             lstCompleanni.setAdapter(customAdapterA);
         }
+    }
+
+    public void ScriveCompleanniRicerca(Activity act, List<StrutturaCompleanno> lista) {
+        ListView lstCompleanni = act.findViewById(R.id.lstRicercaCompleanni);
+        if (!lista.isEmpty()) {
+            AdapterListenerCompleanni customAdapterA = new AdapterListenerCompleanni(context,
+                    lista);
+            lstCompleanni.setAdapter(customAdapterA);
+        }
+    }
+
+    public TextView getTxtNomeSceltoCompleanno() {
+        return txtNomeSceltoCompleanno;
+    }
+
+    public void setTxtNomeSceltoCompleanno(TextView txtNomeSceltoCompleanno) {
+        this.txtNomeSceltoCompleanno = txtNomeSceltoCompleanno;
+    }
+
+    public EditText getEdtCognomeCompleanno() {
+        return edtCognomeCompleanno;
+    }
+
+    public void setEdtCognomeCompleanno(EditText edtCognomeCompleanno) {
+        this.edtCognomeCompleanno = edtCognomeCompleanno;
     }
 
     public int getIdModifica() {

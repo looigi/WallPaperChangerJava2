@@ -364,6 +364,7 @@ public class GestioneNotificheWP {
 
                         db_dati_wallpaper db = new db_dati_wallpaper(context);
                         db.ScriveImpostazioni();
+                        db.ChiudeDB();
 
                         GestioneNotificheWP.getInstance().AggiornaNotifica();
                         break;
