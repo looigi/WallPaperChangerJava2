@@ -132,7 +132,7 @@ public class DownloadImmagineMI {
                 FileOutputStream outStream;
                 try {
                     outStream = new FileOutputStream(PercorsoDIR + "/AppoggioMI.jpg"); // .getPathImmagine());
-                    if (outStream != null & mIcon11 != null && !isCancelled) {
+                    if (mIcon11 != null && !isCancelled) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
 

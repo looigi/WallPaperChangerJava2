@@ -10,6 +10,8 @@ import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 
+import java.util.List;
+
 public class VariabiliStaticheFilms {
     private static VariabiliStaticheFilms instance = null;
 
@@ -43,6 +45,24 @@ public class VariabiliStaticheFilms {
     private int NumeroFrames = 10;
     private boolean staAcquisendoVideo = false;
     private boolean entratoNelCampoDiTesto = false;
+    private List<String> listaCategorie;
+    private String filtroCategoria = "";
+
+    public String getFiltroCategoria() {
+        return filtroCategoria;
+    }
+
+    public void setFiltroCategoria(String filtroCategoria) {
+        this.filtroCategoria = filtroCategoria;
+    }
+
+    public List<String> getListaCategorie() {
+        return listaCategorie;
+    }
+
+    public void setListaCategorie(List<String> listaCategorie) {
+        this.listaCategorie = listaCategorie;
+    }
 
     public boolean isEntratoNelCampoDiTesto() {
         return entratoNelCampoDiTesto;

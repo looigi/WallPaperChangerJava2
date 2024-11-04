@@ -1,16 +1,19 @@
 package com.looigi.wallpaperchanger2.classePennetta.webservice;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -44,10 +47,10 @@ public class ChiamateWSPEN implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
-    public void RitornaProssimaImmagine(String Categoria, String Filtro) {
+    public void RitornaProssimaImmagine(String Categoria) {
         String Urletto="RitornaProssimoPennetta?" +
                 "Categoria=" + Categoria +
-                "&Filtro=" + Filtro +
+                "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
                 "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
                 "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine();
 
@@ -63,7 +66,40 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie() {
+    public void ModificaImmagine(StrutturaImmaginiLibrary s, String stringaBase64, boolean Sovrascrive) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+
+        String Urletto="ModificaImmaginePennetta?" +
+                "Categoria=" + s.getCategoria() +
+                "&idImmagine=" + s.getIdImmagine() +
+                "&StringaBase64=" + stringaBase64 +
+                "&Sovrascrivi=" + (Sovrascrive ? "S" : "N");
+
+        TipoOperazione = "ModificaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaCategorie(boolean forzaLettura) {
+        if (!forzaLettura) {
+            db_dati_pennetta db = new db_dati_pennetta(context);
+            List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
+            db.ChiudeDB();
+            if (!lista.isEmpty()) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(lista);
+                UtilityPennetta.getInstance().AggiornaCategorie(context);
+
+                return;
+            }
+        }
+
         String Urletto="RitornaCategoriePennetta";
 
         TipoOperazione = "RitornaCategorie";
@@ -93,11 +129,12 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RefreshImmagini() {
-        String Urletto="RefreshImmagini";
+    public void RefreshImmagini(String Categoria) {
+        String Urletto="RefreshImmagini?" +
+                "Categoria=" + Categoria +
+                "&Completo=";
 
-        TipoOperazione = "RefreshPennetta?" +
-                "Completo=";
+        TipoOperazione = "RefreshPennetta";
         // ControllaTempoEsecuzione = false;
 
         UtilitiesGlobali.getInstance().ApreToast(context, "Refresh immagini lanciato");
@@ -162,6 +199,9 @@ public class ChiamateWSPEN implements TaskDelegate {
                     case "RitornaCategorie":
                         fRitornaCategorie(result);
                         break;
+                    case "ModificaImmagine":
+                        fModificaImmagine(result);
+                        break;
                     case "RefreshImmagini":
                         fRefreshImmagini(result);
                         break;
@@ -193,13 +233,28 @@ public class ChiamateWSPEN implements TaskDelegate {
         }
     }
 
+    private void fModificaImmagine(String result) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Modifica Immagine", result);
+        if (ritorno) {
+            String Path = context.getFilesDir() + "/Immagini/AppoggioPEN.jpg";
+            Bitmap bmp = BitmapFactory.decodeFile(Path);
+            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg().setImageBitmap(bmp);
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine modificata");
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
+    }
+
     private void fEliminaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Elimina Immagine", result);
         if (ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
-            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -267,15 +322,17 @@ public class ChiamateWSPEN implements TaskDelegate {
                     }
                     c++;
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, l);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setAdapter(adapter);
 
-                if (!CategoriaAttuale.isEmpty()) {
-                    int spinnerPosition = adapter.getPosition(CategoriaAttuale);
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setSelection(spinnerPosition);
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.EliminaCategorie();
+                for (StrutturaImmaginiCategorie s : listaCategorie) {
+                    db.ScriveCategoria(s);
                 }
+                db.ChiudeDB();
+
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriAttuale(CategoriaAttuale);
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategoriePen(l);
+                UtilityPennetta.getInstance().AggiornaCategorie(context);
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }

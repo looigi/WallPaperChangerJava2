@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
@@ -22,6 +23,8 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtilityFilms {
     private static UtilityFilms instance = null;
@@ -280,5 +283,21 @@ public class UtilityFilms {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void AggiornaCategorie(Context context) {
+        List<String> l = new ArrayList<>();
+
+        for (String s : VariabiliStaticheFilms.getInstance().getListaCategorie()) {
+            if (s.toUpperCase().trim().contains(
+                    VariabiliStaticheFilms.getInstance().getFiltroCategoria().toUpperCase().trim())) {
+                l.add(s);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheFilms.getInstance().getSpnCategorie().setAdapter(adapter);
     }
 }

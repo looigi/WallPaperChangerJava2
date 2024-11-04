@@ -8,6 +8,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.util.List;
+
 public class VariabiliStaticheVideo {
     private static VariabiliStaticheVideo instance = null;
 
@@ -41,6 +43,33 @@ public class VariabiliStaticheVideo {
     private int NumeroFrames = 10;
     private boolean staAcquisendoVideo = false;
     private boolean entratoNelCampoDiTesto = false;
+    private TextView txtAvanzamento;
+    private List<String> listaCategorie;
+    private String filtroCategoria = "";
+
+    public String getFiltroCategoria() {
+        return filtroCategoria;
+    }
+
+    public void setFiltroCategoria(String filtroCategoria) {
+        this.filtroCategoria = filtroCategoria;
+    }
+
+    public List<String> getListaCategorie() {
+        return listaCategorie;
+    }
+
+    public void setListaCategorie(List<String> listaCategorie) {
+        this.listaCategorie = listaCategorie;
+    }
+
+    public TextView getTxtAvanzamento() {
+        return txtAvanzamento;
+    }
+
+    public void setTxtAvanzamento(TextView txtAvanzamento) {
+        this.txtAvanzamento = txtAvanzamento;
+    }
 
     public boolean isEntratoNelCampoDiTesto() {
         return entratoNelCampoDiTesto;

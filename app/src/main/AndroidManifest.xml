@@ -149,7 +149,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeModificaImmagine.modificaImmagine"
+            android:name=".classeModificaImmagine.Main_ModificaImmagine"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 

@@ -3,11 +3,14 @@ package com.looigi.wallpaperchanger2.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -27,6 +30,7 @@ import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -419,5 +423,25 @@ public class UtilitiesGlobali {
         } else {
             return false; // Context nullo
         }
+    }
+
+    public String convertBmpToBase64(String filePath){
+        Bitmap bmp = null;
+        ByteArrayOutputStream bos = null;
+        byte[] bt = null;
+        String encodeString = null;
+
+        try{
+            bmp = BitmapFactory.decodeFile(filePath);
+            bos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bt = bos.toByteArray();
+            encodeString = Base64.encodeToString(bt, Base64.DEFAULT);
+        }
+        catch (Exception ignored){
+            // e.printStackTrace();
+        }
+
+        return encodeString;
     }
 }

@@ -9,6 +9,8 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class db_dati_video {
     private static final String NomeMaschera = "DB_Video";
@@ -68,7 +70,8 @@ public class db_dati_video {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR, NumeroFrames VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR, NumeroFrames VARCHAR, "
+                        + "FiltroCategoria VARCHAR, Filtro VARCHAR "
                         + ");";
 
                 myDB.execSQL(sql);
@@ -82,6 +85,12 @@ public class db_dati_video {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Snapshots "
                         + "(id VARCHAR);";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Categorie "
+                        + "(Categoria VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -105,14 +114,63 @@ public class db_dati_video {
                     return false;
                 }
             } catch (Exception e) {
-                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db snapshots: " +
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db snapshots: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
                 return false;
             }
         } else {
-            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
 
             return false;
+        }
+    }
+
+    public List<String> LeggeCategorie() {
+        List<String> l = new ArrayList<>();
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Categorie", null);
+                c.moveToFirst();
+                do {
+                    l.add(c.getString(0));
+                } while(c.moveToNext());
+            } catch (Exception e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db categorie: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+        return l;
+    }
+
+    public void EliminaCategorie() {
+        if (myDB != null) {
+            try {
+                String sql = "Delete From Categorie";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per eliminazione categorie: " + e.getMessage());
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public void ScriveCategoria(String Categoria) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO "
+                        + "Categorie "
+                        + " VALUES ("
+                        + "'" + Categoria.replace("'", "''") + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per categoria: " + e.getMessage());
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 
@@ -126,10 +184,10 @@ public class db_dati_video {
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
-                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per snapshot: " + e.getMessage());
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per snapshot: " + e.getMessage());
             }
         } else {
-            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 
@@ -208,7 +266,9 @@ public class db_dati_video {
                         + "'" + VariabiliStaticheVideo.getInstance().getRandom() + "',"
                         + "'" + (VariabiliStaticheVideo.getInstance().isSettingsAperto() ? "S" : "N") + "',"
                         + "'" + (VariabiliStaticheVideo.getInstance().isBarraVisibile() ? "S" : "N") + "', "
-                        + "'" + VariabiliStaticheVideo.getInstance().getNumeroFrames() + "' "
+                        + "'" + VariabiliStaticheVideo.getInstance().getNumeroFrames() + "', "
+                        + "'" + VariabiliStaticheVideo.getInstance().getFiltroCategoria().replace("'", "''") + "', "
+                        + "'" + VariabiliStaticheVideo.getInstance().getFiltro().replace("'", "''") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -231,6 +291,8 @@ public class db_dati_video {
         VariabiliStaticheVideo.getInstance().setSettingsAperto(true);
         VariabiliStaticheVideo.getInstance().setBarraVisibile(true);
         VariabiliStaticheVideo.getInstance().setNumeroFrames(10);
+        VariabiliStaticheVideo.getInstance().setFiltroCategoria("");
+        VariabiliStaticheVideo.getInstance().setFiltro("");
     }
 
     public int CaricaImpostazioni() {
@@ -246,6 +308,8 @@ public class db_dati_video {
                         VariabiliStaticheVideo.getInstance().setSettingsAperto(c.getString(1).equals("S"));
                         VariabiliStaticheVideo.getInstance().setBarraVisibile(c.getString(2).equals("S"));
                         VariabiliStaticheVideo.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
+                        VariabiliStaticheVideo.getInstance().setFiltroCategoria(c.getString(4));
+                        VariabiliStaticheVideo.getInstance().setFiltro(c.getString(5));
 
                         return 0;
                     } catch (Exception e) {

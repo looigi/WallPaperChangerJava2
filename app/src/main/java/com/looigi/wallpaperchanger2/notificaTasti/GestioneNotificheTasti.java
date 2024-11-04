@@ -440,13 +440,19 @@ public class GestioneNotificheTasti {
                             } else {
                                 VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 
-                                UtilityPlayer.getInstance().PressionePlay(context, false);
-                                UtilityPlayer.getInstance().ChiudeActivity(true);
-
                                 GestioneNotifichePlayer.getInstance().RimuoviNotifica();
-                            }
 
-                            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                                Runnable rTimer = new Runnable() {
+                                    public void run() {
+                                        UtilityPlayer.getInstance().PressionePlay(context, false);
+                                        UtilityPlayer.getInstance().ChiudeActivity(true);
+
+                                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                                    }
+                                };
+                                handlerTimer.postDelayed(rTimer, 500);
+                            }
                             break;
                         case "immagini":
                             Intent iIm = new Intent(context, MainMostraImmagini.class);

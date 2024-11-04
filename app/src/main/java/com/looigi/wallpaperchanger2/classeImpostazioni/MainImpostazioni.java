@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classeImpostazioni;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
@@ -40,6 +42,7 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
@@ -941,8 +944,25 @@ public class MainImpostazioni extends Activity {
                 imgAttesa.setVisibility(LinearLayout.VISIBLE);
 
                 ChiamateWSMI ws = new ChiamateWSMI(context);
-                ws.ImpostaImgAttesa(imgAttesa);
-                ws.RefreshImmagini();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Categoria", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini(String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()));
+                    }
+                });
+                builder.setNegativeButton("Tutto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini("");
+                        // dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -1025,8 +1045,25 @@ public class MainImpostazioni extends Activity {
                 imgAttesa.setVisibility(LinearLayout.VISIBLE);
 
                 ChiamateWSPEN ws = new ChiamateWSPEN(context);
-                ws.ImpostaImgAttesa(imgAttesa);
-                ws.RefreshImmagini();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Categoria", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
+                    }
+                });
+                builder.setNegativeButton("Tutto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini("");
+                        // dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -1086,8 +1123,25 @@ public class MainImpostazioni extends Activity {
                 imgAttesa.setVisibility(LinearLayout.VISIBLE);
 
                 ChiamateWSV ws = new ChiamateWSV(context);
-                ws.ImpostaImgAttesa(imgAttesa);
-                ws.RefreshVideo();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Categoria", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshVideo(VariabiliStaticheVideo.getInstance().getCategoria());
+                    }
+                });
+                builder.setNegativeButton("Tutto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshVideo("");
+                        // dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -1303,8 +1357,25 @@ public class MainImpostazioni extends Activity {
                 imgAttesa.setVisibility(LinearLayout.VISIBLE);
 
                 ChiamateWSF ws = new ChiamateWSF(context);
-                ws.ImpostaImgAttesa(imgAttesa);
-                ws.RefreshFilms();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Categoria", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshFilms(VariabiliStaticheFilms.getInstance().getCategoria());
+                    }
+                });
+                builder.setNegativeButton("Tutto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshFilms("");
+                        // dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

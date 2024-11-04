@@ -44,8 +44,8 @@ public class VariabiliStaticheWallpaper {
     private int errori = 0;
     // private boolean Detector = false;
     private boolean servizioAttivo = true;
-    public static float percAumentoX = .07F;
-    public static float percAumentoY = .07F;
+    public static float percAumentoX = .085F;
+    public static float percAumentoY = .085F;
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";

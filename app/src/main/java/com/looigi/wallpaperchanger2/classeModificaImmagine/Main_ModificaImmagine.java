@@ -17,6 +17,9 @@ import com.canhub.cropper.CropImageView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class modificaImmagine extends Activity {
+import pl.droidsonroids.gif.GifImageView;
+
+public class Main_ModificaImmagine extends Activity {
     private static String NomeMaschera = "Modifica_Immagine";
     private Context context;
     private Activity act;
@@ -48,7 +53,7 @@ public class modificaImmagine extends Activity {
     private ImageView btnSalvaCrop;
     private ImageView btnSalva;
     private ImageView btnAnnullaCrop;
-    private modificaImmagine mI;
+    private Main_ModificaImmagine mI;
     private GestioneImmagini g;
     // private int modalita;
     private Bitmap vecchiaBitmap;
@@ -88,7 +93,7 @@ public class modificaImmagine extends Activity {
         ImpostaSchermata(this);
 
         Path = UtilityDetector.getInstance().PrendePath(context);
-        String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+        String NomeImmagine = VariabiliStaticheModificaImmagine.getInstance().getNomeImmagine();
         if (NomeImmagine.toUpperCase().contains(".DBF")) {
             String[] c = NomeImmagine.split("\\.");
             if (c.length > 0) {
@@ -99,7 +104,13 @@ public class modificaImmagine extends Activity {
         }
         NomeImmagineDaSalvare = NomeImmagine;
 
-        bitmap = BitmapFactory.decodeFile(Path + NomeImmagineDaSalvare);
+        String NomeFinale = "";
+        if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+            NomeFinale = Path + NomeImmagineDaSalvare;
+        } else {
+            NomeFinale = NomeImmagineDaSalvare;
+        }
+        bitmap = BitmapFactory.decodeFile(NomeFinale);
 
         AggiornaBitmap(bitmap);
     }
@@ -114,24 +125,54 @@ public class modificaImmagine extends Activity {
             }
         }
 
+        String NomeFinale = "";
+        if(VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+            NomeFinale = Path + NomeImmagineDaSalvare;
+        } else {
+            NomeFinale = NomeImmagineDaSalvare;
+        }
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(Path + NomeImmagineDaSalvare);
+            out = new FileOutputStream(NomeFinale);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-            RefreshImmagini();
-            impostaCrop();
+            if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+                RefreshImmagini();
+                impostaCrop();
 
-            UtilityDetector.getInstance().CriptaFiles(context);
-        } catch (IOException e) {
+                UtilityDetector.getInstance().CriptaFiles(context);
+            }
+        } catch (IOException ignored) {
+        }
+
+        if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
+        } else {
+            if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("IMMAGINI")) {
+                // Salvataggio immagine da maschera immagini
+                UtilityImmagini.getInstance().SalvataggioImmagine(context, Sovrascrive);
+            } else {
+                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
+                    // Salvataggio immagine da maschera immagini
+                    UtilityPennetta.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                }
+            }
         }
     }
 
     private void RefreshImmagini() {
-        int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-        UtilityDetector.getInstance().CaricaMultimedia(context);
-        VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-        UtilityDetector.getInstance().VisualizzaMultimedia(context);
+        if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+            int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+            UtilityDetector.getInstance().CaricaMultimedia(context);
+            VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
+            UtilityDetector.getInstance().VisualizzaMultimedia(context);
+        } else {
+            if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("IMMAGINI")) {
+            } else {
+                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
+                }
+            }
+        }
     }
 
     private void impostaCrop() {
@@ -278,6 +319,8 @@ public class modificaImmagine extends Activity {
         EditText txtAngolo = act.findViewById(R.id.txtAngolo);
         txtAngolo.setText(Integer.toString(Angolo));
         txtInformazioni = act.findViewById(R.id.txtImmagineDati);
+        VariabiliStaticheModificaImmagine.getInstance().setImgAttendere(act.findViewById(R.id.imgAttendere));
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
 
         impostaCrop();
 
@@ -451,7 +494,9 @@ public class modificaImmagine extends Activity {
 
         btnChiude.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(true);
+                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
+                    VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(true);
+                }
 
                 bitmap = null;
                 crop = null;

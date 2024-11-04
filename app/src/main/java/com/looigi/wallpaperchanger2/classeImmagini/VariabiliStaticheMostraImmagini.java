@@ -53,6 +53,33 @@ public class VariabiliStaticheMostraImmagini {
     private int secondiAttesa = 5000;
     private InterrogazioneWSMI ClasseChiamata;
     private boolean SettingsAperto = true;
+    private String[] listaCategorieImm;
+    private String filtroCategoria = "";
+    private String categoriaAttuale = "";
+
+    public String getCategoriaAttuale() {
+        return categoriaAttuale;
+    }
+
+    public void setCategoriaAttuale(String categoriaAttuale) {
+        this.categoriaAttuale = categoriaAttuale;
+    }
+
+    public String getFiltroCategoria() {
+        return filtroCategoria;
+    }
+
+    public void setFiltroCategoria(String filtroCategoria) {
+        this.filtroCategoria = filtroCategoria;
+    }
+
+    public String[] getListaCategorieImm() {
+        return listaCategorieImm;
+    }
+
+    public void setListaCategorieImm(String[] listaCategorieImm) {
+        this.listaCategorieImm = listaCategorieImm;
+    }
 
     public boolean isSettingsAperto() {
         return SettingsAperto;

@@ -39,6 +39,8 @@
         android:id="@+id/layTastiPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_margin="3dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
         android:orientation="vertical">

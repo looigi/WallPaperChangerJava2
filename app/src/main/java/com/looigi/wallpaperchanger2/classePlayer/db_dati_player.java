@@ -114,6 +114,13 @@ public class db_dati_player {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
+                        + "UltimoScanImmagini "
+                        + " (Giorno VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
                         + "Ricerche"
                         + " ("
                         + "Random VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
@@ -139,8 +146,9 @@ public class db_dati_player {
     public void EliminaTutto() {
         if (myDB != null) {
             myDB.execSQL("Delete From listaBrani");
-            myDB.execSQL("Delete From ImmaginiBrano");
             myDB.execSQL("Delete From UltimoBrano");
+            myDB.execSQL("Delete From ImmaginiBrano");
+            myDB.execSQL("Delete From UltimoScanImmagini");
 
             CompattaDB();
         }
@@ -151,6 +159,32 @@ public class db_dati_player {
             myDB.execSQL("Delete From ImmaginiBrano Where Artista='" + Artista.replace("'", "''") + "' And NomeImmagine='" + Immagine.replace("'", "''") + "'");
 
             CompattaDB();
+        }
+    }
+
+    public void ScriveUltimoGiornoControlloImmagini(String Giorno) {
+        if (myDB != null) {
+            myDB.execSQL("Delete From UltimoScanImmagini");
+            myDB.execSQL("Insert Into UltimoScanImmagini Values ('" + Giorno + "')");
+        }
+    }
+
+    public String CaricaUltimoGiornoControlloImmagini() {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM UltimoScanImmagini", null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    return c.getString(0);
+                } else {
+                    return "";
+                }
+            } catch (Exception ignored) {
+                return "";
+            }
+        } else {
+            return "";
         }
     }
 
@@ -805,12 +839,62 @@ public class db_dati_player {
         return true;
     }
 
+    public List<StrutturaImmagini> RitornaTutteLeImmagini() {
+        List<StrutturaImmagini> lista = new ArrayList<>();
+
+        if (myDB != null) {
+            String sql = "Select * From ImmaginiBrano";
+            Cursor c = myDB.rawQuery(sql, null);
+            String idBranoElim = "";
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                do {
+                    StrutturaImmagini s = new StrutturaImmagini();
+                    s.setArtista(c.getString(0));
+                    s.setAlbum(c.getString(1));
+                    s.setNomeImmagine(c.getString(2));
+                    s.setUrlImmagine(c.getString(3));
+                    s.setPathImmagine(c.getString(4));
+                    s.setCartellaImmagine(c.getString(5));
+
+                    lista.add(s);
+                } while(c.moveToNext());
+            }
+            c.close();
+        }
+
+        return lista;
+    }
+
+    public void EliminaImmagine(StrutturaImmagini s) {
+        if (myDB != null) {
+            String sql = "Delete From ImmaginiBrano " +
+                    "Where Artista='" + s.getArtista().replace("'", "''") + "' " +
+                    "And Album='" + s.getAlbum().replace("'", "''") + "' " +
+                    "And NomeImmagine='" + s.getNomeImmagine().replace("'", "''") + "'";
+            myDB.execSQL(sql);
+        }
+    }
+
     public void EliminaBrano(String idBrano) {
         if (myDB != null) {
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Elimino brano " + idBrano);
 
+            /* String sql = "Select * From listaBrani Where idBrano = '" + idBrano + "'";
+            Cursor c = myDB.rawQuery(sql, null);
+            String idBranoElim = "";
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                 idBranoElim = c.getString(0);
+            }
+            c.close(); */
+
             myDB.execSQL("Delete From listaBrani Where idBrano='" + idBrano + "'");
-            myDB.execSQL("Delete From ImmaginiBrano Where idBrano='" + idBrano + "'");
+            /* if (!idBranoElim.isEmpty()) {
+                myDB.execSQL("Delete From ImmaginiBrano Where idBrano='" + idBranoElim + "'");
+            } */
 
             CompattaDB();
         }
@@ -830,9 +914,9 @@ public class db_dati_player {
                     if (imm.contains(".JPG") || imm.contains(".JPEG") || imm.contains(".PNG")) {
                         nuovaLista.add(i);
 
-                        String sql = "INSERT INTO"
-                                + " ImmaginiBrano"
-                                + " VALUES ("
+                        String sql = "INSERT INTO "
+                                + "ImmaginiBrano "
+                                + "VALUES ("
                                 + "'" + Artista.replace("'", "''") + "', "
                                 + "'" + i.getAlbum().replace("'", "''") + "', "
                                 + "'" + i.getNomeImmagine().replace("'", "''") + "', "

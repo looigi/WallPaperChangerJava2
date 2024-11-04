@@ -43,9 +43,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class UtilityDetector {
@@ -674,8 +676,10 @@ public class UtilityDetector {
         String Path = PrendePath(context);
         File directory = new File(Path);
         File[] files = directory.listFiles();
-        VariabiliStaticheDetector.getInstance().setImmagini(new ArrayList<String>());
-        VariabiliStaticheDetector.getInstance().totImmagini = 0;
+        List<String> immagini = new ArrayList<>();
+        int totImmagini = 0;
+        // VariabiliStaticheDetector.getInstance().setImmagini(new ArrayList<String>());
+        // VariabiliStaticheDetector.getInstance().totImmagini = 0;
         if (files != null) {
             for (File f : files) {
                 String n = f.getName();
@@ -683,13 +687,19 @@ public class UtilityDetector {
                         n.toUpperCase().contains(".MP4") || n.toUpperCase().contains(".DBV") ||
                         n.toUpperCase().contains(".3GP") || n.toUpperCase().contains(".DBA")) {
                     if (!n.toUpperCase().contains(".PV3")) {
-                        VariabiliStaticheDetector.getInstance().getImmagini().add(n);
-                        VariabiliStaticheDetector.getInstance().totImmagini++;
+                        immagini.add(n);
+                        totImmagini++;
                     }
                 }
             }
         }
-        VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini - 1;
+        Collections.sort(immagini);
+
+        VariabiliStaticheDetector.getInstance().setImmagini(immagini);
+        VariabiliStaticheDetector.getInstance().setTotImmagini(totImmagini);
+
+        // VariabiliStaticheDetector.getInstance().setNumMultimedia(VariabiliStaticheDetector.getInstance().getTotImmagini() - 1);
+
         if (VariabiliStaticheDetector.getInstance().getImg() != null) {
             VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
             VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
@@ -697,9 +707,9 @@ public class UtilityDetector {
     }
 
     private void copyFile(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
+        InputStream in = Files.newInputStream(src.toPath());
         try {
-            OutputStream out = new FileOutputStream(dst);
+            OutputStream out = Files.newOutputStream(dst.toPath());
             try {
                 // Transfer bytes from in to out
                 byte[] buf = new byte[1024];
@@ -719,14 +729,14 @@ public class UtilityDetector {
         StopAudio();
         StopVideo();
 
-        if (VariabiliStaticheDetector.getInstance().numMultimedia < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+        if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
             // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
             // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
             // String Cartella = Environment.getExternalStorageDirectory() + "/" +
             //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
             String Path = PrendePath(context);
-            if (VariabiliStaticheDetector.getInstance().numMultimedia > -1) {
-                String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+            if (VariabiliStaticheDetector.getInstance().getNumMultimedia() > -1) {
+                String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
                 if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
                     File f = new File(Path, "Appoggio.jpg");
@@ -781,8 +791,8 @@ public class UtilityDetector {
                     } */
 
                     if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
-                                "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
                     }
                 } else {
                     if (NomeMultimedia.toUpperCase().contains(".3GP") || NomeMultimedia.toUpperCase().contains(".DBA")) {
@@ -804,8 +814,8 @@ public class UtilityDetector {
                         }
 
                         if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                            VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
-                                    "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                            VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                    "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
                         }
                     } else {
                         if (NomeMultimedia.toUpperCase().contains(".MP4") || NomeMultimedia.toUpperCase().contains(".DBV")) {
@@ -828,8 +838,8 @@ public class UtilityDetector {
                             }
 
                             if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                                VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().numMultimedia + 1) +
-                                        "/" + VariabiliStaticheDetector.getInstance().totImmagini);
+                                VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                        "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
                             }
                         }
                     }
@@ -887,7 +897,7 @@ public class UtilityDetector {
         // String Cartella = Environment.getExternalStorageDirectory() + "/" +
         //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
         String Path = PrendePath(context);
-        String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+        String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
         try {
             VariabiliStaticheDetector.getInstance().setMp(new MediaPlayer());
@@ -922,7 +932,7 @@ public class UtilityDetector {
             // String Cartella = Environment.getExternalStorageDirectory() + "/" +
             //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
             String Path = PrendePath(context);
-            String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+            String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
             try {
                 VariabiliStaticheDetector.getInstance().getvView().setVideoURI(Uri.parse(Path + NomeMultimedia));

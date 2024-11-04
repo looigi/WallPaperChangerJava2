@@ -8,8 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class db_dati_films {
     private static final String NomeMaschera = "DB_Films";
@@ -69,7 +72,8 @@ public class db_dati_films {
             if (myDB != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR, NumeroFrames VARCHAR"
+                        + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR, "
+                        + "NumeroFrames VARCHAR, FiltroCategorie VARCHAR, Filtro VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -86,6 +90,12 @@ public class db_dati_films {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Categorie "
+                        + "(Categoria VARCHAR);";
+
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 return false;
@@ -93,6 +103,55 @@ public class db_dati_films {
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
             return false;
+        }
+    }
+
+    public List<String> LeggeCategorie() {
+        List<String> l = new ArrayList<>();
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM Categorie", null);
+                c.moveToFirst();
+                do {
+                    l.add(c.getString(0));
+                } while(c.moveToNext());
+            } catch (Exception e) {
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db categorie: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+        return l;
+    }
+
+    public void EliminaCategorie() {
+        if (myDB != null) {
+            try {
+                String sql = "Delete From Categorie";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per eliminazione categorie: " + e.getMessage());
+            }
+        } else {
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public void ScriveCategoria(String Categoria) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO "
+                        + "Categorie "
+                        + " VALUES ("
+                        + "'" + Categoria.replace("'", "''") + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per categoria: " + e.getMessage());
+            }
+        } else {
+            UtilityFilms.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 
@@ -209,7 +268,9 @@ public class db_dati_films {
                         + "'" + VariabiliStaticheFilms.getInstance().getRandom() + "',"
                         + "'" + (VariabiliStaticheFilms.getInstance().isSettingsAperto() ? "S" : "N") + "',"
                         + "'" + (VariabiliStaticheFilms.getInstance().isBarraVisibile() ? "S" : "N") + "', "
-                        + "'" + VariabiliStaticheFilms.getInstance().getNumeroFrames() + "' "
+                        + "'" + VariabiliStaticheFilms.getInstance().getNumeroFrames() + "', "
+                        + "'" + VariabiliStaticheFilms.getInstance().getFiltroCategoria().replace("'","''") + "', "
+                        + "'" + VariabiliStaticheFilms.getInstance().getFiltro().replace("'","''") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -231,6 +292,8 @@ public class db_dati_films {
         VariabiliStaticheFilms.getInstance().setSettingsAperto(true);
         VariabiliStaticheFilms.getInstance().setBarraVisibile(true);
         VariabiliStaticheFilms.getInstance().setNumeroFrames(10);
+        VariabiliStaticheFilms.getInstance().setFiltroCategoria("");
+        VariabiliStaticheFilms.getInstance().setFiltro("");
     }
 
     public int CaricaImpostazioni() {
@@ -246,6 +309,8 @@ public class db_dati_films {
                         VariabiliStaticheFilms.getInstance().setSettingsAperto(c.getString(1).equals("S"));
                         VariabiliStaticheFilms.getInstance().setBarraVisibile(c.getString(2).equals("S"));
                         VariabiliStaticheFilms.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
+                        VariabiliStaticheFilms.getInstance().setFiltroCategoria(c.getString(4));
+                        VariabiliStaticheFilms.getInstance().setFiltro(c.getString(5));
 
                         return 0;
                     } catch (Exception e) {

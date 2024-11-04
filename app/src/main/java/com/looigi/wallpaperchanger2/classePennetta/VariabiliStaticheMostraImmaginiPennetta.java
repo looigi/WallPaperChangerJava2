@@ -51,6 +51,33 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private boolean slideShowAttivo = false;
     private int secondiAttesa = 5000;
     private boolean settingsAperto = true;
+    private String[] listaCategoriePen;
+    private String filtroCategoria = "";
+    private String categoriAttuale = "";
+
+    public String getCategoriAttuale() {
+        return categoriAttuale;
+    }
+
+    public void setCategoriAttuale(String categoriAttuale) {
+        this.categoriAttuale = categoriAttuale;
+    }
+
+    public String getFiltroCategoria() {
+        return filtroCategoria;
+    }
+
+    public void setFiltroCategoria(String filtroCategoria) {
+        this.filtroCategoria = filtroCategoria;
+    }
+
+    public String[] getListaCategoriePen() {
+        return listaCategoriePen;
+    }
+
+    public void setListaCategoriePen(String[] listaCategorie) {
+        this.listaCategoriePen = listaCategorie;
+    }
 
     public boolean isSettingsAperto() {
         return settingsAperto;

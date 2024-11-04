@@ -1,16 +1,24 @@
 package com.looigi.wallpaperchanger2.classeImmagini.webservice;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -34,6 +42,7 @@ public class ChiamateWSMI implements TaskDelegate {
     private Context context;
     private boolean ApriDialog = false;
     private GifImageView imgAttesa;
+    private boolean Sovrascrive = false;
 
     public ChiamateWSMI(Context context) {
         this.context = context;
@@ -43,15 +52,14 @@ public class ChiamateWSMI implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
-    public void RitornaProssimaImmagine(int idCategoria, String Filtro,
-                                        int idImmagine, String Random) {
+    public void RitornaProssimaImmagine(int idCategoria, int idImmagine, String Random) {
         if (idCategoria == -999) {
             return;
         }
 
         String Urletto="ProssimaImmagine?" +
                 "idCategoria=" + (idCategoria != -1 ? idCategoria : "") +
-                "&Filtro=" + Filtro +
+                "&Filtro=" + VariabiliStaticheMostraImmagini.getInstance().getFiltro() +
                 "&idImmagine=" + idImmagine +
                 "&Random=" + Random;
 
@@ -82,7 +90,42 @@ public class ChiamateWSMI implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie() {
+    public void ModificaImmagine(StrutturaImmaginiLibrary s, String stringaBase64, boolean Sovrascrive) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+
+        this.Sovrascrive = Sovrascrive;
+
+        String Urletto="ModificaImmagine?" +
+                "Categoria=" + s.getCategoria() +
+                "&idImmagine=" + s.getIdImmagine() +
+                "&StringaBase64=" + stringaBase64 +
+                "&Sovrascrivi=" + (Sovrascrive ? "S" : "N");
+
+        TipoOperazione = "ModificaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaCategorie(boolean forzaLettura) {
+        if (!forzaLettura) {
+            db_dati_immagini db = new db_dati_immagini(context);
+            List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
+            db.ChiudeDB();
+            if (!lista.isEmpty()) {
+                VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(lista);
+                UtilityImmagini.getInstance().AggiornaCategorie(context);
+
+                return;
+            }
+        }
+
         String Urletto="RitornaCategorie";
 
         TipoOperazione = "RitornaCategorie";
@@ -97,11 +140,12 @@ public class ChiamateWSMI implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RefreshImmagini() {
-        String Urletto="RefreshImmagini";
+    public void RefreshImmagini(String idCategoria) {
+        String Urletto="RefreshImmagini?" +
+                "idCategoria=" + idCategoria +
+                "&Completo=";
 
-        TipoOperazione = "RefreshImmagini?" +
-            "idCategoria=" + VariabiliStaticheMostraImmagini.getInstance().getIdCategoria();
+        TipoOperazione = "RefreshImmagini";
         // ControllaTempoEsecuzione = false;
 
         UtilitiesGlobali.getInstance().ApreToast(context, "Refresh immagini lanciato");
@@ -166,6 +210,9 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "ProssimaImmagine":
                         fProssimaImmagine(result);
                         break;
+                    case "ModificaImmagine":
+                        fModificaImmagine(result);
+                        break;
                     case "RitornaCategorie":
                         fRitornaCategorie(result);
                         break;
@@ -197,6 +244,21 @@ public class ChiamateWSMI implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fModificaImmagine(String result) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Modifica Immagine", result);
+        if (ritorno) {
+            String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
+            Bitmap bmp = BitmapFactory.decodeFile(Path);
+            VariabiliStaticheMostraImmagini.getInstance().getImg().setImageBitmap(bmp);
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine modificata");
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -261,7 +323,19 @@ public class ChiamateWSMI implements TaskDelegate {
                     }
                     c++;
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.EliminaCategorie();
+                for (StrutturaImmaginiCategorie s : listaCategorie) {
+                    db.ScriveCategoria(s);
+                }
+                db.ChiudeDB();
+
+                VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(CategoriaAttuale);
+                VariabiliStaticheMostraImmagini.getInstance().setListaCategorieImm(l);
+                UtilityImmagini.getInstance().AggiornaCategorie(context);
+
+                /* ArrayAdapter<String> adapter = new ArrayAdapter<String>
                         (context, android.R.layout.simple_spinner_item, l);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setAdapter(adapter);
@@ -269,7 +343,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 if (!CategoriaAttuale.isEmpty()) {
                     int spinnerPosition = adapter.getPosition(CategoriaAttuale);
                     VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setSelection(spinnerPosition);
-                }
+                } */
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

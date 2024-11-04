@@ -27,9 +27,13 @@ import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -39,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainMostraImmagini extends Activity {
     private Context context;
@@ -69,8 +74,37 @@ public class MainMostraImmagini extends Activity {
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
 
+        final boolean[] primoIngresso = {true};
+        VariabiliStaticheMostraImmagini.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+        VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Categoria = adapterView.getItemAtPosition(position).toString();
+                if (Categoria.equals("Tutte")) {
+                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(-1);
+                    UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+                } else {
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                        if (s.getCategoria().equals(Categoria)) {
+                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
+                            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+                            break;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
         ChiamateWSMI ws = new ChiamateWSMI(context);
-        ws.RitornaCategorie();
+        ws.RitornaCategorie(false);
 
         VariabiliStaticheMostraImmagini.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
 
@@ -114,6 +148,24 @@ public class MainMostraImmagini extends Activity {
             }
         });
 
+        ImageView imgModifica = findViewById(R.id.imgModificaMI);
+        imgModifica.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
+
+                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("IMMAGINI");
+                VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                    Path
+                );
+                Intent i = new Intent(context, Main_ModificaImmagine.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+
+                // ChiamateWSMI c = new ChiamateWSMI(context);
+                // c.EliminaImmagine(id);
+            }
+        });
+
         ImageView imgElimina = findViewById(R.id.imgEliminaMI);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -127,7 +179,7 @@ public class MainMostraImmagini extends Activity {
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSMI c = new ChiamateWSMI(context);
-                c.RitornaCategorie();
+                c.RitornaCategorie(true);
             }
         });
 
@@ -140,18 +192,24 @@ public class MainMostraImmagini extends Activity {
                     StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
 
                     String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
-                    long Dimensione = Files.getInstance().DimensioniFile(Path);
+                    String PathImp = context.getFilesDir() + "/Immagini/AppoggioMI_Impostata.jpg";
+                    try {
+                        Files.getInstance().CopiaFile(Path, PathImp);
 
-                    StrutturaImmagine src = new StrutturaImmagine();
-                    src.setPathImmagine(Path);
-                    src.setImmagine(s.getNomeFile());
-                    src.setDimensione(String.valueOf(Dimensione));
-                    src.setDataImmagine(s.getDataCreazione());
+                        long Dimensione = Files.getInstance().DimensioniFile(PathImp);
 
-                    ChangeWallpaper c = new ChangeWallpaper(context);
-                    c.setWallpaperLocale(context, src);
+                        StrutturaImmagine src = new StrutturaImmagine();
+                        src.setPathImmagine(PathImp);
+                        src.setImmagine(s.getNomeFile());
+                        src.setDimensione(String.valueOf(Dimensione));
+                        src.setDataImmagine(s.getDataCreazione());
 
-                    UtilityImmagini.getInstance().Attesa(false);
+                        ChangeWallpaper c = new ChangeWallpaper(context);
+                        c.setWallpaperLocale(context, src);
+
+                        UtilityImmagini.getInstance().Attesa(false);
+                    } catch (IOException ignored) {
+                    }
                 }
             }
         });
@@ -227,11 +285,30 @@ public class MainMostraImmagini extends Activity {
         edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                // if (hasFocus) {
                     VariabiliStaticheMostraImmagini.getInstance().setFiltro(edtFiltro.getText().toString());
 
-                    UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
-                }
+                    db_dati_immagini db = new db_dati_immagini(context);
+                    db.ScriveImpostazioni();
+
+                    // UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+                // }
+            }
+        });
+
+        EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaMI);
+        txtFiltroCate.setText(VariabiliStaticheMostraImmagini.getInstance().getFiltroCategoria());
+        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // if (hasFocus) {
+                    VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                    db_dati_immagini db = new db_dati_immagini(context);
+                    db.ScriveImpostazioni();
+
+                    UtilityImmagini.getInstance().AggiornaCategorie(context);
+                // }
             }
         });
 
@@ -270,36 +347,6 @@ public class MainMostraImmagini extends Activity {
                 }
             }
         }
-
-        final boolean[] primoIngresso = {true};
-        VariabiliStaticheMostraImmagini.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
-        VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view,
-                                       int position, long id) {
-                if (primoIngresso[0]) {
-                    primoIngresso[0] = false;
-                    return;
-                }
-
-                String Categoria = adapterView.getItemAtPosition(position).toString();
-                if (Categoria.equals("Tutte")) {
-                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(-1);
-                    UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
-                } else {
-                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
-                        if (s.getCategoria().equals(Categoria)) {
-                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(s.getIdCategoria());
-                            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
-                            break;
-                        }
-                    }
-                }
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapter) {  }
-        });
 
         ImageView imgSlideShow = findViewById(R.id.imgSlideShow);
         imgSlideShow.setOnClickListener(new View.OnClickListener() {

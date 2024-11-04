@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -77,11 +78,14 @@ public class MainMostraVideo extends Activity {
             }
         });
 
+        VariabiliStaticheVideo.getInstance().setTxtAvanzamento(findViewById(R.id.txtAvanzamentoThumbs));
+        VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setVisibility(LinearLayout.GONE);
+
         ImageView imgRefreshCat = findViewById(R.id.imgRefreshCategorieVideo);
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSV c = new ChiamateWSV(context);
-                c.RitornaCategorie();
+                c.RitornaCategorie(true);
             }
         });
 
@@ -122,6 +126,17 @@ public class MainMostraVideo extends Activity {
                 } else {
                     VariabiliStaticheVideo.getInstance().setEntratoNelCampoDiTesto(true);
                 }
+            }
+        });
+
+        EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaVideo);
+        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // if (!hasFocus) {
+                    VariabiliStaticheVideo.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+                    UtilityVideo.getInstance().AggiornaCategorie(context);
+                // }
             }
         });
 
@@ -234,7 +249,7 @@ public class MainMostraVideo extends Activity {
         }
 
         ChiamateWSV ws = new ChiamateWSV(context);
-        ws.RitornaCategorie();
+        ws.RitornaCategorie(false);
 
         if (!url.isEmpty()) {
             UtilityVideo.getInstance().ImpostaVideo();

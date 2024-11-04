@@ -73,8 +73,8 @@ public class VariabiliStaticheDetector {
     private ImageView imgModificaImmagine;
     private ImageView imgCondividiImmagine;
     private List<String> Immagini;
-    public Integer numMultimedia;
-    public Integer totImmagini;
+    private Integer numMultimedia = 0;
+    private Integer totImmagini;
     private MediaPlayer mp;
     // private boolean letteImpostazioni = false;
     private boolean MascheraPartita = false;

@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 
@@ -26,6 +27,8 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtilityVideo {
     private static UtilityVideo instance = null;
@@ -67,6 +70,8 @@ public class UtilityVideo {
         }
     }
 
+    private String testo;
+
     public void takeScreenShotMultipli(Context context) {
         if (VariabiliStaticheVideo.getInstance().isStaAcquisendoVideo()) {
             UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
@@ -76,13 +81,17 @@ public class UtilityVideo {
 
         Attesa(true);
         VariabiliStaticheVideo.getInstance().getVideoView().pause();
+        testo = "Elaborazione in corso";
+        VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setVisibility(LinearLayout.VISIBLE);
+        VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(testo);
+
+        String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(link);
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                String link = VariabiliStaticheVideo.getInstance().getUltimoLink();
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(link);
                 int tempoTotale = VariabiliStaticheVideo.getInstance().getVideoView().getDuration() * 1000;
                 int ogniSecondi = tempoTotale / VariabiliStaticheVideo.getInstance().getNumeroFrames();
                 int quale = 0;
@@ -108,15 +117,23 @@ public class UtilityVideo {
                     }
                     String Dest = Cartella + nomeFile;
                     try (FileOutputStream out = new FileOutputStream(Dest)) {
+                        assert thummbnailBitmap != null;
                         thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                        quale++;
-                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
-                                VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita");
+                        // UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
+                        //         VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita");
+                        testo += "\nImmagine " + quale + "/" +
+                                 VariabiliStaticheVideo.getInstance().getNumeroFrames() + " acquisita";
                     } catch (IOException ignored) {
+                        testo += "\nImmagine " + quale + "/" +
+                                VariabiliStaticheVideo.getInstance().getNumeroFrames() + " ERRATA";
                     }
+                    quale++;
+
+                    VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(testo);
                 }
 
+                VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setVisibility(LinearLayout.GONE);
                 VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(false);
                 Attesa(false);
             }
@@ -253,41 +270,43 @@ public class UtilityVideo {
                         }
                     });
                     Uri video = Uri.parse(link);
-                    VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
-                            VariabiliStaticheVideo.getInstance().getMediaController());
-                    VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
-                    VariabiliStaticheVideo.getInstance().getVideoView().start();
+                    if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                        VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
+                                VariabiliStaticheVideo.getInstance().getMediaController());
+                        VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
+                        VariabiliStaticheVideo.getInstance().getVideoView().start();
 
-                    VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                        @Override
-                        public boolean onError(MediaPlayer mp, int what, int extra) {
-                            Attesa(false);
+                        VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                            @Override
+                            public boolean onError(MediaPlayer mp, int what, int extra) {
+                                Attesa(false);
 
-                            return false;
-                        }
-                    });
-                    VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            Attesa(false);
-                        }
-                    });
-                    VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-                        }
-                    });
-
-                    /* if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
-                        // BARRA Visibile
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                                return false;
                             }
-                        }, 500);
-                    } */
+                        });
+                        VariabiliStaticheVideo.getInstance().getVideoView().setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
+                                Attesa(false);
+                            }
+                        });
+                        VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mediaPlayer) {
+                            }
+                        });
+
+                        /* if (VariabiliStaticheVideo.getInstance().isBarraVisibile()) {
+                            // BARRA Visibile
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    VariabiliStaticheVideo.getInstance().getMediaController().show(0);
+                                }
+                            }, 500);
+                        } */
+                    }
                 }
             };
             handlerTimer.postDelayed(rTimer, 500);
@@ -296,5 +315,21 @@ public class UtilityVideo {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void AggiornaCategorie(Context context) {
+        List<String> l = new ArrayList<>();
+
+        for (String s : VariabiliStaticheVideo.getInstance().getListaCategorie()) {
+            if (s.toUpperCase().trim().contains(
+                    VariabiliStaticheVideo.getInstance().getFiltroCategoria().toUpperCase().trim())) {
+                l.add(s);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter);
     }
 }

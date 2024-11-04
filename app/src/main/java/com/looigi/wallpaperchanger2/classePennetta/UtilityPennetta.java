@@ -6,14 +6,19 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -171,8 +176,7 @@ public class UtilityPennetta {
     public void RitornaProssimaImmagine(Context context) {
         ChiamateWSPEN ws = new ChiamateWSPEN(context);
         ws.RitornaProssimaImmagine(
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria(),
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro()
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria()
         );
     }
 
@@ -242,5 +246,43 @@ public class UtilityPennetta {
         } else {
             return null;
         }
+    }
+
+    public void AggiornaCategorie(Context context) {
+        List<StrutturaImmaginiCategorie> l1 = new ArrayList<>();
+
+        for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmaginiPennetta.getInstance().getListaCategorie()) {
+            if (s.getCategoria().toUpperCase().trim().contains(
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltroCategoria().toUpperCase().trim())) {
+                l1.add(s);
+            }
+        }
+
+        String[] l = new String[l1.size()];
+        int c = 0;
+        for (StrutturaImmaginiCategorie s : l1) {
+            l[c] = s.getCategoria();
+            c++;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setAdapter(adapter);
+
+        if (!VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriAttuale().isEmpty()) {
+            int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriAttuale());
+            VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setSelection(spinnerPosition);
+        }
+    }
+
+    public void SalvataggioImmagine(Context context, boolean Sovrascrive) {
+        String Path = context.getFilesDir() + "/Immagini/AppoggioPEN.jpg";
+        StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata();
+
+        String encodedImage = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
+
+        ChiamateWSPEN c = new ChiamateWSPEN(context);
+        c.ModificaImmagine(s, encodedImage, Sovrascrive);
     }
 }

@@ -167,7 +167,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
-            android:src="@android:drawable/ic_popup_sync" />
+            android:src="@drawable/icona_refresh" />
 
         <ImageView
             android:id="@+id/imgElimina"

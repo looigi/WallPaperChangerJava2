@@ -27,8 +27,8 @@ import android.widget.VideoView;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
@@ -36,7 +36,7 @@ import com.looigi.wallpaperchanger2.classeDetector.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.classeDetector.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.modificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
@@ -653,6 +653,7 @@ public class InizializzaMascheraDetector {
                         // VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setVisibility(LinearLayout.VISIBLE);
 
                         UtilityDetector.getInstance().CaricaMultimedia(context);
+                        VariabiliStaticheDetector.getInstance().setNumMultimedia(0);
                         UtilityDetector.getInstance().VisualizzaMultimedia(context);
 
                         Handler handlerTimer;
@@ -706,7 +707,11 @@ public class InizializzaMascheraDetector {
         // layModificaImmagine.setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(context, modificaImmagine.class);
+                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("DETECTOR");
+                VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                    VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia())
+                );
+                Intent i = new Intent(context, Main_ModificaImmagine.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
@@ -715,8 +720,8 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String Cartella = UtilityDetector.getInstance().PrendePath(context);
-                String NomeImmagine = Cartella + VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
-                String NomeImmagineSolo = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+                String NomeImmagine = Cartella + VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
+                String NomeImmagineSolo = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
                 if (Files.getInstance().EsisteFile(NomeImmagine)) {
                     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -748,10 +753,12 @@ public class InizializzaMascheraDetector {
 
         btnIndietro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheDetector.getInstance().numMultimedia > 0) {
-                    VariabiliStaticheDetector.getInstance().numMultimedia--;
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() > 0) {
+                    int a = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                    a--;
+                    VariabiliStaticheDetector.getInstance().setNumMultimedia(a);
                 } else {
-                    VariabiliStaticheDetector.getInstance().numMultimedia = VariabiliStaticheDetector.getInstance().totImmagini - 1;
+                    VariabiliStaticheDetector.getInstance().setNumMultimedia(VariabiliStaticheDetector.getInstance().getTotImmagini() - 1);
                 }
 
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
@@ -760,10 +767,12 @@ public class InizializzaMascheraDetector {
 
         btnAvanti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheDetector.getInstance().numMultimedia < VariabiliStaticheDetector.getInstance().totImmagini - 1) {
-                    VariabiliStaticheDetector.getInstance().numMultimedia++;
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getTotImmagini() - 1) {
+                    int a = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                    a++;
+                    VariabiliStaticheDetector.getInstance().setNumMultimedia(a);
                 } else {
-                    VariabiliStaticheDetector.getInstance().numMultimedia = 0;
+                    VariabiliStaticheDetector.getInstance().setNumMultimedia(0);
                 }
 
                 UtilityDetector.getInstance().VisualizzaMultimedia(context);
@@ -772,17 +781,18 @@ public class InizializzaMascheraDetector {
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
-                // String Cartella = UtilityDetector.getInstance().PrendePath(context);
-                String Cartella = UtilityDetector.getInstance().PrendePath(context);
-                String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().numMultimedia);
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+                    // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    // String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                    String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                    String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
-                try {
-                    File file = new File(Cartella + NomeImmagine);
-                    boolean deleted = file.delete();
-                } catch (Exception ignored) {
+                    try {
+                        File file = new File(Cartella + NomeImmagine);
+                        boolean deleted = file.delete();
+                    } catch (Exception ignored) {
 
-                }
+                    }
 
                 /* try {
                     File file = new File(Cartella + NomeImmagine + ".PV3");
@@ -791,15 +801,16 @@ public class InizializzaMascheraDetector {
 
                 } */
 
-                int appo = VariabiliStaticheDetector.getInstance().numMultimedia;
-                UtilityDetector.getInstance().CaricaMultimedia(context);
-                appo--;
-                if (appo < 0) appo = 0;
-                VariabiliStaticheDetector.getInstance().numMultimedia = appo;
-                UtilityDetector.getInstance().VisualizzaMultimedia(context);
-                UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
+                    int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                    UtilityDetector.getInstance().CaricaMultimedia(context);
+                    appo--;
+                    if (appo < 0) appo = 0;
+                    VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
+                    UtilityDetector.getInstance().VisualizzaMultimedia(context);
+                    UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
 
-                UtilityDetector.getInstance().ContaFiles(context);
+                    UtilityDetector.getInstance().ContaFiles(context);
+                }
             }
         });
 

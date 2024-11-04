@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -59,7 +61,19 @@ public class ChiamateWSF implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie() {
+    public void RitornaCategorie(boolean forzaLettura) {
+        if (!forzaLettura) {
+            db_dati_films db = new db_dati_films(context);
+            List<String> lista = db.LeggeCategorie();
+            db.ChiudeDB();
+            if (!lista.isEmpty()) {
+                VariabiliStaticheFilms.getInstance().setListaCategorie(lista);
+                UtilityFilms.getInstance().AggiornaCategorie(context);
+
+                return;
+            }
+        }
+
         String Urletto="RitornaCategorieFilms";
 
         TipoOperazione = "RitornaCategorie";
@@ -74,11 +88,12 @@ public class ChiamateWSF implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RefreshFilms() {
-        String Urletto="RefreshFilms";
+    public void RefreshFilms(String Categoria) {
+        String Urletto="RefreshFilms?" +
+                "Categoria=" + Categoria +
+                "&Completo=";
 
-        TipoOperazione = "RefreshFilms?" +
-                "Completo=";
+        TipoOperazione = "RefreshFilms";
         // ControllaTempoEsecuzione = false;
 
         UtilitiesGlobali.getInstance().ApreToast(context, "Refresh films lanciato");
@@ -185,10 +200,21 @@ public class ChiamateWSF implements TaskDelegate {
             for (String ll : lista) {
                 l.add(ll);
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+
+            db_dati_films db = new db_dati_films(context);
+            db.EliminaCategorie();
+            for (String s : l) {
+                db.ScriveCategoria(s);
+            }
+            db.ChiudeDB();
+
+            VariabiliStaticheFilms.getInstance().setListaCategorie(l);
+            UtilityFilms.getInstance().AggiornaCategorie(context);
+
+            /* ArrayAdapter<String> adapter = new ArrayAdapter<String>
                     (context, android.R.layout.simple_spinner_item, l);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            VariabiliStaticheFilms.getInstance().getSpnCategorie().setAdapter(adapter);
+            VariabiliStaticheFilms.getInstance().getSpnCategorie().setAdapter(adapter); */
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }

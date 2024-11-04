@@ -17,13 +17,8 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraFilms extends Activity {
     private static String NomeMaschera = "Main_Mostra_Films";
@@ -83,7 +78,7 @@ public class MainMostraFilms extends Activity {
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSF c = new ChiamateWSF(context);
-                c.RitornaCategorie();
+                c.RitornaCategorie(true);
             }
         });
 
@@ -116,14 +111,32 @@ public class MainMostraFilms extends Activity {
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheFilms.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
         EditText txtFiltro = findViewById(R.id.edtFiltroFilms);
+        txtFiltro.setText(VariabiliStaticheFilms.getInstance().getFiltro());
         txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(false);
+                    VariabiliStaticheFilms.getInstance().setFiltro(txtFiltro.getText().toString());
+                    db_dati_films db = new db_dati_films(context);
+                    db.ScriveImpostazioni();
                 } else {
                     VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(true);
                 }
+            }
+        });
+
+        EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaFilms);
+        txtFiltroCate.setText(VariabiliStaticheFilms.getInstance().getFiltroCategoria());
+        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // if (!hasFocus) {
+                    VariabiliStaticheFilms.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+                    db_dati_films db = new db_dati_films(context);
+                    db.ScriveImpostazioni();
+                    UtilityFilms.getInstance().AggiornaCategorie(context);
+                // }
             }
         });
 
@@ -236,7 +249,7 @@ public class MainMostraFilms extends Activity {
         }
 
         ChiamateWSF ws = new ChiamateWSF(context);
-        ws.RitornaCategorie();
+        ws.RitornaCategorie(false);
 
         if (!url.isEmpty()) {
             UtilityFilms.getInstance().ImpostaFilms();

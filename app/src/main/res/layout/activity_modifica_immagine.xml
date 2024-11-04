@@ -461,4 +461,13 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgAttendere"
+        android:layout_centerInParent="true"
+        android:src="@drawable/loading"
+        android:layout_width="200dp"
+        android:layout_height="200dp">
+
+    </pl.droidsonroids.gif.GifImageView>
 </RelativeLayout>

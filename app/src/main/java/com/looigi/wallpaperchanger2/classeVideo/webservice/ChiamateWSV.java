@@ -59,7 +59,19 @@ public class ChiamateWSV implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie() {
+    public void RitornaCategorie(boolean forzaLettura) {
+        if (!forzaLettura) {
+            db_dati_video db = new db_dati_video(context);
+            List<String> lista = db.LeggeCategorie();
+            db.ChiudeDB();
+            if (!lista.isEmpty()) {
+                VariabiliStaticheVideo.getInstance().setListaCategorie(lista);
+                UtilityVideo.getInstance().AggiornaCategorie(context);
+
+                return;
+            }
+        }
+
         String Urletto="RitornaCategorieVideo";
 
         TipoOperazione = "RitornaCategorie";
@@ -74,11 +86,12 @@ public class ChiamateWSV implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RefreshVideo() {
-        String Urletto="RefreshVideo";
+    public void RefreshVideo(String Categoria) {
+        String Urletto="RefreshVideo?" +
+                "Categoria=" + Categoria +
+                "&Completo=";
 
-        TipoOperazione = "RefreshVideo?" +
-                "Completo=";
+        TipoOperazione = "RefreshVideo";
         // ControllaTempoEsecuzione = false;
 
         UtilitiesGlobali.getInstance().ApreToast(context, "Refresh video lanciato");
@@ -184,10 +197,16 @@ public class ChiamateWSV implements TaskDelegate {
             for (String ll : lista) {
                 l.add(ll);
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, l);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter);
+
+            db_dati_video db = new db_dati_video(context);
+            db.EliminaCategorie();
+            for (String s : l) {
+                db.ScriveCategoria(s);
+            }
+            db.ChiudeDB();
+
+            VariabiliStaticheVideo.getInstance().setListaCategorie(l);
+            UtilityVideo.getInstance().AggiornaCategorie(context);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
