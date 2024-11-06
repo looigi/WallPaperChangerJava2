@@ -42,7 +42,6 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
@@ -711,15 +710,15 @@ public class MainImpostazioni extends Activity {
     }
 
     private void ImpostaSchermataDetector(Activity act) {
-        SwitchCompat sFotoPower = (SwitchCompat) act.findViewById(R.id.sPower);
-        sFotoPower.setChecked(VariabiliStaticheDetector.getInstance().isFotoSuPower());
-        sFotoPower.setOnClickListener(new View.OnClickListener() {
+        SwitchCompat sTriploTastoCuffieFoto = (SwitchCompat) act.findViewById(R.id.sTriploTastoCuffie);
+        sTriploTastoCuffieFoto.setChecked(VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie());
+        sTriploTastoCuffieFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VariabiliStaticheDetector.getInstance().setFotoSuPower(sFotoPower.isChecked());
+                VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(sTriploTastoCuffieFoto.isChecked());
 
                 db_dati_detector db = new db_dati_detector(context);
-                db.ScriveImpostazioni(context, "SET FOTO POWER");
+                db.ScriveImpostazioni(context, "SET TRIPLO TASTO CUFFIE");
                 db.ChiudeDB();
             }
         });
@@ -938,6 +937,18 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisua);
+        swcRicercaVisuaVideo.setChecked(VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua());
+        swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmagini.getInstance().setRicercaPerVisua(swcRicercaVisuaVideo.isChecked());
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshImmagini);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1013,6 +1024,18 @@ public class MainImpostazioni extends Activity {
         swcRandom.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisua);
+        swcRicercaVisuaVideo.setChecked(VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua());
+        swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setRicercaPerVisua(swcRicercaVisuaVideo.isChecked());
 
                 db_dati_pennetta db = new db_dati_pennetta(context);
                 db.ScriveImpostazioni();
@@ -1167,6 +1190,18 @@ public class MainImpostazioni extends Activity {
                                 }
                             }, 100);
                 }
+
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisua);
+        swcRicercaVisuaVideo.setChecked(VariabiliStaticheVideo.getInstance().isRicercaPerVisua());
+        swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().setRicercaPerVisua(swcRicercaVisuaVideo.isChecked());
 
                 db_dati_video db = new db_dati_video(context);
                 db.ScriveImpostazioni();
@@ -1344,6 +1379,18 @@ public class MainImpostazioni extends Activity {
                                 }
                             }, 100);
                 }
+
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisua);
+        swcRicercaVisuaVideo.setChecked(VariabiliStaticheFilms.getInstance().isRicercaPerVisua());
+        swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheFilms.getInstance().setRicercaPerVisua(swcRicercaVisuaVideo.isChecked());
 
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();

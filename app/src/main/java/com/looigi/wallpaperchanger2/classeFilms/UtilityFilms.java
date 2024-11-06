@@ -14,6 +14,8 @@ import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -299,5 +301,21 @@ public class UtilityFilms {
                 (context, android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheFilms.getInstance().getSpnCategorie().setAdapter(adapter);
+    }
+
+    public void AggiornaCategorieSpostamento(Context context) {
+        List<String> l = new ArrayList<>();
+
+        for (String s : VariabiliStaticheFilms.getInstance().getListaCategorie()) {
+            if (s.toUpperCase().trim().contains(
+                    VariabiliStaticheFilms.getInstance().getFiltroCategoriaSpostamento().toUpperCase().trim())) {
+                l.add(s);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheFilms.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
     }
 }

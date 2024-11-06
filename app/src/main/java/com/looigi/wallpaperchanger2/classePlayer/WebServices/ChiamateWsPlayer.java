@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
@@ -55,6 +57,31 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 "&Immagine=" + Immagine;
 
         TipoOperazione = "EliminaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                10000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void ModificaImmagine(StrutturaImmagini s, String stringaBase64, boolean Sovrascrive) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+
+        String Urletto="ModificaImmagine?" +
+                "Artista=" + s.getArtista() +
+                "&Album=" + s.getAlbum() +
+                "&Cartella=" + s.getCartellaImmagine() +
+                "&Immagine=" + s.getNomeImmagine() +
+                "&StringaBase64=" + stringaBase64;
+
+        TipoOperazione = "ModificaImmagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -461,6 +488,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "RitornaBrani":
                         fRitornaBrani(result);
                         break;
+                    case "ModificaImmagine":
+                        fModificaImmagine(result);
+                        break;
                 }
             }
         };
@@ -506,6 +536,15 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             // db_dati db = new db_dati();
             // db.aggiornaTestoBrano(VariabiliGlobali.getInstance().getIdTesto(), testo);
+        }
+    }
+
+    private void fModificaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Modifica immagine artista", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            // TODO
         }
     }
 

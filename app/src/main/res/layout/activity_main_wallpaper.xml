@@ -278,7 +278,7 @@
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchOnOff"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_width="120dp"
@@ -300,7 +300,7 @@
         <RelativeLayout
             android:visibility="gone"
             android:id="@+id/laySceltaImmagine"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
             android:layout_width="wrap_content"
             android:layout_centerInParent="true"
             android:padding="3dp"

@@ -1,44 +1,29 @@
-package com.looigi.wallpaperchanger2.classeGps.MappeSalvate;
+package com.looigi.wallpaperchanger2.classeMappeSalvate;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.StrictMode;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerMappe extends BaseAdapter {

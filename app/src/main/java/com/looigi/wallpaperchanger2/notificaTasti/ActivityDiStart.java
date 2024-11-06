@@ -1,0 +1,154 @@
+package com.looigi.wallpaperchanger2.notificaTasti;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.annotation.Nullable;
+
+import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
+import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
+import com.looigi.wallpaperchanger2.classeGps.MainMappa;
+import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
+import com.looigi.wallpaperchanger2.classePassword.MainPassword;
+import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
+import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
+public class ActivityDiStart extends Activity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Context context = this;
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("DO");
+
+        switch (id) {
+                case "settings":
+                    Intent iI = new Intent(context, MainImpostazioni.class);
+                    iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iI);
+                    break;
+                case "detector":
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            VariabiliStaticheDetector.getInstance().setMascheraPartita(false);
+
+                            Intent iD = new Intent(context, MainActivityDetector.class);
+                            iD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(iD);
+
+                            /* new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                    i2.inizializzaMaschera(
+                                            context,
+                                            VariabiliStaticheDetector.getInstance().getMainActivity());
+                                }
+                            }, 100); */
+                        }
+                    }, 500);
+                    break;
+                case "onomastici":
+                    Intent iO = new Intent(context, MainOnomastici.class);
+                    iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iO);
+                    break;
+                case "wallpaper":
+                    Intent iW = new Intent(context, MainWallpaper.class);
+                    iW.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iW);
+                    break;
+                case "backup":
+                    Intent iB = new Intent(context, MainBackup.class);
+                    iB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iB);
+                    break;
+                case "mappa":
+                    Intent iM = new Intent(context, MainMappa.class);
+                    iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iM);
+                    break;
+                case "password":
+                    Intent iPa = new Intent(context, MainPassword.class);
+                    iPa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iPa);
+                    break;
+                case "player":
+                    if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {
+                        VariabiliStaticheStart.getInstance().setPlayerAperto(true);
+
+                        Intent iP = new Intent(context, MainPlayer.class);
+                        iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(iP);
+
+                        Notification notificaPlayer = GestioneNotifichePlayer.getInstance().StartNotifica(context);
+                        if (notificaPlayer != null) {
+                            // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
+
+                            GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
+                        }
+                    } else {
+                        VariabiliStaticheStart.getInstance().setPlayerAperto(false);
+
+                        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+
+                        Handler handlerTimer = new Handler(Looper.getMainLooper());
+                        Runnable rTimer = new Runnable() {
+                            public void run() {
+                                UtilityPlayer.getInstance().PressionePlay(context, false);
+                                UtilityPlayer.getInstance().ChiudeActivity(true);
+
+                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 500);
+                    }
+                    break;
+                case "immagini":
+                    Intent iIm = new Intent(context, MainMostraImmagini.class);
+                    iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iIm);
+                    break;
+                case "pennetta":
+                    Intent iPe = new Intent(context, MainMostraPennetta.class);
+                    iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iPe);
+                    break;
+                case "video":
+                    Intent iVi = new Intent(context, MainMostraVideo.class);
+                    iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iVi);
+                    break;
+                case "films":
+                    Intent iF = new Intent(context, MainMostraFilms.class);
+                    iF.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iF);
+                    break;
+                case "uscita":
+                    UtilitiesGlobali.getInstance().ChiudeApplicazione(context);
+                    break;
+        }
+
+        this.finish();
+    }
+}

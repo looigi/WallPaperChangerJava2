@@ -21,6 +21,8 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
+import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -128,6 +130,7 @@ public class GestioneNotificheWP {
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setAutoCancel(false)
                 .setOngoing(true)
+                .setDeleteIntent(createOnDismissedIntent(context))
                 .setCategory(Notification.CATEGORY_SERVICE)
                 // .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
                 // .setGroup("LOO'S WEB PLAYER")
@@ -140,6 +143,8 @@ public class GestioneNotificheWP {
 
             notifica.bigContentView = contentView;
 
+            manager.notify(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID, notifica);
+
             return notifica;
         } catch (Exception e) {
             UtilityWallpaper.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
@@ -147,6 +152,16 @@ public class GestioneNotificheWP {
 
             return null;
         }
+    }
+
+    private PendingIntent createOnDismissedIntent(Context context) {
+        Intent intent = new Intent(context, NotificationDismissedReceiver.class);
+        intent.putExtra("com.looigi.wallpaperchanger2.notificationId", 5);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        2, intent, PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
     }
 
     private void setListeners(RemoteViews view) {

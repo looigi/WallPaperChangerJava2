@@ -45,6 +45,7 @@ public class VariabiliStaticheMostraImmagini {
     private String Random = "S";
     private List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
+    private Spinner spnSpostaCategorie;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
@@ -56,6 +57,41 @@ public class VariabiliStaticheMostraImmagini {
     private String[] listaCategorieImm;
     private String filtroCategoria = "";
     private String categoriaAttuale = "";
+    private String filtroCategoriaSpostamento = "";
+    private String idCategoriaSpostamento;
+    private boolean ricercaPerVisua = true;
+
+    public boolean isRicercaPerVisua() {
+        return ricercaPerVisua;
+    }
+
+    public void setRicercaPerVisua(boolean ricercaPerVisua) {
+        this.ricercaPerVisua = ricercaPerVisua;
+    }
+
+    public String getIdCategoriaSpostamento() {
+        return idCategoriaSpostamento;
+    }
+
+    public void setIdCategoriaSpostamento(String idCategoriaSpostamento) {
+        this.idCategoriaSpostamento = idCategoriaSpostamento;
+    }
+
+    public String getFiltroCategoriaSpostamento() {
+        return filtroCategoriaSpostamento;
+    }
+
+    public void setFiltroCategoriaSpostamento(String filtroCategoriaSpostamento) {
+        this.filtroCategoriaSpostamento = filtroCategoriaSpostamento;
+    }
+
+    public Spinner getSpnSpostaCategorie() {
+        return spnSpostaCategorie;
+    }
+
+    public void setSpnSpostaCategorie(Spinner spnSpostaCategorie) {
+        this.spnSpostaCategorie = spnSpostaCategorie;
+    }
 
     public String getCategoriaAttuale() {
         return categoriaAttuale;

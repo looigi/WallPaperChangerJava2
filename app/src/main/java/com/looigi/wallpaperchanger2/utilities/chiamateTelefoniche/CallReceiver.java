@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer.chiamateTelefoniche;
+package com.looigi.wallpaperchanger2.utilities.chiamateTelefoniche;
 
 import android.content.Context;
 import android.widget.Toast;

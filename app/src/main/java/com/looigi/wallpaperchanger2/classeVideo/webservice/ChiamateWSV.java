@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
@@ -45,7 +48,8 @@ public class ChiamateWSV implements TaskDelegate {
                 "Categoria=" + Categoria.replace("\\", "§") +
                 "&Filtro=" + Filtro +
                 "&Random=" + VariabiliStaticheVideo.getInstance().getRandom() +
-                "&pUltimoVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo();
+                "&pUltimoVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo() +
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheVideo.getInstance().isRicercaPerVisua() ? "S" : "N");
 
         TipoOperazione = "RitornaProssimoVideo";
         // ControllaTempoEsecuzione = false;
@@ -67,6 +71,7 @@ public class ChiamateWSV implements TaskDelegate {
             if (!lista.isEmpty()) {
                 VariabiliStaticheVideo.getInstance().setListaCategorie(lista);
                 UtilityVideo.getInstance().AggiornaCategorie(context);
+                UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
 
                 return;
             }
@@ -83,6 +88,40 @@ public class ChiamateWSV implements TaskDelegate {
                 NS,
                 SA,
                 35000,
+                ApriDialog);
+    }
+
+    public void EliminaVideo(String id) {
+        String Urletto="EliminaVideo?" +
+                "idVideo=" + id;
+
+        TipoOperazione = "EliminaVideo";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
+                ApriDialog);
+    }
+
+    public void SpostaVideo() {
+        String Urletto="SpostaVideo?" +
+                "Categoria=" + VariabiliStaticheVideo.getInstance().getCategoria() +
+                "&idVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo() +
+                "&NuovaCategoria=" + VariabiliStaticheVideo.getInstance().getIdCategoriaSpostamento();
+
+        TipoOperazione = "SpostaVideo";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
                 ApriDialog);
     }
 
@@ -156,6 +195,12 @@ public class ChiamateWSV implements TaskDelegate {
                     case "RefreshVideo":
                         fRefreshVideo(result);
                         break;
+                    case "SpostaVideo":
+                        fSpostaVideo(result);
+                        break;
+                    case "EliminaVideo":
+                        fEliminaVideo(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -168,6 +213,28 @@ public class ChiamateWSV implements TaskDelegate {
 
     public void StoppaEsecuzione() {
         // bckAsyncTask.cancel(true);
+    }
+
+    private void fEliminaVideo(String result) {
+        boolean ritorno = ControllaRitorno("Elimina Video", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Video eliminato");
+
+            ChiamateWSV ws = new ChiamateWSV(context);
+            ws.RitornaProssimoVideo();
+        }
+    }
+
+    private void fSpostaVideo(String result) {
+        boolean ritorno = ControllaRitorno("Sposta Video", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Video spostato");
+            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+        }
     }
 
     private void fRefreshVideo(String result) {
@@ -207,6 +274,7 @@ public class ChiamateWSV implements TaskDelegate {
 
             VariabiliStaticheVideo.getInstance().setListaCategorie(l);
             UtilityVideo.getInstance().AggiornaCategorie(context);
+            UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }

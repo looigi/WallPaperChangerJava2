@@ -20,6 +20,8 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
+import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.Date;
@@ -98,6 +100,7 @@ public class GestioneNotifichePlayer {
                     .setCategory(Notification.CATEGORY_SERVICE)
                     // .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
                     // .setGroup("LOO'S WEB PLAYER")
+                    .setDeleteIntent(createOnDismissedIntent(context))
                     .setGroupSummary(false)
                     // .setDefaults(NotificationCompat.DEFAULT_ALL)
                     // .setContentIntent(pendingIntent)
@@ -107,6 +110,8 @@ public class GestioneNotifichePlayer {
 
             notifica.bigContentView = contentView;
 
+            manager.notify(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notifica);
+
             return notifica;
         } catch (Exception e) {
             UtilityPlayer.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
@@ -114,6 +119,16 @@ public class GestioneNotifichePlayer {
 
             return null;
         }
+    }
+
+    private PendingIntent createOnDismissedIntent(Context context) {
+        Intent intent = new Intent(context, NotificationDismissedReceiver.class);
+        intent.putExtra("com.looigi.wallpaperchanger2.notificationId", 4);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        2, intent, PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
     }
 
     private void setListeners(RemoteViews view) {
@@ -136,9 +151,12 @@ public class GestioneNotifichePlayer {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            Intent apre = new Intent(ctx, NotificationActionServicePlayer.class);
-            apre.putExtra("DO", "Apre");
-            PendingIntent pApre = PendingIntent.getService(ctx, 31, apre,
+            Intent apre = new Intent(ctx, MainPlayer.class);
+            apre.addCategory(Intent.CATEGORY_LAUNCHER);
+            apre.setAction(Intent.ACTION_MAIN );
+            apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            apre.putExtra("DO", "player");
+            PendingIntent pApre = PendingIntent.getActivity(ctx, 31, apre,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.layPlayer1, pApre);
 

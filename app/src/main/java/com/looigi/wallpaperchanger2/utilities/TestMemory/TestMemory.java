@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeDetector.TestMemory;
+package com.looigi.wallpaperchanger2.utilities.TestMemory;
 
 public class TestMemory {
 

@@ -48,7 +48,7 @@ public class Photo extends Activity {
 
 				UtilityDetector.getInstance().SpegneSchermo(context);
 			}
-		}, 1000);
+		}, 100);
 
 		VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
 		VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);

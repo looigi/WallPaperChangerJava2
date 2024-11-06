@@ -38,7 +38,7 @@ public class VariabiliStaticheVideo {
     private TextView txtTitolo;
     private int idUltimoVideo = -1;
     private boolean SettingsAperto = true;
-    private boolean barraVisibile = true;
+    private boolean barraVisibile = false;
     private MediaController mediaController;
     private int NumeroFrames = 10;
     private boolean staAcquisendoVideo = false;
@@ -46,6 +46,42 @@ public class VariabiliStaticheVideo {
     private TextView txtAvanzamento;
     private List<String> listaCategorie;
     private String filtroCategoria = "";
+    private Spinner spnSpostaCategorie;
+    private String filtroCategoriaSpostamento = "";
+    private String idCategoriaSpostamento;
+    private boolean ricercaPerVisua = true;
+
+    public boolean isRicercaPerVisua() {
+        return ricercaPerVisua;
+    }
+
+    public void setRicercaPerVisua(boolean ricercaPerVisua) {
+        this.ricercaPerVisua = ricercaPerVisua;
+    }
+
+    public String getIdCategoriaSpostamento() {
+        return idCategoriaSpostamento;
+    }
+
+    public void setIdCategoriaSpostamento(String idCategoriaSpostamento) {
+        this.idCategoriaSpostamento = idCategoriaSpostamento;
+    }
+
+    public String getFiltroCategoriaSpostamento() {
+        return filtroCategoriaSpostamento;
+    }
+
+    public void setFiltroCategoriaSpostamento(String filtroCategoriaSpostamento) {
+        this.filtroCategoriaSpostamento = filtroCategoriaSpostamento;
+    }
+
+    public Spinner getSpnSpostaCategorie() {
+        return spnSpostaCategorie;
+    }
+
+    public void setSpnSpostaCategorie(Spinner spnSpostaCategorie) {
+        this.spnSpostaCategorie = spnSpostaCategorie;
+    }
 
     public String getFiltroCategoria() {
         return filtroCategoria;

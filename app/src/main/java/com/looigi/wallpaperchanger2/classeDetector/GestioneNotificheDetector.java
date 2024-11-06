@@ -19,6 +19,9 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Audio;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
+import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificheDetector {
@@ -60,7 +63,7 @@ public class GestioneNotificheDetector {
             setListenersTasti(contentView, context);
             setListeners(contentView);
 
-            contentView.setTextViewText(R.id.txtTitolo, VariabiliStaticheDetector.channelName);
+            // contentView.setTextViewText(R.id.txtTitolo, VariabiliStaticheDetector.channelName);
             contentView.setTextViewText(R.id.txtDettaglio, Messaggio);
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheDetector.NOTIFICATION_CHANNEL_STRING);
@@ -77,6 +80,7 @@ public class GestioneNotificheDetector {
                     .setCategory(Notification.CATEGORY_SERVICE)
                     // .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
                     // .setGroup("LOO'S WEB PLAYER")
+                    .setDeleteIntent(createOnDismissedIntent(context))
                     .setGroupSummary(false)
                     // .setDefaults(NotificationCompat.DEFAULT_ALL)
                     // .setContentIntent(pendingIntent)
@@ -86,6 +90,8 @@ public class GestioneNotificheDetector {
 
             notifica.bigContentView = contentView;
 
+            manager.notify(VariabiliStaticheDetector.NOTIFICATION_CHANNEL_ID, notifica);
+
             return notifica;
         } catch (Exception e) {
             UtilityDetector.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
@@ -93,6 +99,16 @@ public class GestioneNotificheDetector {
 
             return null;
         }
+    }
+
+    private PendingIntent createOnDismissedIntent(Context context) {
+        Intent intent = new Intent(context, NotificationDismissedReceiver.class);
+        intent.putExtra("com.looigi.wallpaperchanger2.notificationId", 2);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        2, intent, PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
     }
 
     private void setListeners(RemoteViews view) {
@@ -119,7 +135,7 @@ public class GestioneNotificheDetector {
             apre.putExtra("DO", "Apre");
             PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.layBarraNotifica, pApre);
+            view.setOnClickPendingIntent(R.id.txtDettaglio, pApre);
 
             Intent scatta = new Intent(ctx, NotificationActionServiceDetector.class);
             scatta.putExtra("DO", "Foto");
@@ -198,64 +214,54 @@ public class GestioneNotificheDetector {
             }
 
             if (action != null) {
+                Context ctx = UtilitiesGlobali.getInstance().tornaContextValido();
+
                 switch (action) {
                     case "Apre":
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (context == null) {
-                                    context = VariabiliStaticheStart.getInstance().getContext();
-                                }
-                                if (context == null) {
-                                    context = VariabiliStaticheWallpaper.getInstance().getContext();
-                                }
-                                if (context == null) {
-                                    context = VariabiliStaticheDetector.getInstance().getContext();
-                                }
-                                if (context != null) {
-                                    // VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
+                                // VariabiliStaticheDetector.getInstance().setChiudiActivity(false);
 
-                                    VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
-                                    VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                                VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
+                                VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
-                                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Intent i = new Intent(context, MainActivityDetector.class);
-                                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            context.startActivity(i);
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent i = new Intent(context, MainActivityDetector.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        ctx.startActivity(i);
 
-                                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
-                                                    i2.inizializzaMaschera(
-                                                            context,
-                                                            VariabiliStaticheDetector.getInstance().getMainActivity());
-                                                }
-                                            }, 1000);
-                                        }
-                                    }, 1000);
-                                }
+                                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                InizializzaMascheraDetector i2 = new InizializzaMascheraDetector();
+                                                i2.inizializzaMaschera(
+                                                        ctx,
+                                                        VariabiliStaticheDetector.getInstance().getMainActivity());
+                                            }
+                                        }, 1000);
+                                    }
+                                }, 1000);
                             }
                         }, 100);
                         break;
 
                     case "Foto":
                         // VariabiliStaticheDetector.getInstance().setChiudiActivity(true);
-
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        ctx,
                                         AndroidCameraApi.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                                ctx.startActivity(myIntent);
 
                                 UtilityDetector.getInstance().SpegneSchermo(context);
                             }
-                        }, 1000);
+                        }, 100);
 
                         VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                         VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
@@ -270,10 +276,10 @@ public class GestioneNotificheDetector {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        ctx,
                                         Video.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                                ctx.startActivity(myIntent);
                             }
                         }, 1000);
 
@@ -290,10 +296,10 @@ public class GestioneNotificheDetector {
                             @Override
                             public void run() {
                                 Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        ctx,
                                         Audio.class);
                                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                                ctx.startActivity(myIntent);
                             }
                         }, 1000);
 

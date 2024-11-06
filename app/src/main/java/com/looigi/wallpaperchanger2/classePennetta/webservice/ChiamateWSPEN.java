@@ -15,6 +15,7 @@ import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -52,9 +53,28 @@ public class ChiamateWSPEN implements TaskDelegate {
                 "Categoria=" + Categoria +
                 "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
                 "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
-                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine();
+                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() +
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua() ? "S" : "N");
 
         TipoOperazione = "ProssimaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
+                ApriDialog);
+    }
+
+    public void SpostaImmagine(StrutturaImmaginiLibrary s) {
+        String Urletto="SpostaImmaginePennetta?" +
+                "Categoria=" + s.getCategoria() +
+                "&idImmagine=" + s.getIdImmagine() +
+                "&NuovaCategoria=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdCategoriaSpostamento();
+
+        TipoOperazione = "SpostaImmagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -95,6 +115,7 @@ public class ChiamateWSPEN implements TaskDelegate {
             if (!lista.isEmpty()) {
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(lista);
                 UtilityPennetta.getInstance().AggiornaCategorie(context);
+                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
 
                 return;
             }
@@ -115,9 +136,9 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void EliminaImmagine(String id) {
-        String Urletto="EliminaImmagine";
+        String Urletto="EliminaImmaginePennetta?idImmagine=" + id;
 
-        TipoOperazione = "EliminaImmaginePennetta?idImmagine=" + id;
+        TipoOperazione = "EliminaImmagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -208,6 +229,9 @@ public class ChiamateWSPEN implements TaskDelegate {
                     case "EliminaImmagine":
                         fEliminaImmagine(result);
                         break;
+                    case "SpostaImmagine":
+                        fSpostaImmagine(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -230,6 +254,16 @@ public class ChiamateWSPEN implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fSpostaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Sposta Immagine", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
+            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -333,6 +367,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriAttuale(CategoriaAttuale);
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategoriePen(l);
                 UtilityPennetta.getInstance().AggiornaCategorie(context);
+                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }

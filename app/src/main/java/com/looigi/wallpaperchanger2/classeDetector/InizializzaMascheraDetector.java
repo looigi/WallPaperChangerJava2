@@ -32,8 +32,8 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
-import com.looigi.wallpaperchanger2.classeDetector.TestMemory.DatiMemoria;
-import com.looigi.wallpaperchanger2.classeDetector.TestMemory.TestMemory;
+import com.looigi.wallpaperchanger2.utilities.TestMemory.DatiMemoria;
+import com.looigi.wallpaperchanger2.utilities.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
@@ -782,8 +782,6 @@ public class InizializzaMascheraDetector {
         btnElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
-                    // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
-                    // String Cartella = UtilityDetector.getInstance().PrendePath(context);
                     String Cartella = UtilityDetector.getInstance().PrendePath(context);
                     String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
@@ -794,12 +792,7 @@ public class InizializzaMascheraDetector {
 
                     }
 
-                /* try {
-                    File file = new File(Cartella + NomeImmagine + ".PV3");
-                    boolean deleted = file.delete();
-                } catch (Exception ignored) {
-
-                } */
+                    UtilityDetector.getInstance().EliminaPV3Inutili(context);
 
                     int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
                     UtilityDetector.getInstance().CaricaMultimedia(context);

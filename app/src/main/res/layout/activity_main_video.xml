@@ -58,7 +58,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="6"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
@@ -75,43 +75,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgCerca"
-                    android:src="@drawable/icona_cerca"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp">
-
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgScreenshot"
-                    android:src="@drawable/screenshot"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp">
-
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgScreenshotMultipliV"
-                    android:src="@drawable/screenshot_multipli"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp">
-
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/imgSettingsVideo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/settings" />
-            </LinearLayout>
         </LinearLayout>
 
         <TextView
@@ -119,11 +82,62 @@
             android:textColor="@color/Rosso"
             android:gravity="center_horizontal"
             android:textSize="16sp"
-            android:lines="1"
             android:layout_width="match_parent"
             android:layout_height="25dp">
 
         </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgElimina"
+                android:src="@drawable/elimina"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgCerca"
+                android:src="@drawable/icona_cerca"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgScreenshot"
+                android:src="@drawable/screenshot"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgScreenshotMultipliV"
+                android:src="@drawable/screenshot_multipli"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgSpostaACategoria"
+                android:src="@drawable/sposta"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgSettingsVideo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/settings" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -139,6 +153,101 @@
             android:layout_centerVertical="true">
 
         </VideoView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/laySposta"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_centerInParent="true"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:text="Sposta a categoria"
+            android:textColor="@color/Rosso"
+            android:textSize="16sp"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Filtro"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <EditText
+                android:id="@+id/edtSpostaFiltroCategoria"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content">
+
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Categoria"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <Spinner
+                android:id="@+id/spnSpostaCategorie"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSpostaImmagine"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaSposta"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

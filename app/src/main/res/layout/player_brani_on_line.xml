@@ -65,9 +65,15 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+
         <ListView
             android:id="@+id/lstListaArtisti"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
             android:layout_margin="3dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -78,7 +84,7 @@
 
         <ListView
             android:id="@+id/lstListaAlbum"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
             android:layout_margin="3dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -90,7 +96,7 @@
         <ListView
             android:id="@+id/lstListaBrani"
             android:layout_width="match_parent"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_trasp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
             android:layout_margin="3dp"
             android:layout_height="0dp"
             android:dividerHeight="1dp"

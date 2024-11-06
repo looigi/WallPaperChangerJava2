@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
@@ -34,10 +36,12 @@ import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePE
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,9 +77,6 @@ public class MainMostraPennetta extends Activity {
 
         // db_dati_pennetta db = new db_dati_pennetta(context);
         // db.CaricaImpostazioni();
-
-        ChiamateWSPEN ws = new ChiamateWSPEN(context);
-        ws.RitornaCategorie(false);
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
 
@@ -400,6 +401,11 @@ public class MainMostraPennetta extends Activity {
                 RitornaProssimaImmagine(ws);
             }
         }); */
+
+        ImpostaSpostamento(act);
+
+        ChiamateWSPEN ws = new ChiamateWSPEN(context);
+        ws.RitornaCategorie(false);
     }
 
     @Override
@@ -427,4 +433,78 @@ public class MainMostraPennetta extends Activity {
 
         return false;
     } */
+
+    private void ImpostaSpostamento(Activity act) {
+        LinearLayout laySposta = act.findViewById(R.id.laySposta);
+        laySposta.setVisibility(LinearLayout.GONE);
+
+        ImageView imgApre = act.findViewById(R.id.imgSpostaACategoria);
+        imgApre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgSpostaImmagine = act.findViewById(R.id.imgSpostaImmagine);
+        imgSpostaImmagine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata();
+
+                ChiamateWSPEN c = new ChiamateWSPEN(context);
+                c.SpostaImmagine(s);
+
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgAnnullaSposta = act.findViewById(R.id.imgAnnullaSposta);
+        imgAnnullaSposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        EditText edtFiltroSpostamento = findViewById(R.id.edtSpostaFiltroCategoria);
+        edtFiltroSpostamento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
+                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+            }
+        });
+
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdCategoriaSpostamento("");
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
+        final boolean[] primoIngresso = {true};
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnSpostaCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Categoria = adapterView.getItemAtPosition(position).toString();
+                if (Categoria.equals("Tutte")) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Impostare una categoria. Non Tutte");
+                } else {
+                    String idCategoria = "";
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmaginiPennetta.getInstance().getListaCategorie()) {
+                        if (s.getCategoria().equals(Categoria)) {
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdCategoriaSpostamento(String.valueOf(s.getIdCategoria()));
+                            break;
+                        }
+                    }
+                    if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdCategoriaSpostamento().isEmpty()) {
+                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                "Categoria non valida: " + Categoria);
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+    }
 }

@@ -60,7 +60,7 @@ public class ScanBraniNonPresentiSuDB {
                     UtilityPlayer.getInstance().Attesa(false);
                     UtilitiesGlobali.getInstance().ApreToast(context,
                             "Brani aggiunti a DB: " + AggiuntiBrani + "\n" +
-                            "Immagini aggiunte a DB: " + AggiunteImmagini);
+                            "\nImmagini aggiunte a DB: " + AggiunteImmagini);
                 }
 
                 ScanBraniNonPresentiSuSD s = new ScanBraniNonPresentiSuSD();

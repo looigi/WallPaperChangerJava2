@@ -73,7 +73,7 @@ public class db_dati_films {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
                         + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibile VARCHAR, "
-                        + "NumeroFrames VARCHAR, FiltroCategorie VARCHAR, Filtro VARCHAR"
+                        + "NumeroFrames VARCHAR, FiltroCategorie VARCHAR, Filtro VARCHAR, RicercaPerVisura VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -270,7 +270,8 @@ public class db_dati_films {
                         + "'" + (VariabiliStaticheFilms.getInstance().isBarraVisibile() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheFilms.getInstance().getNumeroFrames() + "', "
                         + "'" + VariabiliStaticheFilms.getInstance().getFiltroCategoria().replace("'","''") + "', "
-                        + "'" + VariabiliStaticheFilms.getInstance().getFiltro().replace("'","''") + "' "
+                        + "'" + VariabiliStaticheFilms.getInstance().getFiltro().replace("'","''") + "', "
+                        + "'" + (VariabiliStaticheFilms.getInstance().isRicercaPerVisua() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -290,10 +291,11 @@ public class db_dati_films {
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheFilms.getInstance().setRandom("S");
         VariabiliStaticheFilms.getInstance().setSettingsAperto(true);
-        VariabiliStaticheFilms.getInstance().setBarraVisibile(true);
+        VariabiliStaticheFilms.getInstance().setBarraVisibile(false);
         VariabiliStaticheFilms.getInstance().setNumeroFrames(10);
         VariabiliStaticheFilms.getInstance().setFiltroCategoria("");
         VariabiliStaticheFilms.getInstance().setFiltro("");
+        VariabiliStaticheFilms.getInstance().setRicercaPerVisua(true);
     }
 
     public int CaricaImpostazioni() {
@@ -311,6 +313,7 @@ public class db_dati_films {
                         VariabiliStaticheFilms.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
                         VariabiliStaticheFilms.getInstance().setFiltroCategoria(c.getString(4));
                         VariabiliStaticheFilms.getInstance().setFiltro(c.getString(5));
+                        VariabiliStaticheFilms.getInstance().setRicercaPerVisua(c.getString(6).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

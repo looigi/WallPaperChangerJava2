@@ -41,7 +41,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeGps.MappeSalvate.MainMappeSalvate;
+import com.looigi.wallpaperchanger2.classeMappeSalvate.MainMappeSalvate;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;

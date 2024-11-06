@@ -40,6 +40,13 @@
                 android:text="Barra controlli visibile"
                 android:layout_height="wrap_content" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchCercaVisua"
+                android:layout_width="match_parent"
+                android:textColor="#0000CC"
+                android:text="Ricerca per visualizzati"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="5"

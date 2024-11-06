@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeGps.MappeSalvate;
+package com.looigi.wallpaperchanger2.classeMappeSalvate;
 
 import android.app.Activity;
 import android.content.Context;

@@ -39,11 +39,11 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/sPower"
+                android:id="@+id/sTriploTastoCuffie"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Foto su tasto Power" />
+                android:text="Foto su precedente brano (tasto cuffie)" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sVibrazione"

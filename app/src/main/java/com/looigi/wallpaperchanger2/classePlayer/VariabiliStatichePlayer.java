@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -61,7 +62,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgPlayStop;
     private ImmagineZoomabile imgBrano;
     private TextView txtTitolo;
-    private GifImageView imgCaricamento;
+    private LinearLayout layCaricamento;
     private TextView txtOperazione;
     private String pathUltimaImmagine;
     private TextView txtInizio;
@@ -119,6 +120,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgCondividi;
     private TextView txtPercentuale;
     private int Perc;
+    private ImageView imgModificaSfondo;
 
     // RICERCHE
     private boolean Random = true;
@@ -152,6 +154,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ImageView getImgModificaSfondo() {
+        return imgModificaSfondo;
+    }
+
+    public void setImgModificaSfondo(ImageView imgModificaSfondo) {
+        this.imgModificaSfondo = imgModificaSfondo;
     }
 
     public int getPerc() {
@@ -639,12 +649,12 @@ public class VariabiliStatichePlayer {
         this.txtOperazione = txtOperazione;
     }
 
-    public GifImageView getImgCaricamento() {
-        return imgCaricamento;
+    public LinearLayout getLayCaricamento() {
+        return layCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
-        this.imgCaricamento = imgCaricamento;
+    public void setLayCaricamento(LinearLayout imgCaricamento) {
+        this.layCaricamento = imgCaricamento;
     }
 
     public TextView getTxtTitolo() {

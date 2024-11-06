@@ -369,9 +369,6 @@ public class UtilityDetector {
     }
 
     public void DeCriptaFiles(Context context) {
-        // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
-        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        // String Cartella = UtilityDetector.getInstance().PrendePath(context);
         String Path = PrendePath(context);
 
         int cambiate = 0;
@@ -414,14 +411,9 @@ public class UtilityDetector {
 
         CaricaMultimedia(context);
         VisualizzaMultimedia(context);
-
-        // VisualizzaPOPUP("Fatto. Immagini decriptate: "+cambiate, false, 0);
     }
 
     public void CriptaFiles(Context context) {
-        // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
-        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        // String Cartella = UtilityDetector.getInstance().PrendePath(context);
         String Path = PrendePath(context);
         int cambiate = 0;
 
@@ -559,7 +551,8 @@ public class UtilityDetector {
         String lon = "";
         String lonref = "";
 
-        if (Filetto.toUpperCase().contains(".DBF")) {
+        if (Filetto.toUpperCase().contains(".DBF") &&
+            !Filetto.toUpperCase().contains("FRAME_")) {
             try {
                 ExifInterface exif = new ExifInterface(Path + Filetto);
                 artista = exif.getAttribute(ExifInterface.TAG_ARTIST);
@@ -620,7 +613,8 @@ public class UtilityDetector {
                 fos.flush();
                 fos.close();
 
-                if (OkEXIF) {
+                if (OkEXIF &&
+                    !Filetto.toUpperCase().contains("FRAME_")) {
                     String datiExif = artista + ";" + model + ";" + lat + ";" + latRef + ";" + lon + ";" + lonref + ";";
                     CreaFileDiTesto(Path, Filetto + ".PV3", datiExif);
                 }
@@ -668,18 +662,32 @@ public class UtilityDetector {
         }
     }
 
+    public void EliminaPV3Inutili(Context context) {
+        String Path = PrendePath(context);
+        File directory = new File(Path);
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (File f : files) {
+                String n = f.getName();
+                if (n.toUpperCase().contains(".PV3")) {
+                    String padre = n.replace(".PV3", "");
+                    File p = new File(padre);
+                    if (!p.exists()) {
+                        f.delete();
+                    }
+                }
+            }
+        }
+    }
+
     public void CaricaMultimedia(Context context) {
-        // String Origine = Environment.getExternalStorageDirectory().getAbsolutePath();
-        // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-        // String Cartella = Environment.getExternalStorageDirectory() + "/" +
-        //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
         String Path = PrendePath(context);
         File directory = new File(Path);
         File[] files = directory.listFiles();
         List<String> immagini = new ArrayList<>();
         int totImmagini = 0;
-        // VariabiliStaticheDetector.getInstance().setImmagini(new ArrayList<String>());
-        // VariabiliStaticheDetector.getInstance().totImmagini = 0;
+
         if (files != null) {
             for (File f : files) {
                 String n = f.getName();

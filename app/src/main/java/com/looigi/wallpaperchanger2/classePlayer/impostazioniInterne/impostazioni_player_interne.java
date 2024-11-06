@@ -20,6 +20,10 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -218,7 +222,7 @@ public class impostazioni_player_interne {
                     n = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1;
                 }
                 VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
-                ImpostaImmagine();
+                UtilityPlayer.getInstance().ImpostaImmagine(context);
             }
         });
 
@@ -232,7 +236,7 @@ public class impostazioni_player_interne {
                     n = 0;
                 }
                 VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
-                ImpostaImmagine();
+                UtilityPlayer.getInstance().ImpostaImmagine(context);
             }
         });
 
@@ -316,6 +320,29 @@ public class impostazioni_player_interne {
             }
         });
 
+        VariabiliStatichePlayer.getInstance().setImgModificaSfondo(act.findViewById(R.id.imgModificaSfondo));
+        VariabiliStatichePlayer.getInstance().getImgModificaSfondo().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (!VariabiliStatichePlayer.getInstance().isCeImmaginePerModifica()) {
+                    return;
+                }
+
+                if (VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica() != null) {
+                    StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica();
+
+                    String Path = s.getPathImmagine();
+
+                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("PLAYER");
+                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                            Path
+                    );
+                    Intent i = new Intent(context, Main_ModificaImmagine.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+            }
+        });
+
         VariabiliStatichePlayer.getInstance().setImgCondividi(act.findViewById(R.id.imgCondividiSfondo));
         VariabiliStatichePlayer.getInstance().getImgCondividi().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -375,70 +402,6 @@ public class impostazioni_player_interne {
 
         ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
         ws.RitornaListaArtisti(false);
-    }
-
-    private void ImpostaImmagine() {
-        if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
-            return;
-        }
-
-        Bitmap bitmapAttesa = BitmapFactory.decodeResource(context.getResources(), R.drawable.loading);
-        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmapAttesa);
-
-        Handler handlerTimer = new Handler(Looper.getMainLooper());
-        Runnable rTimer = new Runnable() {
-            public void run() {
-                int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
-                if (n < VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()) {
-                    StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().get(n);
-                    VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(s);
-                    String path = s.getPathImmagine();
-                    path = path.replace("//", "/");
-                    Bitmap bitmap = null;
-                    VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(false);
-                    boolean visibile = true;
-                    if (Files.getInstance().EsisteFile(path)) {
-                        bitmap = BitmapFactory.decodeFile(path);
-                        VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
-                    } else {
-                        if (!UtilitiesGlobali.getInstance().isRetePresente()) {
-                            // bitmap = null;
-                            visibile = false;
-                            VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
-                        } else {
-                            DownloadImmagine d = new DownloadImmagine();
-                            VariabiliStatichePlayer.getInstance().setDownImmagine(d);
-                            d.EsegueDownload(
-                                    context,
-                                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
-                                    s.getUrlImmagine()
-                            );
-                        }
-                    }
-                /* if (bitmap == null) {
-                    bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
-                } */
-
-                    if (visibile) {
-                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.VISIBLE);
-                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
-                    } else {
-                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.GONE);
-                    }
-
-                    if (VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica() != null &&
-                            VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica() != null) {
-                        VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
-                                VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
-                        );
-                    }
-                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
-                            "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
-                }
-            }
-        };
-        handlerTimer.postDelayed(rTimer, 50);
-
     }
 
     private void visualizzaImpostazioniMaschera(int quale) {

@@ -64,7 +64,7 @@ public class ScanBraniNonPresentiSuSD {
                     if (EsegueAncheImmagini) {
                         UtilityDetector.getInstance().VisualizzaToast(context,
                                 "Brani eliminati da SD: " + Eliminati +
-                                        "Immagini eliminate da SD: " + EliminateImm,
+                                        "\nImmagini eliminate da SD: " + EliminateImm,
                                 true);
                     } else {
                         UtilityDetector.getInstance().VisualizzaToast(context,

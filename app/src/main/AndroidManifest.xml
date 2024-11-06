@@ -90,7 +90,13 @@
 
         <activity
             android:name=".classeDetector.AndroidCameraApi"
+            android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Translucent"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".notificaTasti.ActivityDiStart"
+            android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -99,10 +105,11 @@
 
         <activity
             android:name=".classePassword.MainPassword"
+            android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeGps.MappeSalvate.MainMappeSalvate"
+            android:name=".classeMappeSalvate.MainMappeSalvate"
             android:windowSoftInputMode="adjustResize" />
 
         <meta-data
@@ -111,11 +118,13 @@
 
         <activity
             android:name=".classeImmagini.MainMostraImmagini"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".classePennetta.MainMostraPennetta"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
@@ -141,6 +150,7 @@
 
         <activity
             android:name=".classeDetector.MainActivityDetector"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
@@ -150,6 +160,7 @@
 
         <activity
             android:name=".classeModificaImmagine.Main_ModificaImmagine"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
@@ -160,6 +171,7 @@
 
         <activity
             android:name=".classeVideo.MainMostraVideo"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
@@ -171,6 +183,11 @@
         <activity
             android:name=".utilities.RichiestaPathImmaginiLocali"
             android:windowSoftInputMode="adjustResize" />
+
+        <receiver
+            android:name=".notifiche.NotificationDismissedReceiver"
+            android:exported="false" >
+        </receiver>
 
         <service android:name = ".classeAvvio.ServizioInterno"
             android:foregroundServiceType="specialUse|location|camera" />
@@ -194,11 +211,12 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <service android:name=".classePlayer.cuffie.GestioneTastiCuffieNuovo"
+
+        <service android:name=".utilities.cuffie.GestioneTastiCuffieNuovo"
             android:enabled="true"
             android:exported="true"
             >
-            <intent-filter>
+            <intent-filter android:priority="99999">
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </service>
@@ -232,7 +250,7 @@
             </intent-filter>
         </receiver> -->
 
-        <receiver android:name=".classePlayer.chiamateTelefoniche.CallReceiver"
+        <receiver android:name=".utilities.chiamateTelefoniche.CallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />

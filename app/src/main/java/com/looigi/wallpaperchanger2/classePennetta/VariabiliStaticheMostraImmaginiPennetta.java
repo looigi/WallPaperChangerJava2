@@ -54,6 +54,42 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private String[] listaCategoriePen;
     private String filtroCategoria = "";
     private String categoriAttuale = "";
+    private Spinner spnSpostaCategorie;
+    private String filtroCategoriaSpostamento = "";
+    private String idCategoriaSpostamento;
+    private boolean ricercaPerVisua = true;
+
+    public boolean isRicercaPerVisua() {
+        return ricercaPerVisua;
+    }
+
+    public void setRicercaPerVisua(boolean ricercaPerVisua) {
+        this.ricercaPerVisua = ricercaPerVisua;
+    }
+
+    public String getIdCategoriaSpostamento() {
+        return idCategoriaSpostamento;
+    }
+
+    public void setIdCategoriaSpostamento(String idCategoriaSpostamento) {
+        this.idCategoriaSpostamento = idCategoriaSpostamento;
+    }
+
+    public String getFiltroCategoriaSpostamento() {
+        return filtroCategoriaSpostamento;
+    }
+
+    public void setFiltroCategoriaSpostamento(String filtroCategoriaSpostamento) {
+        this.filtroCategoriaSpostamento = filtroCategoriaSpostamento;
+    }
+
+    public Spinner getSpnSpostaCategorie() {
+        return spnSpostaCategorie;
+    }
+
+    public void setSpnSpostaCategorie(Spinner spnSpostaCategorie) {
+        this.spnSpostaCategorie = spnSpostaCategorie;
+    }
 
     public String getCategoriAttuale() {
         return categoriAttuale;

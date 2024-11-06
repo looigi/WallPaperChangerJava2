@@ -72,7 +72,7 @@ public class db_dati_pennetta {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
                         + " (LimiteInBytes VARCHAR, Random VARCHAR, SettingsAperto VARCHAR, "
-                        + "FiltroCategoria VARCHAR, Filtro VARCHAR "
+                        + "FiltroCategoria VARCHAR, Filtro VARCHAR, RicercaPerVisura VARCHAR "
                         + ");";
 
                 myDB.execSQL(sql);
@@ -164,7 +164,8 @@ public class db_dati_pennetta {
                         + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() + "',"
                         + "'" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isSettingsAperto() ? "S" : "N") + "',"
                         + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltroCategoria().replace("'", "''") + "',"
-                        + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro().replace("'", "''") + "'"
+                        + "'" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro().replace("'", "''") + "',"
+                        + "'" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -187,6 +188,7 @@ public class db_dati_pennetta {
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSettingsAperto(true);
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltroCategoria("");
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltro("");
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setRicercaPerVisua(true);
     }
 
     public int CaricaImpostazioni() {
@@ -203,6 +205,7 @@ public class db_dati_pennetta {
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSettingsAperto(c.getString(2).equals("S"));
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltroCategoria(c.getString(3));
                         VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltro(c.getString(4));
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().setRicercaPerVisua(c.getString(5).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

@@ -1,55 +1,36 @@
 package com.looigi.wallpaperchanger2.classeAvvio;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener2;
-import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
-import com.looigi.wallpaperchanger2.classePlayer.cuffie.GestioneTastiCuffieNuovo;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
-import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-
-import java.util.Date;
 
 // implements SensorEventListener2
 public class ServizioInterno extends Service {
@@ -58,7 +39,7 @@ public class ServizioInterno extends Service {
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
-    private Intent intentCuffie;
+    // private Intent intentCuffie;
 
     /* private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -92,7 +73,6 @@ public class ServizioInterno extends Service {
         return START_STICKY;
     }
 
-    @SuppressLint({"ForegroundServiceType", "WakelockTimeout"})
     @Override
     public void onCreate() {
         context = this;
@@ -118,8 +98,8 @@ public class ServizioInterno extends Service {
         context.registerReceiver(mScreenReceiver, filterSO);
 
         // GESTIONE TASTI CUFFIE
-        intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
-        startService(intentCuffie);
+        // intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
+        // startService(intentCuffie);
 
         // SENSORI DI MOVIMENTO
         /* mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -244,10 +224,6 @@ public class ServizioInterno extends Service {
             VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
         }
 
-        if (intentCuffie != null) {
-            context.stopService(intentCuffie);
-        }
-
         if (intentSegnale != null) {
             context.stopService(intentSegnale);
         }
@@ -255,6 +231,10 @@ public class ServizioInterno extends Service {
         if (mScreenReceiver != null) {
             context.unregisterReceiver(mScreenReceiver);
         }
+
+        /* if (intentCuffie != null) {
+            context.stopService(intentCuffie);
+        } */
 
         // if (mSensorManager != null) {
         //     mSensorManager.unregisterListener(this);

@@ -24,7 +24,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
-import com.looigi.wallpaperchanger2.classePlayer.cuffie.PresenzaCuffie;
+import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
 import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.impostazioni_player_interne;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniPerLimite;
@@ -80,7 +80,7 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setImgIndietro(findViewById(R.id.imgIndietroPlayer));
         VariabiliStatichePlayer.getInstance().setImgPlayStop(findViewById(R.id.imgPlayStop));
         VariabiliStatichePlayer.getInstance().setImgBrano(findViewById(R.id.imgBrano));
-        VariabiliStatichePlayer.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPlayer));
+        VariabiliStatichePlayer.getInstance().setLayCaricamento(findViewById(R.id.layCaricamentoInCorso));
         VariabiliStatichePlayer.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloPlayer));
         VariabiliStatichePlayer.getInstance().setTxtOperazione(findViewById(R.id.txtOperazionePlayer));
         VariabiliStatichePlayer.getInstance().setTxtInizio(findViewById(R.id.txtInizio));

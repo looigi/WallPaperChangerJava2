@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.R;
 
+import java.util.Objects;
+
 public class MainActivityDetector extends Activity {
     private static String NomeMaschera = "Main_Activity";
 

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer.cuffie;
+package com.looigi.wallpaperchanger2.utilities.cuffie;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;

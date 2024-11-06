@@ -61,7 +61,8 @@ public class ChiamateWSMI implements TaskDelegate {
                 "idCategoria=" + (idCategoria != -1 ? idCategoria : "") +
                 "&Filtro=" + VariabiliStaticheMostraImmagini.getInstance().getFiltro() +
                 "&idImmagine=" + idImmagine +
-                "&Random=" + Random;
+                "&Random=" + Random +
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N");
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -76,9 +77,26 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     public void EliminaImmagine(String id) {
-        String Urletto="EliminaImmagine";
+        String Urletto="EliminaImmagine?idImmagine=" + id;
 
-        TipoOperazione = "EliminaImmagine?idImmagine=" + id;
+        TipoOperazione = "EliminaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
+                ApriDialog);
+    }
+
+    public void SpostaImmagine(StrutturaImmaginiLibrary s) {
+        String Urletto="SpostaImmagineACategoria?" +
+            "idImmagine=" + s.getIdImmagine() +
+            "&idCategoriaNuova=" + VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento();
+
+        TipoOperazione = "SpostaImmagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -121,6 +139,7 @@ public class ChiamateWSMI implements TaskDelegate {
             if (!lista.isEmpty()) {
                 VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(lista);
                 UtilityImmagini.getInstance().AggiornaCategorie(context);
+                UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
 
                 return;
             }
@@ -219,6 +238,9 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "EliminaImmagine":
                         fEliminaImmagine(result);
                         break;
+                    case "SpostaImmagine":
+                        fSpostaImmagine(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -259,6 +281,16 @@ public class ChiamateWSMI implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine modificata");
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
+    }
+
+    private void fSpostaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Sposta Immagine", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
+            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -334,6 +366,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(CategoriaAttuale);
                 VariabiliStaticheMostraImmagini.getInstance().setListaCategorieImm(l);
                 UtilityImmagini.getInstance().AggiornaCategorie(context);
+                UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
 
                 /* ArrayAdapter<String> adapter = new ArrayAdapter<String>
                         (context, android.R.layout.simple_spinner_item, l);

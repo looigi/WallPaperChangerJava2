@@ -23,7 +23,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (VariabiliStaticheDetector.getInstance().isFotoSuPower()) {
+        if (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie()) {
             if (datella1 == null) {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 1");
 
@@ -65,7 +65,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             VariabiliStaticheStart.getInstance().getContext().startActivity(myIntent);
                         }
-                    }, 1000);
+                    }, 100);
 
                     VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
                     VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);

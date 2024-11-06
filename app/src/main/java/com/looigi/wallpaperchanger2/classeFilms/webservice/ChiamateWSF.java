@@ -9,8 +9,11 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -47,7 +50,8 @@ public class ChiamateWSF implements TaskDelegate {
                 "Categoria=" + Categoria.replace("\\", "§") +
                 "&Filtro=" + Filtro +
                 "&Random=" + VariabiliStaticheFilms.getInstance().getRandom() +
-                "&pUltimoFilms=" + VariabiliStaticheFilms.getInstance().getIdUltimoFilms();
+                "&pUltimoFilms=" + VariabiliStaticheFilms.getInstance().getIdUltimoFilms() +
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheFilms.getInstance().isRicercaPerVisua() ? "S" : "N");
 
         TipoOperazione = "RitornaProssimoFilms";
         // ControllaTempoEsecuzione = false;
@@ -69,6 +73,7 @@ public class ChiamateWSF implements TaskDelegate {
             if (!lista.isEmpty()) {
                 VariabiliStaticheFilms.getInstance().setListaCategorie(lista);
                 UtilityFilms.getInstance().AggiornaCategorie(context);
+                UtilityFilms.getInstance().AggiornaCategorieSpostamento(context);
 
                 return;
             }
@@ -85,6 +90,40 @@ public class ChiamateWSF implements TaskDelegate {
                 NS,
                 SA,
                 35000,
+                ApriDialog);
+    }
+
+    public void SpostaFilm() {
+        String Urletto="SpostaFilm?" +
+                "Categoria=" + VariabiliStaticheFilms.getInstance().getCategoria() +
+                "&idFilm=" + VariabiliStaticheFilms.getInstance().getIdUltimoFilms() +
+                "&NuovaCategoria=" + VariabiliStaticheFilms.getInstance().getIdCategoriaSpostamento();
+
+        TipoOperazione = "SpostaFilm";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
+                ApriDialog);
+    }
+
+    public void EliminaFilm(String id) {
+        String Urletto="EliminaFilm?" +
+                "idFilm=" + id;
+
+        TipoOperazione = "EliminaFilm";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
                 ApriDialog);
     }
 
@@ -159,6 +198,12 @@ public class ChiamateWSF implements TaskDelegate {
                     case "RefreshFilms":
                         fRefreshFilms(result);
                         break;
+                    case "SpostaFilm":
+                        fSpostaFilm(result);
+                        break;
+                    case "EliminaFilm":
+                        fEliminaFilm(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -181,6 +226,28 @@ public class ChiamateWSF implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fEliminaFilm(String result) {
+        boolean ritorno = ControllaRitorno("Elimina Film", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Film eliminato");
+
+            ChiamateWSF ws = new ChiamateWSF(context);
+            ws.RitornaProssimoFilms();
+        }
+    }
+
+    private void fSpostaFilm(String result) {
+        boolean ritorno = ControllaRitorno("Sposta Film", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Film spostato");
+            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -210,6 +277,7 @@ public class ChiamateWSF implements TaskDelegate {
 
             VariabiliStaticheFilms.getInstance().setListaCategorie(l);
             UtilityFilms.getInstance().AggiornaCategorie(context);
+            UtilityFilms.getInstance().AggiornaCategorieSpostamento(context);
 
             /* ArrayAdapter<String> adapter = new ArrayAdapter<String>
                     (context, android.R.layout.simple_spinner_item, l);

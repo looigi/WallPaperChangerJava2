@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 
 import java.io.File;
@@ -127,7 +126,7 @@ public class db_dati_detector {
         VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
         VariabiliStaticheDetector.getInstance().setGpsMs(1000);
         VariabiliStaticheDetector.getInstance().setGpsMeters(5);
-        VariabiliStaticheDetector.getInstance().setFotoSuPower(true);
+        VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(true);
         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(50);
     }
 
@@ -160,7 +159,7 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setGpsPreciso(c.getString(14).equals("S"));
                         VariabiliStaticheDetector.getInstance().setGpsMs(Integer.parseInt(c.getString(15)));
                         VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(c.getString(16)));
-                        VariabiliStaticheDetector.getInstance().setFotoSuPower(c.getString(17).equals("S"));
+                        VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(c.getString(17).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(c.getString(18)));
 
                         return 0; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
@@ -258,7 +257,7 @@ public class db_dati_detector {
                         + "'" + (VariabiliStaticheDetector.getInstance().isGpsPreciso() ? "S" : "N") + "', "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMs() + ", "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + ", "
-                        + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuPower() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "' "
                         + ") ";
                 myDB.execSQL(sql);

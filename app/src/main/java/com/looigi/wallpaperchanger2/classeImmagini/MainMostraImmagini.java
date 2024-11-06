@@ -29,6 +29,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
@@ -38,6 +39,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,6 +104,8 @@ public class MainMostraImmagini extends Activity {
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
+
+        ImpostaSpostamento(act);
 
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie(false);
@@ -403,4 +407,77 @@ public class MainMostraImmagini extends Activity {
 
         return false;
     } */
+
+    private void ImpostaSpostamento(Activity act) {
+        LinearLayout laySposta = act.findViewById(R.id.laySposta);
+        laySposta.setVisibility(LinearLayout.GONE);
+
+        ImageView imgApre = act.findViewById(R.id.imgSpostaACategoria);
+        imgApre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgSpostaImmagine = act.findViewById(R.id.imgSpostaImmagine);
+        imgSpostaImmagine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
+
+                ChiamateWSMI c = new ChiamateWSMI(context);
+                c.SpostaImmagine(s);
+
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgAnnullaSposta = act.findViewById(R.id.imgAnnullaSposta);
+        imgAnnullaSposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        EditText edtFiltroSpostamento = findViewById(R.id.edtSpostaFiltroCategoria);
+        edtFiltroSpostamento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
+                UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+            }
+        });
+
+        VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento("");
+        VariabiliStaticheMostraImmagini.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
+        final boolean[] primoIngresso = {true};
+        VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Categoria = adapterView.getItemAtPosition(position).toString();
+                if (Categoria.equals("Tutte")) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Impostare una categoria. Non Tutte");
+                } else {
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                        if (s.getCategoria().equals(Categoria)) {
+                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(String.valueOf(s.getIdCategoria()));
+                            break;
+                        }
+                    }
+                    if (VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento().isEmpty()) {
+                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                "Categoria non valida: " + Categoria);
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+    }
 }

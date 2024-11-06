@@ -276,6 +276,29 @@ public class UtilityPennetta {
         }
     }
 
+    public void AggiornaCategorieSpostamento(Context context) {
+        List<StrutturaImmaginiCategorie> l1 = new ArrayList<>();
+
+        for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmaginiPennetta.getInstance().getListaCategorie()) {
+            if (s.getCategoria().toUpperCase().trim().contains(
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltroCategoriaSpostamento().toUpperCase().trim())) {
+                l1.add(s);
+            }
+        }
+
+        String[] l = new String[l1.size()];
+        int c = 0;
+        for (StrutturaImmaginiCategorie s : l1) {
+            l[c] = s.getCategoria();
+            c++;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
+    }
+
     public void SalvataggioImmagine(Context context, boolean Sovrascrive) {
         String Path = context.getFilesDir() + "/Immagini/AppoggioPEN.jpg";
         StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata();

@@ -18,7 +18,16 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraFilms extends Activity {
     private static String NomeMaschera = "Main_Mostra_Films";
@@ -110,16 +119,18 @@ public class MainMostraFilms extends Activity {
         VariabiliStaticheFilms.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloFilms));
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheFilms.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+
         EditText txtFiltro = findViewById(R.id.edtFiltroFilms);
         txtFiltro.setText(VariabiliStaticheFilms.getInstance().getFiltro());
         txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(false);
-                    VariabiliStaticheFilms.getInstance().setFiltro(txtFiltro.getText().toString());
                     db_dati_films db = new db_dati_films(context);
                     db.ScriveImpostazioni();
+
+                    VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(false);
+                    VariabiliStaticheFilms.getInstance().setFiltro(txtFiltro.getText().toString());
                 } else {
                     VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(true);
                 }
@@ -133,8 +144,10 @@ public class MainMostraFilms extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (!hasFocus) {
                     VariabiliStaticheFilms.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
                     db_dati_films db = new db_dati_films(context);
                     db.ScriveImpostazioni();
+
                     UtilityFilms.getInstance().AggiornaCategorie(context);
                 // }
             }
@@ -148,6 +161,31 @@ public class MainMostraFilms extends Activity {
 
                 ChiamateWSF ws = new ChiamateWSF(context);
                 ws.RitornaProssimoFilms();
+            }
+        });
+
+        ImageView imgElimina = findViewById(R.id.imgElimina);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vuole eliminare il Film ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSF c = new ChiamateWSF(context);
+                        c.EliminaFilm(id);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -248,6 +286,8 @@ public class MainMostraFilms extends Activity {
             VariabiliStaticheFilms.getInstance().getTxtTitolo().setText(res);
         }
 
+        ImpostaSpostamento(act);
+
         ChiamateWSF ws = new ChiamateWSF(context);
         ws.RitornaCategorie(false);
 
@@ -272,5 +312,76 @@ public class MainMostraFilms extends Activity {
         }
 
         act.finish();
+    }
+
+    private void ImpostaSpostamento(Activity act) {
+        LinearLayout laySposta = act.findViewById(R.id.laySposta);
+        laySposta.setVisibility(LinearLayout.GONE);
+
+        ImageView imgApre = act.findViewById(R.id.imgSpostaACategoria);
+        imgApre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgSpostaImmagine = act.findViewById(R.id.imgSpostaImmagine);
+        imgSpostaImmagine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSF c = new ChiamateWSF(context);
+                c.SpostaFilm();
+
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgAnnullaSposta = act.findViewById(R.id.imgAnnullaSposta);
+        imgAnnullaSposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        EditText edtFiltroSpostamento = findViewById(R.id.edtSpostaFiltroCategoria);
+        edtFiltroSpostamento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                VariabiliStaticheFilms.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
+                UtilityFilms.getInstance().AggiornaCategorieSpostamento(context);
+            }
+        });
+
+        VariabiliStaticheFilms.getInstance().setIdCategoriaSpostamento("");
+        VariabiliStaticheFilms.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
+        final boolean[] primoIngresso = {true};
+        VariabiliStaticheFilms.getInstance().getSpnSpostaCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Categoria = adapterView.getItemAtPosition(position).toString();
+                if (Categoria.equals("Tutte")) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Impostare una categoria. Non Tutte");
+                } else {
+                    for (String s : VariabiliStaticheFilms.getInstance().getListaCategorie()) {
+                        if (s.equals(Categoria)) {
+                            VariabiliStaticheFilms.getInstance().setIdCategoriaSpostamento(s);
+                            break;
+                        }
+                    }
+                    if (VariabiliStaticheFilms.getInstance().getIdCategoriaSpostamento().isEmpty()) {
+                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                "Categoria non valida: " + Categoria);
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
     }
 }

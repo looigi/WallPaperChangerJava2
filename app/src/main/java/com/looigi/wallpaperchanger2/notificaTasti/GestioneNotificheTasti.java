@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -18,6 +19,7 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
+import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
@@ -29,23 +31,25 @@ import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 
 public class GestioneNotificheTasti {
     private static final String nomeMaschera = "Gestione_Notifiche_Wallpaper";
     private NotificationManager manager;
-    private NotificationCompat.Builder notificationBuilder;
+    // private NotificationCompat.Builder notificationBuilder;
     private RemoteViews contentView;
     private Context context;
     // private Notification notifica;
@@ -66,7 +70,7 @@ public class GestioneNotificheTasti {
             NotificationChannel chan = new NotificationChannel(
                     VariabiliStaticheTasti.NOTIFICATION_CHANNEL_STRING,
                     VariabiliStaticheTasti.channelName,
-                    NotificationManager.IMPORTANCE_LOW);
+                    NotificationManager.IMPORTANCE_HIGH);
             chan.setLightColor(Color.BLUE);
             chan.setShowBadge(false);
             chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
@@ -161,7 +165,8 @@ public class GestioneNotificheTasti {
                     VariabiliStaticheStart.getInstance().getUltimoControlloRete();
             contentView.setTextViewText(R.id.txtSegnale, testo);
 
-            notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheTasti.NOTIFICATION_CHANNEL_STRING);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,
+                    VariabiliStaticheTasti.NOTIFICATION_CHANNEL_STRING);
 
             Notification notifica = notificationBuilder
                 .setContentTitle(VariabiliStaticheTasti.channelName)                            // required
@@ -169,6 +174,7 @@ public class GestioneNotificheTasti {
                 .setContentText(VariabiliStaticheTasti.channelName) // required
                 // .setDefaults(Notification.DEFAULT_ALL)
                 .setOnlyAlertOnce(false)
+                .setStyle(new NotificationCompat.InboxStyle())
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -176,6 +182,7 @@ public class GestioneNotificheTasti {
                 // .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
                 // .setGroup("LOO'S WEB PLAYER")
                 .setGroupSummary(false)
+                .setDeleteIntent(createOnDismissedIntent(context))
                 // .setDefaults(NotificationCompat.DEFAULT_ALL)
                 // .setContentIntent(pendingIntent)
                 .setTicker("")
@@ -184,10 +191,22 @@ public class GestioneNotificheTasti {
 
             notifica.bigContentView = contentView;
 
+            manager.notify(VariabiliStaticheTasti.NOTIFICATION_CHANNEL_ID, notifica);
+
             return notifica;
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private PendingIntent createOnDismissedIntent(Context context) {
+        Intent intent = new Intent(context, NotificationDismissedReceiver.class);
+        intent.putExtra("com.looigi.wallpaperchanger2.notificationId", 1);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        1, intent, PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
     }
 
     private void setListeners(RemoteViews view) {
@@ -216,63 +235,95 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps); */
 
-            Intent settings = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent settings = new Intent(ctx, ActivityDiStart.class);
+            settings.addCategory(Intent.CATEGORY_LAUNCHER);
+            settings.setAction(Intent.ACTION_MAIN );
+            settings.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             settings.putExtra("DO", "settings");
-            PendingIntent pSettings = PendingIntent.getService(ctx, 201, settings,
+            PendingIntent pSettings = PendingIntent.getActivity(ctx, 201, settings,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgSettingsTasti, pSettings);
 
-            Intent detector = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent detector = new Intent(ctx, ActivityDiStart.class);
+            detector.addCategory(Intent.CATEGORY_LAUNCHER);
+            detector.setAction(Intent.ACTION_MAIN );
+            detector.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             detector.putExtra("DO", "detector");
-            PendingIntent pDetector = PendingIntent.getService(ctx, 202, detector,
+            PendingIntent pDetector = PendingIntent.getActivity(ctx,
+                    202,
+                    detector,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgDetectorTasti, pDetector);
 
-            Intent wp = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent wp = new Intent(ctx, ActivityDiStart.class);
+            wp.addCategory(Intent.CATEGORY_LAUNCHER);
+            wp.setAction(Intent.ACTION_MAIN );
+            wp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             wp.putExtra("DO", "wallpaper");
-            PendingIntent pWp = PendingIntent.getService(ctx, 203, wp,
+            PendingIntent pWp = PendingIntent.getActivity(ctx, 203, wp,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgWallpaperTasti, pWp);
 
-            Intent mappa = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent mappa = new Intent(ctx, ActivityDiStart.class);
+            mappa.addCategory(Intent.CATEGORY_LAUNCHER);
+            mappa.setAction(Intent.ACTION_MAIN );
+            mappa.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             mappa.putExtra("DO", "mappa");
-            PendingIntent pMappa = PendingIntent.getService(ctx, 204, mappa,
+            PendingIntent pMappa = PendingIntent.getActivity(ctx, 204, mappa,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgMappaTasti, pMappa);
 
-            Intent player = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent player = new Intent(ctx, ActivityDiStart.class);
+            player.addCategory(Intent.CATEGORY_LAUNCHER);
+            player.setAction(Intent.ACTION_MAIN );
+            player.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             player.putExtra("DO", "player");
-            PendingIntent pPlayer = PendingIntent.getService(ctx, 205, player,
+            PendingIntent pPlayer = PendingIntent.getActivity(ctx, 205, player,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgPlayerTasti, pPlayer);
 
-            Intent ono = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent ono = new Intent(ctx, ActivityDiStart.class);
+            ono.addCategory(Intent.CATEGORY_LAUNCHER);
+            ono.setAction(Intent.ACTION_MAIN );
+            ono.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             ono.putExtra("DO", "onomastici");
-            PendingIntent pOno = PendingIntent.getService(ctx, 207, ono,
+            PendingIntent pOno = PendingIntent.getActivity(ctx, 207, ono,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgOnomasticiTasti, pOno);
 
-            Intent film = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent film = new Intent(ctx, ActivityDiStart.class);
+            film.addCategory(Intent.CATEGORY_LAUNCHER);
+            film.setAction(Intent.ACTION_MAIN );
+            film.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             film.putExtra("DO", "films");
-            PendingIntent pFilm = PendingIntent.getService(ctx, 206, film,
+            PendingIntent pFilm = PendingIntent.getActivity(ctx, 206, film,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgFilmsTasti, pFilm);
 
-            Intent pwd = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent pwd = new Intent(ctx, ActivityDiStart.class);
+            pwd.addCategory(Intent.CATEGORY_LAUNCHER);
+            pwd.setAction(Intent.ACTION_MAIN );
+            pwd.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             pwd.putExtra("DO", "password");
-            PendingIntent pPwd = PendingIntent.getService(ctx, 208, pwd,
+            PendingIntent pPwd = PendingIntent.getActivity(ctx, 208, pwd,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgPasswordTasti, pPwd);
 
-            Intent bac = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent bac = new Intent(ctx, ActivityDiStart.class);
+            bac.addCategory(Intent.CATEGORY_LAUNCHER);
+            bac.setAction(Intent.ACTION_MAIN );
+            bac.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             bac.putExtra("DO", "backup");
-            PendingIntent pBac = PendingIntent.getService(ctx, 209, bac,
+            PendingIntent pBac = PendingIntent.getActivity(ctx, 209, bac,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgBackupTasti, pBac);
 
-            Intent uscita = new Intent(ctx, NotificationActionServiceTasti.class);
+            Intent uscita = new Intent(ctx, ActivityDiStart.class);
+            uscita.addCategory(Intent.CATEGORY_LAUNCHER);
+            uscita.setAction(Intent.ACTION_MAIN );
+            uscita.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             uscita.putExtra("DO", "uscita");
-            PendingIntent pUscita = PendingIntent.getService(ctx, 210, uscita,
+            PendingIntent pUscita = PendingIntent.getActivity(ctx, 210, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
         }
@@ -321,7 +372,7 @@ public class GestioneNotificheTasti {
                 manager.cancelAll();
                 manager = null;
                 contentView = null;
-                notificationBuilder = null;
+                // notificationBuilder = null;
                 // notifica = null;
                 // NOTIF_ID++;
             } catch (Exception e) {
@@ -330,7 +381,7 @@ public class GestioneNotificheTasti {
         }
     }
 
-    public static class NotificationActionServiceTasti extends Service {
+    /* public static class NotificationActionServiceTasti extends Service {
         private Context context;
 
         @Override
@@ -359,6 +410,7 @@ public class GestioneNotificheTasti {
                 if (context == null) {
                     context = UtilitiesGlobali.getInstance().tornaContextValido();
                 }
+
                 if (context != null) {
                     switch (action) {
                         /* case "gps":
@@ -370,7 +422,7 @@ public class GestioneNotificheTasti {
                                 VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
                             }
                             GestioneNotificheTasti.getInstance().AggiornaNotifica();
-                            break; */
+                            break; * /
                         case "settings":
                             Intent iI = new Intent(context, MainImpostazioni.class);
                             iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -488,5 +540,5 @@ public class GestioneNotificheTasti {
         public IBinder onBind(Intent intent) {
             return null;
         }
-    }
+    } */
 }

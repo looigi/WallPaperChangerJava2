@@ -52,7 +52,7 @@ public class VariabiliStaticheDetector {
     private String Anteprima;
     private int Orientamento;
     private String Lingua;
-    private boolean FotoSuPower = true;
+    private boolean FotoSuTriploTastoCuffie = true;
     private boolean Vibrazione = true;
     private int DimensioniThumbs = 70;
     private int DimensioniThumbsM = 50;
@@ -120,12 +120,12 @@ public class VariabiliStaticheDetector {
         this.giaPartito = giaPartito;
     } */
 
-    public boolean isFotoSuPower() {
-        return FotoSuPower;
+    public boolean isFotoSuTriploTastoCuffie() {
+        return FotoSuTriploTastoCuffie;
     }
 
-    public void setFotoSuPower(boolean fotoSuPower) {
-        FotoSuPower = fotoSuPower;
+    public void setFotoSuTriploTastoCuffie(boolean fotoSuTriploTastoCuffie) {
+        FotoSuTriploTastoCuffie = fotoSuTriploTastoCuffie;
     }
 /* public Button getBtnLayModificaImmagine() {
         return btnLayModificaImmagine;

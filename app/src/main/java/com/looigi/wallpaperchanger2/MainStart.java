@@ -2,6 +2,9 @@ package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +17,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;

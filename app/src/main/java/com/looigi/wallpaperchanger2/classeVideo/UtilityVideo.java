@@ -117,7 +117,6 @@ public class UtilityVideo {
                     }
                     String Dest = Cartella + nomeFile;
                     try (FileOutputStream out = new FileOutputStream(Dest)) {
-                        assert thummbnailBitmap != null;
                         thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
                         // UtilitiesGlobali.getInstance().ApreToast(context, "Immagine " + quale + "/" +
@@ -331,5 +330,21 @@ public class UtilityVideo {
                 (context, android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter);
+    }
+
+    public void AggiornaCategorieSpostamento(Context context) {
+        List<String> l = new ArrayList<>();
+
+        for (String s : VariabiliStaticheVideo.getInstance().getListaCategorie()) {
+            if (s.toUpperCase().trim().contains(
+                    VariabiliStaticheVideo.getInstance().getFiltroCategoriaSpostamento().toUpperCase().trim())) {
+                l.add(s);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, l);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        VariabiliStaticheVideo.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
     }
 }

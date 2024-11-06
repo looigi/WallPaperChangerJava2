@@ -19,6 +19,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileOutputStream;
@@ -155,6 +156,11 @@ public class Main_ModificaImmagine extends Activity {
                 if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
                     // Salvataggio immagine da maschera immagini
                     UtilityPennetta.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                } else {
+                    if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PLAYER")) {
+                        // Salvataggio immagine da maschera player
+                        UtilityPlayer.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                    }
                 }
             }
         }
@@ -170,6 +176,9 @@ public class Main_ModificaImmagine extends Activity {
             if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("IMMAGINI")) {
             } else {
                 if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
+                } else {
+                    if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PLAYER")) {
+                    }
                 }
             }
         }

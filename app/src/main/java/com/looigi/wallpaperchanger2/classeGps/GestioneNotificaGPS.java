@@ -20,6 +20,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
+import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificaGPS {
@@ -107,6 +109,7 @@ public class GestioneNotificaGPS {
                     .setCategory(Notification.CATEGORY_SERVICE)
                     // .setGroupAlertBehavior(GROUP_ALERT_SUMMARY)
                     // .setGroup("LOO'S WEB PLAYER")
+                    .setDeleteIntent(createOnDismissedIntent(context))
                     .setGroupSummary(false)
                     // .setDefaults(NotificationCompat.DEFAULT_ALL)
                     // .setContentIntent(pendingIntent)
@@ -116,6 +119,8 @@ public class GestioneNotificaGPS {
 
             notifica.bigContentView = contentView;
 
+            manager.notify(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notifica);
+
             return notifica;
         } catch (Exception e) {
             UtilityGPS.getInstance().ScriveLog(context, nomeMaschera, "Errore notifica: " +
@@ -123,6 +128,16 @@ public class GestioneNotificaGPS {
 
             return null;
         }
+    }
+
+    private PendingIntent createOnDismissedIntent(Context context) {
+        Intent intent = new Intent(context, NotificationDismissedReceiver.class);
+        intent.putExtra("com.looigi.wallpaperchanger2.notificationId", 3);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context.getApplicationContext(),
+                        2, intent, PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
     }
 
     private void setListeners(RemoteViews view) {

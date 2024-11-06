@@ -71,7 +71,7 @@ public class db_dati_video {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
                         + " (Random VARCHAR, SettingsAperto VARCHAR, BarraVisibiòe VARCHAR, NumeroFrames VARCHAR, "
-                        + "FiltroCategoria VARCHAR, Filtro VARCHAR "
+                        + "FiltroCategoria VARCHAR, Filtro VARCHAR, RicercaPerVisura VARCHAR "
                         + ");";
 
                 myDB.execSQL(sql);
@@ -268,7 +268,8 @@ public class db_dati_video {
                         + "'" + (VariabiliStaticheVideo.getInstance().isBarraVisibile() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheVideo.getInstance().getNumeroFrames() + "', "
                         + "'" + VariabiliStaticheVideo.getInstance().getFiltroCategoria().replace("'", "''") + "', "
-                        + "'" + VariabiliStaticheVideo.getInstance().getFiltro().replace("'", "''") + "' "
+                        + "'" + VariabiliStaticheVideo.getInstance().getFiltro().replace("'", "''") + "', "
+                        + "'" + (VariabiliStaticheVideo.getInstance().isRicercaPerVisua() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -289,10 +290,11 @@ public class db_dati_video {
     public void ImpostaValoriDiDefault() {
         VariabiliStaticheVideo.getInstance().setRandom("S");
         VariabiliStaticheVideo.getInstance().setSettingsAperto(true);
-        VariabiliStaticheVideo.getInstance().setBarraVisibile(true);
+        VariabiliStaticheVideo.getInstance().setBarraVisibile(false);
         VariabiliStaticheVideo.getInstance().setNumeroFrames(10);
         VariabiliStaticheVideo.getInstance().setFiltroCategoria("");
         VariabiliStaticheVideo.getInstance().setFiltro("");
+        VariabiliStaticheVideo.getInstance().setRicercaPerVisua(true);
     }
 
     public int CaricaImpostazioni() {
@@ -310,6 +312,7 @@ public class db_dati_video {
                         VariabiliStaticheVideo.getInstance().setNumeroFrames(Integer.parseInt(c.getString(3)));
                         VariabiliStaticheVideo.getInstance().setFiltroCategoria(c.getString(4));
                         VariabiliStaticheVideo.getInstance().setFiltro(c.getString(5));
+                        VariabiliStaticheVideo.getInstance().setRicercaPerVisua(c.getString(6).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

@@ -80,30 +80,29 @@
             android:layout_height="0dp">
 
             <include
-                layout="@layout/ricerche_player"
+                layout="@layout/player_ricerche"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
-                layout="@layout/brani_locali"
+                layout="@layout/player_brani_locali"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
-                layout="@layout/brani_on_line"
+                layout="@layout/player_brani_on_line"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
-                layout="@layout/sfondo_player"
+                layout="@layout/player_sfondo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <include
-                layout="@layout/brano_player"
+                layout="@layout/player_brano_offline"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
