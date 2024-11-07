@@ -38,6 +38,15 @@ public class VariabiliStaticheStart {
     private boolean VisibilePennetta = false;
     private Intent servizioForeground;
     private Intent servizioForegroundGPS;
+    private boolean segnaleAttivo = true;
+
+    public boolean isSegnaleAttivo() {
+        return segnaleAttivo;
+    }
+
+    public void setSegnaleAttivo(boolean segnaleAttivo) {
+        this.segnaleAttivo = segnaleAttivo;
+    }
 
     public Intent getServizioForeground() {
         return servizioForeground;

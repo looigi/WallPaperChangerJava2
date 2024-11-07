@@ -123,6 +123,7 @@ public class GestioneTastiCuffieNuovo extends Service {
                                         "Premuto PLAY");
 
                                 come = true;
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                                 UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                                         "Premuto Pause");
@@ -133,6 +134,7 @@ public class GestioneTastiCuffieNuovo extends Service {
                                         "Premuto PAUSE");
 
                                 come = true;
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_NEXT:
                                 if (diff < 2000) {
                                     UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
@@ -152,6 +154,7 @@ public class GestioneTastiCuffieNuovo extends Service {
 
                                     come = true;
                                 }
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                                 if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
                                     UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
@@ -172,6 +175,7 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 }
 
                                 come = true;
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                                 if (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie()) {
                                     Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
@@ -213,9 +217,11 @@ public class GestioneTastiCuffieNuovo extends Service {
                                         come = true;
                                     }
                                 }
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_REWIND:
                                 // code for rewind
                                 come = true;
+                                break;
                             case KeyEvent.KEYCODE_MEDIA_STOP:
                                 UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
                                         "Premuto Stop");
@@ -226,6 +232,7 @@ public class GestioneTastiCuffieNuovo extends Service {
                                         "Premuto STOP");
 
                                 come = true;
+                                break;
                         }
 
                     /* } else {

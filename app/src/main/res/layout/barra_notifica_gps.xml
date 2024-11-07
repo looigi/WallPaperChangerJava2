@@ -44,6 +44,7 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -68,6 +69,36 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/gps_on" />
+
+        <ImageView
+            android:id="@+id/imgWifi"
+            android:layout_marginStart="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/wifi" />
+
+        <ImageView
+            android:id="@+id/imgStop"
+            android:layout_marginStart="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/stop2" />
+
+        <ImageView
+            android:id="@+id/imgStop2"
+            android:layout_marginStart="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/noenter" />
+
+        <TextView
+            android:id="@+id/txtData"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_height="wrap_content"
+            android:text="Punti: 0">
+
+        </TextView>
 
     </LinearLayout>
 

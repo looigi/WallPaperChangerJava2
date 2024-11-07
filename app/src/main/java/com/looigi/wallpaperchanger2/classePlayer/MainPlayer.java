@@ -106,9 +106,25 @@ public class MainPlayer extends Activity {
         VariabiliStatichePlayer.getInstance().setImgSfondoSettings(act.findViewById(R.id.imgSfondoSettings));
 
         VariabiliStatichePlayer.getInstance().setTxtNumeroImmagine(act.findViewById(R.id.txtNumeroImmagine));
+        VariabiliStatichePlayer.getInstance().setEdtNumeroImmagine(act.findViewById(R.id.edtNumeroImmagine));
         VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("");
+        VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().setText("");
         VariabiliStatichePlayer.getInstance().setTxtNomeImmaginePerModifica(act.findViewById(R.id.txtNomeImmagine));
         VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText("");
+
+        ImageView imgNumero = (ImageView) findViewById(R.id.imgImpostaNumero);
+        imgNumero.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int n = Integer.parseInt(VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().getText().toString());
+                if (n < 0 || n > VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1 ) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Valore non valido");
+                    return;
+                }
+                VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(n);
+
+                UtilityPlayer.getInstance().ImpostaImmagineInterna(context);
+            }
+        });
 
         VariabiliStatichePlayer.getInstance().setSettingsAperte(false);
         ImageView imgSettings = (ImageView) findViewById(R.id.imgSettings);
@@ -119,19 +135,7 @@ public class MainPlayer extends Activity {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
                     public void run() {
-                        if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-                            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
-                                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
-
-                            if (VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica() != null) {
-                                if (VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica() != null) {
-                                    VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
-                                            VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
-                                    );
-                                }
-                            }
-                        }
+                        UtilityPlayer.getInstance().ScriveInfoImmagine();
 
                         VariabiliStatichePlayer.getInstance().setSettingsAperte(true);
                         layImpostazioni.setVisibility(LinearLayout.VISIBLE);
@@ -189,15 +193,25 @@ public class MainPlayer extends Activity {
             VariabiliStatichePlayer.getInstance().getImgCambiaPregresso().setVisibility(LinearLayout.GONE);
         }
 
+        VariabiliStatichePlayer.getInstance().setImgRetePresente(findViewById(R.id.imgRete));
+        if (VariabiliStaticheStart.getInstance().isSegnaleAttivo()) {
+            VariabiliStatichePlayer.getInstance().getImgRetePresente().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStatichePlayer.getInstance().getImgRetePresente().setVisibility(LinearLayout.GONE);
+        }
         VariabiliStatichePlayer.getInstance().setTxtPercentuale(findViewById(R.id.txtpercentuale));
+
+        if (VariabiliStatichePlayer.getInstance().isCuffieInserite()) {
+            VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
+        }
 
         if (!VariabiliStatichePlayer.getInstance().isGiaPartito()) {
             VariabiliStatichePlayer.getInstance().setGiaPartito(true);
 
             VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
             VariabiliStatichePlayer.getInstance().setStaSuonando(false);
-
-            VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
 
             VariabiliStatichePlayer.getInstance().getTxtTitolo().setText("");
             VariabiliStatichePlayer.getInstance().getTxtInizio().setText("");

@@ -47,6 +47,15 @@ public class VariabiliStaticheGPS {
     private int DistanzaMetriPerPS = 50;
     private ImmagineZoomabile imgMappa;
     private boolean NonScriverePunti = false;
+    private String ultimoDataPunto = "";
+
+    public String getUltimoDataPunto() {
+        return ultimoDataPunto;
+    }
+
+    public void setUltimoDataPunto(String ultimoDataPunto) {
+        this.ultimoDataPunto = ultimoDataPunto;
+    }
 
     public boolean isNonScriverePunti() {
         return NonScriverePunti;

@@ -567,16 +567,16 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
         List<StrutturaGps> listaGPS = VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti();
 
-        txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
-
-        // if (listaGPS.isEmpty()) {
+        if (listaGPS.isEmpty()) {
             mappa.clear();
-        // }
+        }
 
-        // if (!listaGPS.isEmpty() && vecchiDati != listaGPS.size()) {
-            // mappa.clear();
-
+        if (!listaGPS.isEmpty() && vecchiDati != listaGPS.size()) {
             vecchiDati = listaGPS.size();
+
+            mappa.clear();
+
+            txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
 
             int vecchioColore = -1;
             List<StrutturaGps> lista = new ArrayList<>();
@@ -687,7 +687,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                             .newCameraPosition(cameraPosition));
                 }
             }
-        // }
+        }
     }
 
     private void AggiungeMarkers(GoogleMap googleMap) {

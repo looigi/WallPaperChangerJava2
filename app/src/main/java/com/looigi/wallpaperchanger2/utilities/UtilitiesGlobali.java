@@ -11,6 +11,7 @@ import android.net.wifi.WifiManager;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
 import android.util.Base64;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -81,15 +82,19 @@ public class UtilitiesGlobali {
         ultimoTmsStatorete = ora;
 
         if (level <= 2 && !VariabiliStaticheStart.getInstance().isCeWifi()) {
+            if (VariabiliStatichePlayer.getInstance().getImgRetePresente() != null) {
+                VariabiliStatichePlayer.getInstance().getImgRetePresente().setVisibility(LinearLayout.GONE);
+            }
+            VariabiliStaticheStart.getInstance().setSegnaleAttivo(false);
             return false;
         } else {
             // contaStatoRete = 0;
+            if (VariabiliStatichePlayer.getInstance().getImgRetePresente() != null) {
+                VariabiliStatichePlayer.getInstance().getImgRetePresente().setVisibility(LinearLayout.VISIBLE);
+            }
+            VariabiliStaticheStart.getInstance().setSegnaleAttivo(true);
             return true;
         }
-    }
-
-    public void setRetePresente(boolean Stato) {
-        reteAttiva = Stato;
     }
 
     public void ChiudeApplicazione(Context context) {

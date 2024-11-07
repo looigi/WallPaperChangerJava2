@@ -36,6 +36,7 @@ import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Chiacchierone;
 import com.looigi.wallpaperchanger2.utilities.Permessi;
 import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
@@ -117,6 +118,8 @@ public class MainStart  extends Activity {
     }
 
     private void impostaSchermata() {
+        // new Chiacchierone(context, "App Quality Insights");
+
         LinearLayout layStart = findViewById(R.id.layStart);
 
         if (VariabiliStaticheStart.getInstance().isDetector()) {

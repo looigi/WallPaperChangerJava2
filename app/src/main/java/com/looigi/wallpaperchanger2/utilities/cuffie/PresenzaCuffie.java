@@ -38,6 +38,7 @@ public class PresenzaCuffie extends BroadcastReceiver {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+
             String nome = device.getName();
             int tipo = device.getType();
 

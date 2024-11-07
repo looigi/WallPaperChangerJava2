@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classePlayer;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -98,11 +99,12 @@ public class VariabiliStatichePlayer {
     private boolean settingsAperte = false;
     private boolean nonMostrareToast = false;
     private StrutturaImmagini immagineImpostata;
-    private int idImmagineImpostata = -1;
+    private int idImmagineImpostata = 0;
     private ImmagineZoomabile imgSfondoSettings;
     private boolean CambiaImmagine = true;
     private int TempoCambioImmagine = 30;
     private TextView txtNumeroImmagine;
+    private EditText edtNumeroImmagine;
     private long ultimaOperazioneTS;
     private boolean ceImmaginePerModifica = false;
     private StrutturaImmagini immagineVisualizzataPerModifica;
@@ -121,6 +123,8 @@ public class VariabiliStatichePlayer {
     private TextView txtPercentuale;
     private int Perc;
     private ImageView imgModificaSfondo;
+    private boolean Chiacchiera = true;
+    private ImageView imgRetePresente;
 
     // RICERCHE
     private boolean Random = true;
@@ -154,6 +158,30 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public EditText getEdtNumeroImmagine() {
+        return edtNumeroImmagine;
+    }
+
+    public void setEdtNumeroImmagine(EditText edtNumeroImmagine) {
+        this.edtNumeroImmagine = edtNumeroImmagine;
+    }
+
+    public ImageView getImgRetePresente() {
+        return imgRetePresente;
+    }
+
+    public void setImgRetePresente(ImageView imgRetePresente) {
+        this.imgRetePresente = imgRetePresente;
+    }
+
+    public boolean isChiacchiera() {
+        return Chiacchiera;
+    }
+
+    public void setChiacchiera(boolean chiacchiera) {
+        Chiacchiera = chiacchiera;
     }
 
     public ImageView getImgModificaSfondo() {

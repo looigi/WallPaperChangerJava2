@@ -7,20 +7,17 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 // import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
+import com.looigi.wallpaperchanger2.utilities.Chiacchierone;
 import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -221,6 +218,10 @@ public class UtilityPlayer {
                 AggiungeBranoAllaListaAscoltati(context, sb);
 
                 FaiPartireTimer(context);
+
+                if (VariabiliStatichePlayer.getInstance().isChiacchiera()) {
+                    new Chiacchierone(context, sb.getArtista() + " " + sb.getBrano() + ".");
+                }
 
                 ScriveLog(context, NomeMaschera, "Brano caricato");
             } catch (IOException e) {
@@ -612,6 +613,8 @@ public class UtilityPlayer {
                         immagine[0] = idImmagine;
                     }
                     if (immagine[0] > -1) {
+                        VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(immagine[0]);
+
                         Handler handlerTimer = new Handler(Looper.getMainLooper());
                         List<StrutturaImmagini> finalLista = lista;
                         Runnable rTimer = new Runnable() {
@@ -647,6 +650,9 @@ public class UtilityPlayer {
                                                 }
                                                 if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
                                                     VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size() - 1));
+                                                }
+                                                if (VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine() != null) {
+                                                    VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().setText(Integer.toString(immagine[0]));
                                                 }
 
                                                 AggiornaInformazioni(false);
@@ -734,11 +740,9 @@ public class UtilityPlayer {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
                 // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(-1);
-                if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
-                            VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                            "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
-                }
+
+                UtilityPlayer.getInstance().ScriveInfoImmagine();
+
                 if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
                 }
@@ -1230,7 +1234,7 @@ public class UtilityPlayer {
         StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica();
         String Path = s.getPathImmagine();
 
-        ImpostaImmagine(context);
+        ImpostaImmagineInterna(context);
 
         String encodedImage = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
 
@@ -1238,7 +1242,29 @@ public class UtilityPlayer {
         // c.ModificaImmagine(s, encodedImage, Sovrascrive);
     }
 
-    public void ImpostaImmagine(Context context) {
+    public void ScriveInfoImmagine() {
+        if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
+                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+        }
+
+        if (VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine() != null) {
+            VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().setText(
+                    Integer.toString(VariabiliStatichePlayer.getInstance().getIdImmagineImpostata())
+            );
+        }
+
+        if (VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica() != null) {
+            if (VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica() != null) {
+                VariabiliStatichePlayer.getInstance().getTxtNomeImmaginePerModifica().setText(
+                        VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
+                );
+            }
+        }
+    }
+
+    public void ImpostaImmagineInterna(Context context) {
         if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
             return;
         }
@@ -1293,8 +1319,17 @@ public class UtilityPlayer {
                                 VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica().getNomeImmagine()
                         );
                     }
-                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
-                            "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+
+                    if (VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine() != null) {
+                        VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().setText(
+                                Integer.toString(VariabiliStatichePlayer.getInstance().getIdImmagineImpostata())
+                        );
+                    }
+
+                    if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
+                        VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
+                                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                    }
                 }
             }
         };

@@ -82,10 +82,15 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <!--  -->
         <activity
             android:name=".classeOnomastici.MainOnomastici"
             android:theme="@style/Theme.AppCompat.Translucent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
@@ -101,20 +106,19 @@
 
         <activity
             android:name=".classeBackup.MainBackup"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".classePassword.MainPassword"
             android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".classeMappeSalvate.MainMappeSalvate"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".classeImmagini.MainMostraImmagini"

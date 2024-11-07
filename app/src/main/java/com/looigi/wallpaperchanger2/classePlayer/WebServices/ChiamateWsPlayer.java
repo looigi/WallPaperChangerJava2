@@ -6,16 +6,15 @@ import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
-import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBraniOnline;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
@@ -315,6 +314,16 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private long lastCall = -1;
 
     public void RitornaBranoDaID(String idBrano, boolean Pregresso) {
+        if (VariabiliStatichePlayer.getInstance().getUtente() == null) {
+            StrutturaUtenti u = new StrutturaUtenti();
+            u.setId(1);
+            u.setAmministratore(true);
+            u.setUtente("Looigi");
+            u.setPassword("looigi227");
+
+            VariabiliStatichePlayer.getInstance().setUtente(u);
+        }
+
         this.Pregresso = Pregresso;
 
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Caricamento prossimo brano. Pregresso: " + Pregresso);

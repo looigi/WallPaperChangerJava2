@@ -131,11 +131,17 @@ public class LogInterno {
 			handler = new Handler(Looper.getMainLooper());
 			final Runnable r = new Runnable() {
 				public void run() {
-					ScriveLogInterno(lista.get(0));
-
-					lista.remove(0);
 					if (!lista.isEmpty()) {
-						handler.postDelayed(this, 100);
+						ScriveLogInterno(lista.get(0));
+
+						lista.remove(0);
+						if (!lista.isEmpty()) {
+							handler.postDelayed(this, 100);
+						} else {
+							handler.removeCallbacksAndMessages(this);
+							handler.removeCallbacks(this);
+							handler = null;
+						}
 					} else {
 						handler.removeCallbacksAndMessages(this);
 						handler.removeCallbacks(this);

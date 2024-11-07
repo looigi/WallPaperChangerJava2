@@ -19,6 +19,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Audio;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -131,9 +132,12 @@ public class GestioneNotificheDetector {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            Intent apre = new Intent(ctx, NotificationActionServiceDetector.class);
-            apre.putExtra("DO", "Apre");
-            PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
+            Intent apre = new Intent(ctx, ActivityDiStart.class);
+            apre.addCategory(Intent.CATEGORY_LAUNCHER);
+            apre.setAction(Intent.ACTION_MAIN );
+            apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            apre.putExtra("DO", "detector");
+            PendingIntent pApre = PendingIntent.getActivity(ctx, 50, apre,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.txtDettaglio, pApre);
 

@@ -79,4 +79,6 @@ dependencies {
 
     implementation(libs.core)
     implementation(libs.media)
+
+    implementation(libs.language.id)
 }

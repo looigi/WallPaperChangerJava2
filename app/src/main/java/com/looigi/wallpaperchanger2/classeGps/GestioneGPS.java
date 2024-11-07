@@ -421,9 +421,20 @@ public class GestioneGPS {
 
             if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() == null) {
                 db_dati_gps db = new db_dati_gps(context);
-                VariabiliStaticheGPS.getInstance().setCoordinateAttuali(
-                        db.RitornaUltimaPosizione(currentDate));
+                StrutturaGps s = db.RitornaUltimaPosizione(currentDate);
+                if (s != null) {
+                    VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
+                }
                 db.ChiudeDB();
+
+                if (s != null) {
+                    String dataUltimoPunto = s.getOra();
+                    VariabiliStaticheGPS.getInstance().setUltimoDataPunto(dataUltimoPunto);
+                } else {
+                    VariabiliStaticheGPS.getInstance().setUltimoDataPunto("--");
+                }
+
+                GestioneNotificaGPS.getInstance().AggiornaNotifica();
             }
 
             boolean ok = true;
@@ -462,29 +473,35 @@ public class GestioneGPS {
                 } */
             }
 
-            if (ok) {
-                if (location.getAccuracy() > 50) {
+            // if (ok) {
+                if (location.getAccuracy() > 100) {
                     ok = false;
 
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                             "Skippo posizione per Accuracy elevata: " + location.getAccuracy());
-                }
-            }
 
-            if (ok) {
+                    return;
+                }
+            // }
+
+            // if (ok) {
                 if (VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
                     ok = false;
                 }
-            }
-
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
-                    location.getLatitude() + ", " + location.getLongitude() + ". Wifi: " +
-                    VariabiliStaticheStart.getInstance().isCeWifi() + ". Abilitato: " +
-                    VariabiliStaticheGPS.getInstance().isGpsAttivo() + ". NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() +
-                    ". OK: " + ok);
+            // }
 
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Location changed: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
+                    "Accuracy: " + location.getAccuracy() + "\n" +
+                    "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
+                    "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
+                    "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
+                    "OK: " + ok + "\n" +
+                    "Ora: " + currentHour
+            );
 
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
@@ -509,6 +526,9 @@ public class GestioneGPS {
             VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
             if (ok) {
+                String dataUltimoPunto = currentHour; // currentDate + " " +
+                VariabiliStaticheGPS.getInstance().setUltimoDataPunto(dataUltimoPunto);
+
             /* if (!ok) {
                 if (!ultimoNull) {
                     StrutturaGps s = new StrutturaGps();

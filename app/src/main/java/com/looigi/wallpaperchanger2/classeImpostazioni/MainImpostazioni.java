@@ -1297,6 +1297,18 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcChiacchiera = (SwitchCompat) act.findViewById(R.id.sChiacchiera);
+        swcChiacchiera.setChecked(VariabiliStatichePlayer.getInstance().isChiacchiera());
+        swcChiacchiera.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setChiacchiera(swcChiacchiera.isChecked());
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
         impostaTastiPlayer();
     }
 

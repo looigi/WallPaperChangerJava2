@@ -108,8 +108,8 @@ public class db_dati_player {
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
-                        + " (LimiteInBytes VARCHAR, CambiaImmagini VARCHAR, TempoCambioImmagine VARCHAR"
-                        + ");";
+                        + " (LimiteInBytes VARCHAR, CambiaImmagini VARCHAR, TempoCambioImmagine VARCHAR, "
+                        + "Chiacchera VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -710,7 +710,8 @@ public class db_dati_player {
                         + " VALUES ("
                         + "'" + VariabiliStatichePlayer.getInstance().getLimiteInGb() + "',"
                         + "'" + (VariabiliStatichePlayer.getInstance().isCambiaImmagine() ? "S" : "N") + "',"
-                        + "'" + VariabiliStatichePlayer.getInstance().getTempoCambioImmagine() + "' "
+                        + "'" + VariabiliStatichePlayer.getInstance().getTempoCambioImmagine() + "', "
+                        + "'" + (VariabiliStatichePlayer.getInstance().isChiacchiera() ? "S" : "N") + "'"
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -733,6 +734,7 @@ public class db_dati_player {
         VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
         VariabiliStatichePlayer.getInstance().setCambiaImmagine(true);
         VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(5000);
+        VariabiliStatichePlayer.getInstance().setChiacchiera(false);
     }
 
     public int CaricaImpostazioni() {
@@ -747,6 +749,7 @@ public class db_dati_player {
                         VariabiliStatichePlayer.getInstance().setLimiteInGb(Float.parseFloat(c.getString(0)));
                         VariabiliStatichePlayer.getInstance().setCambiaImmagine(c.getString(1).equals("S"));
                         VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(Integer.parseInt(c.getString(2)));
+                        VariabiliStatichePlayer.getInstance().setChiacchiera(c.getString(3).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

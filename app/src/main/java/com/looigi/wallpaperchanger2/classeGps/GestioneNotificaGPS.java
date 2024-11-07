@@ -74,26 +74,45 @@ public class GestioneNotificaGPS {
             }
             contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGps);
 
+            contentView.setViewVisibility(R.id.imgWifi, LinearLayout.GONE);
+            contentView.setViewVisibility(R.id.imgStop, LinearLayout.GONE);
+            contentView.setViewVisibility(R.id.imgStop2, LinearLayout.GONE);
+
+            Bitmap bmGpsPS;
             if (!VariabiliStaticheGPS.getInstance().isNonScriverePunti() &&
                 !VariabiliStaticheStart.getInstance().isCeWifi() &&
                 VariabiliStaticheGPS.getInstance().isGpsAttivo() &&
                 !VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
-                contentView.setViewVisibility(R.id.imgAreaPS, LinearLayout.VISIBLE);
+                bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.gps_on);
             } else {
-                contentView.setViewVisibility(R.id.imgAreaPS, LinearLayout.GONE);
+                bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.gps_off);
+                if (VariabiliStaticheStart.getInstance().isCeWifi()) {
+                    contentView.setViewVisibility(R.id.imgWifi, LinearLayout.VISIBLE);
+                }
+                if (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                    contentView.setViewVisibility(R.id.imgStop, LinearLayout.VISIBLE);
+                }
+                if (VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
+                    contentView.setViewVisibility(R.id.imgStop2, LinearLayout.VISIBLE);
+                }
             }
+            contentView.setImageViewBitmap(R.id.imgAreaPS, bmGpsPS);
 
             if (VariabiliStaticheGPS.getInstance().getMappa() != null &&
                     VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti() != null) {
                 long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
                 float dist = Math.round((distanza / 1000F) * 100) / 100F;
                 contentView.setTextViewText(R.id.txtPunti,
-                        "Punti: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size()) + "\n" +
-                                "Distanza: " + Float.toString(dist) + " Km.");
+                        "P.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size()) + "\n" +
+                                "" + Float.toString(dist) + " Km.");
             } else {
                 contentView.setTextViewText(R.id.txtPunti,
-                        "Punti: 0\nDistanza: 0");
+                        "");
             }
+
+            contentView.setTextViewText(R.id.txtData,
+                    "Last:\n" +
+                    VariabiliStaticheGPS.getInstance().getUltimoDataPunto());
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheGPS.NOTIFICATION_CHANNEL_STRING);
 

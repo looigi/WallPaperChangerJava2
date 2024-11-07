@@ -93,12 +93,9 @@ public class DownloadImmagine {
 
                                         // VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
                                         // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
-                                        if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-                                            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
-                                                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                                                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
-                                        }
                                     }
+
+                                    UtilityPlayer.getInstance().ScriveInfoImmagine();
 
                                     BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
                                     Bitmap bitmap = drawable.getBitmap();
