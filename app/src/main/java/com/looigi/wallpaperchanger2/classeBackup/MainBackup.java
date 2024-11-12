@@ -115,35 +115,7 @@ public class MainBackup extends Activity {
     }
 
     private void ZippaFile(Context context, List<String> NomeFile) {
-        Calendar Oggi = Calendar.getInstance();
-        int Giorno = Oggi.get(Calendar.DAY_OF_MONTH);
-        int Mese = Oggi.get(Calendar.MONTH);
-        int Anno = Oggi.get(Calendar.YEAR);
-        String sGiorno = Integer.toString(Giorno).trim();
-        String sMese = Integer.toString(Mese+1).trim();
-        String sAnno = Integer.toString(Anno).trim();
-        if (sGiorno.length() == 1) {
-            sGiorno = "0" + sGiorno;
-        }
-        if (sMese.length() == 1) {
-            sMese = "0" + sMese;
-        }
-        int Ora = Oggi.get(Calendar.HOUR_OF_DAY);
-        String sOra = String.valueOf(Ora).trim();
-        if (sOra.length() == 1) {
-            sOra = "0" + sOra;
-        }
-        int Minuti = Oggi.get(Calendar.MINUTE);
-        String sMinuti = String.valueOf(Minuti).trim();
-        if (sMinuti.length() == 1) {
-            sMinuti = "0" + sMinuti;
-        }
-        int Secondi = Oggi.get(Calendar.SECOND);
-        String sSecondi = String.valueOf(Secondi).trim();
-        if (sSecondi.length() == 1) {
-            sSecondi = "0" + sSecondi;
-        }
-        String NomeFileZip1 = sAnno + sMese + sGiorno + "_" + sOra + sMinuti + sSecondi;
+        String NomeFileZip1 = UtilitiesGlobali.getInstance().TornaNomeFileConData();
 
         String NomeFileZip = PathBackup + NomeFileZip1 + ".zip";
 

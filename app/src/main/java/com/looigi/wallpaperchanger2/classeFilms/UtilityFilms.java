@@ -81,7 +81,7 @@ public class UtilityFilms {
         }, 10);
     }
 
-    public void takeScreenShotMultipli(Context context) {
+    public void takeScreenShotMultipli(Context context, String id) {
         if (VariabiliStaticheFilms.getInstance().isStaAcquisendoVideo()) {
             UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
             return;
@@ -131,13 +131,17 @@ public class UtilityFilms {
                     }
                 }
 
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveSnapshot(id);
+                db.ChiudeDB();
+
                 VariabiliStaticheFilms.getInstance().setStaAcquisendoVideo(false);
                 Attesa(false);
             }
         }, 500);
     }
 
-    public void takeScreenshot(Context context) {
+    public void takeScreenshot(Context context, String id) {
         if (VariabiliStaticheFilms.getInstance().isStaAcquisendoVideo()) {
             UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
             return;
@@ -177,6 +181,10 @@ public class UtilityFilms {
                     String Dest = Cartella + nomeFile;
                     try (FileOutputStream out = new FileOutputStream(Dest)) {
                         thummbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        db_dati_films db = new db_dati_films(context);
+                        db.ScriveSnapshotS(id);
+                        db.ChiudeDB();
 
                         UtilitiesGlobali.getInstance().ApreToast(context, "Immagine acquisita");
                     } catch (IOException ignored) {

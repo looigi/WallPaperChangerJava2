@@ -256,11 +256,10 @@ public class InterrogazioneWSWP {
             if (Ritorno.contains("ERROR:")) {
                 messErrore = Ritorno;
                 Errore = true;
-            } else {
+            }
                 // Log.getInstance().ScriveLog("WS", "Avviso per termine chiamata su operazione " + tOperazione);
 
-                delegate.TaskCompletionResult(result);
-            }
+            delegate.TaskCompletionResult(result);
         } else {
             // Uscito
 

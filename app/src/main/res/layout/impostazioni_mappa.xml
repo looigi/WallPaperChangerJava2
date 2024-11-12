@@ -46,6 +46,27 @@
                 android:layout_height="wrap_content"
                 android:text="Visualizza Percorso" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sWifi"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blocco per wifi attivo" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sPuntiDiSospensione"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Punti di sospensione attivi" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sAccuracy"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Controllo Accuracy 100M" />
+
             <View
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"

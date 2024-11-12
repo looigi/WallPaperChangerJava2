@@ -699,7 +699,8 @@ public class UtilityPlayer {
                                             d. EsegueDownload(
                                                     context,
                                                     VariabiliStatichePlayer.getInstance().getImgBrano(),
-                                                    finalLista.get(immagine[0]).getUrlImmagine()
+                                                    finalLista.get(immagine[0]).getUrlImmagine(),
+                                                    false
                                             );
                                     /* new DownloadImage(
                                             context,
@@ -731,6 +732,23 @@ public class UtilityPlayer {
                 ImpostaLogoApplicazione(context);
             }
         }
+    }
+
+    public void ImpostaLogoApplicazioneInterna(Context context) {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
+
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+
+                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.VISIBLE);
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1000);
     }
 
     public void ImpostaLogoApplicazione(Context context) {
@@ -963,6 +981,21 @@ public class UtilityPlayer {
             VariabiliStatichePlayer.getInstance().getAct().finish();
             // }
         }
+    }
+
+    public void ScrivePerc() {
+        float lim = VariabiliStatichePlayer.getInstance().getLimiteInGb();
+        long L = (long) (lim * 1024 * 1024 * 1024);
+        double ll = Math.round(L * .8);
+        long Limite = (long) ll;
+
+        long Spazio = VariabiliStatichePlayer.getInstance().getSpazioOccupato();
+        int pe = Math.round(((float) Spazio / Limite) * 100);
+
+        String perc = pe + "%";
+        VariabiliStatichePlayer.getInstance().setPerc(pe);
+
+        VariabiliStatichePlayer.getInstance().getTxtPercentuale().setText(perc);
     }
 
     public void ImpostaBellezza() {
@@ -1239,7 +1272,7 @@ public class UtilityPlayer {
         String encodedImage = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
 
         ChiamateWsPlayer c = new ChiamateWsPlayer(context, false);
-        // c.ModificaImmagine(s, encodedImage, Sovrascrive);
+        c.ModificaImmagine(s, encodedImage, Sovrascrive);
     }
 
     public void ScriveInfoImmagine() {
@@ -1276,7 +1309,8 @@ public class UtilityPlayer {
         Runnable rTimer = new Runnable() {
             public void run() {
                 int n = VariabiliStatichePlayer.getInstance().getIdImmagineImpostata();
-                if (n < VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()) {
+                if (!VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().isEmpty() &&
+                        n < VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()) {
                     StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().get(n);
                     VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(s);
                     String path = s.getPathImmagine();
@@ -1298,7 +1332,8 @@ public class UtilityPlayer {
                             d.EsegueDownload(
                                     context,
                                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
-                                    s.getUrlImmagine()
+                                    s.getUrlImmagine(),
+                                    true
                             );
                         }
                     }
@@ -1330,6 +1365,13 @@ public class UtilityPlayer {
                         VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
                                 "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
                     }
+                } else {
+                    VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);
+
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
+
+                    VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setVisibility(LinearLayout.VISIBLE);
                 }
             }
         };

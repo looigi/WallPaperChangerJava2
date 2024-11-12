@@ -37,9 +37,9 @@ public class GestioneTastiCuffieNuovo extends Service {
     {
         @Override
         public void onPlay() {
-            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PLAY 1");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto PLAY 1");
 
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto Play 1");
 
             super.onPlay();
@@ -47,9 +47,9 @@ public class GestioneTastiCuffieNuovo extends Service {
 
         @Override
         public void onPause() {
-            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PAUSE 1");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto PAUSE 1");
 
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto Pause 1");
 
             super.onPause();
@@ -57,9 +57,9 @@ public class GestioneTastiCuffieNuovo extends Service {
 
         @Override
         public void onSkipToNext() {
-            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto NEXT 1");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto NEXT 1");
 
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto NEXT 1");
 
             super.onSkipToNext();
@@ -67,9 +67,9 @@ public class GestioneTastiCuffieNuovo extends Service {
 
         @Override
         public void onSkipToPrevious() {
-            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto PREV 1");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto PREV 1");
 
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto Prev 1");
 
             super.onSkipToPrevious();
@@ -77,9 +77,9 @@ public class GestioneTastiCuffieNuovo extends Service {
 
         @Override
         public void onStop() {
-            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto STOP 1");
+            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto STOP 1");
 
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto Stop");
 
             super.onStop();
@@ -87,7 +87,7 @@ public class GestioneTastiCuffieNuovo extends Service {
 
         @Override
         public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
-            UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                     "Premuto Media Button");
 
             String intentAction = mediaButtonEvent.getAction();
@@ -105,7 +105,7 @@ public class GestioneTastiCuffieNuovo extends Service {
                     // if (action == 1) {
                         // int codice = event.getKeyCode();
 
-                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                             "Premuto Media Button. Evento: " + action);
 
                     long clickAttuale = new Date().getTime();
@@ -114,42 +114,42 @@ public class GestioneTastiCuffieNuovo extends Service {
                     // if (action == KeyEvent.ACTION_DOWN) {
                         switch (event.getKeyCode()) {
                             case KeyEvent.KEYCODE_MEDIA_PLAY:
-                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                         "Premuto Play");
 
-                                UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), true);
+                                UtilityPlayer.getInstance().PressionePlay(context, true);
 
-                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                UtilitiesGlobali.getInstance().ApreToast(context,
                                         "Premuto PLAY");
 
                                 come = true;
                                 break;
                             case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                         "Premuto Pause");
 
-                                UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
+                                UtilityPlayer.getInstance().PressionePlay(context, false);
 
-                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                UtilitiesGlobali.getInstance().ApreToast(context,
                                         "Premuto PAUSE");
 
                                 come = true;
                                 break;
                             case KeyEvent.KEYCODE_MEDIA_NEXT:
                                 if (diff < 2000) {
-                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                             "Premuto NEXT Button. Skip per troppo veloce");
 
-                                    come = false;
                                 } else {
-                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                             "Premuto Next");
 
-                                    UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext(), false);
+                                    UtilityPlayer.getInstance().ResettaCampi(context, false);
 
-                                    UtilityPlayer.getInstance().BranoAvanti(getApplicationContext(), "", false, true);
+                                    UtilityPlayer.getInstance().BranoAvanti(context, "",
+                                            false, true);
 
-                                    UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                    UtilitiesGlobali.getInstance().ApreToast(context,
                                             "Premuto NEXT");
 
                                     come = true;
@@ -157,20 +157,20 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 break;
                             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                                 if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
-                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                             "Premuto Pause");
 
-                                    UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
+                                    UtilityPlayer.getInstance().PressionePlay(context, false);
 
-                                    UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                    UtilitiesGlobali.getInstance().ApreToast(context,
                                             "Premuto PAUSE");
                                 } else {
-                                    UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                             "Premuto Play");
 
-                                    UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), true);
+                                    UtilityPlayer.getInstance().PressionePlay(context, true);
 
-                                    UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                    UtilitiesGlobali.getInstance().ApreToast(context,
                                             "Premuto PLAY");
                                 }
 
@@ -198,20 +198,19 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 } else {
                                     long diff2 = clickAttuale - ultimoClick;
                                     if (diff2 < 2000) {
-                                        UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Premuto NEXT Button. Skip per troppo veloce");
 
                                         come = false;
                                     } else {
-                                        UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Premuto Previous");
 
-                                        UtilityPlayer.getInstance().ResettaCampi(VariabiliStatichePlayer.getInstance().getContext(), false);
+                                        UtilityPlayer.getInstance().ResettaCampi(context, false);
 
-                                        UtilityPlayer.getInstance().IndietroBrano(
-                                                VariabiliStatichePlayer.getInstance().getContext());
+                                        UtilityPlayer.getInstance().IndietroBrano(context);
 
-                                        UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                        UtilitiesGlobali.getInstance().ApreToast(context,
                                                 "Premuto PREVIOUS");
 
                                         come = true;
@@ -223,12 +222,12 @@ public class GestioneTastiCuffieNuovo extends Service {
                                 come = true;
                                 break;
                             case KeyEvent.KEYCODE_MEDIA_STOP:
-                                UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+                                UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                         "Premuto Stop");
 
-                                UtilityPlayer.getInstance().PressionePlay(getApplicationContext(), false);
+                                UtilityPlayer.getInstance().PressionePlay(context, false);
 
-                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(),
+                                UtilitiesGlobali.getInstance().ApreToast(context,
                                         "Premuto STOP");
 
                                 come = true;
@@ -237,10 +236,10 @@ public class GestioneTastiCuffieNuovo extends Service {
 
                     /* } else {
                         if (action == KeyEvent.ACTION_UP) {
-                            UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto ACTION UP");
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Premuto ACTION UP");
                         } else {
                             if (action == KeyEvent.ACTION_DOWN) {
-                                UtilitiesGlobali.getInstance().ApreToast(getApplicationContext(), "Premuto ACTION DOWN");
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Premuto ACTION DOWN");
                             }
                         }
                     } */
@@ -256,15 +255,18 @@ public class GestioneTastiCuffieNuovo extends Service {
     };
 
     private MediaSessionCompat mediaSessionCompat;
-
+    private Context context;
+    
     @Override
     public void onCreate() {
         // Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();
         // Log.e("SERVICE", "onCreate");
 
-        UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                 "onCreate");
 
+        this.context = this;
+        
         mediaSessionCompat = new MediaSessionCompat(this, "MEDIABUTTONS");
         mediaSessionCompat.setCallback(mediaSessionCompatCallBack);
         mediaSessionCompat.setFlags(
@@ -286,7 +288,7 @@ public class GestioneTastiCuffieNuovo extends Service {
 
     @Override
     public void onDestroy() {
-        UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                 "onDestroy");
 
         mediaSessionCompat.release();
@@ -294,7 +296,7 @@ public class GestioneTastiCuffieNuovo extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        UtilityPlayer.getInstance().ScriveLog(getApplicationContext(), NomeMaschera,
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                 "onStart");
 
         MediaButtonReceiver.handleIntent(mediaSessionCompat, intent);

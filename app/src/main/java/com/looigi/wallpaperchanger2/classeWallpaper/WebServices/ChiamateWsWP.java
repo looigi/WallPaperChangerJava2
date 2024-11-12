@@ -5,10 +5,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +28,69 @@ public class ChiamateWsWP implements TaskDelegate {
     private final String ws = "looVF.asmx/";
     private final String NS="http://looVF.org/";
     private final String SA="http://looVF.org/";
+    private String NomeImmaginePerModifica;
+    private String StringaBase64;
 
     public ChiamateWsWP(Context context) {
         this.context = context;
+    }
+
+    public void ModificaImmagine(StrutturaImmagine s, String immagine) {
+        NomeImmaginePerModifica = s.getPathImmagine().replace(
+                VariabiliStaticheWallpaper.PercorsoImmagineSuURL, ""
+        );
+        StringaBase64 = immagine;
+
+        String Urletto="ModificaImmagineWP?" +
+                "Immagine=" + s.getPathImmagine()
+                    .replace("&", "-A-")
+                    .replace("?", "-P-")
+                    .replace(":", "-D-")
+                    .replace("/", "-S-")
+                    .replace("\\", "-B-") +
+                "&DatiImmagine=" + immagine;
+
+        TipoOperazione = "ModificaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void EliminaImmagine(StrutturaImmagine s) {
+        NomeImmaginePerModifica = s.getPathImmagine().replace(
+                VariabiliStaticheWallpaper.PercorsoImmagineSuURL, ""
+        );
+
+        String Urletto="EliminaImmagineWP?" +
+                "Immagine=" + s.getPathImmagine()
+                .replace("&", "-A-")
+                .replace("?", "-P-")
+                .replace(":", "-D-")
+                .replace("/", "-S-")
+                .replace("\\", "-B-");
+
+        TipoOperazione = "EliminaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                true,
+                true,
+                false,
+                -1);
     }
 
     public void TornaProssimaImmagine() {
@@ -44,7 +109,25 @@ public class ChiamateWsWP implements TaskDelegate {
                 -1);
     }
 
-    public void TornaImmagini() {
+    public void TornaImmagini(boolean ForzaRefresh) {
+        if (!ForzaRefresh) {
+            db_dati_wallpaper db = new db_dati_wallpaper(context);
+            List<StrutturaImmagine> lista = db.TornaImmaginiRemote();
+            if (!lista.isEmpty()) {
+                VariabiliStaticheWallpaper.getInstance().setListaImmagini(lista);
+
+                VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + lista.size());
+
+                VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(new AdapterListenerImmagini(context,
+                        VariabiliStaticheWallpaper.getInstance().getListaImmagini()));
+                VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(VariabiliStaticheWallpaper.getInstance().getAdapterImmagini());
+
+                VariabiliStaticheWallpaper.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
+
+                return;
+            }
+        }
+
         String Urletto="TornaImmagini";
         boolean ApriDialog = false;
         TipoOperazione = "TornaImmagini";
@@ -105,6 +188,15 @@ public class ChiamateWsWP implements TaskDelegate {
                     case "TornaImmagini":
                         fTornaImmagini(result);
                         break;
+                    case "ModificaImmagine":
+                        fModificaImmagine(result);
+                        break;
+                    case "EliminaImmagine":
+                        fEliminaImmagine(result);
+                        break;
+                    case "RitornaListaImmagini":
+                        fRitornaListaImmagini(result);
+                        break;
                 }
             }
         };
@@ -119,6 +211,54 @@ public class ChiamateWsWP implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaListaImmagini(String result) {
+        if (result.contains("ERROR")) {
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
+        } else {
+            List<String> ImmaginiSuIONOS = new ArrayList<>();
+            String[] lista = result.split(";");
+            for (String s : lista) {
+                String nome = s.replace("*PV*", ";").replace("/", "\\");
+
+                ImmaginiSuIONOS.add(nome);
+            }
+
+
+        }
+    }
+
+    private void fModificaImmagine(String result) {
+        if (result.contains("ERROR")) {
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                    ws.ScriveImmagineModificataSuLocale(NomeImmaginePerModifica, StringaBase64);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    private void fEliminaImmagine(String result) {
+        if (result.contains("ERROR")) {
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                    ws.EliminaImmagineSuLocale(NomeImmaginePerModifica);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+
+            // UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
         }
     }
 
@@ -139,6 +279,10 @@ public class ChiamateWsWP implements TaskDelegate {
                 lista.add(s);
             }
             VariabiliStaticheWallpaper.getInstance().setListaImmagini(lista);
+
+            db_dati_wallpaper db = new db_dati_wallpaper(context);
+            db.ScriveImmagineRemote(lista);
+
             VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Numero immagini online: " + lista.size());
 
             VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(new AdapterListenerImmagini(context,
@@ -146,7 +290,6 @@ public class ChiamateWsWP implements TaskDelegate {
             VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(VariabiliStaticheWallpaper.getInstance().getAdapterImmagini());
 
             VariabiliStaticheWallpaper.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
-
         }
     }
 
@@ -185,8 +328,7 @@ public class ChiamateWsWP implements TaskDelegate {
             VariabiliStaticheWallpaper.getInstance().setImmaginiOnline(Integer.parseInt(quanteImmagini));
 
             DownloadImmagineWP d = new DownloadImmagineWP();
-            d.EsegueChiamata(context, NomeImmagine, null, Immagine);
-            // new DownloadImageWP(context, NomeImmagine, null).execute(Immagine);
+            d.EsegueChiamata(context, NomeImmagine, null, Immagine, false, "");
         }
     }
 

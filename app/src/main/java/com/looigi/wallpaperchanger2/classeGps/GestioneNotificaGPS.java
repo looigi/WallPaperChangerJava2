@@ -205,7 +205,7 @@ public class GestioneNotificaGPS {
         if (manager != null) {
             try {
                 manager.cancel(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID);
-                manager.cancelAll();
+                // manager.cancelAll();
                 manager = null;
                 contentView = null;
                 notificationBuilder = null;
@@ -250,7 +250,7 @@ public class GestioneNotificaGPS {
                         if (!attivo) {
                             VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICA");
                         } else {
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("On start Notifica GPS");
                         }
                         GestioneNotificaGPS.getInstance().AggiornaNotifica();
                         break;

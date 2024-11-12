@@ -28,9 +28,11 @@ public class ServizioDiAvvioGPS extends Service {
             startForeground(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notifica);
             GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
-            VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
-            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
-            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+            if (VariabiliStaticheGPS.getInstance().getGestioneGPS() == null) {
+                VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
+                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("On Create Servizio GPS");
+            }
         }
     }
 
@@ -38,8 +40,14 @@ public class ServizioDiAvvioGPS extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("SERVIZIO");
-        VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+        String NomeMaschera = "Gestione_GPS";
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "OnDestroy Servizio di avvio GPS");
+
+        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() == null) {
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("SERVIZIO");
+            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+        }
 
         GestioneNotificaGPS.getInstance().RimuoviNotifica();
     }

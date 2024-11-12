@@ -20,6 +20,8 @@ import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileOutputStream;
@@ -75,6 +77,7 @@ public class Main_ModificaImmagine extends Activity {
     private SeekBar seekAngolo;
     private boolean nonFareRuota = false;
     private boolean nonResizare = false;
+    private Button cmdRinomina;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,25 @@ public class Main_ModificaImmagine extends Activity {
         nonFareRuota = false;
 
         ImpostaSchermata(this);
+
+        cmdRinomina.setVisibility(LinearLayout.VISIBLE);
+        switch(VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura()) {
+            case "DETECTOR":
+                break;
+            case "IMMAGINI":
+                break;
+            case "PENNETTA":
+                break;
+            case "PLAYER":
+                cmdRinomina.setVisibility(LinearLayout.GONE);
+                break;
+            case "WALLPAPER1":
+                cmdRinomina.setVisibility(LinearLayout.GONE);
+                break;
+            case "WALLPAPER2":
+                cmdRinomina.setVisibility(LinearLayout.GONE);
+                break;
+        }
 
         Path = UtilityDetector.getInstance().PrendePath(context);
         String NomeImmagine = VariabiliStaticheModificaImmagine.getInstance().getNomeImmagine();
@@ -143,44 +165,55 @@ public class Main_ModificaImmagine extends Activity {
 
                 UtilityDetector.getInstance().CriptaFiles(context);
             }
-        } catch (IOException ignored) {
-        }
 
-        if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
-            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
-        } else {
-            if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("IMMAGINI")) {
-                // Salvataggio immagine da maschera immagini
-                UtilityImmagini.getInstance().SalvataggioImmagine(context, Sovrascrive);
-            } else {
-                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
+            switch(VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura()) {
+                case "DETECTOR":
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
+                    break;
+                case "IMMAGINI":
+                    // Salvataggio immagine da maschera immagini
+                    UtilityImmagini.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                    break;
+                case "PENNETTA":
                     // Salvataggio immagine da maschera immagini
                     UtilityPennetta.getInstance().SalvataggioImmagine(context, Sovrascrive);
-                } else {
-                    if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PLAYER")) {
-                        // Salvataggio immagine da maschera player
-                        UtilityPlayer.getInstance().SalvataggioImmagine(context, Sovrascrive);
-                    }
-                }
+                    break;
+                case "PLAYER":
+                    // Salvataggio immagine da maschera player
+                    UtilityPlayer.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                    break;
+                case "WALLPAPER1":
+                    UtilityWallpaper.getInstance().SalvataggioImmagine(context,
+                            true, Sovrascrive);
+                    break;
+                case "WALLPAPER2":
+                    UtilityWallpaper.getInstance().SalvataggioImmagine(context,
+                            false, Sovrascrive);
+                    break;
             }
+        } catch (IOException ignored) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel salvataggio");
         }
     }
 
     private void RefreshImmagini() {
-        if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
-            int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
-            UtilityDetector.getInstance().CaricaMultimedia(context);
-            VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
-            UtilityDetector.getInstance().VisualizzaMultimedia(context);
-        } else {
-            if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("IMMAGINI")) {
-            } else {
-                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PENNETTA")) {
-                } else {
-                    if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("PLAYER")) {
-                    }
-                }
-            }
+        switch (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura()) {
+            case "DETECTOR":
+                int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                UtilityDetector.getInstance().CaricaMultimedia(context);
+                VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
+                UtilityDetector.getInstance().VisualizzaMultimedia(context);
+                break;
+            case "IMMAGINI":
+                break;
+            case "PENNETTA":
+                break;
+            case "PLAYER":
+                break;
+            case "WALLPAPER1":
+                break;
+            case "WALLPAPER2":
+                break;
         }
     }
 
@@ -299,7 +332,7 @@ public class Main_ModificaImmagine extends Activity {
         imgUndo = act.findViewById(R.id.imgUndo);
         imgUndo.setVisibility(LinearLayout.GONE);
         Button cmdSovrascrive = (Button) act.findViewById(R.id.cmdSovrascrivi);
-        Button cmdRinomina = (Button) act.findViewById(R.id.cmdRinomina);
+        cmdRinomina = (Button) act.findViewById(R.id.cmdRinomina);
         layColori = act.findViewById(R.id.layColori);
         layColori.setVisibility(LinearLayout.GONE);
         ImageView imgAnnullaColori = act.findViewById(R.id.imgAnnullaColori);
@@ -503,8 +536,16 @@ public class Main_ModificaImmagine extends Activity {
 
         btnChiude.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura().equals("DETECTOR")) {
-                    VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(true);
+                switch (VariabiliStaticheModificaImmagine.getInstance().getMascheraApertura()) {
+                    case "DETECTOR":
+                        VariabiliStaticheDetector.getInstance().setRiaperturaSenzaReimpostazione(true);
+                        break;
+                    case "WALLPAPER1":
+                        VariabiliStaticheWallpaper.getInstance().setApreRicerca(true);
+                        break;
+                    case "WALLPAPER2":
+                        VariabiliStaticheWallpaper.getInstance().setApreRicerca(true);
+                        break;
                 }
 
                 bitmap = null;

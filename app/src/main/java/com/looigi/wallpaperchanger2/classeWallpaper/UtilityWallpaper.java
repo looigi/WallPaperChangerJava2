@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -289,5 +293,40 @@ public class UtilityWallpaper {
                 }
             }
         }
+    }
+
+    public void ApreRicerca(Context context) {
+        if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
+            AdapterListenerImmagini customAdapterT = new AdapterListenerImmagini(context,
+                    VariabiliStaticheWallpaper.getInstance().getListaImmagini());
+            VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(customAdapterT);
+            VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(customAdapterT);
+
+            VariabiliStaticheWallpaper.getInstance().getLayScelta().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(null);
+
+            ChiamateWsWP c = new ChiamateWsWP(context);
+            c.TornaImmagini(false);
+        }
+    }
+
+    public void SalvataggioImmagine(Context context, boolean ImmagineGiaCaricata, boolean Sovrascrive) {
+        StrutturaImmagine s = VariabiliStaticheWallpaper.getInstance().getImmagineSelezionataDaLista();
+
+        String NomeFile = "";
+        if (ImmagineGiaCaricata) {
+            NomeFile = "Appoggio";
+        } else {
+            NomeFile = "AppoggioWP";
+        }
+        String Path = context.getFilesDir() + "/Download/" + NomeFile + ".jpg";
+
+        // ImpostaImmagineInterna(context);
+
+        String encodedImage = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
+
+        ChiamateWsWP c = new ChiamateWsWP(context);
+        c.ModificaImmagine(s, encodedImage);
     }
 }

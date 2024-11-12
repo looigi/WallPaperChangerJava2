@@ -38,10 +38,9 @@ import java.util.List;
 
 public class MainPlayer extends Activity {
     private PresenzaCuffie mCuffieInseriteReceiver;
-    private AudioManager mAudioManager = null;
-    private ComponentName mReceiverComponent = null;
+    private final AudioManager mAudioManager = null;
+    private final ComponentName mReceiverComponent = null;
     private Context context;
-    private Activity act;
     private LinearLayout layImpostazioni;
 
     @Override
@@ -50,7 +49,7 @@ public class MainPlayer extends Activity {
         setContentView(R.layout.activity_main_player);
 
         context = this;
-        act = this;
+        Activity act = this;
 
         // GESTIONE INSERIMENTO CUFFIE
         IntentFilter filter = new IntentFilter();
@@ -254,12 +253,6 @@ public class MainPlayer extends Activity {
             UtilityPlayer.getInstance().FaiPartireTimerChiusura(context);
         } else {
             // RIPRISTINO SCHERMATA
-            if (VariabiliStatichePlayer.getInstance().isCuffieInserite()) {
-                VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.VISIBLE);
-            } else {
-                VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
-            }
-
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
                 VariabiliStatichePlayer.getInstance().getTxtTitolo().setText(
                         VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano()
@@ -287,9 +280,7 @@ public class MainPlayer extends Activity {
             Bitmap bitmap = BitmapFactory.decodeFile(VariabiliStatichePlayer.getInstance().getPathUltimaImmagine());
             VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
-            int perc = VariabiliStatichePlayer.getInstance().getPerc();
-            String sPerc = perc + "%";
-            VariabiliStatichePlayer.getInstance().getTxtPercentuale().setText(sPerc);
+            UtilityPlayer.getInstance().ScrivePerc();
 
             UtilityPlayer.getInstance().ImpostaBellezza();
         }

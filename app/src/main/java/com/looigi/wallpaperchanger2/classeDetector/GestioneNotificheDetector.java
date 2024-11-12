@@ -181,7 +181,7 @@ public class GestioneNotificheDetector {
         if (manager != null) {
             try {
                 manager.cancel(VariabiliStaticheDetector.getInstance().getIdNotifica());
-                manager.cancelAll();
+                // manager.cancelAll();
                 manager = null;
                 contentView = null;
                 notificationBuilder = null;

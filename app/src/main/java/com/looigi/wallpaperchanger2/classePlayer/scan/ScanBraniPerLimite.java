@@ -65,6 +65,7 @@ public class ScanBraniPerLimite {
 
                 int pe = Math.round(((float) Spazio / Limite) * 100);
                 String perc = pe + "%";
+                VariabiliStatichePlayer.getInstance().setSpazioOccupato(Spazio);
                 VariabiliStatichePlayer.getInstance().setPerc(pe);
                 if (VariabiliStatichePlayer.getInstance().getTxtPercentuale() != null) {
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {

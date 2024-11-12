@@ -553,7 +553,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
-            // TODO
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine modificata");
         }
     }
 

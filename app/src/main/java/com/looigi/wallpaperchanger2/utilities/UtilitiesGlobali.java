@@ -37,6 +37,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -260,6 +261,39 @@ public class UtilitiesGlobali {
         context.startActivity(Intent.createChooser(i,"Share file di log e db"));
 
         UtilitiesGlobali.getInstance().ApreToast(context, "File di logs condivisi: " + quanti);
+    }
+
+    public String TornaNomeFileConData() {
+        Calendar Oggi = Calendar.getInstance();
+        int Giorno = Oggi.get(Calendar.DAY_OF_MONTH);
+        int Mese = Oggi.get(Calendar.MONTH);
+        int Anno = Oggi.get(Calendar.YEAR);
+        String sGiorno = Integer.toString(Giorno).trim();
+        String sMese = Integer.toString(Mese+1).trim();
+        String sAnno = Integer.toString(Anno).trim();
+        if (sGiorno.length() == 1) {
+            sGiorno = "0" + sGiorno;
+        }
+        if (sMese.length() == 1) {
+            sMese = "0" + sMese;
+        }
+        int Ora = Oggi.get(Calendar.HOUR_OF_DAY);
+        String sOra = String.valueOf(Ora).trim();
+        if (sOra.length() == 1) {
+            sOra = "0" + sOra;
+        }
+        int Minuti = Oggi.get(Calendar.MINUTE);
+        String sMinuti = String.valueOf(Minuti).trim();
+        if (sMinuti.length() == 1) {
+            sMinuti = "0" + sMinuti;
+        }
+        int Secondi = Oggi.get(Calendar.SECOND);
+        String sSecondi = String.valueOf(Secondi).trim();
+        if (sSecondi.length() == 1) {
+            sSecondi = "0" + sSecondi;
+        }
+
+        return sAnno + sMese + sGiorno + "_" + sOra + sMinuti + sSecondi;
     }
 
     public int zip(String[] Applicazione, String[] Path, String zipFile) throws IOException {

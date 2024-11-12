@@ -90,6 +90,11 @@ public class db_dati_wallpaper {
                         + " (ImmagineNome VARCHAR, ImmaginePath VARCHAR, Data VARCHAR, Dimensione VARCHAR);";
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "ListaImmaginiRemote "
+                        + " (Immagine VARCHAR, Path VARCHAR, Data VARCHAR, Dimensione VARCHAR);";
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"DB Non valido");
@@ -102,6 +107,71 @@ public class db_dati_wallpaper {
 
             return false;
         }
+    }
+
+    public List<StrutturaImmagine> TornaImmaginiRemote() {
+        List<StrutturaImmagine> listaImmagini = new ArrayList<>();
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM ListaImmaginiRemote", null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+                    do {
+                        StrutturaImmagine s = new StrutturaImmagine();
+                        s.setImmagine(c.getString(0));
+                        s.setPathImmagine(c.getString(1));
+                        s.setDataImmagine(c.getString(2));
+                        s.setDimensione(c.getString(3));
+
+                        listaImmagini.add(s);
+                    } while (c.moveToNext());
+
+                    VariabiliStaticheWallpaper.getInstance().setListaImmagini(listaImmagini);
+                } else {
+                    return listaImmagini;
+                }
+            } catch (Exception e) {
+                return listaImmagini;
+            }
+        } else {
+            return listaImmagini;
+        }
+
+        return listaImmagini;
+    }
+
+    public boolean ScriveImmagineRemote(List<StrutturaImmagine> lista) {
+        if (myDB != null) {
+            try {
+                myDB.execSQL("Delete From ListaImmaginiLocali");
+
+                for (StrutturaImmagine l : lista) {
+                    String sql = "INSERT INTO"
+                            + " ListaImmaginiRemote "
+                            + "(Immagine, Path, Data, Dimensione)"
+                            + " VALUES ("
+                            + "'" + l.getImmagine().replace("'", "''") + "', "
+                            + "'" + l.getPathImmagine().replace("'", "''") + "', "
+                            + "'" + l.getDataImmagine().replace("'", "''") + "', "
+                            + "'" + l.getDimensione().replace("'", "''") + "' "
+                            + ")";
+                    myDB.execSQL(sql);
+                }
+            } catch (Exception e) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
+                        UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
+                PulisceDatiIL();
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
+                CreazioneTabelle();
+
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean EliminaImmaginiInLocale() {

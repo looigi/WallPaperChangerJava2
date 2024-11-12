@@ -104,9 +104,9 @@ public class db_dati_gps {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
-                        + "Impostazioni"
-                        + " (Segue VARCHAR, PathSegnale VARCHAR, PathPercorso VARCHAR"
-                        + ");";
+                        + "Impostazioni "
+                        + "(Segue VARCHAR, PathSegnale VARCHAR, PathPercorso VARCHAR, PsAttivi VARCHAR,"
+                        + "Accuracy VARCHAR, BloccoWiFi VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -142,16 +142,20 @@ public class db_dati_gps {
                         + " VALUES ("
                         + "'" + (VariabiliStaticheGPS.getInstance().isSegue() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().isMostraSegnale() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheGPS.getInstance().isMostraPercorso() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isMostraPercorso() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() ? "S" : "N") + "', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
                 return true;
             } catch (SQLException e) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per impostazioni: " + e.getMessage());
-                // PulisceDatiIMP();
+                PulisceDatiIMP();
                 // Log.getInstance().ScriveLog("Creazione tabelle");
-                // CreazioneTabelle();
+                CreazioneTabelle();
+                ScriveImpostazioni();
                 return false;
             }
         } else {
@@ -165,6 +169,9 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setSegue(true);
         VariabiliStaticheGPS.getInstance().setMostraSegnale(true);
         VariabiliStaticheGPS.getInstance().setMostraPercorso(true);
+        VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(true);
+        VariabiliStaticheGPS.getInstance().setAccuracyAttiva(true);
+        VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
     }
 
     public int CaricaImpostazioni() {
@@ -179,6 +186,9 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setSegue(c.getString(0).equals("S"));
                         VariabiliStaticheGPS.getInstance().setMostraSegnale(c.getString(1).equals("S"));
                         VariabiliStaticheGPS.getInstance().setMostraPercorso(c.getString(2).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(c.getString(3).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setAccuracyAttiva(c.getString(4).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
 
                         return 0;
                     } catch (Exception e) {
@@ -461,6 +471,7 @@ public class db_dati_gps {
         if (myDB != null) {
             try {
                 String sql = "";
+
                 sql = "INSERT INTO"
                         + " posizioni"
                         + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, "
@@ -480,6 +491,9 @@ public class db_dati_gps {
                         + "'" + s.getLevel() + "' "
                         + ") ";
                 myDB.execSQL(sql);
+
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Punto salvato su db: " + VariabiliStaticheGPS.getInstance().getUltimoDataPunto());
             } catch (SQLException e) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                         "Errore aggiunta posizione: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e) +

@@ -89,6 +89,9 @@ public class VariabiliStaticheWallpaper {
     private boolean SoloVolti = true;
     private boolean staPrendendoVolto = false;
     private List<Rect> quadratiFaccia;
+    private StrutturaImmagine immagineSelezionataDaLista;
+    private boolean ApreRicerca = false;
+    private TextView txtAvanzamentoRefresh;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -97,6 +100,30 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public TextView getTxtAvanzamentoRefresh() {
+        return txtAvanzamentoRefresh;
+    }
+
+    public void setTxtAvanzamentoRefresh(TextView txtAvanzamentoRefresh) {
+        this.txtAvanzamentoRefresh = txtAvanzamentoRefresh;
+    }
+
+    public boolean isApreRicerca() {
+        return ApreRicerca;
+    }
+
+    public void setApreRicerca(boolean apreRicerca) {
+        ApreRicerca = apreRicerca;
+    }
+
+    public StrutturaImmagine getImmagineSelezionataDaLista() {
+        return immagineSelezionataDaLista;
+    }
+
+    public void setImmagineSelezionataDaLista(StrutturaImmagine immagineSelezionataDaLista) {
+        this.immagineSelezionataDaLista = immagineSelezionataDaLista;
     }
 
     public ImageView getImgImpostataFinale() {

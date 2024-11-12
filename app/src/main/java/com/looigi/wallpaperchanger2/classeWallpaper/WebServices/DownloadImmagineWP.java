@@ -1,13 +1,21 @@
 package com.looigi.wallpaperchanger2.classeWallpaper.WebServices;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import androidx.core.content.FileProvider;
+
+import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -16,6 +24,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,12 +42,17 @@ public class DownloadImmagineWP {
     private Context context;
     private ImageView immagine;
     private String Url;
+    private boolean PerModifica;
+    private String Operazione;
 
-    public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine, String Url) {
+    public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine, String Url,
+                               boolean PerModifica, String Operazione) {
         this.NomeImmagine = NomeImmagine;
         this.context = context;
         this.immagine = immagine;
         this.Url = Url;
+        this.PerModifica = PerModifica;
+        this.Operazione = Operazione;
 
         if (immagine == null) {
             UtilityWallpaper.getInstance().Attesa(true);
@@ -86,7 +100,8 @@ public class DownloadImmagineWP {
             public void run() {
                 secondiPassati++;
                 if (secondiPassati > VariabiliStaticheWallpaper.TimeoutImmagine) {
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Timeout per Immagine Scaricata");
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                            "Timeout per Immagine Scaricata");
 
                     if (in != null) {
                         try {
@@ -131,9 +146,15 @@ public class DownloadImmagineWP {
                 mIcon11 = BitmapFactory.decodeStream(in);
             }
             if (immagine == null) {
+                String NomeFile = "";
+                if (PerModifica) {
+                    NomeFile = "AppoggioWP";
+                } else {
+                    NomeFile = "Appoggio";
+                }
                 FileOutputStream outStream;
                 try {
-                    outStream = new FileOutputStream(PercorsoDIR + "/Appoggio.jpg"); // .getPathImmagine());
+                    outStream = new FileOutputStream(PercorsoDIR + "/" + NomeFile + ".jpg"); // .getPathImmagine());
                     if (mIcon11 != null) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
@@ -191,8 +212,15 @@ public class DownloadImmagineWP {
                     sNomeImmagine = s[s.length - 2] + "/" + s[s.length - 1];
                 }
 
+                String NomeFile = "";
+                if (PerModifica) {
+                    NomeFile = "AppoggioWP";
+                } else {
+                    NomeFile = "Appoggio";
+                }
+
                 StrutturaImmagine si = new StrutturaImmagine();
-                si.setPathImmagine(PercorsoDIR + "/Appoggio.jpg");
+                si.setPathImmagine(PercorsoDIR + "/" + NomeFile + ".jpg");
                 si.setImmagine(sNomeImmagine);
                 if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                     si.setDataImmagine(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getDataImmagine());
@@ -202,11 +230,60 @@ public class DownloadImmagineWP {
                     si.setDimensione("---");
                 }
 
-                VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
+                if(!PerModifica) {
+                    VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
-                ChangeWallpaper c = new ChangeWallpaper(context);
-                c.setWallpaperLocale(context, si);
-                // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
+                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    c.setWallpaperLocale(context, si);
+                } else {
+                    String finalNomeFile = NomeFile;
+
+                    switch (Operazione) {
+                        case "MODIFICA":
+                            Handler handlerTimer = new Handler(Looper.getMainLooper());
+                            Runnable rTimer = new Runnable() {
+                                public void run() {
+                                    String Path = context.getFilesDir() + "/Download/" + finalNomeFile + ".jpg";
+
+                                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("WALLPAPER2");
+                                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                                            Path
+                                    );
+                                    Intent i = new Intent(context, Main_ModificaImmagine.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(i);
+                                }
+                            };
+                            handlerTimer.postDelayed(rTimer, 100);
+                            break;
+
+                        case "CONDIVIDI":
+                            Handler handlerTimer2 = new Handler(Looper.getMainLooper());
+                            Runnable rTimer2 = new Runnable() {
+                                public void run() {
+                                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                                    StrictMode.setVmPolicy(builder.build());
+
+                                    String Path = context.getFilesDir() + "/Download/" + finalNomeFile + ".jpg";
+
+                                    File f = new File(Path);
+                                    Uri uri = FileProvider.getUriForFile(context,
+                                            context.getApplicationContext().getPackageName() + ".provider",
+                                            f);
+
+                                    Intent i = new Intent(Intent.ACTION_SEND);
+                                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                                    i.putExtra(Intent.EXTRA_SUBJECT, si.getImmagine());
+                                    i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                                    context.startActivity(Intent.createChooser(i, "Share wallpaper"));
+                                }
+                            };
+                            handlerTimer2.postDelayed(rTimer2, 100);
+                            break;
+                    }
+                }
             }
         } else {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");

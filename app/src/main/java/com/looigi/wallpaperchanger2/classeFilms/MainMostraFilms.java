@@ -26,6 +26,7 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -193,15 +194,18 @@ public class MainMostraFilms extends Activity {
         imgScreenShot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
+
                 db_dati_films db = new db_dati_films(context);
-                if (db.VedeSnapshot(id)) {
+                boolean fatto = db.VedeSnapshotS(id);
+                db.ChiudeDB();
+
+                if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Immagine già scansionata per questo film.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.ScriveSnapshot(id);
-                            UtilityFilms.getInstance().takeScreenshot(context);
+                            UtilityFilms.getInstance().takeScreenshot(context, id);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -213,10 +217,8 @@ public class MainMostraFilms extends Activity {
 
                     builder.show();
                 } else {
-                    db.ScriveSnapshot(id);
-                    UtilityFilms.getInstance().takeScreenshot(context);
+                    UtilityFilms.getInstance().takeScreenshot(context, id);
                 }
-                db.ChiudeDB();
             }
         });
 
@@ -224,15 +226,18 @@ public class MainMostraFilms extends Activity {
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
+
                 db_dati_films db = new db_dati_films(context);
-                if (db.VedeSnapshot(id)) {
+                boolean fatto = db.VedeSnapshot(id);
+                db.ChiudeDB();
+
+                if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.ScriveSnapshot(id);
-                            UtilityFilms.getInstance().takeScreenShotMultipli(context);
+                            UtilityFilms.getInstance().takeScreenShotMultipli(context, id);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -244,8 +249,7 @@ public class MainMostraFilms extends Activity {
 
                     builder.show();
                 } else {
-                    db.ScriveSnapshot(id);
-                    UtilityFilms.getInstance().takeScreenShotMultipli(context);
+                    UtilityFilms.getInstance().takeScreenShotMultipli(context, id);
                 }
                 db.ChiudeDB();
             }

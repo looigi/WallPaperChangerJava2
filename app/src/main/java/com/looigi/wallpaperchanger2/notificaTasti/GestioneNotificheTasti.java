@@ -369,7 +369,7 @@ public class GestioneNotificheTasti {
         if (manager != null) {
             try {
                 manager.cancel(VariabiliStaticheTasti.getInstance().getIdNotifica());
-                manager.cancelAll();
+                // manager.cancelAll();
                 manager = null;
                 contentView = null;
                 // notificationBuilder = null;

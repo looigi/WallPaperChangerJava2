@@ -24,7 +24,7 @@ public class PresenzaCuffie extends BroadcastReceiver {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
         if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-            //Device found
+            // Device found
             // Toast.makeText(context, "device found", Toast.LENGTH_LONG).show();
         } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
             //Device is now connected
@@ -50,9 +50,11 @@ public class PresenzaCuffie extends BroadcastReceiver {
                 VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.VISIBLE);
             }
             VariabiliStatichePlayer.getInstance().setCuffieInserite(true);
-            UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS", "Gestione inserimento cuffie: Cuffie Inserite");
+            UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS",
+                    "Gestione inserimento cuffie: Cuffie Inserite");
 
-            UtilitiesGlobali.getInstance().ApreToast(context, "Cuffie inserite: " + nome + " Tipo: " + tipo);
+            UtilitiesGlobali.getInstance().ApreToast(context, "Cuffie inserite: " + nome +
+                    " Tipo: " + tipo);
         } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
             //Done searching
             // Toast.makeText(getApplicationContext(), "search ended", Toast.LENGTH_LONG).show();
@@ -69,7 +71,8 @@ public class PresenzaCuffie extends BroadcastReceiver {
                     VariabiliStatichePlayer.getInstance().getImgCuffie().setVisibility(LinearLayout.GONE);
                 }
                 VariabiliStatichePlayer.getInstance().setCuffieInserite(false);
-                UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS", "Gestione inserimento cuffie: Cuffie Disinserite");
+                UtilityPlayer.getInstance().ScriveLog(context, "CUFFIEINS",
+                        "Gestione inserimento cuffie: Cuffie Disinserite");
 
                 if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
                     StavaSuonando = 1;
@@ -78,7 +81,8 @@ public class PresenzaCuffie extends BroadcastReceiver {
                     StavaSuonando = -1;
                 }
 
-                UtilitiesGlobali.getInstance().ApreToast(context, "Cuffie disinserite: " + nome + " Tipo: " + tipo);
+                UtilitiesGlobali.getInstance().ApreToast(context, "Cuffie disinserite: " + nome +
+                        " Tipo: " + tipo);
             }
         }
     }

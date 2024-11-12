@@ -139,11 +139,14 @@ public class MainWallpaper extends Activity {
         VariabiliStaticheWallpaper.getInstance().setMainActivity(this);
         VariabiliStaticheWallpaper.getInstance().setContext(this);
 
-        // if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
+        if (VariabiliStaticheWallpaper.getInstance().isApreRicerca()) {
+            VariabiliStaticheWallpaper.getInstance().setApreRicerca(false);
+        } else {
+           // if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
             InizializzaMascheraWallpaper i = new InizializzaMascheraWallpaper();
             i.inizializzaMaschera(this, this);
-        // }
-
+            // }
+        }
         /* if (!VariabiliStaticheServizio.getInstance().isLetteImpostazioni()) {
             Utility.getInstance().ScriveLog(this, NomeMaschera, "Uscita per mancanza di impostazioni 3");
             Utility.getInstance().ApreToast(this, "Uscita per mancanza di impostazioni 3");

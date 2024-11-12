@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
@@ -751,7 +752,7 @@ public class MainImpostazioni extends Activity {
 
                 if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
                     VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("INIT 1");
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta Schermata Detector");
                 }
             }
         });
@@ -802,7 +803,7 @@ public class MainImpostazioni extends Activity {
                         db.ChiudeDB();
 
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 1");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta schermata mappa 1");
                     }
                 }
             }
@@ -822,7 +823,7 @@ public class MainImpostazioni extends Activity {
                         db.ChiudeDB();
 
                         VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 2");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta schermata mappa 2");
                     }
                 }
             }
@@ -864,6 +865,47 @@ public class MainImpostazioni extends Activity {
             @Override
             public void onClick(View v) {
                 VariabiliStaticheGPS.getInstance().setMostraPercorso(sPercorso.isChecked());
+
+                db_dati_gps db = new db_dati_gps(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat sPS = act.findViewById(R.id.sPuntiDiSospensione);
+        sPS.setChecked(VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi());
+        sPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(sPS.isChecked());
+
+                db_dati_gps db = new db_dati_gps(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat sWifi = act.findViewById(R.id.sWifi);
+        sWifi.setChecked(VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
+        sWifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setBloccoPerWifi(sWifi.isChecked());
+
+                db_dati_gps db = new db_dati_gps(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+
+                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+            }
+        });
+
+        SwitchCompat sAccuracy = act.findViewById(R.id.sAccuracy);
+        sAccuracy.setChecked(VariabiliStaticheGPS.getInstance().isAccuracyAttiva());
+        sAccuracy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setAccuracyAttiva(sAccuracy.isChecked());
 
                 db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();

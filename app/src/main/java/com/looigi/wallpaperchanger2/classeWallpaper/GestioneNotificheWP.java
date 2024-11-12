@@ -21,6 +21,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -184,9 +185,12 @@ public class GestioneNotificheWP {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            Intent apre = new Intent(ctx, NotificationActionService.class);
-            apre.putExtra("DO", "apre");
-            PendingIntent pApre = PendingIntent.getService(ctx, 91, apre,
+            Intent apre = new Intent(ctx, ActivityDiStart.class);
+            apre.addCategory(Intent.CATEGORY_LAUNCHER);
+            apre.setAction(Intent.ACTION_MAIN );
+            apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            apre.putExtra("DO", "wallpaper");
+            PendingIntent pApre = PendingIntent.getActivity(ctx, 70, apre,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.txtTitoloNotifica, pApre);
 
@@ -255,7 +259,7 @@ public class GestioneNotificheWP {
         if (manager != null) {
             try {
                 manager.cancel(VariabiliStaticheWallpaper.getInstance().getIdNotifica());
-                manager.cancelAll();
+                // manager.cancelAll();
                 manager = null;
                 contentView = null;
                 notificationBuilder = null;
@@ -363,7 +367,7 @@ public class GestioneNotificheWP {
                             gps = !gps;
                             VariabiliStaticheGPS.getInstance().setGpsAttivo(gps);
                             if (gps) {
-                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS();
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Notifica WP");
                             } else {
                                 VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICHE");
                             }

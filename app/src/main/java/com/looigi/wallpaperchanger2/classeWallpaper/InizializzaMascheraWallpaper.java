@@ -22,21 +22,28 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.VariabiliStaticheRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class InizializzaMascheraWallpaper {
     private static final String NomeMaschera = "Init_Maschera_Wallpaper";
     private Long controlloLongPress = null;
 
     public void inizializzaMaschera(Context context, Activity view) {
-        UtilityWallpaper.getInstance().Attesa(true);
-
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
@@ -47,10 +54,11 @@ public class InizializzaMascheraWallpaper {
     }
 
     private void inizializzaMaschera2(Context context, Activity view) {
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Inizializzo maschera");
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                "Inizializzo maschera");
 
         VariabiliStaticheWallpaper.getInstance().setLayAttesa(view.findViewById(R.id.layAttesa));
-        UtilityWallpaper.getInstance().Attesa(false);
+        // UtilityWallpaper.getInstance().Attesa(false);
 
         TextView txtQuante = (TextView) view.findViewById(R.id.txtQuanteImmagini);
         VariabiliStaticheWallpaper.getInstance().setTxtQuanteImmagini(txtQuante);
@@ -63,23 +71,30 @@ public class InizializzaMascheraWallpaper {
         ImpostaOggetti(context, view);
 
         if (!VariabiliStaticheWallpaper.getInstance().isePartito()) {
-            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Carico immagini in locale");
+            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                    "Carico immagini in locale");
+
             db_dati_wallpaper db = new db_dati_wallpaper(context);
             boolean letteImmagini = db.CaricaImmaginiInLocale();
 
             if (!letteImmagini) {
                 // if (VariabiliGlobali.getInstance().isOffline()) {
-                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini in locale non rilevate... Scanno...");
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                        "Immagini in locale non rilevate... Scanno...");
                 ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, null);
                 bckLeggeImmaginiLocali.execute();
                 // }
             } else {
                 if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
                     int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
-                    VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco: " + q);
+                    VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
+                            "Immagini rilevate su disco: " + q
+                    );
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                            "Immagini rilevate su disco: " + q);
                 } else {
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagini rilevate su disco inutili: OnLine");
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                            "Immagini rilevate su disco inutili: OnLine");
                 }
             }
             db.ChiudeDB();
@@ -144,23 +159,16 @@ public class InizializzaMascheraWallpaper {
         ImageView imgRicerca = (ImageView) view.findViewById(R.id.imgRicerca);
         imgRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                    AdapterListenerImmagini customAdapterT = new AdapterListenerImmagini(context,
-                            VariabiliStaticheWallpaper.getInstance().getListaImmagini());
-                    VariabiliStaticheWallpaper.getInstance().getLstImmagini().setAdapter(customAdapterT);
-                    VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(customAdapterT);
-
-                    laySceltaImm.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    VariabiliStaticheWallpaper.getInstance().setAdapterImmagini(null);
-
-                    ChiamateWsWP c = new ChiamateWsWP(context);
-                    c.TornaImmagini();
-                }
+                UtilityWallpaper.getInstance().ApreRicerca(context);
             }
         });
 
-        /* ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
+        /* if (VariabiliStaticheWallpaper.getInstance().isApreRicerca()) {
+            VariabiliStaticheWallpaper.getInstance().setApreRicerca(false);
+            UtilityWallpaper.getInstance().ApreRicerca(context);
+        }
+
+        ImageView imgUscita = (ImageView) view.findViewById(R.id.imgUscita);
         imgUscita.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityWallpaper.getInstance().ChiudeApplicazione(context);
@@ -191,6 +199,14 @@ public class InizializzaMascheraWallpaper {
         });
 
         EditText edtFiltro = view.findViewById(R.id.edtFiltro);
+
+        ImageView imgRefreshScelta = (ImageView) view.findViewById(R.id.imgRefreshScelta);
+        imgRefreshScelta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWsWP ws = new ChiamateWsWP(context);
+                ws.TornaImmagini(true);
+            }
+        });
 
         ImageView imgRicercaScelta = (ImageView) view.findViewById(R.id.imgRicercaScelta);
         imgRicercaScelta.setOnClickListener(new View.OnClickListener() {
@@ -264,26 +280,97 @@ public class InizializzaMascheraWallpaper {
             }
         }); */
 
+        VariabiliStaticheWallpaper.getInstance().setTxtAvanzamentoRefresh(view.findViewById(R.id.txtAvanzamentoRefresh));
+        VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
+
+        ImageView imgRefreshImmagini = (ImageView) view.findViewById(R.id.imgRefreshIONOS);
+        imgRefreshImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(
+                        LinearLayout.VISIBLE
+                );
+                VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setText(
+                        "Lettura immagini IoNOS"
+                );
+
+                ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                ws.RitornaListaImmaginiIoNOSPerRefresh();
+            }
+        });
+
         ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
         imgCondividi.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String Path = context.getFilesDir() + "/Download/Appoggio.jpg";
-                if (Files.getInstance().EsisteFile(Path)) {
+                String Datella = UtilitiesGlobali.getInstance().TornaNomeFileConData();
+                String SoloNome = "Wallpaper_" + Datella + ".zip";
+                String NomeFileZip = context.getFilesDir() + "/Appoggio/" + SoloNome;
+                Files.getInstance().CreaCartelle(context.getFilesDir() + "/Appoggio");
+
+                String[] NomeFile = { context.getFilesDir() + "/Download/Appoggio.jpg",
+                        context.getFilesDir() + "/Download/AppoggioImpostato.jpg"};
+
+                int BUFFER_SIZE = 1024;
+                byte data[] = new byte[BUFFER_SIZE];
+
+                BufferedInputStream origin = null;
+                try {
+                    ZipOutputStream out = new ZipOutputStream(
+                            new BufferedOutputStream(
+                                    new FileOutputStream(NomeFileZip)));
+                    for (String filetto : NomeFile) {
+                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Zip files: " + filetto);
+
+                        File f = new File(filetto);
+                        if (f.exists()) {
+                            FileInputStream fi = new FileInputStream(f);
+                            origin = new BufferedInputStream(fi, BUFFER_SIZE);
+                            try {
+                                ZipEntry entry = new ZipEntry(f.getAbsoluteFile().getName());
+                                out.putNextEntry(entry);
+                                int count;
+                                while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
+                                    out.write(data, 0, count);
+                                }
+                            } catch (IOException e) {
+                                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                                        "Errore su zip files 1: " +
+                                                UtilityDetector.getInstance().PrendeErroreDaException(e));
+                            } finally {
+                                origin.close();
+                            }
+                        } else {
+                            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"NON esistente");
+                        }
+                    }
+                    out.close();
+
                     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                     StrictMode.setVmPolicy(builder.build());
 
-                    File f = new File(Path);
+                    File f = new File(NomeFileZip);
                     Uri uri = FileProvider.getUriForFile(context,
                             context.getApplicationContext().getPackageName() + ".provider",
                             f);
 
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    i.putExtra(Intent.EXTRA_SUBJECT, SoloNome);
                     i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
                     i.putExtra(Intent.EXTRA_STREAM, uri);
                     i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
                     context.startActivity(Intent.createChooser(i, "Share wallpaper"));
+
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            Files.getInstance().EliminaFileUnico(NomeFileZip);
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 10000);
+                } catch (IOException e) {
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                            "Errore su zip files 2: " +
+                                    UtilityDetector.getInstance().PrendeErroreDaException(e));
                 }
             }
         });

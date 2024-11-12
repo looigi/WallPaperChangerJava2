@@ -104,21 +104,28 @@ public class ActivityDiStart extends Activity {
                             // startForeground(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notificaPlayer);
 
                             GestioneNotifichePlayer.getInstance().AggiornaNotifica("Titolo Canzone");
+                            GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
                             UtilitiesGlobali.getInstance().ApreToast(context, "Player Partito");
                         }
                     } else {
                         VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 
-                        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+                        UtilityPlayer.getInstance().PressionePlay(context, false);
+                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
                         Handler handlerTimer = new Handler(Looper.getMainLooper());
                         Runnable rTimer = new Runnable() {
                             public void run() {
-                                UtilityPlayer.getInstance().PressionePlay(context, false);
-                                UtilityPlayer.getInstance().ChiudeActivity(true);
+                                GestioneNotifichePlayer.getInstance().RimuoviNotifica();
 
-                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                                Runnable rTimer = new Runnable() {
+                                    public void run() {
+                                        UtilityPlayer.getInstance().ChiudeActivity(true);
+                                    }
+                                };
+                                handlerTimer.postDelayed(rTimer, 500);
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 500);

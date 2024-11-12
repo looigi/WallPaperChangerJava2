@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.utilities;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.speech.tts.TextToSpeech;
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.nl.languageid.LanguageIdentification;
 import com.google.mlkit.nl.languageid.LanguageIdentifier;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +58,10 @@ public class Chiacchierone {
                                                     break;
                                             }
 
-                                            t1.speak(Cosa, TextToSpeech.QUEUE_FLUSH,null,null);
+                                            Bundle params = new Bundle();
+                                            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 0.9f); // change the 0.5f to any value from 0f-1f (1f is default)
+
+                                            t1.speak(Cosa, TextToSpeech.QUEUE_FLUSH, params,null);
 
                                             Termina();
                                         }

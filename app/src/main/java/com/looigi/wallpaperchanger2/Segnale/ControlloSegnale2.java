@@ -13,6 +13,8 @@ import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -65,8 +67,34 @@ public class ControlloSegnale2 extends Service {
 
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
         VariabiliStaticheStart.getInstance().setCeWifi(wifi);
+
+        String NomeMaschera = "Gestione_GPS";
+        // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+        //         "Controllo segnale segnale wifi. Attivo: " + wifi);
+
         if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-            VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+            if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+                if (vecchioWifi != wifi) {
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                            "Controllo GPS Per cambio segnale wifi: " + wifi);
+
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+                }
+            }
+        } else {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Classe GPS non istanziata... La accendo");
+
+            VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("On Create Servizio GPS");
+
+            if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Controllo GPS Per cambio segnale wifi: " + wifi);
+
+                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+            }
         }
 
         String tipoConnessione = "";

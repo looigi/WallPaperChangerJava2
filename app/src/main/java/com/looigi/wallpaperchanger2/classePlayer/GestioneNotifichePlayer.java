@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.Date;
@@ -187,8 +188,8 @@ public class GestioneNotifichePlayer {
         if (context != null) {
             try {
                 Notification notification = StartNotifica(context);
-                NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notification);
+                manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID, notification);
             } catch (Exception e) {
                 UtilityPlayer.getInstance().ScriveLog(context, nomeMaschera, "Errore su aggiorna notifica: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
@@ -200,14 +201,16 @@ public class GestioneNotifichePlayer {
         // // Log.getInstance().ScriveLog("Rimuovi notifica");
         if (manager != null) {
             try {
-                manager.cancel(VariabiliStatichePlayer.getInstance().getIdNotifica());
-                manager.cancelAll();
+                manager.cancel(VariabiliStatichePlayer.NOTIFICATION_CHANNEL_ID);
+                // manager.cancelAll();
                 manager = null;
                 contentView = null;
                 notificationBuilder = null;
                 // notifica = null;
                 // NOTIF_ID++;
             } catch (Exception e) {
+                UtilitiesGlobali.getInstance().ApreToast(context, "Errore nella chiusura " +
+                        "della notifica:\n" + UtilityDetector.getInstance().PrendeErroreDaException(e));
                 // // Log.getInstance().ScriveLog(Utility.getInstance().PrendeErroreDaException(e));
             }
         }

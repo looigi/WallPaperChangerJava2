@@ -48,6 +48,33 @@ public class VariabiliStaticheGPS {
     private ImmagineZoomabile imgMappa;
     private boolean NonScriverePunti = false;
     private String ultimoDataPunto = "";
+    private boolean puntiSospensioneAttivi = true;
+    private boolean accuracyAttiva = true;
+    private boolean bloccoPerWifi = true;
+
+    public boolean isBloccoPerWifi() {
+        return bloccoPerWifi;
+    }
+
+    public void setBloccoPerWifi(boolean bloccoPerWifi) {
+        this.bloccoPerWifi = bloccoPerWifi;
+    }
+
+    public boolean isAccuracyAttiva() {
+        return accuracyAttiva;
+    }
+
+    public void setAccuracyAttiva(boolean accuracyAttiva) {
+        this.accuracyAttiva = accuracyAttiva;
+    }
+
+    public boolean isPuntiSospensioneAttivi() {
+        return puntiSospensioneAttivi;
+    }
+
+    public void setPuntiSospensioneAttivi(boolean puntiSospensioneAttivi) {
+        this.puntiSospensioneAttivi = puntiSospensioneAttivi;
+    }
 
     public String getUltimoDataPunto() {
         return ultimoDataPunto;

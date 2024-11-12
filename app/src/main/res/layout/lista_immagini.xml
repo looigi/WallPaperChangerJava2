@@ -50,8 +50,51 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="8"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgModifica"
+                    android:src="@drawable/edit_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgElimina"
+                    android:src="@drawable/elimina"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgCondividi"
+                    android:src="@drawable/share"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="5"
                 android:paddingStart="3dp"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 

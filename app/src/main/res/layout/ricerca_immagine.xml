@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:weightSum="10"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-
         <LinearLayout
+            android:id="@+id/layTasti"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:weightSum="5">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_height="wrap_content"
                 android:weightSum="11"
                 android:gravity="center_vertical|right">
 
@@ -56,7 +50,20 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgRefreshScelta"
+                        android:src="@drawable/icona_refresh"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content">
 
@@ -71,7 +78,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="2"
-                android:layout_height="0dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txtQuanteRicerca"
@@ -89,11 +96,9 @@
 
         <ListView
             android:id="@+id/lstImmagini"
+            android:layout_below="@+id/layTasti"
             android:layout_width="match_parent"
-            android:layout_weight="8"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:dividerHeight="1dp"
             android:listSelector="#9999EE" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

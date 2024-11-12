@@ -193,15 +193,18 @@ public class MainMostraVideo extends Activity {
         imgScreenShot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String id = String.valueOf(VariabiliStaticheVideo.getInstance().getIdUltimoVideo());
+
                 db_dati_video db = new db_dati_video(context);
-                if (db.VedeSnapshot(id)) {
+                boolean fatto = db.VedeSnapshotS(id);
+                db.ChiudeDB();
+
+                if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Immagine già acquisita per questo video.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.ScriveSnapshot(id);
-                            UtilityVideo.getInstance().takeScreenshot(context);
+                            UtilityVideo.getInstance().takeScreenshot(context, id);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -213,10 +216,8 @@ public class MainMostraVideo extends Activity {
 
                     builder.show();
                 } else {
-                    db.ScriveSnapshot(id);
-                    UtilityVideo.getInstance().takeScreenshot(context);
+                    UtilityVideo.getInstance().takeScreenshot(context, id);
                 }
-                db.ChiudeDB();
             }
         });
 
@@ -224,15 +225,18 @@ public class MainMostraVideo extends Activity {
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String id = String.valueOf(VariabiliStaticheVideo.getInstance().getIdUltimoVideo());
+
                 db_dati_video db = new db_dati_video(context);
-                if (db.VedeSnapshot(id)) {
+                boolean fatto = db.VedeSnapshot(id);
+                db.ChiudeDB();
+
+                if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.ScriveSnapshot(id);
-                            UtilityVideo.getInstance().takeScreenShotMultipli(context);
+                            UtilityVideo.getInstance().takeScreenShotMultipli(context, id);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -244,10 +248,8 @@ public class MainMostraVideo extends Activity {
 
                     builder.show();
                 } else {
-                    db.ScriveSnapshot(id);
-                    UtilityVideo.getInstance().takeScreenShotMultipli(context);
+                    UtilityVideo.getInstance().takeScreenShotMultipli(context, id);
                 }
-                db.ChiudeDB();
             }
         });
 

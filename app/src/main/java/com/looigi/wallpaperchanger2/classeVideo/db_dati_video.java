@@ -89,6 +89,12 @@ public class db_dati_video {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
+                        + "SnapshotsS "
+                        + "(id VARCHAR);";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
                         + "Categorie "
                         + "(Categoria VARCHAR);";
 
@@ -115,6 +121,27 @@ public class db_dati_video {
                 }
             } catch (Exception e) {
                 UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db snapshots: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+                return false;
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+
+            return false;
+        }
+    }
+
+    public boolean VedeSnapshotS(String id) {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM SnapshotsS Where id=" + id, null);
+                if (c.getCount() > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db snapshotsS: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
                 return false;
             }
@@ -185,6 +212,23 @@ public class db_dati_video {
                 myDB.execSQL(sql);
             } catch (SQLException e) {
                 UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per snapshot: " + e.getMessage());
+            }
+        } else {
+            UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public void ScriveSnapshotS(String id) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO "
+                        + "SnapshotsS "
+                        + " VALUES ("
+                        + "'" + id + "'"
+                        + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per snapshotS: " + e.getMessage());
             }
         } else {
             UtilityVideo.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
@@ -21,6 +22,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import okhttp3.internal.Util;
 
 public class DownloadCanzone {
     private static final String NomeMaschera = "Download_Brano_Player";
@@ -46,7 +49,7 @@ public class DownloadCanzone {
 
     public void EsegueDownload(Context context, StrutturaBrano s, boolean Pregresso) {
         UtilityPlayer.getInstance().Attesa(true);
-        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download brano: " + s.getBrano());
+        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download brano:\n" + s.getBrano());
 
         this.context = context;
         this.Pregresso = Pregresso;
@@ -114,7 +117,8 @@ public class DownloadCanzone {
 
                         int perc = Math.round(((float) total / dimensione) * 100);
                         if (perc != vecchioPerc) {
-                            UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download brano: " + s.getBrano() + " " + perc + "%");
+                            UtilityPlayer.getInstance().AggiornaOperazioneInCorso(
+                                    "Download brano:\n" + s.getBrano() + "\n" + perc + "%");
                         }
                     }
 
@@ -127,7 +131,8 @@ public class DownloadCanzone {
                         input.close();
                     }
                 } catch (Exception e) {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Errore: " + e.getMessage());
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                            "Errore: " + e.getMessage());
                     erroreDownload = true;
                     Files.getInstance().EliminaFileUnico(sb.getPathBrano());
                 }
@@ -155,6 +160,11 @@ public class DownloadCanzone {
                                         db.ScriveBrano(sb);
                                         db.ScriveUltimoBranoAscoltato(sb);
                                         db.ChiudeDB();
+
+                                        long Spazio = VariabiliStatichePlayer.getInstance().getSpazioOccupato();
+                                        Spazio += (dime * 1024);
+                                        VariabiliStatichePlayer.getInstance().setSpazioOccupato(Spazio);
+                                        UtilityPlayer.getInstance().ScrivePerc();
 
                                         VariabiliStatichePlayer.getInstance().setUltimoBrano(sb);
 
@@ -218,9 +228,14 @@ public class DownloadCanzone {
                 if (secondiPassati > VariabiliStatichePlayer.TimeoutBrano) {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Timeout per Immagine Scaricata");
 
+                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Elimino file " + sb.getPathBrano() + " per timeout");
+                    Files.getInstance().EliminaFileUnico(sb.getPathBrano());
+
                     UtilityPlayer.getInstance().Attesa(false);
                     BloccaTimer();
                     BloccaEsecuzione();
+
+                    UtilityPlayer.getInstance().PrendeBranoInLocaleNonEsatto(context, Pregresso);
                 } else {
                     if (handler != null) {
                         handler.postDelayed(this, 1000);

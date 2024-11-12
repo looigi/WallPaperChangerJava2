@@ -31,8 +31,9 @@ public class DownloadImmagine {
     private Context context;
     private boolean isCancelled;
     private InputStream in;
+    private boolean Interna;
 
-    public void EsegueDownload(Context context, ImageView bmImage, String Immagine) {
+    public void EsegueDownload(Context context, ImageView bmImage, String Immagine, boolean Interna) {
         UtilityPlayer.getInstance().Attesa(true);
         UtilityPlayer.getInstance().ImpostaTastiSfondo(false);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download immagine");
@@ -46,6 +47,7 @@ public class DownloadImmagine {
         PathImmagine = PathImmagine.replace("\\", "/");
         CartellaImmagine = "";
         isCancelled = false;
+        this.Interna = Interna;
         String[] c = PathImmagine.split("/");
         for (int i = 0; i < c.length - 1; i++) {
             CartellaImmagine += c[i] + "/";
@@ -118,6 +120,11 @@ public class DownloadImmagine {
                                         outStream.flush();
                                         outStream.close();
 
+                                        long Spazio = VariabiliStatichePlayer.getInstance().getSpazioOccupato();
+                                        Spazio += (Files.getInstance().DimensioniFile(PathImmagine) * 1024);
+                                        VariabiliStatichePlayer.getInstance().setSpazioOccupato(Spazio);
+                                        UtilityPlayer.getInstance().ScrivePerc();
+
                                         VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
 
                                         UtilityPlayer.getInstance().AggiornaInformazioni(false);
@@ -130,8 +137,12 @@ public class DownloadImmagine {
                                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                                 "Errore nel salvataggio su download Immagine: " + e.getMessage());
 
-                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                        if (!Interna) {
+                                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                        } else {
+                                            UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                                        }
                                         /* } catch (IOException e) {
                                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                                         "Errore nel salvataggio su download Immagine: " + e.getMessage());
@@ -144,18 +155,33 @@ public class DownloadImmagine {
                         } else {
                             UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
-                            //     UtilityPlayer.getInstance().ImpostaImmagine(context);
-                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                            if (!Interna) {
+                                VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                            } else {
+                                UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                            }
                         }
                     } else {
-                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
-                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                        if (!Interna) {
+                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                        } else {
+                            UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                        }
+
+                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
                     }
                 } catch (Exception e) {
-                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+                    if (!Interna) {
+                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                    } else {
+                        UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                    }
 
-                    UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
                     // e.printStackTrace();
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
@@ -169,11 +195,12 @@ public class DownloadImmagine {
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                             "Errore sul download immagine o blocco forzato. Imposto logo");
 
-                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-
-                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
-
-                    UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                    if (!Interna) {
+                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                    } else {
+                        UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                    }
                 }
 
                 VariabiliStatichePlayer.getInstance().setDownImmagine(null);

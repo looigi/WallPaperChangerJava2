@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeWallpaper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -8,10 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.DownloadImmagineWP;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,6 +86,53 @@ public class AdapterListenerImmagini extends BaseAdapter {
 
             // ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
 
+            /* ImageView imgPresenteSuDisco = (ImageView) view.findViewById(R.id.imgPresenteSuDisco);
+            if (Files.getInstance().EsisteFile(PathImmagine)) {
+                imgPresenteSuDisco.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                imgPresenteSuDisco.setVisibility(LinearLayout.GONE);
+            } */
+
+            ImageView imgElimina = (ImageView) view.findViewById(R.id.imgElimina);
+            imgElimina.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    UtilityWallpaper.getInstance().Attesa(true);
+
+                    ChiamateWsWP c = new ChiamateWsWP(context);
+                    c.EliminaImmagine(listaImmagini.get(i));
+                }
+            });
+
+            ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
+            imgModifica.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
+                        VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
+
+                        UtilityWallpaper.getInstance().Attesa(true);
+
+                        DownloadImmagineWP d = new DownloadImmagineWP();
+                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                listaImmagini.get(i).getPathImmagine(), true, "MODIFICA");
+                    }
+                }
+            });
+
+            ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
+            imgCondividi.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
+                        VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
+
+                        UtilityWallpaper.getInstance().Attesa(true);
+
+                        DownloadImmagineWP d = new DownloadImmagineWP();
+                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                listaImmagini.get(i).getPathImmagine(), true, "CONDIVIDI");
+                    }
+                }
+            });
+
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
             if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
                 File imgFile = new File(listaImmagini.get(i).getPathImmagine());
@@ -89,8 +143,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
             } else {
                 String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
                 DownloadImmagineWP d = new DownloadImmagineWP();
-                d.EsegueChiamata(context, NomeImmagine, imgImmagine, PathImmagine2);
-                // new DownloadImageWP(context, PathImmagine2, imgImmagine).execute(PathImmagine2);
+                d.EsegueChiamata(context, NomeImmagine, imgImmagine, PathImmagine2, false, "");
             }
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -99,8 +152,8 @@ public class AdapterListenerImmagini extends BaseAdapter {
                     if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
                         UtilityWallpaper.getInstance().Attesa(true);
                         DownloadImmagineWP d = new DownloadImmagineWP();
-                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null, listaImmagini.get(i).getPathImmagine());
-                        // new DownloadImageWP(context, listaImmagini.get(i).getPathImmagine(), null).execute(listaImmagini.get(i).getPathImmagine());
+                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                listaImmagini.get(i).getPathImmagine(), false, "");
                     } else {
                         ChangeWallpaper c = new ChangeWallpaper(context);
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());

@@ -72,7 +72,7 @@ public class UtilityVideo {
 
     private String testo;
 
-    public void takeScreenShotMultipli(Context context) {
+    public void takeScreenShotMultipli(Context context, String id) {
         if (VariabiliStaticheVideo.getInstance().isStaAcquisendoVideo()) {
             UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
             return;
@@ -132,6 +132,10 @@ public class UtilityVideo {
                     VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(testo);
                 }
 
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveSnapshot(id);
+                db.ChiudeDB();
+
                 VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setVisibility(LinearLayout.GONE);
                 VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(false);
                 Attesa(false);
@@ -152,7 +156,7 @@ public class UtilityVideo {
         }, 10);
     }
 
-    public void takeScreenshot(Context context) {
+    public void takeScreenshot(Context context, String id) {
         if (VariabiliStaticheVideo.getInstance().isStaAcquisendoVideo()) {
             UtilityDetector.getInstance().VisualizzaToast(context, "Acquisizione in corso", false);
             return;
@@ -199,6 +203,10 @@ public class UtilityVideo {
                 } catch (Throwable e) {
                     // e.printStackTrace();
                 }
+
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveSnapshotS(id);
+                db.ChiudeDB();
 
                 VariabiliStaticheVideo.getInstance().setStaAcquisendoVideo(false);
                 Attesa(false);
