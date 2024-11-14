@@ -196,12 +196,8 @@ public class UtilityPlayer {
             try {
                 VariabiliStatichePlayer.getInstance().getMp().setDataSource(path);
                 VariabiliStatichePlayer.getInstance().getMp().prepare();
-                if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
-                    VariabiliStatichePlayer.getInstance().setFermaTimer(false);
-                    VariabiliStatichePlayer.getInstance().getMp().start();
-                } else {
-                    VariabiliStatichePlayer.getInstance().setFermaTimer(true);
-                }
+                VariabiliStatichePlayer.getInstance().getMp().pause();
+                VariabiliStatichePlayer.getInstance().setFermaTimer(false);
 
                 VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(false);
                 VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
@@ -215,12 +211,14 @@ public class UtilityPlayer {
                         context, sb.getArtista());
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
-                AggiungeBranoAllaListaAscoltati(context, sb);
+                AggiornaInformazioni(false);
 
-                FaiPartireTimer(context);
+                GestioneNotifichePlayer.getInstance().AggiornaNotifica(sb.getBrano());
 
                 if (VariabiliStatichePlayer.getInstance().isChiacchiera()) {
-                    new Chiacchierone(context, sb.getArtista() + " " + sb.getBrano() + ".");
+                    new Chiacchierone(context, sb);
+                } else {
+                    CaricaBranoNelLettore2(context, sb);
                 }
 
                 ScriveLog(context, NomeMaschera, "Brano caricato");
@@ -228,19 +226,34 @@ public class UtilityPlayer {
                 ScriveLog(context, NomeMaschera, "Errore caricamento brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
-
-            AggiornaInformazioni(false);
-
-            GestioneNotifichePlayer.getInstance().AggiornaNotifica(sb.getBrano());
-
-            if (sb.getBellezza() == -2) {
-                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
-                VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
-                ws.RitornaStelleBrano();
-            }
         } else {
             GestioneNotifichePlayer.getInstance().AggiornaNotifica("Brano non caricato");
         }
+    }
+
+    public void CaricaBranoNelLettore2(Context context, StrutturaBrano sb) {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
+                    VariabiliStatichePlayer.getInstance().getMp().start();
+                    VariabiliStatichePlayer.getInstance().setFermaTimer(false);
+                } else {
+                    VariabiliStatichePlayer.getInstance().setFermaTimer(true);
+                }
+
+                FaiPartireTimer(context);
+
+                AggiungeBranoAllaListaAscoltati(context, sb);
+
+                if (sb.getBellezza() == -2) {
+                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                    VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+                    ws.RitornaStelleBrano();
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1500);
     }
 
     private String ConverteSecondiInTempo(int SecondiPassati) {
@@ -700,7 +713,9 @@ public class UtilityPlayer {
                                                     context,
                                                     VariabiliStatichePlayer.getInstance().getImgBrano(),
                                                     finalLista.get(immagine[0]).getUrlImmagine(),
-                                                    false
+                                                    false,
+                                                    false,
+                                                    ""
                                             );
                                     /* new DownloadImage(
                                             context,
@@ -1333,7 +1348,9 @@ public class UtilityPlayer {
                                     context,
                                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
                                     s.getUrlImmagine(),
-                                    true
+                                    true,
+                                    false,
+                                    ""
                             );
                         }
                     }

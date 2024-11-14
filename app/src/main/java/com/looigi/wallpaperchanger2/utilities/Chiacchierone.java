@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.nl.languageid.LanguageIdentification;
 import com.google.mlkit.nl.languageid.LanguageIdentifier;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -24,11 +26,16 @@ import java.util.concurrent.Executors;
 public class Chiacchierone {
     private Context context;
     private TextToSpeech t1;
+    private StrutturaBrano sb;
 
-    public Chiacchierone(Context context, String Cosa) {
+    public Chiacchierone(Context context, StrutturaBrano sb) {
         this.context = context;
 
-        if (!Cosa.isEmpty()) {
+        if (sb != null) {
+            this.sb = sb;
+
+            String Cosa = sb.getArtista() + " " + sb.getBrano() + ".";
+
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
@@ -97,6 +104,10 @@ public class Chiacchierone {
                     } else {
                         t1.stop();
                         t1.shutdown();
+
+                        if (sb != null) {
+                            UtilityPlayer.getInstance().CaricaBranoNelLettore2(context, sb);
+                        }
 
                         handlerTimer.removeCallbacksAndMessages(this);
                         handlerTimer.removeCallbacks(this);

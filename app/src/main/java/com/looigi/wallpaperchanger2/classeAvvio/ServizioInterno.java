@@ -3,6 +3,8 @@ package com.looigi.wallpaperchanger2.classeAvvio;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +19,9 @@ import android.widget.Toast;
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+// import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
@@ -31,6 +35,7 @@ import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
 
 // implements SensorEventListener2
 public class ServizioInterno extends Service {
@@ -40,6 +45,7 @@ public class ServizioInterno extends Service {
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
     // private Intent intentCuffie;
+    private PresenzaCuffie mCuffieInseriteReceiver;
 
     /* private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -107,6 +113,14 @@ public class ServizioInterno extends Service {
         lastAcc=SensorManager.GRAVITY_EARTH;
         acceleration=SensorManager.GRAVITY_EARTH;
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL); */
+
+        // GESTIONE INSERIMENTO CUFFIE
+        IntentFilter filter = new IntentFilter();
+        mCuffieInseriteReceiver = new PresenzaCuffie();
+        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        this.registerReceiver(mCuffieInseriteReceiver, filter);
 
         Notification notificaTasti = GestioneNotificheTasti.getInstance().StartNotifica(context);
         if (notificaTasti != null) {
@@ -186,23 +200,6 @@ public class ServizioInterno extends Service {
                 }
             }
 
-            if (VariabiliStaticheStart.getInstance().isDetector() &&
-                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
-                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
-                // db_dati_gps db2 = new db_dati_gps(context);
-                // db2.CaricaAccensioni(context);
-
-                // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
-
-                /* GestioneGPS g = new GestioneGPS();
-                VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
-                g.AbilitaTimer(context);
-                g.AbilitaGPS(); */
-
-                VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(this, ServizioDiAvvioGPS.class));
-                startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
-            }
-
             Intent iO = new Intent(context, MainOnomastici.class);
             iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(iO);
@@ -211,18 +208,15 @@ public class ServizioInterno extends Service {
         } else {
             ScriveLog(context, NomeMaschera,
                     "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla");
+
             Toast.makeText(this,
-                    "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla", Toast.LENGTH_SHORT).show();
+                    "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
     private void ChiudeTutto() {
         ScriveLog(context, NomeMaschera, "Chiudo tutto");
-
-        if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
-            stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
-            VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
-        }
 
         if (intentSegnale != null) {
             context.stopService(intentSegnale);
@@ -259,6 +253,10 @@ public class ServizioInterno extends Service {
         super.onDestroy();
 
         ScriveLog(context, NomeMaschera, "---On Destroy---");
+
+        if (mCuffieInseriteReceiver != null) {
+            context.unregisterReceiver(mCuffieInseriteReceiver);
+        }
 
         /* if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
             VariabiliStaticheStart.getInstance().setmTelephonyManager(null);

@@ -1,6 +1,8 @@
 package com.looigi.wallpaperchanger2.classeAvvio;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -120,11 +122,128 @@ public class Esecuzione {
         }
     }
 
+    /* private StrutturaGps vecchiaGPS;
+    private int Conta = 0;
+    private int Conta2 = 0;
+
+    private void ResettaGPS(String daDove) {
+        Conta = 0;
+        Conta2 = 0;
+
+        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("Resetta GPS");
+            VariabiliStaticheGPS.getInstance().getGestioneGPS().NullaLocationManager();
+        }
+
+        VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+        VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
+        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
+        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(daDove);
+    } */
+
+    private void ControlloGPSAttivo() {
+        // Controllo sull'attività del GPS
+        /* if (VariabiliStaticheStart.getInstance().isDetector()) {
+            if (!isMyServiceRunning(GestioneGPS.class)) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Servizio GPS non girante... Faccio ripartire");
+
+                VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+
+                VariabiliStaticheStart.getInstance().setServizioForegroundGPS(
+                        new Intent(context,
+                                ServizioDiAvvioGPS.class)
+                );
+                context.startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+            } else {
+                if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() == null) {
+                    UtilityGPS.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Servizio GPS Nullo... Faccio ripartire");
+
+                    VariabiliStaticheStart.getInstance().setServizioForegroundGPS(
+                            new Intent(context,
+                                    ServizioDiAvvioGPS.class)
+                    );
+                    context.startForegroundService(
+                            VariabiliStaticheStart.getInstance().getServizioForegroundGPS()
+                    );
+                }
+            } else {
+                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() == null) {
+                    UtilityGPS.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Gestione GPS Nulla... Faccio ripartire");
+
+                    ResettaGPS("Controllo 1");
+                } else {
+                    if (VariabiliStaticheGPS.getInstance().getGestioneGPS().LocationManagerAttivo() == null) {
+                        UtilityGPS.getInstance().ScriveLog(
+                                context,
+                                NomeMaschera,
+                                "Location manager Nullo... Faccio ripartire");
+
+                        ResettaGPS("Controllo 3");
+                    } else {
+                        if (VariabiliStaticheGPS.getInstance().isGpsAttivo() &&
+                            !VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                            if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
+                                Conta2 = 0;
+
+                                StrutturaGps s = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
+                                if (vecchiaGPS != null) {
+                                    if (vecchiaGPS == s) {
+                                        Conta++;
+
+                                        UtilityGPS.getInstance().ScriveLog(
+                                                context,
+                                                NomeMaschera,
+                                                "Stuttura GPS Uguale alla precedente. Contatore " + Conta);
+
+                                        if (Conta > 6) {
+                                            // Un minuto con la stessa struttura. Devo capire se fare qualcosa
+                                        }
+                                    } else {
+                                        Conta = 0;
+                                    }
+                                }
+                                vecchiaGPS = s;
+                            } else {
+                                Conta2++;
+                                UtilityGPS.getInstance().ScriveLog(
+                                        context,
+                                        NomeMaschera,
+                                        "Stuttura GPS Nulla. Contatore " + Conta2);
+                                if (Conta2 > 6) {
+                                    // Un minuto senza struttura. Devo capire se fare qualcosa
+                                }
+                                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+                            }
+                        } else {
+                            // GPS Non attivo per flag
+                            Conta = 0;
+                            Conta2 = 0;
+
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+                        }
+                    }
+                }
+            }
+        } */
+        // Controllo sull'attività del GPS
+    }
+
     private void Controllo() {
         VariabiliStaticheWallpaper.getInstance().setSecondiPassati(
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + 1);
 
         ControlloImpostazioni();
+
+        ControlloGPSAttivo();
 
         long tmsAttuale = System.currentTimeMillis() / 1000L;
         if (tmsPrecedente == -1L) {

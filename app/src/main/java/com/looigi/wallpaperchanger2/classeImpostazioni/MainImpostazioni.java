@@ -29,7 +29,6 @@ import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
-import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -81,6 +80,7 @@ public class MainImpostazioni extends Activity {
     private LinearLayout layChiudePlayer;
     private GifImageView imgAttesa;
     // private LinearLayout laySettingsImpo;
+    private Intent intentGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +257,15 @@ public class MainImpostazioni extends Activity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (intentGPS != null) {
+            stopService(intentGPS);
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
 
@@ -381,8 +390,12 @@ public class MainImpostazioni extends Activity {
                                     VariabiliStaticheGPS.getInstance().setGestioneGPS(g);
                                     g.AbilitaTimer(context);
                                     g.AbilitaGPS(); */
-                                    VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(context, ServizioDiAvvioGPS.class));
-                                    startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+
+                                    intentGPS = new Intent(context, GestioneGPS.class);
+                                    startForegroundService(intentGPS);
+
+                                    // VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(context, ServizioDiAvvioGPS.class));
+                                    // startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
 
                                     GestioneMappa m = new GestioneMappa(context);
                                     Calendar calendar = Calendar.getInstance();
@@ -427,9 +440,9 @@ public class MainImpostazioni extends Activity {
 
                             GestioneNotificaGPS.getInstance().RimuoviNotifica();
 
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("LONG CLICK");
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
-                            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+                            // VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("LONG CLICK");
+                            // VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
+                            // VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
                         }
                     }
                 }

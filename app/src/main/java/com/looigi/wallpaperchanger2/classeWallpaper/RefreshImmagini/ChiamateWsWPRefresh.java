@@ -30,11 +30,14 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     private String TipoOperazione = "";
     private Context context;
 
+    private String NomeImmaginePerCopia;
+    private String Base64PerCopia;
+
     public ChiamateWsWPRefresh(Context context) {
         this.context = context;
     }
 
-    public void EliminaImmagineSuLocale(String Immagine) {
+    public void EliminaImmagineSuSfondiLocale(String Immagine) {
         String Urletto="RefreshEliminaImmagine?" +
                 "Immagine=" + Immagine;
 
@@ -52,16 +55,15 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void ScriveImmagineModificataSuLocale(String Immagine, String Base64) {
+    public void ScriveImmagineSuSfondiLocale(String Immagine, String Base64) {
+        NomeImmaginePerCopia = Immagine;
+        Base64PerCopia = Base64;
+
         String Urletto="RefreshScriveImmagine?" +
                 "Immagine=" + Immagine +
                 "&Base64=" + Base64;
 
-        VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setText(
-                "Scrittura immagine in locale\n" +
-                        Immagine
-        );
-        TipoOperazione = "ScriveImmagineModificataSuLocale";
+        TipoOperazione = "ScriveImmagineSuLocale";
 
         Esegue(
                 RadiceWS_Locale + ws_Locale + Urletto,
@@ -75,7 +77,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void ScriveImmagineDaIoNosALocale(String Base64) {
+    public void ScriveImmagineDaSfondiIoNosALocale(String Base64) {
         String Immagine = VariabiliStaticheRefresh.getInstance().getImmaginiMancantiInLocale().get(
                 VariabiliStaticheRefresh.getInstance().getIndiceLocale()
         );
@@ -104,7 +106,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void TornaBase64DaIoNos() {
+    public void TornaBase64DaSfondiIoNos() {
         String Immagine = VariabiliStaticheRefresh.getInstance().getImmaginiMancantiInLocale().get(
                 VariabiliStaticheRefresh.getInstance().getIndiceLocale()
         );
@@ -132,7 +134,26 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void ScriveImmagineDaLocaleAIoNos(String Base64) {
+    public void ScriveImmagineSuSfondiIoNos(String Immagine, String Base64) {
+        String Urletto="ScriveImmagine?" +
+                "Path=" + Immagine +
+                "&Base64=" + Base64;
+
+        TipoOperazione = "ScriveImmagineSuIoNos";
+
+        Esegue(
+                RadiceWS_IoNos + ws_IoNos + Urletto,
+                TipoOperazione,
+                NS_IoNos,
+                SA_IoNos,
+                20000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void ScriveImmagineDaSfondiLocaleAIoNos(String Base64) {
         String Immagine = VariabiliStaticheRefresh.getInstance().getImmaginiMancantiSuIoNos().get(
                 VariabiliStaticheRefresh.getInstance().getIndiceIoNos()
         );
@@ -161,7 +182,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void TornaBase64DaLocale() {
+    public void TornaBase64DaSfondiLocale() {
         String Immagine = VariabiliStaticheRefresh.getInstance().getImmaginiMancantiSuIoNos().get(
                 VariabiliStaticheRefresh.getInstance().getIndiceIoNos()
         );
@@ -189,7 +210,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void RitornaListaImmaginiIoNOSPerRefresh() {
+    public void RitornaListaImmaginiSfondiIoNOSPerRefresh() {
         String Urletto="RitornaListaImmagini";
 
         TipoOperazione = "RitornaListaImmaginiIoNos";
@@ -206,7 +227,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 -1);
     }
 
-    public void RitornaListaImmaginiLocalePerRefresh() {
+    public void RitornaListaImmaginiSfondiLocalePerRefresh() {
         String Urletto="RefreshRitornaListaImmagini";
 
         TipoOperazione = "RitornaListaImmaginiLocale";
@@ -269,8 +290,11 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                     case "ScriveImmagineBase64DaIoNos":
                         fScriveImmagineBase64DaIoNos(result);
                         break;
-                    case "ScriveImmagineModificataSuLocale":
-                        fScriveImmagineModificataSuLocale(result);
+                    case "ScriveImmagineSuLocale":
+                        fScriveImmagineSuLocale(result);
+                        break;
+                    case "ScriveImmagineSuIoNos":
+                        fScriveImmagineSuIoNos(result);
                         break;
                     case "EliminaImmagineSuLocale":
                         fEliminaImmagineSuLocale(result);
@@ -289,11 +313,26 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
         }
     }
 
-    private void fScriveImmagineModificataSuLocale(String result) {
+    private void fScriveImmagineSuIoNos(String result) {
         if (result.contains("ERROR")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
+        }
+    }
+
+    private void fScriveImmagineSuLocale(String result) {
+        if (result.contains("ERROR")) {
+            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                    ws.ScriveImmagineSuSfondiIoNos(NomeImmaginePerCopia, Base64PerCopia);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
         }
     }
 
@@ -326,7 +365,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.ScriveImmagineDaIoNosALocale(result);
+                    ws.ScriveImmagineDaSfondiIoNosALocale(result);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);
@@ -357,7 +396,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
             );
 
             ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-            ws.TornaBase64DaIoNos();
+            ws.TornaBase64DaSfondiIoNos();
         } else {
             // Fine elaborazione
             VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
@@ -373,11 +412,11 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
             );
 
             ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-            ws.TornaBase64DaLocale();
+            ws.TornaBase64DaSfondiLocale();
         } else {
             if (!VariabiliStaticheRefresh.getInstance().getImmaginiMancantiInLocale().isEmpty()) {
                 ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                ws.TornaBase64DaIoNos();
+                ws.TornaBase64DaSfondiIoNos();
             } else {
                 // Fine elaborazione
                 VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
@@ -399,7 +438,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.ScriveImmagineDaLocaleAIoNos(result);
+                    ws.ScriveImmagineDaSfondiLocaleAIoNos(result);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);
@@ -438,26 +477,28 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
                     // Controllo immagini locali che mancano su ioNos
                     List<String> immaginiMancantiSuIoNos = new ArrayList<>();
-                    for (StrutturaImmaginiPerRefresh Locale : VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali()) {
-                        boolean esiste = false;
-                        if (!Locale.getNomeFile().toUpperCase().contains(".RSZ")) {
-                            int indiceRilevato = 0;
-                            for (StrutturaImmaginiPerRefresh IoNos : VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS()) {
-                                if (Locale.getNomeFile().equals(IoNos.getNomeFile())) {
-                                    esiste = true;
-                                    break;
+                    if (VariabiliStaticheRefresh.getInstance().isAggiornaSoloIoNos()) {
+                        for (StrutturaImmaginiPerRefresh Locale : VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali()) {
+                            boolean esiste = false;
+                            if (!Locale.getNomeFile().toUpperCase().contains(".RSZ")) {
+                                int indiceRilevato = 0;
+                                for (StrutturaImmaginiPerRefresh IoNos : VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS()) {
+                                    if (Locale.getNomeFile().equals(IoNos.getNomeFile())) {
+                                        esiste = true;
+                                        break;
+                                    }
+                                    indiceRilevato++;
                                 }
-                                indiceRilevato++;
-                            }
-                            if (!esiste) {
-                                immaginiMancantiSuIoNos.add(Locale.getNomeFile());
-                            } /* else {
+                                if (!esiste) {
+                                    immaginiMancantiSuIoNos.add(Locale.getNomeFile());
+                                } /* else {
                                 StrutturaImmaginiPerRefresh ss = VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS().get(indiceRilevato);
                                 if (!ss.getDimensione().equals(Locale.getDimensione())) {
                                         // ss.getData().equals(Locale.getData())) {
                                     immaginiMancantiSuIoNos.add(Locale.getNomeFile());
                                 }
                             } */
+                            }
                         }
                     }
                     VariabiliStaticheRefresh.getInstance().setImmaginiMancantiSuIoNos(immaginiMancantiSuIoNos);
@@ -468,25 +509,27 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
                     // Controllo immagini IoNos che mancano in locale
                     List<String> immaginiMancantiInLocale = new ArrayList<>();
-                    for (StrutturaImmaginiPerRefresh IoNos : VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS()) {
-                        boolean esiste = false;
-                        if (!IoNos.getNomeFile().toUpperCase().contains(".RSZ")) {
-                            int indiceRilevato = 0;
-                            for (StrutturaImmaginiPerRefresh Locale : VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali()) {
-                                if (IoNos.getNomeFile().equals(Locale.getNomeFile())) {
-                                    esiste = true;
-                                    break;
+                    if (VariabiliStaticheRefresh.getInstance().isAggiornaSoloLocale()) {
+                        for (StrutturaImmaginiPerRefresh IoNos : VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS()) {
+                            boolean esiste = false;
+                            if (!IoNos.getNomeFile().toUpperCase().contains(".RSZ")) {
+                                int indiceRilevato = 0;
+                                for (StrutturaImmaginiPerRefresh Locale : VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali()) {
+                                    if (IoNos.getNomeFile().equals(Locale.getNomeFile())) {
+                                        esiste = true;
+                                        break;
+                                    }
+                                    indiceRilevato++;
                                 }
-                                indiceRilevato++;
-                            }
-                            if (!esiste) {
-                                immaginiMancantiInLocale.add(IoNos.getNomeFile());
-                            } /* else {
-                                StrutturaImmaginiPerRefresh ss = VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali().get(indiceRilevato);
-                                if (!ss.getDimensione().equals(IoNos.getDimensione())) {
+                                if (!esiste) {
                                     immaginiMancantiInLocale.add(IoNos.getNomeFile());
-                                }
-                            } */
+                                } /* else {
+                                    StrutturaImmaginiPerRefresh ss = VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali().get(indiceRilevato);
+                                    if (!ss.getDimensione().equals(IoNos.getDimensione())) {
+                                        immaginiMancantiInLocale.add(IoNos.getNomeFile());
+                                    }
+                                } */
+                            }
                         }
                     }
                     VariabiliStaticheRefresh.getInstance().setImmaginiMancantiInLocale(immaginiMancantiInLocale);
@@ -503,11 +546,11 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                         public void run() {
                             if (!VariabiliStaticheRefresh.getInstance().getImmaginiMancantiSuIoNos().isEmpty()) {
                                 ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                                ws.TornaBase64DaLocale();
+                                ws.TornaBase64DaSfondiLocale();
                             } else {
                                 if (!VariabiliStaticheRefresh.getInstance().getImmaginiMancantiInLocale().isEmpty()) {
                                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                                    ws.TornaBase64DaIoNos();
+                                    ws.TornaBase64DaSfondiIoNos();
                                 } else {
                                     VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
                                 }
@@ -552,7 +595,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                     );
 
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.RitornaListaImmaginiLocalePerRefresh();
+                    ws.RitornaListaImmaginiSfondiLocalePerRefresh();
                 }
             };
             handlerTimer.postDelayed(rTimer, 1000);

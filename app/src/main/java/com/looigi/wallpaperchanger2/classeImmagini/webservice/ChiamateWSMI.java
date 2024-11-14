@@ -402,7 +402,8 @@ public class ChiamateWSMI implements TaskDelegate {
                     d.EsegueChiamata(
                             context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg(),
-                            si.getUrlImmagine()
+                            si.getUrlImmagine(),
+                            false
                     );
                     // new DownloadImageMI(context, si.getUrlImmagine(),
                     //         VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine());

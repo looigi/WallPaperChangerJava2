@@ -361,7 +361,7 @@ public class GestioneNotificheWP {
                         }, 100);
                         break;
 
-                    case "gps":
+                    /* case "gps":
                         if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
                             boolean gps = VariabiliStaticheGPS.getInstance().isGpsAttivo();
                             gps = !gps;
@@ -375,7 +375,7 @@ public class GestioneNotificheWP {
                         } else {
                             UtilitiesGlobali.getInstance().ApreToast(this, "GPS Non attivo");
                         }
-                        break;
+                        break; */
 
                     case "attivo":
                         boolean on = VariabiliStaticheWallpaper.getInstance().isOnOff();

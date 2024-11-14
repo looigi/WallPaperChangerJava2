@@ -24,6 +24,7 @@ import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
@@ -58,6 +59,7 @@ public class MainStart  extends Activity {
     private Context context;
     private Activity act;
     private LinearLayout laySplash;
+    private Intent intentGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -546,14 +548,20 @@ public class MainStart  extends Activity {
 
     private void StartActivities() {
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
-            VariabiliStaticheStart.getInstance().setServizioForeground(new Intent(this, ServizioInterno.class));
+            VariabiliStaticheStart.getInstance().setServizioForeground(
+                    new Intent(this, ServizioInterno.class));
             startForegroundService(VariabiliStaticheStart.getInstance().getServizioForeground());
 
-            VariabiliStaticheStart.getInstance().setGiaPartito(true);
-            // WALLPAPER Parte nel servizio
+            // SERVIZIO GPS
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
+                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                intentGPS = new Intent(context, GestioneGPS.class);
+                startForegroundService(intentGPS);
+            }
+            // SERVIZIO GPS
 
-            // DETECTOR PARTE IN WALLPAPER DOPO LA LETTURA DELLE VARIABILI SALVATE PER CAPIRE
-            // SE SI DEVE APRIRE (InizializzaMaschera)
+            VariabiliStaticheStart.getInstance().setGiaPartito(true);
 
             this.finish();
         }
@@ -630,6 +638,11 @@ public class MainStart  extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (intentGPS != null) {
+            stopService(intentGPS);
+            // VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
+        }
     }
 
 }

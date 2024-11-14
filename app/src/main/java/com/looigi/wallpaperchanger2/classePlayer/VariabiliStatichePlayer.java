@@ -125,6 +125,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgModificaSfondo;
     private boolean Chiacchiera = true;
     private ImageView imgRetePresente;
+    private ImageView imgCopiaSuSfondi;
 
     // RICERCHE
     private boolean Random = true;
@@ -158,6 +159,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ImageView getImgCopiaSuSfondi() {
+        return imgCopiaSuSfondi;
+    }
+
+    public void setImgCopiaSuSfondi(ImageView imgCopiaSuSfondi) {
+        this.imgCopiaSuSfondi = imgCopiaSuSfondi;
     }
 
     public EditText getEdtNumeroImmagine() {

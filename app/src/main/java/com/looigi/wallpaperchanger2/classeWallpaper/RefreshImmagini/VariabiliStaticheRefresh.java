@@ -24,6 +24,24 @@ public class VariabiliStaticheRefresh {
     private int indiceLocale = 0;
     private List<String> immaginiMancantiSuIoNos;
     private List<String> immaginiMancantiInLocale;
+    private boolean aggiornaSoloLocale = false;
+    private boolean aggiornaSoloIoNos = false;
+
+    public boolean isAggiornaSoloIoNos() {
+        return aggiornaSoloIoNos;
+    }
+
+    public void setAggiornaSoloIoNos(boolean aggiornaSoloIoNos) {
+        this.aggiornaSoloIoNos = aggiornaSoloIoNos;
+    }
+
+    public boolean isAggiornaSoloLocale() {
+        return aggiornaSoloLocale;
+    }
+
+    public void setAggiornaSoloLocale(boolean aggiornaSoloLocale) {
+        this.aggiornaSoloLocale = aggiornaSoloLocale;
+    }
 
     public List<String> getImmaginiMancantiInLocale() {
         return immaginiMancantiInLocale;

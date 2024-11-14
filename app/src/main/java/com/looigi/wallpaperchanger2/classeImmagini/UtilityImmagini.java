@@ -198,7 +198,8 @@ public class UtilityImmagini {
             d.EsegueChiamata(
                     context, s.getUrlImmagine(),
                     VariabiliStaticheMostraImmagini.getInstance().getImg(),
-                    s.getUrlImmagine()
+                    s.getUrlImmagine(),
+                    false
             );
             // new DownloadImageMI(context, s.getUrlImmagine(),
             //         VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(s.getUrlImmagine());

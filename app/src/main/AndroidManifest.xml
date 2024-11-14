@@ -43,6 +43,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
+
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         android:minSdkVersion="30" />
@@ -102,6 +103,13 @@
 
         <activity
             android:name=".notificaTasti.ActivityDiStart"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:excludeFromRecents="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classeWallpaper.provider.WallpaperPerWidget"
+            android:theme="@style/Theme.AppCompat.Translucent"
             android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize" />
 
@@ -195,9 +203,9 @@
         </receiver>
 
         <service android:name = ".classeAvvio.ServizioInterno"
-            android:foregroundServiceType="specialUse|location|camera" />
+            android:foregroundServiceType="specialUse|camera" />
 
-        <service android:name = ".classeGps.ServizioDiAvvioGPS"
+        <service android:name = ".classeGps.GestioneGPS"
             android:foregroundServiceType="location" />
 
         <!-- <receiver android:name=".classePlayer.cuffie.GestioneTastiCuffie"
@@ -368,6 +376,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_settings_audio" />
+        </receiver>
+
+        <receiver android:name=".classeWallpaper.provider.ProviderWallpaper"
+            android:exported="false"
+            android:label="Wallpaper">
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_wallpaper" />
         </receiver>
 
         <provider

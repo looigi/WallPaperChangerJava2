@@ -29,13 +29,9 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
@@ -58,7 +54,7 @@ public class MainMostraImmagini extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mostra_immagini);
+        setContentView(R.layout.activity_main_immagini);
 
         context = this;
         act = this;
@@ -341,7 +337,8 @@ public class MainMostraImmagini extends Activity {
                     d.EsegueChiamata(
                             context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg(),
-                            si.getUrlImmagine()
+                            si.getUrlImmagine(),
+                            false
                     );
                     /* new DownloadImageMI(context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine()); */
@@ -428,6 +425,17 @@ public class MainMostraImmagini extends Activity {
                 c.SpostaImmagine(s);
 
                 laySposta.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgCopiaSuSfondi = act.findViewById(R.id.imgCopiaSuSfondi);
+        imgCopiaSuSfondi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
+                String UrlImmagine = s.getUrlImmagine();
+
+                DownloadImmagineMI d = new DownloadImmagineMI();
+                d.EsegueChiamata(context, s.getNomeFile(), null, UrlImmagine, true);
             }
         });
 

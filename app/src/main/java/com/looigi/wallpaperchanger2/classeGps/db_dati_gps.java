@@ -446,7 +446,7 @@ public class db_dati_gps {
                     s.setOraRiattivazioneVenerdi("16:00");
                     s.setOraDisattivazioneSabato("08:00");
                     s.setOraRiattivazioneSabato("16:00");
-                    VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+                    // VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
                     VariabiliStaticheGPS.getInstance().setAccensioneGPS(s);
 
                     return true;

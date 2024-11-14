@@ -5,15 +5,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,7 +235,7 @@ public class ChiamateWsWP implements TaskDelegate {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.ScriveImmagineModificataSuLocale(NomeImmaginePerModifica, StringaBase64);
+                    ws.ScriveImmagineSuSfondiLocale(NomeImmaginePerModifica, StringaBase64);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);
@@ -253,7 +250,7 @@ public class ChiamateWsWP implements TaskDelegate {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.EliminaImmagineSuLocale(NomeImmaginePerModifica);
+                    ws.EliminaImmagineSuSfondiLocale(NomeImmaginePerModifica);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);

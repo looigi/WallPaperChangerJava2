@@ -113,10 +113,10 @@ public class UtilitiesGlobali {
             VariabiliStaticheStart.getInstance().setServizioForeground(null);
         }
 
-        if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
+        /* if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
             context.stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
             VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
-        }
+        } */
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
         ApreToast(context, "Uscita");

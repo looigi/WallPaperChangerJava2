@@ -16,6 +16,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
@@ -25,11 +28,14 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.List;
@@ -308,6 +314,26 @@ public class impostazioni_player_interne {
 
                 ChiamateWsPlayer c = new ChiamateWsPlayer(context, false);
                 c.RitornaImmaginiArtista(Artista);
+            }
+        });
+
+        VariabiliStatichePlayer.getInstance().setImgCopiaSuSfondi(act.findViewById(R.id.imgCopiaSuSfondi));
+        VariabiliStatichePlayer.getInstance().getImgCopiaSuSfondi().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                StrutturaImmagini s = VariabiliStatichePlayer.getInstance().getImmagineVisualizzataPerModifica();
+                String UrlImmagine = s.getUrlImmagine();
+
+                if (UrlImmagine.contains("http://")) {
+                    DownloadImmagine d = new DownloadImmagine();
+                    d.EsegueDownload(context,
+                            VariabiliStatichePlayer.getInstance().getImgSfondoSettings(),
+                            UrlImmagine, true, true, s.getNomeImmagine());
+                } else {
+                    String result = UtilitiesGlobali.getInstance().convertBmpToBase64(UrlImmagine);
+
+                    ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                    ws.ScriveImmagineSuSfondiLocale("DaPlayer/" + s.getNomeImmagine(), result);
+                }
             }
         });
 

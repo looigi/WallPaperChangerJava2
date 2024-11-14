@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeGps;
+/* package com.looigi.wallpaperchanger2.classeGps;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class ServizioDiAvvioGPS extends Service {
     private static final String NomeMaschera = "Servizio_Interno_GPS";
@@ -25,8 +27,10 @@ public class ServizioDiAvvioGPS extends Service {
 
         Notification notifica = GestioneNotificaGPS.getInstance().StartNotifica(this);
         if (notifica != null) {
-            startForeground(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notifica);
-            GestioneNotificaGPS.getInstance().AggiornaNotifica();
+            VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
+
+            // startForeground(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notifica);
+            // GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
             if (VariabiliStaticheGPS.getInstance().getGestioneGPS() == null) {
                 VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
@@ -49,6 +53,10 @@ public class ServizioDiAvvioGPS extends Service {
             VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
         }
 
+        // if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() == null) {
+        //     stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+        // }
+
         GestioneNotificaGPS.getInstance().RimuoviNotifica();
     }
 
@@ -58,3 +66,4 @@ public class ServizioDiAvvioGPS extends Service {
         return null;
     }
 }
+*/

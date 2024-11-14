@@ -85,7 +85,6 @@ public class ProviderPhoto extends AppWidgetProvider {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private static void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
 		views.setRemoteAdapter(R.id.imgScatta,
 				new Intent(context, Photo.class));

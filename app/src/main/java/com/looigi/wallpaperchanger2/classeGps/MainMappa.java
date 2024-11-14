@@ -520,6 +520,10 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     LatLng ll = new LatLng(loc.getLoc().getLatitude(), loc.getLoc().getLongitude());
                     if (aggiungePunti) {
+                        if (bc == null) {
+                            bc = new LatLngBounds.Builder();
+                        }
+
                         bc.include(ll);
                         bcs++;
                     }

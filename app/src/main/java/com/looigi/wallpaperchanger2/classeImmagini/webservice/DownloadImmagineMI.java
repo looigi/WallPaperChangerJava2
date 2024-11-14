@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -31,13 +32,16 @@ public class DownloadImmagineMI {
     private ImageView immagine;
     private String Url;
     private InputStream in;
+    private boolean PerCopia;
 
-    public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine, String UrlImmagine) {
+    public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
+                               String UrlImmagine, boolean PerCopia) {
         isCancelled = false;
         this.NomeImmagine = NomeImmagine;
         this.context = context;
         this.immagine = immagine;
         this.Url = UrlImmagine;
+        this.PerCopia = PerCopia;
 
         UtilityImmagini.getInstance().Attesa(true);
 
@@ -128,10 +132,16 @@ public class DownloadImmagineMI {
             if (in != null && !isCancelled) {
                 mIcon11 = BitmapFactory.decodeStream(in);
 
+                String Nome = "";
+                if (PerCopia) {
+                    Nome = "AppoggioCopia";
+                } else {
+                    Nome = "AppoggioMI";
+                }
                 // if (immagine == null) {
                 FileOutputStream outStream;
                 try {
-                    outStream = new FileOutputStream(PercorsoDIR + "/AppoggioMI.jpg"); // .getPathImmagine());
+                    outStream = new FileOutputStream(PercorsoDIR + "/" + Nome + ".jpg"); // .getPathImmagine());
                     if (mIcon11 != null && !isCancelled) {
                         mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     }
@@ -163,18 +173,20 @@ public class DownloadImmagineMI {
 
             // } else {
             if (!isCancelled) {
-                Bitmap finalMIcon1 = mIcon11;
+                if (!PerCopia) {
+                    Bitmap finalMIcon1 = mIcon11;
 
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        immagine.setImageBitmap(finalMIcon1);
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            immagine.setImageBitmap(finalMIcon1);
 
-                        if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
-                            UtilityImmagini.getInstance().RiattivaTimer();
+                            if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
+                                UtilityImmagini.getInstance().RiattivaTimer();
+                            }
                         }
-                    }
-                }, 100);
+                    }, 100);
+                }
             }
             // }
         } catch (Exception e) {
@@ -215,6 +227,15 @@ public class DownloadImmagineMI {
                 c.setWallpaperLocale(context, si);
                 // UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "---Immagine impostata online: " + fatto + "---");
             } */
+            if (PerCopia) {
+                String[] N = Url.split("/");
+                String NomeImmagine = "DaImmagini/" + N[N.length - 1];
+
+                String result = UtilitiesGlobali.getInstance().convertBmpToBase64(PercorsoDIR + "/AppoggioCopia.jpg");
+
+                ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                ws.ScriveImmagineSuSfondiLocale(NomeImmagine, result);
+            }
         } else {
             UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
         }

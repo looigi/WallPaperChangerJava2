@@ -21,10 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
-import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -34,17 +31,11 @@ import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +51,7 @@ public class MainMostraPennetta extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mostra_pennetta);
+        setContentView(R.layout.activity_main_pennetta);
 
         context = this;
         act = this;

@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeWallpaper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,11 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.VariabiliStaticheRefresh;
@@ -286,15 +289,28 @@ public class InizializzaMascheraWallpaper {
         ImageView imgRefreshImmagini = (ImageView) view.findViewById(R.id.imgRefreshIONOS);
         imgRefreshImmagini.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(
-                        LinearLayout.VISIBLE
-                );
-                VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setText(
-                        "Lettura immagini IoNOS"
-                );
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Solo Locale", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EsegueAggiornamento(context, 1);
+                    }
+                });
+                builder.setNegativeButton("Solo IoNos", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EsegueAggiornamento(context, 2);
+                    }
+                });
+                builder.setNeutralButton("Entrambi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EsegueAggiornamento(context, 3);
+                    }
+                });
 
-                ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                ws.RitornaListaImmaginiIoNOSPerRefresh();
+                builder.show();
             }
         });
 
@@ -554,5 +570,31 @@ public class InizializzaMascheraWallpaper {
                 VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
             }
         }
+    }
+
+    private void EsegueAggiornamento(Context context, int modalita) {
+        switch (modalita) {
+            case 1:
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloLocale(true);
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloIoNos(false);
+                break;
+            case 2:
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloLocale(false);
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloIoNos(true);
+                break;
+            case 3:
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloLocale(true);
+                VariabiliStaticheRefresh.getInstance().setAggiornaSoloIoNos(true);
+                break;
+        }
+        VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(
+                LinearLayout.VISIBLE
+        );
+        VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setText(
+                "Lettura immagini IoNOS"
+        );
+
+        ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+        ws.RitornaListaImmaginiSfondiIoNOSPerRefresh();
     }
 }

@@ -37,7 +37,7 @@ public class VariabiliStaticheStart {
     private boolean VisibileVideo = false;
     private boolean VisibilePennetta = false;
     private Intent servizioForeground;
-    private Intent servizioForegroundGPS;
+    // private Intent servizioForegroundGPS;
     private boolean segnaleAttivo = true;
 
     public boolean isSegnaleAttivo() {
@@ -56,13 +56,13 @@ public class VariabiliStaticheStart {
         this.servizioForeground = servizioForeground;
     }
 
-    public Intent getServizioForegroundGPS() {
+    /* public Intent getServizioForegroundGPS() {
         return servizioForegroundGPS;
     }
 
     public void setServizioForegroundGPS(Intent servizioForegroundGPS) {
         this.servizioForegroundGPS = servizioForegroundGPS;
-    }
+    } */
 
     public boolean isVisibilePennetta() {
         return VisibilePennetta;

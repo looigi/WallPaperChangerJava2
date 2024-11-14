@@ -13,7 +13,9 @@ import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,8 +34,11 @@ public class DownloadImmagine {
     private boolean isCancelled;
     private InputStream in;
     private boolean Interna;
+    private boolean PerCopia;
+    private String NomeImmagine;
 
-    public void EsegueDownload(Context context, ImageView bmImage, String Immagine, boolean Interna) {
+    public void EsegueDownload(Context context, ImageView bmImage, String Immagine,
+                               boolean Interna, boolean PerCopia, String NomeImmagine) {
         UtilityPlayer.getInstance().Attesa(true);
         UtilityPlayer.getInstance().ImpostaTastiSfondo(false);
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("Download immagine");
@@ -41,10 +46,17 @@ public class DownloadImmagine {
         this.context = context;
         this.bmImage = bmImage;
         this.Immagine = Immagine;
-        PathImmagine = Immagine;
-        PathImmagine = PathImmagine.replace(VariabiliStatichePlayer.PercorsoBranoMP3SuURL + "/", "");
-        PathImmagine = context.getFilesDir() + "/Player/" + PathImmagine;
-        PathImmagine = PathImmagine.replace("\\", "/");
+        this.PerCopia = PerCopia;
+        this.NomeImmagine = NomeImmagine;
+
+        if (!PerCopia) {
+            PathImmagine = Immagine;
+            PathImmagine = PathImmagine.replace(VariabiliStatichePlayer.PercorsoBranoMP3SuURL + "/", "");
+            PathImmagine = context.getFilesDir() + "/Player/" + PathImmagine;
+            PathImmagine = PathImmagine.replace("\\", "/");
+        } else {
+            PathImmagine = context.getFilesDir() + "/Appoggio/AppoggioWP.jpg";
+        }
         CartellaImmagine = "";
         isCancelled = false;
         this.Interna = Interna;
@@ -79,35 +91,42 @@ public class DownloadImmagine {
                                 public void run() {
                                     bmImage.setImageBitmap(finalMIcon1);
 
-                                    if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
-                                        VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(finalMIcon1);
-                                        String[] n = PathImmagine.split("/");
-                                        String NomeImmagine = n[n.length - 1];
-                                        String Cartella = PathImmagine.replace(NomeImmagine, "");
+                                    if (!PerCopia) {
+                                        if (VariabiliStatichePlayer.getInstance().getImgSfondoSettings() != null) {
+                                            VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(finalMIcon1);
+                                            String[] n = PathImmagine.split("/");
+                                            String NomeImmagine = n[n.length - 1];
+                                            String Cartella = PathImmagine.replace(NomeImmagine, "");
 
-                                        StrutturaImmagini s = new StrutturaImmagini();
-                                        s.setPathImmagine(PathImmagine);
-                                        s.setNomeImmagine(NomeImmagine);
-                                        s.setCartellaImmagine(Cartella);
-                                        s.setArtista(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
-                                        s.setAlbum(VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum());
-                                        s.setUrlImmagine(finalUrldisplay);
+                                            StrutturaImmagini s = new StrutturaImmagini();
+                                            s.setPathImmagine(PathImmagine);
+                                            s.setNomeImmagine(NomeImmagine);
+                                            s.setCartellaImmagine(Cartella);
+                                            s.setArtista(VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista());
+                                            s.setAlbum(VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum());
+                                            s.setUrlImmagine(finalUrldisplay);
 
-                                        // VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
-                                        // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
+                                            // VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
+                                            // VariabiliStatichePlayer.getInstance().setIdImmagineImpostata(VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1);
+                                        }
+
+                                        UtilityPlayer.getInstance().ScriveInfoImmagine();
                                     }
-
-                                    UtilityPlayer.getInstance().ScriveInfoImmagine();
 
                                     BitmapDrawable drawable = (BitmapDrawable) bmImage.getDrawable();
                                     Bitmap bitmap = drawable.getBitmap();
 
-                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "URL per salvataggio immagine: " + Immagine);
-                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Creo cartelle per salvataggio immagine: " + CartellaImmagine);
-                                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Path salvataggio immagine: " + PathImmagine);
+                                    if (!PerCopia) {
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "URL per salvataggio immagine: " + Immagine);
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Creo cartelle per salvataggio immagine: " + CartellaImmagine);
+                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Path salvataggio immagine: " + PathImmagine);
+                                    }
+
                                     Files.getInstance().CreaCartelle(CartellaImmagine); // .getCartellaImmagine());
                                     PathImmagine = PathImmagine.replace("\\", "/");
-                                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
+                                    if (!PerCopia) {
+                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
+                                    }
 
                                     FileOutputStream outStream;
                                     try {
@@ -120,39 +139,66 @@ public class DownloadImmagine {
                                         outStream.flush();
                                         outStream.close();
 
-                                        long Spazio = VariabiliStatichePlayer.getInstance().getSpazioOccupato();
-                                        Spazio += (Files.getInstance().DimensioniFile(PathImmagine) * 1024);
-                                        VariabiliStatichePlayer.getInstance().setSpazioOccupato(Spazio);
-                                        UtilityPlayer.getInstance().ScrivePerc();
+                                        if (!PerCopia) {
+                                            long Spazio = VariabiliStatichePlayer.getInstance().getSpazioOccupato();
+                                            Spazio += (Files.getInstance().DimensioniFile(PathImmagine) * 1024);
+                                            VariabiliStatichePlayer.getInstance().setSpazioOccupato(Spazio);
+                                            UtilityPlayer.getInstance().ScrivePerc();
 
-                                        VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
+                                            VariabiliStatichePlayer.getInstance().setCeImmaginePerModifica(true);
 
-                                        UtilityPlayer.getInstance().AggiornaInformazioni(false);
+                                            UtilityPlayer.getInstance().AggiornaInformazioni(false);
 
-                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                                                "Immagine Scaricata: " + PathImmagine);
-                                    } catch (IOException e) {
-                                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
-
-                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                                                "Errore nel salvataggio su download Immagine: " + e.getMessage());
-
-                                        if (!Interna) {
-                                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                                    "Immagine Scaricata: " + PathImmagine);
                                         } else {
-                                            UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
-                                        }
-                                        /* } catch (IOException e) {
-                                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                                        "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                                            // String[] N = PathImmagine.split("/");
+                                            // String NomeImmagine = "DaPlayer/" + N[N.length - 1];
 
-                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context); */
+                                            String result = UtilitiesGlobali.getInstance().convertBmpToBase64(PathImmagine);
+
+                                            ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                                            ws.ScriveImmagineSuSfondiLocale("DaPlayer/" + NomeImmagine, result);
+                                        }
+                                    } catch (IOException e) {
+                                        if (!PerCopia) {
+                                            UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
+                                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                                    "Errore nel salvataggio su download Immagine: " + e.getMessage());
+
+                                            if (!Interna) {
+                                                VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                            } else {
+                                                UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                                            }
+
+                                            /* } catch (IOException e) {
+                                            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                            "Errore nel salvataggio su download Immagine: " + e.getMessage());
+
+                                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context); */
+                                        }
                                     }
                                 }
                             }, 100);
                         } else {
+                            if (!PerCopia) {
+                                UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
+                                if (!Interna) {
+                                    VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                                    UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                                } else {
+                                    UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                                }
+                            }
+                        }
+                    } else {
+
+                        if (!PerCopia) {
                             UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
                             if (!Interna) {
@@ -162,7 +208,10 @@ public class DownloadImmagine {
                                 UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
                             }
                         }
-                    } else {
+                    }
+                } catch (Exception e) {
+                    if (!PerCopia) {
+                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
                         if (!Interna) {
                             VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
@@ -170,18 +219,7 @@ public class DownloadImmagine {
                         } else {
                             UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
                         }
-
-                        UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
                     }
-                } catch (Exception e) {
-                    if (!Interna) {
-                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
-                    } else {
-                        UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
-                    }
-
-                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
                     // e.printStackTrace();
                     UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
@@ -192,21 +230,26 @@ public class DownloadImmagine {
                 BloccaTimer();
 
                 if (Errore || isCancelled) {
-                    UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
-                            "Errore sul download immagine o blocco forzato. Imposto logo");
+                    if (!PerCopia) {
+                        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                                "Errore sul download immagine o blocco forzato. Imposto logo");
 
-                    if (!Interna) {
-                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
-                        UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
-                    } else {
-                        UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                        if (!Interna) {
+                            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
+                            UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+                        } else {
+                            UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
+                        }
                     }
                 }
 
-                VariabiliStatichePlayer.getInstance().setDownImmagine(null);
                 UtilityPlayer.getInstance().Attesa(false);
-                UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
-                UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
+                if (!PerCopia) {
+                    VariabiliStatichePlayer.getInstance().setDownImmagine(null);
+                    UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+                    UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+                }
 
                 handler.post(new Runnable() {
                     @Override
@@ -246,8 +289,12 @@ public class DownloadImmagine {
                         }
                         in = null;
                     }
-                    UtilityPlayer.getInstance().Attesa(false);
-                    UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+
+                    if (!PerCopia) {
+                        UtilityPlayer.getInstance().Attesa(false);
+                        UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
+                    }
+
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {

@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 public class MainPlayer extends Activity {
-    private PresenzaCuffie mCuffieInseriteReceiver;
     private final AudioManager mAudioManager = null;
     private final ComponentName mReceiverComponent = null;
     private Context context;
@@ -50,14 +49,6 @@ public class MainPlayer extends Activity {
 
         context = this;
         Activity act = this;
-
-        // GESTIONE INSERIMENTO CUFFIE
-        IntentFilter filter = new IntentFilter();
-        mCuffieInseriteReceiver = new PresenzaCuffie();
-        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        this.registerReceiver(mCuffieInseriteReceiver, filter);
 
         // GESTIONE TASTI CUFFIE
         /* mButtonMediaReceiver = new GestioneTastiCuffie();
@@ -386,10 +377,6 @@ public class MainPlayer extends Activity {
         if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
             VariabiliStatichePlayer.getInstance().getClasseChiamata().StoppaEsecuzione();
             VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
-        }
-
-        if (mCuffieInseriteReceiver != null) {
-            context.unregisterReceiver(mCuffieInseriteReceiver);
         }
 
         /* if (mButtonMediaReceiver != null) {
