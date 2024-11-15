@@ -17,6 +17,7 @@ import com.google.mlkit.nl.languageid.LanguageIdentification;
 import com.google.mlkit.nl.languageid.LanguageIdentifier;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -106,7 +107,18 @@ public class Chiacchierone {
                         t1.shutdown();
 
                         if (sb != null) {
-                            UtilityPlayer.getInstance().CaricaBranoNelLettore2(context, sb);
+                            Handler handlerTimer = new Handler(Looper.getMainLooper());
+                            Runnable rTimer = new Runnable() {
+                                public void run() {
+                                    if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
+                                        UtilityPlayer.getInstance().FaiPartireTimer(context);
+                                        VariabiliStatichePlayer.getInstance().getMp().start();
+                                    } else {
+                                        UtilityPlayer.getInstance().FermaTimer();
+                                    }
+                                }
+                            };
+                            handlerTimer.postDelayed(rTimer, 1000);
                         }
 
                         handlerTimer.removeCallbacksAndMessages(this);

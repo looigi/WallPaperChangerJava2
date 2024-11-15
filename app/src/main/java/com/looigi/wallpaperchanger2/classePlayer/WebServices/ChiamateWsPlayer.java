@@ -1,14 +1,18 @@
 package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBraniOnline;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
@@ -18,8 +22,11 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classePlayer.scaricaImmagini.scaricaImmagini;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,11 +47,66 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private boolean Pregresso = false;
     private String Brano = "";
     private boolean Riprova = false;
+    private String Artista;
+    private String Immagine;
     // private StrutturaChiamateWSPlayer chiamataDaFare;
 
     public ChiamateWsPlayer(Context context, boolean Riprova) {
         this.context = context;
         this.Riprova = Riprova;
+    }
+
+    public void SalvaImmagineArtista(String Artista, String Immagine, String Base64) {
+        UtilityPlayer.getInstance().AttesaSI(true);
+
+        this.Artista = Artista;
+        this.Immagine = Immagine;
+
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Salva Immagine Artista " + Artista + ": " + Immagine);
+
+        String Urletto="SalvaImmagineArtista?" +
+                "Artista=" + Artista +
+                "&Immagine=" + Immagine +
+                "&Base64=" + Base64;
+
+        TipoOperazione = "Salva Immagine Artista";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                20000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void ScaricaImmaginiArtista(String Artista) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Scarica Immagini Artista " + Artista);
+
+        this.Artista = Artista;
+
+        String Urletto="ScaricaListaImmagini?" +
+                "Artista=" + Artista;
+
+        TipoOperazione = "Scarica Lista Immagini";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                true,
+                true,
+                false,
+                -1);
     }
 
     public void EliminaImmagine(String Artista, String Album, String Immagine) {
@@ -55,7 +117,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 "&Album=" + Album +
                 "&Immagine=" + Immagine;
 
-        TipoOperazione = "EliminaImmagine";
+        TipoOperazione = "Elimina Immagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -80,7 +142,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 "&Immagine=" + s.getNomeImmagine() +
                 "&StringaBase64=" + stringaBase64;
 
-        TipoOperazione = "ModificaImmagine";
+        TipoOperazione = "Modifica Immagine";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -100,7 +162,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         String Urletto="RitornaImmaginiArtista?Artista=" + Artista;
 
-        TipoOperazione = "RitornaImmaginiArtista";
+        TipoOperazione = "Ritorna Immagini Artista";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -120,7 +182,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         String Urletto="RitornaBrani?Ricerca=" + Ricerca;
 
-        TipoOperazione = "RitornaBrani";
+        TipoOperazione = "Ritorna Brani";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -189,7 +251,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 "&Album=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getAlbum() +
                 "&Brano=" + VariabiliStatichePlayer.getInstance().getUltimoBrano().getBrano();
 
-        TipoOperazione = "RitornaStelleBrano";
+        TipoOperazione = "Ritorna Stelle Brano";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -212,7 +274,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         String Urletto="RitornaListaAlbumArtista?Artista=" + Artista + "&Ricerca=" + Ricerca;
 
-        TipoOperazione = "RitornaListaAlbumArtista";
+        TipoOperazione = "Ritorna Lista Album Artista";
         // ControllaTempoEsecuzione = true;
 
         Esegue(
@@ -235,7 +297,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
         String Urletto="RitornaListaBraniAlbumArtista?Artista=" + Artista + "&Album=" + Album + "&Ricerca=" + Ricerca;
 
-        TipoOperazione = "RitornaListaBraniAlbumArtista";
+        TipoOperazione = "Ritorna Lista Brani Album Artista";
         // ControllaTempoEsecuzione = true;
 
         Esegue(
@@ -293,9 +355,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         }
 
         if (esegueQuery) {
-            String Urletto = "RitornaArtisti";
+            String Urletto = "Ritorna Artisti";
 
-            TipoOperazione = "RitornaArtisti";
+            TipoOperazione = "Ritorna Artisti";
             // ControllaTempoEsecuzione = true;
 
             Esegue(
@@ -359,7 +421,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         Urletto += "&RicercaNonTesto=" + s.getTestoNon();
 
         // ControllaTempoEsecuzione = true;
-        TipoOperazione = "RitornaProssimoBranoMobile";
+        TipoOperazione = "Ritorna Prossimo Brano Mobile";
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -470,42 +532,107 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                         // if (Ok) {
                 switch (TipoOperazione) {
-                    case "EliminaImmagine":
+                    case "Elimina Immagine":
                         fEliminaImmagine(result);
                         break;
-                    case "RitornaStelleBrano":
+                    case "Ritorna Stelle Brano":
                         fRitornaStelleBrano(result);
                         break;
-                    case "RitornaArtisti":
+                    case "Ritorna Artisti":
                         RitornaArtisti(result);
                         break;
-                    case "RitornaListaBraniAlbumArtista":
+                    case "Ritorna Lista Brani Album Artista":
                         RitornaListaBraniAlbumArtista(result);
                         break;
-                    case "RitornaListaAlbumArtista":
+                    case "Ritorna Lista Album Artista":
                         RitornaListaAlbumArtista(result);
                         break;
-                    case "RitornaImmaginiArtista":
+                    case "Ritorna Immagini Artista":
                         fRitornaImmaginiArtista(result);
                         break;
-                    case "RitornaProssimoBranoMobile":
+                    case "Ritorna Prossimo Brano Mobile":
                         CaricaBrano(result);
                         break;
-                    case "ScaricaTesto":
+                    case "Scarica Testo":
                         fAggiornaTesto(result);
                         break;
-                    case "RitornaBrani":
+                    case "Ritorna Brani":
                         fRitornaBrani(result);
                         break;
-                    case "ModificaImmagine":
+                    case "Modifica Immagine":
                         fModificaImmagine(result);
+                        break;
+                    case "Salva Immagine Artista":
+                        fSalvaImmagineArtista(result);
+                        break;
+                    case "Scarica Lista Immagini":
+                        fScaricaListaImmagini(result);
                         break;
                 }
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
-
     }
+
+    private void fSalvaImmagineArtista(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Salva Immagine Artista", result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String NomeFileAppoggio = context.getFilesDir() + "/Appoggio/ImmScaricata.jpg";
+            String NomeInterno = context.getFilesDir() + "/Player/ImmaginiMusica/" + Artista +
+                    "/ZZZ-ImmaginiArtista/" + Immagine;
+
+            try {
+                Files.getInstance().CopiaFile(NomeFileAppoggio, NomeInterno);
+
+                StrutturaImmagini s = new StrutturaImmagini();
+                s.setPathImmagine(context.getFilesDir() + "/Player/ImmaginiMusica/" + Artista +
+                                "/ZZZ-ImmaginiArtista");
+                s.setArtista(Artista);
+                s.setNomeImmagine(Immagine);
+                s.setAlbum("");
+                s.setUrlImmagine("");
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveImmagineBrano(Artista, s);
+
+                VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().add(s);
+            } catch (IOException e) {
+            }
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
+        }
+    }
+
+    private void fScaricaListaImmagini(String result) {
+        boolean ritorno = ControllaRitorno("Scarica lista immagini artista", result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            if (!result.isEmpty()) {
+                String[] urls = result.split("§");
+                List<String> urlDaScaricare = new ArrayList<>();
+                for (String url : urls) {
+                    String link = url.replace("*CS*", "§");
+                    urlDaScaricare.add(link);
+                }
+                VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
+
+                Intent si = new Intent(context, scaricaImmagini.class);
+                si.addCategory(Intent.CATEGORY_LAUNCHER);
+                si.setAction(Intent.ACTION_MAIN );
+                si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                si.putExtra("ARTISTA", Artista);
+                context.startActivity(si);
+            }
+        }
+    }
+    
     private void fEliminaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Elimina Immagine", result);
         if (!ritorno) {

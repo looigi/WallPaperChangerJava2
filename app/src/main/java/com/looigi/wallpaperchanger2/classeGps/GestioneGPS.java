@@ -659,12 +659,12 @@ public class GestioneGPS extends Service {
                 } */
                 // ultimoNull = false;
 
-                // if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
+                if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                     VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
                 /* } else {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "---MAPPA NON PRESENTE---");
-                } */
+                            "---MAPPA NON PRESENTE---"); */
+                }
 
                 // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                 //         "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());

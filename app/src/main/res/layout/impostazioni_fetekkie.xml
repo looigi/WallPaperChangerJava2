@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:id="@+id/layImpostazioniPennetta"
+    android:id="@+id/layImpostazioniFetekkie"
     android:padding="5dp"
     android:orientation="vertical"
     android:background="@drawable/bordato_non_trasparente"
@@ -12,7 +12,7 @@
         android:gravity="center_horizontal"
         android:textSize="20sp"
         android:textColor="@color/Rosso"
-        android:text="Impostazioni PENNETTA"
+        android:text="Impostazioni Fetekkie"
         android:layout_height="wrap_content">
 
     </TextView>
@@ -46,7 +46,7 @@
                     android:text="Tempo Slideshow" />
 
                 <EditText
-                    android:id="@+id/edtTempoSlideShowPen"
+                    android:id="@+id/edtTempoSlideShowFET"
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:layout_width="0dp"
@@ -58,14 +58,14 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/sRandomPEN"
+                android:id="@+id/sRandomFET"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Random" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchCercaVisuaPen"
+                android:id="@+id/switchCercaVisuaFet"
                 android:layout_width="match_parent"
                 android:textColor="#0000CC"
                 android:text="Ricerca per visualizzati"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgRefreshPennetta"
+                        android:id="@+id/imgRefreshFetekkie"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/icona_refresh"
@@ -124,7 +124,7 @@
                 </TextView>
 
                 <Button
-                    android:id="@+id/btnInviaLogPen"
+                    android:id="@+id/btnInviaLogFET"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:text="..."
@@ -150,7 +150,7 @@
                 </TextView>
 
                 <Button
-                    android:id="@+id/btnPulisceLogPen"
+                    android:id="@+id/btnPulisceLogFET"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:text="..."
@@ -176,7 +176,7 @@
                 </TextView>
 
                 <Button
-                    android:id="@+id/btnVisualizzaLogPen"
+                    android:id="@+id/btnVisualizzaLogFET"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:text="..."

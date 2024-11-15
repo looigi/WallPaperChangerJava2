@@ -80,6 +80,12 @@
                         android:layout_height="match_parent" />
 
                     <Button
+                        android:id="@+id/btnSettingsFetekkie"
+                        android:layout_width="wrap_content"
+                        android:text="Fetekkie"
+                        android:layout_height="match_parent" />
+
+                    <Button
                         android:id="@+id/btnSettingsDebug"
                         android:layout_width="wrap_content"
                         android:text="Debug"
@@ -141,6 +147,12 @@
             <include
                 android:visibility="gone"
                 layout="@layout/impostazioni_pennetta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:visibility="gone"
+                layout="@layout/impostazioni_fetekkie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

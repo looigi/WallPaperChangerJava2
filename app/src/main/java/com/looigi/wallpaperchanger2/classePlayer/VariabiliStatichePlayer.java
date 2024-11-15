@@ -126,6 +126,9 @@ public class VariabiliStatichePlayer {
     private boolean Chiacchiera = true;
     private ImageView imgRetePresente;
     private ImageView imgCopiaSuSfondi;
+    private ImageView imgNuovaImmagine;
+    private List<String> urlImmaginiDaScaricare;
+    private LinearLayout layCaricamentoSI;
 
     // RICERCHE
     private boolean Random = true;
@@ -159,6 +162,30 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public LinearLayout getLayCaricamentoSI() {
+        return layCaricamentoSI;
+    }
+
+    public void setLayCaricamentoSI(LinearLayout layCaricamentoSI) {
+        this.layCaricamentoSI = layCaricamentoSI;
+    }
+
+    public List<String> getUrlImmaginiDaScaricare() {
+        return urlImmaginiDaScaricare;
+    }
+
+    public void setUrlImmaginiDaScaricare(List<String> urlImmaginiDaScaricare) {
+        this.urlImmaginiDaScaricare = urlImmaginiDaScaricare;
+    }
+
+    public ImageView getImgNuovaImmagine() {
+        return imgNuovaImmagine;
+    }
+
+    public void setImgNuovaImmagine(ImageView imgNuovaImmagine) {
+        this.imgNuovaImmagine = imgNuovaImmagine;
     }
 
     public ImageView getImgCopiaSuSfondi() {

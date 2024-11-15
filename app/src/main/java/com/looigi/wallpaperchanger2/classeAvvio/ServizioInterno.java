@@ -35,6 +35,7 @@ import com.looigi.wallpaperchanger2.utilities.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.utilities.cuffie.GestioneTastiCuffieNuovo;
 import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
 
 // implements SensorEventListener2
@@ -44,7 +45,7 @@ public class ServizioInterno extends Service {
     private ScreenReceiver mScreenReceiver;
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
-    // private Intent intentCuffie;
+    private Intent intentCuffie;
     private PresenzaCuffie mCuffieInseriteReceiver;
 
     /* private SensorManager mSensorManager;
@@ -104,8 +105,8 @@ public class ServizioInterno extends Service {
         context.registerReceiver(mScreenReceiver, filterSO);
 
         // GESTIONE TASTI CUFFIE
-        // intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
-        // startService(intentCuffie);
+        intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
+        startService(intentCuffie);
 
         // SENSORI DI MOVIMENTO
         /* mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -226,9 +227,9 @@ public class ServizioInterno extends Service {
             context.unregisterReceiver(mScreenReceiver);
         }
 
-        /* if (intentCuffie != null) {
+        if (intentCuffie != null) {
             context.stopService(intentCuffie);
-        } */
+        }
 
         // if (mSensorManager != null) {
         //     mSensorManager.unregisterListener(this);

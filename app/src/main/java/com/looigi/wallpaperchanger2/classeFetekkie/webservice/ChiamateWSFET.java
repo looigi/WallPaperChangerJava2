@@ -1,37 +1,30 @@
-package com.looigi.wallpaperchanger2.classePennetta.webservice;
+package com.looigi.wallpaperchanger2.classeFetekkie.webservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
+import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiCategorieFE;
+import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiLibraryFE;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeFetekkie.UtilityFetekkie;
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class ChiamateWSPEN implements TaskDelegate {
-    private static final String NomeMaschera = "Chiamate_WS_Immagini_PEN";
+public class ChiamateWSFET implements TaskDelegate {
+    private static final String NomeMaschera = "Chiamate_WS_Immagini_FET";
     // private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = VariabiliStaticheMostraImmaginiPennetta.UrlWS;
+    private final String RadiceWS = VariabiliStaticheMostraImmaginiFetekkie.UrlWS;
     private final String ws = "newLooVF.asmx/";
     private final String NS="http://newLooVF.org/";
     private final String SA="http://newLooVF.org/";
@@ -40,7 +33,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     private final boolean ApriDialog = false;
     private GifImageView imgAttesa;
 
-    public ChiamateWSPEN(Context context) {
+    public ChiamateWSFET(Context context) {
         this.context = context;
     }
 
@@ -49,12 +42,12 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void RitornaProssimaImmagine(String Categoria) {
-        String Urletto="RitornaProssimoPennetta?" +
+        String Urletto="RitornaProssimoFetekkie?" +
                 "Categoria=" + Categoria +
-                "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
-                "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
-                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() +
-                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua() ? "S" : "N");
+                "&Filtro=" + VariabiliStaticheMostraImmaginiFetekkie.getInstance().getFiltro() +
+                "&Random=" + VariabiliStaticheMostraImmaginiFetekkie.getInstance().getRandom() +
+                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiFetekkie.getInstance().getIdImmagine() +
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmaginiFetekkie.getInstance().isRicercaPerVisua() ? "S" : "N");
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -68,11 +61,11 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void SpostaImmagine(StrutturaImmaginiLibrary s) {
-        String Urletto="SpostaImmaginePennetta?" +
+    public void SpostaImmagine(StrutturaImmaginiLibraryFE s) {
+        String Urletto="SpostaImmagineFetekkie?" +
                 "Categoria=" + s.getCategoria() +
                 "&idImmagine=" + s.getIdImmagine() +
-                "&NuovaCategoria=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdCategoriaSpostamento();
+                "&NuovaCategoria=" + VariabiliStaticheMostraImmaginiFetekkie.getInstance().getIdCategoriaSpostamento();
 
         TipoOperazione = "SpostaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -86,10 +79,10 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void ModificaImmagine(StrutturaImmaginiLibrary s, String stringaBase64, boolean Sovrascrive) {
+    public void ModificaImmagine(StrutturaImmaginiLibraryFE s, String stringaBase64, boolean Sovrascrive) {
         VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
 
-        String Urletto="ModificaImmaginePennetta?" +
+        String Urletto="ModificaImmagineFetekkie?" +
                 "Categoria=" + s.getCategoria() +
                 "&idImmagine=" + s.getIdImmagine() +
                 "&StringaBase64=" + stringaBase64 +
@@ -109,19 +102,19 @@ public class ChiamateWSPEN implements TaskDelegate {
 
     public void RitornaCategorie(boolean forzaLettura) {
         if (!forzaLettura) {
-            db_dati_pennetta db = new db_dati_pennetta(context);
-            List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
+            db_dati_fetekkie db = new db_dati_fetekkie(context);
+            List<StrutturaImmaginiCategorieFE> lista = db.LeggeCategorie();
             db.ChiudeDB();
             if (!lista.isEmpty()) {
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(lista);
-                UtilityPennetta.getInstance().AggiornaCategorie(context);
-                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setListaCategorie(lista);
+                UtilityFetekkie.getInstance().AggiornaCategorie(context);
+                UtilityFetekkie.getInstance().AggiornaCategorieSpostamento(context);
 
                 return;
             }
         }
 
-        String Urletto="RitornaCategoriePennetta";
+        String Urletto="RitornaCategorieFetekkie";
 
         TipoOperazione = "RitornaCategorie";
         // ControllaTempoEsecuzione = false;
@@ -136,7 +129,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void EliminaImmagine(String id) {
-        String Urletto="EliminaImmaginePennetta?idImmagine=" + id;
+        String Urletto="EliminaImmagineFetekkie?idImmagine=" + id;
 
         TipoOperazione = "EliminaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -155,7 +148,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 "Categoria=" + Categoria +
                 "&Completo=";
 
-        TipoOperazione = "RefreshPennetta";
+        TipoOperazione = "RefreshFetekkie";
         // ControllaTempoEsecuzione = false;
 
         UtilitiesGlobali.getInstance().ApreToast(context, "Refresh immagini lanciato");
@@ -173,13 +166,13 @@ public class ChiamateWSPEN implements TaskDelegate {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
-        UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
-        UtilityPennetta.getInstance().Attesa(true);
+        UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
+        UtilityFetekkie.getInstance().Attesa(true);
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
 
-        InterrogazioneWSPEN i = new InterrogazioneWSPEN();
+        InterrogazioneWSFET i = new InterrogazioneWSFET();
         i.EsegueChiamata(
                 context,
                 NS,
@@ -209,9 +202,9 @@ public class ChiamateWSPEN implements TaskDelegate {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+                UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-                UtilityPennetta.getInstance().Attesa(false);
+                UtilityFetekkie.getInstance().Attesa(false);
 
                 switch (TipoOperazione) {
                     case "ProssimaImmagine":
@@ -263,7 +256,7 @@ public class ChiamateWSPEN implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
-            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            UtilityFetekkie.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -272,9 +265,9 @@ public class ChiamateWSPEN implements TaskDelegate {
 
         boolean ritorno = ControllaRitorno("Modifica Immagine", result);
         if (ritorno) {
-            String Path = context.getFilesDir() + "/Immagini/AppoggioPEN.jpg";
+            String Path = context.getFilesDir() + "/Immagini/AppoggioFET.jpg";
             Bitmap bmp = BitmapFactory.decodeFile(Path);
-            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg().setImageBitmap(bmp);
+            VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImg().setImageBitmap(bmp);
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine modificata");
         } else {
@@ -288,7 +281,7 @@ public class ChiamateWSPEN implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
-            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            UtilityFetekkie.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -303,9 +296,9 @@ public class ChiamateWSPEN implements TaskDelegate {
         boolean ritorno = ControllaRitorno("Ritorna categorie", result);
         if (ritorno) {
             // try {
-                List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
+                List<StrutturaImmaginiCategorieFE> listaCategorie = new ArrayList<>();
 
-                StrutturaImmaginiCategorie sicT = new StrutturaImmaginiCategorie();
+                StrutturaImmaginiCategorieFE sicT = new StrutturaImmaginiCategorieFE();
                 sicT.setIdCategoria(-1);
                 sicT.setCategoria("Tutte");
                 sicT.setAlias("");
@@ -329,7 +322,7 @@ public class ChiamateWSPEN implements TaskDelegate {
 
                 String[] categorie = result.split("§");
                 for (String c : categorie) {
-                    StrutturaImmaginiCategorie sicT2 = new StrutturaImmaginiCategorie();
+                    StrutturaImmaginiCategorieFE sicT2 = new StrutturaImmaginiCategorieFE();
                     sicT2.setIdCategoria(-1);
                     sicT2.setCategoria(c);
                     sicT2.setAlias("");
@@ -338,18 +331,18 @@ public class ChiamateWSPEN implements TaskDelegate {
                     listaCategorie.add(sicT2);
                 }
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(listaCategorie);
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setListaCategorie(listaCategorie);
 
                 /* int idCategoriaImpostata = -1;
-                if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata() != null) {
-                    idCategoriaImpostata = VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata().getIdCategoria();
+                if (VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata() != null) {
+                    idCategoriaImpostata = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata().getIdCategoria();
                 } */
-                String idCategoriaImpostata = VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria();
+                String idCategoriaImpostata = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria();
                 String CategoriaAttuale = "";
 
                 String[] l = new String[listaCategorie.size()];
                 int c = 0;
-                for (StrutturaImmaginiCategorie s : listaCategorie) {
+                for (StrutturaImmaginiCategorieFE s : listaCategorie) {
                     l[c] = s.getCategoria();
                     if (s.getCategoria().equals(idCategoriaImpostata)) {
                         CategoriaAttuale = s.getCategoria();
@@ -357,17 +350,17 @@ public class ChiamateWSPEN implements TaskDelegate {
                     c++;
                 }
 
-                db_dati_pennetta db = new db_dati_pennetta(context);
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
                 db.EliminaCategorie();
-                for (StrutturaImmaginiCategorie s : listaCategorie) {
+                for (StrutturaImmaginiCategorieFE s : listaCategorie) {
                     db.ScriveCategoria(s);
                 }
                 db.ChiudeDB();
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriAttuale(CategoriaAttuale);
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategoriePen(l);
-                UtilityPennetta.getInstance().AggiornaCategorie(context);
-                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setCategoriAttuale(CategoriaAttuale);
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setListaCategorieFet(l);
+                UtilityFetekkie.getInstance().AggiornaCategorie(context);
+                UtilityFetekkie.getInstance().AggiornaCategorieSpostamento(context);
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }
@@ -383,46 +376,46 @@ public class ChiamateWSPEN implements TaskDelegate {
             int id = -1;
             if (result.contains("§")) {
                 String[] p = result.split("§");
-                path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + p[0];
+                path = VariabiliStaticheMostraImmaginiFetekkie.PathUrl + p[0];
                 id = Integer.parseInt(p[1]);
             } else {
-                path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + result;
+                path = VariabiliStaticheMostraImmaginiFetekkie.PathUrl + result;
             }
 
-            VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(id);
+            VariabiliStaticheMostraImmaginiFetekkie.getInstance().setIdImmagine(id);
 
-            StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary();
+            StrutturaImmaginiLibraryFE s = new StrutturaImmaginiLibraryFE();
             s.setIdImmagine(id);
             s.setUrlImmagine(path);
-            s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
+            s.setCategoria(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria());
             s.setNomeFile(result);
             s.setDataCreazione("");
 
-            UtilityPennetta.getInstance().AggiungeImmagine(context, result, s);
+            UtilityFetekkie.getInstance().AggiungeImmagine(context, result, s);
 
-            VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
+            VariabiliStaticheMostraImmaginiFetekkie.getInstance().setUltimaImmagineCaricata(s);
 
-            DownloadImmaginePEN d = new DownloadImmaginePEN();
+            DownloadImmagineFET d = new DownloadImmagineFET();
             d.EsegueChiamata(
                     context,
                     path,
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImg(),
                     path
             );
-            // new DownloadImagePEN(context, path,
-            //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
+            // new DownloadImageFET(context, path,
+            //         VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImg()).execute(path);
 
             /* try {
                 JSONObject jObject = new JSONObject(result);
-                StrutturaImmaginiLibrary si = UtilityPennetta.getInstance().prendeStruttura(jObject);
+                StrutturaImmaginiLibrary si = UtilityFetekkie.getInstance().prendeStruttura(jObject);
                 if (si != null) {
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdCategoria(si.getIdCategoria());
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(si.getIdImmagine());
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().setIdCategoria(si.getIdCategoria());
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().setIdImmagine(si.getIdImmagine());
 
-                    UtilityPennetta.getInstance().AggiungeImmagine(context, result, si);
+                    UtilityFetekkie.getInstance().AggiungeImmagine(context, result, si);
 
-                    new DownloadImagePEN(context, si.getUrlImmagine(),
-                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(si.getUrlImmagine());
+                    new DownloadImageFET(context, si.getUrlImmagine(),
+                            VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImg()).execute(si.getUrlImmagine());
                 }
             } catch (JSONException e) {
 

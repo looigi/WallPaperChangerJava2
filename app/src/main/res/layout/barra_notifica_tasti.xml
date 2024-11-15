@@ -109,6 +109,14 @@
             android:src="@drawable/video2" />
 
         <ImageView
+            android:id="@+id/imgFetekkieTasti"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/fetekkie" />
+
+        <ImageView
             android:id="@+id/imgBackupTasti"
             android:layout_width="40dp"
             android:layout_height="40dp"

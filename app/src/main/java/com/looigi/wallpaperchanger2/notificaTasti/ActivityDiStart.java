@@ -14,6 +14,7 @@ import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
@@ -70,6 +71,11 @@ public class ActivityDiStart extends Activity {
                     Intent iO = new Intent(context, MainOnomastici.class);
                     iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(iO);
+                    break;
+                case "fetekkie":
+                    Intent iFE = new Intent(context, MainMostraFetekkie.class);
+                    iFE.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iFE);
                     break;
                 case "wallpaper":
                     Intent iW = new Intent(context, MainWallpaper.class);

@@ -23,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
@@ -324,6 +325,31 @@ public class MainStart  extends Activity {
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+
+        ImageView imgFetekkie = (ImageView) findViewById(R.id.imgStartFetekkie);
+        imgFetekkie.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainMostraFetekkie.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
             }
         });
 

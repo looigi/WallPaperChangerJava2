@@ -303,12 +303,12 @@ public class InizializzaMascheraWallpaper {
                         EsegueAggiornamento(context, 2);
                     }
                 });
-                builder.setNeutralButton("Entrambi", new DialogInterface.OnClickListener() {
+                /* builder.setNeutralButton("Entrambi", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EsegueAggiornamento(context, 3);
                     }
-                });
+                }); */
 
                 builder.show();
             }

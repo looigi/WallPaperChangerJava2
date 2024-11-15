@@ -422,9 +422,9 @@
         <TextView
             android:id="@+id/txtOperazionePlayer"
             android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@color/Blue"
-            android:layout_height="wrap_content"
-            android:lines="1">
+            android:layout_height="wrap_content">
 
         </TextView>
     </LinearLayout>

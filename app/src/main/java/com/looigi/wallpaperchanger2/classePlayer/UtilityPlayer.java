@@ -196,8 +196,6 @@ public class UtilityPlayer {
             try {
                 VariabiliStatichePlayer.getInstance().getMp().setDataSource(path);
                 VariabiliStatichePlayer.getInstance().getMp().prepare();
-                VariabiliStatichePlayer.getInstance().getMp().pause();
-                VariabiliStatichePlayer.getInstance().setFermaTimer(false);
 
                 VariabiliStatichePlayer.getInstance().setStaCaricandoBranoPregresso(false);
                 VariabiliStatichePlayer.getInstance().setStrutturaBranoPregressoCaricata(null);
@@ -211,14 +209,18 @@ public class UtilityPlayer {
                         context, sb.getArtista());
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
-                AggiornaInformazioni(false);
-
-                GestioneNotifichePlayer.getInstance().AggiornaNotifica(sb.getBrano());
+                AggiungeBranoAllaListaAscoltati(context, sb);
 
                 if (VariabiliStatichePlayer.getInstance().isChiacchiera()) {
                     new Chiacchierone(context, sb);
                 } else {
-                    CaricaBranoNelLettore2(context, sb);
+                    if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
+                        FaiPartireTimer(context);
+
+                        VariabiliStatichePlayer.getInstance().getMp().start();
+                    } else {
+                        FermaTimer();
+                    }
                 }
 
                 ScriveLog(context, NomeMaschera, "Brano caricato");
@@ -226,34 +228,19 @@ public class UtilityPlayer {
                 ScriveLog(context, NomeMaschera, "Errore caricamento brano: " +
                         UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
+
+            AggiornaInformazioni(false);
+
+            GestioneNotifichePlayer.getInstance().AggiornaNotifica(sb.getBrano());
+
+            if (sb.getBellezza() == -2) {
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
+                ws.RitornaStelleBrano();
+            }
         } else {
             GestioneNotifichePlayer.getInstance().AggiornaNotifica("Brano non caricato");
         }
-    }
-
-    public void CaricaBranoNelLettore2(Context context, StrutturaBrano sb) {
-        Handler handlerTimer = new Handler(Looper.getMainLooper());
-        Runnable rTimer = new Runnable() {
-            public void run() {
-                if (VariabiliStatichePlayer.getInstance().isStaSuonando()) {
-                    VariabiliStatichePlayer.getInstance().getMp().start();
-                    VariabiliStatichePlayer.getInstance().setFermaTimer(false);
-                } else {
-                    VariabiliStatichePlayer.getInstance().setFermaTimer(true);
-                }
-
-                FaiPartireTimer(context);
-
-                AggiungeBranoAllaListaAscoltati(context, sb);
-
-                if (sb.getBellezza() == -2) {
-                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
-                    VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
-                    ws.RitornaStelleBrano();
-                }
-            }
-        };
-        handlerTimer.postDelayed(rTimer, 1500);
     }
 
     private String ConverteSecondiInTempo(int SecondiPassati) {
@@ -344,14 +331,18 @@ public class UtilityPlayer {
             public void run() {
                 if (Acceso) {
                     if (quantiCaricamenti == 0) {
-                        VariabiliStatichePlayer.getInstance().getLayCaricamento().setVisibility(LinearLayout.VISIBLE);
+                        if (VariabiliStatichePlayer.getInstance().getLayCaricamento() != null) {
+                            VariabiliStatichePlayer.getInstance().getLayCaricamento().setVisibility(LinearLayout.VISIBLE);
+                        }
                     }
                     quantiCaricamenti++;
                 } else {
                     quantiCaricamenti--;
                     if (quantiCaricamenti < 1) {
                         quantiCaricamenti = 0;
-                        VariabiliStatichePlayer.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                        if (VariabiliStatichePlayer.getInstance().getLayCaricamento() != null) {
+                            VariabiliStatichePlayer.getInstance().getLayCaricamento().setVisibility(LinearLayout.GONE);
+                        }
                     }
                 }
             }
@@ -527,6 +518,13 @@ public class UtilityPlayer {
         db.ChiudeDB();
     }
 
+    public void AttesaSI(boolean come) {
+        if (come) {
+            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
+        }
+    }
     public void PrendeBranoInLocaleNonEsatto(Context context, boolean Pregresso) {
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Rete non valida. Prendo in locale");
 

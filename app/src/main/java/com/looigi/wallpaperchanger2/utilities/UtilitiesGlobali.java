@@ -179,11 +179,12 @@ public class UtilitiesGlobali {
         String path8 = context.getFilesDir() + "/Log/Pennetta";
         String path9 = context.getFilesDir() + "/Log/Films";
         String path10 = context.getFilesDir() + "/Log/Servizio";
+        String path11 = context.getFilesDir() + "/Log/Fetekkie";
 
         if (qualeLog.isEmpty()) {
             App = new String[] {"WallPaper", "Detector", "DB", "GPS", "Player",
-                    "Immagini", "Video", "Pennetta", "Films", "Servizio"};
-            paths = new String[] {path1, path2, path3, path4, path5, path6, path7, path8, path9};
+                    "Immagini", "Video", "Pennetta", "Films", "Servizio", "Fetekkie"};
+            paths = new String[] {path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11};
         } else {
             switch (qualeLog) {
                 case "WALLPAPER":
@@ -222,8 +223,42 @@ public class UtilitiesGlobali {
                     App = new String[] {"Servizio"};
                     paths = new String[] {path10};
                     break;
+                case "FETEKKIE":
+                    App = new String[] {"Fetekkie"};
+                    paths = new String[] {path10};
+                    break;
             }
         }
+    }
+
+    public String TogliePercentualiDalNome(String Nome) {
+        /* if (Nome.contains("%")) {
+            String Nome2 = Nome;
+
+            while (Nome2.contains("%")) {
+                int pos = Nome2.indexOf("%");
+                String chars = Nome2.substring(pos - 1, 2);
+
+                Nome2 = Nome2.replace(chars, "_");
+            }
+
+            return Nome2;
+        } else {
+            return Nome;
+        } */
+        String Nome2 = Nome;
+        Nome2 = Nome2.replace("%", "_");
+        Nome2 = Nome2.replace("?", "_");
+        Nome2 = Nome2.replace("*", "_");
+        Nome2 = Nome2.replace("|", "_");
+        Nome2 = Nome2.replace("<", "_");
+        Nome2 = Nome2.replace(">", "_");
+        Nome2 = Nome2.replace("+", "_");
+        Nome2 = Nome2.replace("&", "_");
+        Nome2 = Nome2.replace("/", "_");
+        Nome2 = Nome2.replace("\\", "_");
+
+        return Nome2;
     }
 
     public void CondividiLogs(Context context, String qualeLog) {

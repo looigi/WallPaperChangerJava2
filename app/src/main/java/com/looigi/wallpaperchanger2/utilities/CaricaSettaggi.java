@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.utilities;
 import android.content.Context;
 
 import com.looigi.wallpaperchanger2.classeDetector.db_dati_detector;
+import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
@@ -36,10 +37,19 @@ public class CaricaSettaggi {
     private boolean caricateImpostazioniGPS = false;
     private boolean caricateImpostazioniImmagini = false;
     private boolean caricateImpostazioniPennetta = false;
+    private boolean caricateImpostazioniFetekkie = false;
     private boolean caricateImpostazioniPlayer = false;
     private boolean caricateImpostazioniWallpaper = false;
     private boolean caricateImpostazioniVideo = false;
     private boolean caricateImpostazioniFilms = false;
+
+    public boolean isCaricateImpostazioniFetekkie() {
+        return caricateImpostazioniFetekkie;
+    }
+
+    public void setCaricateImpostazioniFetekkie(boolean caricateImpostazioniFetekkie) {
+        this.caricateImpostazioniFetekkie = caricateImpostazioniFetekkie;
+    }
 
     public boolean isCaricateImpostazioniFilms() {
         return caricateImpostazioniFilms;
@@ -323,6 +333,40 @@ public class CaricaSettaggi {
                 caricateImpostazioniPennetta = false;
             }
             dbPen.ChiudeDB();
+
+            caricateImpostazioniFetekkie = true;
+            db_dati_fetekkie dbFet = new db_dati_fetekkie(context);
+            if (dbFet.DbAperto()) {
+                if (dbFet.CreazioneTabelle()) {
+                    int ritFet = dbFet.CaricaImpostazioni();
+                    if (ritFet == -3 || ritFet == -4) {
+                        dbFet.ImpostaValoriDiDefault();
+                        if (dbFet.PulisceDati()) {
+                            if (dbFet.CreazioneTabelle()) {
+                                if (!dbFet.ScriveImpostazioni()) {
+                                    ritorno = "Errore salvataggio impostazioni Fetekkie";
+                                    caricateImpostazioniFetekkie = false;
+                                } else {
+                                    dbFet.CompattaDB();
+                                }
+                            } else {
+                                ritorno = "Errore creazione tabelle Fetekkie 2";
+                                caricateImpostazioniFetekkie = false;
+                            }
+                        } else {
+                            ritorno = "Errore pulizia tabelle Fetekkie";
+                            caricateImpostazioniFetekkie = false;
+                        }
+                    }
+                } else {
+                    ritorno = "Errore creazione tabelle Fetekkie 1";
+                    caricateImpostazioniFetekkie = false;
+                }
+            } else {
+                ritorno = "Errore db non aperto Fetekkie";
+                caricateImpostazioniFetekkie = false;
+            }
+            dbFet.ChiudeDB();
 
             caricateImpostazioniVideo = true;
             db_dati_video dbVid = new db_dati_video(context);

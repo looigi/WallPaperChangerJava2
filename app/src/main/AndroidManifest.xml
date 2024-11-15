@@ -130,6 +130,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classePlayer.scaricaImmagini.scaricaImmagini"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeImmagini.MainMostraImmagini"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -137,6 +143,12 @@
 
         <activity
             android:name=".classePennetta.MainMostraPennetta"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classeFetekkie.MainMostraFetekkie"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
@@ -208,6 +220,13 @@
         <service android:name = ".classeGps.GestioneGPS"
             android:foregroundServiceType="location" />
 
+        <service android:name=".utilities.cuffie.GestioneTastiCuffieNuovo"
+            android:foregroundServiceType="specialUse">
+            <!-- <intent-filter android:priority="99999">
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter> -->
+        </service>
+
         <!-- <receiver android:name=".classePlayer.cuffie.GestioneTastiCuffie"
             android:enabled="true"
             android:exported="true">
@@ -218,21 +237,11 @@
 
         <receiver android:name="androidx.media.session.MediaButtonReceiver"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".utilities.cuffie.GestioneTastiCuffieNuovo"
-            android:enabled="true"
-            android:exported="true"
-            >
-            <intent-filter android:priority="99999">
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </service>
 
         <receiver android:name=".classeOnomastici.WidgetOnomastici"
             android:enabled="true"

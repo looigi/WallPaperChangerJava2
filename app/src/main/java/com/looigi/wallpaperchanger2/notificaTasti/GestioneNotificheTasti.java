@@ -300,6 +300,15 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgFilmsTasti, pFilm);
 
+            Intent fetekkie = new Intent(ctx, ActivityDiStart.class);
+            fetekkie.addCategory(Intent.CATEGORY_LAUNCHER);
+            fetekkie.setAction(Intent.ACTION_MAIN );
+            fetekkie.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            fetekkie.putExtra("DO", "fetekkie");
+            PendingIntent pFetekkie = PendingIntent.getActivity(ctx, 211, fetekkie,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgFetekkieTasti, pFetekkie);
+
             Intent pwd = new Intent(ctx, ActivityDiStart.class);
             pwd.addCategory(Intent.CATEGORY_LAUNCHER);
             pwd.setAction(Intent.ACTION_MAIN );

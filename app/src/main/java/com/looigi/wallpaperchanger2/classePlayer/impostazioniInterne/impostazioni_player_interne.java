@@ -2,9 +2,14 @@ package com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,9 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
@@ -38,6 +47,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class impostazioni_player_interne {
@@ -334,6 +344,39 @@ public class impostazioni_player_interne {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
                     ws.ScriveImmagineSuSfondiLocale("DaPlayer/" + s.getNomeImmagine(), result);
                 }
+            }
+        });
+
+        VariabiliStatichePlayer.getInstance().setImgNuovaImmagine(act.findViewById(R.id.imgNuovoSfondo));
+        VariabiliStatichePlayer.getInstance().getImgNuovaImmagine().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Artista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Nome Artista");
+
+                final EditText input = new EditText(context);
+                input.setText(Artista);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String sArtista = input.getText().toString();
+
+                        ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                        ws.ScaricaImmaginiArtista(sArtista);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

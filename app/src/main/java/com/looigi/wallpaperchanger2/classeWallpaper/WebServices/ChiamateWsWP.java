@@ -250,7 +250,7 @@ public class ChiamateWsWP implements TaskDelegate {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
-                    ws.EliminaImmagineSuSfondiLocale(NomeImmaginePerModifica);
+                    ws.EliminaImmagineSuSfondiLocale(NomeImmaginePerModifica, false);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);

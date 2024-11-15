@@ -1,7 +1,5 @@
 package com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini;
 
-import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-
 import java.util.List;
 
 public class VariabiliStaticheRefresh {
@@ -20,12 +18,48 @@ public class VariabiliStaticheRefresh {
 
     private List<StrutturaImmaginiPerRefresh> listaImmaginiIoNOS;
     private List<StrutturaImmaginiPerRefresh> listaImmaginiLocali;
-    private int indiceIoNos = 0;
-    private int indiceLocale = 0;
+    private int indiceCopiaIoNos = 0;
+    private int indiceCopiaLocale = 0;
+    private int indiceEliminazioneIoNos = 0;
+    private int indiceEliminazioneLocale = 0;
     private List<String> immaginiMancantiSuIoNos;
     private List<String> immaginiMancantiInLocale;
+    private List<String> immaginiDaEliminareDaIoNos;
+    private List<String> immaginiDaEliminareDaLocale;
     private boolean aggiornaSoloLocale = false;
     private boolean aggiornaSoloIoNos = false;
+
+    public int getIndiceEliminazioneIoNos() {
+        return indiceEliminazioneIoNos;
+    }
+
+    public void setIndiceEliminazioneIoNos(int indiceEliminazioneIoNos) {
+        this.indiceEliminazioneIoNos = indiceEliminazioneIoNos;
+    }
+
+    public int getIndiceEliminazioneLocale() {
+        return indiceEliminazioneLocale;
+    }
+
+    public void setIndiceEliminazioneLocale(int indiceEliminazioneLocale) {
+        this.indiceEliminazioneLocale = indiceEliminazioneLocale;
+    }
+
+    public List<String> getImmaginiDaEliminareDaIoNos() {
+        return immaginiDaEliminareDaIoNos;
+    }
+
+    public void setImmaginiDaEliminareDaIoNos(List<String> immaginiDaEliminareDaIoNos) {
+        this.immaginiDaEliminareDaIoNos = immaginiDaEliminareDaIoNos;
+    }
+
+    public List<String> getImmaginiDaEliminareDaLocale() {
+        return immaginiDaEliminareDaLocale;
+    }
+
+    public void setImmaginiDaEliminareDaLocale(List<String> immaginiDaEliminareDaLocale) {
+        this.immaginiDaEliminareDaLocale = immaginiDaEliminareDaLocale;
+    }
 
     public boolean isAggiornaSoloIoNos() {
         return aggiornaSoloIoNos;
@@ -59,20 +93,20 @@ public class VariabiliStaticheRefresh {
         this.immaginiMancantiSuIoNos = immaginiMancantiSuIoNos;
     }
 
-    public int getIndiceIoNos() {
-        return indiceIoNos;
+    public int getIndiceCopiaIoNos() {
+        return indiceCopiaIoNos;
     }
 
-    public void setIndiceIoNos(int indiceIoNos) {
-        this.indiceIoNos = indiceIoNos;
+    public void setIndiceCopiaIoNos(int indiceCopiaIoNos) {
+        this.indiceCopiaIoNos = indiceCopiaIoNos;
     }
 
-    public int getIndiceLocale() {
-        return indiceLocale;
+    public int getIndiceCopiaLocale() {
+        return indiceCopiaLocale;
     }
 
-    public void setIndiceLocale(int indiceLocale) {
-        this.indiceLocale = indiceLocale;
+    public void setIndiceCopiaLocale(int indiceCopiaLocale) {
+        this.indiceCopiaLocale = indiceCopiaLocale;
     }
 
     public List<StrutturaImmaginiPerRefresh> getListaImmaginiIoNOS() {

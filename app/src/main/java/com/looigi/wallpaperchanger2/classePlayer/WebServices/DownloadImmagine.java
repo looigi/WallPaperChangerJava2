@@ -155,6 +155,8 @@ public class DownloadImmagine {
                                             // String[] N = PathImmagine.split("/");
                                             // String NomeImmagine = "DaPlayer/" + N[N.length - 1];
 
+                                            UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
+
                                             String result = UtilitiesGlobali.getInstance().convertBmpToBase64(PathImmagine);
 
                                             ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);

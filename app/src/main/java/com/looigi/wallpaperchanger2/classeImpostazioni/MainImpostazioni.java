@@ -23,6 +23,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
+import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
+import com.looigi.wallpaperchanger2.classeFetekkie.webservice.ChiamateWSFET;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
@@ -123,6 +126,9 @@ public class MainImpostazioni extends Activity {
             case "FILMS":
                 qualeSchermata = 8;
                 break;
+            case "FETEKKIE":
+                qualeSchermata = 9;
+                break;
             default:
                 qualeSchermata = 0;
                 break;
@@ -170,6 +176,8 @@ public class MainImpostazioni extends Activity {
         } else {
             btnPennetta.setVisibility(LinearLayout.GONE);
         }
+
+        Button btnFetekkie = act.findViewById(R.id.btnSettingsFetekkie);
 
         btnWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +251,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        btnFetekkie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qualeSchermata = 9;
+                VisualizzaSchermata(act);
+            }
+        });
+
         ImpostaSchermataWallpaper(act);
         ImpostaSchermataDetector(act);
         ImpostaSchermataMappa(act);
@@ -251,6 +267,7 @@ public class MainImpostazioni extends Activity {
         ImpostaSchermataImmagini(act);
         ImpostaSchermataVideo(act);
         ImpostaSchermataPennetta(act);
+        ImpostaSchermataFetekkie(act);
         ImpostaSchermataFilms(act);
 
         VisualizzaSchermata(act);
@@ -282,6 +299,7 @@ public class MainImpostazioni extends Activity {
         LinearLayout layVideo = act.findViewById(R.id.layImpostazioniVideo);
         LinearLayout layPennetta = act.findViewById(R.id.layImpostazioniPennetta);
         LinearLayout layFilms = act.findViewById(R.id.layImpostazioniFilms);
+        LinearLayout layFetekkie = act.findViewById(R.id.layImpostazioniFetekkie);
 
         layWallaper.setVisibility(LinearLayout.GONE);
         layDetector.setVisibility(LinearLayout.GONE);
@@ -292,6 +310,7 @@ public class MainImpostazioni extends Activity {
         layVideo.setVisibility(LinearLayout.GONE);
         layPennetta.setVisibility(LinearLayout.GONE);
         layFilms.setVisibility(LinearLayout.GONE);
+        layFetekkie.setVisibility(LinearLayout.GONE);
 
         switch(qualeSchermata) {
             case 0:
@@ -320,6 +339,9 @@ public class MainImpostazioni extends Activity {
                 break;
             case 8:
                 layFilms.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 9:
+                layFetekkie.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -1071,6 +1093,100 @@ public class MainImpostazioni extends Activity {
         });
     }
 
+    private void ImpostaSchermataFetekkie(Activity act) {
+        // db_dati_immagini db = new db_dati_immagini(context);
+        // db.CaricaImpostazioni();
+        SwitchCompat swcRandom = (SwitchCompat) act.findViewById(R.id.sRandomFET);
+        swcRandom.setChecked(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getRandom().equals("S"));
+        swcRandom.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setRandom(swcRandom.isChecked() ? "S" : "N");
+
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisuaFet);
+        swcRicercaVisuaVideo.setChecked(VariabiliStaticheMostraImmaginiFetekkie.getInstance().isRicercaPerVisua());
+        swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setRicercaPerVisua(swcRicercaVisuaVideo.isChecked());
+
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShowFET);
+        String limite = String.valueOf(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSecondiAttesa());
+        edtSecondi.setText(limite);
+        edtSecondi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        String lim = edtSecondi.getText().toString();
+                        VariabiliStaticheMostraImmaginiFetekkie.getInstance().setSecondiAttesa(Integer.parseInt(lim));
+
+                        db_dati_fetekkie db = new db_dati_fetekkie(context);
+                        db.ScriveImpostazioni();
+                        db.ChiudeDB();
+                    }
+                }
+            }
+        });
+
+        ImageView imgRefresh = act.findViewById(R.id.imgRefreshFetekkie);
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imgAttesa.setVisibility(LinearLayout.VISIBLE);
+
+                ChiamateWSFET ws = new ChiamateWSFET(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tipo aggiornamento");
+                builder.setPositiveButton("Categoria", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria());
+                    }
+                });
+                builder.setNegativeButton("Tutto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ws.ImpostaImgAttesa(imgAttesa);
+                        ws.RefreshImmagini("");
+                        // dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        Button btnInviaLog = act.findViewById(R.id.btnInviaLogFET);
+        Button btnPulisceLog = act.findViewById(R.id.btnPulisceLogFET);
+        Button btnVisualizzaLog = act.findViewById(R.id.btnVisualizzaLogFET);
+        btnInviaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().CondividiLogs(context, "FETEKKIE");
+            }
+        });
+        btnPulisceLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().EliminaLogs(context, "FETEKKIE");
+            }
+        });
+        btnVisualizzaLog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilitiesGlobali.getInstance().VisualizzaLogs(context, "FETEKKIE");
+            }
+        });
+    }
+
     private void ImpostaSchermataPennetta(Activity act) {
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
@@ -1086,7 +1202,7 @@ public class MainImpostazioni extends Activity {
             }
         });
 
-        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisua);
+        SwitchCompat swcRicercaVisuaVideo = act.findViewById(R.id.switchCercaVisuaPen);
         swcRicercaVisuaVideo.setChecked(VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua());
         swcRicercaVisuaVideo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1099,7 +1215,7 @@ public class MainImpostazioni extends Activity {
         });
 
         EditText edtSecondi = act.findViewById(R.id.edtTempoSlideShowPen);
-        String limite = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getSecondiAttesa());
+        String limite = String.valueOf(VariabiliStaticheMostraImmaginiPennetta.getInstance().getSecondiAttesa());
         edtSecondi.setText(limite);
         edtSecondi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1107,7 +1223,7 @@ public class MainImpostazioni extends Activity {
                 if (!hasFocus) {
                     {
                         String lim = edtSecondi.getText().toString();
-                        VariabiliStaticheMostraImmagini.getInstance().setSecondiAttesa(Integer.parseInt(lim));
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().setSecondiAttesa(Integer.parseInt(lim));
 
                         db_dati_pennetta db = new db_dati_pennetta(context);
                         db.ScriveImpostazioni();
