@@ -46,6 +46,7 @@ public class ServizioInterno extends Service {
     private PowerManager.WakeLock wl;
     private Intent intentSegnale;
     private Intent intentCuffie;
+    private Intent intentGPS;
     private PresenzaCuffie mCuffieInseriteReceiver;
 
     /* private SensorManager mSensorManager;
@@ -107,6 +108,15 @@ public class ServizioInterno extends Service {
         // GESTIONE TASTI CUFFIE
         intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
         startService(intentCuffie);
+
+        // SERVIZIO GPS
+        if (VariabiliStaticheStart.getInstance().isDetector() &&
+                !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+            intentGPS = new Intent(this, GestioneGPS.class);
+            startForegroundService(intentGPS);
+        }
+        // SERVIZIO GPS
 
         // SENSORI DI MOVIMENTO
         /* mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -231,6 +241,14 @@ public class ServizioInterno extends Service {
             context.stopService(intentCuffie);
         }
 
+        if (mCuffieInseriteReceiver != null) {
+            context.unregisterReceiver(mCuffieInseriteReceiver);
+        }
+
+        if (intentGPS != null) {
+            stopService(intentGPS);
+        }
+
         // if (mSensorManager != null) {
         //     mSensorManager.unregisterListener(this);
         // }
@@ -254,10 +272,6 @@ public class ServizioInterno extends Service {
         super.onDestroy();
 
         ScriveLog(context, NomeMaschera, "---On Destroy---");
-
-        if (mCuffieInseriteReceiver != null) {
-            context.unregisterReceiver(mCuffieInseriteReceiver);
-        }
 
         /* if (VariabiliStaticheStart.getInstance().getmTelephonyManager() != null) {
             VariabiliStaticheStart.getInstance().setmTelephonyManager(null);

@@ -19,6 +19,7 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.watchDog.VariabiliStaticheWatchdog;
 
 import java.util.Calendar;
 import java.util.List;
@@ -104,6 +105,9 @@ public class ControlloSegnale2 extends Service {
         if (!segnali.isEmpty()) {
             int mSignalStrength = segnali.get(0).getDbm();
             mLevel = segnali.get(0).getLevel();
+
+            VariabiliStaticheWatchdog.getInstance().setSegnale((wifi ? "WiFi" : "Air") + ": " + mLevel);
+
             // String livello = UtilitiesGlobali.getInstance().getLevelString(mLevel);
 
             // int mSignalStrength = signalStrength.getGsmSignalStrength();
@@ -159,21 +163,7 @@ public class ControlloSegnale2 extends Service {
 
         if (wifi != vecchioWifi || !tipoConnessione.equals(vecchioTipoConnessione)) {
             // || mLevel != vecchioLivello) {
-            Calendar calendar = Calendar.getInstance();
-            String h = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
-            if (h.length() == 1) {
-                h = "0" + h;
-            }
-            String m = Integer.toString(calendar.get(Calendar.MINUTE));
-            if (m.length() == 1) {
-                m = "0" + m;
-            }
-            String s = Integer.toString(calendar.get(Calendar.SECOND));
-            if (s.length() == 1) {
-                s = "0" + s;
-            }
-
-            String quando = h + ":" + m + ":" + s;
+            String quando = UtilitiesGlobali.getInstance().RitornaOra();
 
             VariabiliStaticheStart.getInstance().setUltimoControlloRete(quando);
             GestioneNotificheTasti.getInstance().AggiornaNotifica();

@@ -60,7 +60,6 @@ public class MainStart  extends Activity {
     private Context context;
     private Activity act;
     private LinearLayout laySplash;
-    private Intent intentGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -578,15 +577,6 @@ public class MainStart  extends Activity {
                     new Intent(this, ServizioInterno.class));
             startForegroundService(VariabiliStaticheStart.getInstance().getServizioForeground());
 
-            // SERVIZIO GPS
-            if (VariabiliStaticheStart.getInstance().isDetector() &&
-                    !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
-                    VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
-                intentGPS = new Intent(context, GestioneGPS.class);
-                startForegroundService(intentGPS);
-            }
-            // SERVIZIO GPS
-
             VariabiliStaticheStart.getInstance().setGiaPartito(true);
 
             this.finish();
@@ -664,11 +654,6 @@ public class MainStart  extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (intentGPS != null) {
-            stopService(intentGPS);
-            // VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
-        }
     }
 
 }

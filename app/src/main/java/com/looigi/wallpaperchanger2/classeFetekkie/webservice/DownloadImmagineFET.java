@@ -84,7 +84,8 @@ public class DownloadImmagineFET {
             public void run() {
                 secondiPassati++;
                 if (secondiPassati > VariabiliStaticheMostraImmaginiFetekkie.TimeoutImmagine) {
-                    UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera, "Timeout per Immagine Scaricata");
+                    UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera,
+                            "Timeout per Immagine Scaricata");
 
                     if (in != null) {
                         try {

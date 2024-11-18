@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.ChiamateWSFET;
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.DownloadImmagineFET;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -38,9 +39,14 @@ import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class MainMostraFetekkie extends Activity {
+    private static final int PICKFILE_RESULT_CODE = 27;
     private Context context;
     private Activity act;
     private boolean SettaggiAperti = false;
@@ -116,18 +122,30 @@ public class MainMostraFetekkie extends Activity {
             public void onClick(View v) {
                 String Path = context.getFilesDir() + "/Immagini/AppoggioFET.jpg";
 
-                com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
-
-                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("Fetekkie");
+                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("FETEKKIE");
                 VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
                         Path
                 );
                 Intent i = new Intent(context, Main_ModificaImmagine.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
+            }
+        });
 
-                // ChiamateWSMI c = new ChiamateWSMI(context);
-                // c.EliminaImmagine(id);
+        ImageView imgUpload = findViewById(R.id.imgUploadFET);
+        imgUpload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Categoria = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria();
+
+                if (Categoria.equals("Tutte")) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Impostare una categoria. Non Tutte");
+                } else {
+                    Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseFile.setType("*/*");
+                    chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                    startActivityForResult(chooseFile, PICKFILE_RESULT_CODE);
+                }
             }
         });
 
@@ -151,18 +169,20 @@ public class MainMostraFetekkie extends Activity {
         ImageView imgShare = findViewById(R.id.imgShareFetekkie);
         imgShare.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
+                String Path = context.getFilesDir() + "/Immagini/AppoggioFET.jpg";
+
+                if (Files.getInstance().EsisteFile(Path)) {
                     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                     StrictMode.setVmPolicy(builder.build());
 
-                    File f = new File(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    File f = new File(Path);
                     Uri uri = FileProvider.getUriForFile(context,
                             context.getApplicationContext().getPackageName() + ".provider",
                             f);
 
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT,VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata().getPathImmagine());
+                    i.putExtra(Intent.EXTRA_SUBJECT,VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata().getNomeFile());
                     i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                     i.putExtra(Intent.EXTRA_STREAM,uri);
                     i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
@@ -497,5 +517,68 @@ public class MainMostraFetekkie extends Activity {
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK) {
+            String Categoria = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria();
+
+            if (Categoria.equals("Tutte")) {
+                UtilitiesGlobali.getInstance().ApreToast(context,
+                        "Impostare una categoria. Non Tutte");
+            } else {
+                String Path = context.getFilesDir() + "/Immagini/UploadFET.jpg";
+
+                Uri content_describer = data.getData();
+                assert content_describer != null;
+
+                String filename = content_describer.getLastPathSegment();
+                assert filename != null;
+                String[] f = filename.split("/");
+                filename = f[f.length - 1];
+
+                InputStream in = null;
+                OutputStream out = null;
+                try {
+                    in = getContentResolver().openInputStream(content_describer);
+                    out = new FileOutputStream(new File(Path));
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, len);
+                    }
+                } catch (FileNotFoundException e) {
+                    // throw new RuntimeException(e);
+                } catch (IOException e) {
+                    // throw new RuntimeException(e);
+                } finally {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            // throw new RuntimeException(e);
+                        }
+                    }
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            // throw new RuntimeException(e);
+                        }
+                    }
+
+                    String base64 = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
+
+                    ChiamateWSFET ws = new ChiamateWSFET(context);
+                    ws.AggiungeImmagine(
+                            Categoria,
+                            filename,
+                            base64
+                    );
+                }
+            }
+        }
     }
 }

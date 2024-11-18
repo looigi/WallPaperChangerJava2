@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_gravity="center_horizontal|center_horizontal"
+    android:gravity="center_horizontal|center_vertical"
+    android:background="@drawable/bordo_arrotondato_bianco_sfumato_molto_trasp"
+    android:weightSum="10"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:src="@drawable/watchdog"
+        android:layout_height="match_parent">
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:padding="3dp"
+        android:paddingEnd="5dp"
+        android:layout_marginTop="-3dp"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtInfo1"
+            android:gravity="end"
+            android:lines="1"
+            android:shadowColor="#000000"
+            android:shadowDy="2"
+            android:shadowRadius="9.5"
+            android:textSize="13sp"
+            android:textColor="@color/Bianco"
+            android:layout_width="match_parent"
+            android:layout_height="16sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtInfo2"
+            android:gravity="end"
+            android:lines="1"
+            android:shadowColor="#000000"
+            android:shadowDy="2"
+            android:shadowRadius="9.5"
+            android:textSize="13sp"
+            android:textColor="@color/Rosso"
+            android:layout_width="match_parent"
+            android:layout_height="16sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtInfo3"
+            android:gravity="end"
+            android:lines="1"
+            android:shadowColor="#000000"
+            android:shadowDy="2"
+            android:shadowRadius="9.5"
+            android:textSize="13sp"
+            android:textColor="@color/Bianco"
+            android:layout_width="match_parent"
+            android:layout_height="16sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtInfo4"
+            android:gravity="end"
+            android:textSize="13sp"
+            android:lines="1"
+            android:shadowColor="#000000"
+            android:shadowDy="2"
+            android:shadowRadius="9.5"
+            android:textColor="@color/Bianco"
+            android:layout_width="match_parent"
+            android:layout_height="16sp">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="8"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:textColor="@color/Bianco"
+                android:layout_width="0dp"
+                android:text="Sys"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtInfo51"
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:textColor="@color/Bianco"
+                android:layout_width="0dp"
+                android:text="HP"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtInfo52"
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:textColor="@color/Bianco"
+                android:layout_width="0dp"
+                android:text="Net"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtInfo53"
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:textColor="@color/Bianco"
+                android:layout_width="0dp"
+                android:text="Gps"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtInfo54"
+                android:gravity="center_horizontal"
+                android:textSize="13sp"
+                android:lines="1"
+                android:shadowColor="#000000"
+                android:shadowDy="2"
+                android:shadowRadius="9.5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="16sp">
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -93,6 +93,15 @@
 
             <ImageView
                 android:layout_marginEnd="5dp"
+                android:id="@+id/imgUploadFET"
+                android:src="@drawable/upload"
+                android:layout_width="30dp"
+                android:layout_height="30dp">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_marginEnd="5dp"
                 android:id="@+id/imgModificaFET"
                 android:src="@drawable/edit_image"
                 android:layout_width="30dp"

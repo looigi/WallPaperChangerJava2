@@ -17,6 +17,7 @@ import com.canhub.cropper.CropImageView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeFetekkie.UtilityFetekkie;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
@@ -104,6 +105,8 @@ public class Main_ModificaImmagine extends Activity {
                 break;
             case "PENNETTA":
                 break;
+            case "FETEKKIE":
+                break;
             case "PLAYER":
                 cmdRinomina.setVisibility(LinearLayout.GONE);
                 break;
@@ -177,6 +180,10 @@ public class Main_ModificaImmagine extends Activity {
                 case "PENNETTA":
                     // Salvataggio immagine da maschera immagini
                     UtilityPennetta.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                    break;
+                case "FETEKKIE":
+                    // Salvataggio immagine da maschera immagini
+                    UtilityFetekkie.getInstance().SalvataggioImmagine(context, Sovrascrive);
                     break;
                 case "PLAYER":
                     // Salvataggio immagine da maschera player

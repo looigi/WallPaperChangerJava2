@@ -395,7 +395,12 @@ public class ChiamateWSPEN implements TaskDelegate {
             s.setIdImmagine(id);
             s.setUrlImmagine(path);
             s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
-            s.setNomeFile(result);
+            if (result.contains("§")) {
+                String[] r = result.split("§");
+                s.setNomeFile(r[0]);
+            } else {
+                s.setNomeFile(result);
+            }
             s.setDataCreazione("");
 
             UtilityPennetta.getInstance().AggiungeImmagine(context, result, s);

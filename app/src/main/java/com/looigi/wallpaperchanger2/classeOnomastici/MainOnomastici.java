@@ -952,7 +952,7 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         }
 
         WidgetOnomastici w=new WidgetOnomastici();
-        Intent intent=this.getIntent();
+        Intent intent = this.getIntent();
         w.onReceive(VariabiliStaticheOnomastici.getInstance().getContext(), intent);
     }
 

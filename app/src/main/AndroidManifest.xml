@@ -254,6 +254,17 @@
                 android:resource="@xml/widget_settings_onomastici" />
         </receiver>
 
+        <receiver android:name=".watchDog.WidgetWatchdog"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Watchdog">
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_settings_watchdog" />
+        </receiver>
+
         <!-- <receiver android:name=".classiAttivitaDetector.VolumePressed"
             android:enabled="true"
             android:exported="true">

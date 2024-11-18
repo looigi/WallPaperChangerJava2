@@ -41,6 +41,24 @@ public class ChiamateWSFET implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
+    public void AggiungeImmagine(String Categoria, String NomeFile, String Base64) {
+        String Urletto="AggiungeImmagineFetekkie?" +
+                "Categoria=" + Categoria +
+                "&NomeFile=" + NomeFile +
+                "&Base64=" + Base64;
+
+        TipoOperazione = "AggiungeImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                5000,
+                ApriDialog);
+    }
+
     public void RitornaProssimaImmagine(String Categoria) {
         String Urletto="RitornaProssimoFetekkie?" +
                 "Categoria=" + Categoria +
@@ -225,6 +243,9 @@ public class ChiamateWSFET implements TaskDelegate {
                     case "SpostaImmagine":
                         fSpostaImmagine(result);
                         break;
+                    case "AggiungeImmagine":
+                        fAggiungeImmagine(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -247,6 +268,15 @@ public class ChiamateWSFET implements TaskDelegate {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fAggiungeImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Aggiunge Immagine", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine aggiunta");
         }
     }
 
@@ -388,7 +418,12 @@ public class ChiamateWSFET implements TaskDelegate {
             s.setIdImmagine(id);
             s.setUrlImmagine(path);
             s.setCategoria(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoria());
-            s.setNomeFile(result);
+            if (result.contains("§")) {
+                String[] r = result.split("§");
+                s.setNomeFile(r[0]);
+            } else {
+                s.setNomeFile(result);
+            }
             s.setDataCreazione("");
 
             UtilityFetekkie.getInstance().AggiungeImmagine(context, result, s);

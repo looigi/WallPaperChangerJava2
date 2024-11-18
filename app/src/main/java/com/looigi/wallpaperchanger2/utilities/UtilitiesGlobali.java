@@ -261,6 +261,24 @@ public class UtilitiesGlobali {
         return Nome2;
     }
 
+    public String RitornaOra() {
+        Calendar calendar = Calendar.getInstance();
+        String h = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+        if (h.length() == 1) {
+            h = "0" + h;
+        }
+        String m = Integer.toString(calendar.get(Calendar.MINUTE));
+        if (m.length() == 1) {
+            m = "0" + m;
+        }
+        String s = Integer.toString(calendar.get(Calendar.SECOND));
+        if (s.length() == 1) {
+            s = "0" + s;
+        }
+
+        return h + ":" + m + ":" + s;
+    }
+
     public void CondividiLogs(Context context, String qualeLog) {
         int quanti = 0;
 

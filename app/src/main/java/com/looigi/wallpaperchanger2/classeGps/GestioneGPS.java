@@ -54,6 +54,15 @@ public class GestioneGPS extends Service {
     // private boolean nonScriverePunti = false;
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+
+        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        return START_STICKY;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
@@ -813,7 +822,6 @@ public class GestioneGPS extends Service {
         } */
     }
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
