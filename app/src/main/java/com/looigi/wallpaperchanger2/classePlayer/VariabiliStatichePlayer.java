@@ -11,8 +11,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaSalvataggi;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadCanzone;
@@ -131,6 +134,8 @@ public class VariabiliStatichePlayer {
     private LinearLayout layCaricamentoSI;
 
     // RICERCHE
+    private List<StrutturaSalvataggi> listaSalvataggi = new ArrayList<>();
+    private String SalvataggioSelezionato = "";
     private boolean Random = true;
     private int StelleDaRicercare = 7;
     private boolean StelleSuperiori = true;
@@ -153,6 +158,12 @@ public class VariabiliStatichePlayer {
     private boolean DataInferiore = false;
     private String TxtDataInferiore = "";
     private int idUltimoBrano;
+    private List<StrutturaArtisti> listaArtisti = new ArrayList<>();
+    private List<StrutturaTags> listaTags = new ArrayList<>();
+    private TextView txtPreferiti;
+    private TextView txtNonPreferiti;
+    private TextView txtTags;
+    private TextView txtNonTags;
     // RICERCHE
 
     public void ChiudeActivity(boolean Finish) {
@@ -162,6 +173,70 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public List<StrutturaTags> getListaTags() {
+        return listaTags;
+    }
+
+    public void setListaTags(List<StrutturaTags> listaTags) {
+        this.listaTags = listaTags;
+    }
+
+    public TextView getTxtNonPreferiti() {
+        return txtNonPreferiti;
+    }
+
+    public void setTxtNonPreferiti(TextView txtNonPreferiti) {
+        this.txtNonPreferiti = txtNonPreferiti;
+    }
+
+    public TextView getTxtNonTags() {
+        return txtNonTags;
+    }
+
+    public void setTxtNonTags(TextView txtNonTags) {
+        this.txtNonTags = txtNonTags;
+    }
+
+    public TextView getTxtPreferiti() {
+        return txtPreferiti;
+    }
+
+    public void setTxtPreferiti(TextView txtPreferiti) {
+        this.txtPreferiti = txtPreferiti;
+    }
+
+    public TextView getTxtTags() {
+        return txtTags;
+    }
+
+    public void setTxtTags(TextView txtTags) {
+        this.txtTags = txtTags;
+    }
+
+    public List<StrutturaArtisti> getListaArtisti() {
+        return listaArtisti;
+    }
+
+    public void setListaArtisti(List<StrutturaArtisti> listaArtisti) {
+        this.listaArtisti = listaArtisti;
+    }
+
+    public String getSalvataggioSelezionato() {
+        return SalvataggioSelezionato;
+    }
+
+    public void setSalvataggioSelezionato(String salvataggioSelezionato) {
+        SalvataggioSelezionato = salvataggioSelezionato;
+    }
+
+    public List<StrutturaSalvataggi> getListaSalvataggi() {
+        return listaSalvataggi;
+    }
+
+    public void setListaSalvataggi(List<StrutturaSalvataggi> listaSalvataggi) {
+        this.listaSalvataggi = listaSalvataggi;
     }
 
     public LinearLayout getLayCaricamentoSI() {

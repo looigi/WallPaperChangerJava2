@@ -47,36 +47,52 @@ public class GestioneGPS extends Service {
     // private Runnable rAccensione;
     // private long ultimoTSLocation = -1;
     // private boolean statoAttivo = true;
-    private HandlerThread handlerThread1;
-    private Handler handler1;
-    private Runnable r1;
-    private boolean wifi;
+    // private HandlerThread handlerThread1;
+    // private Handler handler1;
+    // private Runnable r1;
+    // private boolean wifi;
     // private boolean nonScriverePunti = false;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        VariabiliStaticheGPS.getInstance().setContext(this);
 
-        return START_STICKY;
+        VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
+        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
+        VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
+
+        /* if (intent != null && intent.getAction() != null && intent.getAction().equals("CONTROLLO_ATTIVAZIONE")) {
+            ControlloAccSpegn();
+        } else {
+            if (intent != null && intent.getAction() != null && intent.getAction().equals("BLOCCO_GPS")) {
+                BloccaGPS("NOTIFICA");
+            } else {
+                if (intent != null && intent.getAction() != null && intent.getAction().equals("ABILITA_GPS")) {
+                    AbilitaGPS("NOTIFICA");
+                } else { */
+                    AbilitaTimer(context);
+
+                    ControlloAccSpegn();
+
+                    // UtilitiesGlobali.getInstance().ApreToast(context, "GPS Partito");
+
+                    Notification notificaGPS = GestioneNotificaGPS.getInstance().StartNotifica(this);
+                    startForeground(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notificaGPS);
+
+                    // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                // }
+            // }
+        // }
+
+        return START_REDELIVER_INTENT ;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        VariabiliStaticheGPS.getInstance().setContext(this);
-        VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-
-        Notification notificaGPS = GestioneNotificaGPS.getInstance().StartNotifica(this);
-
-        AbilitaTimer(context);
-        AbilitaGPS("On Create Servizio GPS");
-
-        UtilitiesGlobali.getInstance().ApreToast(context, "GPS Partito");
-
-        startForeground(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notificaGPS);
     }
 
     /* @Override
@@ -103,11 +119,16 @@ public class GestioneGPS extends Service {
             return;
         }
 
-        context = UtilitiesGlobali.getInstance().tornaContextValido();
+        // context = UtilitiesGlobali.getInstance().tornaContextValido();
         if (context == null) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "Blocco GPS Annullato per context nullo da " + daDove);
-            return;
+                    "Blocco GPS Context nullo da " + daDove + ". Tento di riprenderlo");
+            context = UtilitiesGlobali.getInstance().tornaContextValido();
+            if (context == null) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Blocco GPS Annullato per context nullo da " + daDove);
+                return;
+            }
         }
 
         // statoAttivo = false;
@@ -150,13 +171,13 @@ public class GestioneGPS extends Service {
     }
 
     public void BloccaTimer() {
-        if (handler1 != null) {
+        /* if (handler1 != null) {
             handler1.removeCallbacksAndMessages(r1);
             handler1.removeCallbacks(r1);
             handler1 = null;
             handlerThread1 = null;
             // return;
-        }
+        } */
     }
 
     public void AbilitaTimer(Context context) {
@@ -231,10 +252,8 @@ public class GestioneGPS extends Service {
         }
     }
 
-    public void ControlloAccSpegn(Context ctx) {
-        Context context;
-
-        if (ctx == null) {
+    public void ControlloAccSpegn() {
+        /* if (context == null) {
             context = UtilitiesGlobali.getInstance().tornaContextValido();
             if (context == null) {
                 UtilityGPS.getInstance().ScriveLog(
@@ -245,38 +264,46 @@ public class GestioneGPS extends Service {
             }
         } else {
             context = ctx;
-        }
+        } */
 
         if (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
-            UtilityGPS.getInstance().ScriveLog(
-                    context,
-                    NomeMaschera,
-                    "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto");
+            if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Disattivo per blocco da tasto");
+
+                BloccaGPS("Controllo Acc Spegn 3");
+            } else {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto");
+            }
+
             return;
         }
 
         // wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
-        wifi = VariabiliStaticheStart.getInstance().isCeWifi();
+        // boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
 
         /* UtilityGPS.getInstance().ScriveLog(
                 context,
                 NomeMaschera,
                 "Controllo disattivazione/attivazione. Controllo wifi connesso: " + wifi); */
 
+        boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
+        if (!VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+            wifi = false;
+        }
+
         if (wifi) {
             if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                if (!VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
-                    UtilityGPS.getInstance().ScriveLog(
-                            context,
-                            NomeMaschera,
-                            "Controllo disattivazione/attivazione. Esco per blocco wifi non attivo");
-                    return;
-                }
-
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Disattivo per WiFi attivo");
+                        "Controllo disattivazione/attivazione. Disattivo. " +
+                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
 
                 BloccaGPS("Controllo Acc Spegn 2");
             } /* else {
@@ -290,7 +317,8 @@ public class GestioneGPS extends Service {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Riattivo per WiFi non attivo");
+                        "Controllo disattivazione/attivazione. Riattivo. " +
+                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
 
                 AbilitaGPS("Controllo Acc/Spegn");
             } /* else {
@@ -409,11 +437,16 @@ public class GestioneGPS extends Service {
             return;
         }
 
-        context = UtilitiesGlobali.getInstance().tornaContextValido();
+        // context = UtilitiesGlobali.getInstance().tornaContextValido();
         if (context == null) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "Abilita GPS. Esco per context nullo da " + daDove);
-            return;
+                    "Abilita GPS. Context nullo da " + daDove + ". Tento di riprenderlo");
+            context = UtilitiesGlobali.getInstance().tornaContextValido();
+            if (context == null) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Abilita GPS. Esco per context nullo da " + daDove);
+                return;
+            }
         }
 
         if (locationManager != null) {
@@ -451,13 +484,15 @@ public class GestioneGPS extends Service {
 
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Preciso");
         } else {
-            provider = LocationManager.FUSED_PROVIDER; // NETWORK_PROVIDER
+            provider = LocationManager.NETWORK_PROVIDER;
 
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Network");
         }
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Milli: " + VariabiliStaticheDetector.getInstance().getGpsMs());
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Milli: " + VariabiliStaticheDetector.getInstance().getGpsMs());
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
 
         locationManager.requestLocationUpdates(
                 provider,
@@ -465,10 +500,11 @@ public class GestioneGPS extends Service {
                 VariabiliStaticheDetector.getInstance().getGpsMeters(),
                 locationListenerGPS);
 
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!locationManager.isProviderEnabled(provider)) {
             AlertDialog.Builder alertDialog=new AlertDialog.Builder(context);
             alertDialog.setTitle("Attiva Location");
-            alertDialog.setMessage("L'impostazione delle tue posizioni non è abilitata. Si prega di abilitarlo nel menu delle impostazioni.");
+            alertDialog.setMessage("L'impostazione delle tue posizioni non è abilitata. " +
+                    "Si prega di abilitarlo nel menu delle impostazioni.");
             alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -604,17 +640,6 @@ public class GestioneGPS extends Service {
             SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
             String currentHour = sdfO.format(calendar.getTime());
 
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "\n\nLocation changed: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
-                    "Accuracy: " + location.getAccuracy() + "\n" +
-                    "Distanza: " + distanza + "\n" +
-                    "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
-                    "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
-                    "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
-                    "OK: " + ok + "\n" +
-                    "Ora: " + currentHour
-            );
-
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             double altitude = location.getAltitude();
@@ -630,7 +655,7 @@ public class GestioneGPS extends Service {
             s.setSpeed(speed);
             s.setAccuracy(accuracy);
             s.setDistanza((float) distanza);
-            s.setWifi(wifi);
+            s.setWifi(VariabiliStaticheStart.getInstance().isCeWifi());
             s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
             s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
             s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
@@ -645,8 +670,19 @@ public class GestioneGPS extends Service {
                 VariabiliStaticheGPS.getInstance().setUltimoDataPunto(currentHour);
 
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "---Punto scritto: " + VariabiliStaticheGPS.getInstance().getUltimoDataPunto() + "---\n\n"
+                        "\n\nLocation changed: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
+                                "Accuracy: " + location.getAccuracy() + "\n" +
+                                "Distanza: " + distanza + "\n" +
+                                "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
+                                "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
+                                "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
+                                "OK: " + ok + "\n" +
+                                "Ora: " + currentHour
                 );
+
+                /* UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "---Punto scritto: " + VariabiliStaticheGPS.getInstance().getUltimoDataPunto() + "---\n\n"
+                ); */
 
                 /* if (!ok) {
                     if (!ultimoNull) {

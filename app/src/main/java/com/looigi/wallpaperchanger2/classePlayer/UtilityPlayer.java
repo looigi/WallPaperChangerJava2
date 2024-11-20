@@ -1394,4 +1394,10 @@ public class UtilityPlayer {
 
     }
 
+    public void ScrivePreferitiTags() {
+        VariabiliStatichePlayer.getInstance().getTxtPreferiti().setText(VariabiliStatichePlayer.getInstance().getPreferiti());
+        VariabiliStatichePlayer.getInstance().getTxtNonPreferiti().setText(VariabiliStatichePlayer.getInstance().getPreferitiElimina());
+        VariabiliStatichePlayer.getInstance().getTxtTags().setText(VariabiliStatichePlayer.getInstance().getPreferitiTags());
+        VariabiliStatichePlayer.getInstance().getTxtNonTags().setText(VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags());
+    }
 }

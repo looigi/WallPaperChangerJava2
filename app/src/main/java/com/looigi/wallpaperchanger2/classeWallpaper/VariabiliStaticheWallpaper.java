@@ -39,13 +39,13 @@ public class VariabiliStaticheWallpaper {
     public static int channelIdIntentOverlay = 152;
     // private String NomeFileDiLog = "";
     // private String PercorsoDIRLog = "";
-    public static int secondiDiAttesaContatore = 25;
+    public static int secondiDiAttesaContatore = 30;
     private boolean staPartendo = true;
     private int errori = 0;
     // private boolean Detector = false;
     private boolean servizioAttivo = true;
-    public static float percAumentoX = .085F;
-    public static float percAumentoY = .085F;
+    public static float percAumentoX = .115F;
+    public static float percAumentoY = .115F;
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
@@ -92,6 +92,7 @@ public class VariabiliStaticheWallpaper {
     private StrutturaImmagine immagineSelezionataDaLista;
     private boolean ApreRicerca = false;
     private TextView txtAvanzamentoRefresh;
+    private boolean ImpostataConSchermoSpento = false;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -100,6 +101,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean isImpostataConSchermoSpento() {
+        return ImpostataConSchermoSpento;
+    }
+
+    public void setImpostataConSchermoSpento(boolean impostataConSchermoSpento) {
+        ImpostataConSchermoSpento = impostataConSchermoSpento;
     }
 
     public TextView getTxtAvanzamentoRefresh() {

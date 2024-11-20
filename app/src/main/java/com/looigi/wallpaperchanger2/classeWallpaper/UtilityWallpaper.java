@@ -232,6 +232,8 @@ public class UtilityWallpaper {
     }
 
     public void CambiaImmagine(Context context) {
+        VariabiliStaticheWallpaper.getInstance().setImpostataConSchermoSpento(false);
+
         ChangeWallpaper c = new ChangeWallpaper(context);
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             c.setWallpaper(context, null);

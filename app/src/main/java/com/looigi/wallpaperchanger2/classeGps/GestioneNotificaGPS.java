@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class GestioneNotificaGPS {
@@ -181,7 +182,7 @@ public class GestioneNotificaGPS {
         if (view != null) {
             Intent gps = new Intent(ctx, NotificationActionServiceGPS.class);
             gps.putExtra("DO", "gps");
-            PendingIntent pGps = PendingIntent.getService(ctx, 800, gps,
+            PendingIntent pGps = PendingIntent.getService(ctx, 870, gps,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps);
         }
@@ -247,17 +248,15 @@ public class GestioneNotificaGPS {
                     case "gps":
                         boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
                         VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
-                        if (!attivo) {
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("NOTIFICA");
-                        } else {
-                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("On start Notifica GPS");
-                        }
+
+                        UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE");
+
                         GestioneNotificaGPS.getInstance().AggiornaNotifica();
                         break;
                 }
             }
 
-            return START_STICKY;
+            return START_REDELIVER_INTENT ;
         }
 
         @Override

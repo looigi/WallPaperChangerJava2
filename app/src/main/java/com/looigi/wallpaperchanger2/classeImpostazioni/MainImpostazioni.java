@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -83,7 +84,7 @@ public class MainImpostazioni extends Activity {
     private LinearLayout layChiudePlayer;
     private GifImageView imgAttesa;
     // private LinearLayout laySettingsImpo;
-    private Intent intentGPS;
+    // private Intent intentGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,9 +278,9 @@ public class MainImpostazioni extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (intentGPS != null) {
-            stopService(intentGPS);
-        }
+        // if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+        //     stopService(VariabiliStaticheGPS.getInstance().getGestioneGPS());
+        // }
     }
 
     @Override
@@ -413,8 +414,12 @@ public class MainImpostazioni extends Activity {
                                     g.AbilitaTimer(context);
                                     g.AbilitaGPS(); */
 
-                                    intentGPS = new Intent(context, GestioneGPS.class);
-                                    startForegroundService(intentGPS);
+                                    VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
+                                    VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
+                                    VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
+
+                                    UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                                            "CONTROLLO_ATTIVAZIONE");
 
                                     // VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(context, ServizioDiAvvioGPS.class));
                                     // startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
@@ -464,7 +469,7 @@ public class MainImpostazioni extends Activity {
 
                             // VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("LONG CLICK");
                             // VariabiliStaticheGPS.getInstance().getGestioneGPS().ChiudeMaschera();
-                            // VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+                            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
                         }
                     }
                 }
@@ -785,10 +790,8 @@ public class MainImpostazioni extends Activity {
                 db.ScriveImpostazioni(context, "SET GPS PRECISO");
                 db.ChiudeDB();
 
-                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("INIT 1");
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta Schermata Detector");
-                }
+                UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                        "CONTROLLO_ATTIVAZIONE");
             }
         });
 
@@ -837,8 +840,8 @@ public class MainImpostazioni extends Activity {
                         db.ScriveImpostazioni(context, "SET GPS MS");
                         db.ChiudeDB();
 
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 1");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta schermata mappa 1");
+                        UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                                "CONTROLLO_ATTIVAZIONE");
                     }
                 }
             }
@@ -857,8 +860,8 @@ public class MainImpostazioni extends Activity {
                         db.ScriveImpostazioni(context, "SET GPS METERS");
                         db.ChiudeDB();
 
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS("FOCUS CHANGE 2");
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS("Imposta schermata mappa 2");
+                        UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                                "CONTROLLO_ATTIVAZIONE");
                     }
                 }
             }
@@ -931,7 +934,8 @@ public class MainImpostazioni extends Activity {
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
 
-                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+                UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                        "CONTROLLO_ATTIVAZIONE");
             }
         });
 

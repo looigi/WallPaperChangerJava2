@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -34,10 +37,14 @@ public class ActivityDiStart extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_di_start);
 
         Context context = this;
         Intent intent = getIntent();
         String id = intent.getStringExtra("DO");
+
+        TextView t = findViewById(R.id.txtOperazione);
+        t.setText("Apertura " + id);
 
         switch (id) {
                 case "settings":
@@ -162,6 +169,15 @@ public class ActivityDiStart extends Activity {
                     break;
         }
 
-        this.finish();
+        Activity act = this;
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                act.finish();
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 1000);
+
     }
 }

@@ -151,7 +151,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void RefreshImmagini(String Categoria) {
-        String Urletto="RefreshImmagini?" +
+        String Urletto="RefreshPennetta?" +
                 "Categoria=" + Categoria +
                 "&Completo=";
 
@@ -223,7 +223,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                     case "ModificaImmagine":
                         fModificaImmagine(result);
                         break;
-                    case "RefreshImmagini":
+                    case "RefreshPennetta":
                         fRefreshImmagini(result);
                         break;
                     case "EliminaImmagine":
@@ -293,10 +293,10 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     private void fRefreshImmagini(String result) {
-        boolean ritorno = ControllaRitorno("Ritorna Refresh Immagini", result);
-        if (ritorno) {
+        // boolean ritorno = ControllaRitorno("Ritorna Refresh Immagini", result);
+        // if (ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
-        }
+        // }
     }
 
     private void fRitornaCategorie(String result) {

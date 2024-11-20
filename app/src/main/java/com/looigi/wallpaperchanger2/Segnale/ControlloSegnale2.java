@@ -73,18 +73,17 @@ public class ControlloSegnale2 extends Service {
         // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
         //         "Controllo segnale segnale wifi. Attivo: " + wifi);
 
-        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-            if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+            // if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
                 if (vecchioWifi != wifi) {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Controllo GPS Per cambio segnale wifi: " + wifi);
+                            "Attivazione gps. Wifi: " + wifi);
 
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
+                    UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE");
                 }
-            }
-        } else {
+            // }
+        /* } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "Classe GPS non istanziata... La accendo");
+                    "Classe GPS non istanziata...");
 
             VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
             VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaTimer(context);
@@ -96,7 +95,7 @@ public class ControlloSegnale2 extends Service {
 
                 VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(context);
             }
-        }
+        } */
 
         String tipoConnessione = "";
         int mLevel = 0;
@@ -105,8 +104,6 @@ public class ControlloSegnale2 extends Service {
         if (!segnali.isEmpty()) {
             int mSignalStrength = segnali.get(0).getDbm();
             mLevel = segnali.get(0).getLevel();
-
-            VariabiliStaticheWatchdog.getInstance().setSegnale((wifi ? "WiFi" : "Air") + ": " + mLevel);
 
             // String livello = UtilitiesGlobali.getInstance().getLevelString(mLevel);
 
@@ -142,6 +139,12 @@ public class ControlloSegnale2 extends Service {
                     }
                 }
             }
+
+            String livello = UtilitiesGlobali.getInstance().getLevelString(
+                    VariabiliStaticheStart.getInstance().getLivello()
+            );
+            VariabiliStaticheWatchdog.getInstance().setSegnale((wifi ? "WiFi" : "Mobile") + ": " +
+                     livello);
 
             /* if (VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer() != null) {
                 String testo = (wifi ? "WiFi" : "Mobile");

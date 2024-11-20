@@ -38,7 +38,7 @@ public class Esecuzione {
         VariabiliStaticheWallpaper.getInstance().setErrori(0);
 
         Giri = 0;
-        VariabiliStaticheWatchdog.getInstance().setInfo1("");
+        VariabiliStaticheWatchdog.getInstance().setInfo1("Starting");
         VariabiliStaticheWatchdog.getInstance().setInfo2("");
 
         updateWatchDog(context);
@@ -56,7 +56,7 @@ public class Esecuzione {
         long secondiAttesa = (VariabiliStaticheWallpaper.secondiDiAttesaContatore * 1000L);
 
         if (VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
-            BloccaTimer();
+            BloccaTimer("Start Servizio");
         }
 
         VariabiliStaticheWallpaper.getInstance().setServizioAttivo(true);
@@ -78,11 +78,14 @@ public class Esecuzione {
         handler.postDelayed(r, secondiAttesa);
     }
 
-    public void BloccaTimer() {
+    public void BloccaTimer(String daDove) {
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                "Blocco timer esecuzione da " + daDove);
+
         VariabiliStaticheWallpaper.getInstance().setServizioAttivo(false);
 
         if (handler != null && r != null && handlerThread != null) {
-            handlerThread.quit();
+            // handlerThread.quit();
 
             handler.removeCallbacksAndMessages(null);
 
@@ -97,37 +100,37 @@ public class Esecuzione {
 
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniDebug()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Debug non validi");
+                    "Settaggi Debug non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniDetector()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Detector non validi");
+                    "Settaggi Detector non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniGPS()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi GPS non validi");
+                    "Settaggi GPS non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniImmagini()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Immagini non validi");
+                    "Settaggi Immagini non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniPlayer()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Player non validi");
+                    "Settaggi Player non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniPennetta()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Pennetta non validi");
+                    "Settaggi Pennetta non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (!CaricaSettaggi.getInstance().isCaricateImpostazioniWallpaper()) {
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                    "Settaggi Wallpaper non validi");
+                    "Settaggi Wallpaper non validi. Ricarico");
             ricaricaSettaggi = true;
         }
         if (ricaricaSettaggi) {
@@ -136,6 +139,9 @@ public class Esecuzione {
             String ritorno = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context,
                     "ESECUZIONE");
             if (!ritorno.equals("OK")) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                        "Ricarico settaggi andato male: " + ritorno);
+
                 UtilityDetector.getInstance().VisualizzaPOPUP(
                         context, ritorno, false, -1
                 );
@@ -262,13 +268,16 @@ public class Esecuzione {
         VariabiliStaticheWallpaper.getInstance().setSecondiPassati(
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + 1);
 
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Tick: " +
+                VariabiliStaticheWallpaper.getInstance().getSecondiPassati());
+
         ControlloImpostazioni();
 
         ControlloGPSAttivo();
 
         Giri++;
         String quando = UtilitiesGlobali.getInstance().RitornaOra();
-        VariabiliStaticheWatchdog.getInstance().setInfo1("Giri: " + Giri + " - Last: " + quando + " - Ctx: "
+        VariabiliStaticheWatchdog.getInstance().setInfo1("Loops: " + Giri + " - Last: " + quando + " - Ctx: "
                 + (context != null));
 
         long tmsAttuale = System.currentTimeMillis() / 1000L;
@@ -311,6 +320,7 @@ public class Esecuzione {
         String prossimoCambio = "Prossimo cambio: " +
                 VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
                 quantiGiri;
+
         if (VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio() != null) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
@@ -328,14 +338,20 @@ public class Esecuzione {
             VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
 
             if (VariabiliStaticheWallpaper.getInstance().isOnOff()) {
-                // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
-                UtilityWallpaper.getInstance().CambiaImmagine(context);
+                if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+                    // VariabiliStaticheServizio.getInstance().setImmagineCambiataConSchermoSpento(false);
+                    VariabiliStaticheWallpaper.getInstance().setImpostataConSchermoSpento(false);
+
+                    UtilityWallpaper.getInstance().CambiaImmagine(context);
+                } else {
+                    VariabiliStaticheWallpaper.getInstance().setImpostataConSchermoSpento(true);
+                }
             }
 
-            if (!VariabiliStaticheWallpaper.getInstance().isScreenOn() ||
+            /* if (!VariabiliStaticheWallpaper.getInstance().isScreenOn() ||
                 !VariabiliStaticheWallpaper.getInstance().isOnOff()) {
-                BloccaTimer();
-            }
+                BloccaTimer("Controllo");
+            } */
 
             // if (!VariabiliStaticheServizio.getInstance().isScreenOn()) {
             // } else {

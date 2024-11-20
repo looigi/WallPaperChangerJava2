@@ -76,9 +76,17 @@ public class ScreenReceiver extends BroadcastReceiver {
         if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
            screenOff = false;
 
-            if (!VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
+            GestioneNotificheWP.getInstance().AggiornaNotifica();
+
+            /* if (!VariabiliStaticheWallpaper.getInstance().isServizioAttivo()) {
                 Esecuzione e = new Esecuzione(context);
                 e.startServizio1();
+            } */
+            if (VariabiliStaticheWallpaper.getInstance().isImpostataConSchermoSpento()) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                        "Cambio immagine per flag impostato");
+
+                UtilityWallpaper.getInstance().CambiaImmagine(context);
             }
         }
         else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {

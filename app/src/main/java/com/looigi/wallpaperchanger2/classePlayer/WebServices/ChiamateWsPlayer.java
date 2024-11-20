@@ -1,17 +1,17 @@
 package com.looigi.wallpaperchanger2.classePlayer.WebServices;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBraniOnline;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerPreferiti;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
@@ -22,8 +22,9 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerTags;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.VaribiliStatichePrefTags;
 import com.looigi.wallpaperchanger2.classePlayer.scaricaImmagini.scaricaImmagini;
-import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     private boolean Riprova = false;
     private String Artista;
     private String Immagine;
+    private boolean PerActivityPrefTags = false;
     // private StrutturaChiamateWSPlayer chiamataDaFare;
 
     public ChiamateWsPlayer(Context context, boolean Riprova) {
@@ -312,40 +314,67 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 -1);
     }
 
-    public void RitornaListaTags() {
+    public void RitornaListaTags(boolean EsegueRefresh) {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Tags");
 
-        String Urletto="RitornaListaTags";
+        if (!EsegueRefresh) {
+            db_dati_player db = new db_dati_player(context);
+            List<StrutturaTags> lista = db.RitornaTags();
+            db.ChiudeDB();
 
-        TipoOperazione = "RitornaListaTags";
-        // ControllaTempoEsecuzione = true;
+            if (lista.isEmpty()) {
+                EsegueRefresh = true;
+            } else {
+                VariabiliStatichePlayer.getInstance().setListaTags(lista);
 
-        Esegue(
-                RadiceWS + ws + Urletto,
-                TipoOperazione,
-                NS,
-                SA,
-                10000,
-                false,
-                true,
-                false,
-                -1);
+                AdapterListenerTags customAdapterA = new AdapterListenerTags(context,
+                        lista);
+                VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                VaribiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
+
+                return;
+            }
+        }
+
+        if (EsegueRefresh) {
+            String Urletto = "RitornaListaTags";
+
+            TipoOperazione = "Ritorna Lista Tags";
+            // ControllaTempoEsecuzione = true;
+
+            Esegue(
+                    RadiceWS + ws + Urletto,
+                    TipoOperazione,
+                    NS,
+                    SA,
+                    10000,
+                    false,
+                    true,
+                    false,
+                    -1);
+        }
     }
 
-    public void RitornaListaArtisti(boolean EsegueRefresh) {
+    public void RitornaListaArtisti(boolean EsegueRefresh, boolean PerActivityPrefTags) {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorna lista Artisti");
+
+        this.PerActivityPrefTags = PerActivityPrefTags;
 
         boolean esegueQuery = true;
 
-        if (!EsegueRefresh) {
+        if (!EsegueRefresh || PerActivityPrefTags) {
             db_dati_player db = new db_dati_player(context);
             List<StrutturaArtisti> lista = db.CaricaArtisti();
             db.ChiudeDB();
 
             if (!lista.isEmpty()) {
-                AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
-                VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
-                VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+                if (!PerActivityPrefTags) {
+                    AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
+                    VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                    VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+                } else {
+                    VariabiliStatichePlayer.getInstance().setListaArtisti(lista);
+                }
 
                 esegueQuery = false;
 
@@ -539,13 +568,16 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                         fRitornaStelleBrano(result);
                         break;
                     case "Ritorna Artisti":
-                        RitornaArtisti(result);
+                        fRitornaArtisti(result);
                         break;
                     case "Ritorna Lista Brani Album Artista":
                         RitornaListaBraniAlbumArtista(result);
                         break;
                     case "Ritorna Lista Album Artista":
                         RitornaListaAlbumArtista(result);
+                        break;
+                    case "Ritorna Lista Tags":
+                        fRitornaListaTags(result);
                         break;
                     case "Ritorna Immagini Artista":
                         fRitornaImmaginiArtista(result);
@@ -829,7 +861,38 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         UtilityPlayer.getInstance().AggiornaOperazioneInCorso("");
     }
 
-    private void RitornaArtisti(String result) {
+    private void fRitornaListaTags(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Artisti", result);
+        if (!ritorno) {
+        } else {
+            String[] Globale = result.split("§", -1);
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno Tags -> " + Globale.length);
+
+            List<StrutturaTags> lista = new ArrayList<>();
+            for (String g : Globale) {
+                if (!g.isEmpty() && g.contains(";")) {
+                    String[] c = g.split(";");
+                    StrutturaTags s = new StrutturaTags();
+                    s.setIdTag(Integer.parseInt(c[0]));
+                    s.setTag(c[1]);
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStatichePlayer.getInstance().setListaTags(lista);
+
+            db_dati_player db = new db_dati_player(context);
+            db.ScriveTags(lista);
+            db.ChiudeDB();
+
+            AdapterListenerTags customAdapterA = new AdapterListenerTags(context,
+                    lista);
+            VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+            VaribiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
+        }
+    }
+
+    private void fRitornaArtisti(String result) {
         boolean ritorno = ControllaRitorno("Ritorna Artisti", result);
         if (!ritorno) {
         } else {
@@ -871,9 +934,17 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             db.ScriveArtisti(lista);
             db.ChiudeDB();
 
-            AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
-            VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
-            VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+            if (!PerActivityPrefTags) {
+                AdapterListenerArtisti customAdapterA = new AdapterListenerArtisti(context, lista);
+                VariabiliStatichePlayer.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                VariabiliStatichePlayer.getInstance().setCustomAdapterA(customAdapterA);
+            } else {
+                VariabiliStatichePlayer.getInstance().setListaArtisti(lista);
+
+                AdapterListenerPreferiti customAdapterA = new AdapterListenerPreferiti(context,
+                        lista);
+                VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+            }
 
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti effettuato");
         }

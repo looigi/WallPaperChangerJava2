@@ -4,41 +4,39 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaSalvataggi;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.Main_Preferiti_Tags;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
@@ -47,7 +45,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class impostazioni_player_interne {
@@ -154,6 +152,135 @@ public class impostazioni_player_interne {
     }
 
     private void ImpostazioniMascheraRicerca() {
+        final boolean[] primoIngresso = {true};
+        Spinner spnSalvataggi = act.findViewById(R.id.spnSalvataggi);
+        spnSalvataggi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Salvataggio = adapterView.getItemAtPosition(position).toString();
+                VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(Salvataggio);
+
+                for (StrutturaSalvataggi l : VariabiliStatichePlayer.getInstance().getListaSalvataggi()) {
+                    if (l.getSalvataggio().equals(Salvataggio)) {
+                        db_dati_player db = new db_dati_player(context);
+                        db.CaricaSalvataggio(Integer.toString(l.getIdSalvataggio()));
+                        db.ChiudeDB();
+
+                        ImpostazioniMascheraRicerca();
+                        break;
+                    }
+                };
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
+        CaricaSalvataggi(spnSalvataggi);
+
+        final boolean[] primoIngresso2 = {true};
+        Spinner spnStelle = act.findViewById(R.id.spnStelle);
+        spnStelle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                String Stelle = adapterView.getItemAtPosition(position).toString();
+
+                VariabiliStatichePlayer.getInstance().setStelleDaRicercare(Integer.parseInt(Stelle));
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
+        CaricaStelle(spnStelle);
+
+        ImageView imgSalvaSalvataggio = act.findViewById(R.id.imgSalvaSalvataggio);
+        imgSalvaSalvataggio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Nome salvataggio");
+
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String Salvataggio = input.getText().toString();
+                        if (Salvataggio.isEmpty()) {
+                            UtilitiesGlobali.getInstance().ApreToast(context,
+                                    "Immettere un nome salvataggio");
+                        } else {
+                            db_dati_player db = new db_dati_player(context);
+                            db.ScriveSalvataggioDettaglio(Salvataggio);
+                            db.ChiudeDB();
+
+                            ImpostazioniMascheraRicerca();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+        ImageView imgEliminaSalvataggio = act.findViewById(R.id.imgEliminaSalvataggio);
+        imgEliminaSalvataggio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Selezionare un salvataggio");
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Vuoi eliminare il salvataggio selezionato ?");
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (StrutturaSalvataggi l : VariabiliStatichePlayer.getInstance().getListaSalvataggi()) {
+                                if (l.getSalvataggio().equals(VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato())) {
+                                    db_dati_player db = new db_dati_player(context);
+                                    db.EliminaSalvataggio(Integer.toString(l.getIdSalvataggio()));
+                                    db.ChiudeDB();
+
+                                    ImpostazioniMascheraRicerca();
+                                    break;
+                                }
+                            };
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                }
+            }
+        });
+
         SwitchCompat swcRandom = act.findViewById(R.id.sRandom);
         swcRandom.setChecked(VariabiliStatichePlayer.getInstance().isRandom());
         swcRandom.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +290,279 @@ public class impostazioni_player_interne {
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveRicerca();
                 db.ChiudeDB();
+            }
+        });
+
+        LinearLayout layRicercaStelle = act.findViewById(R.id.layRicercaStelle);
+
+        SwitchCompat swcStelle = act.findViewById(R.id.sStelle);
+        swcStelle.setChecked(VariabiliStatichePlayer.getInstance().isRicercaStelle());
+        if (swcStelle.isChecked()) {
+            layRicercaStelle.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layRicercaStelle.setVisibility(LinearLayout.GONE);
+        }
+        swcStelle.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRicercaStelle(swcStelle.isChecked());
+                if (swcStelle.isChecked()) {
+                    layRicercaStelle.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layRicercaStelle.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcStelleSuperiori = act.findViewById(R.id.sStelleSuperiori);
+        swcStelleSuperiori.setChecked(VariabiliStatichePlayer.getInstance().isStelleSuperiori());
+        swcStelleSuperiori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setStelleSuperiori(swcStelleSuperiori.isChecked());
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcMaiAscoltate = act.findViewById(R.id.sMaiAscoltata);
+        swcMaiAscoltate.setChecked(VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata());
+        swcMaiAscoltate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(swcMaiAscoltate.isChecked());
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        EditText edtRicercaTesto = act.findViewById(R.id.edtRicercaTesto);
+        edtRicercaTesto.setText(VariabiliStatichePlayer.getInstance().getTestoDaRicercare());
+        edtRicercaTesto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare(edtRicercaTesto.getText().toString());
+
+                    db_dati_player db = new db_dati_player(context);
+                    db.ScriveImpostazioni();
+                    db.ChiudeDB();
+                }
+            }
+        });
+
+        EditText edtRicercaNonTesto = act.findViewById(R.id.edtRicercaNonTesto);
+        edtRicercaNonTesto.setText(VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare());
+        edtRicercaNonTesto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare(edtRicercaNonTesto.getText().toString());
+
+                    db_dati_player db = new db_dati_player(context);
+                    db.ScriveImpostazioni();
+                    db.ChiudeDB();
+                }
+            }
+        });
+
+        // PREFERITI
+        LinearLayout layRicercaPreferiti = act.findViewById(R.id.layRicercaPreferiti);
+
+        VariabiliStatichePlayer.getInstance().setTxtPreferiti(act.findViewById(R.id.txtPreferiti));
+        VariabiliStatichePlayer.getInstance().setTxtNonPreferiti(act.findViewById(R.id.txtNonPreferiti));
+
+        SwitchCompat swcPreferiti = act.findViewById(R.id.sPreferiti);
+        swcPreferiti.setChecked(VariabiliStatichePlayer.getInstance().isRicercaPreferiti());
+        if (swcPreferiti.isChecked()) {
+            layRicercaPreferiti.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layRicercaPreferiti.setVisibility(LinearLayout.GONE);
+        }
+        swcPreferiti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRicercaPreferiti(swcPreferiti.isChecked());
+                if (swcPreferiti.isChecked()) {
+                    layRicercaPreferiti.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layRicercaPreferiti.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        Button btnPreferiti = act.findViewById(R.id.btnPreferiti);
+        btnPreferiti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, Main_Preferiti_Tags.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("DO", "Preferiti");
+                context.startActivity(i);
+            }
+        });
+
+        Button btnPreferitiElimina = act.findViewById(R.id.btnPreferitiElimina);
+        btnPreferitiElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, Main_Preferiti_Tags.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("DO", "PreferitiElimina");
+                context.startActivity(i);
+            }
+        });
+
+        RadioButton optAndPreferiti = act.findViewById(R.id.optAndPreferiti);
+        RadioButton optOrPreferiti = act.findViewById(R.id.optOrPreferiti);
+
+        if (VariabiliStatichePlayer.getInstance().isAndOrPref()) {
+            optAndPreferiti.setChecked(true);
+            optOrPreferiti.setChecked(false);
+        } else {
+            optAndPreferiti.setChecked(false);
+            optOrPreferiti.setChecked(true);
+        }
+        optAndPreferiti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setAndOrPref(true);
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+        optOrPreferiti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setAndOrPref(false);
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        // TAGS
+        LinearLayout layRicercaTags = act.findViewById(R.id.layRicercaTags);
+
+        VariabiliStatichePlayer.getInstance().setTxtTags(act.findViewById(R.id.txtTags));
+        VariabiliStatichePlayer.getInstance().setTxtNonTags(act.findViewById(R.id.txtNonTags));
+
+        SwitchCompat swcTags = act.findViewById(R.id.sTags);
+        swcTags.setChecked(VariabiliStatichePlayer.getInstance().isRicercaTags());
+        if (swcTags.isChecked()) {
+            layRicercaTags.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layRicercaTags.setVisibility(LinearLayout.GONE);
+        }
+        swcTags.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRicercaTags(swcTags.isChecked());
+                if (swcTags.isChecked()) {
+                    layRicercaTags.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layRicercaTags.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        Button btnTags = act.findViewById(R.id.btnTags);
+        btnTags.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, Main_Preferiti_Tags.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("DO", "Tags");
+                context.startActivity(i);
+            }
+        });
+
+        Button btnTagsElimina = act.findViewById(R.id.btnTagsElimina);
+        btnTagsElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, Main_Preferiti_Tags.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("DO", "TagsElimina");
+                context.startActivity(i);
+            }
+        });
+
+        RadioButton optAndTags = act.findViewById(R.id.optAndTags);
+        RadioButton optOrTags = act.findViewById(R.id.optOrTags);
+
+        if (VariabiliStatichePlayer.getInstance().isAndOrTags()) {
+            optAndTags.setChecked(true);
+            optOrTags.setChecked(false);
+        } else {
+            optAndTags.setChecked(false);
+            optOrTags.setChecked(true);
+        }
+        optAndTags.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setAndOrTags(true);
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+        optOrTags.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setAndOrTags(false);
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        // DATE
+        LinearLayout layRicercaDate = act.findViewById(R.id.layRicercaDate);
+        TextView txtDataSuperiore = act.findViewById(R.id.txtDataSuperiore);
+        txtDataSuperiore.setText(VariabiliStatichePlayer.getInstance().getTxtDataSuperiore());
+        TextView txtDataInferiore = act.findViewById(R.id.txtDataInferiore);
+        txtDataInferiore.setText(VariabiliStatichePlayer.getInstance().getTxtDataInferiore());
+
+        SwitchCompat swcDate = act.findViewById(R.id.sDate);
+        swcDate.setChecked(VariabiliStatichePlayer.getInstance().isRicercaTags());
+        if (swcDate.isChecked()) {
+            layRicercaDate.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layRicercaDate.setVisibility(LinearLayout.GONE);
+        }
+        swcDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setDate(swcDate.isChecked());
+                if (swcDate.isChecked()) {
+                    layRicercaDate.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layRicercaDate.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
+        Button btnDataSuperiore = act.findViewById(R.id.btnDataSuperiore);
+        btnDataSuperiore.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        Button btnDataInferiore = act.findViewById(R.id.btnDataInferiore);
+        btnDataInferiore.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
             }
         });
     }
@@ -453,15 +853,17 @@ public class impostazioni_player_interne {
         imgRefreshArtisti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
-                ws.RitornaListaArtisti(true);
+                ws.RitornaListaArtisti(true, false);
 
                 VariabiliStatichePlayer.getInstance().getLstAlbum().setAdapter(null);
                 VariabiliStatichePlayer.getInstance().getLstBrani().setAdapter(null);
             }
         });
 
+        UtilityPlayer.getInstance().ScrivePreferitiTags();
+
         ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
-        ws.RitornaListaArtisti(false);
+        ws.RitornaListaArtisti(false, false);
     }
 
     private void visualizzaImpostazioniMaschera(int quale) {
@@ -494,5 +896,56 @@ public class impostazioni_player_interne {
                 layBraniOnLine.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
+    }
+
+    private void CaricaStelle(Spinner spinner) {
+        String[] lista = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+        String Stelle = Integer.toString(VariabiliStatichePlayer.getInstance().getStelleDaRicercare());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, lista);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        if (!Stelle.isEmpty()) {
+            int spinnerPosition = adapter.getPosition(Stelle);
+            spinner.setSelection(spinnerPosition);
+        }
+    }
+
+    private void CaricaSalvataggi(Spinner spinner) {
+        db_dati_player db = new db_dati_player(context);
+        List<StrutturaSalvataggi> lista = db.RitornaSalvataggi();
+        VariabiliStatichePlayer.getInstance().setListaSalvataggi(lista);
+
+        List<String> lista2 = new ArrayList<>();
+        for (StrutturaSalvataggi l : lista) {
+            lista2.add(l.getSalvataggio());
+        };
+
+        String id = db.RitornaSalvataggioDefault();
+        String salvataggioDefault = "";
+        for (StrutturaSalvataggi l : lista) {
+            if (Integer.toString(l.getIdSalvataggio()).equals(id)) {
+                salvataggioDefault = l.getSalvataggio();
+                break;
+            }
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (context, android.R.layout.simple_spinner_item, lista2);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        if (!salvataggioDefault.isEmpty()) {
+            VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(salvataggioDefault);
+
+            int spinnerPosition = adapter.getPosition(salvataggioDefault);
+            spinner.setSelection(spinnerPosition);
+
+            db.CaricaSalvataggio(id);
+        }
+        db.ChiudeDB();
+
     }
 }

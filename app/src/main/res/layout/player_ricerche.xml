@@ -3,8 +3,50 @@
     android:id="@+id/layRicerchePlayer"
     android:layout_width="match_parent"
     android:padding="3dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="7"
+        android:padding="3dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/bordato"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="Salvataggi"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnSalvataggi"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgEliminaSalvataggio"
+                android:src="@drawable/elimina"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <ImageView
+                android:id="@+id/imgSalvaSalvataggio"
+                android:src="@drawable/icona_salva"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sRandom"
@@ -13,4 +55,350 @@
         android:layout_height="wrap_content"
         android:text="Random" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sStelle"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stelle" />
+
+    <LinearLayout
+        android:id="@+id/layRicercaStelle"
+        android:background="@drawable/bordato"
+        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:text="Stelle"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnStelle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sStelleSuperiori"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stelle Superiori" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sMaiAscoltata"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mai Ascoltate" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="Testo"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtRicercaTesto"
+            android:autofillHints="Testo da ricercare"
+            android:layout_width="0dp"
+            android:inputType="text"
+            android:layout_weight="3"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="!Testo"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtRicercaNonTesto"
+            android:layout_width="0dp"
+            android:autofillHints="Testo da escludere"
+            android:inputType="text"
+            android:layout_weight="3"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sPreferiti"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Preferiti" />
+
+    <LinearLayout
+        android:id="@+id/layRicercaPreferiti"
+        android:background="@drawable/bordato"
+        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Da Includere"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtPreferiti"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:lines="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnPreferiti"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Da Escludere"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNonPreferiti"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:lines="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnPreferitiElimina"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Ricerca Preferiti"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/optAndPreferiti"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="And" />
+
+            <RadioButton
+                android:id="@+id/optOrPreferiti"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Or" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sTags"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tags" />
+
+    <LinearLayout
+        android:id="@+id/layRicercaTags"
+        android:background="@drawable/bordato"
+        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Da Includere"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtTags"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:lines="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnTags"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Da Escludere"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtNonTags"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:lines="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnTagsElimina"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Ricerca Tags"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/optAndTags"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="And" />
+
+            <RadioButton
+                android:id="@+id/optOrTags"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Or" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sDate"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data" />
+
+    <LinearLayout
+        android:id="@+id/layRicercaDate"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Data Superiore"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtDataSuperiore"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnDataSuperiore"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Data Inferiore"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtDataInferiore"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnDataInferiore"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="..." />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

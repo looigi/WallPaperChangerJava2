@@ -119,6 +119,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classePlayer.preferiti_tags.Main_Preferiti_Tags"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classePassword.MainPassword"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"

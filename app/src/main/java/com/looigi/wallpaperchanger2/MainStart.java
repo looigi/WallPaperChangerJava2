@@ -573,10 +573,11 @@ public class MainStart  extends Activity {
 
     private void StartActivities() {
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
-            VariabiliStaticheStart.getInstance().setServizioForeground(
-                    new Intent(this, ServizioInterno.class));
-            startForegroundService(VariabiliStaticheStart.getInstance().getServizioForeground());
-
+            if (VariabiliStaticheStart.getInstance().getServizioForeground() == null) {
+                VariabiliStaticheStart.getInstance().setServizioForeground(
+                        new Intent(this, ServizioInterno.class));
+                startForegroundService(VariabiliStaticheStart.getInstance().getServizioForeground());
+            }
             VariabiliStaticheStart.getInstance().setGiaPartito(true);
 
             this.finish();

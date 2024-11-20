@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainStart;
@@ -22,7 +23,10 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 // import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
+import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
+import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
@@ -37,6 +41,8 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.utilities.cuffie.GestioneTastiCuffieNuovo;
 import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
+
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
 
 // implements SensorEventListener2
 public class ServizioInterno extends Service {
@@ -76,16 +82,7 @@ public class ServizioInterno extends Service {
 
         ScriveLog(context, NomeMaschera, "---Start Command---");
 
-        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        return START_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
         context = this;
-
-        ScriveLog(context, NomeMaschera, "---On Create---");
 
         // CPU Attiva
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -110,11 +107,29 @@ public class ServizioInterno extends Service {
         startService(intentCuffie);
 
         // SERVIZIO GPS
+        boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
+        VariabiliStaticheStart.getInstance().setCeWifi(wifi);
+
         if (VariabiliStaticheStart.getInstance().isDetector() &&
                 !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
                 VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+            VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
+
             intentGPS = new Intent(this, GestioneGPS.class);
             startForegroundService(intentGPS);
+
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                            "Controllo GPS Per cambio segnale wifi: " +
+                                    VariabiliStaticheStart.getInstance().isCeWifi());
+
+                    // UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE");
+                    startForegroundService(intentGPS);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
         }
         // SERVIZIO GPS
 
@@ -224,10 +239,23 @@ public class ServizioInterno extends Service {
                     "Notifica " + VariabiliStaticheWallpaper.channelName + " nulla",
                     Toast.LENGTH_SHORT).show();
         }
+
+        return START_REDELIVER_INTENT ;
+    }
+
+    @Override
+    public void onCreate() {
+        ScriveLog(context, NomeMaschera, "---On Create---");
     }
 
     private void ChiudeTutto() {
         ScriveLog(context, NomeMaschera, "Chiudo tutto");
+
+        GestioneNotificheWP.getInstance().RimuoviNotifica();
+        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
+        GestioneNotificheTasti.getInstance().RimuoviNotifica();
+        GestioneNotificheDetector.getInstance().RimuoviNotifica();
+        GestioneNotificaGPS.getInstance().RimuoviNotifica();
 
         if (intentSegnale != null) {
             context.stopService(intentSegnale);
@@ -248,6 +276,8 @@ public class ServizioInterno extends Service {
         if (intentGPS != null) {
             stopService(intentGPS);
         }
+
+        VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
 
         // if (mSensorManager != null) {
         //     mSensorManager.unregisterListener(this);

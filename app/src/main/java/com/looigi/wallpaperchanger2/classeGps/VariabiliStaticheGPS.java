@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeGps;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaAccensioneGPS;

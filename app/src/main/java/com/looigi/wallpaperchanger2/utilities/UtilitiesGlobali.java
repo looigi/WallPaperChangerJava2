@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
+import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
@@ -98,13 +101,39 @@ public class UtilitiesGlobali {
         }
     }
 
+    /* public void ImpostaServizioGPS(Context context, String Azione) {
+        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+            context.stopService(VariabiliStaticheGPS.getInstance().getGestioneGPS());
+            VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
+        }
+
+        Intent intentGPS = new Intent(context, GestioneGPS.class);
+        VariabiliStaticheGPS.getInstance().setGestioneGPS(intentGPS);
+        VariabiliStaticheGPS.getInstance().getGestioneGPS().setAction("");
+        context.startForegroundService(VariabiliStaticheGPS.getInstance().getGestioneGPS());
+    } */
+
+    public void ImpostaServizioGPS(Context context, String Azione) {
+        switch(Azione) {
+            case "CONTROLLO_ATTIVAZIONE":
+                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn();
+                break;
+        }
+    }
+
     public void ChiudeApplicazione(Context context) {
+        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
+        ApreToast(context, "Uscita");
+
         VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
+
+        Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
 
         GestioneNotificheWP.getInstance().RimuoviNotifica();
         GestioneNotifichePlayer.getInstance().RimuoviNotifica();
         GestioneNotificheTasti.getInstance().RimuoviNotifica();
         GestioneNotificheDetector.getInstance().RimuoviNotifica();
+        GestioneNotificaGPS.getInstance().RimuoviNotifica();
 
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
@@ -117,11 +146,6 @@ public class UtilitiesGlobali {
             context.stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
             VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
         } */
-
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
-        ApreToast(context, "Uscita");
-
-        Activity act = tornaActivityValida();
 
         if (act != null) {
             finishAffinity(act);

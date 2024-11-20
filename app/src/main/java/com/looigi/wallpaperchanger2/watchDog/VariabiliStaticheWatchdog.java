@@ -83,9 +83,9 @@ public class VariabiliStaticheWatchdog {
             ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
             ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
             activityManager.getMemoryInfo(mi);
-            double availableMegs = mi.availMem / 0x100000L;
+            double availableMegs = Math.round((double) mi.availMem / 0x100000L);
             double percentAvail = mi.availMem / (double) mi.totalMem * 100.0;
-            Ritorno += " Free Mem. " + Double.toString(Math.round(percentAvail)) + "%";
+            Ritorno += " - Free Mem. " + availableMegs + " (" + Double.toString(Math.round(percentAvail)) + "%)";
         }
 
         return Ritorno;
@@ -114,11 +114,13 @@ public class VariabiliStaticheWatchdog {
     public String getInfo3() {
         String Ritorno = "";
 
-        Ritorno = "GPS " +checkGPSStatus() + " (" + locationEnabled() + ") ";
+        Ritorno = "GPS " + checkGPSStatus() + " (" + locationEnabled() + ") " +
+            "Active: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + " - ";
         if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
             Ritorno += "P.: " + VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size() + " ";
         }
-        Ritorno += "D.: " + VariabiliStaticheGPS.getInstance().getDistanzaTotale();
+        Ritorno += "D.: " + VariabiliStaticheGPS.getInstance().getDistanzaTotale() + " ";
+        Ritorno += "PS: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti();
 
         return Ritorno;
     }

@@ -612,7 +612,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
                     if (VariabiliStaticheRefresh.getInstance().isAggiornaSoloIoNos() &&
                         !VariabiliStaticheRefresh.getInstance().isAggiornaSoloLocale()) {
-                        // Controllo immagini che devo essere cancellate da IoNos visto che non esistono
+                        // Controllo immagini che devo essere cancellate da IoNos visto che non esistono in locale
                         // però solamente se sto aggiornando solo IoNOS
                         for (StrutturaImmaginiPerRefresh IoNos : VariabiliStaticheRefresh.getInstance().getListaImmaginiIoNOS()) {
                             boolean esiste = false;
@@ -660,7 +660,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
                     if (!VariabiliStaticheRefresh.getInstance().isAggiornaSoloIoNos() &&
                         VariabiliStaticheRefresh.getInstance().isAggiornaSoloLocale()) {
-                        // Controllo immagini che devo essere cancellate da locale visto che non esistono
+                        // Controllo immagini che devo essere cancellate da locale visto che non esistono su IoNos
                         // però solamente se sto aggiornando solo locale
                         for (StrutturaImmaginiPerRefresh Locale : VariabiliStaticheRefresh.getInstance().getListaImmaginiLocali()) {
                             boolean esiste = false;

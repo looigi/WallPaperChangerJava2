@@ -10,6 +10,9 @@ import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaSalvataggi;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,6 +99,13 @@ public class db_dati_player {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Tags "
+                        + "(idTag VARCHAR, Tag VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
                         + "ImmaginiBrano"
                         + " (Artista VARCHAR, Album VARCHAR,"
                         + " NomeImmagine VARCHAR,"
@@ -121,9 +131,36 @@ public class db_dati_player {
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
-                        + "Ricerche"
-                        + " ("
+                        + "Ricerche "
+                        + "("
                         + "Random VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
+                        + "Testo VARCHAR, TestoNon VARCHAR, Preferiti VARCHAR, PreferitiElimina VARCHAR, "
+                        + "AndOrPref VARCHAR, Tags VARCHAR, TagsElimina VARCHAR, AndOrTags VARCHAR, "
+                        + "DataSuperiore VARCHAR, DataInferiore VARCHAR, DataSuperioreTesto VARCHAR, DataInferioreTesto VARCHAR "
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Salvataggi "
+                        + "("
+                        + "idSalvataggio VARCHAR, Salvataggio VARCHAR "
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "SalvataggiDefault "
+                        + "("
+                        + "idSalvataggio VARCHAR "
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "SalvataggiDettaglio "
+                        + "("
+                        + "idSalvataggio VARCHAR, Random VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
                         + "Testo VARCHAR, TestoNon VARCHAR, Preferiti VARCHAR, PreferitiElimina VARCHAR, "
                         + "AndOrPref VARCHAR, Tags VARCHAR, TagsElimina VARCHAR, AndOrTags VARCHAR, "
                         + "DataSuperiore VARCHAR, DataInferiore VARCHAR, DataSuperioreTesto VARCHAR, DataInferioreTesto VARCHAR "
@@ -143,11 +180,194 @@ public class db_dati_player {
         }
     }
 
+    public void EliminaSalvataggio(String idSalvataggio) {
+        if (myDB != null) {
+            myDB.execSQL("Delete From Salvataggi Where idSalvataggio='" + idSalvataggio + "'");
+            myDB.execSQL("Delete From SalvataggiDettaglio Where idSalvataggio='" + idSalvataggio + "'");
+        }
+    }
+
+    public void ScriveTags(List<StrutturaTags> lista) {
+        if (myDB != null) {
+            String sql = "Delete From Tags";
+            myDB.execSQL(sql);
+
+            for (StrutturaTags s : lista) {
+                sql = "Insert Into Tags Values (" +
+                        "'" + s.getIdTag() + "', " +
+                        "'" + s.getTag().replace("'", "''") + "' " +
+                        ")";
+                myDB.execSQL(sql);
+            }
+        }
+    }
+
+    public List<StrutturaTags> RitornaTags() {
+        List<StrutturaTags> lista = new ArrayList<>();
+        if (myDB != null) {
+            String sql = "Select * From Tags";
+            Cursor c = myDB.rawQuery(sql, null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                do {
+                    StrutturaTags s = new StrutturaTags();
+                    s.setIdTag(Integer.parseInt(c.getString(0)));
+                    s.setTag(c.getString(1));
+
+                    lista.add(s);
+                } while (c.moveToNext());
+            }
+            c.close();
+        }
+
+        return lista;
+    }
+
+    public List<StrutturaSalvataggi> RitornaSalvataggi() {
+        List<StrutturaSalvataggi> lista = new ArrayList<>();
+        if (myDB != null) {
+            String sql = "Select * From Salvataggi";
+            Cursor c = myDB.rawQuery(sql, null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                do {
+                    StrutturaSalvataggi s = new StrutturaSalvataggi();
+                    s.setIdSalvataggio(Integer.parseInt(c.getString(0)));
+                    s.setSalvataggio(c.getString(1));
+
+                    lista.add(s);
+                } while (c.moveToNext());
+            }
+            c.close();
+        }
+
+        return lista;
+    }
+
+    public void SalvaSalvataggioDefault(String idSalvataggio) {
+        if (myDB != null) {
+            myDB.execSQL("Delete From SalvataggiDefault");
+            myDB.execSQL("Insert Into SalvataggiDefault Values ('" + idSalvataggio + "')");
+        }
+    }
+
+    public String RitornaSalvataggioDefault() {
+        String id = "";
+        if (myDB != null) {
+            String sql = "Select * From SalvataggiDefault";
+            Cursor c = myDB.rawQuery(sql, null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                id = c.getString(0);
+            }
+            c.close();
+        }
+
+        return id;
+    }
+
+    public void ScriveSalvataggioDettaglio(String Salvataggio) {
+        if (myDB != null) {
+            String idSalvataggio = "1";
+
+            String sql = "Select * From Salvataggi Where Salvataggio='" + Salvataggio.replace("'", "''") + "'";
+            Cursor c = myDB.rawQuery(sql, null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+
+                UtilitiesGlobali.getInstance().ApreToast(context, "Salvataggio già esistente");
+                return;
+            }
+            c.close();
+
+            sql = "Select Coalesce(Max(idSalvataggio), 0)+1 From Salvataggi";
+            Cursor c2 = myDB.rawQuery(sql, null);
+            if (c2.getCount() > 0) {
+                c2.moveToFirst();
+
+                idSalvataggio = c2.getString(0);
+            }
+            c2.close();
+
+            sql = "Insert Into Salvataggi Values ("
+                    + "'" + idSalvataggio + "', "
+                    + "'" + Salvataggio.replace("'", "''") + "' "
+                    + ")";
+            myDB.execSQL(sql);
+
+            sql = "Insert Into SalvataggiDettaglio Values ("
+                + "'" + idSalvataggio + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRandom() ? "S" : "N") + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getStelleDaRicercare()  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N") + "' , "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N") + "' , "
+                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferiti()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina()  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N")  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags()  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N")  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isDataSuperiore() ? "S" : "N")  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isDataInferiore() ? "S" : "N")  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getTxtDataSuperiore()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getTxtDataInferiore()  + "' "
+                + ")";
+            myDB.execSQL(sql);
+        } else {
+            UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,"Db non valido per scrive salvataggio dettaglio");
+        }
+    }
+
+    public boolean CaricaSalvataggio(String idSalvataggio) {
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM SalvataggiDettaglio Where idSalvataggio=" + idSalvataggio, null);
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+
+                    VariabiliStatichePlayer.getInstance().setRandom(c.getString(0).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(Integer.parseInt(c.getString(1)));
+                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(c.getString(2).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(c.getString(3).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare(c.getString(4));
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare(c.getString(5));
+                    VariabiliStatichePlayer.getInstance().setPreferiti(c.getString(6));
+                    VariabiliStatichePlayer.getInstance().setPreferitiElimina(c.getString(7));
+                    VariabiliStatichePlayer.getInstance().setAndOrPref(c.getString(8).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setPreferitiTags(c.getString(9));
+                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags(c.getString(10));
+                    VariabiliStatichePlayer.getInstance().setAndOrTags(c.getString(11).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataSuperiore(c.getString(12).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataInferiore(c.getString(13).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore(c.getString(14));
+                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore(c.getString(15));
+
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception ignored) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void EliminaTutto() {
         if (myDB != null) {
             myDB.execSQL("Delete From listaBrani");
             myDB.execSQL("Delete From UltimoBrano");
             myDB.execSQL("Delete From ImmaginiBrano");
+            myDB.execSQL("Delete From UltimoScanImmagini");
+            myDB.execSQL("Delete From Salvataggi");
+            myDB.execSQL("Delete From SalvataggiDefault");
+            myDB.execSQL("Delete From SalvataggiDettaglio");
             myDB.execSQL("Delete From UltimoScanImmagini");
 
             CompattaDB();
