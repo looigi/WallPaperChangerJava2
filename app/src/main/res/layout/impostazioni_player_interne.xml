@@ -44,6 +44,12 @@
                         android:layout_height="match_parent" />
 
                     <Button
+                        android:id="@+id/btnSettingsRicerca"
+                        android:layout_width="wrap_content"
+                        android:text="Ricerca"
+                        android:layout_height="match_parent" />
+
+                    <Button
                         android:id="@+id/btnSettingsBrano"
                         android:layout_width="wrap_content"
                         android:text="Brano"
@@ -91,6 +97,11 @@
 
             <include
                 layout="@layout/player_brani_on_line"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/player_ricerca"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

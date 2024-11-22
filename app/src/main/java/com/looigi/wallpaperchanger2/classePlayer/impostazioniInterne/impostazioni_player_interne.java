@@ -5,17 +5,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,6 +29,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
@@ -43,15 +49,25 @@ import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWP
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class impostazioni_player_interne {
     private Activity act;
     private Context context;
     private String Filtro = "";
+    private int tipoDataSelezionata = -1; // 0 - Inferiore / 1 - Superiore
+    private boolean apertoDP = false;
+    private ArrayAdapter<String> adapterSalvataggi;
+    private final String StringaNessuno = "---Nessuno---";
 
     public impostazioni_player_interne(Activity act, Context context) {
         this.act = act;
@@ -83,6 +99,15 @@ public class impostazioni_player_interne {
                 visualizzaImpostazioniMaschera(4);
 
                 impostazioniMascheraBraniOnLine();
+            }
+        });
+
+        Button imgRicercaBrano = (Button) act.findViewById(R.id.btnSettingsRicerca);
+        imgRicercaBrano.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                visualizzaImpostazioniMaschera(5);
+
+                impostazioniMascheraRicercaBrano();
             }
         });
 
@@ -166,17 +191,58 @@ public class impostazioni_player_interne {
                 String Salvataggio = adapterView.getItemAtPosition(position).toString();
                 VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(Salvataggio);
 
+                if (Salvataggio.equals(StringaNessuno)) {
+                    VariabiliStatichePlayer.getInstance().setRandom(true);
+                    VariabiliStatichePlayer.getInstance().setRicercaStelle(true);
+                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(8);
+                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(true);
+                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(false);
+                    VariabiliStatichePlayer.getInstance().setRicercaTesto(false);
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare("");
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare("");
+                    VariabiliStatichePlayer.getInstance().setRicercaPreferiti(false);
+                    VariabiliStatichePlayer.getInstance().setPreferiti("");
+                    VariabiliStatichePlayer.getInstance().setPreferitiElimina("");
+                    VariabiliStatichePlayer.getInstance().setAndOrPref(true);
+                    VariabiliStatichePlayer.getInstance().setRicercaTags(false);
+                    VariabiliStatichePlayer.getInstance().setPreferitiTags("");
+                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags("");
+                    VariabiliStatichePlayer.getInstance().setAndOrTags(true);
+                    VariabiliStatichePlayer.getInstance().setDate(false);
+                    VariabiliStatichePlayer.getInstance().setDataSuperiore(false);
+                    VariabiliStatichePlayer.getInstance().setDataInferiore(false);
+                    VariabiliStatichePlayer.getInstance().setsDataSuperiore("");
+                    VariabiliStatichePlayer.getInstance().setsDataInferiore("");
+
+                    db_dati_player db = new db_dati_player(context);
+                    db.EliminaSalvataggioDefault();
+                    db.ChiudeDB();
+
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ImpostazioniMascheraRicerca();
+                        }
+                    }, 500);
+                    return;
+                }
+
                 for (StrutturaSalvataggi l : VariabiliStatichePlayer.getInstance().getListaSalvataggi()) {
                     if (l.getSalvataggio().equals(Salvataggio)) {
                         db_dati_player db = new db_dati_player(context);
                         db.CaricaSalvataggio(Integer.toString(l.getIdSalvataggio()));
+                        db.SalvaSalvataggioDefault(Integer.toString(l.getIdSalvataggio()));
                         db.ChiudeDB();
 
-                        ImpostazioniMascheraRicerca();
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ImpostazioniMascheraRicerca();
+                            }
+                        }, 500);
                         break;
                     }
                 };
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
@@ -190,8 +256,8 @@ public class impostazioni_player_interne {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
-                if (primoIngresso[0]) {
-                    primoIngresso[0] = false;
+                if (primoIngresso2[0]) {
+                    primoIngresso2[0] = false;
                     return;
                 }
 
@@ -232,6 +298,19 @@ public class impostazioni_player_interne {
                             db.ChiudeDB();
 
                             ImpostazioniMascheraRicerca();
+
+                            VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(Salvataggio);
+
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int spinnerPosition = adapterSalvataggi.getPosition(Salvataggio);
+                                    spnSalvataggi.setSelection(spinnerPosition);
+                                }
+                            }, 500);
+
+                            UtilitiesGlobali.getInstance().ApreToast(context,
+                                    "Salvataggio salvato");
                         }
                     }
                 });
@@ -245,12 +324,73 @@ public class impostazioni_player_interne {
                 builder.show();
             }
         });
+
+        ImageView imgModificaSalvataggio = act.findViewById(R.id.imgModificaSalvataggio);
+        imgModificaSalvataggio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Selezionare un salvataggio");
+                } else {
+                    if (VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato().equals(StringaNessuno)) {
+                        return;
+                    }
+
+                    for (StrutturaSalvataggi l : VariabiliStatichePlayer.getInstance().getListaSalvataggi()) {
+                        if (l.getSalvataggio().equals(VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato())) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Nome salvataggio");
+
+                            final EditText input = new EditText(context);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT);
+                            input.setText(l.getSalvataggio());
+                            builder.setView(input);
+
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String Salvataggio = input.getText().toString();
+                                    if (Salvataggio.isEmpty()) {
+                                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                                "Immettere un nome salvataggio");
+                                    } else {
+                                        db_dati_player db = new db_dati_player(context);
+                                        db.ModificaSalvataggioDettaglio(Integer.toString(l.getIdSalvataggio()),
+                                            Salvataggio);
+                                        db.ChiudeDB();
+
+                                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                                "Salvataggio modificato");
+                                    }
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            builder.show();
+
+                            break;
+                        }
+                    };
+                }
+            }
+        });
+
         ImageView imgEliminaSalvataggio = act.findViewById(R.id.imgEliminaSalvataggio);
         imgEliminaSalvataggio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato().isEmpty()) {
-                    UtilitiesGlobali.getInstance().ApreToast(context, "Selezionare un salvataggio");
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Selezionare un salvataggio");
                 } else {
+                    if (VariabiliStatichePlayer.getInstance().getSalvataggioSelezionato().equals(StringaNessuno)) {
+                        return;
+                    }
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Vuoi eliminare il salvataggio selezionato ?");
 
@@ -264,6 +404,9 @@ public class impostazioni_player_interne {
                                     db.ChiudeDB();
 
                                     ImpostazioniMascheraRicerca();
+
+                                    UtilitiesGlobali.getInstance().ApreToast(context,
+                                            "Salvataggio eliminato");
                                     break;
                                 }
                             };
@@ -341,7 +484,34 @@ public class impostazioni_player_interne {
             }
         });
 
+        LinearLayout layRicercaTesto = act.findViewById(R.id.layRicercaTesto);
         EditText edtRicercaTesto = act.findViewById(R.id.edtRicercaTesto);
+        EditText edtRicercaNonTesto = act.findViewById(R.id.edtRicercaNonTesto);
+
+        SwitchCompat swcTesto = act.findViewById(R.id.sTesto);
+        swcTesto.setChecked(VariabiliStatichePlayer.getInstance().isRicercaTesto());
+        if (swcTesto.isChecked()) {
+            layRicercaTesto.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layRicercaTesto.setVisibility(LinearLayout.GONE);
+            edtRicercaTesto.setText("");
+            edtRicercaNonTesto.setText("");
+        }
+        swcTesto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePlayer.getInstance().setRicercaTesto(swcTesto.isChecked());
+                if (swcTesto.isChecked()) {
+                    layRicercaTesto.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layRicercaTesto.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_player db = new db_dati_player(context);
+                db.ScriveRicerca();
+                db.ChiudeDB();
+            }
+        });
+
         edtRicercaTesto.setText(VariabiliStatichePlayer.getInstance().getTestoDaRicercare());
         edtRicercaTesto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -356,7 +526,6 @@ public class impostazioni_player_interne {
             }
         });
 
-        EditText edtRicercaNonTesto = act.findViewById(R.id.edtRicercaNonTesto);
         edtRicercaNonTesto.setText(VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare());
         edtRicercaNonTesto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -383,6 +552,8 @@ public class impostazioni_player_interne {
             layRicercaPreferiti.setVisibility(LinearLayout.VISIBLE);
         } else {
             layRicercaPreferiti.setVisibility(LinearLayout.GONE);
+            VariabiliStatichePlayer.getInstance().getTxtPreferiti().setText("");
+            VariabiliStatichePlayer.getInstance().getTxtNonPreferiti().setText("");
         }
         swcPreferiti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -460,6 +631,8 @@ public class impostazioni_player_interne {
             layRicercaTags.setVisibility(LinearLayout.VISIBLE);
         } else {
             layRicercaTags.setVisibility(LinearLayout.GONE);
+            VariabiliStatichePlayer.getInstance().getTxtTags().setText("");
+            VariabiliStatichePlayer.getInstance().getTxtNonTags().setText("");
         }
         swcTags.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -528,16 +701,18 @@ public class impostazioni_player_interne {
         // DATE
         LinearLayout layRicercaDate = act.findViewById(R.id.layRicercaDate);
         TextView txtDataSuperiore = act.findViewById(R.id.txtDataSuperiore);
-        txtDataSuperiore.setText(VariabiliStatichePlayer.getInstance().getTxtDataSuperiore());
+        txtDataSuperiore.setText(VariabiliStatichePlayer.getInstance().getsDataSuperiore());
         TextView txtDataInferiore = act.findViewById(R.id.txtDataInferiore);
-        txtDataInferiore.setText(VariabiliStatichePlayer.getInstance().getTxtDataInferiore());
+        txtDataInferiore.setText(VariabiliStatichePlayer.getInstance().getsDataInferiore());
 
         SwitchCompat swcDate = act.findViewById(R.id.sDate);
-        swcDate.setChecked(VariabiliStatichePlayer.getInstance().isRicercaTags());
+        swcDate.setChecked(VariabiliStatichePlayer.getInstance().isDate());
         if (swcDate.isChecked()) {
             layRicercaDate.setVisibility(LinearLayout.VISIBLE);
         } else {
             layRicercaDate.setVisibility(LinearLayout.GONE);
+            txtDataSuperiore.setText("");
+            txtDataInferiore.setText("");
         }
         swcDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -554,15 +729,84 @@ public class impostazioni_player_interne {
             }
         });
 
+        DatePicker dpSceltaData = act.findViewById(R.id.dpSceltaData);
+
+        Calendar calendar = Calendar.getInstance();
+        int annoInizio = calendar.get(Calendar.YEAR);
+        int meseInizio = calendar.get(Calendar.MONTH) + 1;
+        int giornoInizio = calendar.get(Calendar.DAY_OF_MONTH);
+        dpSceltaData.updateDate(annoInizio, meseInizio, giornoInizio);
+
+        dpSceltaData.setVisibility(LinearLayout.GONE);
+
+        dpSceltaData.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                if (apertoDP) {
+                    apertoDP = false;
+                } else {
+                    String dataFinale = year + ";" + (monthOfYear + 1) + ";" + dayOfMonth;
+
+                    if (tipoDataSelezionata == 0) {
+                        VariabiliStatichePlayer.getInstance().setsDataInferiore(dataFinale);
+
+                        txtDataInferiore.setText(dataFinale);
+                    } else {
+                        VariabiliStatichePlayer.getInstance().setsDataSuperiore(dataFinale);
+
+                        txtDataSuperiore.setText(dataFinale);
+                    }
+
+                    db_dati_player db = new db_dati_player(context);
+                    db.ScriveRicerca();
+                    db.ChiudeDB();
+
+                    dpSceltaData.setVisibility(LinearLayout.GONE);
+                }
+            }
+        });
+
         Button btnDataSuperiore = act.findViewById(R.id.btnDataSuperiore);
         btnDataSuperiore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                tipoDataSelezionata = 1;
+                apertoDP = true;
+
+                dpSceltaData.setVisibility(LinearLayout.VISIBLE);
+
+                String data = VariabiliStatichePlayer.getInstance().getsDataSuperiore();
+                if (!data.isEmpty()) {
+                    String[] d = data.split(";");
+                    int anno = Integer.parseInt(d[0]);
+                    int mese = Integer.parseInt(d[1]);
+                    int giorno = Integer.parseInt(d[2]);
+
+                    dpSceltaData.updateDate(anno, mese, giorno);
+                } else {
+                    dpSceltaData.updateDate(annoInizio, meseInizio, giornoInizio);
+                }
             }
         });
 
         Button btnDataInferiore = act.findViewById(R.id.btnDataInferiore);
         btnDataInferiore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                tipoDataSelezionata = 0;
+                apertoDP = true;
+
+                dpSceltaData.setVisibility(LinearLayout.VISIBLE);
+
+                String data = VariabiliStatichePlayer.getInstance().getsDataInferiore();
+                if (!data.isEmpty()) {
+                    String[] d = data.split(";");
+                    int anno = Integer.parseInt(d[0]);
+                    int mese = Integer.parseInt(d[1]);
+                    int giorno = Integer.parseInt(d[2]);
+
+                    dpSceltaData.updateDate(anno, mese, giorno);
+                } else {
+                    dpSceltaData.updateDate(annoInizio, meseInizio, giornoInizio);
+                }
             }
         });
     }
@@ -866,18 +1110,34 @@ public class impostazioni_player_interne {
         ws.RitornaListaArtisti(false, false);
     }
 
+    private void impostazioniMascheraRicercaBrano() {
+        VariabiliStatichePlayer.getInstance().setLstRicerca(act.findViewById(R.id.lstListaBraniRicercati));
+        EditText edtFiltro = act.findViewById(R.id.edtRicercaBrano);
+        ImageView imgCerca = act.findViewById(R.id.imgRicercaBrano);
+        imgCerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Filtro = edtFiltro.getText().toString();
+
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                ws.RicercaBrano(Filtro);
+            }
+        });
+    }
+
     private void visualizzaImpostazioniMaschera(int quale) {
         LinearLayout layBraniLocali = act.findViewById(R.id.layBraniLocali);
-        LinearLayout layRicerche = act.findViewById(R.id.layRicerchePlayer);
+        RelativeLayout layRicerche = act.findViewById(R.id.layRicerchePlayer);
         LinearLayout laySfondoPlayer = act.findViewById(R.id.laySfondoPlayer);
         LinearLayout layBraniOnLine = act.findViewById(R.id.layBraniOnLine);
         LinearLayout layBranoPlayer = act.findViewById(R.id.layBranoPlayer);
+        LinearLayout layRicercaBrano = act.findViewById(R.id.layRicercaBranoPlayer);
 
         layBraniLocali.setVisibility(LinearLayout.GONE);
         layRicerche.setVisibility(LinearLayout.GONE);
         laySfondoPlayer.setVisibility(LinearLayout.GONE);
         layBraniOnLine.setVisibility(LinearLayout.GONE);
         layBranoPlayer.setVisibility(LinearLayout.GONE);
+        layRicercaBrano.setVisibility(LinearLayout.GONE);
 
         switch(quale) {
             case 0:
@@ -894,6 +1154,9 @@ public class impostazioni_player_interne {
                 break;
             case 4:
                 layBraniOnLine.setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 5:
+                layRicercaBrano.setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -919,6 +1182,7 @@ public class impostazioni_player_interne {
         VariabiliStatichePlayer.getInstance().setListaSalvataggi(lista);
 
         List<String> lista2 = new ArrayList<>();
+        lista2.add(StringaNessuno);
         for (StrutturaSalvataggi l : lista) {
             lista2.add(l.getSalvataggio());
         };
@@ -935,6 +1199,7 @@ public class impostazioni_player_interne {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (context, android.R.layout.simple_spinner_item, lista2);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterSalvataggi = adapter;
         spinner.setAdapter(adapter);
 
         if (!salvataggioDefault.isEmpty()) {
@@ -944,8 +1209,13 @@ public class impostazioni_player_interne {
             spinner.setSelection(spinnerPosition);
 
             db.CaricaSalvataggio(id);
-        }
-        db.ChiudeDB();
+        } else {
+            VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(StringaNessuno);
 
+            int spinnerPosition = adapter.getPosition(salvataggioDefault);
+            spinner.setSelection(spinnerPosition);
+        }
+
+        db.ChiudeDB();
     }
 }

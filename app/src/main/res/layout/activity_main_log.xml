@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,14 +30,90 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="5"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgInizio"
+                android:layout_width="40dp"
+                android:src="@drawable/indietro"
+                android:layout_height="40dp">
+
+            </ImageView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:weightSum="6"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Righe"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtRighe"
+                android:autofillHints="Testo da ricercare"
+                android:layout_width="0dp"
+                android:textColor="@color/white"
+                android:inputType="number"
+                android:layout_weight="2"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgImposta"
+                    android:src="@drawable/icona_cerca"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgFine"
+                android:src="@drawable/avanti"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+
+            </ImageView>
+        </LinearLayout>
+    </LinearLayout>
+
     <TextView
         android:padding="3dp"
+        android:scrollbarSize="20dip"
+        android:scrollbarThumbVertical="@drawable/pallocchetto"
         android:textColor="@color/white"
-        android:layout_below="@+id/layTitolo"
         android:id="@+id/txtTestoLog"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </TextView>
-</RelativeLayout>
+
+
+</LinearLayout>

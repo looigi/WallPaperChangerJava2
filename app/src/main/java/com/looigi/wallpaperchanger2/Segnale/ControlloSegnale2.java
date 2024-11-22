@@ -59,7 +59,7 @@ public class ControlloSegnale2 extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private boolean vecchioWifi;
+    // private boolean vecchioWifi;
     private String vecchioTipoConnessione;
     private int vecchioLivello;
 
@@ -74,12 +74,12 @@ public class ControlloSegnale2 extends Service {
         //         "Controllo segnale segnale wifi. Attivo: " + wifi);
 
             // if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
-                if (vecchioWifi != wifi) {
+                // if (vecchioWifi != wifi) {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                             "Attivazione gps. Wifi: " + wifi);
 
                     UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE");
-                }
+                // }
             // }
         /* } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -164,7 +164,8 @@ public class ControlloSegnale2 extends Service {
             VariabiliStaticheStart.getInstance().setVelocitaUpload(0);
         }
 
-        if (wifi != vecchioWifi || !tipoConnessione.equals(vecchioTipoConnessione)) {
+        if (!tipoConnessione.equals(vecchioTipoConnessione)) {
+        // if (wifi != vecchioWifi || !tipoConnessione.equals(vecchioTipoConnessione)) {
             // || mLevel != vecchioLivello) {
             String quando = UtilitiesGlobali.getInstance().RitornaOra();
 
@@ -172,7 +173,7 @@ public class ControlloSegnale2 extends Service {
             GestioneNotificheTasti.getInstance().AggiornaNotifica();
         }
 
-        vecchioWifi = wifi;
+        // vecchioWifi = wifi;
         vecchioLivello = mLevel;
         vecchioTipoConnessione = tipoConnessione;
     }

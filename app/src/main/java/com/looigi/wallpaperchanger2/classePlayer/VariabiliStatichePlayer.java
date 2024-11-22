@@ -26,8 +26,6 @@ import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStatichePlayer {
     private static VariabiliStatichePlayer instance = null;
 
@@ -132,6 +130,7 @@ public class VariabiliStatichePlayer {
     private ImageView imgNuovaImmagine;
     private List<String> urlImmaginiDaScaricare;
     private LinearLayout layCaricamentoSI;
+    private ListView lstRicerca;
 
     // RICERCHE
     private List<StrutturaSalvataggi> listaSalvataggi = new ArrayList<>();
@@ -154,9 +153,9 @@ public class VariabiliStatichePlayer {
     private boolean RicercaTags = false;
     private boolean Date = false;
     private boolean DataSuperiore = false;
-    private String TxtDataSuperiore = "";
+    private String sDataSuperiore = "";
     private boolean DataInferiore = false;
-    private String TxtDataInferiore = "";
+    private String sDataInferiore = "";
     private int idUltimoBrano;
     private List<StrutturaArtisti> listaArtisti = new ArrayList<>();
     private List<StrutturaTags> listaTags = new ArrayList<>();
@@ -173,6 +172,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public ListView getLstRicerca() {
+        return lstRicerca;
+    }
+
+    public void setLstRicerca(ListView lstRicerca) {
+        this.lstRicerca = lstRicerca;
     }
 
     public List<StrutturaTags> getListaTags() {
@@ -1000,12 +1007,12 @@ public class VariabiliStatichePlayer {
         DataSuperiore = dataSuperiore;
     }
 
-    public String getTxtDataSuperiore() {
-        return TxtDataSuperiore;
+    public String getsDataSuperiore() {
+        return sDataSuperiore;
     }
 
-    public void setTxtDataSuperiore(String txtDataSuperiore) {
-        TxtDataSuperiore = txtDataSuperiore;
+    public void setsDataSuperiore(String sDataSuperiore) {
+        this.sDataSuperiore = sDataSuperiore;
     }
 
     public boolean isDataInferiore() {
@@ -1016,12 +1023,12 @@ public class VariabiliStatichePlayer {
         DataInferiore = dataInferiore;
     }
 
-    public String getTxtDataInferiore() {
-        return TxtDataInferiore;
+    public String getsDataInferiore() {
+        return sDataInferiore;
     }
 
-    public void setTxtDataInferiore(String txtDataInferiore) {
-        TxtDataInferiore = txtDataInferiore;
+    public void setsDataInferiore(String sDataInferiore) {
+        this.sDataInferiore = sDataInferiore;
     }
 
     public StrutturaUtenti getUtente() {

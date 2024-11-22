@@ -116,7 +116,9 @@ public class UtilitiesGlobali {
     public void ImpostaServizioGPS(Context context, String Azione) {
         switch(Azione) {
             case "CONTROLLO_ATTIVAZIONE":
-                VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn();
+                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn();
+                }
                 break;
         }
     }

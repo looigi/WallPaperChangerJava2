@@ -160,10 +160,10 @@ public class db_dati_player {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "SalvataggiDettaglio "
                         + "("
-                        + "idSalvataggio VARCHAR, Random VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
-                        + "Testo VARCHAR, TestoNon VARCHAR, Preferiti VARCHAR, PreferitiElimina VARCHAR, "
-                        + "AndOrPref VARCHAR, Tags VARCHAR, TagsElimina VARCHAR, AndOrTags VARCHAR, "
-                        + "DataSuperiore VARCHAR, DataInferiore VARCHAR, DataSuperioreTesto VARCHAR, DataInferioreTesto VARCHAR "
+                        + "idSalvataggio VARCHAR, Random VARCHAR, StelleDaRicercare VARCHAR, Stelle VARCHAR, StelleSuperiori VARCHAR, MaiAscoltata VARCHAR, "
+                        + "RicercaTesto VARCHAR, Testo VARCHAR, TestoNon VARCHAR, RicercaPreferiti VARCHAR, Preferiti VARCHAR, PreferitiElimina VARCHAR, "
+                        + "AndOrPref VARCHAR, RicercaTags VARCHAR, Tags VARCHAR, TagsElimina VARCHAR, AndOrTags VARCHAR, "
+                        + "RicercaData VARCHAR, DataSuperiore VARCHAR, DataInferiore VARCHAR, DataSuperioreTesto VARCHAR, DataInferioreTesto VARCHAR "
                         + ");";
 
                 myDB.execSQL(sql);
@@ -269,6 +269,47 @@ public class db_dati_player {
         return id;
     }
 
+    public String EliminaSalvataggioDefault() {
+        String id = "";
+        if (myDB != null) {
+            myDB.execSQL("Delete From SalvataggiDefault");
+        }
+
+        return id;
+    }
+
+    public void ModificaSalvataggioDettaglio(String idSalvataggio, String NomeSalvataggio) {
+        if (myDB != null) {
+            String sql = "Update SalvataggiDettaglio Set "
+                    + "Random='" + (VariabiliStatichePlayer.getInstance().isRandom() ? "S" : "N") + "', "
+                    + "StelleDaRicercare='" + (VariabiliStatichePlayer.getInstance().isRicercaStelle() ? "S" : "N") + "', "
+                    + "Stelle='" + VariabiliStatichePlayer.getInstance().getStelleDaRicercare()  + "', "
+                    + "StelleSuperiori='" + (VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N") + "' , "
+                    + "MaiAscoltata='" + (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N") + "' , "
+                    + "RicercaTesto='" + (VariabiliStatichePlayer.getInstance().isRicercaTesto() ? "S" : "N") + "', "
+                    + "Testo='" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare().replace("'","''") + "', "
+                    + "TestoNon='" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare().replace("'","''") + "', "
+                    + "RicercaPreferiti='" + (VariabiliStatichePlayer.getInstance().isRicercaPreferiti() ? "S" : "N") + "', "
+                    + "Preferiti='" + VariabiliStatichePlayer.getInstance().getPreferiti().replace("'","''") + "', "
+                    + "PreferitiElimina='" + VariabiliStatichePlayer.getInstance().getPreferitiElimina().replace("'","''") + "', "
+                    + "AndOrPref='" + (VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N")  + "', "
+                    + "RicercaTags='" + (VariabiliStatichePlayer.getInstance().isRicercaTags() ? "S" : "N") + "', "
+                    + "Tags='" + VariabiliStatichePlayer.getInstance().getPreferitiTags().replace("'","''") + "', "
+                    + "TagsElimina='" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags().replace("'","''") + "', "
+                    + "AndOrTags='" + (VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N")  + "', "
+                    + "RicercaData='" + (VariabiliStatichePlayer.getInstance().isDate() ? "S" : "N") + "', "
+                    + "DataSuperiore='" + (VariabiliStatichePlayer.getInstance().isDataSuperiore() ? "S" : "N")  + "', "
+                    + "DataInferiore='" + (VariabiliStatichePlayer.getInstance().isDataInferiore() ? "S" : "N")  + "', "
+                    + "DataSuperioreTesto='" + VariabiliStatichePlayer.getInstance().getsDataSuperiore()  + "', "
+                    + "DataInferioreTesto='" + VariabiliStatichePlayer.getInstance().getsDataInferiore()  + "' "
+                    + "Where idSalvataggio='" + idSalvataggio + "'";
+            myDB.execSQL(sql);
+
+            sql = "Update Salvataggi Set Salvataggio='" + NomeSalvataggio + "' Where idSalvataggio='" + idSalvataggio + "'";
+            myDB.execSQL(sql);
+        }
+    }
+
     public void ScriveSalvataggioDettaglio(String Salvataggio) {
         if (myDB != null) {
             String idSalvataggio = "1";
@@ -301,21 +342,26 @@ public class db_dati_player {
             sql = "Insert Into SalvataggiDettaglio Values ("
                 + "'" + idSalvataggio + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isRandom() ? "S" : "N") + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRicercaStelle() ? "S" : "N")  + "', "
                 + "'" + VariabiliStatichePlayer.getInstance().getStelleDaRicercare()  + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N") + "' , "
                 + "'" + (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N") + "' , "
-                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare()  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare()  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getPreferiti()  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina()  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRicercaTesto() ? "S" : "N")  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare().replace("'","''") + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare().replace("'","''") + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRicercaPreferiti() ? "S" : "N") + "' , "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferiti().replace("'","''")+ "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina().replace("'","''")  + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N")  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags()  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags()  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isRicercaTags() ? "S" : "N") + "' , "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags().replace("'","''") + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags().replace("'","''")  + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N")  + "', "
+                + "'" + (VariabiliStatichePlayer.getInstance().isDate() ? "S" : "N")  + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isDataSuperiore() ? "S" : "N")  + "', "
                 + "'" + (VariabiliStatichePlayer.getInstance().isDataInferiore() ? "S" : "N")  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getTxtDataSuperiore()  + "', "
-                + "'" + VariabiliStatichePlayer.getInstance().getTxtDataInferiore()  + "' "
+                + "'" + VariabiliStatichePlayer.getInstance().getsDataSuperiore()  + "', "
+                + "'" + VariabiliStatichePlayer.getInstance().getsDataInferiore()  + "' "
                 + ")";
             myDB.execSQL(sql);
         } else {
@@ -330,22 +376,27 @@ public class db_dati_player {
                 if (c.getCount() > 0) {
                     c.moveToFirst();
 
-                    VariabiliStatichePlayer.getInstance().setRandom(c.getString(0).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(Integer.parseInt(c.getString(1)));
-                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(c.getString(2).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(c.getString(3).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare(c.getString(4));
-                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare(c.getString(5));
-                    VariabiliStatichePlayer.getInstance().setPreferiti(c.getString(6));
-                    VariabiliStatichePlayer.getInstance().setPreferitiElimina(c.getString(7));
-                    VariabiliStatichePlayer.getInstance().setAndOrPref(c.getString(8).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setPreferitiTags(c.getString(9));
-                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags(c.getString(10));
-                    VariabiliStatichePlayer.getInstance().setAndOrTags(c.getString(11).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setDataSuperiore(c.getString(12).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setDataInferiore(c.getString(13).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore(c.getString(14));
-                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore(c.getString(15));
+                    VariabiliStatichePlayer.getInstance().setRandom(c.getString(1).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaStelle(c.getString(2).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setStelleDaRicercare(Integer.parseInt(c.getString(3)));
+                    VariabiliStatichePlayer.getInstance().setStelleSuperiori(c.getString(4).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(c.getString(5).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaTesto(c.getString(6).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setTestoDaRicercare(c.getString(7));
+                    VariabiliStatichePlayer.getInstance().setTestoDaNonRicercare(c.getString(8));
+                    VariabiliStatichePlayer.getInstance().setRicercaPreferiti(c.getString(9).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setPreferiti(c.getString(10));
+                    VariabiliStatichePlayer.getInstance().setPreferitiElimina(c.getString(11));
+                    VariabiliStatichePlayer.getInstance().setAndOrPref(c.getString(12).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setRicercaTags(c.getString(13).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setPreferitiTags(c.getString(14));
+                    VariabiliStatichePlayer.getInstance().setPreferitiEliminaTags(c.getString(15));
+                    VariabiliStatichePlayer.getInstance().setAndOrTags(c.getString(16).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDate(c.getString(17).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataSuperiore(c.getString(18).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setDataInferiore(c.getString(19).equals("S"));
+                    VariabiliStatichePlayer.getInstance().setsDataSuperiore(c.getString(20));
+                    VariabiliStatichePlayer.getInstance().setsDataInferiore(c.getString(21));
 
                     return true;
                 } else {
@@ -429,8 +480,8 @@ public class db_dati_player {
                     VariabiliStatichePlayer.getInstance().setAndOrTags(c.getString(11).equals("S"));
                     VariabiliStatichePlayer.getInstance().setDataSuperiore(c.getString(12).equals("S"));
                     VariabiliStatichePlayer.getInstance().setDataInferiore(c.getString(13).equals("S"));
-                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore(c.getString(14));
-                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore(c.getString(15));
+                    VariabiliStatichePlayer.getInstance().setsDataSuperiore(c.getString(14));
+                    VariabiliStatichePlayer.getInstance().setsDataInferiore(c.getString(15));
 
                     return 0;
                 } else {
@@ -448,8 +499,8 @@ public class db_dati_player {
                     VariabiliStatichePlayer.getInstance().setAndOrTags(true);
                     VariabiliStatichePlayer.getInstance().setDataSuperiore(false);
                     VariabiliStatichePlayer.getInstance().setDataInferiore(false);
-                    VariabiliStatichePlayer.getInstance().setTxtDataSuperiore("");
-                    VariabiliStatichePlayer.getInstance().setTxtDataInferiore("");
+                    VariabiliStatichePlayer.getInstance().setsDataSuperiore("");
+                    VariabiliStatichePlayer.getInstance().setsDataInferiore("");
 
                     ScriveRicerca();
 
@@ -528,18 +579,18 @@ public class db_dati_player {
                     + "'" + VariabiliStatichePlayer.getInstance().getStelleDaRicercare()  + "', "
                     + "'" + (VariabiliStatichePlayer.getInstance().isStelleSuperiori() ? "S" : "N") + "' , "
                     + "'" + (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata() ? "S" : "N") + "' , "
-                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare()  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare()  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getPreferiti()  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaRicercare().replace("'","''")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getTestoDaNonRicercare().replace("'","''")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferiti().replace("'","''")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiElimina().replace("'","''")  + "', "
                     + "'" + (VariabiliStatichePlayer.getInstance().isAndOrPref() ? "S" : "N")  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags()  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiTags().replace("'","''")  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getPreferitiEliminaTags().replace("'","''")  + "', "
                     + "'" + (VariabiliStatichePlayer.getInstance().isAndOrTags() ? "S" : "N")  + "', "
                     + "'" + (VariabiliStatichePlayer.getInstance().isDataSuperiore() ? "S" : "N")  + "', "
                     + "'" + (VariabiliStatichePlayer.getInstance().isDataInferiore() ? "S" : "N")  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getTxtDataSuperiore()  + "', "
-                    + "'" + VariabiliStatichePlayer.getInstance().getTxtDataInferiore()  + "' "
+                    + "'" + VariabiliStatichePlayer.getInstance().getsDataSuperiore()  + "', "
+                    + "'" + VariabiliStatichePlayer.getInstance().getsDataInferiore()  + "' "
                     + ")";
             myDB.execSQL(sql);
         } else {

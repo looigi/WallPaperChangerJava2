@@ -519,10 +519,12 @@ public class UtilityPlayer {
     }
 
     public void AttesaSI(boolean come) {
-        if (come) {
-            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
-        } else {
-            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
+        if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
+            if (come) {
+                VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
+            }
         }
     }
     public void PrendeBranoInLocaleNonEsatto(Context context, boolean Pregresso) {
@@ -589,7 +591,7 @@ public class UtilityPlayer {
         db.ChiudeDB();
     }
 
-    private void PrendeBranoInRete(Context context, String Brano, boolean Pregresso) {
+    public void PrendeBranoInRete(Context context, String Brano, boolean Pregresso) {
         ScriveLog(context, NomeMaschera, "Avanzo Brano. Scarico Brano");
 
         if (VariabiliStatichePlayer.getInstance().getClasseChiamata() != null) {
@@ -597,7 +599,7 @@ public class UtilityPlayer {
         }
         ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
         VariabiliStatichePlayer.getInstance().setClasseChiamata(ws);
-        ws.RitornaBranoDaID("", Pregresso);
+        ws.RitornaBranoDaID(Brano, Pregresso);
     }
 
     public void ImpostaImmagine(Context context, int idImmagine) {
@@ -1184,17 +1186,17 @@ public class UtilityPlayer {
         String DataInferiore = "";
 
         if (VariabiliStatichePlayer.getInstance().isDate()) {
-            if (VariabiliStatichePlayer.getInstance().isDataSuperiore()) {
-                if (!VariabiliStatichePlayer.getInstance().getTxtDataSuperiore().isEmpty()) {
-                    DataSuperiore = VariabiliStatichePlayer.getInstance().getTxtDataSuperiore();
+            // if (VariabiliStatichePlayer.getInstance().isDataSuperiore()) {
+                if (!VariabiliStatichePlayer.getInstance().getsDataSuperiore().isEmpty()) {
+                    DataSuperiore = VariabiliStatichePlayer.getInstance().getsDataSuperiore();
                 }
-            }
+            // }
 
-            if (VariabiliStatichePlayer.getInstance().isDataInferiore()) {
-                if (!VariabiliStatichePlayer.getInstance().getTxtDataInferiore().isEmpty()) {
-                    DataInferiore = VariabiliStatichePlayer.getInstance().getTxtDataInferiore();
+            // if (VariabiliStatichePlayer.getInstance().isDataInferiore()) {
+                if (!VariabiliStatichePlayer.getInstance().getsDataInferiore().isEmpty()) {
+                    DataInferiore = VariabiliStatichePlayer.getInstance().getsDataInferiore();
                 }
-            }
+            // }
         }
 
         int idUltimoBrano;

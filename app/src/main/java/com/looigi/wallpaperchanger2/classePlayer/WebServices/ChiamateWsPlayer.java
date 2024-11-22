@@ -10,6 +10,8 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBraniOnline;
+import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerRicerca;
+import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaRicerca;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerPreferiti;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -97,6 +99,28 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 "Artista=" + Artista;
 
         TipoOperazione = "Scarica Lista Immagini";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void RicercaBrano(String Brano) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Ricerca brano " + Brano);
+
+        String Urletto="RicercaBrano?" +
+                "Filtro=" + Brano;
+
+        TipoOperazione = "Ricerca Brano";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -600,10 +624,45 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "Scarica Lista Immagini":
                         fScaricaListaImmagini(result);
                         break;
+                    case "Ricerca Brano":
+                        fRicercaBrano(result);
+                        break;
                 }
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
+    }
+
+    private void fRicercaBrano(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Ricerca Brano", result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            List<StrutturaRicerca> lista = new ArrayList<>();
+            String[] trovati = result.split("§");
+            for (String s : trovati) {
+                if (!s.isEmpty() && s.contains(";")) {
+                    String[] c = s.split(";");
+
+                    StrutturaRicerca sr = new StrutturaRicerca();
+                    sr.setId(Integer.parseInt(c[0]));
+                    sr.setArtista(c[1]);
+                    sr.setAlbum(c[2]);
+                    sr.setBrano(c[3]);
+                    sr.setBellezza(c[4]);
+                    sr.setTraccia(c[5]);
+
+                    lista.add(sr);
+                }
+            }
+
+            AdapterListenerRicerca customAdapterA = new AdapterListenerRicerca(context,
+                    lista);
+            VariabiliStatichePlayer.getInstance().getLstRicerca().setAdapter(customAdapterA);
+        }
     }
 
     private void fSalvaImmagineArtista(String result) {
