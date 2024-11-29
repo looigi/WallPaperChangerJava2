@@ -155,7 +155,7 @@ public class AdapterListenerImmagini extends BaseAdapter {
                         d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
                                 listaImmagini.get(i).getPathImmagine(), false, "");
                     } else {
-                        ChangeWallpaper c = new ChangeWallpaper(context);
+                        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                     }
                 }

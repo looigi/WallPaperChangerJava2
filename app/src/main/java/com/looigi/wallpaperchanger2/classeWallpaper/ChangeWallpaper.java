@@ -38,8 +38,9 @@ public class ChangeWallpaper {
 	private int SchermoX;
 	private int SchermoY;
 
-	public ChangeWallpaper(Context context) {
+	public ChangeWallpaper(Context context, String daDove) {
 		UtilityWallpaper.getInstance().Attesa(true);
+		VariabiliStaticheWallpaper.getInstance().setImmagineImpostataDaChi(daDove);
 
 		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		if (act != null) {

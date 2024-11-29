@@ -884,6 +884,25 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        EditText etPuntiSuMappa = (EditText) act.findViewById(R.id.edtPuntiSuMappa);
+        etPuntiSuMappa.setText(Integer.toString(VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa()));
+        etPuntiSuMappa.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(
+                                Integer.parseInt(etPuntiSuMappa.getText().toString())
+                        );
+
+                        db_dati_detector db = new db_dati_detector(context);
+                        db.ScriveImpostazioni(context, "SET PUNTI SU MAPPA");
+                        db.ChiudeDB();
+                    }
+                }
+            }
+        });
+
         SwitchCompat sSegnale = act.findViewById(R.id.sSegnale);
         sSegnale.setChecked(true);
         sSegnale.setOnClickListener(new View.OnClickListener() {

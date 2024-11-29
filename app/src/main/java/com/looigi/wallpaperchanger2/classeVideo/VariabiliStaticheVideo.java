@@ -35,6 +35,8 @@ public class VariabiliStaticheVideo {
     private String Filtro = "";
     private String Categoria = "";
     private Spinner spnCategorie;
+    private TextView txtId;
+    private TextView txtCate;
     private TextView txtTitolo;
     private int idUltimoVideo = -1;
     private boolean SettingsAperto = true;
@@ -50,6 +52,22 @@ public class VariabiliStaticheVideo {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+
+    public TextView getTxtCate() {
+        return txtCate;
+    }
+
+    public void setTxtCate(TextView txtCate) {
+        this.txtCate = txtCate;
+    }
+
+    public TextView getTxtId() {
+        return txtId;
+    }
+
+    public void setTxtId(TextView txtId) {
+        this.txtId = txtId;
+    }
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -241,5 +259,21 @@ public class VariabiliStaticheVideo {
 
     public void setUltimoLink(String ultimoLink) {
         UltimoLink = ultimoLink;
+    }
+
+    public void ScriveImmagini(String url) {
+        String[] c = url.split("/");
+        String NomeFile = c[c.length - 1];
+        String Categoria = url.replace("/" + NomeFile, "");
+
+        VariabiliStaticheVideo.getInstance().getTxtId().setText(
+                Integer.toString(VariabiliStaticheVideo.getInstance().getIdUltimoVideo())
+        );
+        VariabiliStaticheVideo.getInstance().getTxtCate().setText(
+                Categoria.replace(PathUrl, "")
+        );
+        VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(
+                NomeFile
+        );
     }
 }

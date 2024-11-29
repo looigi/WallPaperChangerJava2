@@ -74,6 +74,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private LatLngBounds.Builder bc;
     private int bcs = 0;
     private final int livelloZoomStandard = 16;
+    private Polyline polylineSegnale;
+    private Polyline polylineVelocita;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,7 +369,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
             }
 
-            Polyline polylineVelocita = googleMap.addPolyline(new PolylineOptions()
+            polylineVelocita = googleMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(path)
                     .width(10)
@@ -394,7 +396,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
             }
 
-            Polyline polylineSegnale = mappa.addPolyline(new PolylineOptions()
+            polylineSegnale = mappa.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(path)
                     .width(20)
@@ -579,6 +581,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             vecchiDati = listaGPS.size();
 
             mappa.clear();
+
+            if (polylineSegnale != null) polylineSegnale.remove();
+            if (polylineVelocita != null) polylineVelocita.remove();
 
             txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
 

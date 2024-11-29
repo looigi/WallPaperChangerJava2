@@ -69,6 +69,8 @@ public class MainMostraPennetta extends Activity {
         // db_dati_pennetta db = new db_dati_pennetta(context);
         // db.CaricaImpostazioni();
 
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setImg(findViewById(R.id.imgLibrary));
@@ -190,7 +192,7 @@ public class MainMostraPennetta extends Activity {
                     src.setDimensione("");
                     src.setDataImmagine(s.getDataCreazione());
 
-                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    ChangeWallpaper c = new ChangeWallpaper(context,"PENNETTA");
                     c.setWallpaperLocale(context, src);
 
                     UtilityPennetta.getInstance().Attesa(false);

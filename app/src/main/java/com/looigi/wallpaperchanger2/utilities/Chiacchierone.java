@@ -118,7 +118,7 @@ public class Chiacchierone {
                                     }
                                 }
                             };
-                            handlerTimer.postDelayed(rTimer, 1000);
+                            handlerTimer.postDelayed(rTimer, 500);
                         }
 
                         handlerTimer.removeCallbacksAndMessages(this);

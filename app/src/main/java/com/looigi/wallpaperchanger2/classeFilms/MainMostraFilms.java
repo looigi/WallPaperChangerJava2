@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
@@ -117,6 +118,8 @@ public class MainMostraFilms extends Activity {
 
         VariabiliStaticheFilms.getInstance().setFilmsView(findViewById(R.id.videoViewFilms));
         VariabiliStaticheFilms.getInstance().setPbLoading(findViewById(R.id.pbFilmsLoading));
+        VariabiliStaticheFilms.getInstance().setTxtId(findViewById(R.id.txtIdFilm));
+        VariabiliStaticheFilms.getInstance().setTxtCate(findViewById(R.id.txtCategoriaFilm));
         VariabiliStaticheFilms.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloFilms));
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheFilms.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
@@ -284,10 +287,7 @@ public class MainMostraFilms extends Activity {
         db.ChiudeDB();
 
         if (!url.isEmpty()) {
-            String[] u = url.split("/");
-            String res = u[u.length - 1];
-            res = VariabiliStaticheFilms.getInstance().getIdUltimoFilms() + ": " + res;
-            VariabiliStaticheFilms.getInstance().getTxtTitolo().setText(res);
+            VariabiliStaticheFilms.getInstance().ScriveInfo(url);
         }
 
         ImpostaSpostamento(act);

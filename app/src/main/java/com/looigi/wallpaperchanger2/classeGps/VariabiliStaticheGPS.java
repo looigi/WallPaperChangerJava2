@@ -38,7 +38,7 @@ public class VariabiliStaticheGPS {
     private StrutturaAccensioneGPS accensioneGPS;
     private ImageView bitmapHome;
     private GestioneMappa mappa;
-    public static int quantiPuntiSumappa = 990;
+    private int quantiPuntiSumappa = 50;
     private long distanzaTotale = 0;
     private boolean bloccatoDaTasto = false;
     private boolean segue = true;
@@ -52,6 +52,14 @@ public class VariabiliStaticheGPS {
     private boolean puntiSospensioneAttivi = true;
     private boolean accuracyAttiva = true;
     private boolean bloccoPerWifi = true;
+
+    public int getQuantiPuntiSumappa() {
+        return quantiPuntiSumappa;
+    }
+
+    public void setQuantiPuntiSumappa(int quantiPuntiSumappa) {
+        this.quantiPuntiSumappa = quantiPuntiSumappa;
+    }
 
     public boolean isBloccoPerWifi() {
         return bloccoPerWifi;

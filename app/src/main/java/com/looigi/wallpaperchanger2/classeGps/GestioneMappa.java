@@ -17,6 +17,8 @@ public class GestioneMappa {
 
     public GestioneMappa(Context context) {
         this.context = context;
+
+        PuliscePunti();
     }
 
     public void LeggePunti(String dataOdierna) {
@@ -26,6 +28,10 @@ public class GestioneMappa {
 
         listaGPS = db.RitornaPosizioni(dataOdierna);
         listaGPS = togliePuntiEccessivi(listaGPS);
+
+        UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
+                "Lettura punti: " + listaGPS.size()
+        );
 
         calcolaDistanza();
 
@@ -39,13 +45,20 @@ public class GestioneMappa {
     private List<StrutturaGps> togliePuntiEccessivi(List<StrutturaGps> list) {
         List<StrutturaGps> listaGPS = new ArrayList<>();
 
-        if (listaGPS.size() <= VariabiliStaticheGPS.quantiPuntiSumappa) {
+        if (listaGPS.size() <= VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa()) {
             listaGPS = list;
         } else {
-            int passo = (int) Math.round((float) list.size() / VariabiliStaticheGPS.quantiPuntiSumappa);
+            int passo = (int) Math.round((float) list.size() /
+                    VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa());
+            UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
+                    "Passo per toglie punti eccessivi: " + passo
+                    );
             for (int i = 0; i < list.size(); i += passo) {
                 listaGPS.add(list.get(i));
             }
+            UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
+                    "Punti totali tagliati: " + listaGPS.size()
+            );
         }
 
         return listaGPS;
@@ -54,12 +67,17 @@ public class GestioneMappa {
     public void AggiungePosizione(StrutturaGps g) {
         listaGPS.add(g);
 
+        listaGPS = togliePuntiEccessivi(listaGPS);
+
         long d = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
         long dist = Math.round(g.getDistanza());
         VariabiliStaticheGPS.getInstance().setDistanzaTotale(d + dist);
         conta++;
         if (conta > 10) {
             conta = 0;
+            UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
+                    "Punti totali memorizzati su lista: " + listaGPS.size()
+            );
             GestioneNotificheTasti.getInstance().AggiornaNotifica();
         }
     }
@@ -77,7 +95,7 @@ public class GestioneMappa {
     private void calcolaDistanza() {
         long d = 0;
         for (StrutturaGps g : listaGPS) {
-            d += g.getDistanza();
+            d += (long) g.getDistanza();
         }
         VariabiliStaticheGPS.getInstance().setDistanzaTotale(d);
     }

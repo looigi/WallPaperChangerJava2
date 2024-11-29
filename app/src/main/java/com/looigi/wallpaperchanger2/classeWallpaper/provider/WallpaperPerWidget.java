@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
+import java.util.Date;
 
 public class WallpaperPerWidget extends Activity {
     private Context context;
@@ -19,38 +23,54 @@ public class WallpaperPerWidget extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.camera);
+        setContentView(R.layout.activity_per_attesa_wp);
 
         act = this;
         context = this; // VariabiliStatiche.getInstance().getContext();
 
+        long ora = new Date().getTime();
+        long diff = VariabiliStaticheWallpaper.getInstance().getUltimoCambio();
+        if (ora - diff < 2000) {
+            return;
+        }
+        VariabiliStaticheWallpaper.getInstance().setUltimoCambio(ora);
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("DO");
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (id) {
+                    case "cambia":
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                UtilityWallpaper.getInstance().CambiaImmagine(context);
 
-        switch (id) {
-            case "cambia":
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        UtilityWallpaper.getInstance().CambiaImmagine(context);
+                                GestioneNotificheWP.getInstance().AggiornaNotifica();
 
-                        GestioneNotificheWP.getInstance().AggiornaNotifica();
-                    }
-                }, 100);
-                break;
-            case "refresh":
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ChangeWallpaper c = new ChangeWallpaper(context);
-                        c.setWallpaperLocale(context,
-                                VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
-                        UtilityWallpaper.getInstance().Attesa(false);
-                    }
-                }, 100);
-                break;
-        }
+                                act.finish();
+                            }
+                        }, 100);
+                        break;
+                    case "refresh":
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+                                c.setWallpaperLocale(context,
+                                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
+                                UtilityWallpaper.getInstance().Attesa(false);
 
-        act.finish();
+                                act.finish();
+                            }
+                        }, 100);
+                        break;
+                    default:
+                        act.finish();
+                }
+            }
+        }, 100);
+
     }
 }

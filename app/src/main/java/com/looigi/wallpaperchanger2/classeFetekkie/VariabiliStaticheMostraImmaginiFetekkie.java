@@ -44,6 +44,8 @@ public class VariabiliStaticheMostraImmaginiFetekkie {
     private String Random = "S";
     private List<StrutturaImmaginiCategorieFE> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
+    private TextView txtId;
+    private TextView txtCate;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibraryFE> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
@@ -58,6 +60,22 @@ public class VariabiliStaticheMostraImmaginiFetekkie {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+
+    public TextView getTxtCate() {
+        return txtCate;
+    }
+
+    public void setTxtCate(TextView txtCate) {
+        this.txtCate = txtCate;
+    }
+
+    public TextView getTxtId() {
+        return txtId;
+    }
+
+    public void setTxtId(TextView txtId) {
+        this.txtId = txtId;
+    }
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -260,10 +278,23 @@ public class VariabiliStaticheMostraImmaginiFetekkie {
         Runnable rTimer = new Runnable() {
             public void run() {
                 if (si != null && VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtInfo() != null) {
-                    String testo = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getIdImmagine() + ": " +
-                            si.getNomeFile(); // + "\nSize: " + si.getDimensioniImmagine();
-                    // testo += " Dim.: B." + si.getDimensioneFile();
-                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtInfo().setText(testo);
+                    String[] c = si.getNomeFile().split("/");
+                    String NomeFile = c[c.length - 1];
+                    String Categoria = si.getNomeFile().replace("/" + NomeFile, "");
+
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtId().setText(
+                            Integer.toString(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getIdImmagine())
+                    );
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtCate().setText(
+                            Categoria
+                    );
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtInfo().setText(
+                            NomeFile
+                    );
+                } else {
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtId().setText("");
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtCate().setText("");
+                    VariabiliStaticheMostraImmaginiFetekkie.getInstance().getTxtInfo().setText("");
                 }
             }
         };

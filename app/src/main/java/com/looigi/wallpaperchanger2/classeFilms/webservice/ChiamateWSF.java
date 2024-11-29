@@ -304,14 +304,7 @@ public class ChiamateWSF implements TaskDelegate {
             VariabiliStaticheFilms.getInstance().setUltimoLink(url);
             VariabiliStaticheFilms.getInstance().setIdUltimoFilms(id);
 
-            String[] u = result.split("/");
-            String res = u[u.length -1];
-            if (res.contains("§")) {
-                String[] r = res.split("§");
-                res = r[0];
-            }
-            res = VariabiliStaticheFilms.getInstance().getIdUltimoFilms() + ": " + res;
-            VariabiliStaticheFilms.getInstance().getTxtTitolo().setText(res);
+            VariabiliStaticheFilms.getInstance().ScriveInfo(url);
 
             db_dati_films db = new db_dati_films(context);
             db.ScriveUltimoFilms();

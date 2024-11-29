@@ -117,6 +117,8 @@ public class MainMostraVideo extends Activity {
 
         VariabiliStaticheVideo.getInstance().setVideoView(findViewById(R.id.videoView));
         VariabiliStaticheVideo.getInstance().setPbLoading(findViewById(R.id.pbVideoLoading));
+        VariabiliStaticheVideo.getInstance().setTxtId(findViewById(R.id.txtIdVideo));
+        VariabiliStaticheVideo.getInstance().setTxtCate(findViewById(R.id.txtCategoriaVideo));
         VariabiliStaticheVideo.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloVideo));
         VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheVideo.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
@@ -282,10 +284,7 @@ public class MainMostraVideo extends Activity {
         db.ChiudeDB();
 
         if (!url.isEmpty()) {
-            String[] u = url.split("/");
-            String res = u[u.length - 1];
-            res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
-            VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res);
+            VariabiliStaticheVideo.getInstance().ScriveImmagini(url);
         }
 
         ImpostaSpostamento(act);

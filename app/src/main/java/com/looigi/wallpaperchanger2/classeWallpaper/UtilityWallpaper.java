@@ -234,7 +234,7 @@ public class UtilityWallpaper {
     public void CambiaImmagine(Context context) {
         VariabiliStaticheWallpaper.getInstance().setImpostataConSchermoSpento(false);
 
-        ChangeWallpaper c = new ChangeWallpaper(context);
+        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             c.setWallpaper(context, null);
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");

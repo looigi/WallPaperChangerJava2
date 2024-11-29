@@ -338,7 +338,7 @@ public class GestioneNotificheWP {
                             @Override
                             public void run() {
                                 UtilityWallpaper.getInstance().Attesa(true);
-                                ChangeWallpaper c = new ChangeWallpaper(context);
+                                ChangeWallpaper c = new ChangeWallpaper(context,  "WALLPAPER");
                                 c.setWallpaperLocale(context,
                                         VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                                 UtilityWallpaper.getInstance().Attesa(false);

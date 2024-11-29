@@ -46,6 +46,7 @@ public class VariabiliStaticheWallpaper {
     private boolean servizioAttivo = true;
     public static float percAumentoX = .115F;
     public static float percAumentoY = .115F;
+    private String immagineImpostataDaChi = "";
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
@@ -93,6 +94,7 @@ public class VariabiliStaticheWallpaper {
     private boolean ApreRicerca = false;
     private TextView txtAvanzamentoRefresh;
     private boolean ImpostataConSchermoSpento = false;
+    private long ultimoCambio = -1L;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -101,6 +103,22 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public long getUltimoCambio() {
+        return ultimoCambio;
+    }
+
+    public void setUltimoCambio(long ultimoCambio) {
+        this.ultimoCambio = ultimoCambio;
+    }
+
+    public String getImmagineImpostataDaChi() {
+        return immagineImpostataDaChi;
+    }
+
+    public void setImmagineImpostataDaChi(String immagineImpostataDaChi) {
+        this.immagineImpostataDaChi = immagineImpostataDaChi;
     }
 
     public boolean isImpostataConSchermoSpento() {

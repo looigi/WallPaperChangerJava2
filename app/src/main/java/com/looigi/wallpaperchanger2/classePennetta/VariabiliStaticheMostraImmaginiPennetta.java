@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
@@ -44,6 +45,8 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private String Random = "S";
     private List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
+    private TextView txtId;
+    private TextView txtCate;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
@@ -58,6 +61,22 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+
+    public TextView getTxtCate() {
+        return txtCate;
+    }
+
+    public void setTxtCate(TextView txtCate) {
+        this.txtCate = txtCate;
+    }
+
+    public TextView getTxtId() {
+        return txtId;
+    }
+
+    public void setTxtId(TextView txtId) {
+        this.txtId = txtId;
+    }
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -260,10 +279,23 @@ public class VariabiliStaticheMostraImmaginiPennetta {
         Runnable rTimer = new Runnable() {
             public void run() {
                 if (si != null && VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo() != null) {
-                    String testo = VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() + ": " +
-                            si.getNomeFile(); // + "\nSize: " + si.getDimensioniImmagine();
-                    // testo += " Dim.: B." + si.getDimensioneFile();
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText(testo);
+                    String[] c = si.getNomeFile().split("/");
+                    String NomeFile = c[c.length - 1];
+                    String Categoria = si.getNomeFile().replace("/" + NomeFile, "");
+
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtId().setText(
+                            Integer.toString(VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine())
+                    );
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtCate().setText(
+                            Categoria
+                    );
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText(
+                            NomeFile
+                    );
+                } else {
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtId().setText("");
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtCate().setText("");
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText("");
                 }
             }
         };

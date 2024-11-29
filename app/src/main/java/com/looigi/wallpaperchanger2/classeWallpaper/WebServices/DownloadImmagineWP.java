@@ -233,7 +233,7 @@ public class DownloadImmagineWP {
                 if(!PerModifica) {
                     VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
-                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
                     c.setWallpaperLocale(context, si);
                 } else {
                     String finalNomeFile = NomeFile;

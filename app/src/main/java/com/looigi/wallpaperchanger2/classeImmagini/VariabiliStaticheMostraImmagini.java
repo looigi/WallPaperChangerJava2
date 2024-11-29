@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
@@ -46,6 +47,8 @@ public class VariabiliStaticheMostraImmagini {
     private List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
     private Spinner spnSpostaCategorie;
+    private TextView txtId;
+    private TextView txtCate;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
@@ -60,6 +63,22 @@ public class VariabiliStaticheMostraImmagini {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+
+    public TextView getTxtCate() {
+        return txtCate;
+    }
+
+    public void setTxtCate(TextView txtCate) {
+        this.txtCate = txtCate;
+    }
+
+    public TextView getTxtId() {
+        return txtId;
+    }
+
+    public void setTxtId(TextView txtId) {
+        this.txtId = txtId;
+    }
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -270,9 +289,22 @@ public class VariabiliStaticheMostraImmagini {
         Runnable rTimer = new Runnable() {
             public void run() {
                 if (si != null && VariabiliStaticheMostraImmagini.getInstance().getTxtInfo() != null) {
-                    String testo = si.getNomeFile() + "\nSize: " + si.getDimensioniImmagine();
-                    testo += " Dim.: B." + si.getDimensioneFile();
-                    VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText(testo);
+                    String NomeFile = si.getNomeFile();
+                    String Categoria = si.getCategoria();
+
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtId().setText(
+                            Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getIdImmagine())
+                    );
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtCate().setText(
+                            Categoria
+                    );
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText(
+                            NomeFile
+                    );
+                } else {
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtId().setText("");
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtCate().setText("");
+                    VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText("");
                 }
             }
         };

@@ -106,6 +106,8 @@ public class MainMostraImmagini extends Activity {
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie(false);
 
+        VariabiliStaticheMostraImmagini.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
+        VariabiliStaticheMostraImmagini.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
         VariabiliStaticheMostraImmagini.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
 
         VariabiliStaticheMostraImmagini.getInstance().setImg(findViewById(R.id.imgLibrary));
@@ -204,7 +206,7 @@ public class MainMostraImmagini extends Activity {
                         src.setDimensione(String.valueOf(Dimensione));
                         src.setDataImmagine(s.getDataCreazione());
 
-                        ChangeWallpaper c = new ChangeWallpaper(context);
+                        ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI");
                         c.setWallpaperLocale(context, src);
 
                         UtilityImmagini.getInstance().Attesa(false);

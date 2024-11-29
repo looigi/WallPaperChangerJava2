@@ -296,14 +296,16 @@ public class ChiamateWSV implements TaskDelegate {
             VariabiliStaticheVideo.getInstance().setUltimoLink(url);
             VariabiliStaticheVideo.getInstance().setIdUltimoVideo(id);
 
-            String[] u = result.split("/");
+            /* String[] u = result.split("/");
             String res = u[u.length -1];
             if (res.contains("§")) {
                 String[] r = res.split("§");
                 res = r[0];
             }
             res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
-            VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res);
+            VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res); */
+
+            VariabiliStaticheVideo.getInstance().ScriveImmagini(url);
 
             db_dati_video db = new db_dati_video(context);
             db.ScriveUltimoVideo();

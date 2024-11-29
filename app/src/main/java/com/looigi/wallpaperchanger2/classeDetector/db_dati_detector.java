@@ -72,7 +72,7 @@ public class db_dati_detector {
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
                         "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR, FotoPower VARCHAR, " +
-                        "MetriPS VARCHAR);";
+                        "MetriPS VARCHAR, QuantiPunti VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -128,6 +128,7 @@ public class db_dati_detector {
         VariabiliStaticheDetector.getInstance().setGpsMeters(5);
         VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(true);
         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(50);
+        VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(100);
     }
 
     public int CaricaImpostazioni() {
@@ -161,6 +162,7 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setGpsMeters(Integer.parseInt(c.getString(16)));
                         VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(c.getString(17).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(c.getString(18)));
+                        VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(Integer.parseInt(c.getString(19)));
 
                         return 0; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
@@ -258,7 +260,8 @@ public class db_dati_detector {
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMs() + ", "
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + ", "
                         + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie() ? "S" : "N") + "', "
-                        + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "' "
+                        + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "', "
+                        + "'" + VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa() + "' "
                         + ") ";
                 myDB.execSQL(sql);
 

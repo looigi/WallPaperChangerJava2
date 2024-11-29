@@ -205,8 +205,9 @@ public class UtilityPlayer {
                 db.ScriveUltimoBranoAscoltato(sb);
                 db.ChiudeDB();
 
-                Bitmap bitmap = PrendeImmagineArtistaACaso(
-                        context, sb.getArtista());
+                Bitmap bitmap = PrendeImmagineDisco(context, sb);
+                /* Bitmap bitmap = PrendeImmagineArtistaACaso(
+                        context, sb.getArtista()); */
                 VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
 
                 AggiungeBranoAllaListaAscoltati(context, sb);
@@ -833,6 +834,56 @@ public class UtilityPlayer {
             }
         };
         handlerTimer.postDelayed(rTimer, 1000);
+    }
+
+    public Bitmap PrendeImmagineDisco(Context context, StrutturaBrano sb) {
+        String Path = context.getFilesDir() + "/Player/ImmaginiMusica/";
+        String PathImmagini = Path + sb.getArtista() + "/" + sb.getAnno() + "-" + sb.getAlbum();
+        File root = new File(PathImmagini);
+        File[] list = root.listFiles();
+        Bitmap bitmap = null;
+
+        String Url = VariabiliStatichePlayer.PercorsoBranoMP3SuURL + "/ImmaginiMusica/" + sb.getArtista() +
+                "/" + sb.getAnno() + "-" + sb.getAlbum() + "/Cover_" + sb.getArtista() + ".jpg";
+        if (list == null) {
+            DownloadImmagine d = new DownloadImmagine();
+            VariabiliStatichePlayer.getInstance().setDownImmagine(d);
+            d. EsegueDownload(
+                context,
+                VariabiliStatichePlayer.getInstance().getImgBrano(),
+                Url,
+                false,
+                false,
+                ""
+            );
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+            return bitmap;
+        } else {
+            for (File f : list) {
+                String Filetto = f.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
+                if (!f.isDirectory() && Filetto.toUpperCase().contains("COVER_")) {
+                    if (Files.getInstance().EsisteFile(Filetto)) {
+                        bitmap = BitmapFactory.decodeFile(Filetto);
+                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(Filetto);
+                    } else {
+                        DownloadImmagine d = new DownloadImmagine();
+                        VariabiliStatichePlayer.getInstance().setDownImmagine(d);
+                        d. EsegueDownload(
+                            context,
+                            VariabiliStatichePlayer.getInstance().getImgBrano(),
+                            Url,
+                            false,
+                            false,
+                            ""
+                        );
+                        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
+                        return bitmap;
+                    }
+                }
+            }
+        }
+
+        return bitmap;
     }
 
     public Bitmap PrendeImmagineArtistaACaso(Context context, String Artista) {

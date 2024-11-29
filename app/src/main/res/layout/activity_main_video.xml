@@ -77,15 +77,45 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtTitoloVideo"
-            android:textColor="@color/Rosso"
-            android:gravity="center_horizontal"
-            android:textSize="16sp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp">
+            android:weightSum="7"
+            android:background="@drawable/bordato_non_trasparente"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-        </TextView>
+            <TextView
+                android:id="@+id/txtIdVideo"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/Blue"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtCategoriaVideo"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:lines="1"
+                android:textColor="@color/Blue"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtTitoloVideo"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:lines="1"
+                android:textColor="@color/Rosso"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

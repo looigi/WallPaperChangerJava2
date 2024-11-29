@@ -76,6 +76,8 @@ public class MainMostraFetekkie extends Activity {
         // db.CaricaImpostazioni();
 
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
+        VariabiliStaticheMostraImmaginiFetekkie.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
+        VariabiliStaticheMostraImmaginiFetekkie.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
 
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().setImg(findViewById(R.id.imgLibrary));
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
@@ -210,7 +212,7 @@ public class MainMostraFetekkie extends Activity {
                     src.setDimensione("");
                     src.setDataImmagine(s.getDataCreazione());
 
-                    ChangeWallpaper c = new ChangeWallpaper(context);
+                    ChangeWallpaper c = new ChangeWallpaper(context, "FETEKKIE");
                     c.setWallpaperLocale(context, src);
 
                     UtilityFetekkie.getInstance().Attesa(false);
