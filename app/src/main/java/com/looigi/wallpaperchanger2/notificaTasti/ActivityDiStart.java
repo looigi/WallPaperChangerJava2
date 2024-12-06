@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeModifiche.MainModifiche;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
@@ -51,6 +52,11 @@ public class ActivityDiStart extends Activity {
                     Intent iI = new Intent(context, MainImpostazioni.class);
                     iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(iI);
+                    break;
+                case "modifiche":
+                    Intent iM = new Intent(context, MainModifiche.class);
+                    iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iM);
                     break;
                 case "detector":
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -95,9 +101,9 @@ public class ActivityDiStart extends Activity {
                     context.startActivity(iB);
                     break;
                 case "mappa":
-                    Intent iM = new Intent(context, MainMappa.class);
-                    iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(iM);
+                    Intent iMa = new Intent(context, MainMappa.class);
+                    iMa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iMa);
                     break;
                 case "password":
                     Intent iPa = new Intent(context, MainPassword.class);

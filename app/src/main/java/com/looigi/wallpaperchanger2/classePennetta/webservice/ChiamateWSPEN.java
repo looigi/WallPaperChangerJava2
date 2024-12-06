@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
@@ -153,7 +154,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     public void RefreshImmagini(String Categoria) {
         String Urletto="RefreshPennetta?" +
                 "Categoria=" + Categoria +
-                "&Completo=";
+                "&Completo=" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isAggiornamentoCompleto() ? "S" : "");
 
         TipoOperazione = "RefreshPennetta";
         // ControllaTempoEsecuzione = false;

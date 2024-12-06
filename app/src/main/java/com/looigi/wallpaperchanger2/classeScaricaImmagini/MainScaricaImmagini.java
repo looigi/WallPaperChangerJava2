@@ -1,21 +1,21 @@
-package com.looigi.wallpaperchanger2.classePlayer.scaricaImmagini;
+package com.looigi.wallpaperchanger2.classeScaricaImmagini;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeMappeSalvate.AdapterListenerMappe;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 
 import java.util.List;
 
-public class scaricaImmagini extends Activity {
+public class MainScaricaImmagini extends Activity {
     private Context context;
 
     @Override
@@ -27,18 +27,22 @@ public class scaricaImmagini extends Activity {
         Activity act = this;
 
         Intent intent = getIntent();
-        String Artista = intent.getStringExtra("ARTISTA");
+        String Modalita = intent.getStringExtra("MODALITA");
+        String Filtro = intent.getStringExtra("FILTRO");
 
         VariabiliStatichePlayer.getInstance().setLayCaricamentoSI(findViewById(R.id.layCaricamentoInCorsoSI));
-        UtilityPlayer.getInstance().AttesaSI(false);
+        VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
 
         List<String> listaImmagini = VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare();
         ListView lstImms = act.findViewById(R.id.lstImmagini);
         AdapterListenerImmaginiDaScaricare customAdapterT = new AdapterListenerImmaginiDaScaricare(
                 context,
-                Artista,
+                Modalita,
+                Filtro,
                 listaImmagini);
         lstImms.setAdapter(customAdapterT);
+
+        UtilityPlayer.getInstance().AttesaSI(false);
     }
 
     @Override

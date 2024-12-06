@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class VariabiliStaticheFilms {
         return instance;
     }
 
-    public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
-    public static final String PathUrl = "http://looigi.no-ip.biz:1085/Video/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1071/"; // "http://looigi.no-ip.biz:1071/";
+    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":1085/Video/"; // "http://looigi.no-ip.biz:1085/Video/";
     private String Random = "S";
     private String UltimoLink;
     private VideoView FilmsView;
@@ -53,6 +54,15 @@ public class VariabiliStaticheFilms {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+    private boolean AggiornamentoCompleto = false;
+
+    public boolean isAggiornamentoCompleto() {
+        return AggiornamentoCompleto;
+    }
+
+    public void setAggiornamentoCompleto(boolean aggiornamentoCompleto) {
+        AggiornamentoCompleto = aggiornamentoCompleto;
+    }
 
     public TextView getTxtCate() {
         return txtCate;

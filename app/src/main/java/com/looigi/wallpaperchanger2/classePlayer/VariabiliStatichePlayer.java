@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadCanzone;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.InterrogazioneWSPlayer;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,10 @@ public class VariabiliStatichePlayer {
     public static final int TimeoutImmagine = 5;
     public static final int TimeoutBrano = 45;
     private boolean staSuonando = false;
-    public static String UrlWS = "http://looigi.no-ip.biz:1081";
+    public static String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1081"; // "http://looigi.no-ip.biz:1081";
     private StrutturaUtenti Utente;
     private int braniTotali;
-    public static String PercorsoBranoMP3SuURL = "http://looigi.no-ip.biz:1085";
+    public static String PercorsoBranoMP3SuURL = VariabiliStaticheStart.UrlWSGlobale + ":1085"; // "http://looigi.no-ip.biz:1085";
     private StrutturaBrano ultimoBrano;
     private MediaPlayer mp;
     private ImageView imgAvanti;

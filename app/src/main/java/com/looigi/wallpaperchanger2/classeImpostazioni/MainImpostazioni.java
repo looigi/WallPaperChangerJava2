@@ -1049,6 +1049,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcAggCompleto = act.findViewById(R.id.switchAggCompleto);
+        swcAggCompleto.setChecked(false);
+        swcAggCompleto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmagini.getInstance().setAggiornamentoCompleto(swcAggCompleto.isChecked());
+            }
+        });
+
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshImmagini);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1162,6 +1170,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcAggCompleto = act.findViewById(R.id.switchAggCompleto);
+        swcAggCompleto.setChecked(false);
+        swcAggCompleto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setAggiornamentoCompleto(swcAggCompleto.isChecked());
+            }
+        });
+
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshFetekkie);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1256,6 +1272,14 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        SwitchCompat swcAggCompleto = act.findViewById(R.id.switchAggCompleto);
+        swcAggCompleto.setChecked(false);
+        swcAggCompleto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setAggiornamentoCompleto(swcAggCompleto.isChecked());
+            }
+        });
+
         ImageView imgRefresh = act.findViewById(R.id.imgRefreshPennetta);
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -1331,6 +1355,14 @@ public class MainImpostazioni extends Activity {
                         db.ChiudeDB();
                     }
                 }
+            }
+        });
+
+        SwitchCompat swcAggCompleto = act.findViewById(R.id.switchAggCompleto);
+        swcAggCompleto.setChecked(false);
+        swcAggCompleto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().setAggiornamentoCompleto(swcAggCompleto.isChecked());
             }
         });
 
@@ -1601,6 +1633,14 @@ public class MainImpostazioni extends Activity {
                 db_dati_films db = new db_dati_films(context);
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcAggCompleto = act.findViewById(R.id.switchAggCompleto);
+        swcAggCompleto.setChecked(false);
+        swcAggCompleto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheFilms.getInstance().setAggiornamentoCompleto(swcAggCompleto.isChecked());
             }
         });
 

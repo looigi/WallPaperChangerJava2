@@ -9,6 +9,7 @@
         android:id="@+id/laySettaggiPEN"
         android:background="@drawable/bordato"
         android:layout_width="match_parent"
+        android:padding="3dp"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -117,71 +118,164 @@
             </TextView>
         </LinearLayout>
 
-        <LinearLayout
+        <HorizontalScrollView
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:gravity="end"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_marginEnd="5dp"
-                android:id="@+id/imgModificaPEN"
-                android:src="@drawable/edit_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            </ImageView>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_marginEnd="5dp"
-                android:id="@+id/imgEliminaPennetta"
-                android:src="@drawable/elimina"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Modifica"
+                        android:layout_height="wrap_content"/>
 
-            </ImageView>
+                    <ImageView
+                        android:id="@+id/imgModificaPEN"
+                        android:src="@drawable/edit_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
 
-            <ImageView
-                android:layout_marginEnd="5dp"
-                android:id="@+id/imgSharePennetta"
-                android:src="@drawable/share"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Modifica"
+                        android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:layout_marginEnd="5dp"
-                android:id="@+id/imgImpostaWallpaper"
-                android:src="@drawable/eye"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+                    <ImageView
+                        android:id="@+id/imgEliminaPennetta"
+                        android:src="@drawable/elimina"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
 
-            </ImageView>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_marginEnd="5dp"
-                android:id="@+id/imgSlideShow"
-                android:src="@drawable/slideshow_off"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Share"
+                        android:layout_height="wrap_content"/>
 
-            </ImageView>
+                    <ImageView
+                        android:id="@+id/imgSharePennetta"
+                        android:src="@drawable/share"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgSpostaACategoria"
-                android:src="@drawable/sposta"
-                android:layout_width="40dp"
-                android:layout_height="40dp">
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:id="@+id/imgSettingsPEN"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/settings" />
+                    <ImageView
+                        android:id="@+id/imgImpostaWallpaper"
+                        android:src="@drawable/eye"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Slideshow"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSlideShow"
+                        android:src="@drawable/slideshow_off"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSpostaACategoria"
+                        android:src="@drawable/sposta"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Settings"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSettingsPEN"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/settings" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
 
     </LinearLayout>
 

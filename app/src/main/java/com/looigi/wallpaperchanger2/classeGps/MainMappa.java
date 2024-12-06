@@ -189,6 +189,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath();
+                    disegnaMarkersPS();
+                    AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -210,6 +212,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath();
+                    disegnaMarkersPS();
+                    AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -412,6 +416,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         rTimer = new Runnable() {
             public void run() {
                 DisegnaPath();
+
                 handlerTimer.postDelayed(rTimer, 10000);
             }
         };
@@ -585,7 +590,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             if (polylineSegnale != null) polylineSegnale.remove();
             if (polylineVelocita != null) polylineVelocita.remove();
 
-            txtMappa.setText("Data " + dataOdierna + ". Posizioni: " + listaGPS.size());
+            txtMappa.setText("Data " + dataOdierna + "\nPosizioni: " + listaGPS.size());
 
             int vecchioColore = -1;
             List<StrutturaGps> lista = new ArrayList<>();
@@ -696,6 +701,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                             .newCameraPosition(cameraPosition));
                 }
             }
+        } else {
+            txtMappa.setText("Data " + dataOdierna + "\nPosizioni: 0");
         }
     }
 

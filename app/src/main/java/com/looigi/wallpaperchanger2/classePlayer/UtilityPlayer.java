@@ -355,14 +355,16 @@ public class UtilityPlayer {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                if (Operazione.isEmpty()) {
-                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.GONE);
+                if (VariabiliStatichePlayer.getInstance().getTxtOperazione() != null) {
+                    if (Operazione.isEmpty()) {
+                        VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.GONE);
 
-                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
-                } else {
-                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
+                    } else {
+                        VariabiliStatichePlayer.getInstance().getTxtOperazione().setVisibility(LinearLayout.VISIBLE);
 
-                    VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
+                        VariabiliStatichePlayer.getInstance().getTxtOperazione().setText(Operazione);
+                    }
                 }
             }
         };

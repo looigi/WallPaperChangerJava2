@@ -9,6 +9,7 @@
         android:id="@+id/laySettaggiVideo"
         android:background="@drawable/bordato"
         android:layout_width="match_parent"
+        android:padding="3dp"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -117,57 +118,143 @@
             </TextView>
         </LinearLayout>
 
-        <LinearLayout
+        <HorizontalScrollView
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:gravity="end|center_vertical"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgElimina"
-                android:src="@drawable/elimina"
-                android:layout_width="35dp"
-                android:layout_height="35dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            </ImageView>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgCerca"
-                android:src="@drawable/icona_cerca"
-                android:layout_width="35dp"
-                android:layout_height="35dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Prossimo"
+                        android:layout_height="wrap_content"/>
 
-            </ImageView>
+                    <ImageView
+                        android:id="@+id/imgCerca"
+                        android:src="@drawable/icona_cerca"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgScreenshot"
-                android:src="@drawable/screenshot"
-                android:layout_width="35dp"
-                android:layout_height="35dp">
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Elimina"
+                        android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:id="@+id/imgScreenshotMultipliV"
-                android:src="@drawable/screenshot_multipli"
-                android:layout_width="35dp"
-                android:layout_height="35dp">
+                    <ImageView
+                            android:id="@+id/imgElimina"
+                            android:src="@drawable/elimina"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"/>
+                </LinearLayout>
 
-            </ImageView>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgSpostaACategoria"
-                android:src="@drawable/sposta"
-                android:layout_width="35dp"
-                android:layout_height="35dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Screenshot"
+                        android:layout_height="wrap_content"/>
 
-            </ImageView>
+                    <ImageView
+                        android:id="@+id/imgScreenshot"
+                        android:src="@drawable/screenshot"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgSettingsVideo"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/settings" />
-        </LinearLayout>
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="SS. Multiplo"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgScreenshotMultipliV"
+                        android:src="@drawable/screenshot_multipli"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSpostaACategoria"
+                        android:src="@drawable/sposta"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Settings"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSettingsVideo"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/settings" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
     <LinearLayout

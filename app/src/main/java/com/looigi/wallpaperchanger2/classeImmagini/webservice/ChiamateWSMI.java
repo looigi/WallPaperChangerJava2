@@ -1,11 +1,11 @@
 package com.looigi.wallpaperchanger2.classeImmagini.webservice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
@@ -15,10 +15,9 @@ import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -43,6 +42,7 @@ public class ChiamateWSMI implements TaskDelegate {
     private boolean ApriDialog = false;
     private GifImageView imgAttesa;
     private boolean Sovrascrive = false;
+    private String Categoria;
 
     public ChiamateWSMI(Context context) {
         this.context = context;
@@ -88,6 +88,45 @@ public class ChiamateWSMI implements TaskDelegate {
                 NS,
                 SA,
                 5000,
+                ApriDialog);
+    }
+
+    public void ScaricaImmagini(String Categoria, String Ricerca) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Scarica Immagini " + Categoria);
+
+        this.Categoria = Categoria;
+
+        String Urletto="ScaricaListaImmagini?" +
+                "Categoria=" + Ricerca;
+
+        TipoOperazione = "ScaricaListaImmagini";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                65000,
+                ApriDialog);
+    }
+
+    public void UploadImmagine(String NomeFile, String base64) {
+        String Urletto="UploadImmagine?" +
+                "Categoria=" + VariabiliStaticheMostraImmagini.getInstance().getCategoria().replace("\\", "§") +
+                "&NomeFile=" + NomeFile +
+                "&Base64=" + base64;
+
+        TipoOperazione = "UploadImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                25000,
                 ApriDialog);
     }
 
@@ -162,7 +201,7 @@ public class ChiamateWSMI implements TaskDelegate {
     public void RefreshImmagini(String idCategoria) {
         String Urletto="RefreshImmagini?" +
                 "idCategoria=" + idCategoria +
-                "&Completo=";
+                "&Completo=" + (VariabiliStaticheMostraImmagini.getInstance().isAggiornamentoCompleto() ? "S" : "");
 
         TipoOperazione = "RefreshImmagini";
         // ControllaTempoEsecuzione = false;
@@ -241,6 +280,12 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "SpostaImmagine":
                         fSpostaImmagine(result);
                         break;
+                    case "ScaricaListaImmagini":
+                        fScaricaListaImmagini(result);
+                        break;
+                    case "UploadImmagine":
+                        fUploadImmagine(result);
+                        break;
                 }
 
                 if (imgAttesa != null) {
@@ -267,6 +312,45 @@ public class ChiamateWSMI implements TaskDelegate {
         } else {
             return true;
         }
+    }
+
+    private void fScaricaListaImmagini(String result) {
+        boolean ritorno = ControllaRitorno("Scarica lista immagini categoria " + Categoria, result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            if (!result.isEmpty()) {
+                String[] urls = result.split("§");
+                List<String> urlDaScaricare = new ArrayList<>();
+                for (String url : urls) {
+                    String link = url.replace("*CS*", "§");
+                    urlDaScaricare.add(link);
+                }
+                VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
+
+                Intent si = new Intent(context, MainScaricaImmagini.class);
+                si.addCategory(Intent.CATEGORY_LAUNCHER);
+                si.setAction(Intent.ACTION_MAIN );
+                si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                si.putExtra("MODALITA", "IMMAGINI");
+                si.putExtra("FILTRO", Categoria);
+                context.startActivity(si);
+            }
+        }
+    }
+
+    private void fUploadImmagine(String result) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Upload Immagine", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Upload immagine completato");
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
+
+        UtilityPlayer.getInstance().AttesaSI(false);
     }
 
     private void fModificaImmagine(String result) {

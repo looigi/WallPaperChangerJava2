@@ -21,7 +21,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicConvolve3x3;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeWallpaper.RilevamentoVolti;
+import com.looigi.wallpaperchanger2.utilities.RilevamentoVolti;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;

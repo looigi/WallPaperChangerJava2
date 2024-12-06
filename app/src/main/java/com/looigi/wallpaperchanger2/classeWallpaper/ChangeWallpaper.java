@@ -22,6 +22,7 @@ import android.view.Display;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.GestioneImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
+import com.looigi.wallpaperchanger2.utilities.RilevamentoVolti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;

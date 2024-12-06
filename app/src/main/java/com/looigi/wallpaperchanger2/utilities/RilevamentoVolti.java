@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeWallpaper;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import com.google.mlkit.vision.face.Face;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 import java.util.ArrayList;
 import java.util.List;

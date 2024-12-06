@@ -88,7 +88,8 @@ public class DownloadImmagineMI {
             public void run() {
                 secondiPassati++;
                 if (secondiPassati > VariabiliStaticheMostraImmagini.TimeoutImmagine) {
-                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Timeout per Immagine Scaricata");
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                            "Timeout per Immagine Scaricata");
 
                     if (in != null) {
                         try {

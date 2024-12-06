@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeImmagini;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
@@ -31,7 +34,6 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
@@ -147,6 +149,59 @@ public class MainMostraImmagini extends Activity {
                                     RelativeLayout.LayoutParams.MATCH_PARENT,
                                     RelativeLayout.LayoutParams.WRAP_CONTENT));
                 }
+            }
+        });
+
+        ImageView imgDownload = findViewById(R.id.imgDownloadMI);
+        imgDownload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Categoria = "";
+
+                for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                    if (s.getIdCategoria() == VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()) {
+                        Categoria = s.getCategoria();
+                        break;
+                    }
+                }
+
+                if (Categoria.isEmpty() || Categoria.equals("Tutte")) {
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "Impostare una categoria. Non Tutte");
+                    return;
+                }
+
+                VariabiliStaticheMostraImmagini.getInstance().setCategoria(Categoria);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Nome salvataggio");
+
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(Categoria.replace("_", " "));
+                builder.setView(input);
+
+                String finalCategoria = Categoria;
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String Salvataggio = input.getText().toString();
+                        if (Salvataggio.isEmpty()) {
+                            UtilitiesGlobali.getInstance().ApreToast(context,
+                                    "Immettere un nome categoria");
+                        } else {
+                            ChiamateWSMI ws = new ChiamateWSMI(context);
+                            ws.ScaricaImmagini(finalCategoria, Salvataggio);
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

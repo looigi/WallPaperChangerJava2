@@ -135,7 +135,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classePlayer.scaricaImmagini.scaricaImmagini"
+            android:name=".classeScaricaImmagini.MainScaricaImmagini"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
@@ -315,7 +315,7 @@
 
         <service android:name=".classeDetector.GestioneNotificheDetector$NotificationActionServiceDetector" />
 
-        <service android:name=".notificaTasti.GestioneNotificheTasti$NotificationActionServiceTasti" />
+        <!-- <service android:name=".notificaTasti.GestioneNotificheTasti$NotificationActionServiceTasti" /> -->
 
         <receiver android:name=".AutoStart.yourActivityRunOnStartup"
             android:enabled="true"
@@ -336,6 +336,11 @@
         <activity
             android:name=".classeDetector.widgets.Video"
             android:theme="@style/Theme.Transparent"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".classeModifiche.MainModifiche"
             android:label="@string/app_name" >
         </activity>
 

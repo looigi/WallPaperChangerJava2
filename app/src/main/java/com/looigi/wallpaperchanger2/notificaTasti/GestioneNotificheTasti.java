@@ -335,6 +335,15 @@ public class GestioneNotificheTasti {
             PendingIntent pUscita = PendingIntent.getActivity(ctx, 210, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
+
+            Intent mod = new Intent(ctx, ActivityDiStart.class);
+            mod.addCategory(Intent.CATEGORY_LAUNCHER);
+            mod.setAction(Intent.ACTION_MAIN );
+            mod.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            mod.putExtra("DO", "modifiche");
+            PendingIntent pMod = PendingIntent.getActivity(ctx, 212, mod,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgModificheTasti, pMod);
         }
     }
 

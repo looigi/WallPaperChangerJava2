@@ -164,7 +164,7 @@ public class ChiamateWSFET implements TaskDelegate {
     public void RefreshImmagini(String Categoria) {
         String Urletto="RefreshFetekkie?" +
                 "Categoria=" + Categoria +
-                "&Completo=";
+                "&Completo=" + (VariabiliStaticheMostraImmaginiFetekkie.getInstance().isAggiornamentoCompleto() ? "S" : "");
 
         TipoOperazione = "RefreshFetekkie";
         // ControllaTempoEsecuzione = false;

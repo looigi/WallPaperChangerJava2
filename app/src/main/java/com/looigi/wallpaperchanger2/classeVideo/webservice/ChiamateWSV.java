@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
@@ -128,7 +129,7 @@ public class ChiamateWSV implements TaskDelegate {
     public void RefreshVideo(String Categoria) {
         String Urletto="RefreshVideo?" +
                 "Categoria=" + Categoria +
-                "&Completo=";
+                "&Completo=" + (VariabiliStaticheVideo.getInstance().isAggiornamentoCompleto() ? "S" : "");
 
         TipoOperazione = "RefreshVideo";
         // ControllaTempoEsecuzione = false;

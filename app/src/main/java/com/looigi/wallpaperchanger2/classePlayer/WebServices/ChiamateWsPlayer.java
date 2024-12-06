@@ -26,7 +26,7 @@ import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerTags;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.VaribiliStatichePrefTags;
-import com.looigi.wallpaperchanger2.classePlayer.scaricaImmagini.scaricaImmagini;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.IOException;
@@ -714,11 +714,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 }
                 VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
 
-                Intent si = new Intent(context, scaricaImmagini.class);
+                Intent si = new Intent(context, MainScaricaImmagini.class);
                 si.addCategory(Intent.CATEGORY_LAUNCHER);
                 si.setAction(Intent.ACTION_MAIN );
                 si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
-                si.putExtra("ARTISTA", Artista);
+                si.putExtra("MODALITA", "PLAYER");
+                si.putExtra("FILTRO", Artista);
                 context.startActivity(si);
             }
         }

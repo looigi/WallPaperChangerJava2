@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class VariabiliStaticheOnomastici {
         return instance;
     }
 
-    public static final String UrlImmagini = "http://looigi.no-ip.biz:1085/";
+    public static final String UrlImmagini = VariabiliStaticheStart.UrlWSGlobale + ":1085/"; // "http://looigi.no-ip.biz:1085/";
     private ContentResolver Rubrica;
     private AssetManager Assets;
     private Context context;

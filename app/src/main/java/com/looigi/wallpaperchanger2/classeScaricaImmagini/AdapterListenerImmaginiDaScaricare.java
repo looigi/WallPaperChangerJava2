@@ -1,12 +1,6 @@
-package com.looigi.wallpaperchanger2.classePlayer.scaricaImmagini;
+package com.looigi.wallpaperchanger2.classeScaricaImmagini;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,28 +8,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.File;
 import java.util.List;
 
 public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
     private Context context;
     private List<String> Immagini;
     private LayoutInflater inflater;
-    private String Artista;
+    private String Filtro;
+    private String Modalita;
 
-    public AdapterListenerImmaginiDaScaricare(Context applicationContext, String Artista, List<String> Imms) {
+    public AdapterListenerImmaginiDaScaricare(Context applicationContext, String Modalita,
+                                              String Filtro, List<String> Imms) {
         this.context = applicationContext;
         this.Immagini = Imms;
-        this.Artista = Artista;
+        this.Filtro = Filtro;
+        this.Modalita = Modalita;
 
         inflater = (LayoutInflater.from(applicationContext));
     }
@@ -65,7 +54,8 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
 
             DownloadImmagineSI d = new DownloadImmagineSI();
-            d.EsegueDownload(context, imgImmagine, UrlImmagine, Artista, false, "");
+            d.EsegueDownload(context, imgImmagine, UrlImmagine, Modalita,
+                    Filtro, false, "");
 
             /* imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -78,21 +68,24 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
             ImageView imgScarica = (ImageView) view.findViewById(R.id.imgScarica);
             imgScarica.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Artista, true, "SCARICA");
+                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Modalita,
+                            Filtro, true, "SCARICA");
                 }
             });
 
             ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
             imgCondividi.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Artista, true, "CONDIVIDI");
+                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Modalita,
+                            Filtro, true, "CONDIVIDI");
                 }
             });
 
             ImageView imgCopiaSuSfondi = (ImageView) view.findViewById(R.id.imgCopiaSuSfondi);
             imgCopiaSuSfondi.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Artista, true, "COPIA");
+                    d.EsegueDownload(context, imgImmagine, UrlImmagine, Modalita,
+                            Filtro, true, "COPIA");
                 }
             });
         }

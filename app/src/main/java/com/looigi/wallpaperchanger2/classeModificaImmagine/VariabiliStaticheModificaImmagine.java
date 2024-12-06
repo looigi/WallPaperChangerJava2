@@ -34,10 +34,12 @@ public class VariabiliStaticheModificaImmagine {
     }
 
     public void ImpostaAttesa(boolean Attesa) {
-        if (!Attesa) {
-            imgAttendere.setVisibility(LinearLayout.GONE);
-        } else {
-            imgAttendere.setVisibility(LinearLayout.VISIBLE);
+        if (imgAttendere != null) {
+            if (!Attesa) {
+                imgAttendere.setVisibility(LinearLayout.GONE);
+            } else {
+                imgAttendere.setVisibility(LinearLayout.VISIBLE);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
@@ -130,7 +131,7 @@ public class ChiamateWSF implements TaskDelegate {
     public void RefreshFilms(String Categoria) {
         String Urletto="RefreshFilms?" +
                 "Categoria=" + Categoria +
-                "&Completo=";
+                "&Completo=" + (VariabiliStaticheFilms.getInstance().isAggiornamentoCompleto() ? "S" : "");
 
         TipoOperazione = "RefreshFilms";
         // ControllaTempoEsecuzione = false;

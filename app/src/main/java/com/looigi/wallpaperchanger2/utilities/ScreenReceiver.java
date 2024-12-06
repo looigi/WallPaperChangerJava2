@@ -23,7 +23,7 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie()) {
+        /* if (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie()) {
             if (datella1 == null) {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio schermo 1");
 
@@ -71,10 +71,10 @@ public class ScreenReceiver extends BroadcastReceiver {
                     VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
                 }
             }
-        }
+        } */
 
         if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
-           screenOff = false;
+            screenOff = false;
 
             GestioneNotificheWP.getInstance().AggiornaNotifica();
 

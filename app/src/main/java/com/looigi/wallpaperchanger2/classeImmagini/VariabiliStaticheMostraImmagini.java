@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +36,13 @@ public class VariabiliStaticheMostraImmagini {
 
     private Activity act;
     private Context ctx;
-    public static final String UrlWS = "http://looigi.no-ip.biz:1071/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1071/"; // "http://looigi.no-ip.biz:1071/";
     public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
     public static final int TimeoutImmagine = 5;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;
     private int idCategoria;
+    private String Categoria;
     private String Filtro = "";
     private int idImmagine;
     private String Random = "S";
@@ -63,6 +65,23 @@ public class VariabiliStaticheMostraImmagini {
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
+    private boolean AggiornamentoCompleto = false;
+
+    public boolean isAggiornamentoCompleto() {
+        return AggiornamentoCompleto;
+    }
+
+    public void setAggiornamentoCompleto(boolean aggiornamentoCompleto) {
+        AggiornamentoCompleto = aggiornamentoCompleto;
+    }
+
+    public String getCategoria() {
+        return Categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        Categoria = categoria;
+    }
 
     public TextView getTxtCate() {
         return txtCate;
