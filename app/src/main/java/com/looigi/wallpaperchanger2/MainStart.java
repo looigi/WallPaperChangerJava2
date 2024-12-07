@@ -90,9 +90,9 @@ public class MainStart  extends Activity {
             // UtilityWallpaper.getInstance().generaPath(this);
 
             Permessi pp = new Permessi();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
-            }
+            // }
         }
 
         laySplash = findViewById(R.id.laySplash);
@@ -116,6 +116,12 @@ public class MainStart  extends Activity {
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 3000);
+            } else {
+                Permessi pp = new Permessi();
+                // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
+                // }
+
             }
         }
     }

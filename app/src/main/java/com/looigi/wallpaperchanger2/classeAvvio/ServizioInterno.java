@@ -226,9 +226,11 @@ public class ServizioInterno extends Service {
                 }
             }
 
-            Intent iO = new Intent(context, MainOnomastici.class);
-            iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(iO);
+            if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                Intent iO = new Intent(context, MainOnomastici.class);
+                iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iO);
+            }
 
             // PARTENZA MASCHERE
         } else {
