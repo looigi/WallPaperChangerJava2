@@ -106,7 +106,7 @@ public class DownloadImmagineSI {
                                                             UtilityPlayer.getInstance().AttesaSI(true);
 
                                                             ChiamateWSMI wsmi = new ChiamateWSMI(context);
-                                                            wsmi.UploadImmagine(NomeFile, result);
+                                                            wsmi.UploadImmagine(NomeFile, result, bmImage, UrlImmagine);
                                                             break;
                                                         case "COPIA":
                                                             UtilityImmagini.getInstance().Attesa(true);

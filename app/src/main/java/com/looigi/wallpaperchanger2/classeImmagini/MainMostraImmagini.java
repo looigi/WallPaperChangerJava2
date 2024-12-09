@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
@@ -33,6 +34,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI
 import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -44,6 +46,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainMostraImmagini extends Activity {
     private Context context;
@@ -189,8 +192,46 @@ public class MainMostraImmagini extends Activity {
                             UtilitiesGlobali.getInstance().ApreToast(context,
                                     "Immettere un nome categoria");
                         } else {
+                            VariabiliScaricaImmagini.getInstance().setListaDaScaricare(new ArrayList<>());
+
                             ChiamateWSMI ws = new ChiamateWSMI(context);
                             ws.ScaricaImmagini(finalCategoria, Salvataggio);
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
+        imgNuovaCategoria.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Nuova categoria");
+
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText("");
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String Salvataggio = input.getText().toString();
+
+                        if (Salvataggio.isEmpty()) {
+                            UtilitiesGlobali.getInstance().ApreToast(context,
+                                    "Immettere un nome categoria");
+                        } else {
+                            ChiamateWSMI ws = new ChiamateWSMI(context);
+                            ws.CreaNuovaCategoria(Salvataggio.replace(" ", "_"));
                         }
                     }
                 });
@@ -316,6 +357,34 @@ public class MainMostraImmagini extends Activity {
                     }
                 };
                 handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
+
+        ImageView imgUguali = (ImageView) findViewById(R.id.imgImmaginiUgualiMI);
+        imgUguali.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Categoria = "";
+
+                if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                        if (s.getIdCategoria() == VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()) {
+                            Categoria = s.getCategoria();
+                            break;
+                        }
+                    }
+                    if (Categoria.isEmpty()) {
+                        return;
+                    }
+                } else {
+                    Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoria();
+                }
+
+                Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiUguali.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle b = new Bundle();
+                b.putString("CATEGORIA", Categoria);
+                iP.putExtras(b);
+                VariabiliStaticheMostraImmagini.getInstance().getCtx().startActivity(iP);
             }
         });
 

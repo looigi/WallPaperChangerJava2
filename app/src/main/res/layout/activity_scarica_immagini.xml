@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/txtTitolo"
-        android:text="Immagini artista da scaricare"
+        android:text="Immagini da scaricare"
         android:gravity="center_horizontal"
         android:textColor="@color/Blue"
         android:textSize="18sp"
@@ -16,8 +16,31 @@
 
     </TextView>
 
-    <ListView
+    <LinearLayout
+        android:id="@+id/layTasti"
+        android:gravity="end|center_vertical"
         android:layout_below="@+id/txtTitolo"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtSelezionate"
+            android:layout_marginEnd="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imgSalvaTutte"
+            android:layout_height="35dp"
+            android:layout_width="35dp"
+            android:src="@drawable/icona_salva" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_below="@+id/layTasti"
         android:id="@+id/lstImmagini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -42,4 +65,31 @@
         </pl.droidsonroids.gif.GifImageView>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layPreview"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            
+            <ImageView
+                android:id="@+id/imgChiudePreview"
+                android:layout_width="35dp"
+                android:src="@drawable/elimina_quadrato"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+        
 </RelativeLayout>

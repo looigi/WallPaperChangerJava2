@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="3dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layTesta"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="Tipologia"></TextView>
+
+        <Spinner
+            android:id="@+id/spnTipologie"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgRefresh"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/icona_refresh">
+
+            </ImageView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/layTesta"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="3"
+        android:orientation="vertical">
+
+        <ListView
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_margin="2dp"
+            android:id="@+id/lstTipi"
+            android:divider="@color/black"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></ListView>
+
+        <ListView
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_margin="2dp"
+            android:id="@+id/lstImmagini"
+            android:divider="@color/black"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"></ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layPreview"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgChiudePreview"
+                android:layout_width="35dp"
+                android:src="@drawable/elimina_quadrato"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoMIU"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+    </pl.droidsonroids.gif.GifImageView>
+
+</RelativeLayout>

@@ -139,6 +139,28 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:text="Nuova cat."
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgNuovaCategoriaMI"
+                        android:src="@drawable/icona_aggiunge"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:text="Aggiunge"
                         android:layout_height="wrap_content"/>
 
@@ -187,6 +209,27 @@
                     <ImageView
                         android:id="@+id/imgEliminaMI"
                         android:src="@drawable/elimina"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Imm. Uguali"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImmaginiUgualiMI"
+                        android:src="@drawable/icona_cerca"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>
