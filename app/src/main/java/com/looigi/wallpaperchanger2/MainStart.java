@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -578,7 +579,12 @@ public class MainStart  extends Activity {
                 this,
                 MostraImmaginiLibrary.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(myIntent); */
+        this.startActivity(myIntent);
+
+        Intent i = new Intent(context, MainMostraImmagini.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i); */
+
     }
 
     @Override

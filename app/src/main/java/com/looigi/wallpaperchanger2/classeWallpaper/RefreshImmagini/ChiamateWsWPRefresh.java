@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -109,7 +110,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                 TipoOperazione,
                 NS_Locale,
                 SA_Locale,
-                20000,
+                600000,
                 true,
                 true,
                 false,
@@ -341,6 +342,10 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
                     case "EliminaImmagineSuIoNos":
                         fEliminaImmagineSuIoNos(result);
                         break;
+                }
+
+                if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
+                    VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
                 }
             }
         };

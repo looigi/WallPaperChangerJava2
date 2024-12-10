@@ -158,7 +158,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                60000,
+                600000,
                 ApriDialog);
     }
 
@@ -323,6 +323,11 @@ public class ChiamateWSMI implements TaskDelegate {
                         break;
                 }
 
+
+                if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
+                    VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
+                }
+
                 if (imgAttesa != null) {
                     imgAttesa.setVisibility(LinearLayout.GONE);
                 }
@@ -427,6 +432,7 @@ public class ChiamateWSMI implements TaskDelegate {
         } else {
             if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
                 UtilitiesGlobali.getInstance().ApreToast(context, result);
+                VariabiliScaricaImmagini.getInstance().PulisceCartellaAppoggio(context);
             } else {
                 ScaricaSuccessiva(Modalita, Filtro);
             }
@@ -436,7 +442,9 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     private void ScaricaSuccessiva(String Modalita, String Filtro) {
-        VariabiliScaricaImmagini.getInstance().getListaDaScaricare().remove(0);
+        if (!VariabiliScaricaImmagini.getInstance().getListaDaScaricare().isEmpty()) {
+            VariabiliScaricaImmagini.getInstance().getListaDaScaricare().remove(0);
+        }
 
         VariabiliScaricaImmagini.getInstance().getTxtSelezionate().setText("Selezionate: " +
                 (VariabiliScaricaImmagini.getInstance().getListaDaScaricare().size()));
@@ -453,7 +461,7 @@ public class ChiamateWSMI implements TaskDelegate {
                     DownloadImmagineSI d = new DownloadImmagineSI();
 
                     d.EsegueDownload(context, s.getImgImmagine(), s.getUrlImmagine(), Modalita,
-                            Filtro, true, "SCARICA");
+                            Filtro, true, "SCARICA", 0, null);
                 }
             }, 500);
         } else {
@@ -461,6 +469,7 @@ public class ChiamateWSMI implements TaskDelegate {
             VariabiliScaricaImmagini.getInstance().getImgScaricaTutte().setVisibility(LinearLayout.GONE);
 
             AggiornaImmagini(Modalita, Filtro);
+            VariabiliScaricaImmagini.getInstance().PulisceCartellaAppoggio(context);
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Upload immagini completati");
         }

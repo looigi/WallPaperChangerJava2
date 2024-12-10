@@ -10,6 +10,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
@@ -40,7 +42,8 @@ public class DownloadImmagineSI {
     private InputStream in;
 
     public void EsegueDownload(Context context, ImageView bmImage, String UrlImmagine,
-                               String Modalita, String Filtro, boolean Salva, String TipoOperazione) {
+                               String Modalita, String Filtro, boolean Salva, String TipoOperazione, int numeroScarico,
+                               TextView txtInfoImmagine) {
         this.context = context;
         this.bmImage = bmImage;
 
@@ -103,13 +106,13 @@ public class DownloadImmagineSI {
                                                 case "IMMAGINI":
                                                     switch (TipoOperazione) {
                                                         case "SCARICA":
-                                                            UtilityPlayer.getInstance().AttesaSI(true);
+                                                            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
 
                                                             ChiamateWSMI wsmi = new ChiamateWSMI(context);
                                                             wsmi.UploadImmagine(NomeFile, result, bmImage, UrlImmagine);
                                                             break;
                                                         case "COPIA":
-                                                            UtilityImmagini.getInstance().Attesa(true);
+                                                            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
 
                                                             ChiamateWsWPRefresh ws2 = new ChiamateWsWPRefresh(context);
                                                             ws2.ScriveImmagineSuSfondiLocale("DaImmagini/" + NomeFile, result);
@@ -136,11 +139,13 @@ public class DownloadImmagineSI {
                                                 case "PLAYER":
                                                     switch (TipoOperazione) {
                                                         case "SCARICA":
+                                                            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
+
                                                             ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
                                                             ws.SalvaImmagineArtista(Filtro, NomeFile, result);
                                                             break;
                                                         case "COPIA":
-                                                            UtilityPlayer.getInstance().AttesaSI(true);
+                                                            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
 
                                                             ChiamateWsWPRefresh ws2 = new ChiamateWsWPRefresh(context);
                                                             ws2.ScriveImmagineSuSfondiLocale("DaPlayer/" + NomeFile, result);
@@ -166,17 +171,34 @@ public class DownloadImmagineSI {
                                                     break;
                                             }
                                         }
+                                    } else {
+                                        String NomeFileAppoggio = context.getFilesDir() + "/AppoggioLW/Scarico_" + numeroScarico + ".jpg";
+
+                                        FileOutputStream outStream;
+                                        try {
+                                            outStream = new FileOutputStream(NomeFileAppoggio);
+                                            finalMIcon1.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+                                            outStream.flush();
+                                            outStream.close();
+
+                                            if (txtInfoImmagine != null) {
+                                                txtInfoImmagine.setText(finalMIcon1.getWidth() + "x" + finalMIcon1.getHeight() + " Kb:" + Files.getInstance().DimensioniFile(NomeFileAppoggio));
+                                            }
+                                        } catch (IOException ignored) {
+
+                                        }
                                     }
                                 }
                             }, 100);
                         } else {
-                            ImpostaLogo();
+                            ImpostaLogo(numeroScarico, txtInfoImmagine);
                         }
                     } else {
-                        ImpostaLogo();
+                        ImpostaLogo(numeroScarico, txtInfoImmagine);
                     }
                 } catch (Exception e) {
-                    ImpostaLogo();
+                    ImpostaLogo(numeroScarico, txtInfoImmagine);
 
                     Errore = true;
                 }
@@ -259,12 +281,30 @@ public class DownloadImmagineSI {
         isCancelled = true;
     }
 
-    private void ImpostaLogo() {
+    private void ImpostaLogo(int numeroScarico, TextView txtInfoImmagine) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.player);
                 bmImage.setImageBitmap(bitmap);
+
+                String NomeFileAppoggio = context.getFilesDir() + "/AppoggioLW/Scarico_" + numeroScarico + ".jpg";
+
+                FileOutputStream outStream;
+                try {
+                    outStream = new FileOutputStream(NomeFileAppoggio);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+                    outStream.flush();
+                    outStream.close();
+
+                    if (txtInfoImmagine != null) {
+                        txtInfoImmagine.setText("");
+                    }
+                } catch (IOException ignored) {
+
+                }
+
             }
         }, 10);
     }

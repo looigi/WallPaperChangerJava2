@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -82,7 +83,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TipoOperazione,
                 NS,
                 SA,
-                20000,
+                600000,
                 true,
                 true,
                 false,
@@ -627,6 +628,10 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "Ricerca Brano":
                         fRicercaBrano(result);
                         break;
+                }
+
+                if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
+                    VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
                 }
             }
         };

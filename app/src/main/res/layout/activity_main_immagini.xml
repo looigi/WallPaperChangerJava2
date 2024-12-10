@@ -245,6 +245,27 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:text="Imm. Fuori Cat."
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImmaginiFCMI"
+                        android:src="@drawable/export"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:text="Share"
                         android:layout_height="wrap_content"/>
 

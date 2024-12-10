@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layTesta"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_margin="2dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Alias 1" />
+
+            <EditText
+                android:id="@+id/edtAlias1"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Alias 2" />
+
+            <EditText
+                android:id="@+id/edtAlias2"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Caratteri" />
+
+            <EditText
+                android:id="@+id/edtCaratteri"
+                android:inputType="number"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="And/Or"></TextView>
+
+            <Spinner
+                android:id="@+id/spnAndOr"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchSoloSuAltro"
+            android:layout_width="match_parent"
+            android:textColor="#0000CC"
+            android:text="Solo su categoria 'Altro'"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchCercaSuExif"
+            android:layout_width="match_parent"
+            android:textColor="#0000CC"
+            android:text="Cerca anche su exif"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Tag" />
+
+            <EditText
+                android:id="@+id/edtTag"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end|center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtQuanti"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/Rosso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/imgCerca"
+                android:src="@drawable/icona_cerca"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:layout_below="@+id/layTesta"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_margin="2dp"
+        android:id="@+id/lstImmagini"
+        android:divider="@color/black"
+        android:dividerHeight="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+    <LinearLayout
+        android:id="@+id/layPreview"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgChiudePreview"
+                android:layout_width="35dp"
+                android:src="@drawable/elimina_quadrato"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoIFC"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+    </pl.droidsonroids.gif.GifImageView>
+
+</RelativeLayout>

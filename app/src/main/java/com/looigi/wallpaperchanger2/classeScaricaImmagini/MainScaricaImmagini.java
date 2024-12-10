@@ -57,7 +57,7 @@ public class MainScaricaImmagini extends Activity {
                     DownloadImmagineSI d = new DownloadImmagineSI();
 
                     d.EsegueDownload(context, s.getImgImmagine(), s.getUrlImmagine(), Modalita,
-                            Filtro, true, "SCARICA");
+                            Filtro, true, "SCARICA", 0, null);
                 }
             }
         });

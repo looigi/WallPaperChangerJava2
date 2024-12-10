@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
@@ -382,6 +383,35 @@ public class MainMostraImmagini extends Activity {
                 Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiUguali.class);
                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle b = new Bundle();
+                b.putString("CATEGORIA", Categoria);
+                iP.putExtras(b);
+                VariabiliStaticheMostraImmagini.getInstance().getCtx().startActivity(iP);
+            }
+        });
+
+        ImageView imgFuoriCategoria = (ImageView) findViewById(R.id.imgImmaginiFCMI);
+        imgFuoriCategoria.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Categoria = "";
+
+                if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
+                    for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                        if (s.getIdCategoria() == VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()) {
+                            Categoria = s.getCategoria();
+                            break;
+                        }
+                    }
+                    if (Categoria.isEmpty()) {
+                        return;
+                    }
+                } else {
+                    Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoria();
+                }
+
+                Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiFuoriCategoria.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle b = new Bundle();
+                b.putString("IDCATEGORIA", Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()));
                 b.putString("CATEGORIA", Categoria);
                 iP.putExtras(b);
                 VariabiliStaticheMostraImmagini.getInstance().getCtx().startActivity(iP);

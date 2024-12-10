@@ -1,13 +1,16 @@
 package com.looigi.wallpaperchanger2.classeScaricaImmagini;
 
+import android.content.Context;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,5 +126,18 @@ public class VariabiliScaricaImmagini {
 
     public void setImgScaricaDaDisabilitare(ImageView imgScaricaDaDisabilitare) {
         this.imgScaricaDaDisabilitare = imgScaricaDaDisabilitare;
+    }
+
+    public void PulisceCartellaAppoggio(Context context) {
+        Files.getInstance().CreaCartelle(context.getFilesDir() + "/AppoggioLW");
+
+        File file = new File(context.getFilesDir() + "/AppoggioLW");
+        String[] myFiles;
+
+        myFiles = file.list();
+        for (int i=0; i<myFiles.length; i++) {
+            File myFile = new File(file, myFiles[i]);
+            myFile.delete();
+        }
     }
 }
