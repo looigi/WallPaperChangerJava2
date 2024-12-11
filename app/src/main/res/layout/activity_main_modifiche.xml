@@ -175,6 +175,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/txtQuante"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:textColor="@color/Verde_Scuro"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchSoloAperte"
             android:layout_width="match_parent"
@@ -199,17 +208,38 @@
         android:background="@drawable/bordato_non_trasparente"
         android:padding="3dp"
         android:layout_margin="3dp"
+        android:weightSum="2"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:gravity="center_vertical|end"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgAggiungeModifica"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icona_aggiunge" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgCreaTesto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/notepad" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgAggiungeModifica"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icona_aggiunge" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -232,7 +262,8 @@
         <EditText
             android:id="@+id/edtTipologia"
             android:layout_width="match_parent"
-            android:layout_height="45dp"/>
+            android:maxLines="5"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/layStato"
@@ -242,17 +273,17 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:text="Stato"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnStato"
                 android:layout_width="0dp"
-                android:layout_weight="5"
+                android:layout_weight="7"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
@@ -289,7 +320,7 @@
                     android:src="@drawable/elimina"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
-            </LinearLayout>
+            </LinearLayout> -->
 
         </LinearLayout>
 
@@ -326,7 +357,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/layStati"
         android:layout_width="match_parent"
         android:layout_margin="5dp"
@@ -379,5 +410,5 @@
                     android:layout_height="30dp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout> -->
 </RelativeLayout>

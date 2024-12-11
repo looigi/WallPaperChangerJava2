@@ -59,6 +59,10 @@ public class AdapterListenerModifiche extends BaseAdapter {
 
         if (i < listaModifiche.size()) {
             String NomeModifica = listaModifiche.get(i).getModifica();
+            String Stato = VariabiliStaticheModifiche.getInstance().RitornaStringaStato(
+                                listaModifiche.get(i).getIdStato()
+                            );
+
 
             ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
@@ -69,9 +73,7 @@ public class AdapterListenerModifiche extends BaseAdapter {
                     VariabiliStaticheModifiche.getInstance().setOperazione("UPDATE");
 
                     VariabiliStaticheModifiche.getInstance().getSpnStati().setPrompt(
-                            VariabiliStaticheModifiche.getInstance().RitornaStringaStato(
-                                    listaModifiche.get(i).getIdStato()
-                            )
+                            Stato
                     );
                     VariabiliStaticheModifiche.getInstance().getLayStato().setVisibility(LinearLayout.VISIBLE);
                     VariabiliStaticheModifiche.getInstance().getTxtTipologia().setText("Modifica modifica");
@@ -107,14 +109,17 @@ public class AdapterListenerModifiche extends BaseAdapter {
                 }
             });
 
-            ImageView imgCambiaStato = (ImageView) view.findViewById(R.id.imgCambiaStato);
+            /* ImageView imgCambiaStato = (ImageView) view.findViewById(R.id.imgCambiaStato);
             imgCambiaStato.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                 }
-            });
+            }); */
 
             TextView Modifica = (TextView) view.findViewById(R.id.txtModifica);
             Modifica.setText(NomeModifica);
+
+            TextView StatoModifica = (TextView) view.findViewById(R.id.txtStatoModifica);
+            StatoModifica.setText("Stato: " + Stato);
         }
 
         return view;

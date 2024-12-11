@@ -248,13 +248,15 @@ public class ChiamateWSF implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Film spostato");
-            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            // UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
     private void fRefreshFilms(String result) {
         boolean ritorno = ControllaRitorno("Ritorna Refresh Films", result);
         if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }

@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
 import android.util.Base64;
@@ -125,11 +127,12 @@ public class UtilitiesGlobali {
 
     public void ChiudeApplicazione(Context context) {
         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Uscita\n\n");
+
+        Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
+
         ApreToast(context, "Uscita");
 
         VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
-
-        Activity act = VariabiliStaticheStart.getInstance().getMainActivity();
 
         GestioneNotificheWP.getInstance().RimuoviNotifica();
         GestioneNotifichePlayer.getInstance().RimuoviNotifica();
@@ -491,15 +494,23 @@ public class UtilitiesGlobali {
 
     public void ApreToast(Context context, String messaggio) {
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
-            Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
-            if (context != null && act != null) {
-                act.runOnUiThread(new Runnable() {
+            if (context != null) {
+                /* act.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(context,
                                 messaggio,
                                 Toast.LENGTH_SHORT).show();
                     }
-                });
+                }); */
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context,
+                                messaggio,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }, 10);
+
             }
         }
     }

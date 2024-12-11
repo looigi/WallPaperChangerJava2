@@ -48,7 +48,7 @@
                 </ImageView>
             </LinearLayout>
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
@@ -60,11 +60,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </ImageView>
-            </LinearLayout>
+            </LinearLayout> -->
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="7"
+                android:layout_weight="8"
                 android:paddingStart="3dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical"
@@ -78,6 +78,15 @@
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtStatoModifica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/Rosso"
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 

@@ -396,8 +396,8 @@ public class ChiamateWSFET implements TaskDelegate {
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }
-        // } else {
-        //     UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -460,6 +460,8 @@ public class ChiamateWSFET implements TaskDelegate {
             // Utility.getInstance().VisualizzaMessaggio(result);
         // } else {
         //     UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 }

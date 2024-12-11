@@ -1169,7 +1169,7 @@ public class InizializzaMascheraDetector {
             Messaggio+= "will therefore not be possible to take pictures. However, we are trying to solve the problem. \n \n";
             Messaggio+="The new version will also allow the creation of video and the ability to save your images\n";
             Messaggio+="on a web space\n";
-        } else { */
+        } else {
             Messaggio+="Detector: L'app che Vi permetterà di effettuare foto direttamente da ";
             Messaggio+="un widget dedicato da posizionare nella home del telefono. Sarà possibile, in qualsiasi momento e soltanto tramite pressione sull'icona ";
             Messaggio+="relativa, scattare una foto e trovarsela direttamente nella directory preimpostata ";
@@ -1183,6 +1183,12 @@ public class InizializzaMascheraDetector {
             Messaggio+="La nuova versione permetterà inoltre la creazione di video e la possibilità di salvare le proprie immagini\n";
             Messaggio+="su uno spazio web\n";
         // }
+        */
+
+        Messaggio += "Detector: L'app che Vi permetterà di effettuare tante belle cose\n";
+        Messaggio += "in maniera veloce e semplice senza sforzo alcuno.\n";
+        Messaggio += "Con queste cose potrete trarne beneficio e benevolenza verso il mondo\n";
+        Messaggio += "Android che Vi ringrazierà a pieno regime. Altresì potrei dire anche di no.";
 
         TextView tv=(TextView) act.findViewById(R.id.txtInfoHome);
         tv.setText(Messaggio);

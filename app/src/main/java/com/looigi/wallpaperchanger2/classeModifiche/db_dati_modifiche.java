@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class db_dati_modifiche {
-    private static final String NomeMaschera = "DB_Immagini_MOD";
+    private static final String NomeMaschera = "DB_Modifiche";
 
     private String PathDB;
     private SQLiteDatabase myDB = null;
@@ -42,7 +42,7 @@ public class db_dati_modifiche {
         try {
             f.mkdirs();
         } catch (Exception ignored) {
-
+            int i = 0;
         }
         myDB = ApreDB();
     }
@@ -64,7 +64,6 @@ public class db_dati_modifiche {
             db = context.openOrCreateDatabase(
                     PathDB + nomeDB, 0, null);
         } catch (Exception e) {
-            // Log.getInstance().ScriveLog("ERRORE Nell'apertura del db: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
             int a = 0;
         }
         return  db;
@@ -96,7 +95,12 @@ public class db_dati_modifiche {
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Stati "
-                        + "(idStato NUMERIC, Stato VARCHAR);";
+                        + "(idStato NUMERIC, Stato VARCHAR, Eliminato VARCHAR);";
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "UltimeSelezioni "
+                        + "(Progetto VARCHAR, Modulo VARCHAR, Sezione VARCHAR);";
                 myDB.execSQL(sql);
 
                 return true;
@@ -105,6 +109,43 @@ public class db_dati_modifiche {
             }
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public void LeggeUltimeSelezioni() {
+        if (myDB != null) {
+            VariabiliStaticheModifiche.getInstance().setProgettoSelezionato("");
+            VariabiliStaticheModifiche.getInstance().setModuloSelezionato("");
+            VariabiliStaticheModifiche.getInstance().setSezioneSelezionata("");
+
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM UltimeSelezioni", null);
+                c.moveToFirst();
+                do {
+                    VariabiliStaticheModifiche.getInstance().setProgettoSelezionato(c.getString(0));
+                    VariabiliStaticheModifiche.getInstance().setModuloSelezionato(c.getString(1));
+                    VariabiliStaticheModifiche.getInstance().setSezioneSelezionata(c.getString(2));
+                } while(c.moveToNext());
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    public void ModificaUltimeSelezioni() {
+        if (myDB != null) {
+            try {
+                String sql = "Delete From UltimeSelezioni";
+                myDB.execSQL(sql);
+
+                sql = "Insert Into UltimeSelezioni Values(" +
+                        "'" + VariabiliStaticheModifiche.getInstance().getProgettoSelezionato().replace("'", "''") + "'," +
+                        "'" + VariabiliStaticheModifiche.getInstance().getModuloSelezionato().replace("'", "''") + "'," +
+                        "'" + VariabiliStaticheModifiche.getInstance().getSezioneSelezionata().replace("'", "''") + "'" +
+                        ")";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                int i = 0;
+            }
         }
     }
 
@@ -138,8 +179,8 @@ public class db_dati_modifiche {
                         "Where idProgetto=" + idProgetto;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -151,8 +192,8 @@ public class db_dati_modifiche {
                         "Where idProgetto=" + idProgetto;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -160,7 +201,7 @@ public class db_dati_modifiche {
         List<Progetti> lista = new ArrayList<>();
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM Progetti Order By Progetto", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM Progetti Where Eliminato='N' Order By Progetto", null);
                 c.moveToFirst();
                 do {
                     try {
@@ -170,12 +211,12 @@ public class db_dati_modifiche {
 
                         lista.add(p);
                     } catch (Exception ignored) {
-
+                        int i = 0;
                     }
                 } while(c.moveToNext());
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
 
         return lista;
@@ -199,8 +240,8 @@ public class db_dati_modifiche {
                     myDB.execSQL(sql);
                 }
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -212,8 +253,8 @@ public class db_dati_modifiche {
                         "Where idProgetto=" + idProgetto + " And idModulo=" + idModulo;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -225,8 +266,8 @@ public class db_dati_modifiche {
                         "Where idProgetto=" + idProgetto + " And idModulo=" + idModulo;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -235,27 +276,24 @@ public class db_dati_modifiche {
 
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM Moduli Where idProgetto=" + idProgetto + " " +
+                Cursor c = myDB.rawQuery("SELECT * FROM Moduli Where idProgetto=" + idProgetto + " And Eliminato='N' " +
                         "Order By Modulo", null);
                 c.moveToFirst();
                 do {
-                    c.moveToFirst();
-                    do {
-                        try {
-                            Moduli p = new Moduli();
-                            p.setIdProgetto(c.getInt(0));
-                            p.setIdModulo(c.getInt(1));
-                            p.setModulo(c.getString(2));
+                    try {
+                        Moduli p = new Moduli();
+                        p.setIdProgetto(c.getInt(0));
+                        p.setIdModulo(c.getInt(1));
+                        p.setModulo(c.getString(2));
 
-                            lista.add(p);
-                        } catch (Exception ignored) {
-
-                        }
-                    } while(c.moveToNext());
+                        lista.add(p);
+                    } catch (Exception ignored) {
+                        int i = 0;
+                    }
                 } while(c.moveToNext());
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
 
         return lista;
@@ -280,8 +318,8 @@ public class db_dati_modifiche {
                     myDB.execSQL(sql);
                 }
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -294,8 +332,8 @@ public class db_dati_modifiche {
                         "And idSezione=" + idSezione;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -308,8 +346,8 @@ public class db_dati_modifiche {
                         "And idSezione=" + idSezione;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -319,7 +357,7 @@ public class db_dati_modifiche {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Sezioni Where idProgetto=" + idProgetto + " " +
-                        "And idModulo=" + idModulo + " Order By Sezione", null);
+                        "And idModulo=" + idModulo + " And Eliminato='N' Order By Sezione", null);
                 c.moveToFirst();
                 do {
                     try {
@@ -331,12 +369,12 @@ public class db_dati_modifiche {
 
                         lista.add(p);
                     } catch (Exception ignored) {
-
+                        int i = 0;
                     }
                 } while(c.moveToNext());
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
 
         return lista;
@@ -349,16 +387,16 @@ public class db_dati_modifiche {
 
                 Cursor c1 = myDB.rawQuery("SELECT * FROM Stati", null);
                 if (c1.getCount() == 0) {
-                    sql = "Insert Into Stati Values(0, 'Aperta')";
+                    sql = "Insert Into Stati Values(0, 'Aperta', 'N')";
                     myDB.execSQL(sql);
 
-                    sql = "Insert Into Stati Values(1, 'Da Controllare')";
+                    sql = "Insert Into Stati Values(1, 'Da Controllare', 'N')";
                     myDB.execSQL(sql);
 
-                    sql = "Insert Into Stati Values(2, 'Chiusa')";
+                    sql = "Insert Into Stati Values(2, 'Chiusa', 'N')";
                     myDB.execSQL(sql);
 
-                    sql = "Insert Into Stati Values(3, 'In Dubbio')";
+                    sql = "Insert Into Stati Values(3, 'In Dubbio', 'N')";
                     myDB.execSQL(sql);
                 }
                 c1.close();
@@ -376,14 +414,14 @@ public class db_dati_modifiche {
                             " " + idModulo + "," +
                             " " + idSezione + "," +
                             " " + idModifica + "," +
-                            "'" + Modifica.replace("'", "''") + "'," +
                             "0," +
+                            "'" + Modifica.replace("'", "''") + "'," +
                             "'N')";
                     myDB.execSQL(sql);
                 }
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -393,13 +431,13 @@ public class db_dati_modifiche {
             try {
                 String sql = "Update Modifiche Set " +
                         "Modifica='" + Modifica.replace("'", "''") + "', " +
-                        "idStato=" + idStato + ", " +
+                        "idStato=" + idStato + " " +
                         "Where idProgetto=" + idProgetto + " And idModulo=" + idModulo +
                         " And idSezione=" + idSezione + " And idModifica=" + idModifica;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -412,8 +450,8 @@ public class db_dati_modifiche {
                         " And idSezione=" + idSezione + " And idModifica=" + idModifica;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -425,12 +463,14 @@ public class db_dati_modifiche {
                 String Where = "";
 
                 if (VariabiliStaticheModifiche.getInstance().getSwcSoloAperti().isChecked()) {
-                    Where = "Where idStato = 0";
+                    Where = "And idStato = 0";
                 }
 
-                Cursor c = myDB.rawQuery("SELECT * FROM Modifiche Where " +
+                String sql = "SELECT * FROM Modifiche Where " +
                         "idProgetto=" + idProgetto + " And idModulo=" + idModulo +
-                        " And idSezione=" + idSezione + " " + Where + " Order By idModifica", null);
+                        " And idSezione=" + idSezione + " " + Where + " And Eliminato='N' Order By idModifica";
+
+                Cursor c = myDB.rawQuery(sql, null);
                 c.moveToFirst();
                 do {
                     try {
@@ -439,20 +479,40 @@ public class db_dati_modifiche {
                         p.setIdModulo(c.getInt(1));
                         p.setIdSezione(c.getInt(2));
                         p.setIdModifica(c.getInt(3));
-                        p.setModifica(c.getString(4));
-                        p.setIdStato(c.getInt(5));
+                        p.setIdStato(c.getInt(4));
+                        p.setModifica(c.getString(5));
 
                         lista.add(p);
                     } catch (Exception ignored) {
-
+                        int i = 0;
                     }
                 } while(c.moveToNext());
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
 
+        VariabiliStaticheModifiche.getInstance().setListaModifiche(lista);
+
         return lista;
+    }
+
+    public int RitornaNumeroModificheTotali(int idProgetto, int idModulo, int idSezione) {
+        if (myDB != null) {
+            try {
+                String sql = "SELECT Coalesce(Count(*), 0) FROM Modifiche Where " +
+                        "idProgetto=" + idProgetto + " And idModulo=" + idModulo +
+                        " And idSezione=" + idSezione + " And Eliminato='N'";
+
+                Cursor c = myDB.rawQuery(sql, null);
+                c.moveToFirst();
+                return c.getInt(0);
+            } catch (SQLException e) {
+                int i = 0;
+            }
+        }
+
+        return 0;
     }
 
     public void InserisceNuovoStato(String Stato) {
@@ -471,8 +531,8 @@ public class db_dati_modifiche {
                     myDB.execSQL(sql);
                 }
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -484,8 +544,8 @@ public class db_dati_modifiche {
                         "Where idStato=" + idStato;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -497,8 +557,8 @@ public class db_dati_modifiche {
                         "Where idStato=" + idStato;
                 myDB.execSQL(sql);
             } catch (SQLException e) {
+                int i = 0;
             }
-        } else {
         }
     }
 
@@ -506,7 +566,7 @@ public class db_dati_modifiche {
         List<Stati> lista = new ArrayList<>();
         if (myDB != null) {
             try {
-                Cursor c = myDB.rawQuery("SELECT * FROM Stati Order By Stato", null);
+                Cursor c = myDB.rawQuery("SELECT * FROM Stati Where Eliminato='N' Order By Stato", null);
                 c.moveToFirst();
                 do {
                     try {
@@ -516,14 +576,15 @@ public class db_dati_modifiche {
 
                         lista.add(p);
                     } catch (Exception ignored) {
-
+                        int i = 0;
                     }
                 } while(c.moveToNext());
             } catch (SQLException e) {
                 int a = 0;
             }
-        } else {
         }
+
+        VariabiliStaticheModifiche.getInstance().setListaStati(lista);
 
         return lista;
     }

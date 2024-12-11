@@ -581,10 +581,9 @@ public class MainStart  extends Activity {
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(myIntent);
 
-        Intent i = new Intent(context, MainMostraImmagini.class);
+        Intent i = new Intent(context, MainModifiche.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i); */
-
     }
 
     @Override

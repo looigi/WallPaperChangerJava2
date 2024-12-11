@@ -192,17 +192,6 @@ public class ChiamateWSPEN implements TaskDelegate {
                 TimeStampAttuale,
                 this
         );
-        /* bckAsyncTask = new LetturaWSAsincrona(
-                context,
-                NS,
-                Timeout,
-                SOAP_ACTION,
-                tOperazione,
-                ApriDialog,
-                Urletto,
-                TimeStampAttuale,
-                this);
-        bckAsyncTask.execute(Urletto); */
     }
 
     @Override
@@ -374,6 +363,8 @@ public class ChiamateWSPEN implements TaskDelegate {
             // }
         // } else {
         //     UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -436,6 +427,8 @@ public class ChiamateWSPEN implements TaskDelegate {
             // Utility.getInstance().VisualizzaMessaggio(result);
         // } else {
         //     UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 }

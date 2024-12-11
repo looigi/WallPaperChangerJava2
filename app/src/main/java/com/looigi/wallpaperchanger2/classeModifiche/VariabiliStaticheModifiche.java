@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -72,6 +73,69 @@ public class VariabiliStaticheModifiche {
     private Spinner spnStati;
     private EditText edtStato;
     private SwitchCompat swcSoloAperti;
+    private ImageView imgModificaProgetto;
+    private ImageView imgEliminaProgetto;
+    private ImageView imgModificaModulo;
+    private ImageView imgEliminaModulo;
+    private ImageView imgModificaSezioni;
+    private ImageView imgEliminaSezioni;
+    private TextView txtQuante;
+
+    public TextView getTxtQuante() {
+        return txtQuante;
+    }
+
+    public void setTxtQuante(TextView txtQuante) {
+        this.txtQuante = txtQuante;
+    }
+
+    public ImageView getImgEliminaProgetto() {
+        return imgEliminaProgetto;
+    }
+
+    public void setImgEliminaProgetto(ImageView imgEliminaProgetto) {
+        this.imgEliminaProgetto = imgEliminaProgetto;
+    }
+
+    public ImageView getImgModificaProgetto() {
+        return imgModificaProgetto;
+    }
+
+    public void setImgModificaProgetto(ImageView imgModificaProgetto) {
+        this.imgModificaProgetto = imgModificaProgetto;
+    }
+
+    public ImageView getImgEliminaSezioni() {
+        return imgEliminaSezioni;
+    }
+
+    public void setImgEliminaSezioni(ImageView imgEliminaSezioni) {
+        this.imgEliminaSezioni = imgEliminaSezioni;
+    }
+
+    public ImageView getImgModificaSezioni() {
+        return imgModificaSezioni;
+    }
+
+    public void setImgModificaSezioni(ImageView imgModificaSezioni) {
+        this.imgModificaSezioni = imgModificaSezioni;
+    }
+
+    public ImageView getImgEliminaModulo() {
+        return imgEliminaModulo;
+    }
+
+    public void setImgEliminaModulo(ImageView imgEliminaModulo) {
+        this.imgEliminaModulo = imgEliminaModulo;
+    }
+
+    public ImageView getImgModificaModulo() {
+        return imgModificaModulo;
+    }
+
+    public void setImgModificaModulo(ImageView imgModificaModulo) {
+        this.imgModificaModulo = imgModificaModulo;
+    }
 
     public SwitchCompat getSwcSoloAperti() {
         return swcSoloAperti;
@@ -299,9 +363,11 @@ public class VariabiliStaticheModifiche {
 
     public String[] RitornaStringaStati(List<Stati> listaStati) {
         String[] sStati = new String[listaStati.size()];
+
         int i = 0;
         for (Stati p : listaStati) {
             sStati[i] = p.getStato();
+            i++;
         }
 
         return sStati;
@@ -319,9 +385,13 @@ public class VariabiliStaticheModifiche {
 
     public String[] RitornaStringaProgetti(List<Progetti> listaProgetti) {
         String[] sProgetti = new String[listaProgetti.size()];
+
         int i = 0;
         for (Progetti p : listaProgetti) {
-            sProgetti[i] = p.getProgetto();
+            if (p != null && p.getProgetto() != null) {
+                sProgetti[i] = p.getProgetto();
+                i++;
+            }
         }
 
         return sProgetti;
@@ -339,9 +409,13 @@ public class VariabiliStaticheModifiche {
 
     public String[] RitornaStringaModuli(List<Moduli> listaModuli) {
         String[] sModuli = new String[listaModuli.size()];
+
         int i = 0;
         for (Moduli p : listaModuli) {
-            sModuli[i] = p.getModulo();
+            if (p != null && p.getModulo() != null) {
+                sModuli[i] = p.getModulo();
+                i++;
+            }
         }
 
         return sModuli;
@@ -359,9 +433,13 @@ public class VariabiliStaticheModifiche {
 
     public String[] RitornaStringaSezioni(List<Sezioni> listaSezioni) {
         String[] sSezioni = new String[listaSezioni.size()];
+
         int i = 0;
         for (Sezioni p : listaSezioni) {
-            sSezioni[i] = p.getSezione();
+            if (p != null && p.getSezione() != null) {
+                sSezioni[i] = p.getSezione();
+                i++;
+            }
         }
 
         return sSezioni;
@@ -390,6 +468,14 @@ public class VariabiliStaticheModifiche {
     private void RicaricaProgetti(Context context, db_dati_modifiche db) {
         listaProgetti = db.RitornaProgetti();
 
+        if (!listaProgetti.isEmpty()) {
+            VariabiliStaticheModifiche.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStaticheModifiche.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
@@ -398,8 +484,16 @@ public class VariabiliStaticheModifiche {
         spnProgetto.setAdapter(adapter);
     }
 
-    private void RicaricaModuli(Context context, db_dati_modifiche db) {
+    public List<Moduli> RicaricaModuli(Context context, db_dati_modifiche db) {
         listaModuli = db.RitornaModuli(idProgetto);
+
+        if (!listaModuli.isEmpty()) {
+            VariabiliStaticheModifiche.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStaticheModifiche.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
@@ -407,10 +501,20 @@ public class VariabiliStaticheModifiche {
                 RitornaStringaModuli(listaModuli)
         );
         spnModulo.setAdapter(adapter);
+
+        return listaModuli;
     }
 
-    private void RicaricaSezioni(Context context, db_dati_modifiche db) {
+    public List<Sezioni> RicaricaSezioni(Context context, db_dati_modifiche db) {
         listaSezioni = db.RitornaSezioni(idProgetto, idModulo);
+
+        if (!listaSezioni.isEmpty()) {
+            VariabiliStaticheModifiche.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStaticheModifiche.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModifiche.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
@@ -418,6 +522,8 @@ public class VariabiliStaticheModifiche {
                 RitornaStringaSezioni(listaSezioni)
         );
         spnSezione.setAdapter(adapter);
+
+        return listaSezioni;
     }
 
     private void RicaricaStati(Context context, db_dati_modifiche db) {
@@ -580,5 +686,23 @@ public class VariabiliStaticheModifiche {
         }
 
         db.ChiudeDB();
+    }
+
+    public String PrendeNumeroModifiche(Context context) {
+        db_dati_modifiche db = new db_dati_modifiche(context);
+
+        int modificheTotali = db.RitornaNumeroModificheTotali(
+          VariabiliStaticheModifiche.getInstance().getIdProgetto(),
+          VariabiliStaticheModifiche.getInstance().getIdModulo(),
+          VariabiliStaticheModifiche.getInstance().getIdSezione()
+        );
+
+        String Ritorno = "Modifiche: " +
+                VariabiliStaticheModifiche.getInstance().getListaModifiche().size() +
+                "/" + modificheTotali;
+
+        db.ChiudeDB();
+
+        return Ritorno;
     }
 }
