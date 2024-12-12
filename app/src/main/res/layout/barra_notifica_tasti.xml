@@ -93,6 +93,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/modifiche" />
+
+        <ImageView
+            android:id="@+id/imgOrariTasti"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/orari" />
     </LinearLayout>
 
     <LinearLayout

@@ -34,6 +34,7 @@ import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeModifiche.MainModifiche;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
+import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
@@ -369,6 +370,31 @@ public class MainStart  extends Activity {
                     @Override
                     public void run() {
                         Intent i = new Intent(context, MainModifiche.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgOrari = (ImageView) findViewById(R.id.imgStartOrari);
+        imgOrari.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainOrari.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }

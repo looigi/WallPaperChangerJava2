@@ -27,10 +27,11 @@ public class AdapterListenerTags extends BaseAdapter {
         this.listaTagsOrig = Tags;
         this.listaTags = Tags; //  new ArrayList<>();
         inflater = (LayoutInflater.from(applicationContext));
-        this.Confronto = VaribiliStatichePrefTags.getInstance().getStringaDiConfronto();
+        this.Confronto = VariabiliStatichePrefTags.getInstance().getStringaDiConfronto();
 
         ScriveQuantiSelezionati();
-        VaribiliStatichePrefTags.getInstance().getTxtQuanti().setText("0/" +
+
+        VariabiliStatichePrefTags.getInstance().getTxtQuanti().setText("0/" +
                 listaTagsOrig.size());
     }
 
@@ -55,7 +56,7 @@ public class AdapterListenerTags extends BaseAdapter {
 
         notifyDataSetChanged();
 
-        if (VaribiliStatichePrefTags.getInstance().isSoloSelezionati()) {
+        if (VariabiliStatichePrefTags.getInstance().isSoloSelezionati()) {
             for (int i = 0; i < listaTagsOrig.size(); i++) {
                 String NomeTag = listaTagsOrig.get(i).getTag();
 
@@ -80,7 +81,7 @@ public class AdapterListenerTags extends BaseAdapter {
             }
         }
 
-        VaribiliStatichePrefTags.getInstance().getTxtQuanti().setText(listaTags.size() + "/" +
+        VariabiliStatichePrefTags.getInstance().getTxtQuanti().setText(listaTags.size() + "/" +
                 listaTagsOrig.size());
 
         notifyDataSetChanged();
@@ -94,7 +95,7 @@ public class AdapterListenerTags extends BaseAdapter {
             quanti = s.length;
         }
 
-        VaribiliStatichePrefTags.getInstance().getTxtSelezionati().setText(Integer.toString(quanti));
+        VariabiliStatichePrefTags.getInstance().getTxtSelezionati().setText(Integer.toString(quanti));
     }
 
     @Override
@@ -120,12 +121,19 @@ public class AdapterListenerTags extends BaseAdapter {
 
                     ScriveQuantiSelezionati();
 
-                    VaribiliStatichePrefTags.getInstance().ImpostaStringa(Confronto);
+                    VariabiliStatichePrefTags.getInstance().ImpostaStringa(Confronto);
                 }
             });
 
             TextView tTag = (TextView) view.findViewById(R.id.txtTag);
             tTag.setText(NomeTag);
+
+            tTag.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    VariabiliStatichePrefTags.getInstance().setIdTagSelezionato(Integer.toString(listaTags.get(i).getIdTag()));
+                    VariabiliStatichePrefTags.getInstance().getTxtTagSelezionato().setText(NomeTag);
+                }
+            });
         }
 
         return view;

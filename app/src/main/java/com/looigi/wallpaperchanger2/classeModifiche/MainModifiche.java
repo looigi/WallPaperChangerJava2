@@ -3,7 +3,12 @@ package com.looigi.wallpaperchanger2.classeModifiche;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,15 +22,21 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +86,73 @@ public class MainModifiche extends Activity {
 
         imgCreaTesto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                db_dati_modifiche db = new db_dati_modifiche(context);
+
+                List<Modifiche> listaModificaIniziale = VariabiliStaticheModifiche.getInstance().getListaModifiche();
+                boolean check = VariabiliStaticheModifiche.getInstance().getSwcSoloAperti().isChecked();
+                VariabiliStaticheModifiche.getInstance().getSwcSoloAperti().setChecked(false);
+
+                String Testo = "Modifiche '" + VariabiliStaticheModifiche.getInstance().getProgettoSelezionato().toUpperCase().trim() + "'";
+                Testo += "\n----------------------------------------------------------------";
+                for (Moduli m : VariabiliStaticheModifiche.getInstance().getListaModuli()) {
+                    Testo += "\n     Modulo '" + m.getModulo().toUpperCase().trim() + "':\n";
+                    int idModulo = VariabiliStaticheModifiche.getInstance().TornaIdModulo(
+                            VariabiliStaticheModifiche.getInstance().getListaModuli(),
+                            m.getModulo()
+                    );
+                    List<Sezioni> listaSezioni = db.RitornaSezioni(VariabiliStaticheModifiche.getInstance().getIdProgetto(), idModulo);
+                    for (Sezioni s : listaSezioni) {
+                        Testo += "\n         Sezione '" + s.getSezione().toUpperCase().trim() + "':";
+                        int idSezione = VariabiliStaticheModifiche.getInstance().TornaIdSezione(
+                                VariabiliStaticheModifiche.getInstance().getListaSezioni(),
+                                s.getSezione()
+                        );
+                        List<Modifiche> listaModifiche = db.RitornaModifiche(
+                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
+                                idModulo,
+                                idSezione
+                        );
+                        for (Modifiche modif : listaModifiche) {
+                            int idStato = modif.getIdStato();
+                            String Stato = VariabiliStaticheModifiche.getInstance().RitornaStringaStato(idStato);
+
+                            Testo += "\n             " + modif.getModifica() + " (" + Stato + ")";
+                        }
+                    }
+                }
+                Testo += "\n----------------------------------------------------------------";
+
+                String Path = context.getFilesDir() + "/Appoggio";
+                Files.getInstance().CreaCartelle(Path);
+                String NomeFile = "Modifiche_" + VariabiliStaticheModifiche.getInstance().getProgettoSelezionato() + ".txt";
+                Files.getInstance().EliminaFileUnico(Path + "/" + NomeFile);
+                Files.getInstance().ScriveFile(Path, NomeFile, Testo);
+
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+
+                File f = new File(Path + "/" + NomeFile);
+                Uri uri = FileProvider.getUriForFile(context,
+                        context.getApplicationContext().getPackageName() + ".provider",
+                        f);
+
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, NomeFile);
+                i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                i.putExtra(Intent.EXTRA_STREAM,uri);
+                i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                context.startActivity(Intent.createChooser(i,"Share file modifiche"));
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Files.getInstance().EliminaFile(Path, NomeFile);
+                    }
+                }, 30000);
+
+                VariabiliStaticheModifiche.getInstance().getSwcSoloAperti().setChecked(check);
+                VariabiliStaticheModifiche.getInstance().setListaModifiche(listaModificaIniziale);
             }
         });
 

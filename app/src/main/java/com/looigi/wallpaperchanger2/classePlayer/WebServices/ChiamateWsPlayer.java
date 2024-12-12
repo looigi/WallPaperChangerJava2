@@ -26,7 +26,7 @@ import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerTags;
-import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.VaribiliStatichePrefTags;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.VariabiliStatichePrefTags;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -59,6 +59,96 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     public ChiamateWsPlayer(Context context, boolean Riprova) {
         this.context = context;
         this.Riprova = Riprova;
+    }
+
+    public void SalvaTagsBrano(String idBrano, String idTags) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Salva Tags brano " + idBrano + ": " + idTags);
+
+        String Urletto="SalvaTagsABrano?" +
+                "idBrano=" + idBrano +
+                "&idTags=" + idTags;
+
+        TipoOperazione = "Salva TAGS Brano";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                5000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void EliminaTag(String idTag) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Elimina Tag: " + idTag);
+
+        String Urletto="EliminaTag?" +
+                "idTag=" + idTag;
+
+        TipoOperazione = "Elimina TAG";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                5000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void ModificaTag(String idTag, String Tag) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Modifica Tag: " + Tag);
+
+        String Urletto="ModificaTag?" +
+                "idTag=" + idTag +
+                "&Tag=" + Tag;
+
+        TipoOperazione = "Modifica TAG";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                5000,
+                true,
+                true,
+                false,
+                -1);
+    }
+
+    public void SalvaTag(String Tag) {
+        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
+                "Salva Tag: " + Tag);
+
+        String Urletto="SalvaTag?" +
+                "Tag=" + Tag;
+
+        TipoOperazione = "Salva TAG";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                5000,
+                true,
+                true,
+                false,
+                -1);
     }
 
     public void SalvaImmagineArtista(String Artista, String Immagine, String Base64) {
@@ -224,32 +314,12 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 -1);
     }
 
-    public void RicaricaBrani() {
-        UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani. Eliminazione JSON");
-
-        String Urletto="EliminaJSON?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId();
-
-        TipoOperazione = "EliminaJSON";
-        // ControllaTempoEsecuzione = false;
-
-        Esegue(
-                RadiceWS + ws2 + Urletto,
-                TipoOperazione,
-                NS2,
-                SA2,
-                10000,
-                true,
-                true,
-                false,
-                -1);
-    }
-
-    public void RicaricaBrani2() {
+    public void RicaricaBraniHard() {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ricarica brani2. Creazione JSON");
 
         String Urletto="RefreshCanzoniHard?idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId();
 
-        TipoOperazione = "RefreshCanzoniHard";
+        TipoOperazione = "Refresh Canzoni Hard";
         // ControllaTempoEsecuzione = false;
 
         Esegue(
@@ -257,7 +327,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TipoOperazione,
                 NS2,
                 SA2,
-                200000,
+                500000,
                 true,
                 true,
                 false,
@@ -354,30 +424,28 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                 AdapterListenerTags customAdapterA = new AdapterListenerTags(context,
                         lista);
-                VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
-                VaribiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
+                VariabiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                VariabiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
 
                 return;
             }
         }
 
-        if (EsegueRefresh) {
-            String Urletto = "RitornaListaTags";
+        String Urletto = "RitornaListaTags";
 
-            TipoOperazione = "Ritorna Lista Tags";
-            // ControllaTempoEsecuzione = true;
+        TipoOperazione = "Ritorna Lista Tags";
+        // ControllaTempoEsecuzione = true;
 
-            Esegue(
-                    RadiceWS + ws + Urletto,
-                    TipoOperazione,
-                    NS,
-                    SA,
-                    10000,
-                    false,
-                    true,
-                    false,
-                    -1);
-        }
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                false,
+                true,
+                false,
+                -1);
     }
 
     public void RitornaListaArtisti(boolean EsegueRefresh, boolean PerActivityPrefTags) {
@@ -616,6 +684,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "Ritorna Brani":
                         fRitornaBrani(result);
                         break;
+                    case "Refresh Canzoni Hard":
+                        fRefreshCanzoni(result);
+                        break;
                     case "Modifica Immagine":
                         fModificaImmagine(result);
                         break;
@@ -628,6 +699,18 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "Ricerca Brano":
                         fRicercaBrano(result);
                         break;
+                    case "Salva TAG":
+                        fSalvaTag(result);
+                        break;
+                    case "Modifica TAG":
+                        fModificaTag(result);
+                        break;
+                    case "Elimina TAG":
+                        fEliminaTag(result);
+                        break;
+                    case "Salva TAGS Brano":
+                        fSalvaTagsBrano(result);
+                        break;
                 }
 
                 if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
@@ -636,6 +719,89 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
+    }
+
+    private void fRefreshCanzoni(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Refresh brani", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Brani aggiornati");
+        }
+    }
+
+    private void fSalvaTagsBrano(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Salva Tags Brano", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Tags brano salvati");
+        }
+    }
+
+    private void fEliminaTag(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Elimina Tag", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                    ws.RitornaListaTags(true);
+
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Tag eliminato");
+                }
+            }, 100);
+        }
+    }
+
+    private void fModificaTag(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Modifica Tag", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            VariabiliStatichePrefTags.getInstance().getLayTag().setVisibility(LinearLayout.GONE);
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                    ws.RitornaListaTags(true);
+
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Tag modificato");
+                }
+            }, 100);
+        }
+    }
+
+    private void fSalvaTag(String result) {
+        UtilityPlayer.getInstance().AttesaSI(false);
+
+        boolean ritorno = ControllaRitorno("Salva Tag", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            VariabiliStatichePrefTags.getInstance().getLayTag().setVisibility(LinearLayout.GONE);
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                    ws.RitornaListaTags(true);
+
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Tag salvato");
+                }
+            }, 100);
+        }
     }
 
     private void fRicercaBrano(String result) {
@@ -952,8 +1118,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
             AdapterListenerTags customAdapterA = new AdapterListenerTags(context,
                     lista);
-            VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
-            VaribiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
+            VariabiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+            VariabiliStatichePrefTags.getInstance().setCustomAdapterTag(customAdapterA);
         }
     }
 
@@ -1008,7 +1174,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                 AdapterListenerPreferiti customAdapterA = new AdapterListenerPreferiti(context,
                         lista);
-                VaribiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
+                VariabiliStatichePrefTags.getInstance().getLstArtisti().setAdapter(customAdapterA);
             }
 
             UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "Ritorno artisti effettuato");

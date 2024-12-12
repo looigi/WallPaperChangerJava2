@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/layTesta"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
-        android:padding="3dp"
+        android:padding="2dp"
+        android:layout_margin="2dp"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -43,17 +46,13 @@
                     android:id="@+id/imgFiltroArtisti"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/icona_cerca">
-
-                </ImageView>
+                    android:src="@drawable/icona_cerca"/>
 
                 <ImageView
                     android:id="@+id/imgRefreshArtisti"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/icona_refresh">
-
-                </ImageView>
+                    android:src="@drawable/icona_refresh"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -98,16 +97,122 @@
     </LinearLayout>
 
     <View
+        android:layout_below="@+id/layTesta"
+        android:id="@+id/layBarra"
         android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black" />
 
+    <LinearLayout
+        android:id="@+id/layTags"
+        android:layout_below="@+id/layBarra"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_width="match_parent"
+        android:padding="2dp"
+        android:gravity="end|center_vertical"
+        android:layout_margin="2dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtTagSelezionato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp" />
+
+        <ImageView
+            android:id="@+id/imgAggiungeTag"
+            android:layout_marginEnd="5dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/icona_aggiunge" />
+
+        <ImageView
+            android:id="@+id/imgModificaTag"
+            android:layout_marginEnd="5dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/icona_modifica" />
+
+        <ImageView
+            android:id="@+id/imgEliminaTag"
+            android:layout_marginEnd="5dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/elimina" />
+    </LinearLayout>
+
     <ListView
-        android:id="@+id/lstArtisti"
+        android:layout_below="@+id/layTags"
+        android:id="@+id/lstTagPreferiti"
+        android:padding="2dp"
+        android:layout_margin="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="1dp"
         android:listSelector="#9999EE" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layTag"
+        android:layout_centerInParent="true"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_margin="3dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtTitoloMaschera"
+            android:text=""
+            android:textColor="@color/Rosso"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/edtTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaTag"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaTag"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

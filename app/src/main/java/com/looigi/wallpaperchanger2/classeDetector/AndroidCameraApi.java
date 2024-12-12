@@ -335,6 +335,7 @@ public class AndroidCameraApi extends Activity {
                 "Scatto " + (Scatto + 1) + "/" + QuantiScatti);
 
         CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+
         try {
             cameraId = manager.getCameraIdList()[cameraFronteRetro];
 
@@ -366,6 +367,9 @@ public class AndroidCameraApi extends Activity {
                     CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+
+            captureBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CameraMetadata.LENS_OPTICAL_STABILIZATION_MODE_ON);
+            captureBuilder.set(CaptureRequest.CONTROL_SCENE_MODE, CameraMetadata.CONTROL_SCENE_MODE_HDR);
 
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -466,7 +470,8 @@ public class AndroidCameraApi extends Activity {
 
                                 UtilityDetector.getInstance().ContaFiles(context);
 
-                                VariabiliStaticheStart.getInstance().ChiudeActivity(false);
+                                // VariabiliStaticheStart.getInstance().ChiudeActivity(false);
+                                act.finish();
 
                                 UtilityDetector.getInstance().Vibra(context, 1500);
                                 UtilityDetector.getInstance().VisualizzaToast(context,

@@ -39,7 +39,7 @@ public class VariabiliStaticheStart {
     private Intent servizioForeground;
     // private Intent servizioForegroundGPS;
     private boolean segnaleAttivo = true;
-    public static final String UrlWSGlobale = "http://looigi.ddnsfree.com"; // http://looigi.no-ip.biz:1071/";
+    public static final String UrlWSGlobale = "http://looigi.no-ip.biz"; // http://looigi.no-ip.biz:1071/";
 
     public boolean isSegnaleAttivo() {
         return segnaleAttivo;

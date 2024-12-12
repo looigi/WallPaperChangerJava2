@@ -43,6 +43,7 @@ import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.Main_Preferiti_Tags;
+import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.VariabiliStatichePrefTags;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
@@ -832,6 +833,24 @@ public class impostazioni_player_interne {
                 i.putExtra(Intent.EXTRA_STREAM,uri);
                 i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
                 context.startActivity(Intent.createChooser(i,"Share immagine"));
+            }
+        });
+
+        TextView txtTagsBrano = act.findViewById(R.id.txtTagsBrano);
+        if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null) {
+            txtTagsBrano.setText("Tags: " + VariabiliStatichePlayer.getInstance().getUltimoBrano().getTags());
+        } else {
+            txtTagsBrano.setText("");
+        }
+        VariabiliStatichePrefTags.getInstance().setTxtTagsPerBrano(txtTagsBrano);
+
+        ImageView imgTagsBrano = act.findViewById(R.id.imgTagsBrano);
+        imgTagsBrano.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, Main_Preferiti_Tags.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("DO", "TagsBrano");
+                context.startActivity(i);
             }
         });
     }

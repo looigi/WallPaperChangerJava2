@@ -32,10 +32,10 @@ public class AdapterListenerPreferiti extends BaseAdapter {
         this.listaArtisti = new ArrayList<>();
         inflater = (LayoutInflater.from(applicationContext));
         this.Path = context.getFilesDir() + "/Player/ImmaginiMusica/";
-        this.Confronto = VaribiliStatichePrefTags.getInstance().getStringaDiConfronto();
+        this.Confronto = VariabiliStatichePrefTags.getInstance().getStringaDiConfronto();
 
         ScriveQuantiSelezionati();
-        VaribiliStatichePrefTags.getInstance().getTxtQuanti().setText("0/" +
+        VariabiliStatichePrefTags.getInstance().getTxtQuanti().setText("0/" +
                 listaArtistiOrig.size());
     }
 
@@ -60,7 +60,7 @@ public class AdapterListenerPreferiti extends BaseAdapter {
 
         notifyDataSetChanged();
 
-        if (VaribiliStatichePrefTags.getInstance().isSoloSelezionati()) {
+        if (VariabiliStatichePrefTags.getInstance().isSoloSelezionati()) {
             for (int i = 0; i < listaArtistiOrig.size(); i++) {
                 String NomeArtista = listaArtistiOrig.get(i).getNomeArtista();
 
@@ -85,7 +85,7 @@ public class AdapterListenerPreferiti extends BaseAdapter {
             }
         }
 
-        VaribiliStatichePrefTags.getInstance().getTxtQuanti().setText(listaArtisti.size() + "/" +
+        VariabiliStatichePrefTags.getInstance().getTxtQuanti().setText(listaArtisti.size() + "/" +
                 listaArtistiOrig.size());
 
         notifyDataSetChanged();
@@ -99,7 +99,7 @@ public class AdapterListenerPreferiti extends BaseAdapter {
             quanti = s.length;
         }
 
-        VaribiliStatichePrefTags.getInstance().getTxtSelezionati().setText(Integer.toString(quanti));
+        VariabiliStatichePrefTags.getInstance().getTxtSelezionati().setText(Integer.toString(quanti));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class AdapterListenerPreferiti extends BaseAdapter {
 
                     ScriveQuantiSelezionati();
 
-                    VaribiliStatichePrefTags.getInstance().ImpostaStringa(Confronto);
+                    VariabiliStatichePrefTags.getInstance().ImpostaStringa(Confronto);
                 }
             });
 

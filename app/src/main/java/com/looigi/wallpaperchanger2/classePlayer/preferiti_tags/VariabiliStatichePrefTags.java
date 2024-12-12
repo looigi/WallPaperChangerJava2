@@ -1,19 +1,20 @@
 package com.looigi.wallpaperchanger2.classePlayer.preferiti_tags;
 
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 
-public class VaribiliStatichePrefTags {
-    private static VaribiliStatichePrefTags instance = null;
+public class VariabiliStatichePrefTags {
+    private static VariabiliStatichePrefTags instance = null;
 
-    private VaribiliStatichePrefTags() {
+    private VariabiliStatichePrefTags() {
     }
 
-    public static VaribiliStatichePrefTags getInstance() {
+    public static VariabiliStatichePrefTags getInstance() {
         if (instance == null) {
-            instance = new VaribiliStatichePrefTags();
+            instance = new VariabiliStatichePrefTags();
         }
 
         return instance;
@@ -27,6 +28,11 @@ public class VaribiliStatichePrefTags {
     private TextView txtSelezionati;
     private TextView txtQuanti;
     private String tipoOperazione;
+    private TextView txtTagSelezionato;
+    private String idTagSelezionato;
+    private LinearLayout layTag;
+    private String tagsBrano = "";
+    private TextView txtTagsPerBrano;
 
     public void ImpostaStringa(String Cosa) {
         switch (tipoOperazione) {
@@ -50,7 +56,50 @@ public class VaribiliStatichePrefTags {
                         Cosa
                 );
                 break;
+            case "TagsBrano":
+                tagsBrano =  Cosa;
+                break;
         }
+    }
+
+    public TextView getTxtTagsPerBrano() {
+        return txtTagsPerBrano;
+    }
+
+    public void setTxtTagsPerBrano(TextView txtTagsPerBrano) {
+        this.txtTagsPerBrano = txtTagsPerBrano;
+    }
+
+    public String getTagsBrano() {
+        return tagsBrano;
+    }
+
+    public void setTagsBrano(String tagsBrano) {
+        this.tagsBrano = tagsBrano;
+    }
+
+    public LinearLayout getLayTag() {
+        return layTag;
+    }
+
+    public void setLayTag(LinearLayout layTag) {
+        this.layTag = layTag;
+    }
+
+    public String getIdTagSelezionato() {
+        return idTagSelezionato;
+    }
+
+    public void setIdTagSelezionato(String idTagSelezionato) {
+        this.idTagSelezionato = idTagSelezionato;
+    }
+
+    public TextView getTxtTagSelezionato() {
+        return txtTagSelezionato;
+    }
+
+    public void setTxtTagSelezionato(TextView txtTagSelezionato) {
+        this.txtTagSelezionato = txtTagSelezionato;
     }
 
     public AdapterListenerTags getCustomAdapterTag() {

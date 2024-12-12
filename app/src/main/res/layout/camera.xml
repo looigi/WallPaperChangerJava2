@@ -38,5 +38,13 @@
             android:layout_height="50dp">
 
         </ImageView>
-    </RelativeLayout> -->
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_centerInParent="true"
+        android:src="@drawable/connected"
+        android:layout_width="35dp"
+        android:layout_height="35dp">
+
+    </ImageView> -->
 </RelativeLayout>

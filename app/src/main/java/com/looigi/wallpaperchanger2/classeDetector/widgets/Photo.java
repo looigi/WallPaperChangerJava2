@@ -47,14 +47,21 @@ public class Photo extends Activity {
 				act.startActivity(myIntent);
 
 				UtilityDetector.getInstance().SpegneSchermo(context);
+
+				new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						act.finish();
+					}
+				}, 500);
 			}
 		}, 100);
 
-		VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+		/* VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
 		VariabiliStaticheWallpaper.getInstance().ChiudeActivity(true);
 		VariabiliStaticheStart.getInstance().ChiudeActivity(true);
 
-		/* handlerTimer = new Handler();
+		handlerTimer = new Handler();
 		rTimer = new Runnable() {
 			public void run() {
 				if (VariabiliStaticheStart.getInstance().getMainActivity() != null) {

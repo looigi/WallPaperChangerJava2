@@ -344,6 +344,15 @@ public class GestioneNotificheTasti {
             PendingIntent pMod = PendingIntent.getActivity(ctx, 212, mod,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgModificheTasti, pMod);
+
+            Intent orari = new Intent(ctx, ActivityDiStart.class);
+            orari.addCategory(Intent.CATEGORY_LAUNCHER);
+            orari.setAction(Intent.ACTION_MAIN );
+            orari.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            orari.putExtra("DO", "orari");
+            PendingIntent pOrari = PendingIntent.getActivity(ctx, 213, orari,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgModificheTasti, pOrari);
         }
     }
 

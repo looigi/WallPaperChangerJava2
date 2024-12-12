@@ -46,6 +46,7 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
@@ -1532,6 +1533,14 @@ public class MainImpostazioni extends Activity {
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
+            }
+        });
+
+        Button btnRefresh = act.findViewById(R.id.btnRefreshBrani);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                ws.RicaricaBraniHard();
             }
         });
 

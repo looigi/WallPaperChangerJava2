@@ -24,6 +24,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModifiche.MainModifiche;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
+import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
@@ -58,6 +59,11 @@ public class ActivityDiStart extends Activity {
                     iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(iM);
                     break;
+                case "orari":
+                    Intent iO = new Intent(context, MainOrari.class);
+                    iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iO);
+                    break;
                 case "detector":
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
@@ -81,9 +87,9 @@ public class ActivityDiStart extends Activity {
                     }, 500);
                     break;
                 case "onomastici":
-                    Intent iO = new Intent(context, MainOnomastici.class);
-                    iO.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(iO);
+                    Intent iOn = new Intent(context, MainOnomastici.class);
+                    iOn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iOn);
                     break;
                 case "fetekkie":
                     Intent iFE = new Intent(context, MainMostraFetekkie.class);
