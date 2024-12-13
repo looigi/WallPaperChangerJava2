@@ -1,7 +1,571 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_margin="2dp"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layTesta"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:weightSum="10"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgIndietro"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/indietro" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtData"
+                android:textColor="@color/Blue"
+                android:textSize="18sp"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtNomeGiorno"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgAvanti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/avanti" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/layTesta"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/layContenitore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Tipo lavoro -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtTipoLavoro"
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:textColor="@color/Blue"
+                        android:singleLine="true"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imgCambiaTipoLavoro"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/edit_image" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layDettaglioGiornata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:layout_marginTop="3dp"
+                        android:padding="3dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <!-- Ore giornata -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="6"
+                                android:text="Ore Lavorative:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <EditText
+                                android:inputType="number"
+                                android:id="@+id/txtOreLavoro"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaOreLavoro"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Entrata -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="6"
+                                android:text="Entrata:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <EditText
+                                android:id="@+id/txtEntrata"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaEntrata"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Lavoro -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="4"
+                                android:text="Lavoro:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/txtLavoro"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:textColor="@color/Blue"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaLavoro"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Commessa -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="4"
+                                android:text="Commessa:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/txtCommessa"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:textColor="@color/Blue"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaCommessa"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Note -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edtNote"
+                            android:layout_width="0dp"
+                            android:layout_weight="9"
+                            android:maxLines="5"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="end|center_vertical"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imgCambiaNote"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/edit_image" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Mezzi Andata -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="Mezzi Andata"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/Verde_Scuro"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <ListView
+                                android:id="@+id/lstMezziAndata"
+                                android:divider="@color/black"
+                                android:dividerHeight="1dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            </ListView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Mezzi Ritorno -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="Mezzi Ritorno"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/Verde_Scuro"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <ListView
+                                android:id="@+id/lstMezziRitorno"
+                                android:divider="@color/black"
+                                android:dividerHeight="1dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            </ListView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Portate -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:layout_marginTop="3dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="Portate"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/Verde_Scuro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <ListView
+                            android:id="@+id/lstPranzo"
+                            android:divider="@color/black"
+                            android:dividerHeight="1dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        </ListView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:padding="3dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <!-- Tempo -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="4"
+                                android:text="Tempo:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/txtTempo"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:textColor="@color/Blue"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaTempo"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Gradi -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="6"
+                                android:text="Gradi:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <EditText
+                                android:inputType="number"
+                                android:id="@+id/txtGradi"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaGradi"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                        android:padding="3dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <!-- Pasticca -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="4"
+                                android:text="Pasticca:"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/txtPasticca"
+                                android:layout_width="0dp"
+                                android:layout_weight="5"
+                                android:textColor="@color/Blue"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgCambiaPasticca"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:src="@drawable/edit_image" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layAggiunge"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:padding="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/icona_aggiunge"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoOrari"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+    </pl.droidsonroids.gif.GifImageView>
 </RelativeLayout>

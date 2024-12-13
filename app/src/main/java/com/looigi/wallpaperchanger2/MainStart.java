@@ -605,11 +605,11 @@ public class MainStart  extends Activity {
                 this,
                 MostraImmaginiLibrary.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(myIntent);
+        this.startActivity(myIntent); */
 
-        Intent i = new Intent(context, MainModifiche.class);
+        Intent i = new Intent(context, MainOrari.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i); */
+        context.startActivity(i);
     }
 
     @Override

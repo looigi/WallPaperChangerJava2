@@ -118,8 +118,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                        bitmap = snapshot;
 
                        Calendar calendar = Calendar.getInstance();
-                       String day = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)).trim();
-                       String month = String.valueOf(calendar.get(Calendar.MONTH + 1)).trim();
+                       String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)).trim();
+                       String month = String.valueOf(calendar.get(Calendar.MONTH) + 1).trim();
                        String year = String.valueOf(calendar.get(Calendar.YEAR)).trim();
                        String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)).trim();
                        String minuti = String.valueOf(calendar.get(Calendar.MINUTE)).trim();

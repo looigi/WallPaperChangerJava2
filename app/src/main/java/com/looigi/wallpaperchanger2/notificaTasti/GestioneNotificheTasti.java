@@ -352,7 +352,7 @@ public class GestioneNotificheTasti {
             orari.putExtra("DO", "orari");
             PendingIntent pOrari = PendingIntent.getActivity(ctx, 213, orari,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgModificheTasti, pOrari);
+            view.setOnClickPendingIntent(R.id.imgOrariTasti, pOrari);
         }
     }
 
