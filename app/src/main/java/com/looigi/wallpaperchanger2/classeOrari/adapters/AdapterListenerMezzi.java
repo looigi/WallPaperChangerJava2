@@ -44,7 +44,9 @@ public class AdapterListenerMezzi extends BaseAdapter {
         view = inflter.inflate(R.layout.lista_mezzi, null);
 
         TextView txtSito = (TextView) view.findViewById(R.id.txtMezzo);
-        txtSito.setText(listaMezzi.get(i).getMezzo());
+        txtSito.setText(listaMezzi.get(i).getMezzo() + " " +
+                (listaMezzi.get(i).getDettaglio() == null ? "" : listaMezzi.get(i).getDettaglio())
+        );
 
         ImageView imgAggiunge = view.findViewById(R.id.imgAggiunge);
         imgAggiunge.setOnClickListener(new View.OnClickListener() {

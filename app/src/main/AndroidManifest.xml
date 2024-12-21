@@ -119,6 +119,16 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classeOrari.statisticheOrari.MainStatisticheOrari"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classeOrari.impostazioni_orari.MainImpostazioniOrari"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classePlayer.preferiti_tags.Main_Preferiti_Tags"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />

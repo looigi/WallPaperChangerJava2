@@ -6,10 +6,15 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
 import com.looigi.wallpaperchanger2.classePassword.AdapterListenerPassword;
 import com.looigi.wallpaperchanger2.classePassword.VariabiliStatichePWD;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class UtilityOrari {
     private static UtilityOrari instance = null;
@@ -44,6 +49,65 @@ public class UtilityOrari {
         return day + " " + Mese[month] + " " + year + ";" + Giorni[numeroGiorno];
     }
 
+    public boolean ControllaFormatodata(Context context, String ValoreImpostato) {
+        if (ValoreImpostato.isEmpty()) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immetter un valore");
+            return false;
+        } else {
+            if (!ValoreImpostato.contains(":")) {
+                UtilitiesGlobali.getInstance().ApreToast(context, "Valore non valido");
+                return false;
+            } else {
+                String[] s = ValoreImpostato.split(":");
+                if (s.length < 3) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Valore non valido");
+                    return false;
+                } else {
+                    boolean ok = true;
+                    for (String ss : s) {
+                        if (!UtilityOrari.getInstance().isNumeric(ss)) {
+                            ok = false;
+                        }
+                    }
+                    if (!ok) {
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Valore non valido");
+                        return false;
+                    } else {
+                        int ore = Integer.parseInt(s[0]);
+                        int minuti = Integer.parseInt(s[1]);
+                        int secondi = Integer.parseInt(s[2]);
+
+                        if (ore < 0 || ore > 23) {
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Ore non valide (0-23)");
+                            return false;
+                        } else {
+                            if (minuti < 0 || minuti > 59) {
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Minuti non validi");
+                                return false;
+                            } else {
+                                if (secondi < 0 || secondi > 59) {
+                                    UtilitiesGlobali.getInstance().ApreToast(context, "Secondi non validi");
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
     public void ScriveDatiGiornata(Context context) {
         StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
 
@@ -58,9 +122,11 @@ public class UtilityOrari {
 
             String Lavoro = "";
             boolean visualizzaOre = true;
+            boolean giornoDiLavoro = false;
 
             if (sdg.getQuanteOre() == oreStandard) {
                 Lavoro = "Lavoro in sede / Cliente";
+                giornoDiLavoro = true;
             } else {
                 switch (sdg.getQuanteOre()) {
                     case -1:
@@ -101,6 +167,9 @@ public class UtilityOrari {
             VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(sdg.getLavoro());
             VariabiliStaticheOrari.getInstance().getTxtCommessa().setText(sdg.getCommessa());
             VariabiliStaticheOrari.getInstance().getTxtTempo().setText(sdg.getTempo());
+            if (sdg.getGradi().equals("999")) {
+                sdg.setGradi("");
+            }
             VariabiliStaticheOrari.getInstance().getEdtGradi().setText(sdg.getGradi());
             VariabiliStaticheOrari.getInstance().getTxtPasticca().setText(sdg.getPasticca().get(0).getPasticca());
             VariabiliStaticheOrari.getInstance().getEdtNote().setText(sdg.getNote().toString());
@@ -109,6 +178,32 @@ public class UtilityOrari {
                     VariabiliStaticheOrari.getInstance().getDatiGiornata().getPranzo());
             VariabiliStaticheOrari.getInstance().getLstPranzo().setAdapter(cstmAdptPranzo);
 
+            if (giornoDiLavoro && (VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata() == null ||
+                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata().size() == 0)) {
+                List<StrutturaMezzi> listaAndata = new ArrayList<>();
+                for (StrutturaMezziStandard ss : VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziStandardAndata()) {
+                    for (StrutturaMezzi m : VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi()) {
+                        if (m.getIdMezzo() == ss.getIdMezzo()) {
+                            listaAndata.add(m);
+                        }
+                    }
+                }
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(
+                        listaAndata
+                );
+
+                List<StrutturaMezzi> listaRitorno = new ArrayList<>();
+                for (StrutturaMezziStandard ss : VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziStandardRitorno()) {
+                    for (StrutturaMezzi m : VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi()) {
+                        if (m.getIdMezzo() == ss.getIdMezzo()) {
+                            listaRitorno.add(m);
+                        }
+                    }
+                }
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(
+                        listaRitorno
+                );
+            }
             AdapterListenerMezzi cstmAdptMezziAndata = new AdapterListenerMezzi(context,
                     VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata());
             VariabiliStaticheOrari.getInstance().getLstMezziAndata().setAdapter(cstmAdptMezziAndata);

@@ -37,8 +37,8 @@ public class Permessi {
                 // Manifest.permission.READ_EXTERNAL_STORAGE,
                 // Manifest.permission.WRITE_EXTERNAL_STORAGE,
 
-                Manifest.permission.FOREGROUND_SERVICE_CAMERA,
-                Manifest.permission.FOREGROUND_SERVICE_LOCATION,
+                // Manifest.permission.FOREGROUND_SERVICE_CAMERA,
+                // Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 // Manifest.permission.ACCESS_BACKGROUND_LOCATION,
@@ -65,7 +65,7 @@ public class Permessi {
                 Manifest.permission.MODIFY_AUDIO_SETTINGS,
                 // android.Manifest.permission.BLUETOOTH_ADMIN
                 Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE,
+                // Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE,
 
                 // Manifest.permission.SEND_SMS,
                 Manifest.permission.READ_CONTACTS,

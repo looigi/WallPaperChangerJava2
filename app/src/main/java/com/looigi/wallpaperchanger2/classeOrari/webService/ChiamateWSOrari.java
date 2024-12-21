@@ -3,18 +3,28 @@ package com.looigi.wallpaperchanger2.classeOrari.webService;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Path;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaIndirizzi;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaLavoro;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPasticca;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPranzo;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaRicorrenze;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaTempo;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -41,6 +51,48 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
 
     public ChiamateWSOrari(Context context) {
         this.context = context;
+    }
+
+    public void RitornaCommesseLavoro(String idLavoro) {
+        String Urletto="RitornaCommesseLavoro?" +
+                "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
+                "&idLavoro=" + idLavoro;
+
+        TipoOperazione = "RitornaCommesseLavoro";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaDatiPerModifica(boolean RefreshDati) {
+        if (!RefreshDati) {
+            String PathFile = VariabiliStaticheOrari.getInstance().getPathOrari();
+            String NomeFile = "Dati.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
+                fRitornaDatiPerModificaOrario(Dati);
+                return;
+            }
+        }
+        String Urletto="RitornaDatiPerModificaOrario?" +
+                "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente();
+
+        TipoOperazione = "RitornaDatiPerModificaOrario";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
     }
 
     public void RitornaDatiGiorno() {
@@ -100,6 +152,12 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     case "RitornaOrario":
                         fRitornaOrario(result);
                         break;
+                    case "RitornaDatiPerModificaOrario":
+                        fRitornaDatiPerModificaOrario(result);
+                        break;
+                    case "RitornaCommesseLavoro":
+                        fRitornaCommesseLavoro(result);
+                        break;
                 }
 
                 VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
@@ -120,6 +178,174 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaCommesseLavoro(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno commesse lavoro", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            JSONArray jObject = null;
+            try {
+                jObject = new JSONArray(result);
+                List<StrutturaCommesse> listaCommesse = new ArrayList<>();
+                for(int i = 0; i < jObject.length(); i++) {
+                    JSONObject objCommesse = jObject.getJSONObject(i);
+
+                    StrutturaCommesse s = new StrutturaCommesse();
+                    s.setIdCommessa(objCommesse.getInt("idCommessa"));
+                    s.setDescrizione(objCommesse.getString("Descrizione"));
+                    s.setCommessa(objCommesse.getString("Commessa"));
+                    s.setCliente(objCommesse.getString("Cliente"));
+                    s.setIndirizzo(objCommesse.getString("Indirizzo"));
+                    s.setLatLng(objCommesse.getString("LatLng"));
+                    s.setDataInizio(objCommesse.getString("DataInizio"));
+                    s.setDataFine(objCommesse.getString("DataFine"));
+
+                    listaCommesse.add(s);
+                }
+                VariabiliStaticheOrari.getInstance().setListaCommesse(listaCommesse);
+
+                StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
+                String[] lista = new String[listaCommesse.size()];
+                int i = 0;
+                int qualeRiga = -1;
+                String commessaDefault = "";
+                for (StrutturaCommesse s : listaCommesse) {
+                    if (sdg != null && sdg.isGiornoInserito()) {
+                        if (s.getDescrizione().equals(sdg.getCommessa())) {
+                            qualeRiga = i;
+                        }
+                    } else {
+                        if (s.getIdCommessa() == sdg.getCodCommessa()) {
+                            commessaDefault = s.getDescrizione();
+                        }
+                    }
+                    lista[i] = s.getDescrizione();
+                    i++;
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        (context, android.R.layout.simple_spinner_item, lista);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
+
+                if (sdg == null || !sdg.isGiornoInserito()) {
+                    VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(commessaDefault);
+                } else {
+                    VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
+                }
+                VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    private void fRitornaDatiPerModificaOrario(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno Dati Generali", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String PathFile = VariabiliStaticheOrari.getInstance().getPathOrari();
+            String NomeFile = "Dati.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                Files.getInstance().EliminaFile(PathFile, NomeFile);
+            }
+            Files.getInstance().ScriveFile(PathFile, NomeFile, result);
+
+            JSONArray jObject = null;
+            try {
+                jObject = new JSONArray("[" + result + "]");
+                JSONObject obj = jObject.getJSONObject(0);
+
+                String Tempi = obj.getString("Tempi");
+                JSONArray jObjTempi = new JSONArray(Tempi);
+                List<StrutturaTempo> listaTempi = new ArrayList<>();
+                for(int i = 0; i < jObjTempi.length(); i++) {
+                    JSONObject objTempi = jObjTempi.getJSONObject(i);
+                    StrutturaTempo s = new StrutturaTempo();
+                    s.setIdTempo(objTempi.getInt("idTempo"));
+                    s.setTempo(objTempi.getString("Tempo"));
+
+                    listaTempi.add(s);
+                }
+
+                String Lavori = obj.getString("Lavori");
+                JSONArray jObjLavori = new JSONArray(Lavori);
+                List<StrutturaLavoro> listaLavori = new ArrayList<>();
+                for(int i = 0; i < jObjLavori.length(); i++) {
+                    JSONObject objLavori = jObjLavori.getJSONObject(i);
+                    StrutturaLavoro s = new StrutturaLavoro();
+                    s.setIdLavoro(objLavori.getInt("idLavoro"));
+                    s.setLavoro(objLavori.getString("Lavoro"));
+                    s.setLatlng(objLavori.getString("LatLng"));
+
+                    listaLavori.add(s);
+                }
+
+                String Portate = obj.getString("Portate");
+                JSONArray jObjPortate = new JSONArray(Portate);
+                List<StrutturaPranzo> listaPortate = new ArrayList<>();
+                for(int i = 0; i < jObjPortate.length(); i++) {
+                    JSONObject objPortate = jObjPortate.getJSONObject(i);
+                    StrutturaPranzo s = new StrutturaPranzo();
+                    s.setIdPortata(objPortate.getInt("idPortata"));
+                    s.setPortata(objPortate.getString("Portata"));
+
+                    listaPortate.add(s);
+                }
+
+                String Indirizzi = obj.getString("Indirizzi");
+                JSONArray jObjIndirizzi = new JSONArray(Indirizzi);
+                List<StrutturaIndirizzi> listaIndirizzi = new ArrayList<>();
+                for(int i = 0; i < jObjIndirizzi.length(); i++) {
+                    JSONObject objIndirizzi = jObjIndirizzi.getJSONObject(i);
+                    StrutturaIndirizzi s = new StrutturaIndirizzi();
+                    s.setIdIndirizzo(objIndirizzi.getInt("idIndirizzo"));
+                    s.setIndirizzo(objIndirizzi.getString("Indirizzo"));
+                    s.setLatLng(objIndirizzi.getString("LatLng"));
+
+                    listaIndirizzi.add(s);
+                }
+
+                String Mezzi = obj.getString("Mezzi");
+                JSONArray jObjMezzi = new JSONArray(Mezzi);
+                List<StrutturaMezzi> listaMezzi = new ArrayList<>();
+                for(int i = 0; i < jObjMezzi.length(); i++) {
+                    JSONObject objMezzi = jObjMezzi.getJSONObject(i);
+                    StrutturaMezzi s = new StrutturaMezzi();
+                    s.setIdMezzo(objMezzi.getInt("idMezzo"));
+                    s.setMezzo(objMezzi.getString("Mezzo"));
+
+                    listaMezzi.add(s);
+                }
+
+                String Pasticche = obj.getString("Pasticche");
+                JSONArray jObjPasticche = new JSONArray(Pasticche);
+                List<StrutturaPasticca> listaPasticche = new ArrayList<>();
+                for(int i = 0; i < jObjPasticche.length(); i++) {
+                    JSONObject objPasticche = jObjPasticche.getJSONObject(i);
+                    StrutturaPasticca s = new StrutturaPasticca();
+                    s.setIdPasticca(objPasticche.getInt("idPasticca"));
+                    s.setPasticca(objPasticche.getString("Pasticca"));
+
+                    listaPasticche.add(s);
+                }
+
+                StrutturaDati s2 = new StrutturaDati();
+                s2.setIndirizzi(listaIndirizzi);
+                s2.setLavori(listaLavori);
+                s2.setMezzi(listaMezzi);
+                s2.setPortate(listaPortate);
+                s2.setTempi(listaTempi);
+                s2.setPasticche(listaPasticche);
+
+                VariabiliStaticheOrari.getInstance().setStrutturaDati(s2);
+            } catch (JSONException e) {
+                UtilitiesGlobali.getInstance().ApreToast(context, UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
         }
     }
 

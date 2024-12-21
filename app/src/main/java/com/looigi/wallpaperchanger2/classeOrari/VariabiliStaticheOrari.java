@@ -3,11 +3,15 @@ package com.looigi.wallpaperchanger2.classeOrari;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 
 import java.util.Date;
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -26,6 +30,8 @@ public class VariabiliStaticheOrari {
     }
 
     public static final String UrlWS = "http://www.wsorari.looigi.it/"; // "http://looigi.no-ip.biz:1071/";
+    public String PathOrari;
+
     private Date dataAttuale;
     private int idUtente = 1;
     private GifImageView imgCaricamento;
@@ -46,6 +52,50 @@ public class VariabiliStaticheOrari {
     private ListView lstPranzo;
     private ListView lstMezziAndata;
     private ListView lstMezziRitorno;
+    private StrutturaDati strutturaDati;
+    private Spinner spnValori;
+    private EditText edtValori;
+    private List<StrutturaCommesse> listaCommesse;
+
+    public List<StrutturaCommesse> getListaCommesse() {
+        return listaCommesse;
+    }
+
+    public void setListaCommesse(List<StrutturaCommesse> listaCommesse) {
+        this.listaCommesse = listaCommesse;
+    }
+
+    public Spinner getSpnValori() {
+        return spnValori;
+    }
+
+    public void setSpnValori(Spinner spnValori) {
+        this.spnValori = spnValori;
+    }
+
+    public EditText getEdtValori() {
+        return edtValori;
+    }
+
+    public void setEdtValori(EditText edtValori) {
+        this.edtValori = edtValori;
+    }
+
+    public String getPathOrari() {
+        return PathOrari;
+    }
+
+    public void setPathOrari(String pathOrari) {
+        PathOrari = pathOrari;
+    }
+
+    public StrutturaDati getStrutturaDati() {
+        return strutturaDati;
+    }
+
+    public void setStrutturaDati(StrutturaDati strutturaDati) {
+        this.strutturaDati = strutturaDati;
+    }
 
     public ListView getLstMezziAndata() {
         return lstMezziAndata;
