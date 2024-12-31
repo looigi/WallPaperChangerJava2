@@ -41,8 +41,8 @@
             android:id="@+id/imgSwitchGPSTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/satellite" />
         -->
 
@@ -50,56 +50,56 @@
             android:id="@+id/imgSettingsTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/settings" />
 
         <ImageView
             android:id="@+id/imgPlayerTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/player" />
 
         <ImageView
             android:id="@+id/imgDetectorTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/detector" />
 
         <ImageView
             android:id="@+id/imgWallpaperTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/eye" />
 
         <ImageView
             android:id="@+id/imgPasswordTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/password" />
 
         <ImageView
             android:id="@+id/imgModificheTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/modifiche" />
 
         <ImageView
             android:id="@+id/imgOrariTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/orari" />
     </LinearLayout>
 
@@ -109,49 +109,57 @@
         android:gravity="center_horizontal">
 
         <ImageView
+            android:id="@+id/imgLazioTasti"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/lazio" />
+
+        <ImageView
             android:id="@+id/imgOnomasticiTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/onomastici" />
 
         <ImageView
             android:id="@+id/imgFilmsTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/video2" />
 
         <ImageView
             android:id="@+id/imgFetekkieTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/fetekkie" />
 
         <ImageView
             android:id="@+id/imgBackupTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/backup" />
 
         <ImageView
             android:id="@+id/imgMappaTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/map" />
 
         <ImageView
             android:id="@+id/imgUscitaTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/shutdown" />
@@ -160,24 +168,24 @@
             android:id="@+id/imgImmaginiTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/loovf" />
 
         <ImageView
             android:id="@+id/imgImmaginiVideo"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/video2" />
 
         <ImageView
             android:id="@+id/imgImmaginiPennetta"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/pennetta" /> -->
     </LinearLayout>
 </LinearLayout>

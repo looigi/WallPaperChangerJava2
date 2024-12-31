@@ -707,7 +707,6 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
 
         varDB.ChiudeDB(myDB,tRoutine, tErrore, "CaricaMessaggi", tChiamante);
 
-
         String MessaggiS[];
         MessaggiS=new String[listaMessaggi.size()];
         int i=0;

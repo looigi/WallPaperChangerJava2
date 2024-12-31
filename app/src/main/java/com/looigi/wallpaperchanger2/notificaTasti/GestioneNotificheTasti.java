@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
+import com.looigi.wallpaperchanger2.classeLazio.MainLazio;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
@@ -308,6 +309,15 @@ public class GestioneNotificheTasti {
             PendingIntent pFetekkie = PendingIntent.getActivity(ctx, 211, fetekkie,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgFetekkieTasti, pFetekkie);
+
+            Intent lazio = new Intent(ctx, ActivityDiStart.class);
+            lazio.addCategory(Intent.CATEGORY_LAUNCHER);
+            lazio.setAction(Intent.ACTION_MAIN );
+            lazio.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            lazio.putExtra("DO", "lazio");
+            PendingIntent pLazio = PendingIntent.getActivity(ctx, 214, lazio,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgLazioTasti, pLazio);
 
             Intent pwd = new Intent(ctx, ActivityDiStart.class);
             pwd.addCategory(Intent.CATEGORY_LAUNCHER);

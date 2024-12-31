@@ -36,7 +36,7 @@ import com.looigi.wallpaperchanger2.utilities.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.utilities.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
@@ -707,40 +707,52 @@ public class InizializzaMascheraDetector {
         // layModificaImmagine.setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("DETECTOR");
-                VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
-                    VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia())
-                );
-                Intent i = new Intent(context, Main_ModificaImmagine.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
+                        VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
+                ) {
+                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("DETECTOR");
+                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                            VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia())
+                    );
+
+                    Intent i = new Intent(context, MainModificaImmagine.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna immagine");
+                }
             }
         });
 
         VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String Cartella = UtilityDetector.getInstance().PrendePath(context);
-                String NomeImmagine = Cartella + VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
-                String NomeImmagineSolo = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
+                        VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
+                ) {
+                    String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                    String NomeImmagine = Cartella + VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
+                    String NomeImmagineSolo = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
-                if (Files.getInstance().EsisteFile(NomeImmagine)) {
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
+                    if (Files.getInstance().EsisteFile(NomeImmagine)) {
+                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder.build());
 
-                    File f = new File(NomeImmagine);
-                    Uri uri = FileProvider.getUriForFile(context,
-                            context.getApplicationContext().getPackageName() + ".provider",
-                            f);
+                        File f = new File(NomeImmagine);
+                        Uri uri = FileProvider.getUriForFile(context,
+                                context.getApplicationContext().getPackageName() + ".provider",
+                                f);
 
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, NomeImmagineSolo);
-                    i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
-                    i.putExtra(Intent.EXTRA_STREAM, uri);
-                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
-                    context.startActivity(Intent.createChooser(i, "Share immagine"));
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                        i.putExtra(Intent.EXTRA_SUBJECT, NomeImmagineSolo);
+                        i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                        i.putExtra(Intent.EXTRA_STREAM, uri);
+                        i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                        context.startActivity(Intent.createChooser(i, "Share immagine"));
+                    }
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna immagine");
                 }
-
             }
         });
 
@@ -781,28 +793,34 @@ public class InizializzaMascheraDetector {
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
-                    String Cartella = UtilityDetector.getInstance().PrendePath(context);
-                    String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
+                        VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
+                ) {
+                    if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+                        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+                        String NomeImmagine = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
-                    try {
-                        File file = new File(Cartella + NomeImmagine);
-                        boolean deleted = file.delete();
-                    } catch (Exception ignored) {
+                        try {
+                            File file = new File(Cartella + NomeImmagine);
+                            boolean deleted = file.delete();
+                        } catch (Exception ignored) {
 
+                        }
+
+                        UtilityDetector.getInstance().EliminaPV3Inutili(context);
+
+                        int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                        UtilityDetector.getInstance().CaricaMultimedia(context);
+                        appo--;
+                        if (appo < 0) appo = 0;
+                        VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
+                        UtilityDetector.getInstance().VisualizzaMultimedia(context);
+                        UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
+
+                        UtilityDetector.getInstance().ContaFiles(context);
                     }
-
-                    UtilityDetector.getInstance().EliminaPV3Inutili(context);
-
-                    int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
-                    UtilityDetector.getInstance().CaricaMultimedia(context);
-                    appo--;
-                    if (appo < 0) appo = 0;
-                    VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
-                    UtilityDetector.getInstance().VisualizzaMultimedia(context);
-                    UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
-
-                    UtilityDetector.getInstance().ContaFiles(context);
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna immagine");
                 }
             }
         });

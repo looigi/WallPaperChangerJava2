@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeModifiche;
+package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,20 +6,17 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Modifiche;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Moduli;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Progetti;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Sezioni;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Stati;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class db_dati_modifiche {
+public class db_dati_modifiche_codice {
     private static final String NomeMaschera = "DB_Modifiche";
 
     private String PathDB;
@@ -34,7 +31,7 @@ public class db_dati_modifiche {
         }
     }
 
-    public db_dati_modifiche(Context context) {
+    public db_dati_modifiche_codice(Context context) {
         this.context = context;
         PathDB = UtilityDetector.getInstance().PrendePathDB(context);
 
@@ -114,17 +111,17 @@ public class db_dati_modifiche {
 
     public void LeggeUltimeSelezioni() {
         if (myDB != null) {
-            VariabiliStaticheModifiche.getInstance().setProgettoSelezionato("");
-            VariabiliStaticheModifiche.getInstance().setModuloSelezionato("");
-            VariabiliStaticheModifiche.getInstance().setSezioneSelezionata("");
+            VariabiliStaticheModificheCodice.getInstance().setProgettoSelezionato("");
+            VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato("");
+            VariabiliStaticheModificheCodice.getInstance().setSezioneSelezionata("");
 
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM UltimeSelezioni", null);
                 c.moveToFirst();
                 do {
-                    VariabiliStaticheModifiche.getInstance().setProgettoSelezionato(c.getString(0));
-                    VariabiliStaticheModifiche.getInstance().setModuloSelezionato(c.getString(1));
-                    VariabiliStaticheModifiche.getInstance().setSezioneSelezionata(c.getString(2));
+                    VariabiliStaticheModificheCodice.getInstance().setProgettoSelezionato(c.getString(0));
+                    VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato(c.getString(1));
+                    VariabiliStaticheModificheCodice.getInstance().setSezioneSelezionata(c.getString(2));
                 } while(c.moveToNext());
             } catch (Exception ignored) {
             }
@@ -138,9 +135,9 @@ public class db_dati_modifiche {
                 myDB.execSQL(sql);
 
                 sql = "Insert Into UltimeSelezioni Values(" +
-                        "'" + VariabiliStaticheModifiche.getInstance().getProgettoSelezionato().replace("'", "''") + "'," +
-                        "'" + VariabiliStaticheModifiche.getInstance().getModuloSelezionato().replace("'", "''") + "'," +
-                        "'" + VariabiliStaticheModifiche.getInstance().getSezioneSelezionata().replace("'", "''") + "'" +
+                        "'" + VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato().replace("'", "''") + "'," +
+                        "'" + VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato().replace("'", "''") + "'," +
+                        "'" + VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata().replace("'", "''") + "'" +
                         ")";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -462,7 +459,7 @@ public class db_dati_modifiche {
             try {
                 String Where = "";
 
-                if (VariabiliStaticheModifiche.getInstance().getSwcSoloAperti().isChecked()) {
+                if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
                     Where = "And idStato = 0";
                 }
 
@@ -492,7 +489,7 @@ public class db_dati_modifiche {
             }
         }
 
-        VariabiliStaticheModifiche.getInstance().setListaModifiche(lista);
+        VariabiliStaticheModificheCodice.getInstance().setListaModifiche(lista);
 
         return lista;
     }
@@ -584,7 +581,7 @@ public class db_dati_modifiche {
             }
         }
 
-        VariabiliStaticheModifiche.getInstance().setListaStati(lista);
+        VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
 
         return lista;
     }

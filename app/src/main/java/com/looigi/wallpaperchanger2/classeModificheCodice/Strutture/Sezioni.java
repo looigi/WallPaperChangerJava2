@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeModifiche.Strutture;
+package com.looigi.wallpaperchanger2.classeModificheCodice.Strutture;
 
 public class Sezioni {
     int idProgetto;

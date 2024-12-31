@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
-import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
@@ -22,7 +20,8 @@ import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGps.MainMappa;
 import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeModifiche.MainModifiche;
+import com.looigi.wallpaperchanger2.classeLazio.MainLazio;
+import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
@@ -54,8 +53,13 @@ public class ActivityDiStart extends Activity {
                     iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(iI);
                     break;
+                case "lazio":
+                    Intent iL = new Intent(context, MainLazio.class);
+                    iL.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(iL);
+                    break;
                 case "modifiche":
-                    Intent iM = new Intent(context, MainModifiche.class);
+                    Intent iM = new Intent(context, MainModificheCodice.class);
                     iM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(iM);
                     break;

@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classeMappeSalvate;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -56,5 +57,19 @@ public class MainMappeSalvate extends Activity {
 
         VariabiliStaticheGPS.getInstance().setImgMappa(null);
         this.finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

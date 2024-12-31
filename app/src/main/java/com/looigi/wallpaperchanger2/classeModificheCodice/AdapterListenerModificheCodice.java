@@ -1,9 +1,7 @@
-package com.looigi.wallpaperchanger2.classeModifiche;
+package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +13,16 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Modifiche;
-import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
-import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.DownloadImmagineWP;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterListenerModifiche extends BaseAdapter {
+public class AdapterListenerModificheCodice extends BaseAdapter {
     private Context context;
     private List<Modifiche> listaModifiche;
     private LayoutInflater inflater;
 
-    public AdapterListenerModifiche(Context applicationContext, List<Modifiche> Modifiche) {
+    public AdapterListenerModificheCodice(Context applicationContext, List<Modifiche> Modifiche) {
         this.context = applicationContext;
         this.listaModifiche = Modifiche;
         inflater = (LayoutInflater.from(applicationContext));
@@ -59,7 +49,7 @@ public class AdapterListenerModifiche extends BaseAdapter {
 
         if (i < listaModifiche.size()) {
             String NomeModifica = listaModifiche.get(i).getModifica();
-            String Stato = VariabiliStaticheModifiche.getInstance().RitornaStringaStato(
+            String Stato = VariabiliStaticheModificheCodice.getInstance().RitornaStringaStato(
                                 listaModifiche.get(i).getIdStato()
                             );
 
@@ -67,18 +57,18 @@ public class AdapterListenerModifiche extends BaseAdapter {
             ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliStaticheModifiche.getInstance().setIdModifica(listaModifiche.get(i).getIdModifica());
+                    VariabiliStaticheModificheCodice.getInstance().setIdModifica(listaModifiche.get(i).getIdModifica());
 
-                    VariabiliStaticheModifiche.getInstance().setTipologia("MODIFICA");
-                    VariabiliStaticheModifiche.getInstance().setOperazione("UPDATE");
+                    VariabiliStaticheModificheCodice.getInstance().setTipologia("MODIFICA");
+                    VariabiliStaticheModificheCodice.getInstance().setOperazione("UPDATE");
 
-                    VariabiliStaticheModifiche.getInstance().getSpnStati().setPrompt(
+                    VariabiliStaticheModificheCodice.getInstance().getSpnStati().setPrompt(
                             Stato
                     );
-                    VariabiliStaticheModifiche.getInstance().getLayStato().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliStaticheModifiche.getInstance().getTxtTipologia().setText("Modifica modifica");
-                    VariabiliStaticheModifiche.getInstance().getEdtTipologia().setText(NomeModifica);
-                    VariabiliStaticheModifiche.getInstance().getLayTipologia().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStaticheModificheCodice.getInstance().getLayStato().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStaticheModificheCodice.getInstance().getTxtTipologia().setText("Modifica modifica");
+                    VariabiliStaticheModificheCodice.getInstance().getEdtTipologia().setText(NomeModifica);
+                    VariabiliStaticheModificheCodice.getInstance().getLayTipologia().setVisibility(LinearLayout.VISIBLE);
                 }
             });
 
@@ -90,12 +80,12 @@ public class AdapterListenerModifiche extends BaseAdapter {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            VariabiliStaticheModifiche.getInstance().setIdModifica(listaModifiche.get(i).getIdModifica());
+                            VariabiliStaticheModificheCodice.getInstance().setIdModifica(listaModifiche.get(i).getIdModifica());
 
-                            VariabiliStaticheModifiche.getInstance().setTipologia("MODIFICA");
-                            VariabiliStaticheModifiche.getInstance().setOperazione("DELETE");
+                            VariabiliStaticheModificheCodice.getInstance().setTipologia("MODIFICA");
+                            VariabiliStaticheModificheCodice.getInstance().setOperazione("DELETE");
 
-                            VariabiliStaticheModifiche.getInstance().EffettuaSalvataggio(context);
+                            VariabiliStaticheModificheCodice.getInstance().EffettuaSalvataggio(context);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
