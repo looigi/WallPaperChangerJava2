@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -94,6 +95,8 @@ public class MainOrari extends Activity {
         VariabiliStaticheOrari.getInstance().setTxtTempo(findViewById(R.id.txtTempo));
         VariabiliStaticheOrari.getInstance().setEdtGradi(findViewById(R.id.txtGradi));
         VariabiliStaticheOrari.getInstance().setTxtPasticca(findViewById(R.id.txtPasticca));
+        VariabiliStaticheOrari.getInstance().setTxtTipoGiorno(findViewById(R.id.txtTipoGiorno));
+        VariabiliStaticheOrari.getInstance().setTxtNumeroGiorno(findViewById(R.id.txtNumeroGiorno));
         VariabiliStaticheOrari.getInstance().setEdtNote(findViewById(R.id.edtNote));
         VariabiliStaticheOrari.getInstance().setLstPranzo(findViewById(R.id.lstPranzo));
         VariabiliStaticheOrari.getInstance().setLstMezziAndata(findViewById(R.id.lstMezziAndata));
@@ -568,6 +571,8 @@ public class MainOrari extends Activity {
         ImageView imgSalva = findViewById(R.id.imgSalva);
         imgSalva.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ChiamateWSOrari ws = new ChiamateWSOrari(context);
+                ws.ScriveOrario();
             }
         });
 
@@ -581,7 +586,213 @@ public class MainOrari extends Activity {
         String oggi = UtilityOrari.getInstance().RitornaData();
         String[] o = oggi.split(";");
 
-        txtData.setText(o[0]);
+        String tipoGiorno = "";
+        int colore = 0;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(VariabiliStaticheOrari.getInstance().getDataAttuale());
+
+        int Giorno = calendar.get(Calendar.DAY_OF_MONTH);
+        int Mese = calendar.get(Calendar.MONTH) + 1;
+        int Anno = calendar.get(Calendar.YEAR);
+
+        String[] Giorni = {"Domenica", "Lunedì", "Martedì", "Mercoledì",
+                "Giovedì", "Venerdì", "Sabato" };
+        int numeroGiorni = 0;
+        int giorniMese = 30;
+
+        if (Mese == 2) {
+            giorniMese = 28;
+        } else {
+            if (Mese == 1 || Mese == 3 || Mese == 5 || Mese == 7 || Mese == 8 || Mese == 10 || Mese == 12) {
+                giorniMese = 31;
+            }
+        }
+
+        int giorniAnno = 365;
+        if (Anno%400 == 0 || (Anno%4 == 0 && Anno%100 != 0)) {
+            giorniAnno = 366;
+            if (Mese == 2) {
+                giorniMese = 29;
+            }
+        }
+
+        for (int i = 1; i <= giorniMese; i++) {
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.DAY_OF_MONTH, i);
+            calendar2.set(Calendar.MONTH, Mese - 1);
+            calendar2.set(Calendar.YEAR, Anno);
+
+            int numeroGiorno = calendar2.get(Calendar.DAY_OF_WEEK) - 1;
+            String NomeGiorno = Giorni[numeroGiorno];
+            if (!NomeGiorno.equals("Sabato") && !NomeGiorno.equals("Domenica")) {
+                numeroGiorni++;
+            }
+        }
+
+        // Controllo festività
+        switch(Mese) {
+            case 1:
+                numeroGiorni-=2;
+
+                switch (Giorno) {
+                    case 1:
+                        colore = 1;
+                        tipoGiorno = "Capodanno";
+                        break;
+                    case 6:
+                        colore = 1;
+                        tipoGiorno = "Befana";
+                        break;
+                }
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                numeroGiorni-=1;
+
+                switch (Giorno) {
+                    case 25:
+                        colore = 1;
+                        tipoGiorno = "Liberazione";
+                        break;
+                }
+                break;
+            case 5:
+                numeroGiorni-=1;
+
+                switch (Giorno) {
+                    case 1:
+                        colore = 1;
+                        tipoGiorno = "Festa del lavoro";
+                        break;
+                }
+                break;
+            case 6:
+                numeroGiorni-=1;
+
+                switch (Giorno) {
+                    case 2:
+                        colore = 1;
+                        tipoGiorno = "Festa Repubblica";
+                        break;
+                }
+                break;
+            case 7:
+                break;
+            case 8:
+                numeroGiorni-=1;
+
+                switch (Giorno) {
+                    case 15:
+                        colore = 1;
+                        tipoGiorno = "Ferragosto";
+                        break;
+                }
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                numeroGiorni-=1;
+
+                switch (Giorno) {
+                    case 1:
+                        colore = 1;
+                        tipoGiorno = "Ognissanti";
+                        break;
+                }
+                break;
+            case 12:
+                numeroGiorni-=3;
+
+                switch (Giorno) {
+                    case 15:
+                        colore = 1;
+                        tipoGiorno = "Immacolata";
+                        break;
+                    case 25:
+                        colore = 1;
+                        tipoGiorno = "Natale";
+                        break;
+                    case 26:
+                        colore = 1;
+                        tipoGiorno = "Santo Stefano";
+                        break;
+                }
+                break;
+        }
+
+        if (colore == 0) {
+            String Pasqua = UtilityOrari.getInstance().RitornaPasqua(Anno);
+            String[] psq = Pasqua.split(";");
+            int giornoPasqua = Integer.parseInt(psq[0]);
+            int mesePasqua = Integer.parseInt(psq[1]);
+
+            if (giornoPasqua == Giorno && mesePasqua == Mese) {
+                numeroGiorni-=2;
+
+                colore = 1;
+                tipoGiorno = "Pasqua";
+            } else {
+                int giornoPasquetta = giornoPasqua + 1;
+                int mesePasquetta = mesePasqua;
+                if (mesePasquetta == 3 || mesePasquetta == 5) {
+                    if (giornoPasquetta > 31) {
+                        giornoPasquetta = 1;
+                        mesePasquetta++;
+                    }
+                } else {
+                    if (giornoPasquetta > 30) {
+                        giornoPasquetta = 1;
+                        mesePasquetta++;
+                    }
+                }
+
+                if (giornoPasquetta  == Giorno && mesePasquetta == Mese) {
+                    numeroGiorni-=2;
+
+                    colore = 1;
+                    tipoGiorno = "Pasquetta";
+                }
+            }
+        }
+
+        if (colore == 0) {
+            if (o[1].equals("Sabato")) {
+                colore = 2;
+                tipoGiorno = "Festivo";
+            } else {
+                if (o[1].equals("Domenica")) {
+                    colore = 1;
+                    tipoGiorno = "Festivo";
+                }
+            }
+        }
+
+        if (colore == 0) {
+            tipoGiorno = "Feriale";
+        }
+
+        String sColore = "#000000";
+        switch (colore) {
+            case 1:
+                sColore = "#FF0000";
+                break;
+            case 2:
+                sColore = "#AA0000";
+                break;
+        }
+        VariabiliStaticheOrari.getInstance().getTxtTipoGiorno().setTextColor(Color.parseColor(sColore));
+        txtNomeGiorno.setTextColor(Color.parseColor(sColore));
+        VariabiliStaticheOrari.getInstance().getTxtNumeroGiorno().setText(calendar.get(Calendar.DAY_OF_YEAR) + "/" + giorniAnno);
+        VariabiliStaticheOrari.getInstance().getTxtNumeroGiorno().setTextColor(Color.parseColor(sColore));
+        VariabiliStaticheOrari.getInstance().getTxtTipoGiorno().setText(tipoGiorno);
+
+        txtData.setText(o[0] + " (Lav. " + numeroGiorni + "/" + giorniMese + ")");
         txtNomeGiorno.setText(o[1]);
 
         ChiamateWSOrari ws = new ChiamateWSOrari(context);

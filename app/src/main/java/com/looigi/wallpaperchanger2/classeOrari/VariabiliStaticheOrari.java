@@ -56,6 +56,33 @@ public class VariabiliStaticheOrari {
     private Spinner spnValori;
     private EditText edtValori;
     private List<StrutturaCommesse> listaCommesse;
+    private boolean PrendeCommessePerSalvataggio = false;
+    private TextView txtTipoGiorno;
+    private TextView txtNumeroGiorno;
+
+    public TextView getTxtNumeroGiorno() {
+        return txtNumeroGiorno;
+    }
+
+    public void setTxtNumeroGiorno(TextView txtNumeroGiorno) {
+        this.txtNumeroGiorno = txtNumeroGiorno;
+    }
+
+    public TextView getTxtTipoGiorno() {
+        return txtTipoGiorno;
+    }
+
+    public void setTxtTipoGiorno(TextView txtTipoGiorno) {
+        this.txtTipoGiorno = txtTipoGiorno;
+    }
+
+    public boolean isPrendeCommessePerSalvataggio() {
+        return PrendeCommessePerSalvataggio;
+    }
+
+    public void setPrendeCommessePerSalvataggio(boolean prendeCommessePerSalvataggio) {
+        PrendeCommessePerSalvataggio = prendeCommessePerSalvataggio;
+    }
 
     public List<StrutturaCommesse> getListaCommesse() {
         return listaCommesse;

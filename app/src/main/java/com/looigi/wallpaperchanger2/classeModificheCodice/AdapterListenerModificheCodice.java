@@ -53,7 +53,6 @@ public class AdapterListenerModificheCodice extends BaseAdapter {
                                 listaModifiche.get(i).getIdStato()
                             );
 
-
             ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

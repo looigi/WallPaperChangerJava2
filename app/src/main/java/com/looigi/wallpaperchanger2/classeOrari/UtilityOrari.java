@@ -35,6 +35,24 @@ public class UtilityOrari {
     private String[] Giorni = {"Domenica", "Lunedì", "Martedì", "Mercoledì",
         "Giovedì", "Venerdì", "Sabato" };
 
+    public String RitornaPasqua(int Anno) {
+        int a = Anno % 19,
+        b = Anno / 100,
+        c = Anno % 100,
+        d = b / 4,
+        e = b % 4,
+        g = (8 * b + 13) / 25,
+        h = (19 * a + b - d - g + 15) % 30,
+        j = c / 4,
+        k = c % 4,
+        m = (a + 11 * h) / 319,
+        r = (2 * e + 2 * j - k - h + m + 32) % 7,
+        month = (h - m + r + 90) / 25,
+        day = (h - m + r + month + 19) % 32;
+
+        return day + ";" + month;
+    }
+
     public String RitornaData() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(VariabiliStaticheOrari.getInstance().getDataAttuale());

@@ -87,11 +87,11 @@
 
             <TextView
                 android:id="@+id/txtIdImmagine"
-                android:gravity="center_horizontal"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/Blue"
-                android:layout_height="wrap_content">
+                android:gravity="center_horizontal"
+                android:textColor="@color/Blue">
 
             </TextView>
 

@@ -107,7 +107,7 @@ public class GestioneDB {
 		try{
     		String myPath = DB_PATH + DB_NAME;
     		checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-    	}catch(SQLiteException e){
+    	} catch (SQLiteException e){
      	   tChiamante2.setText(tChiamante);
     	   tRoutine.setText("CheckDB");
      	   tErrore.setText(e.getMessage());

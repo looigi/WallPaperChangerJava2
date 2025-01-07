@@ -45,6 +45,10 @@ public class DownloadImmagineWP {
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine, String Url,
                                boolean PerModifica, String Operazione) {
+        if (context == null) {
+            return;
+        }
+
         this.NomeImmagine = NomeImmagine;
         this.context = context;
         this.immagine = immagine;

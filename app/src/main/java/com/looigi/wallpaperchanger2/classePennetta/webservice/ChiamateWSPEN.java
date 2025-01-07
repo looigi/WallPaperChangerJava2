@@ -65,7 +65,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                5000,
+                10000,
                 ApriDialog);
     }
 

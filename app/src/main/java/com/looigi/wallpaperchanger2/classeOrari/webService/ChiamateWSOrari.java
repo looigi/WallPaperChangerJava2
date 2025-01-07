@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -59,7 +60,6 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 "&idLavoro=" + idLavoro;
 
         TipoOperazione = "RitornaCommesseLavoro";
-        // ControllaTempoEsecuzione = false;
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -92,6 +92,102 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 NS,
                 SA,
                 10000,
+                ApriDialog);
+    }
+
+    public void ScriveOrario() {
+        StrutturaDatiGiornata s = VariabiliStaticheOrari.getInstance().getDatiGiornata();
+
+        if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
+            VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(false);
+            if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null || VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
+                UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna commessa valida per il lavoro");
+                return;
+            }
+        }
+
+        if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null || VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
+            VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
+            RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()));
+            return;
+        }
+
+        Date datella = VariabiliStaticheOrari.getInstance().getDataAttuale();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datella);
+
+        String Giorno = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String Mese = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        String Anno = String.valueOf(calendar.get(Calendar.YEAR));
+
+        int QuanteOre = s.getQuanteOre();
+
+        int idCommessa = -1;
+        if (s.getCommessa() != null && !s.getCommessa().isEmpty()) {
+            for (StrutturaCommesse sc : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
+                if (s.getCommessa().equals(sc.getDescrizione())) {
+                    idCommessa = sc.getIdCommessa();
+                    break;
+                }
+            }
+        }
+
+        String Pranzo = "";
+        for (StrutturaPranzo sp : s.getPranzo()) {
+            Pranzo += sp.getIdPortata() + ";";
+        }
+
+        String MezziAndata = "";
+        for (StrutturaMezzi sm : s.getMezziAndata()) {
+            MezziAndata += sm.getIdMezzo() + ";";
+        }
+
+        String MezziRitorno = "";
+        for (StrutturaMezzi sm : s.getMezziRitorno()) {
+            MezziRitorno += sm.getIdMezzo() + ";";
+        }
+
+        int Pasticca = -1;
+        if (!s.getPranzo().isEmpty()) {
+            Pasticca = s.getPasticca().get(0).getIdPasticca();
+        }
+
+        String Tempo = s.getTempo();
+        String idTempo = "";
+        for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+            if (Tempo.equals(st.getTempo())) {
+                idTempo = st.getIdTempo() + ";";
+                break;
+            }
+        }
+
+        String Urletto = "ScriveOrario?" +
+                "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
+                "&Giorno=" + Giorno +
+                "&Mese=" + Mese +
+                "&Anno=" + Anno +
+                "&QuanteOre=" + QuanteOre +
+                "&Note=" + s.getNote() +
+                "&Misti=" + s.getMisti() +
+                "&CodCommessa=" + idCommessa +
+                "&Entrata=" + s.getEntrata() +
+                "&idLavoro=" + s.getIdLavoro() +
+                "&idIndirizzo=" + s.getIdIndirizzo() +
+                "&Km=" + s.getKm() +
+                "&Pranzo=" + Pranzo +
+                "&Pasticca=" + Pasticca +
+                "&MezziAndata=" + MezziAndata +
+                "&MezziRitorno=" + MezziRitorno +
+                "&Tempo=" + idTempo;
+
+        TipoOperazione = "ScriveOrario";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                20000,
                 ApriDialog);
     }
 
@@ -158,6 +254,9 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     case "RitornaCommesseLavoro":
                         fRitornaCommesseLavoro(result);
                         break;
+                    case "ScriveOrario":
+                        fScriveOrario(result);
+                        break;
                 }
 
                 VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
@@ -178,6 +277,15 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fScriveOrario(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno scrive orario", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Giornata salvata");
         }
     }
 
@@ -237,6 +345,16 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
                 }
                 VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
+
+                if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            ScriveOrario();
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 100);
+                }
             } catch (Exception e) {
 
             }
