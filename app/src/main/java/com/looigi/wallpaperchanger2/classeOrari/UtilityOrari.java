@@ -8,8 +8,6 @@ import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
-import com.looigi.wallpaperchanger2.classePassword.AdapterListenerPassword;
-import com.looigi.wallpaperchanger2.classePassword.VariabiliStatichePWD;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -192,9 +190,7 @@ public class UtilityOrari {
             VariabiliStaticheOrari.getInstance().getTxtPasticca().setText(sdg.getPasticca().get(0).getPasticca());
             VariabiliStaticheOrari.getInstance().getEdtNote().setText(sdg.getNote().toString());
 
-            AdapterListenerPortate cstmAdptPranzo = new AdapterListenerPortate(context,
-                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getPranzo());
-            VariabiliStaticheOrari.getInstance().getLstPranzo().setAdapter(cstmAdptPranzo);
+            AggiornaListaPortate(context,false);
 
             if (giornoDiLavoro && (VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata() == null ||
                     VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata().size() == 0)) {
@@ -222,13 +218,31 @@ public class UtilityOrari {
                         listaRitorno
                 );
             }
-            AdapterListenerMezzi cstmAdptMezziAndata = new AdapterListenerMezzi(context,
-                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata());
-            VariabiliStaticheOrari.getInstance().getLstMezziAndata().setAdapter(cstmAdptMezziAndata);
-
-            AdapterListenerMezzi cstmAdptMezziRitorno = new AdapterListenerMezzi(context,
-                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno());
-            VariabiliStaticheOrari.getInstance().getLstMezziRitorno().setAdapter(cstmAdptMezziRitorno);
+            AggiornaListaMezziAndata(context, false, true);
+            AggiornaListaMezziRitorno(context, false, false);
         }
+    }
+
+    public void AggiornaListaPortate(Context context, boolean NuovoValore) {
+        AdapterListenerPortate cstmAdptPranzo = new AdapterListenerPortate(context,
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().getPranzo(),
+                NuovoValore);
+        VariabiliStaticheOrari.getInstance().getLstPranzo().setAdapter(cstmAdptPranzo);
+    }
+
+    public void AggiornaListaMezziAndata(Context context, boolean NuovoValore, boolean Andata) {
+        AdapterListenerMezzi cstmAdptMezziAndata = new AdapterListenerMezzi(context,
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata(),
+                NuovoValore,
+                Andata);
+        VariabiliStaticheOrari.getInstance().getLstMezziAndata().setAdapter(cstmAdptMezziAndata);
+    }
+
+    public void AggiornaListaMezziRitorno(Context context, boolean NuovoValore, boolean Andata) {
+        AdapterListenerMezzi cstmAdptMezziRitorno = new AdapterListenerMezzi(context,
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno(),
+                NuovoValore,
+                Andata);
+        VariabiliStaticheOrari.getInstance().getLstMezziRitorno().setAdapter(cstmAdptMezziRitorno);
     }
 }

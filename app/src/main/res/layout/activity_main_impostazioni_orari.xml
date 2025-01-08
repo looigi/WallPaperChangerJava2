@@ -1,0 +1,447 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_margin="2dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layPortate"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Portate"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestionePortate"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layMezzi"
+        android:layout_below="@+id/layPortate"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Mezzi"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneMezzi"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layMezziStandardAndata"
+        android:layout_below="@+id/layMezzi"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Mezzi standard andata"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneMSA"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layMezziStandardRitorno"
+        android:layout_below="@+id/layMezziStandardAndata"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Mezzi standard ritorno"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneMSR"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layLavori"
+        android:layout_below="@+id/layMezziStandardRitorno"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Lavori"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneLavoro"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layCommesse"
+        android:layout_below="@+id/layLavori"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Commesse Lavoro"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneCommesseLavoro"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layTempo"
+        android:layout_below="@+id/layCommesse"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Tempo"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestioneTempo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layPasticche"
+        android:layout_below="@+id/layTempo"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Pasticche"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgGestionePasticche"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- LISTA -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layGestione"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:weightSum="10"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgNuovoValore"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icona_aggiunge" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtTipoModifica"
+                android:textColor="@color/Blue"
+                android:textSize="18sp"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtTestoRicerca"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgCercaTesto"
+                        android:layout_width="25dp"
+                        android:src="@drawable/icona_cerca"
+                        android:layout_height="25dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgChiudeGestione"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstLista"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <!-- PORTATE -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layPortata"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal"
+            android:text="Portata" />
+
+        <EditText
+            android:id="@+id/edtPortata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaPortata"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaPortata"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoImpOrari"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+</RelativeLayout>

@@ -9,6 +9,10 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
+import com.looigi.wallpaperchanger2.classeOrari.webService.ChiamateWSOrari;
+import com.looigi.wallpaperchanger2.classeOrari.webService.InterrogazioneWSOrari;
 
 import java.util.Date;
 import java.util.List;
@@ -59,6 +63,51 @@ public class VariabiliStaticheOrari {
     private boolean PrendeCommessePerSalvataggio = false;
     private TextView txtTipoGiorno;
     private TextView txtNumeroGiorno;
+    private LinearLayout layNuovoDato;
+    private LinearLayout layBloccoSfondo;
+    private InterrogazioneWSOrari chiamataInCorso;
+    private List<StrutturaMezziStandard> listaMezziAndataStandard;
+    private List<StrutturaMezziStandard> listaMezziRitornoStandard;
+
+    public List<StrutturaMezziStandard> getListaMezziAndataStandard() {
+        return listaMezziAndataStandard;
+    }
+
+    public void setListaMezziAndataStandard(List<StrutturaMezziStandard> listaMezziAndataStandard) {
+        this.listaMezziAndataStandard = listaMezziAndataStandard;
+    }
+
+    public List<StrutturaMezziStandard> getListaMezziRitornoStandard() {
+        return listaMezziRitornoStandard;
+    }
+
+    public void setListaMezziRitornoStandard(List<StrutturaMezziStandard> listaMezziRitornoStandard) {
+        this.listaMezziRitornoStandard = listaMezziRitornoStandard;
+    }
+
+    public InterrogazioneWSOrari getChiamataInCorso() {
+        return chiamataInCorso;
+    }
+
+    public void setChiamataInCorso(InterrogazioneWSOrari chiamataInCorso) {
+        this.chiamataInCorso = chiamataInCorso;
+    }
+
+    public LinearLayout getLayBloccoSfondo() {
+        return layBloccoSfondo;
+    }
+
+    public void setLayBloccoSfondo(LinearLayout layBloccoSfondo) {
+        this.layBloccoSfondo = layBloccoSfondo;
+    }
+
+    public LinearLayout getLayNuovoDato() {
+        return layNuovoDato;
+    }
+
+    public void setLayNuovoDato(LinearLayout layNuovoDato) {
+        this.layNuovoDato = layNuovoDato;
+    }
 
     public TextView getTxtNumeroGiorno() {
         return txtNumeroGiorno;

@@ -192,6 +192,11 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     }
 
     public void RitornaDatiGiorno() {
+        if (VariabiliStaticheOrari.getInstance().getChiamataInCorso() != null) {
+            VariabiliStaticheOrari.getInstance().getChiamataInCorso().BloccaEsecuzione();
+            VariabiliStaticheOrari.getInstance().setChiamataInCorso(null);
+        }
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(VariabiliStaticheOrari.getInstance().getDataAttuale());
 
@@ -206,7 +211,6 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 "&Anno=" + Anno;
 
         TipoOperazione = "RitornaOrario";
-        // ControllaTempoEsecuzione = false;
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -226,6 +230,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
         String TimeStampAttuale = tsLong.toString();
 
         InterrogazioneWSOrari i = new InterrogazioneWSOrari();
+        VariabiliStaticheOrari.getInstance().setChiamataInCorso(i);
         i.EsegueChiamata(
                 context,
                 NS,
@@ -436,6 +441,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     StrutturaMezzi s = new StrutturaMezzi();
                     s.setIdMezzo(objMezzi.getInt("idMezzo"));
                     s.setMezzo(objMezzi.getString("Mezzo"));
+                    s.setDettaglio(objMezzi.getString("Dettaglio"));
 
                     listaMezzi.add(s);
                 }
@@ -576,6 +582,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     listaMezziStandardAndata.add(sms);
                 }
                 sdg.setMezziStandardAndata(listaMezziStandardAndata);
+                VariabiliStaticheOrari.getInstance().setListaMezziAndataStandard(listaMezziStandardAndata);
 
                 List<StrutturaMezziStandard> listaMezziStandardRitorno = new ArrayList<>();
                 String MezziStandardRitorno = obj.getString("MezziStandardRitorno");
@@ -589,6 +596,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     listaMezziStandardRitorno.add(sms);
                 }
                 sdg.setMezziStandardRitorno(listaMezziStandardRitorno);
+                VariabiliStaticheOrari.getInstance().setListaMezziRitornoStandard(listaMezziStandardRitorno);
 
                 sdg.setCommessaDefault(obj.getInt("CommessaDefault"));
                 sdg.setLavoroDefault(obj.getInt("LavoroDefault"));

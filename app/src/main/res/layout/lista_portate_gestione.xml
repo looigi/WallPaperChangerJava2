@@ -20,16 +20,30 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imgModifica"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/edit_image" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:weightSum="1"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent">
+
+            <ImageView
                 android:id="@+id/imgElimina"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/elimina_quadrato" />
+                android:src="@drawable/elimina" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/txtPortata"
             android:layout_width="0dp"
-            android:layout_weight="9"
+            android:layout_weight="8"
             android:layout_marginStart="5dp"
             android:layout_height="wrap_content"
             android:gravity="left"

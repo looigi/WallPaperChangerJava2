@@ -14,12 +14,11 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="center_vertical"
-            android:weightSum="3"
+            android:weightSum="2"
             android:layout_height="match_parent">
 
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -27,24 +26,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imgSu"
+                    android:id="@+id/imgModifica"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/icona_su" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgGiu"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icona_giu" />
+                    android:src="@drawable/edit_image" />
 
             </LinearLayout>
 
@@ -58,14 +43,14 @@
                     android:id="@+id/imgElimina"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/elimina_quadrato" />
+                    android:src="@drawable/elimina" />
             </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtMezzo"
+            android:id="@+id/txtPasticca"
             android:layout_width="0dp"
-            android:layout_weight="7"
+            android:layout_weight="8"
             android:layout_marginStart="5dp"
             android:layout_height="wrap_content"
             android:gravity="left"

@@ -124,12 +124,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeLazio.MainLazio"
+            android:name=".classeOrari.impostazioni.MainImpostazioniOrari"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeOrari.impostazioni_orari.MainImpostazioniOrari"
+            android:name=".classeLazio.MainLazio"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 

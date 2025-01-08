@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,7 +35,10 @@ import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
-import com.looigi.wallpaperchanger2.classeOrari.impostazioni_orari.MainImpostazioniOrari;
+import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerMezzi;
+import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.MainImpostazioniOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.statisticheOrari.MainStatisticheOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
@@ -48,10 +52,13 @@ import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCa
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,6 +69,10 @@ public class MainOrari extends Activity {
     private Activity act;
     private String Modalita;
     private String ValoreImpostato;
+    private String ModalitaNuovoDato;
+    private AdapterListenerPortate cstmAdptPranzo = null;
+    private AdapterListenerMezzi cstmAdptMezziAndata = null;
+    private AdapterListenerMezzi cstmAdptMezziRitorno = null;
 
     public MainOrari() {
     }
@@ -120,6 +131,96 @@ public class MainOrari extends Activity {
             }
         });
 
+        ModalitaNuovoDato = "";
+        VariabiliStaticheOrari.getInstance().setLayNuovoDato(findViewById(R.id.layNuovoDato));
+        VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.GONE);
+
+        TextView txtNuovoTesto = findViewById(R.id.txtNuovoTesto);
+        ListView lstNuovoDato = findViewById(R.id.lstNuovoDato);
+
+        EditText edtRicercaTestoNuovo = findViewById(R.id.edtTestoRicercaNuovo);
+
+        ImageView imgCercaTestoNuovo = findViewById(R.id.imgCercaTestoNuovo);
+        imgCercaTestoNuovo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                switch (ModalitaNuovoDato) {
+                    case "PORTATA":
+                        cstmAdptPranzo.updateData(
+                                edtRicercaTestoNuovo.getText().toString());
+                        break;
+                    case "MEZZOANDATA":
+                        cstmAdptMezziAndata.updateData(
+                                edtRicercaTestoNuovo.getText().toString());
+                        break;
+                    case "MEZZORITORNO":
+                        cstmAdptMezziRitorno.updateData(
+                                edtRicercaTestoNuovo.getText().toString());
+                        break;
+                }
+            }
+        });
+        
+        ImageView imgChiudeNuovo = findViewById(R.id.imgChiudeNuovo);
+        imgChiudeNuovo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ModalitaNuovoDato = "";
+                txtNuovoTesto.setText("");
+                lstNuovoDato.setAdapter(null);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgNuovaPortata = findViewById(R.id.imgNuovaPortata);
+        imgNuovaPortata.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                txtNuovoTesto.setText("Aggiungi portata");
+                ModalitaNuovoDato = "PORTATA";
+
+                cstmAdptPranzo = new AdapterListenerPortate(context,
+                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getPortate(),
+                        true);
+                lstNuovoDato.setAdapter(cstmAdptPranzo);
+
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgNuovoMezzoAndata = findViewById(R.id.imgNuovoMezzoAndata);
+        imgNuovoMezzoAndata.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                txtNuovoTesto.setText("Aggiungi Mezzo Andata");
+                ModalitaNuovoDato = "MEZZOANDATA";
+
+                cstmAdptMezziAndata = new AdapterListenerMezzi(context,
+                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi(),
+                        true,
+                        true);
+                lstNuovoDato.setAdapter(cstmAdptMezziAndata);
+
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgNuovoMezzoRitorno = findViewById(R.id.imgNuovoMezzoRitorno);
+        imgNuovoMezzoRitorno.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                txtNuovoTesto.setText("Aggiungi Mezzo Ritorno");
+                ModalitaNuovoDato = "MEZZORITORNO";
+
+                cstmAdptMezziRitorno = new AdapterListenerMezzi(context,
+                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi(),
+                        true,
+                        false);
+                lstNuovoDato.setAdapter(cstmAdptMezziRitorno);
+
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
         imgAvanti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Date d = VariabiliStaticheOrari.getInstance().getDataAttuale();
@@ -133,8 +234,8 @@ public class MainOrari extends Activity {
             }
         });
 
-        LinearLayout layBloccoSfondo = findViewById(R.id.layBloccoSfondo);
-        layBloccoSfondo.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheOrari.getInstance().setLayBloccoSfondo(findViewById(R.id.layBloccoSfondo));
+        VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
         LinearLayout layGestione = findViewById(R.id.layGestioneValori);
         layGestione.setVisibility(LinearLayout.GONE);
         TextView txtGestioneValoriTesto = findViewById(R.id.txtGestioneTesto);
@@ -251,7 +352,7 @@ public class MainOrari extends Activity {
 
                 UtilityOrari.getInstance().ScriveDatiGiornata(context);
 
-                layBloccoSfondo.setVisibility(LinearLayout.GONE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
                 layGestione.setVisibility(LinearLayout.GONE);
             }
         });
@@ -259,7 +360,7 @@ public class MainOrari extends Activity {
         ImageView imgAnnullaValore = findViewById(R.id.imgAnnullaValori);
         imgAnnullaValore.setOnClickListener(new View.OnClickListener() {
               public void onClick(View v) {
-                  layBloccoSfondo.setVisibility(LinearLayout.GONE);
+                  VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
                   layGestione.setVisibility(LinearLayout.GONE);
               }
           });
@@ -298,7 +399,7 @@ public class MainOrari extends Activity {
                     VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(0);
                 }
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -326,7 +427,7 @@ public class MainOrari extends Activity {
                 }
                 VariabiliStaticheOrari.getInstance().getEdtValori().setText(Integer.toString(ore));
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -350,7 +451,7 @@ public class MainOrari extends Activity {
                 }
                 VariabiliStaticheOrari.getInstance().getEdtValori().setText(entrata);
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -396,7 +497,7 @@ public class MainOrari extends Activity {
                 }
                 VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -428,7 +529,7 @@ public class MainOrari extends Activity {
                 ChiamateWSOrari ws = new ChiamateWSOrari(context);
                 ws.RitornaCommesseLavoro(Integer.toString(idLavoro));
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -446,7 +547,7 @@ public class MainOrari extends Activity {
                 StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
                 VariabiliStaticheOrari.getInstance().getEdtValori().setText(sdg.getNote());
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -487,7 +588,7 @@ public class MainOrari extends Activity {
                 }
                 VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -505,7 +606,7 @@ public class MainOrari extends Activity {
                 StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
                 VariabiliStaticheOrari.getInstance().getEdtValori().setText(sdg.getGradi());
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
@@ -545,7 +646,7 @@ public class MainOrari extends Activity {
                 }
                 VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
 
-                layBloccoSfondo.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
             }
         });
