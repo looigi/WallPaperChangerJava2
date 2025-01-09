@@ -49,6 +49,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
+    private boolean RiempieCombo;
 
     public ChiamateWSOrari(Context context) {
         this.context = context;
@@ -70,14 +71,17 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 ApriDialog);
     }
 
-    public void RitornaDatiPerModifica(boolean RefreshDati) {
+    public void RitornaDatiPerModifica(boolean RefreshDati, boolean RiempieCombo) {
+        this.RiempieCombo = RiempieCombo;
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheOrari.getInstance().getPathOrari();
             String NomeFile = "Dati.txt";
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
                 String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
-                fRitornaDatiPerModificaOrario(Dati);
-                return;
+                if (!Dati.isEmpty()) {
+                    fRitornaDatiPerModificaOrario(Dati);
+                    return;
+                }
             }
         }
         String Urletto="RitornaDatiPerModificaOrario?" +
@@ -85,6 +89,32 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
 
         TipoOperazione = "RitornaDatiPerModificaOrario";
         // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void EliminaOrario() {
+        Date datella = VariabiliStaticheOrari.getInstance().getDataAttuale();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datella);
+
+        String Giorno = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String Mese = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        String Anno = String.valueOf(calendar.get(Calendar.YEAR));
+
+        String Urletto="EliminaOrario?" +
+                "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
+                "&Giorno=" + Giorno +
+                "&Mese=" + Mese +
+                "&Anno=" + Anno;
+
+        TipoOperazione = "EliminaOrario";
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -106,10 +136,13 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             }
         }
 
-        if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null || VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
-            VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
-            RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()));
-            return;
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote()) {
+            if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null ||
+                    VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
+                VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
+                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()));
+                return;
+            }
         }
 
         Date datella = VariabiliStaticheOrari.getInstance().getDataAttuale();
@@ -120,44 +153,63 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
         String Mese = String.valueOf(calendar.get(Calendar.MONTH) + 1);
         String Anno = String.valueOf(calendar.get(Calendar.YEAR));
 
-        int QuanteOre = s.getQuanteOre();
-
+        int QuanteOre = -9999;
         int idCommessa = -1;
-        if (s.getCommessa() != null && !s.getCommessa().isEmpty()) {
-            for (StrutturaCommesse sc : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
-                if (s.getCommessa().equals(sc.getDescrizione())) {
-                    idCommessa = sc.getIdCommessa();
-                    break;
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+            VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            QuanteOre = s.getQuanteOre();
+
+            if (s.getCommessa() != null && !s.getCommessa().isEmpty()) {
+                for (StrutturaCommesse sc : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
+                    if (s.getCommessa().equals(sc.getDescrizione())) {
+                        idCommessa = sc.getIdCommessa();
+                        break;
+                    }
                 }
             }
         }
 
         String Pranzo = "";
-        for (StrutturaPranzo sp : s.getPranzo()) {
-            Pranzo += sp.getIdPortata() + ";";
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            for (StrutturaPranzo sp : s.getPranzo()) {
+                Pranzo += sp.getIdPortata() + ";";
+            }
         }
 
         String MezziAndata = "";
-        for (StrutturaMezzi sm : s.getMezziAndata()) {
-            MezziAndata += sm.getIdMezzo() + ";";
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            for (StrutturaMezzi sm : s.getMezziAndata()) {
+                MezziAndata += sm.getIdMezzo() + ";";
+            }
         }
 
         String MezziRitorno = "";
-        for (StrutturaMezzi sm : s.getMezziRitorno()) {
-            MezziRitorno += sm.getIdMezzo() + ";";
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            for (StrutturaMezzi sm : s.getMezziRitorno()) {
+                MezziRitorno += sm.getIdMezzo() + ";";
+            }
         }
 
         int Pasticca = -1;
-        if (!s.getPranzo().isEmpty()) {
-            Pasticca = s.getPasticca().get(0).getIdPasticca();
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            if (!s.getPranzo().isEmpty()) {
+                Pasticca = s.getPasticca().get(0).getIdPasticca();
+            }
         }
 
-        String Tempo = s.getTempo();
         String idTempo = "";
-        for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
-            if (Tempo.equals(st.getTempo())) {
-                idTempo = st.getIdTempo() + ";";
-                break;
+        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+            String Tempo = s.getTempo();
+            for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+                if (Tempo.equals(st.getTempo())) {
+                    idTempo = st.getIdTempo() + ";";
+                    break;
+                }
             }
         }
 
@@ -262,6 +314,9 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     case "ScriveOrario":
                         fScriveOrario(result);
                         break;
+                    case "EliminaOrario":
+                        fEliminaOrario(result);
+                        break;
                 }
 
                 VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
@@ -282,6 +337,17 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fEliminaOrario(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno elimina orario", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilityOrari.getInstance().ScriveDatiGiornata(context);
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Giornata eliminata");
         }
     }
 
@@ -467,6 +533,10 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 s2.setPasticche(listaPasticche);
 
                 VariabiliStaticheOrari.getInstance().setStrutturaDati(s2);
+
+                if (RiempieCombo) {
+                    UtilityOrari.getInstance().RiempieMezzi(context);
+                }
             } catch (JSONException e) {
                 UtilitiesGlobali.getInstance().ApreToast(context, UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
@@ -497,6 +567,10 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 sdg.setCommessa(obj.getString("Commessa"));
                 sdg.setTempo(obj.getString("Tempo"));
                 sdg.setGradi(obj.getString("Gradi"));
+
+                if (!sdg.getNote().isEmpty() && sdg.getQuanteOre() == -9999) {
+                    sdg.setSoloNote(true);
+                }
 
                 List<StrutturaMezzi> listaMezziAndata = new ArrayList<>();
                 String MezziAndata = obj.getString("MezziAndata");

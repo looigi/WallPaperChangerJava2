@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -133,7 +134,7 @@ public class MainModificheCodice extends Activity {
                 i.putExtra(Intent.EXTRA_SUBJECT, NomeFile);
                 i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                 i.putExtra(Intent.EXTRA_STREAM,uri);
-                i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                 context.startActivity(Intent.createChooser(i,"Share file modifiche"));
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {

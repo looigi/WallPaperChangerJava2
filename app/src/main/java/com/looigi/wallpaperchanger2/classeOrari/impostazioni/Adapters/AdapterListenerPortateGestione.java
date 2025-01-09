@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.webService.ChiamateWSImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPranzo;
 
 import java.util.ArrayList;
@@ -88,7 +89,12 @@ public class AdapterListenerPortateGestione extends BaseAdapter {
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                ws.EliminaPortata(String.valueOf(idPortata));
+
                 listaPranzi.remove(i);
+
+                notifyDataSetChanged();
             }
         });
 

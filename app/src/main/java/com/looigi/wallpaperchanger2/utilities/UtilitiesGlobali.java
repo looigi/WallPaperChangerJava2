@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
 import android.util.Base64;
+import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -114,6 +116,18 @@ public class UtilitiesGlobali {
         VariabiliStaticheGPS.getInstance().getGestioneGPS().setAction("");
         context.startForegroundService(VariabiliStaticheGPS.getInstance().getGestioneGPS());
     } */
+
+    public String GetMimeType(Context context, Uri uri) {
+        String mimeType = null;
+
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            mimeType = context.getContentResolver().getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
 
     public void ImpostaServizioGPS(Context context, String Azione) {
         switch(Azione) {
@@ -339,7 +353,7 @@ public class UtilitiesGlobali {
         i.putExtra(Intent.EXTRA_SUBJECT,"logs.zip");
         i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
         i.putExtra(Intent.EXTRA_STREAM,uri);
-        i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+        i.setType(GetMimeType(context, uri));
         context.startActivity(Intent.createChooser(i,"Share file di log e db"));
 
         UtilitiesGlobali.getInstance().ApreToast(context, "File di logs condivisi: " + quanti);

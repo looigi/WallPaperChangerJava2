@@ -292,6 +292,42 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layRefresh"
+        android:layout_below="@+id/layPasticche"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:textColor="@color/Blue"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Refresh dati"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgRefresh"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/refresh2" />
+        </LinearLayout>
+    </LinearLayout>
+
     <!-- LISTA -->
     <LinearLayout
         android:visibility="gone"
@@ -379,7 +415,7 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <!-- PORTATE -->
+    <!-- GESTIONE PORTATE -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/layPortata"
@@ -399,10 +435,22 @@
             android:gravity="center_horizontal"
             android:text="Portata" />
 
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
         <EditText
             android:id="@+id/edtPortata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -431,6 +479,275 @@
 
                 <ImageView
                     android:id="@+id/imgAnnullaPortata"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- GESTIONE MEZZI -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layGestioneMezzi"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal"
+            android:text="Mezzo" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <EditText
+            android:id="@+id/edtMezzo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtMezzoDettaglio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaMezzo"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaMezzo"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- GESTIONE MEZZI STANDARD ANDATA -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layGestioneMS"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:weightSum="20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:text="Mezzi"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_height="0dp"
+            android:padding="2dp"
+            android:layout_weight="10">
+
+            <ListView
+                android:id="@+id/lstListaMezzi"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <TextView
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:text="Mezzi Standard"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="2dp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_height="0dp"
+            android:layout_weight="6">
+
+            <ListView
+                android:id="@+id/lstListaMezziStandard"
+                android:divider="#CCCCCC"
+                android:dividerHeight="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaMS"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaMS"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- GESTIONE LAVORI -->
+    <LinearLayout
+        android:id="@+id/layGestioneLavoro"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal"
+            android:text="Lavoro" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <EditText
+            android:id="@+id/edtLavoro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Lavoro" />
+
+        <EditText
+            android:id="@+id/edtIndirizzo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Indirizzo" />
+
+        <EditText
+            android:id="@+id/edtDataInizio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Data Inizio" />
+
+        <EditText
+            android:id="@+id/edtDataFine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Data Fine" />
+
+        <EditText
+            android:id="@+id/edtLatLng"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="LatLng" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaLavoro"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaLavoro"
                     android:src="@drawable/elimina_quadrato"
                     android:layout_width="40dp"
                     android:layout_height="40dp" />

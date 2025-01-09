@@ -68,6 +68,15 @@ public class VariabiliStaticheOrari {
     private InterrogazioneWSOrari chiamataInCorso;
     private List<StrutturaMezziStandard> listaMezziAndataStandard;
     private List<StrutturaMezziStandard> listaMezziRitornoStandard;
+    private LinearLayout layNote;
+
+    public LinearLayout getLayNote() {
+        return layNote;
+    }
+
+    public void setLayNote(LinearLayout layNote) {
+        this.layNote = layNote;
+    }
 
     public List<StrutturaMezziStandard> getListaMezziAndataStandard() {
         return listaMezziAndataStandard;

@@ -96,7 +96,7 @@ public class AdapterListenerMappe extends BaseAdapter {
                     i.putExtra(Intent.EXTRA_SUBJECT, NomeMappa);
                     i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                     i.putExtra(Intent.EXTRA_STREAM,uri);
-                    i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                    i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                     context.startActivity(Intent.createChooser(i,"Share immagine mappa salvata"));
                 }
             });

@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.webService.ChiamateWSImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 
 import java.util.ArrayList;
@@ -70,6 +72,8 @@ public class AdapterListenerMezziGestione extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.lista_mezzi_gestione, null);
 
+        int idMezzo = listaMezzi.get(i).getIdMezzo();
+
         TextView txtSito = (TextView) view.findViewById(R.id.txtMezzo);
         txtSito.setText(listaMezzi.get(i).getMezzo() + " " +
                 (listaMezzi.get(i).getDettaglio() == null ? "" : listaMezzi.get(i).getDettaglio())
@@ -78,13 +82,22 @@ public class AdapterListenerMezziGestione extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().setIdMezzo(idMezzo);
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzo().setText(listaMezzi.get(i).getMezzo());
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzoDettaglio().setText(listaMezzi.get(i).getDettaglio());
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayMezzi().setVisibility(LinearLayout.VISIBLE);
             }
         });
 
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                ws.EliminaMezzo(String.valueOf(idMezzo));
+
                 listaMezzi.remove(i);
+
+                notifyDataSetChanged();
             }
         });
 

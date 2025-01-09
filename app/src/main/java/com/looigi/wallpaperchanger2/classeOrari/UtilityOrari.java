@@ -8,6 +8,7 @@ import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
+import com.looigi.wallpaperchanger2.classeOrari.webService.ChiamateWSOrari;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -127,12 +128,33 @@ public class UtilityOrari {
     public void ScriveDatiGiornata(Context context) {
         StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
 
-        if (sdg == null || !sdg.isGiornoInserito()) {
+        if (sdg == null) {
             VariabiliStaticheOrari.getInstance().getLayContenitore().setVisibility(LinearLayout.GONE);
             VariabiliStaticheOrari.getInstance().getLayAggiunge().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.GONE);
+            return;
+        }
+
+        if (sdg.isSoloNote()) {
+            VariabiliStaticheOrari.getInstance().getLayContenitore().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayAggiunge().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getDatiGiornata().setQuanteOre(-9999);
+            VariabiliStaticheOrari.getInstance().getEdtNote().setText(sdg.getNote());
+            return;
+        }
+
+        if (!sdg.isGiornoInserito()) {
+            VariabiliStaticheOrari.getInstance().getLayContenitore().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayAggiunge().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.GONE);
         } else {
             VariabiliStaticheOrari.getInstance().getLayContenitore().setVisibility(LinearLayout.VISIBLE);
             VariabiliStaticheOrari.getInstance().getLayAggiunge().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.VISIBLE);
 
             int oreStandard = sdg.getOreStandard();
 
@@ -175,9 +197,11 @@ public class UtilityOrari {
             if (visualizzaOre) {
                 VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(Integer.toString(sdg.getQuanteOre()));
                 VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.VISIBLE);
             } else {
                 VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(Integer.toString(oreStandard));
                 VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.GONE);
             }
             VariabiliStaticheOrari.getInstance().getEdtEntrata().setText(sdg.getEntrata());
             VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(sdg.getLavoro());
@@ -187,13 +211,44 @@ public class UtilityOrari {
                 sdg.setGradi("");
             }
             VariabiliStaticheOrari.getInstance().getEdtGradi().setText(sdg.getGradi());
-            VariabiliStaticheOrari.getInstance().getTxtPasticca().setText(sdg.getPasticca().get(0).getPasticca());
+
+            // PASTICCA
+            if (!giornoDiLavoro) {
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setPasticca(new ArrayList<>());
+            }
+            if (!sdg.getPasticca().isEmpty()) {
+                VariabiliStaticheOrari.getInstance().getTxtPasticca().setText(sdg.getPasticca().get(0).getPasticca());
+            } else {
+                VariabiliStaticheOrari.getInstance().getTxtPasticca().setText("");
+            }
+
+            // NOTE
             VariabiliStaticheOrari.getInstance().getEdtNote().setText(sdg.getNote().toString());
 
+            // PORTATE
+            if (!giornoDiLavoro) {
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setPranzo(new ArrayList<>());
+            }
             AggiornaListaPortate(context,false);
 
-            if (giornoDiLavoro && (VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata() == null ||
-                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata().size() == 0)) {
+            // Controllo se esistono i dati standard
+            if (giornoDiLavoro && (VariabiliStaticheOrari.getInstance().getStrutturaDati() == null ||
+                    VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi() == null)) {
+                ChiamateWSOrari ws = new ChiamateWSOrari(context);
+                ws.RitornaDatiPerModifica(false, true);
+            } else {
+                // MEZZI
+                RiempieMezzi(context);
+            }
+        }
+    }
+
+    public void RiempieMezzi(Context context) {
+        int oreStandard = VariabiliStaticheOrari.getInstance().getDatiGiornata().getOreStandard();
+
+        if (VariabiliStaticheOrari.getInstance().getDatiGiornata().getQuanteOre() == oreStandard) {
+            if (VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata() == null ||
+                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata().isEmpty()) {
                 List<StrutturaMezzi> listaAndata = new ArrayList<>();
                 for (StrutturaMezziStandard ss : VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziStandardAndata()) {
                     for (StrutturaMezzi m : VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi()) {
@@ -205,12 +260,18 @@ public class UtilityOrari {
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(
                         listaAndata
                 );
+            }
 
+            if (VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno() == null ||
+                    VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno().isEmpty()) {
                 List<StrutturaMezzi> listaRitorno = new ArrayList<>();
                 for (StrutturaMezziStandard ss : VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziStandardRitorno()) {
-                    for (StrutturaMezzi m : VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi()) {
-                        if (m.getIdMezzo() == ss.getIdMezzo()) {
-                            listaRitorno.add(m);
+                    if (VariabiliStaticheOrari.getInstance().getStrutturaDati() != null &&
+                            VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi() != null) {
+                        for (StrutturaMezzi m : VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi()) {
+                            if (m.getIdMezzo() == ss.getIdMezzo()) {
+                                listaRitorno.add(m);
+                            }
                         }
                     }
                 }
@@ -218,8 +279,16 @@ public class UtilityOrari {
                         listaRitorno
                 );
             }
+
             AggiornaListaMezziAndata(context, false, true);
             AggiornaListaMezziRitorno(context, false, false);
+        } else {
+            VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(
+                    new ArrayList<>()
+            );
+            VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(
+                    new ArrayList<>()
+            );
         }
     }
 
@@ -234,7 +303,8 @@ public class UtilityOrari {
         AdapterListenerMezzi cstmAdptMezziAndata = new AdapterListenerMezzi(context,
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata(),
                 NuovoValore,
-                Andata);
+                Andata,
+                "");
         VariabiliStaticheOrari.getInstance().getLstMezziAndata().setAdapter(cstmAdptMezziAndata);
     }
 
@@ -242,7 +312,8 @@ public class UtilityOrari {
         AdapterListenerMezzi cstmAdptMezziRitorno = new AdapterListenerMezzi(context,
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno(),
                 NuovoValore,
-                Andata);
+                Andata,
+                "");
         VariabiliStaticheOrari.getInstance().getLstMezziRitorno().setAdapter(cstmAdptMezziRitorno);
     }
 }

@@ -2,8 +2,11 @@ package com.looigi.wallpaperchanger2.classeBackup;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -20,6 +24,7 @@ import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
@@ -84,6 +89,29 @@ public class AdapterListenerBackups extends BaseAdapter {
                     });
 
                     builder.show();
+                }
+            });
+
+            ImageView btnCondividi = view.findViewById(R.id.imgCondividi);
+            btnCondividi.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    StrutturaBackups NomeBackup = listaBackups.get(i);
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(NomeBackup.getPath());
+                    Uri uri = FileProvider.getUriForFile(context,
+                    context.getApplicationContext().getPackageName() + ".provider",
+                        f
+                    );
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, NomeBackup.getNome());
+                    i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                    i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i, "Share backup"));
                 }
             });
 

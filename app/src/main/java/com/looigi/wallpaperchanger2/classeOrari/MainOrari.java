@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classeOrari;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,9 +26,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
@@ -51,6 +55,8 @@ import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmagi
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
@@ -73,8 +79,10 @@ public class MainOrari extends Activity {
     private AdapterListenerPortate cstmAdptPranzo = null;
     private AdapterListenerMezzi cstmAdptMezziAndata = null;
     private AdapterListenerMezzi cstmAdptMezziRitorno = null;
+    private boolean ApertoDP = true;
 
     public MainOrari() {
+        ApertoDP = true;
     }
 
     @Override
@@ -118,6 +126,26 @@ public class MainOrari extends Activity {
 
         VariabiliStaticheOrari.getInstance().setDataAttuale(new Date());
 
+        VariabiliStaticheOrari.getInstance().setLayNote(findViewById(R.id.layNote));
+
+        ImageView imgNuovoOrario = findViewById(R.id.imgNuovoOrario);
+        imgNuovoOrario.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setGiornoInserito(true);
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setEntrata("08:00:00");
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setQuanteOre(-6); // Smart Working default
+                UtilityOrari.getInstance().ScriveDatiGiornata(context);
+            }
+        });
+
+        ImageView imgInserisceNote = findViewById(R.id.imgInserisceNote);
+        imgInserisceNote.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setSoloNote(true);
+                UtilityOrari.getInstance().ScriveDatiGiornata(context);
+            }
+        });
+
         imgIndietro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Date d = VariabiliStaticheOrari.getInstance().getDataAttuale();
@@ -125,6 +153,58 @@ public class MainOrari extends Activity {
                 c.setTime(d);
                 c.add(Calendar.DATE, -1);
 
+                VariabiliStaticheOrari.getInstance().setDataAttuale(c.getTime());
+
+                ScriveData(context, txtData, txtNomeGiorno);
+            }
+        });
+
+        LinearLayout laySceltaData = findViewById(R.id.laySceltaData);
+        laySceltaData.setVisibility(LinearLayout.GONE);
+
+        DatePicker sceltaData = findViewById(R.id.datePicker1);
+
+        txtData.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Date datella = VariabiliStaticheOrari.getInstance().getDataAttuale();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(datella);
+
+                int Giorno = calendar.get(Calendar.DAY_OF_MONTH);
+                int Mese = calendar.get(Calendar.MONTH) + 1;
+                int Anno = calendar.get(Calendar.YEAR);
+
+                // sceltaData.init(Anno, Mese, Giorno, null);
+
+                laySceltaData.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        sceltaData.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                if (ApertoDP) {
+                    ApertoDP = false;
+                } else {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, monthOfYear);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                    VariabiliStaticheOrari.getInstance().setDataAttuale(calendar.getTime());
+
+                    ScriveData(context, txtData, txtNomeGiorno);
+
+                    laySceltaData.setVisibility(LinearLayout.GONE);
+                }
+            }
+        });
+
+        ImageView imgOggi = findViewById(R.id.imgOggi);
+        imgOggi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
                 VariabiliStaticheOrari.getInstance().setDataAttuale(c.getTime());
 
                 ScriveData(context, txtData, txtNomeGiorno);
@@ -196,7 +276,8 @@ public class MainOrari extends Activity {
                 cstmAdptMezziAndata = new AdapterListenerMezzi(context,
                         VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi(),
                         true,
-                        true);
+                        true,
+                        "");
                 lstNuovoDato.setAdapter(cstmAdptMezziAndata);
 
                 VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
@@ -213,7 +294,8 @@ public class MainOrari extends Activity {
                 cstmAdptMezziRitorno = new AdapterListenerMezzi(context,
                         VariabiliStaticheOrari.getInstance().getStrutturaDati().getMezzi(),
                         true,
-                        false);
+                        false,
+                        "");
                 lstNuovoDato.setAdapter(cstmAdptMezziRitorno);
 
                 VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
@@ -293,39 +375,49 @@ public class MainOrari extends Activity {
                         if (ValoreImpostato.equals("Lavoro")) {
                             if (sdg.getOreStandard() > 0) {
                                 sdg.setQuanteOre(sdg.getOreStandard());
+                                VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(Integer.toString(sdg.getOreStandard()));
                             } else {
                                 sdg.setQuanteOre(8);
+                                VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("8");
                             }
                         } else {
                             for (String l : listaTipiLavoro) {
                                 if (l.equals(ValoreImpostato)) {
                                     sdg.setQuanteOre(valoriTipoLavoro[i]);
+                                    VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(valoriTipoLavoro[i]);
                                 }
                                 i++;
                             }
                         }
+                        VariabiliStaticheOrari.getInstance().getTxtTipoLavoro().setText(ValoreImpostato);
                         break;
                     case "ORELAVORO":
                         if (ValoreImpostato.isEmpty()) {
                             UtilitiesGlobali.getInstance().ApreToast(context, "Inserire un valore");
+                            VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("");
                             return;
                         }
                         if (Integer.parseInt(ValoreImpostato) < 1 || Integer.parseInt(ValoreImpostato) > 13) {
                             UtilitiesGlobali.getInstance().ApreToast(context, "Valore non valido ");
+                            VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("");
                             return;
                         }
                         sdg.setQuanteOre(Integer.parseInt(ValoreImpostato));
+                        VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(ValoreImpostato);
                         break;
                     case "ENTRATA":
                         if (UtilityOrari.getInstance().ControllaFormatodata(context, ValoreImpostato)) {
                             sdg.setEntrata(ValoreImpostato);
+                            VariabiliStaticheOrari.getInstance().getEdtEntrata().setText(ValoreImpostato);
                         } else {
+                            VariabiliStaticheOrari.getInstance().getEdtEntrata().setText("");
                             return;
                         }
                         break;
                     case "LAVORO":
                         sdg.setLavoro(ValoreImpostato);
                         sdg.setCommessa("");
+                        VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(ValoreImpostato);
                         break;
                     case "COMMESSA":
                         sdg.setCommessa(ValoreImpostato);
@@ -338,15 +430,19 @@ public class MainOrari extends Activity {
                         break;
                     case "NOTE":
                         sdg.setNote(ValoreImpostato);
+                        VariabiliStaticheOrari.getInstance().getEdtNote().setText(ValoreImpostato);
                         break;
                     case "TEMPO":
                         sdg.setTempo(ValoreImpostato);
+                        VariabiliStaticheOrari.getInstance().getTxtTempo().setText(ValoreImpostato);
                         break;
                     case "GRADI":
                         sdg.setGradi(ValoreImpostato);
+                        VariabiliStaticheOrari.getInstance().getEdtGradi().setText(ValoreImpostato);
                         break;
                     case "PASTICCA":
                         sdg.getPasticca().get(0).setPasticca(ValoreImpostato);
+                        VariabiliStaticheOrari.getInstance().getTxtPasticca().setText(ValoreImpostato);
                         break;
                 }
 
@@ -363,7 +459,33 @@ public class MainOrari extends Activity {
                   VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
                   layGestione.setVisibility(LinearLayout.GONE);
               }
-          });
+        });
+
+        ImageView imgElimina = findViewById(R.id.imgElimina);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vuole eliminare la giornata attuale?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        VariabiliStaticheOrari.getInstance().getDatiGiornata().setGiornoInserito(false);
+                        VariabiliStaticheOrari.getInstance().getDatiGiornata().setSoloNote(false);
+
+                        ChiamateWSOrari ws = new ChiamateWSOrari(context);
+                        ws.EliminaOrario();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         ImageView imgCambiaTipoLavoro = findViewById(R.id.imgCambiaTipoLavoro);
         imgCambiaTipoLavoro.setOnClickListener(new View.OnClickListener() {
@@ -678,7 +800,7 @@ public class MainOrari extends Activity {
         });
 
         ChiamateWSOrari ws = new ChiamateWSOrari(context);
-        ws.RitornaDatiPerModifica(false);
+        ws.RitornaDatiPerModifica(false, false);
 
         ScriveData(context, txtData, txtNomeGiorno);
     }

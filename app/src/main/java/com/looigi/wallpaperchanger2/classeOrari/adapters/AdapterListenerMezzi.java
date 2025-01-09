@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ public class AdapterListenerMezzi extends BaseAdapter {
     private LayoutInflater inflter;
     private boolean ModalitaPerNuovo;
     private boolean Andata;
+    private String DaImpostazioni;
 
     public AdapterListenerMezzi(Context applicationContext, List<StrutturaMezzi> Mezzi,
-                                boolean ModalitaPerNuovo, boolean Andata) {
+                                boolean ModalitaPerNuovo, boolean Andata, String DaImpostazioni) {
         this.context = applicationContext;
         if (ModalitaPerNuovo) {
             this.listaMezziOrig = Mezzi;
@@ -36,6 +38,7 @@ public class AdapterListenerMezzi extends BaseAdapter {
             this.listaMezzi = Mezzi;
         }
         this.Andata = Andata;
+        this.DaImpostazioni = DaImpostazioni;
         inflter = (LayoutInflater.from(applicationContext));
         this.ModalitaPerNuovo = ModalitaPerNuovo;
     }
@@ -78,7 +81,7 @@ public class AdapterListenerMezzi extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if (ModalitaPerNuovo) {
+        if (ModalitaPerNuovo || DaImpostazioni.equals("IMPO1")) {
             view = inflter.inflate(R.layout.lista_mezzi_per_nuovo, null);
         } else {
             view = inflter.inflate(R.layout.lista_mezzi, null);
@@ -103,11 +106,19 @@ public class AdapterListenerMezzi extends BaseAdapter {
                     if (Andata) {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     } else {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             });
@@ -125,11 +136,19 @@ public class AdapterListenerMezzi extends BaseAdapter {
                     if (Andata) {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     } else {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             });
@@ -142,11 +161,19 @@ public class AdapterListenerMezzi extends BaseAdapter {
                     if (Andata) {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     } else {
                         VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(listaMezzi);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        if (!DaImpostazioni.equals("IMPO2")) {
+                            UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        } else {
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             });
@@ -154,24 +181,37 @@ public class AdapterListenerMezzi extends BaseAdapter {
             ImageView imgAggiunge = view.findViewById(R.id.imgAggiunge);
             imgAggiunge.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    StrutturaMezzi s = listaMezzi.get(i);
+                    if (DaImpostazioni.isEmpty()) {
+                        StrutturaMezzi s = listaMezzi.get(i);
 
-                    if (Andata) {
-                        List<StrutturaMezzi> lista = VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata();
-                        lista.add(s);
-                        VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(lista);
+                        if (Andata) {
+                            List<StrutturaMezzi> lista = VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziAndata();
+                            lista.add(s);
+                            VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziAndata(lista);
 
-                        UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                            UtilityOrari.getInstance().AggiornaListaMezziAndata(context, false, true);
+                        } else {
+                            List<StrutturaMezzi> lista = VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno();
+                            lista.add(s);
+                            VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(lista);
+
+                            UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                        }
+
+                        VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.GONE);
                     } else {
-                        List<StrutturaMezzi> lista = VariabiliStaticheOrari.getInstance().getDatiGiornata().getMezziRitorno();
-                        lista.add(s);
-                        VariabiliStaticheOrari.getInstance().getDatiGiornata().setMezziRitorno(lista);
+                        if (DaImpostazioni.equals("IMPO1")) {
+                            VariabiliStaticheImpostazioniOrari.getInstance().getMezziStandard().add(listaMezzi.get(i));
 
-                        UtilityOrari.getInstance().AggiornaListaMezziRitorno(context, false, false);
+                            AdapterListenerMezzi adapterS = new AdapterListenerMezzi(context,
+                                    VariabiliStaticheImpostazioniOrari.getInstance().getMezziStandard(),
+                                    false,
+                                    false,
+                                    "IMPO2");
+                            VariabiliStaticheImpostazioniOrari.getInstance().getLstMezziStandard().setAdapter(adapterS);
+                        }
                     }
-
-                    VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.GONE);
-                    VariabiliStaticheOrari.getInstance().getLayNuovoDato().setVisibility(LinearLayout.GONE);
                 }
             });
         }

@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaLavoro;
 
 import java.util.ArrayList;
@@ -70,9 +72,18 @@ public class AdapterListenerLavoriGestione extends BaseAdapter {
         TextView txtSito = (TextView) view.findViewById(R.id.txtLavoro);
         txtSito.setText(listaLavori.get(i).getLavoro());
 
+        int idLavoro = listaLavori.get(i).getIdLavoro();
+
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().setIdLavoro(idLavoro);
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtLavoro().setText(listaLavori.get(i).getLavoro());
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtIndirizzo().setText(listaLavori.get(i).getIndirizzo());
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataInizio().setText(listaLavori.get(i).getDataInizio());
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataFine().setText(listaLavori.get(i).getDataFine());
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtLatLng().setText(listaLavori.get(i).getLatlng());
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayLavoro().setVisibility(LinearLayout.VISIBLE);
             }
         });
 

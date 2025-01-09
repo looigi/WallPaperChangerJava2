@@ -28,7 +28,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="8"
+            android:layout_weight="7"
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
@@ -77,9 +77,15 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="end"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgOggi"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/oggi" />
 
             <ImageView
                 android:id="@+id/imgAvanti"
@@ -208,13 +214,13 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/layContenitore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <!-- Tipo lavoro -->
                 <LinearLayout
+                    android:id="@+id/layContenitore"
                     android:layout_width="match_parent"
                     android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
                     android:orientation="horizontal"
@@ -247,6 +253,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Dettaglio giornata -->
                 <LinearLayout
                     android:id="@+id/layDettaglioGiornata"
                     android:layout_width="match_parent"
@@ -417,37 +424,6 @@
                                     android:src="@drawable/edit_image" />
                             </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Note -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
-                        android:layout_marginTop="3dp"
-                        android:orientation="horizontal"
-                        android:weightSum="10"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/edtNote"
-                            android:layout_width="0dp"
-                            android:layout_weight="9"
-                            android:maxLines="5"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:gravity="end|center_vertical"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:id="@+id/imgCambiaNote"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:src="@drawable/edit_image" />
-                        </LinearLayout>
-
                     </LinearLayout>
 
                     <!-- Mezzi Andata -->
@@ -736,6 +712,39 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <!-- Note -->
+                <LinearLayout
+                    android:id="@+id/layNote"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edtNote"
+                        android:enabled="false"
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:maxLines="5"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgCambiaNote"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/edit_image" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -744,13 +753,54 @@
         android:id="@+id/layAggiunge"
         android:layout_centerInParent="true"
         android:padding="3dp"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:src="@drawable/edit_orario"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:padding="3dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgNuovoOrario"
+                android:src="@drawable/edit_orario"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:text="Inserisce\nGiornata"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
+                android:textColor="@color/Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:padding="3dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgInserisceNote"
+                android:src="@drawable/notepad"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:text="Inserisce\nNote"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -763,6 +813,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layGestioneValori"
         android:layout_centerInParent="true"
         android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
@@ -780,6 +831,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
         <Spinner
             android:id="@+id/spnValori"
             android:spinnerMode="dialog"
@@ -791,7 +848,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
         <LinearLayout
+            android:layout_marginTop="3dp"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:weightSum="2"
@@ -897,6 +961,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/laySceltaData"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:padding="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <DatePicker
+            android:id="@+id/datePicker1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView

@@ -131,7 +131,7 @@ public class DownloadImmagineSI {
                                                             i.putExtra(Intent.EXTRA_SUBJECT, NomeFile);
                                                             i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
                                                             i.putExtra(Intent.EXTRA_STREAM, uri);
-                                                            i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                                                            i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                                                             context.startActivity(Intent.createChooser(i, "Share immagine"));
                                                             break;
                                                     }
@@ -164,7 +164,7 @@ public class DownloadImmagineSI {
                                                             i.putExtra(Intent.EXTRA_SUBJECT, NomeFile);
                                                             i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
                                                             i.putExtra(Intent.EXTRA_STREAM, uri);
-                                                            i.setType(UtilityWallpaper.getInstance().GetMimeType(context, uri));
+                                                            i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                                                             context.startActivity(Intent.createChooser(i, "Share immagine looWebPlayer"));
                                                             break;
                                                     }

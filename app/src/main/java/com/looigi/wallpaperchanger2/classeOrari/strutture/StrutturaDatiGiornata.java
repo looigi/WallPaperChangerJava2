@@ -28,6 +28,15 @@ public class StrutturaDatiGiornata {
     private int CommessaDefault;
     private int LavoroDefault;
     private int OreStandard;
+    private boolean SoloNote = false;
+
+    public boolean isSoloNote() {
+        return SoloNote;
+    }
+
+    public void setSoloNote(boolean soloNote) {
+        SoloNote = soloNote;
+    }
 
     public int getCodCommessa() {
         return CodCommessa;

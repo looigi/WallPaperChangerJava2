@@ -96,18 +96,6 @@ public class UtilityWallpaper {
         }
     }
 
-    public String GetMimeType(Context context, Uri uri) {
-        String mimeType = null;
-
-        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
-            mimeType = context.getContentResolver().getType(uri);
-        } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
-        }
-        return mimeType;
-    }
-
     /* public void generaPath(Context context) {
         String pathLog = context.getFilesDir() + "/Log";
         VariabiliStaticheStart.getInstance().setPercorsoDIRLog(pathLog);
