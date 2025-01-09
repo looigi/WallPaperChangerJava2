@@ -1,9 +1,6 @@
-package com.looigi.wallpaperchanger2.classeModifiche;
+package com.looigi.wallpaperchanger2.classeModificheCodice;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,31 +12,23 @@ import android.widget.TextView;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Modifiche;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Moduli;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Progetti;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Sezioni;
-import com.looigi.wallpaperchanger2.classeModifiche.Strutture.Stati;
-import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
-import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
+public class VariabiliStaticheModificheCodice {
+    private static VariabiliStaticheModificheCodice instance = null;
 
-public class VariabiliStaticheModifiche {
-    private static VariabiliStaticheModifiche instance = null;
-
-    private VariabiliStaticheModifiche() {
+    private VariabiliStaticheModificheCodice() {
     }
 
-    public static VariabiliStaticheModifiche getInstance() {
+    public static VariabiliStaticheModificheCodice getInstance() {
         if (instance == null) {
-            instance = new VariabiliStaticheModifiche();
+            instance = new VariabiliStaticheModificheCodice();
         }
 
         return instance;
@@ -465,15 +454,15 @@ public class VariabiliStaticheModifiche {
         return -1;
     }
 
-    private void RicaricaProgetti(Context context, db_dati_modifiche db) {
+    private void RicaricaProgetti(Context context, db_dati_modifiche_codice db) {
         listaProgetti = db.RitornaProgetti();
 
         if (!listaProgetti.isEmpty()) {
-            VariabiliStaticheModifiche.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
         } else {
-            VariabiliStaticheModifiche.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -484,15 +473,15 @@ public class VariabiliStaticheModifiche {
         spnProgetto.setAdapter(adapter);
     }
 
-    public List<Moduli> RicaricaModuli(Context context, db_dati_modifiche db) {
+    public List<Moduli> RicaricaModuli(Context context, db_dati_modifiche_codice db) {
         listaModuli = db.RitornaModuli(idProgetto);
 
         if (!listaModuli.isEmpty()) {
-            VariabiliStaticheModifiche.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
         } else {
-            VariabiliStaticheModifiche.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -505,15 +494,15 @@ public class VariabiliStaticheModifiche {
         return listaModuli;
     }
 
-    public List<Sezioni> RicaricaSezioni(Context context, db_dati_modifiche db) {
+    public List<Sezioni> RicaricaSezioni(Context context, db_dati_modifiche_codice db) {
         listaSezioni = db.RitornaSezioni(idProgetto, idModulo);
 
         if (!listaSezioni.isEmpty()) {
-            VariabiliStaticheModifiche.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
         } else {
-            VariabiliStaticheModifiche.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModifiche.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -526,7 +515,7 @@ public class VariabiliStaticheModifiche {
         return listaSezioni;
     }
 
-    private void RicaricaStati(Context context, db_dati_modifiche db) {
+    private void RicaricaStati(Context context, db_dati_modifiche_codice db) {
         listaStati = db.RitornaStati();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -537,35 +526,35 @@ public class VariabiliStaticheModifiche {
         spnStati.setAdapter(adapter);
     }
 
-    private void RicaricaModifiche(Context context, db_dati_modifiche db) {
+    private void RicaricaModifiche(Context context, db_dati_modifiche_codice db) {
         listaModifiche = db.RitornaModifiche(idProgetto, idModulo, idSezione);
 
-        AdapterListenerModifiche customAdapterT = new AdapterListenerModifiche(context, VariabiliStaticheModifiche.getInstance().getListaModifiche());
+        AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(context, VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
         lstModifiche.setAdapter(customAdapterT);
     }
 
     public void EffettuaSalvataggio(Context context) {
-        db_dati_modifiche db = new db_dati_modifiche(context);
+        db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
 
         String Cosa = "";
 
-        switch (VariabiliStaticheModifiche.getInstance().getTipologia()) {
+        switch (VariabiliStaticheModificheCodice.getInstance().getTipologia()) {
             case "PROGETTO":
-                Cosa = VariabiliStaticheModifiche.getInstance().getEdtTipologia().getText().toString();
+                Cosa = VariabiliStaticheModificheCodice.getInstance().getEdtTipologia().getText().toString();
 
-                switch (VariabiliStaticheModifiche.getInstance().getOperazione()) {
+                switch (VariabiliStaticheModificheCodice.getInstance().getOperazione()) {
                     case "INSERT":
                         db.InserisceNuovoProgetto(Cosa);
                         break;
                     case "UPDATE":
                         db.ModificaProgetto(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
                                 Cosa
                         );
                         break;
                     case "DELETE":
                         db.EliminaProgetto(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto()
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto()
                         );
                         break;
                 }
@@ -573,25 +562,25 @@ public class VariabiliStaticheModifiche {
                 RicaricaProgetti(context, db);
                 break;
             case "MODULO":
-                Cosa = VariabiliStaticheModifiche.getInstance().getEdtTipologia().getText().toString();
+                Cosa = VariabiliStaticheModificheCodice.getInstance().getEdtTipologia().getText().toString();
 
-                switch (VariabiliStaticheModifiche.getInstance().getOperazione()) {
+                switch (VariabiliStaticheModificheCodice.getInstance().getOperazione()) {
                     case "INSERT":
                         db.InserisceNuovoModulo(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
                                 Cosa);
                         break;
                     case "UPDATE":
                         db.ModificaModulo(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
                                 Cosa
                         );
                         break;
                     case "DELETE":
                         db.EliminaModulo(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo()
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo()
                         );
                         break;
                 }
@@ -599,27 +588,27 @@ public class VariabiliStaticheModifiche {
                 RicaricaModuli(context, db);
                 break;
             case "SEZIONE":
-                Cosa = VariabiliStaticheModifiche.getInstance().getEdtTipologia().getText().toString();
+                Cosa = VariabiliStaticheModificheCodice.getInstance().getEdtTipologia().getText().toString();
 
-                switch (VariabiliStaticheModifiche.getInstance().getOperazione()) {
+                switch (VariabiliStaticheModificheCodice.getInstance().getOperazione()) {
                     case "INSERT":
                         db.InserisceNuovaSezione(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
                                 Cosa);
                         break;
                     case "UPDATE":
                         db.ModificaSezione(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
-                                VariabiliStaticheModifiche.getInstance().getIdSezione(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdSezione(),
                                 Cosa);
                         break;
                     case "DELETE":
                         db.EliminaSezione(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
-                                VariabiliStaticheModifiche.getInstance().getIdSezione()
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdSezione()
                         );
                         break;
                 }
@@ -627,32 +616,32 @@ public class VariabiliStaticheModifiche {
                 RicaricaSezioni(context, db);
                 break;
             case "MODIFICA":
-                Cosa = VariabiliStaticheModifiche.getInstance().getEdtTipologia().getText().toString();
+                Cosa = VariabiliStaticheModificheCodice.getInstance().getEdtTipologia().getText().toString();
 
-                switch (VariabiliStaticheModifiche.getInstance().getOperazione()) {
+                switch (VariabiliStaticheModificheCodice.getInstance().getOperazione()) {
                     case "INSERT":
                         db.InserisceNuovaModifica(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
-                                VariabiliStaticheModifiche.getInstance().getIdSezione(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdSezione(),
                                 Cosa);
                         break;
                     case "UPDATE":
                         db.ModificaModifica(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
-                                VariabiliStaticheModifiche.getInstance().getIdSezione(),
-                                VariabiliStaticheModifiche.getInstance().getIdModifica(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdSezione(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModifica(),
                                 Cosa,
-                                VariabiliStaticheModifiche.getInstance().getIdStato()
+                                VariabiliStaticheModificheCodice.getInstance().getIdStato()
                         );
                         break;
                     case "DELETE":
                         db.EliminaModifica(
-                                VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-                                VariabiliStaticheModifiche.getInstance().getIdModulo(),
-                                VariabiliStaticheModifiche.getInstance().getIdSezione(),
-                                VariabiliStaticheModifiche.getInstance().getIdModifica()
+                                VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdSezione(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdModifica()
                         );
                         break;
                 }
@@ -660,9 +649,9 @@ public class VariabiliStaticheModifiche {
                 RicaricaModifiche(context, db);
                 break;
             case "STATI":
-                Cosa = VariabiliStaticheModifiche.getInstance().getEdtStato().getText().toString();
+                Cosa = VariabiliStaticheModificheCodice.getInstance().getEdtStato().getText().toString();
 
-                switch (VariabiliStaticheModifiche.getInstance().getOperazione()) {
+                switch (VariabiliStaticheModificheCodice.getInstance().getOperazione()) {
                     case "INSERT":
                         db.InserisceNuovoStato(
                                 Cosa
@@ -670,13 +659,13 @@ public class VariabiliStaticheModifiche {
                         break;
                     case "UPDATE":
                         db.ModificaStato(
-                                VariabiliStaticheModifiche.getInstance().getIdStato(),
+                                VariabiliStaticheModificheCodice.getInstance().getIdStato(),
                                 Cosa
                         );
                         break;
                     case "DELETE":
                         db.EliminaStati(
-                                VariabiliStaticheModifiche.getInstance().getIdStato()
+                                VariabiliStaticheModificheCodice.getInstance().getIdStato()
                         );
                         break;
                 }
@@ -689,16 +678,16 @@ public class VariabiliStaticheModifiche {
     }
 
     public String PrendeNumeroModifiche(Context context) {
-        db_dati_modifiche db = new db_dati_modifiche(context);
+        db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
 
         int modificheTotali = db.RitornaNumeroModificheTotali(
-          VariabiliStaticheModifiche.getInstance().getIdProgetto(),
-          VariabiliStaticheModifiche.getInstance().getIdModulo(),
-          VariabiliStaticheModifiche.getInstance().getIdSezione()
+          VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
+          VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
+          VariabiliStaticheModificheCodice.getInstance().getIdSezione()
         );
 
         String Ritorno = "Modifiche: " +
-                VariabiliStaticheModifiche.getInstance().getListaModifiche().size() +
+                VariabiliStaticheModificheCodice.getInstance().getListaModifiche().size() +
                 "/" + modificheTotali;
 
         db.ChiudeDB();

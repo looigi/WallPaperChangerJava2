@@ -3,11 +3,19 @@ package com.looigi.wallpaperchanger2.classeOrari;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
+import com.looigi.wallpaperchanger2.classeOrari.webService.ChiamateWSOrari;
+import com.looigi.wallpaperchanger2.classeOrari.webService.InterrogazioneWSOrari;
 
 import java.util.Date;
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -26,6 +34,8 @@ public class VariabiliStaticheOrari {
     }
 
     public static final String UrlWS = "http://www.wsorari.looigi.it/"; // "http://looigi.no-ip.biz:1071/";
+    public String PathOrari;
+
     private Date dataAttuale;
     private int idUtente = 1;
     private GifImageView imgCaricamento;
@@ -46,6 +56,122 @@ public class VariabiliStaticheOrari {
     private ListView lstPranzo;
     private ListView lstMezziAndata;
     private ListView lstMezziRitorno;
+    private StrutturaDati strutturaDati;
+    private Spinner spnValori;
+    private EditText edtValori;
+    private List<StrutturaCommesse> listaCommesse;
+    private boolean PrendeCommessePerSalvataggio = false;
+    private TextView txtTipoGiorno;
+    private TextView txtNumeroGiorno;
+    private LinearLayout layNuovoDato;
+    private LinearLayout layBloccoSfondo;
+    private InterrogazioneWSOrari chiamataInCorso;
+    private List<StrutturaMezziStandard> listaMezziAndataStandard;
+    private List<StrutturaMezziStandard> listaMezziRitornoStandard;
+
+    public List<StrutturaMezziStandard> getListaMezziAndataStandard() {
+        return listaMezziAndataStandard;
+    }
+
+    public void setListaMezziAndataStandard(List<StrutturaMezziStandard> listaMezziAndataStandard) {
+        this.listaMezziAndataStandard = listaMezziAndataStandard;
+    }
+
+    public List<StrutturaMezziStandard> getListaMezziRitornoStandard() {
+        return listaMezziRitornoStandard;
+    }
+
+    public void setListaMezziRitornoStandard(List<StrutturaMezziStandard> listaMezziRitornoStandard) {
+        this.listaMezziRitornoStandard = listaMezziRitornoStandard;
+    }
+
+    public InterrogazioneWSOrari getChiamataInCorso() {
+        return chiamataInCorso;
+    }
+
+    public void setChiamataInCorso(InterrogazioneWSOrari chiamataInCorso) {
+        this.chiamataInCorso = chiamataInCorso;
+    }
+
+    public LinearLayout getLayBloccoSfondo() {
+        return layBloccoSfondo;
+    }
+
+    public void setLayBloccoSfondo(LinearLayout layBloccoSfondo) {
+        this.layBloccoSfondo = layBloccoSfondo;
+    }
+
+    public LinearLayout getLayNuovoDato() {
+        return layNuovoDato;
+    }
+
+    public void setLayNuovoDato(LinearLayout layNuovoDato) {
+        this.layNuovoDato = layNuovoDato;
+    }
+
+    public TextView getTxtNumeroGiorno() {
+        return txtNumeroGiorno;
+    }
+
+    public void setTxtNumeroGiorno(TextView txtNumeroGiorno) {
+        this.txtNumeroGiorno = txtNumeroGiorno;
+    }
+
+    public TextView getTxtTipoGiorno() {
+        return txtTipoGiorno;
+    }
+
+    public void setTxtTipoGiorno(TextView txtTipoGiorno) {
+        this.txtTipoGiorno = txtTipoGiorno;
+    }
+
+    public boolean isPrendeCommessePerSalvataggio() {
+        return PrendeCommessePerSalvataggio;
+    }
+
+    public void setPrendeCommessePerSalvataggio(boolean prendeCommessePerSalvataggio) {
+        PrendeCommessePerSalvataggio = prendeCommessePerSalvataggio;
+    }
+
+    public List<StrutturaCommesse> getListaCommesse() {
+        return listaCommesse;
+    }
+
+    public void setListaCommesse(List<StrutturaCommesse> listaCommesse) {
+        this.listaCommesse = listaCommesse;
+    }
+
+    public Spinner getSpnValori() {
+        return spnValori;
+    }
+
+    public void setSpnValori(Spinner spnValori) {
+        this.spnValori = spnValori;
+    }
+
+    public EditText getEdtValori() {
+        return edtValori;
+    }
+
+    public void setEdtValori(EditText edtValori) {
+        this.edtValori = edtValori;
+    }
+
+    public String getPathOrari() {
+        return PathOrari;
+    }
+
+    public void setPathOrari(String pathOrari) {
+        PathOrari = pathOrari;
+    }
+
+    public StrutturaDati getStrutturaDati() {
+        return strutturaDati;
+    }
+
+    public void setStrutturaDati(StrutturaDati strutturaDati) {
+        this.strutturaDati = strutturaDati;
+    }
 
     public ListView getLstMezziAndata() {
         return lstMezziAndata;

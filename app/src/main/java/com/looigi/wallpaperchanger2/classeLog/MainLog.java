@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -173,5 +174,19 @@ public class MainLog extends Activity {
         }
 
         return text.toString();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

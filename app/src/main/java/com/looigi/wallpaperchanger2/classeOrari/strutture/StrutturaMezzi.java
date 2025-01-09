@@ -1,8 +1,17 @@
 package com.looigi.wallpaperchanger2.classeOrari.strutture;
 
 public class StrutturaMezzi {
+    private int idMezzo;
     private String Mezzo;
     private String Dettaglio;
+
+    public int getIdMezzo() {
+        return idMezzo;
+    }
+
+    public void setIdMezzo(int idMezzo) {
+        this.idMezzo = idMezzo;
+    }
 
     public String getMezzo() {
         return Mezzo;

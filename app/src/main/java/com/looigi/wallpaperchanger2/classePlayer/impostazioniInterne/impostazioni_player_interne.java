@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,8 +28,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -50,15 +48,10 @@ import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWP
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class impostazioni_player_interne {
@@ -1059,7 +1052,7 @@ public class impostazioni_player_interne {
                     VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
                             Path
                     );
-                    Intent i = new Intent(context, Main_ModificaImmagine.class);
+                    Intent i = new Intent(context, MainModificaImmagine.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }

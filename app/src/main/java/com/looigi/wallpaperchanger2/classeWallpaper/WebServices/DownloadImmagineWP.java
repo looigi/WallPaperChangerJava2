@@ -10,14 +10,12 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.core.content.FileProvider;
 
-import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -47,6 +45,10 @@ public class DownloadImmagineWP {
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine, String Url,
                                boolean PerModifica, String Operazione) {
+        if (context == null) {
+            return;
+        }
+
         this.NomeImmagine = NomeImmagine;
         this.context = context;
         this.immagine = immagine;
@@ -249,7 +251,7 @@ public class DownloadImmagineWP {
                                     VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
                                             Path
                                     );
-                                    Intent i = new Intent(context, Main_ModificaImmagine.class);
+                                    Intent i = new Intent(context, MainModificaImmagine.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(i);
                                 }

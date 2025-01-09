@@ -693,16 +693,19 @@ public class MainOnomastici extends Activity implements ColorPickerDialog.OnColo
         TextView tRoutine=(TextView) findViewById(R.id.txtGiorno);
         TextView tChiamante=(TextView) findViewById(R.id.txtNumSettimana);
         SQLiteDatabase myDB= varDB.ApreDB(tRoutine, tErrore,"CaricaMessaggi",tChiamante);
-        Cursor c = myDB.rawQuery(Sql , null);
-        c.moveToFirst();
-        do {
-            String Mess=c.getString(0);
-            listaMessaggi.add(Mess);
-        } while (c.moveToNext());
-        c.close();
+        try {
+            Cursor c = myDB.rawQuery(Sql , null);
+            c.moveToFirst();
+            do {
+                String Mess=c.getString(0);
+                listaMessaggi.add(Mess);
+            } while (c.moveToNext());
+            c.close();
+        } catch (Exception e) {
+
+        }
 
         varDB.ChiudeDB(myDB,tRoutine, tErrore, "CaricaMessaggi", tChiamante);
-
 
         String MessaggiS[];
         MessaggiS=new String[listaMessaggi.size()];

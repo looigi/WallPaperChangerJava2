@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -27,9 +28,8 @@ import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.ChiamateWSFET;
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.DownloadImmagineFET;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -128,7 +128,7 @@ public class MainMostraFetekkie extends Activity {
                 VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
                         Path
                 );
-                Intent i = new Intent(context, Main_ModificaImmagine.class);
+                Intent i = new Intent(context, MainModificaImmagine.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
@@ -582,5 +582,19 @@ public class MainMostraFetekkie extends Activity {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

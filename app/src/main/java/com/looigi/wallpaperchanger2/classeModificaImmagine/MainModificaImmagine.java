@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,9 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
-public class Main_ModificaImmagine extends Activity {
+public class MainModificaImmagine extends Activity {
     private static String NomeMaschera = "Modifica_Immagine";
     private Context context;
     private Activity act;
@@ -57,7 +56,7 @@ public class Main_ModificaImmagine extends Activity {
     private ImageView btnSalvaCrop;
     private ImageView btnSalva;
     private ImageView btnAnnullaCrop;
-    private Main_ModificaImmagine mI;
+    private MainModificaImmagine mI;
     private GestioneImmagini g;
     // private int modalita;
     private Bitmap vecchiaBitmap;
@@ -784,5 +783,19 @@ public class Main_ModificaImmagine extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

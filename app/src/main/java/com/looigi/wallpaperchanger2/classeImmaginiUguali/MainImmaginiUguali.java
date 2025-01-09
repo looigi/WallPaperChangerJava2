@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -96,5 +97,19 @@ public class MainImmaginiUguali extends Activity {
         VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso().setVisibility(LinearLayout.GONE);
 
         c.RitornaImmaginiUguali(Categoria);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

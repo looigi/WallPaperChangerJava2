@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,7 +24,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.Main_ModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
@@ -124,7 +125,7 @@ public class MainMostraPennetta extends Activity {
                 VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
                         Path
                 );
-                Intent i = new Intent(context, Main_ModificaImmagine.class);
+                Intent i = new Intent(context, MainModificaImmagine.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
 
@@ -496,8 +497,23 @@ public class MainMostraPennetta extends Activity {
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
     }
 }

@@ -2,13 +2,9 @@ package com.looigi.wallpaperchanger2;
 
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,30 +14,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.app.NotificationCompat;
-
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
-import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classeModifiche.MainModifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.utilities.Chiacchierone;
 import com.looigi.wallpaperchanger2.utilities.Permessi;
 import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
@@ -369,7 +359,7 @@ public class MainStart  extends Activity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent i = new Intent(context, MainModifiche.class);
+                        Intent i = new Intent(context, MainModificheCodice.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }
@@ -605,11 +595,11 @@ public class MainStart  extends Activity {
                 this,
                 MostraImmaginiLibrary.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(myIntent); */
+        this.startActivity(myIntent);
 
         Intent i = new Intent(context, MainOrari.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        context.startActivity(i); */
     }
 
     @Override

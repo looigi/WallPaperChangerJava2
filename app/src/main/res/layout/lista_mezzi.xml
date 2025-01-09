@@ -14,51 +14,11 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center_vertical"
-            android:weightSum="4"
+            android:weightSum="3"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgAggiunge"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icona_aggiunge" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgModifica"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icona_modifica" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgElimina"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/elimina_quadrato" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -87,12 +47,25 @@
                     android:src="@drawable/icona_giu" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgElimina"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/txtMezzo"
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="7"
             android:layout_marginStart="5dp"
             android:layout_height="wrap_content"
             android:gravity="left"

@@ -38,19 +38,41 @@
                 android:textSize="18sp"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
-            </TextView>
-
-            <TextView
-                android:id="@+id/txtNomeGiorno"
-                android:textColor="@color/black"
-                android:gravity="center_horizontal"
-                android:textSize="14sp"
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10"
                 android:layout_height="wrap_content">
 
-            </TextView>
+                <TextView
+                    android:id="@+id/txtNomeGiorno"
+                    android:textColor="@color/black"
+                    android:gravity="center_horizontal"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txtTipoGiorno"
+                    android:textColor="@color/black"
+                    android:gravity="center_horizontal"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txtNumeroGiorno"
+                    android:textColor="@color/black"
+                    android:gravity="center_horizontal"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -68,8 +90,116 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
         android:layout_below="@+id/layTesta"
+        android:id="@+id/layTasti"
+        android:padding="3dp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp">
+
+        <HorizontalScrollView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Impostazioni"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImpostazioni"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/settings" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Statistiche"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgStatistiche"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/icona_lancio" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Elimina Giornata"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgElimina"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/elimina" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Salva"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSalva"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/icona_salva" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/layTasti"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -88,6 +218,7 @@
                     android:layout_width="match_parent"
                     android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
                     android:orientation="horizontal"
+                    android:padding="3dp"
                     android:weightSum="10"
                     android:gravity="center_vertical"
                     android:layout_height="wrap_content">
@@ -139,7 +270,7 @@
 
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="6"
+                                android:layout_weight="8"
                                 android:text="Ore Lavorative:"
                                 android:textStyle="bold"
                                 android:singleLine="true"
@@ -150,7 +281,7 @@
                                 android:inputType="number"
                                 android:id="@+id/txtOreLavoro"
                                 android:layout_width="0dp"
-                                android:layout_weight="3"
+                                android:layout_weight="1"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -178,7 +309,7 @@
 
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="6"
+                                android:layout_weight="7"
                                 android:text="Entrata:"
                                 android:textStyle="bold"
                                 android:singleLine="true"
@@ -188,7 +319,7 @@
                             <EditText
                                 android:id="@+id/txtEntrata"
                                 android:layout_width="0dp"
-                                android:layout_weight="3"
+                                android:layout_weight="2"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -330,21 +461,42 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:text="Mezzi Andata"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/Verde_Scuro"
+                            <LinearLayout
+                                android:weightSum="10"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:text="Mezzi Andata"
+                                    android:gravity="center_horizontal"
+                                    android:textColor="@color/Verde_Scuro"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="9"
+                                    android:layout_height="wrap_content" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/imgNuovoMezzoAndata"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/edit_orario" />
+                                </LinearLayout>
+                            </LinearLayout>
 
                             <ListView
                                 android:id="@+id/lstMezziAndata"
-                                android:divider="@color/black"
+                                android:divider="#CCCCCC"
                                 android:dividerHeight="1dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="80dp">
                             </ListView>
                         </LinearLayout>
                     </LinearLayout>
@@ -361,21 +513,42 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:text="Mezzi Ritorno"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/Verde_Scuro"
+                            <LinearLayout
+                                android:weightSum="10"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:text="Mezzi Ritorno"
+                                    android:gravity="center_horizontal"
+                                    android:textColor="@color/Verde_Scuro"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="9"
+                                    android:layout_height="wrap_content" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/imgNuovoMezzoRitorno"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/edit_orario" />
+                                </LinearLayout>
+                            </LinearLayout>
 
                             <ListView
                                 android:id="@+id/lstMezziRitorno"
-                                android:divider="@color/black"
+                                android:divider="#CCCCCC"
                                 android:dividerHeight="1dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="80dp">
                             </ListView>
                         </LinearLayout>
                     </LinearLayout>
@@ -388,16 +561,37 @@
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:text="Portate"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/Verde_Scuro"
+                        <LinearLayout
+                            android:weightSum="10"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:text="Portate"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/Verde_Scuro"
+                                android:layout_width="0dp"
+                                android:layout_weight="9"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgNuovaPortata"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/edit_orario" />
+                            </LinearLayout>
+                        </LinearLayout>
 
                         <ListView
                             android:id="@+id/lstPranzo"
-                            android:divider="@color/black"
+                            android:divider="#CCCCCC"
                             android:dividerHeight="1dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -549,15 +743,160 @@
     <LinearLayout
         android:id="@+id/layAggiunge"
         android:layout_centerInParent="true"
-        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
         android:padding="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/icona_aggiunge"
+            android:src="@drawable/edit_orario"
             android:layout_width="100dp"
             android:layout_height="100dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layBloccoSfondo"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:background="@drawable/blocco_sfondo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layGestioneValori"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:padding="3dp"
+        android:orientation="vertical"
+        android:layout_margin="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtGestioneTesto"
+            android:gravity="center_horizontal"
+            android:textColor="@color/Rosso"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnValori"
+            android:spinnerMode="dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edtValori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaValori"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/icona_salva" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaValori"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layNuovoDato"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_height="300dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtNuovoTesto"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Verde_Scuro"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtTestoRicercaNuovo"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgCercaTestoNuovo"
+                        android:layout_width="25dp"
+                        android:src="@drawable/icona_cerca"
+                        android:layout_height="25dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgChiudeNuovo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstNuovoDato"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView
@@ -565,7 +904,5 @@
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
-        android:layout_height="100dp">
-
-    </pl.droidsonroids.gif.GifImageView>
+        android:layout_height="100dp" />
 </RelativeLayout>

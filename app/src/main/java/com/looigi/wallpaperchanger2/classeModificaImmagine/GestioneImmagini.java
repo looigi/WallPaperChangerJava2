@@ -193,7 +193,7 @@ public class GestioneImmagini {
 		// UtilityDetector.getInstance().VisualizzaMultimedia(context);
 	}
 
-	public void PrendeVoltoDaBitmap(Context context, Bitmap bitmap, Main_ModificaImmagine mI) {
+	public void PrendeVoltoDaBitmap(Context context, Bitmap bitmap, MainModificaImmagine mI) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
 		VariabiliStaticheWallpaper.getInstance().setStaPrendendoVolto(true);

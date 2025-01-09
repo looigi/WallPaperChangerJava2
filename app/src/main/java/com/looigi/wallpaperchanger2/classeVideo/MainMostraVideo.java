@@ -386,4 +386,18 @@ public class MainMostraVideo extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return false;
+        }
+
+        return false;
+    }
 }
