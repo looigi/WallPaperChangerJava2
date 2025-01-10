@@ -441,10 +441,24 @@
             android:layout_height="1dp"
             android:background="#999999" />
 
-        <EditText
-            android:id="@+id/edtPortata"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Portata"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtPortata"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <View
             android:layout_marginTop="10dp"
@@ -512,15 +526,43 @@
             android:layout_height="1dp"
             android:background="#999999" />
 
-        <EditText
-            android:id="@+id/edtMezzo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edtMezzoDettaglio"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Mezzo"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtMezzo"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Dettaglio"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtMezzoDettaglio"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <View
             android:layout_marginTop="10dp"
@@ -661,6 +703,7 @@
 
     <!-- GESTIONE LAVORI -->
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layGestioneLavoro"
         android:layout_centerInParent="true"
         android:orientation="vertical"
@@ -684,36 +727,121 @@
             android:layout_height="1dp"
             android:background="#999999" />
 
-        <EditText
-            android:id="@+id/edtLavoro"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="Lavoro" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edtIndirizzo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="Indirizzo" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Lavoro"
+                android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/edtDataInizio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="Data Inizio" />
+            <EditText
+                android:id="@+id/edtLavoro"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:autofillHints="Lavoro" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/edtDataFine"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="Data Fine" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edtLatLng"
-            android:enabled="false"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Indirizzo"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtIndirizzo"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:autofillHints="Indirizzo" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="LatLng" />
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Data Inizio"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtDataInizio"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:autofillHints="Data Inizio" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Data Fine"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtDataFine"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:autofillHints="Data Fine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="6"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Lat/Lng"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtLatLng"
+                android:enabled="false"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:lines="1"
+                android:layout_height="wrap_content"
+                android:autofillHints="LatLng" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgPrendeLatLng"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/gps_on" />
+            </LinearLayout>
+        </LinearLayout>
 
         <View
             android:layout_marginTop="10dp"
@@ -748,6 +876,280 @@
 
                 <ImageView
                     android:id="@+id/imgAnnullaLavoro"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- GESTIONE SCELTA COMMESSA -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layGestioneCommesse"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/Verde_Scuro"
+                android:gravity="center_horizontal"
+                android:text="Lavori" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgChiudeCommesse"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <ListView
+            android:id="@+id/lstListaLavori"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAggiungeCommessa"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icona_aggiunge" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/Verde_Scuro"
+                android:gravity="center_horizontal"
+                android:text="Commesse" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <ListView
+            android:id="@+id/lstListaCommesse"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+    </LinearLayout>
+
+    <!-- GESTIONE TEMPO -->
+    <LinearLayout
+        android:id="@+id/layGestioneTempo"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal"
+            android:text="Tempo" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Tempo"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtTempo"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaTempo"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaTempo"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- GESTIONE PASTICCHE -->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layGestionePasticca"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Verde_Scuro"
+            android:gravity="center_horizontal"
+            android:text="Pasticca" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Pasticca"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtPasticca"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalvaPasticca"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaPasticca"
                     android:src="@drawable/elimina_quadrato"
                     android:layout_width="40dp"
                     android:layout_height="40dp" />

@@ -708,7 +708,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
-                        VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
+                        VariabiliStaticheDetector.getInstance().getImmagini().size()
                 ) {
                     VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("DETECTOR");
                     VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(

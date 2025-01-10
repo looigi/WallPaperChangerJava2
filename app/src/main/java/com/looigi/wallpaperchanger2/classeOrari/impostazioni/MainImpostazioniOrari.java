@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeOrari.impostazioni;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerCommesseGestione;
@@ -24,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterLis
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerPasticcheGestione;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerPortateGestione;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerTempoGestione;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Commesse.MainCommessa;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.webService.ChiamateWSImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
@@ -172,20 +176,11 @@ public class MainImpostazioniOrari extends Activity {
                 }
 
                 ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
-                if (VariabiliStaticheImpostazioniOrari.getInstance().getIdMezzo() > -1) {
-                    // Modifica
-                    ws.SalvaMezzo(String.valueOf(VariabiliStaticheImpostazioniOrari.getInstance().getIdMezzo()),
-                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzo().getText().toString(),
-                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzoDettaglio().getText().toString()
-                    );
-                } else {
-                    // Nuovo Inserimento
-                    ws.SalvaMezzo("-1",
-                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzo().getText().toString(),
-                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzoDettaglio().getText().toString()
-                    );
-                }
-
+                ws.SalvaMezzo(
+                        String.valueOf(VariabiliStaticheImpostazioniOrari.getInstance().getIdMezzo()),
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzo().getText().toString(),
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtMezzoDettaglio().getText().toString()
+                );
                 VariabiliStaticheImpostazioniOrari.getInstance().setDatiModificati(true);
 
                 VariabiliStaticheImpostazioniOrari.getInstance().getLayMezzi().setVisibility(LinearLayout.GONE);
@@ -340,14 +335,61 @@ public class MainImpostazioniOrari extends Activity {
                 txtTipoModifica.setText("Gestione lavori");
 
                 VariabiliStaticheImpostazioniOrari.getInstance().setCstmAdptLavori(new AdapterListenerLavoriGestione(context,
-                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori()));
+                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori(),
+                                false));
                 lstLista.setAdapter(VariabiliStaticheImpostazioniOrari.getInstance().getCstmAdptLavori());
+            }
+        });
+
+        ImageView imgPrendeLatLng = findViewById(R.id.imgPrendeLatLng);
+        imgPrendeLatLng.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Indirizzo = VariabiliStaticheImpostazioniOrari.getInstance().getEdtIndirizzo().getText().toString();
+                if (Indirizzo.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire l'indirizzo");
+                    return;
+                }
+                LatLng l = UtilityImpostazioniOrari.getInstance().getLocationFromAddress(context, Indirizzo);
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtLatLng().setText(l.latitude + ";" + l.longitude);
             }
         });
 
         ImageView imgSalvaLavoro = findViewById(R.id.imgSalvaLavoro);
         imgSalvaLavoro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                String Lavoro = VariabiliStaticheImpostazioniOrari.getInstance().getEdtLavoro().getText().toString();
+                if (Lavoro.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire il lavoro");
+                    return;
+                }
+                String Indirizzo = VariabiliStaticheImpostazioniOrari.getInstance().getEdtIndirizzo().getText().toString();
+                if (Indirizzo.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire l'indirizzo");
+                    return;
+                }
+                String DataInizio = VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataInizio().getText().toString();
+                if (DataInizio.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire la data di inizio");
+                    return;
+                }
+                String DataFine = VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataFine().getText().toString();
+                if (DataFine.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire la data di fine");
+                    return;
+                }
+                String LatLng = VariabiliStaticheImpostazioniOrari.getInstance().getEdtLatLng().getText().toString();
+
+                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                ws.SalvaLavori(
+                        String.valueOf(VariabiliStaticheImpostazioniOrari.getInstance().getIdLavoro()),
+                        Lavoro,
+                        Indirizzo,
+                        DataInizio,
+                        DataFine,
+                        LatLng
+                );
+                VariabiliStaticheImpostazioniOrari.getInstance().setDatiModificati(true);
+
                 VariabiliStaticheImpostazioniOrari.getInstance().getLayLavoro().setVisibility(LinearLayout.GONE);
             }
         });
@@ -361,21 +403,51 @@ public class MainImpostazioniOrari extends Activity {
         // endregion
 
         // region COMMESSE LAVORI
+        ListView listaLavori = findViewById(R.id.lstListaLavori);
+        VariabiliStaticheImpostazioniOrari.getInstance().setLstCommesse(findViewById(R.id.lstListaCommesse));
+        VariabiliStaticheImpostazioniOrari.getInstance().setLayCommesse(findViewById(R.id.layGestioneCommesse));
+        VariabiliStaticheImpostazioniOrari.getInstance().getLayCommesse().setVisibility(LinearLayout.GONE);
+
         ImageView imgCommesseLavori = findViewById(R.id.imgGestioneCommesseLavoro);
         imgCommesseLavori.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheImpostazioniOrari.getInstance().getLayGestione().setVisibility(LinearLayout.VISIBLE);
-                VariabiliStaticheImpostazioniOrari.getInstance().setModalita("COMMESSE");
-                txtTipoModifica.setText("Gestione commesse lavoro");
+                VariabiliStaticheImpostazioniOrari.getInstance().setCstmAdptLavori(
+                        new AdapterListenerLavoriGestione(
+                                context,
+                                VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori(),
+                                true
+                        )
+                );
+                listaLavori.setAdapter(VariabiliStaticheImpostazioniOrari.getInstance().getCstmAdptLavori());
 
-                VariabiliStaticheImpostazioniOrari.getInstance().setCstmAdptCommessa(new AdapterListenerCommesseGestione(context,
-                        new ArrayList<>()));
-                lstLista.setAdapter(VariabiliStaticheImpostazioniOrari.getInstance().getCstmAdptCommessa());
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayCommesse().setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgChiudeCommesse = findViewById(R.id.imgChiudeCommesse);
+        imgChiudeCommesse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayCommesse().setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgAggiungeCommessa = findViewById(R.id.imgAggiungeCommessa);
+        imgAggiungeCommessa.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().setIdCommessa(-1);
+
+                Intent iI = new Intent(context, MainCommessa.class);
+                iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iI);
             }
         });
         // endregion
 
         // region TEMPO
+        VariabiliStaticheImpostazioniOrari.getInstance().setLayTempo(findViewById(R.id.layGestioneTempo));
+        VariabiliStaticheImpostazioniOrari.getInstance().getLayTempo().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheImpostazioniOrari.getInstance().setEdtTempo(findViewById(R.id.edtTempo));
+
         ImageView imgTempo = findViewById(R.id.imgGestioneTempo);
         imgTempo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -388,9 +460,46 @@ public class MainImpostazioniOrari extends Activity {
                 lstLista.setAdapter(VariabiliStaticheImpostazioniOrari.getInstance().getCstmAdptTempo());
             }
         });
+
+        ImageView imgSalvaTempo = findViewById(R.id.imgSalvaTempo);
+        imgSalvaTempo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheImpostazioniOrari.getInstance().getEdtTempo().getText().toString().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire un valore per il tempo");
+                    return;
+                }
+
+                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                if (VariabiliStaticheImpostazioniOrari.getInstance().getIdTempo() > -1) {
+                    // Modifica
+                    ws.SalvaTempo(String.valueOf(VariabiliStaticheImpostazioniOrari.getInstance().getIdTempo()),
+                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtTempo().getText().toString()
+                    );
+                } else {
+                    // Nuovo Inserimento
+                    ws.SalvaTempo("-1",
+                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtTempo().getText().toString()
+                    );
+                }
+
+                VariabiliStaticheImpostazioniOrari.getInstance().setDatiModificati(true);
+
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayTempo().setVisibility(LinearLayout.GONE);
+            }
+        });
+        ImageView imgAnnullaTempo = findViewById(R.id.imgAnnullaTempo);
+        imgAnnullaTempo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayTempo().setVisibility(LinearLayout.GONE);
+            }
+        });
         // endregion
 
         // region PASTICCHE
+        VariabiliStaticheImpostazioniOrari.getInstance().setLayPasticca(findViewById(R.id.layGestionePasticca));
+        VariabiliStaticheImpostazioniOrari.getInstance().getLayPasticca().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheImpostazioniOrari.getInstance().setEdtPasticca(findViewById(R.id.edtPasticca));
+
         ImageView imgPasticche = findViewById(R.id.imgGestionePasticche);
         imgPasticche.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -401,6 +510,39 @@ public class MainImpostazioniOrari extends Activity {
                 VariabiliStaticheImpostazioniOrari.getInstance().setCstmAdptPasticche(new AdapterListenerPasticcheGestione(context,
                         VariabiliStaticheOrari.getInstance().getStrutturaDati().getPasticche()));
                 lstLista.setAdapter(VariabiliStaticheImpostazioniOrari.getInstance().getCstmAdptPasticche());
+            }
+        });
+
+        ImageView imgSalvaPasticca = findViewById(R.id.imgSalvaPasticca);
+        imgSalvaPasticca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheImpostazioniOrari.getInstance().getEdtPasticca().getText().toString().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Inserire un valore per la pasticca");
+                    return;
+                }
+
+                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                if (VariabiliStaticheImpostazioniOrari.getInstance().getIdPasticca() > -1) {
+                    // Modifica
+                    ws.SalvaPasticca(String.valueOf(VariabiliStaticheImpostazioniOrari.getInstance().getIdPasticca()),
+                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtPasticca().getText().toString()
+                    );
+                } else {
+                    // Nuovo Inserimento
+                    ws.SalvaPasticca("-1",
+                            VariabiliStaticheImpostazioniOrari.getInstance().getEdtPasticca().getText().toString()
+                    );
+                }
+
+                VariabiliStaticheImpostazioniOrari.getInstance().setDatiModificati(true);
+
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayPasticca().setVisibility(LinearLayout.GONE);
+            }
+        });
+        ImageView imgAnnullaPasticca = findViewById(R.id.imgAnnullaPasticca);
+        imgAnnullaPasticca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayPasticca().setVisibility(LinearLayout.GONE);
             }
         });
         // endregion
@@ -425,12 +567,25 @@ public class MainImpostazioniOrari extends Activity {
                     case "MSR":
                         break;
                     case "LAVORI":
+                        VariabiliStaticheImpostazioniOrari.getInstance().setIdLavoro(-1);
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtLavoro().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtIndirizzo().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataInizio().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtDataFine().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtLatLng().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getLayLavoro().setVisibility(LinearLayout.VISIBLE);
                         break;
                     case "COMMESSE":
                         break;
                     case "TEMPO":
+                        VariabiliStaticheImpostazioniOrari.getInstance().setIdTempo(-1);
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtTempo().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getLayTempo().setVisibility(LinearLayout.VISIBLE);
                         break;
                     case "PASTICCHE":
+                        VariabiliStaticheImpostazioniOrari.getInstance().setIdPasticca(-1);
+                        VariabiliStaticheImpostazioniOrari.getInstance().getEdtPasticca().setText("");
+                        VariabiliStaticheImpostazioniOrari.getInstance().getLayPasticca().setVisibility(LinearLayout.VISIBLE);
                         break;
                 }
             }

@@ -1,14 +1,18 @@
 package com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Commesse.MainCommessa;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 
 import java.util.ArrayList;
@@ -70,9 +74,24 @@ public class AdapterListenerCommesseGestione extends BaseAdapter {
         TextView txtSito = (TextView) view.findViewById(R.id.txtCommessa);
         txtSito.setText(listaCommesse.get(i).getDescrizione());
 
+        /* listaCommesse.get(i).getCommessa()
+        listaCommesse.get(i).getCliente()
+        listaCommesse.get(i).getDescrizione()
+        listaCommesse.get(i).getDataInizio()
+        listaCommesse.get(i).getDataFine()
+        listaCommesse.get(i).getIndirizzo()
+        listaCommesse.get(i).getLatLng() */
+
+        int idCommessa = listaCommesse.get(i).getIdCommessa();
+
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().setIdCommessa(idCommessa);
+
+                Intent iI = new Intent(context, MainCommessa.class);
+                iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iI);
             }
         });
 

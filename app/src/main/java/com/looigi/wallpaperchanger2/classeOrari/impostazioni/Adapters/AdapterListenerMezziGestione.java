@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
@@ -92,12 +95,27 @@ public class AdapterListenerMezziGestione extends BaseAdapter {
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
-                ws.EliminaMezzo(String.valueOf(idMezzo));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vuole eliminare il mezzo selezionato?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                        ws.EliminaMezzo(String.valueOf(idMezzo));
 
-                listaMezzi.remove(i);
+                        listaMezzi.remove(i);
 
-                notifyDataSetChanged();
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

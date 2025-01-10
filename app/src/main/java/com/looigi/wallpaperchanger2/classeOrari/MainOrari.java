@@ -649,7 +649,7 @@ public class MainOrari extends Activity {
                 }
 
                 ChiamateWSOrari ws = new ChiamateWSOrari(context);
-                ws.RitornaCommesseLavoro(Integer.toString(idLavoro));
+                ws.RitornaCommesseLavoro(Integer.toString(idLavoro), false);
 
                 VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);

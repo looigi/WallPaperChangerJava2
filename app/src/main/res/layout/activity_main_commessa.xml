@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".classeWallpaper.MainWallpaper">
+
+    <HorizontalScrollView
+        android:id="@+id/barraSuperiore"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:background="@drawable/bordato_non_trasparente"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Salva"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgSalvaCommessa"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_below="@+id/barraSuperiore"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </LinearLayout>
+</RelativeLayout>

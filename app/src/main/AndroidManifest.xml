@@ -129,6 +129,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classeOrari.impostazioni.Commesse.MainCommessa"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeLazio.MainLazio"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />

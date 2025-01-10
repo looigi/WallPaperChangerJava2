@@ -70,8 +70,91 @@ public class VariabiliStaticheImpostazioniOrari {
     private EditText edtLatLng;
 
     private AdapterListenerCommesseGestione cstmAdptCommessa = null;
+    private int idCommessa;
+    private LinearLayout layCommesse;
+    private ListView lstCommesse;
+
     private AdapterListenerTempoGestione cstmAdptTempo = null;
+    private int idTempo;
+    private LinearLayout layTempo;
+    private EditText edtTempo;
+
     private AdapterListenerPasticcheGestione cstmAdptPasticche = null;
+    private int idPasticca;
+    private LinearLayout layPasticca;
+    private EditText edtPasticca;
+
+    public int getIdPasticca() {
+        return idPasticca;
+    }
+
+    public void setIdPasticca(int idPasticca) {
+        this.idPasticca = idPasticca;
+    }
+
+    public LinearLayout getLayPasticca() {
+        return layPasticca;
+    }
+
+    public void setLayPasticca(LinearLayout layPasticca) {
+        this.layPasticca = layPasticca;
+    }
+
+    public EditText getEdtPasticca() {
+        return edtPasticca;
+    }
+
+    public void setEdtPasticca(EditText edtPasticca) {
+        this.edtPasticca = edtPasticca;
+    }
+
+    public int getIdTempo() {
+        return idTempo;
+    }
+
+    public void setIdTempo(int idTempo) {
+        this.idTempo = idTempo;
+    }
+
+    public LinearLayout getLayTempo() {
+        return layTempo;
+    }
+
+    public void setLayTempo(LinearLayout layTempo) {
+        this.layTempo = layTempo;
+    }
+
+    public EditText getEdtTempo() {
+        return edtTempo;
+    }
+
+    public void setEdtTempo(EditText edtTempo) {
+        this.edtTempo = edtTempo;
+    }
+
+    public ListView getLstCommesse() {
+        return lstCommesse;
+    }
+
+    public void setLstCommesse(ListView lstCommesse) {
+        this.lstCommesse = lstCommesse;
+    }
+
+    public LinearLayout getLayCommesse() {
+        return layCommesse;
+    }
+
+    public void setLayCommesse(LinearLayout layCommesse) {
+        this.layCommesse = layCommesse;
+    }
+
+    public int getIdCommessa() {
+        return idCommessa;
+    }
+
+    public void setIdCommessa(int idCommessa) {
+        this.idCommessa = idCommessa;
+    }
 
     public int getIdLavoro() {
         return idLavoro;

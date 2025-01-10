@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerCommesseGestione;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerLavoriGestione;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
@@ -50,12 +53,14 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     private final Context context;
     private final boolean ApriDialog = false;
     private boolean RiempieCombo;
+    private boolean PerModificaCommessa;
 
     public ChiamateWSOrari(Context context) {
         this.context = context;
     }
 
-    public void RitornaCommesseLavoro(String idLavoro) {
+    public void RitornaCommesseLavoro(String idLavoro, boolean PerModificaCommessa) {
+        this.PerModificaCommessa = PerModificaCommessa;
         String Urletto="RitornaCommesseLavoro?" +
                 "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
                 "&idLavoro=" + idLavoro;
@@ -140,7 +145,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null ||
                     VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
                 VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
-                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()));
+                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()), false);
                 return;
             }
         }
@@ -386,45 +391,54 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 }
                 VariabiliStaticheOrari.getInstance().setListaCommesse(listaCommesse);
 
-                StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
-                String[] lista = new String[listaCommesse.size()];
-                int i = 0;
-                int qualeRiga = -1;
-                String commessaDefault = "";
-                for (StrutturaCommesse s : listaCommesse) {
-                    if (sdg != null && sdg.isGiornoInserito()) {
-                        if (s.getDescrizione().equals(sdg.getCommessa())) {
-                            qualeRiga = i;
-                        }
-                    } else {
-                        if (s.getIdCommessa() == sdg.getCodCommessa()) {
-                            commessaDefault = s.getDescrizione();
-                        }
-                    }
-                    lista[i] = s.getDescrizione();
-                    i++;
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, lista);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
-
-                if (sdg == null || !sdg.isGiornoInserito()) {
-                    VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(commessaDefault);
+                if (PerModificaCommessa) {
+                    AdapterListenerCommesseGestione adapter =
+                            new AdapterListenerCommesseGestione(
+                                    context,
+                                    VariabiliStaticheOrari.getInstance().getListaCommesse()
+                    );
+                    VariabiliStaticheImpostazioniOrari.getInstance().getLstCommesse().setAdapter(adapter);
                 } else {
-                    VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
-                }
-                VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
-
-                if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
-                    Handler handlerTimer = new Handler(Looper.getMainLooper());
-                    Runnable rTimer = new Runnable() {
-                        public void run() {
-                            ScriveOrario();
+                    StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
+                    String[] lista = new String[listaCommesse.size()];
+                    int i = 0;
+                    int qualeRiga = -1;
+                    String commessaDefault = "";
+                    for (StrutturaCommesse s : listaCommesse) {
+                        if (sdg != null && sdg.isGiornoInserito()) {
+                            if (s.getDescrizione().equals(sdg.getCommessa())) {
+                                qualeRiga = i;
+                            }
+                        } else {
+                            if (s.getIdCommessa() == sdg.getCodCommessa()) {
+                                commessaDefault = s.getDescrizione();
+                            }
                         }
-                    };
-                    handlerTimer.postDelayed(rTimer, 100);
+                        lista[i] = s.getDescrizione();
+                        i++;
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                            (context, android.R.layout.simple_spinner_item, lista);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
+
+                    if (sdg == null || !sdg.isGiornoInserito()) {
+                        VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(commessaDefault);
+                    } else {
+                        VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
+                    }
+                    VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
+
+                    if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
+                        Handler handlerTimer = new Handler(Looper.getMainLooper());
+                        Runnable rTimer = new Runnable() {
+                            public void run() {
+                                ScriveOrario();
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 100);
+                    }
                 }
             } catch (Exception e) {
 
@@ -469,6 +483,9 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     StrutturaLavoro s = new StrutturaLavoro();
                     s.setIdLavoro(objLavori.getInt("idLavoro"));
                     s.setLavoro(objLavori.getString("Lavoro"));
+                    s.setIndirizzo(objLavori.getString("Indirizzo"));
+                    s.setDataInizio(objLavori.getString("DataInizio"));
+                    s.setDataFine(objLavori.getString("DataFine"));
                     s.setLatlng(objLavori.getString("LatLng"));
 
                     listaLavori.add(s);

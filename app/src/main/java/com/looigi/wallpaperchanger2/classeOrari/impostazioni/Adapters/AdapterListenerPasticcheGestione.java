@@ -1,14 +1,20 @@
 package com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
+import com.looigi.wallpaperchanger2.classeOrari.impostazioni.webService.ChiamateWSImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPasticca;
 
 import java.util.ArrayList;
@@ -70,16 +76,41 @@ public class AdapterListenerPasticcheGestione extends BaseAdapter {
         TextView txtSito = (TextView) view.findViewById(R.id.txtPasticca);
         txtSito.setText(listaPasticche.get(i).getPasticca());
 
+        int idPasticca = listaPasticche.get(i).getIdPasticca();
+
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheImpostazioniOrari.getInstance().setIdPasticca(idPasticca);
+                VariabiliStaticheImpostazioniOrari.getInstance().getEdtPasticca().setText(listaPasticche.get(i).getPasticca());
+                VariabiliStaticheImpostazioniOrari.getInstance().getLayPasticca().setVisibility(LinearLayout.VISIBLE);
             }
         });
 
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                listaPasticche.remove(i);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vuole eliminare la pasticca selezionata?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSImpostazioniOrari ws = new ChiamateWSImpostazioniOrari(context);
+                        ws.EliminaPasticca(String.valueOf(idPasticca));
+
+                        listaPasticche.remove(i);
+
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

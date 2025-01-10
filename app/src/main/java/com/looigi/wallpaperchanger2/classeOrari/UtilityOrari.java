@@ -201,7 +201,7 @@ public class UtilityOrari {
             } else {
                 VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(Integer.toString(oreStandard));
                 VariabiliStaticheOrari.getInstance().getLayDettaglioGiornata().setVisibility(LinearLayout.GONE);
-                VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheOrari.getInstance().getLayNote().setVisibility(LinearLayout.VISIBLE);
             }
             VariabiliStaticheOrari.getInstance().getEdtEntrata().setText(sdg.getEntrata());
             VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(sdg.getLavoro());
