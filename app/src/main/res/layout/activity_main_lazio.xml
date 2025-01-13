@@ -5,6 +5,359 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/layTesta"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Anno"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnAnni"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshAnno"
+                    android:src="@drawable/icona_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgCambiaAnno"
+                    android:src="@drawable/icona_cerca"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Competizione"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnCompetizione"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshCompetizione"
+                    android:src="@drawable/icona_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgCambiaCompetizione"
+                    android:src="@drawable/icona_cerca"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:weightSum="5"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgIndietroClassifica"
+                    android:src="@drawable/indietro"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtGiornata"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:text="Giornata"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAvantiClassifica"
+                    android:src="@drawable/avanti"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/layTesta"
+        android:layout_margin="2dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:orientation="vertical"
+        android:padding="3dp"
+        android:layout_height="match_parent">
+
+        <HorizontalScrollView
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Classifica"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgClassifica"
+                        android:src="@drawable/classifica"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Calendario"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgCalendario"
+                        android:src="@drawable/calendario"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Squadre"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSquadre"
+                        android:src="@drawable/squadre"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Mercato"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgMercato"
+                        android:src="@drawable/mercato"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/layClassifica"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:weightSum="3"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/optTotale"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Totale"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/optCasa"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Casa"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/optFuori"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Fuori"
+                        android:layout_height="wrap_content" />
+                </RadioGroup>
+
+                <ListView
+                    android:id="@+id/lstClassifica"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layCalendario"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/lstCalendario"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/laySquadre"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/lstSquadre"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layMercato"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/lstMercato"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoLazio"
         android:src="@drawable/loading"

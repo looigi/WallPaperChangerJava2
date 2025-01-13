@@ -45,7 +45,7 @@ public class VariabiliStaticheWallpaper {
     // private boolean Detector = false;
     private boolean servizioAttivo = true;
     public static float percAumentoX = .115F;
-    public static float percAumentoY = .115F;
+    public static float percAumentoY = .185F;
     private String immagineImpostataDaChi = "";
 
     // INIZIO VARIABILI ATTIVITA'
