@@ -15,16 +15,21 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerFonti;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerSquadre;
-import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
-import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerStati;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -44,6 +49,77 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public ChiamateWSLazio(Context context) {
         this.context = context;
+    }
+
+    // GestioneMercato(idAnno As String, idModalita As String, Progressivo As String, Nominativo As String,
+    //                                 Data As String, idFonte As String, idStato As String) As String
+
+    public void RitornaStati(boolean RefreshDati) {
+        if (!RefreshDati) {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Stati.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
+                if (!Dati.isEmpty()) {
+                    fRitornaStati(Dati);
+                    return;
+                }
+            }
+        }
+
+        String Urletto="RitornaStati";
+
+        TipoOperazione = "RitornaStati";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaFonti(boolean RefreshDati) {
+        if (!RefreshDati) {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Fonti.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
+                if (!Dati.isEmpty()) {
+                    fRitornaFonti(Dati);
+                    return;
+                }
+            }
+        }
+
+        String Urletto="RitornaFonti";
+
+        TipoOperazione = "RitornaFonti";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaMercato() {
+        String Urletto="RitornaMercato?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "&idModalita=" + VariabiliStaticheLazio.getInstance().getModalitaMercato();
+
+        TipoOperazione = "RitornaMercato";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
     }
 
     public void RitornaCalendario() {
@@ -193,6 +269,15 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "RitornaCalendario":
                         fRitornaCalendario(result);
                         break;
+                    case "RitornaMercato":
+                        fRitornaMercato(result);
+                        break;
+                    case "RitornaStati":
+                        fRitornaStati(result);
+                        break;
+                    case "RitornaFonti":
+                        fRitornaFonti(result);
+                        break;
                 }
 
                 VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
@@ -213,6 +298,103 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaStati(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno stati", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Stati.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                Files.getInstance().EliminaFileUnico(PathFile + "/" + NomeFile);
+            }
+            Files.getInstance().ScriveFile(PathFile, NomeFile, result);
+
+            List<StrutturaStati> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaStati s = new StrutturaStati();
+                    s.setIdStato(Integer.parseInt(campi[0]));
+                    s.setStato(campi[1]);
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setStati(lista);
+
+            AdapterListenerStati cstmAdptStati = new AdapterListenerStati(context, lista);
+            VariabiliStaticheLazio.getInstance().getLstStati().setAdapter(cstmAdptStati);
+        }
+    }
+
+    private void fRitornaFonti(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno fonti", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Fonti.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                Files.getInstance().EliminaFileUnico(PathFile + "/" + NomeFile);
+            }
+            Files.getInstance().ScriveFile(PathFile, NomeFile, result);
+
+            List<StrutturaFonti> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaFonti s = new StrutturaFonti();
+                    s.setIdFonte(Integer.parseInt(campi[0]));
+                    s.setFonte(campi[1]);
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setFonti(lista);
+
+            AdapterListenerFonti cstmAdptFonti = new AdapterListenerFonti(context, lista);
+            VariabiliStaticheLazio.getInstance().getLstFonti().setAdapter(cstmAdptFonti);
+        }
+    }
+
+    private void fRitornaMercato(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno mercato", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            List<StrutturaMercato> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaMercato s = new StrutturaMercato();
+                    s.setProgressivo(Integer.parseInt(campi[0]));
+                    s.setData(campi[1]);
+                    s.setNominativo(campi[2]);
+                    s.setIdFonte(Integer.parseInt(campi[3]));
+                    s.setFonte(campi[4]);
+                    s.setIdStato(Integer.parseInt(campi[5]));
+                    s.setStato(campi[6]);
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setMercato(lista);
+
+            VariabiliStaticheLazio.getInstance().setCstmAdptMercato(new AdapterListenerMercato(context, lista));
+            VariabiliStaticheLazio.getInstance().getLstMercato().setAdapter(VariabiliStaticheLazio.getInstance().getCstmAdptMercato());
         }
     }
 
@@ -256,10 +438,20 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             }
             VariabiliStaticheLazio.getInstance().setClassifica(lista);
 
-            VariabiliStaticheLazio.getInstance().getTxtGiornata().setText("Giornata " + VariabiliStaticheLazio.getInstance().getGiornata());
+            VariabiliStaticheLazio.getInstance().getTxtGiornata().setText(
+                    "Giornata " + VariabiliStaticheLazio.getInstance().getGiornata() + "/" +
+                    VariabiliStaticheLazio.getInstance().getMaxGiornate());
 
             VariabiliStaticheLazio.getInstance().setCstmAdptClassifica(new AdapterListenerClassifica(context, lista));
             VariabiliStaticheLazio.getInstance().getLstClassifica().setAdapter(VariabiliStaticheLazio.getInstance().getCstmAdptClassifica());
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaCalendario();
+                }
+            }, 100);
         }
     }
 
@@ -281,10 +473,22 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 }
             }
 
+            int giornate = (lista.size() - 1) * 2;
+            VariabiliStaticheLazio.getInstance().setMaxGiornate(giornate);
+            VariabiliStaticheLazio.getInstance().setGiornata(giornate);
+
             VariabiliStaticheLazio.getInstance().setSquadre(lista);
 
             AdapterListenerSquadre cstmAdptSquadre = new AdapterListenerSquadre(context, lista);
             VariabiliStaticheLazio.getInstance().getLstSquadre().setAdapter(cstmAdptSquadre);
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaClassifica();
+                }
+            }, 100);
         }
     }
 
@@ -320,6 +524,18 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             AdapterListenerCalendario cstmAdptCalendario = new AdapterListenerCalendario(context, lista);
             VariabiliStaticheLazio.getInstance().getLstCalendario().setAdapter(cstmAdptCalendario);
+
+            if (!VariabiliStaticheLazio.getInstance().isNonRicaricareMercato()) {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                        ws.RitornaMercato();
+                    }
+                }, 100);
+            } else {
+                VariabiliStaticheLazio.getInstance().setNonRicaricareMercato(false);
+            }
         }
     }
 

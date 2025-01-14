@@ -89,6 +89,22 @@ public class AdapterListenerCalendario extends BaseAdapter {
             d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg");
         }
 
+        ImageView imgVisualizza = view.findViewById(R.id.imgVisualizza);
+        imgVisualizza.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+        ImageView imgModifica = view.findViewById(R.id.imgModifica);
+        imgModifica.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+        ImageView imgElimina = view.findViewById(R.id.imgElimina);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
         return view;
     }
 }

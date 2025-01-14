@@ -33,18 +33,32 @@ public class UtilityLazio {
         VariabiliStaticheLazio.getInstance().getLayClassifica().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLaySquadre().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLayMercato().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheLazio.getInstance().getLayFonti().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheLazio.getInstance().getLayStati().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.GONE);
         switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
             case 1:
                 VariabiliStaticheLazio.getInstance().getLayClassifica().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 2:
                 VariabiliStaticheLazio.getInstance().getLayCalendario().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 3:
                 VariabiliStaticheLazio.getInstance().getLaySquadre().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 4:
                 VariabiliStaticheLazio.getInstance().getLayMercato().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 5:
+                VariabiliStaticheLazio.getInstance().getLayFonti().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 6:
+                VariabiliStaticheLazio.getInstance().getLayStati().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }
@@ -52,11 +66,5 @@ public class UtilityLazio {
     public void LeggeAnno(Context context) {
         ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
         ws1.RitornaSquadre();
-
-        ChiamateWSLazio ws2 = new ChiamateWSLazio(context);
-        ws2.RitornaClassifica();
-
-        ChiamateWSLazio ws3 = new ChiamateWSLazio(context);
-        ws3.RitornaCalendario();
     }
 }

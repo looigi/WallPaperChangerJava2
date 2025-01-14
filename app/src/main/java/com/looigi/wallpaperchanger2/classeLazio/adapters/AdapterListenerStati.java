@@ -11,31 +11,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 
-import java.io.File;
 import java.util.List;
 
-public class AdapterListenerSquadre extends BaseAdapter {
+public class AdapterListenerStati extends BaseAdapter {
     private Context context;
-    private List<StrutturaSquadre> listaSquadre;
+    private List<StrutturaStati> listaStati;
     private LayoutInflater inflter;
 
-    public AdapterListenerSquadre(Context applicationContext, List<StrutturaSquadre> Squadre) {
+    public AdapterListenerStati(Context applicationContext, List<StrutturaStati> Stati) {
         this.context = applicationContext;
-        this.listaSquadre = Squadre;
+        this.listaStati = Stati;
         inflter = (LayoutInflater.from(applicationContext));
-
-        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
-        Files.getInstance().CreaCartelle(PathImmagini);
     }
 
     @Override
     public int getCount() {
-        return listaSquadre.size();
+        return listaStati.size();
     }
 
     @Override
@@ -50,25 +46,12 @@ public class AdapterListenerSquadre extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.lista_squadre, null);
+        view = inflter.inflate(R.layout.lista_stati, null);
 
-        String Squadra = listaSquadre.get(i).getSquadra();
+        String Stato = listaStati.get(i).getStato();
 
-        TextView txtSquadra = view.findViewById(R.id.txtSquadra);
-        txtSquadra.setText(Squadra);
-
-        ImageView imgLogo = view.findViewById(R.id.imgLogo);
-
-        String NomeSquadra = Squadra.toUpperCase().trim();
-        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadra)) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra);
-            imgLogo.setImageBitmap(bmp);
-        } else {
-            String url = VariabiliStaticheLazio.UrlMedia + NomeSquadra + ".Jpg";
-            DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgLogo, url, NomeSquadra + ".Jpg");
-        }
+        TextView txtStato = view.findViewById(R.id.txtStato);
+        txtStato.setText(Stato);
 
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {

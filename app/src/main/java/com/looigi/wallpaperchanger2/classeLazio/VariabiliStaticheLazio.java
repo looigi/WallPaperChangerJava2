@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeLazio;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -10,8 +11,12 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
@@ -48,21 +53,129 @@ public class VariabiliStaticheLazio {
     private Spinner spnCompetizioni;
     private List<StrutturaCompetizioni> Competizioni = new ArrayList<>();
     private List<StrutturaSquadre> Squadre = new ArrayList<>();
-    private int Giornata = 1;
+    private int Giornata = -1;
     private List<StrutturaClassifica> Classifica = new ArrayList<>();
     private LinearLayout layClassifica;
     private LinearLayout laySquadre;
     private LinearLayout layMercato;
     private LinearLayout layCalendario;
+    private LinearLayout layFonti;
+    private LinearLayout layStati;
     private int MascheraSelezionata = 1;
     private ListView lstClassifica;
     private ListView lstCalendario;
     private ListView lstSquadre;
     private ListView lstMercato;
+    private ListView lstFonti;
+    private ListView lstStati;
     private int ModalitaClassifica;
     private AdapterListenerClassifica cstmAdptClassifica;
     private TextView txtGiornata;
     private List<StrutturaCalendario> Calendario = new ArrayList<>();
+    private int ModalitaMercato = 1;
+    private List<StrutturaMercato> Mercato = new ArrayList<>();
+    private AdapterListenerMercato cstmAdptMercato;
+    private List<StrutturaStati> Stati = new ArrayList<>();
+    private List<StrutturaFonti> Fonti = new ArrayList<>();
+    private ImageView imgNuovo;
+    private int MaxGiornate;
+    private boolean nonRicaricareMercato = false;
+
+    public boolean isNonRicaricareMercato() {
+        return nonRicaricareMercato;
+    }
+
+    public void setNonRicaricareMercato(boolean nonRicaricareMercato) {
+        this.nonRicaricareMercato = nonRicaricareMercato;
+    }
+
+    public ListView getLstFonti() {
+        return lstFonti;
+    }
+
+    public void setLstFonti(ListView lstFonti) {
+        this.lstFonti = lstFonti;
+    }
+
+    public ListView getLstStati() {
+        return lstStati;
+    }
+
+    public void setLstStati(ListView lstStati) {
+        this.lstStati = lstStati;
+    }
+
+    public LinearLayout getLayFonti() {
+        return layFonti;
+    }
+
+    public void setLayFonti(LinearLayout layFonti) {
+        this.layFonti = layFonti;
+    }
+
+    public LinearLayout getLayStati() {
+        return layStati;
+    }
+
+    public void setLayStati(LinearLayout layStati) {
+        this.layStati = layStati;
+    }
+
+    public int getMaxGiornate() {
+        return MaxGiornate;
+    }
+
+    public void setMaxGiornate(int maxGiornate) {
+        MaxGiornate = maxGiornate;
+    }
+
+    public ImageView getImgNuovo() {
+        return imgNuovo;
+    }
+
+    public void setImgNuovo(ImageView imgNuovo) {
+        this.imgNuovo = imgNuovo;
+    }
+
+    public List<StrutturaStati> getStati() {
+        return Stati;
+    }
+
+    public void setStati(List<StrutturaStati> stati) {
+        Stati = stati;
+    }
+
+    public List<StrutturaFonti> getFonti() {
+        return Fonti;
+    }
+
+    public void setFonti(List<StrutturaFonti> fonti) {
+        Fonti = fonti;
+    }
+
+    public AdapterListenerMercato getCstmAdptMercato() {
+        return cstmAdptMercato;
+    }
+
+    public void setCstmAdptMercato(AdapterListenerMercato cstmAdptMercato) {
+        this.cstmAdptMercato = cstmAdptMercato;
+    }
+
+    public List<StrutturaMercato> getMercato() {
+        return Mercato;
+    }
+
+    public void setMercato(List<StrutturaMercato> mercato) {
+        Mercato = mercato;
+    }
+
+    public int getModalitaMercato() {
+        return ModalitaMercato;
+    }
+
+    public void setModalitaMercato(int modalitaMercato) {
+        ModalitaMercato = modalitaMercato;
+    }
 
     public List<StrutturaCalendario> getCalendario() {
         return Calendario;

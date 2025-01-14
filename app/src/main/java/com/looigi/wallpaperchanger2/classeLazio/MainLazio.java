@@ -40,6 +40,7 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setSpnAnni(findViewById(R.id.spnAnni));
         VariabiliStaticheLazio.getInstance().setSpnCompetizioni(findViewById(R.id.spnCompetizione));
 
+        VariabiliStaticheLazio.getInstance().setImgNuovo(findViewById(R.id.imgNuovo));
         VariabiliStaticheLazio.getInstance().setLayCalendario(findViewById(R.id.layCalendario));
         VariabiliStaticheLazio.getInstance().setLstCalendario(findViewById(R.id.lstCalendario));
         VariabiliStaticheLazio.getInstance().setLayClassifica(findViewById(R.id.layClassifica));
@@ -48,9 +49,37 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setLstSquadre(findViewById(R.id.lstSquadre));
         VariabiliStaticheLazio.getInstance().setLayMercato(findViewById(R.id.layMercato));
         VariabiliStaticheLazio.getInstance().setLstMercato(findViewById(R.id.lstMercato));
+        VariabiliStaticheLazio.getInstance().setLayFonti(findViewById(R.id.layFonti));
+        VariabiliStaticheLazio.getInstance().setLstFonti(findViewById(R.id.lstFonti));
+        VariabiliStaticheLazio.getInstance().setLayStati(findViewById(R.id.layStati));
+        VariabiliStaticheLazio.getInstance().setLstStati(findViewById(R.id.lstStati));
         VariabiliStaticheLazio.getInstance().setModalitaClassifica(1);
         VariabiliStaticheLazio.getInstance().setMascheraSelezionata(1);
         UtilityLazio.getInstance().VisualizzaMaschera();
+
+        VariabiliStaticheLazio.getInstance().getImgNuovo().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
+                    case 1:
+                        break;
+                    case 2:
+                        // Calendario
+                        break;
+                    case 3:
+                        // Squadre
+                        break;
+                    case 4:
+                        // Mercato
+                        break;
+                    case 5:
+                        // Fonti
+                        break;
+                    case 6:
+                        // Stati
+                        break;
+                }
+            }
+        });
 
         VariabiliStaticheLazio.getInstance().setTxtGiornata(findViewById(R.id.txtGiornata));
         ImageView imgIndietroClassifica = findViewById(R.id.imgIndietroClassifica);
@@ -62,11 +91,10 @@ public class MainLazio extends Activity {
                     VariabiliStaticheLazio.getInstance().getTxtGiornata().setText("Giornata " + giornata);
                     VariabiliStaticheLazio.getInstance().setGiornata(giornata);
 
+                    VariabiliStaticheLazio.getInstance().setNonRicaricareMercato(true);
+
                     ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
                     ws1.RitornaClassifica();
-
-                    ChiamateWSLazio ws2 = new ChiamateWSLazio(context);
-                    ws2.RitornaCalendario();
                 }
             }
         });
@@ -75,22 +103,52 @@ public class MainLazio extends Activity {
             public void onClick(View v) {
                 int giornata = VariabiliStaticheLazio.getInstance().getGiornata();
                 giornata++;
-                VariabiliStaticheLazio.getInstance().getTxtGiornata().setText("Giornata " + giornata);
-                VariabiliStaticheLazio.getInstance().setGiornata(giornata);
+                if (giornata <= VariabiliStaticheLazio.getInstance().getMaxGiornate()) {
+                    VariabiliStaticheLazio.getInstance().getTxtGiornata().setText("Giornata " + giornata);
+                    VariabiliStaticheLazio.getInstance().setGiornata(giornata);
 
-                ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
-                ws1.RitornaClassifica();
+                    VariabiliStaticheLazio.getInstance().setNonRicaricareMercato(true);
 
-                ChiamateWSLazio ws2 = new ChiamateWSLazio(context);
-                ws2.RitornaCalendario();
+                    ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
+                    ws1.RitornaClassifica();
+                }
             }
         });
 
         UtilityLazio.getInstance().ImpostaAttesa(false);
 
-        ChiamateWSLazio ws = new ChiamateWSLazio(context);
-        ws.RitornaCompetizioni(false);
-        ws.RitornaAnni(false);
+        ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
+        ws1.RitornaCompetizioni(false);
+
+        ChiamateWSLazio ws2 = new ChiamateWSLazio(context);
+        ws2.RitornaAnni(false);
+
+        ChiamateWSLazio ws3 = new ChiamateWSLazio(context);
+        ws3.RitornaStati(false);
+
+        ChiamateWSLazio ws4 = new ChiamateWSLazio(context);
+        ws4.RitornaFonti(false);
+
+        RadioButton optEstivo = findViewById(R.id.optEstivo);
+        optEstivo.setChecked(true);
+        optEstivo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setModalitaMercato(1);
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMercato();
+            }
+        });
+
+        RadioButton optInvernale = findViewById(R.id.optInvernale);
+        optInvernale.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setModalitaMercato(2);
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMercato();
+            }
+        });
 
         RadioButton optTotale = findViewById(R.id.optTotale);
         optTotale.setChecked(true);
@@ -163,6 +221,22 @@ public class MainLazio extends Activity {
         imgMercato.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(4);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgFonti = findViewById(R.id.imgFonti);
+        imgFonti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(5);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgStati = findViewById(R.id.imgStati);
+        imgStati.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(6);
                 UtilityLazio.getInstance().VisualizzaMaschera();
             }
         });
