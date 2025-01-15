@@ -1,19 +1,27 @@
 package com.looigi.wallpaperchanger2.classeLazio.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.MainDettaglioPartita;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.VariabiliStaticheLazioDettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
+import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 
@@ -56,7 +64,6 @@ public class AdapterListenerCalendario extends BaseAdapter {
         String Fuori = listaCalendario.get(i).getFuori();
         String Risultato = listaCalendario.get(i).getRisultato1() + "-" + listaCalendario.get(i).getRisultato2();
 
-
         TextView txtCasa = view.findViewById(R.id.txtCasa);
         txtCasa.setText(Casa);
 
@@ -92,11 +99,24 @@ public class AdapterListenerCalendario extends BaseAdapter {
         ImageView imgVisualizza = view.findViewById(R.id.imgVisualizza);
         imgVisualizza.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazioDettaglio.getInstance().setIdPartita(listaCalendario.get(i).getIdPartita());
+                VariabiliStaticheLazioDettaglio.getInstance().setIdSquadraCasa(listaCalendario.get(i).getIdSquadraCasa());
+                VariabiliStaticheLazioDettaglio.getInstance().setIdSquadraFuori(listaCalendario.get(i).getIdSquadraFuori());
+                VariabiliStaticheLazioDettaglio.getInstance().setCasa(listaCalendario.get(i).getCasa());
+                VariabiliStaticheLazioDettaglio.getInstance().setFuori(listaCalendario.get(i).getFuori());
+                String ris = listaCalendario.get(i).getRisultato1() + "-" + listaCalendario.get(i).getRisultato2();
+                VariabiliStaticheLazioDettaglio.getInstance().setData(listaCalendario.get(i).getDataPartita());
+                VariabiliStaticheLazioDettaglio.getInstance().setRisultato(ris);
+
+                Intent iP = new Intent(context, MainDettaglioPartita.class);
+                context.startActivity(iP);
             }
         });
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                UtilityLazio.getInstance().ApreModifica(context, "CALENDARIO", "UPDATE",
+                        "Modifica partita", String.valueOf(i));
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

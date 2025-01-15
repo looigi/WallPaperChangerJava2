@@ -353,7 +353,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fEliminaImmagineSuIoNos(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             if (cicloEliminazione) {
@@ -381,7 +381,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fEliminaImmagineSuLocale(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             if (cicloEliminazione) {
@@ -411,7 +411,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     private void fScriveImmagineSuIoNos(String result) {
         UtilityPlayer.getInstance().AttesaSI(false);
 
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine salvata");
@@ -419,7 +419,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fScriveImmagineSuLocale(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityPlayer.getInstance().AttesaSI(false);
 
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
@@ -436,7 +436,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fScriveImmagineBase64DaIoNos(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } // else {
@@ -451,7 +451,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fConverteImmagineBase64DaIoNos(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
@@ -472,7 +472,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fScriveImmagineBase64DaLocale(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } // else {
@@ -543,7 +543,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fConverteImmagineBase64DaLocale(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
@@ -564,7 +564,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fRitornaListaImmaginiLocale(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
@@ -720,7 +720,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fRitornaListaImmaginiIoNos(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {

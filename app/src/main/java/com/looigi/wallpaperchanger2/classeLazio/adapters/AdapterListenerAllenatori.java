@@ -1,8 +1,6 @@
 package com.looigi.wallpaperchanger2.classeLazio.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +9,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
-import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
-public class AdapterListenerStati extends BaseAdapter {
+public class AdapterListenerAllenatori extends BaseAdapter {
     private Context context;
-    private List<StrutturaStati> listaStati;
+    private List<StrutturaAllenatori> listaAllenatori;
     private LayoutInflater inflter;
 
-    public AdapterListenerStati(Context applicationContext, List<StrutturaStati> Stati) {
+    public AdapterListenerAllenatori(Context applicationContext, List<StrutturaAllenatori> Allenatori) {
         this.context = applicationContext;
-        this.listaStati = Stati;
+        this.listaAllenatori = Allenatori;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return listaStati.size();
+        return listaAllenatori.size();
     }
 
     @Override
@@ -47,18 +42,22 @@ public class AdapterListenerStati extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.lista_stati, null);
+        view = inflter.inflate(R.layout.lista_allenatori, null);
 
-        String Stato = listaStati.get(i).getStato();
+        String Nome = listaAllenatori.get(i).getNome();
+        String Cognome = listaAllenatori.get(i).getCognome();
 
-        TextView txtStato = view.findViewById(R.id.txtStato);
-        txtStato.setText(Stato);
+        TextView txtNome = view.findViewById(R.id.txtNome);
+        txtNome.setText(Nome);
+
+        TextView txtCognome = view.findViewById(R.id.txtCognome);
+        txtCognome.setText(Cognome);
 
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityLazio.getInstance().ApreModifica(context, "STATI", "UPDATE",
-                        "Modifica stato", Stato);
+                UtilityLazio.getInstance().ApreModifica(context, "ALLENATORI", "UPDATE",
+                        "Modifica allenatore", String.valueOf(i));
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

@@ -29,8 +29,21 @@
             <Spinner
                 android:id="@+id/spnAnni"
                 android:layout_width="0dp"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgNuovoAnno"
+                    android:src="@drawable/icona_aggiunge"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -77,7 +90,20 @@
                 android:id="@+id/spnCompetizione"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_weight="5" />
+                android:layout_weight="4" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgNuovaCompetizione"
+                    android:src="@drawable/icona_aggiunge"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -251,6 +277,48 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:text="Giocatori"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgGiocatori"
+                        android:src="@drawable/giocatori"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Allenatori"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgAllenatori"
+                        android:src="@drawable/allenatori"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:text="Mercato"
                         android:layout_height="wrap_content"/>
 
@@ -299,6 +367,27 @@
                     <ImageView
                         android:id="@+id/imgStati"
                         android:src="@drawable/stato"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Ruoli"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgRuoli"
+                        android:src="@drawable/ruoli"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>
@@ -490,6 +579,86 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layGiocatori"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:weightSum="5"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text="Squadra" />
+
+                    <Spinner
+                        android:id="@+id/spnSquadreGioc"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/lstGiocatori"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layRuoli"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/lstRuoli"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layAllenatori"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:weightSum="5"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:text="Squadra" />
+
+                    <Spinner
+                        android:id="@+id/spnSquadreAll"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/lstAllenatori"
+                    android:divider="#CCCCCC"
+                    android:dividerHeight="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layFonti"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -563,6 +732,12 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/icona_aggiunge" />
+
+    <include
+        layout="@layout/lazio_modifiche"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoLazio"

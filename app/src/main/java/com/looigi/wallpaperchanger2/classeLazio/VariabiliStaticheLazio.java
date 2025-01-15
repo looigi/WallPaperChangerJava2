@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classeLazio;
 
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -7,22 +8,23 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -80,6 +82,429 @@ public class VariabiliStaticheLazio {
     private ImageView imgNuovo;
     private int MaxGiornate;
     private boolean nonRicaricareMercato = false;
+    private LinearLayout layModifica;
+    private TextView txtModifica;
+    private String CosaStoModificando;
+    private String ModalitaModifica;
+    private EditText edtValore1;
+    private String ValoreImpostato1;
+    private String ValoreImpostato2;
+    private LinearLayout layModificaSFS;
+    private LinearLayout layModificaCalendario;
+    private LinearLayout layModificaMercato;
+    private Spinner spnFonti;
+    private Spinner spnStati;
+    private EditText edtNominativo;
+    private EditText edtData;
+    private String[] righePerSquadre;
+    private EditText edtDataCal;
+    private EditText edtRisultato;
+    private Spinner spnCasa;
+    private Spinner spnFuori;
+    private ArrayAdapter<String> adapterFonti;
+    private ArrayAdapter<String> adapterStati;
+    private int idFonte;
+    private int idStato;
+    private int idCasa;
+    private int idFuori;
+    private LinearLayout layGiocatori;
+    private Spinner spnSquadreGioc;
+    private int idSquadraPerGioc = -1;
+    private List<StrutturaGiocatori> Giocatori = new ArrayList<>();
+    private AdapterListenerGiocatori cstmAdptGiocatori;
+    private ListView lstGiocatori;
+    private LinearLayout layModificaGiocatore;
+    private EditText edtCognome;
+    private EditText edtNome;
+    private Spinner spnRuolo;
+    private ArrayAdapter<String> adapterRuoli;
+    private List<StrutturaRuoli> Ruoli;
+    private int idRuoloSelezionato;
+    private LinearLayout layRuoli;
+    private ListView lstRuoli;
+    private LinearLayout layAllenatori;
+    private ListView lstAllenatori;
+    private List<StrutturaAllenatori> Allenatori;
+    private int idSquadraPerAll = -1;
+    private Spinner spnSquadreAll;
+    private AdapterListenerAllenatori cstmAdptAllenatori;
+    private LinearLayout layRuolo;
+
+    public LinearLayout getLayRuolo() {
+        return layRuolo;
+    }
+
+    public void setLayRuolo(LinearLayout layRuolo) {
+        this.layRuolo = layRuolo;
+    }
+
+    public AdapterListenerAllenatori getCstmAdptAllenatori() {
+        return cstmAdptAllenatori;
+    }
+
+    public void setCstmAdptAllenatori(AdapterListenerAllenatori cstmAdptAllenatori) {
+        this.cstmAdptAllenatori = cstmAdptAllenatori;
+    }
+
+    public Spinner getSpnSquadreAll() {
+        return spnSquadreAll;
+    }
+
+    public void setSpnSquadreAll(Spinner spnSquadreAll) {
+        this.spnSquadreAll = spnSquadreAll;
+    }
+
+    public int getIdSquadraPerAll() {
+        return idSquadraPerAll;
+    }
+
+    public void setIdSquadraPerAll(int idSquadraPerAll) {
+        this.idSquadraPerAll = idSquadraPerAll;
+    }
+
+    public List<StrutturaAllenatori> getAllenatori() {
+        return Allenatori;
+    }
+
+    public void setAllenatori(List<StrutturaAllenatori> allenatori) {
+        Allenatori = allenatori;
+    }
+
+    public LinearLayout getLayAllenatori() {
+        return layAllenatori;
+    }
+
+    public void setLayAllenatori(LinearLayout layAllenatori) {
+        this.layAllenatori = layAllenatori;
+    }
+
+    public ListView getLstAllenatori() {
+        return lstAllenatori;
+    }
+
+    public void setLstAllenatori(ListView lstAllenatori) {
+        this.lstAllenatori = lstAllenatori;
+    }
+
+    public LinearLayout getLayRuoli() {
+        return layRuoli;
+    }
+
+    public void setLayRuoli(LinearLayout layRuoli) {
+        this.layRuoli = layRuoli;
+    }
+
+    public ListView getLstRuoli() {
+        return lstRuoli;
+    }
+
+    public void setLstRuoli(ListView lstRuoli) {
+        this.lstRuoli = lstRuoli;
+    }
+
+    public ArrayAdapter<String> getAdapterRuoli() {
+        return adapterRuoli;
+    }
+
+    public void setAdapterRuoli(ArrayAdapter<String> adapterRuoli) {
+        this.adapterRuoli = adapterRuoli;
+    }
+
+    public int getIdRuoloSelezionato() {
+        return idRuoloSelezionato;
+    }
+
+    public void setIdRuoloSelezionato(int idRuoloSelezionato) {
+        this.idRuoloSelezionato = idRuoloSelezionato;
+    }
+
+    public List<StrutturaRuoli> getRuoli() {
+        return Ruoli;
+    }
+
+    public void setRuoli(List<StrutturaRuoli> ruoli) {
+        Ruoli = ruoli;
+    }
+
+    public EditText getEdtCognome() {
+        return edtCognome;
+    }
+
+    public void setEdtCognome(EditText edtCognome) {
+        this.edtCognome = edtCognome;
+    }
+
+    public EditText getEdtNome() {
+        return edtNome;
+    }
+
+    public void setEdtNome(EditText edtNome) {
+        this.edtNome = edtNome;
+    }
+
+    public Spinner getSpnRuolo() {
+        return spnRuolo;
+    }
+
+    public void setSpnRuolo(Spinner spnRuolo) {
+        this.spnRuolo = spnRuolo;
+    }
+
+    public LinearLayout getLayModificaGiocatore() {
+        return layModificaGiocatore;
+    }
+
+    public void setLayModificaGiocatore(LinearLayout layModificaGiocatore) {
+        this.layModificaGiocatore = layModificaGiocatore;
+    }
+
+    public ListView getLstGiocatori() {
+        return lstGiocatori;
+    }
+
+    public void setLstGiocatori(ListView lstGiocatori) {
+        this.lstGiocatori = lstGiocatori;
+    }
+
+    public AdapterListenerGiocatori getCstmAdptGiocatori() {
+        return cstmAdptGiocatori;
+    }
+
+    public void setCstmAdptGiocatori(AdapterListenerGiocatori cstmAdptGiocatori) {
+        this.cstmAdptGiocatori = cstmAdptGiocatori;
+    }
+
+    public List<StrutturaGiocatori> getGiocatori() {
+        return Giocatori;
+    }
+
+    public void setGiocatori(List<StrutturaGiocatori> giocatori) {
+        Giocatori = giocatori;
+    }
+
+    public int getIdSquadraPerGioc() {
+        return idSquadraPerGioc;
+    }
+
+    public void setIdSquadraPerGioc(int idSquadraPerGioc) {
+        this.idSquadraPerGioc = idSquadraPerGioc;
+    }
+
+    public Spinner getSpnSquadreGioc() {
+        return spnSquadreGioc;
+    }
+
+    public void setSpnSquadreGioc(Spinner spnSquadreGioc) {
+        this.spnSquadreGioc = spnSquadreGioc;
+    }
+
+    public LinearLayout getLayGiocatori() {
+        return layGiocatori;
+    }
+
+    public void setLayGiocatori(LinearLayout layGiocatori) {
+        this.layGiocatori = layGiocatori;
+    }
+
+    public int getIdCasa() {
+        return idCasa;
+    }
+
+    public void setIdCasa(int idCasa) {
+        this.idCasa = idCasa;
+    }
+
+    public int getIdFuori() {
+        return idFuori;
+    }
+
+    public void setIdFuori(int idFuori) {
+        this.idFuori = idFuori;
+    }
+
+    public int getIdFonte() {
+        return idFonte;
+    }
+
+    public void setIdFonte(int idFonte) {
+        this.idFonte = idFonte;
+    }
+
+    public int getIdStato() {
+        return idStato;
+    }
+
+    public void setIdStato(int idStato) {
+        this.idStato = idStato;
+    }
+
+    public ArrayAdapter<String> getAdapterFonti() {
+        return adapterFonti;
+    }
+
+    public void setAdapterFonti(ArrayAdapter<String> adapterFonti) {
+        this.adapterFonti = adapterFonti;
+    }
+
+    public ArrayAdapter<String> getAdapterStati() {
+        return adapterStati;
+    }
+
+    public void setAdapterStati(ArrayAdapter<String> adapterStati) {
+        this.adapterStati = adapterStati;
+    }
+
+    public EditText getEdtDataCal() {
+        return edtDataCal;
+    }
+
+    public void setEdtDataCal(EditText edtDataCal) {
+        this.edtDataCal = edtDataCal;
+    }
+
+    public EditText getEdtRisultato() {
+        return edtRisultato;
+    }
+
+    public void setEdtRisultato(EditText edtRisultato) {
+        this.edtRisultato = edtRisultato;
+    }
+
+    public Spinner getSpnCasa() {
+        return spnCasa;
+    }
+
+    public void setSpnCasa(Spinner spnCasa) {
+        this.spnCasa = spnCasa;
+    }
+
+    public Spinner getSpnFuori() {
+        return spnFuori;
+    }
+
+    public void setSpnFuori(Spinner spnFuori) {
+        this.spnFuori = spnFuori;
+    }
+
+    public String[] getRighePerSquadre() {
+        return righePerSquadre;
+    }
+
+    public void setRighePerSquadre(String[] righePerSquadre) {
+        this.righePerSquadre = righePerSquadre;
+    }
+
+    public String getValoreImpostato2() {
+        return ValoreImpostato2;
+    }
+
+    public void setValoreImpostato2(String valoreImpostato2) {
+        ValoreImpostato2 = valoreImpostato2;
+    }
+
+    public EditText getEdtNominativo() {
+        return edtNominativo;
+    }
+
+    public void setEdtNominativo(EditText edtNominativo) {
+        this.edtNominativo = edtNominativo;
+    }
+
+    public EditText getEdtData() {
+        return edtData;
+    }
+
+    public void setEdtData(EditText edtData) {
+        this.edtData = edtData;
+    }
+
+    public Spinner getSpnFonti() {
+        return spnFonti;
+    }
+
+    public void setSpnFonti(Spinner spnFonti) {
+        this.spnFonti = spnFonti;
+    }
+
+    public Spinner getSpnStati() {
+        return spnStati;
+    }
+
+    public void setSpnStati(Spinner spnStati) {
+        this.spnStati = spnStati;
+    }
+
+    public LinearLayout getLayModificaCalendario() {
+        return layModificaCalendario;
+    }
+
+    public void setLayModificaCalendario(LinearLayout layModificaCalendario) {
+        this.layModificaCalendario = layModificaCalendario;
+    }
+
+    public LinearLayout getLayModificaMercato() {
+        return layModificaMercato;
+    }
+
+    public void setLayModificaMercato(LinearLayout layModificaMercato) {
+        this.layModificaMercato = layModificaMercato;
+    }
+
+    public LinearLayout getLayModificaSFS() {
+        return layModificaSFS;
+    }
+
+    public void setLayModificaSFS(LinearLayout layModificaSFS) {
+        this.layModificaSFS = layModificaSFS;
+    }
+
+    public String getValoreImpostato1() {
+        return ValoreImpostato1;
+    }
+
+    public void setValoreImpostato1(String valoreImpostato1) {
+        ValoreImpostato1 = valoreImpostato1;
+    }
+
+    public EditText getEdtValore1() {
+        return edtValore1;
+    }
+
+    public void setEdtValore1(EditText edtValore1) {
+        this.edtValore1 = edtValore1;
+    }
+
+    public String getCosaStoModificando() {
+        return CosaStoModificando;
+    }
+
+    public void setCosaStoModificando(String cosaStoModificando) {
+        CosaStoModificando = cosaStoModificando;
+    }
+
+    public String getModalitaModifica() {
+        return ModalitaModifica;
+    }
+
+    public void setModalitaModifica(String modalitaModifica) {
+        ModalitaModifica = modalitaModifica;
+    }
+
+    public LinearLayout getLayModifica() {
+        return layModifica;
+    }
+
+    public void setLayModifica(LinearLayout layModifica) {
+        this.layModifica = layModifica;
+    }
+
+    public TextView getTxtModifica() {
+        return txtModifica;
+    }
+
+    public void setTxtModifica(TextView txtModifica) {
+        this.txtModifica = txtModifica;
+    }
 
     public boolean isNonRicaricareMercato() {
         return nonRicaricareMercato;

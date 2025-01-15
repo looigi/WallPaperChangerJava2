@@ -212,7 +212,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fRitornaListaImmagini(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             List<String> ImmaginiSuIONOS = new ArrayList<>();
@@ -228,7 +228,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
@@ -243,7 +243,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fEliminaImmagine(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
@@ -260,7 +260,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fTornaImmagini(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             // ColtoEDiClasse.jpg;Sport/ColtoEDiClasse.jpg;130629;05/26/2015
@@ -291,7 +291,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fTornaProssimaImmagine(String result) {
-        if (result.contains("ERROR")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
             // 2433;/var/www/html/CartelleCondivise/SfondiDir/Donne/MetalWomen/df89106251200cc0021db5ae3e32.jpg

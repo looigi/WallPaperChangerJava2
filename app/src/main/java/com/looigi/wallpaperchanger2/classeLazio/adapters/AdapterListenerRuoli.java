@@ -1,8 +1,6 @@
 package com.looigi.wallpaperchanger2.classeLazio.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
-import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
-public class AdapterListenerStati extends BaseAdapter {
+public class AdapterListenerRuoli extends BaseAdapter {
     private Context context;
-    private List<StrutturaStati> listaStati;
+    private List<StrutturaRuoli> listaRuoli;
     private LayoutInflater inflter;
 
-    public AdapterListenerStati(Context applicationContext, List<StrutturaStati> Stati) {
+    public AdapterListenerRuoli(Context applicationContext, List<StrutturaRuoli> Ruoli) {
         this.context = applicationContext;
-        this.listaStati = Stati;
+        this.listaRuoli = Ruoli;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return listaStati.size();
+        return listaRuoli.size();
     }
 
     @Override
@@ -47,18 +43,18 @@ public class AdapterListenerStati extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.lista_stati, null);
+        view = inflter.inflate(R.layout.lista_ruoli, null);
 
-        String Stato = listaStati.get(i).getStato();
+        String Ruolo = listaRuoli.get(i).getRuolo();
 
-        TextView txtStato = view.findViewById(R.id.txtStato);
-        txtStato.setText(Stato);
+        TextView txtRuolo = view.findViewById(R.id.txtRuolo);
+        txtRuolo.setText(Ruolo);
 
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityLazio.getInstance().ApreModifica(context, "STATI", "UPDATE",
-                        "Modifica stato", Stato);
+                UtilityLazio.getInstance().ApreModifica(context, "RUOLI", "UPDATE",
+                        "Modifica ruolo", Ruolo);
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

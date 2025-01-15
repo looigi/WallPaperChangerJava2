@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
+import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class AdapterListenerMercato extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                UtilityLazio.getInstance().ApreModifica(context, "MERCATO", "UPDATE",
+                        "Modifica movimento di mercato", String.valueOf(i));
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

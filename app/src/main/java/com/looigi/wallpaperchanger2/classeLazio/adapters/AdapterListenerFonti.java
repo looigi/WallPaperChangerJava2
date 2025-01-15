@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
+import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -57,6 +58,7 @@ public class AdapterListenerFonti extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                UtilityLazio.getInstance().ApreModifica(context, "FONTI", "UPDATE", "Modifica fonte", Fonte);
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

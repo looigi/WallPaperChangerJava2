@@ -3,21 +3,22 @@ package com.looigi.wallpaperchanger2.classeLazio;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
-import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 
@@ -51,11 +52,270 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setLstMercato(findViewById(R.id.lstMercato));
         VariabiliStaticheLazio.getInstance().setLayFonti(findViewById(R.id.layFonti));
         VariabiliStaticheLazio.getInstance().setLstFonti(findViewById(R.id.lstFonti));
+        VariabiliStaticheLazio.getInstance().setLayRuoli(findViewById(R.id.layRuoli));
+        VariabiliStaticheLazio.getInstance().setLstRuoli(findViewById(R.id.lstRuoli));
+        VariabiliStaticheLazio.getInstance().setLayAllenatori(findViewById(R.id.layAllenatori));
+        VariabiliStaticheLazio.getInstance().setLstAllenatori(findViewById(R.id.lstAllenatori));
         VariabiliStaticheLazio.getInstance().setLayStati(findViewById(R.id.layStati));
         VariabiliStaticheLazio.getInstance().setLstStati(findViewById(R.id.lstStati));
         VariabiliStaticheLazio.getInstance().setModalitaClassifica(1);
         VariabiliStaticheLazio.getInstance().setMascheraSelezionata(1);
+        VariabiliStaticheLazio.getInstance().setLayGiocatori(findViewById(R.id.layGiocatori));
+        VariabiliStaticheLazio.getInstance().setLayRuolo(findViewById(R.id.layRuolo));
         UtilityLazio.getInstance().VisualizzaMaschera();
+
+        VariabiliStaticheLazio.getInstance().setEdtCognome(findViewById(R.id.edtCognomeGiocatore));
+        VariabiliStaticheLazio.getInstance().setEdtNome(findViewById(R.id.edtNomeGiocatore));
+        VariabiliStaticheLazio.getInstance().setSpnRuolo(findViewById(R.id.spnRuolo));
+        VariabiliStaticheLazio.getInstance().setLayModifica(findViewById(R.id.layModifica));
+        VariabiliStaticheLazio.getInstance().setLayModificaSFS(findViewById(R.id.layModificaSFS));
+        VariabiliStaticheLazio.getInstance().setLayModificaCalendario(findViewById(R.id.layModificaCalendario));
+        VariabiliStaticheLazio.getInstance().setLayModificaMercato(findViewById(R.id.layModificaMercato));
+        VariabiliStaticheLazio.getInstance().setLayModificaGiocatore(findViewById(R.id.layModificaGiocatore));
+        VariabiliStaticheLazio.getInstance().setTxtModifica(findViewById(R.id.txtModifica));
+        VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheLazio.getInstance().setEdtValore1(findViewById(R.id.edtValore1));
+        VariabiliStaticheLazio.getInstance().setSpnStati(findViewById(R.id.spnStato));
+        VariabiliStaticheLazio.getInstance().setSpnFonti(findViewById(R.id.spnFonte));
+        VariabiliStaticheLazio.getInstance().setEdtData(findViewById(R.id.edtData));
+        VariabiliStaticheLazio.getInstance().getEdtData().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheLazio.getInstance().setValoreImpostato2(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setEdtDataCal(findViewById(R.id.edtDataCal));
+        VariabiliStaticheLazio.getInstance().getEdtDataCal().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheLazio.getInstance().setValoreImpostato1(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setEdtRisultato(findViewById(R.id.edtRisultato));
+        VariabiliStaticheLazio.getInstance().getEdtRisultato().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheLazio.getInstance().setValoreImpostato2(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setSpnCasa(findViewById(R.id.spnCasa));
+        final boolean[] primoIngressoC = {true};
+        VariabiliStaticheLazio.getInstance().getSpnCasa().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoC[0]) {
+                    primoIngressoC[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                        if (s.getSquadra().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdCasa(s.getIdSquadra());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setSpnFuori(findViewById(R.id.spnFuori));
+        final boolean[] primoIngressoF = {true};
+        VariabiliStaticheLazio.getInstance().getSpnCasa().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoF[0]) {
+                    primoIngressoF[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                        if (s.getSquadra().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdFuori(s.getIdSquadra());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setEdtNominativo(findViewById(R.id.edtNominativo));
+        VariabiliStaticheLazio.getInstance().getEdtNominativo().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheLazio.getInstance().setValoreImpostato1(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        VariabiliStaticheLazio.getInstance().getEdtValore1().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheLazio.getInstance().setValoreImpostato1(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setSpnSquadreGioc(findViewById(R.id.spnSquadreGioc));
+        final boolean[] primoIngressoS = {true};
+        VariabiliStaticheLazio.getInstance().getSpnSquadreGioc().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoS[0]) {
+                    primoIngressoS[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                        if (s.getSquadra().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdSquadraPerGioc(s.getIdSquadra());
+
+                            ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                            ws.RitornaGiocatori();
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+        VariabiliStaticheLazio.getInstance().setLstGiocatori(findViewById(R.id.lstGiocatori));
+
+        VariabiliStaticheLazio.getInstance().setSpnSquadreAll(findViewById(R.id.spnSquadreAll));
+        final boolean[] primoIngressoSA = {true};
+        VariabiliStaticheLazio.getInstance().getSpnSquadreAll().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoSA[0]) {
+                    primoIngressoSA[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                        if (s.getSquadra().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdSquadraPerAll(s.getIdSquadra());
+
+                            ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                            ws.RitornaAllenatori();
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        ImageView imgSalva = findViewById(R.id.imgSalvaValore);
+        imgSalva.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityLazio.getInstance().SalvaValori(context);
+            }
+        });
+        ImageView imgAnnulla = findViewById(R.id.imgAnnullaValore);
+        imgAnnulla.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgNuovoAnno = findViewById(R.id.imgNuovoAnno);
+        imgNuovoAnno.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityLazio.getInstance().SalvaValori(context);
+            }
+        });
+
+        ImageView imgNuovaCompetizione = findViewById(R.id.imgNuovaCompetizione);
+        imgNuovaCompetizione.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityLazio.getInstance().SalvaValori(context);
+            }
+        });
 
         VariabiliStaticheLazio.getInstance().getImgNuovo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,18 +324,47 @@ public class MainLazio extends Activity {
                         break;
                     case 2:
                         // Calendario
+                        UtilityLazio.getInstance().ApreModifica(context, "CALENDARIO", "NUOVO",
+                                "Nuova partita", "");
                         break;
                     case 3:
                         // Squadre
+                        UtilityLazio.getInstance().ApreModifica(context, "SQUADRE", "NUOVO",
+                                "Nuova squadra", "");
                         break;
                     case 4:
                         // Mercato
+                        UtilityLazio.getInstance().ApreModifica(context, "MERCATO", "NUOVO",
+                                "Nuovo movimento di mercato", "");
                         break;
                     case 5:
                         // Fonti
+                        UtilityLazio.getInstance().ApreModifica(context, "FONTI", "NUOVO",
+                                "Nuova fonte", "");
                         break;
                     case 6:
                         // Stati
+                        UtilityLazio.getInstance().ApreModifica(context, "STATI", "NUOVO",
+                                "Nuovo stato", "");
+                        break;
+                    case 7:
+                        // Giocatori
+                        if (VariabiliStaticheLazio.getInstance().getIdSquadraPerGioc() > -1) {
+                            UtilityLazio.getInstance().ApreModifica(context, "GIOCATORI", "NUOVO",
+                                    "Nuovo giocatore", "");
+                        }
+                        break;
+                    case 8:
+                        // Ruoli
+                        UtilityLazio.getInstance().ApreModifica(context, "RUOLI", "NUOVO",
+                                "Nuovo ruolo", "");
+                        break;
+                    case 9:
+                        // Allenatori
+                        if (VariabiliStaticheLazio.getInstance().getIdSquadraPerAll() > -1) {
+                            UtilityLazio.getInstance().ApreModifica(context, "ALLENATORI", "NUOVO",
+                                    "Nuovo allenatore", "");
+                        }
                         break;
                 }
             }
@@ -128,6 +417,9 @@ public class MainLazio extends Activity {
 
         ChiamateWSLazio ws4 = new ChiamateWSLazio(context);
         ws4.RitornaFonti(false);
+
+        ChiamateWSLazio ws5 = new ChiamateWSLazio(context);
+        ws5.RitornaRuoli(false);
 
         RadioButton optEstivo = findViewById(R.id.optEstivo);
         optEstivo.setChecked(true);
@@ -193,6 +485,14 @@ public class MainLazio extends Activity {
             }
         });
 
+        ImageView imgRefreshRuoli = findViewById(R.id.imgRefreshRuoli);
+        imgRefreshRuoli.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaRuoli(true);
+            }
+        });
+
         ImageView imgClassifica = findViewById(R.id.imgClassifica);
         imgClassifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -237,6 +537,30 @@ public class MainLazio extends Activity {
         imgStati.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(6);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgGiocatori = findViewById(R.id.imgGiocatori);
+        imgGiocatori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(7);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgRuoli = findViewById(R.id.imgRuoli);
+        imgRuoli.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(8);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgAllenatori = findViewById(R.id.imgAllenatori);
+        imgAllenatori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(9);
                 UtilityLazio.getInstance().VisualizzaMaschera();
             }
         });

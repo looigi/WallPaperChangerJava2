@@ -96,6 +96,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classeLazio.DettaglioPartita.MainDettaglioPartita"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeDetector.AndroidCameraApi"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Translucent"

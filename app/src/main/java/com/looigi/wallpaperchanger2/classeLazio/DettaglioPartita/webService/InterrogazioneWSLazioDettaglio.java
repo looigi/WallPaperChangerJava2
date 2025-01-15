@@ -1,11 +1,11 @@
-package com.looigi.wallpaperchanger2.classeLazio.webService;
+package com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.webService;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeOrari.webService.TaskDelegateOrari;
+import com.looigi.wallpaperchanger2.classeLazio.webService.TaskDelegateLazio;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -19,9 +19,9 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class InterrogazioneWSLazio {
+public class InterrogazioneWSLazioDettaglio {
     private boolean isCancelled;
-    private static final String NomeMaschera = "Lettura_WS_LAZIO";
+    private static final String NomeMaschera = "Lettura_WS_LAZIO_DET";
     private String NAMESPACE;
     private String METHOD_NAME = "";
     private String[] Parametri;
@@ -35,7 +35,7 @@ public class InterrogazioneWSLazio {
     private String messErrore="";
     private String tOperazione;
     private String TimeStampAttuale;
-    private TaskDelegateLazio delegate;
+    private TaskDelegateLazioDettaglio delegate;
     private boolean ApriDialog;
     private Context context;
 
@@ -43,7 +43,7 @@ public class InterrogazioneWSLazio {
                                String SOAP_ACTION, String tOperazione,
                                boolean ApriDialog, String Urletto,
                                String TimeStampAttuale,
-                               TaskDelegateLazio delegate) {
+                               TaskDelegateLazioDettaglio delegate) {
         isCancelled = false;
         this.context = context;
         this.NAMESPACE = NAMESPACE;

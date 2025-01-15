@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -73,6 +74,8 @@ public class AdapterListenerSquadre extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                UtilityLazio.getInstance().ApreModifica(context, "SQUADRE", "UPDATE",
+                        "Modifica squadra", Squadra);
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);

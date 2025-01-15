@@ -11,22 +11,29 @@ import android.widget.Spinner;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerFonti;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerStati;
+import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -53,6 +60,64 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     // GestioneMercato(idAnno As String, idModalita As String, Progressivo As String, Nominativo As String,
     //                                 Data As String, idFonte As String, idStato As String) As String
+
+    public void RitornaAllenatori() {
+        String Urletto="RitornaAllenatori?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "&idSquadra=" + VariabiliStaticheLazio.getInstance().getIdSquadraPerAll();
+
+        TipoOperazione = "RitornaAllenatori";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaGiocatori() {
+        String Urletto="RitornaGiocatori?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "&idSquadra=" + VariabiliStaticheLazio.getInstance().getIdSquadraPerGioc();
+
+        TipoOperazione = "RitornaGiocatori";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void RitornaRuoli(boolean RefreshDati) {
+        if (!RefreshDati) {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Ruoli.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
+                if (!Dati.isEmpty()) {
+                    fRitornaRuoli(Dati);
+                    return;
+                }
+            }
+        }
+
+        String Urletto="RitornaRuoli";
+
+        TipoOperazione = "RitornaRuoli";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
 
     public void RitornaStati(boolean RefreshDati) {
         if (!RefreshDati) {
@@ -275,12 +340,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "RitornaStati":
                         fRitornaStati(result);
                         break;
+                    case "RitornaRuoli":
+                        fRitornaRuoli(result);
+                        break;
                     case "RitornaFonti":
                         fRitornaFonti(result);
                         break;
+                    case "RitornaGiocatori":
+                        fRitornaGiocatori(result);
+                        break;
+                    case "RitornaAllenatori":
+                        fRitornaAllenatori(result);
+                        break;
                 }
-
-                VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
@@ -291,13 +363,71 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     private boolean ControllaRitorno(String Operazione, String result) {
-        if (result.contains("ERROR:")) {
+        if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
             }
 
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaAllenatori(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno allenatori", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            List<StrutturaAllenatori> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaAllenatori s = new StrutturaAllenatori();
+                    s.setIdAllenatore(Integer.parseInt(campi[0]));
+                    s.setCognome(campi[1]);
+                    s.setNome(campi[2]);
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setAllenatori(lista);
+
+            VariabiliStaticheLazio.getInstance().setCstmAdptAllenatori(new AdapterListenerAllenatori(context, lista));
+            VariabiliStaticheLazio.getInstance().getLstAllenatori().setAdapter(VariabiliStaticheLazio.getInstance().getCstmAdptAllenatori());
+
+        }
+    }
+
+    private void fRitornaGiocatori(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno giocatori", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            List<StrutturaGiocatori> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaGiocatori s = new StrutturaGiocatori();
+                    s.setIdGiocatore(Integer.parseInt(campi[0]));
+                    s.setCognome(campi[1]);
+                    s.setNome(campi[2]);
+                    s.setIdRuolo(Integer.parseInt(campi[3]));
+                    s.setRuolo(campi[4]);
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setGiocatori(lista);
+
+            VariabiliStaticheLazio.getInstance().setCstmAdptGiocatori(new AdapterListenerGiocatori(context, lista));
+            VariabiliStaticheLazio.getInstance().getLstGiocatori().setAdapter(VariabiliStaticheLazio.getInstance().getCstmAdptGiocatori());
+
         }
     }
 
@@ -315,6 +445,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             List<StrutturaStati> lista = new ArrayList<>();
             String[] righe = result.split("§");
+            String[] righePerSpinner = new String[righe.length];
+            righePerSpinner[0] = "";
+            int i = 1;
             for (String r : righe) {
                 if (!r.isEmpty() && !r.equals("\n")) {
                     String[] campi = r.split(";");
@@ -323,14 +456,124 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     s.setIdStato(Integer.parseInt(campi[0]));
                     s.setStato(campi[1]);
 
+                    righePerSpinner[i] = campi[1];
+                    i++;
+
                     lista.add(s);
                 }
             }
+
+            VariabiliStaticheLazio.getInstance().setAdapterStati(new ArrayAdapter<String>
+                    (context, android.R.layout.simple_spinner_item, righePerSpinner));
+            VariabiliStaticheLazio.getInstance().getAdapterStati().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            VariabiliStaticheLazio.getInstance().getSpnStati().setAdapter(VariabiliStaticheLazio.getInstance().getAdapterStati());
+            final boolean[] primoIngresso = {true};
+            VariabiliStaticheLazio.getInstance().getSpnStati().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    if (primoIngresso[0]) {
+                        primoIngresso[0] = false;
+                        return;
+                    }
+
+                    String selected ="";
+
+                    try {
+                        selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                        for (StrutturaCompetizioni s : VariabiliStaticheLazio.getInstance().getCompetizioni()) {
+                            if (s.getCompetizione().equals(selected)) {
+                                VariabiliStaticheLazio.getInstance().setIdTipologia(s.getIdTipologia());
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        selected="";
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
 
             VariabiliStaticheLazio.getInstance().setStati(lista);
 
             AdapterListenerStati cstmAdptStati = new AdapterListenerStati(context, lista);
             VariabiliStaticheLazio.getInstance().getLstStati().setAdapter(cstmAdptStati);
+        }
+    }
+
+    private void fRitornaRuoli(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno ruoli", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
+            String NomeFile = "Ruoli.txt";
+            if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                Files.getInstance().EliminaFileUnico(PathFile + "/" + NomeFile);
+            }
+            Files.getInstance().ScriveFile(PathFile, NomeFile, result);
+
+            List<StrutturaRuoli> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            String[] righePerSpinner = new String[righe.length];
+            righePerSpinner[0] = "";
+            int i = 1;
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaRuoli s = new StrutturaRuoli();
+                    s.setIdRuolo(Integer.parseInt(campi[0]));
+                    s.setRuolo(campi[1]);
+
+                    righePerSpinner[i] = campi[1];
+                    i++;
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setAdapterRuoli(new ArrayAdapter<String>
+                    (context, android.R.layout.simple_spinner_item, righePerSpinner));
+            VariabiliStaticheLazio.getInstance().getAdapterRuoli().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            VariabiliStaticheLazio.getInstance().getSpnRuolo().setAdapter(VariabiliStaticheLazio.getInstance().getAdapterRuoli());
+            final boolean[] primoIngressoR = {true};
+            VariabiliStaticheLazio.getInstance().getSpnRuolo().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    if (primoIngressoR[0]) {
+                        primoIngressoR[0] = false;
+                        return;
+                    }
+
+                    String selected ="";
+
+                    try {
+                        selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                        for (StrutturaRuoli s : VariabiliStaticheLazio.getInstance().getRuoli()) {
+                            if (s.getRuolo().equals(selected)) {
+                                VariabiliStaticheLazio.getInstance().setIdRuoloSelezionato(s.getIdRuolo());
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        selected="";
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
+
+            VariabiliStaticheLazio.getInstance().setRuoli(lista);
+
+            AdapterListenerRuoli cstmAdptRuoli = new AdapterListenerRuoli(context, lista);
+            VariabiliStaticheLazio.getInstance().getLstRuoli().setAdapter(cstmAdptRuoli);
         }
     }
 
@@ -348,6 +591,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             List<StrutturaFonti> lista = new ArrayList<>();
             String[] righe = result.split("§");
+            String[] righePerSpinner = new String[righe.length];
+            righePerSpinner[0] = "";
+            int i = 1;
             for (String r : righe) {
                 if (!r.isEmpty() && !r.equals("\n")) {
                     String[] campi = r.split(";");
@@ -356,9 +602,46 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     s.setIdFonte(Integer.parseInt(campi[0]));
                     s.setFonte(campi[1]);
 
+                    righePerSpinner[i] = campi[1];
+                    i++;
+
                     lista.add(s);
                 }
             }
+
+            VariabiliStaticheLazio.getInstance().setAdapterFonti(new ArrayAdapter<String>
+                    (context, android.R.layout.simple_spinner_item, righePerSpinner));
+            VariabiliStaticheLazio.getInstance().getAdapterFonti().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            VariabiliStaticheLazio.getInstance().getSpnFonti().setAdapter(VariabiliStaticheLazio.getInstance().getAdapterFonti());
+            final boolean[] primoIngresso = {true};
+            VariabiliStaticheLazio.getInstance().getSpnFonti().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    if (primoIngresso[0]) {
+                        primoIngresso[0] = false;
+                        return;
+                    }
+
+                    String selected ="";
+
+                    try {
+                        selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                        for (StrutturaFonti s : VariabiliStaticheLazio.getInstance().getFonti()) {
+                            if (s.getFonte().equals(selected)) {
+                                VariabiliStaticheLazio.getInstance().setIdFonte(s.getIdFonte());
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        selected="";
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
 
             VariabiliStaticheLazio.getInstance().setFonti(lista);
 
@@ -462,12 +745,18 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         } else {
             List<StrutturaSquadre> lista = new ArrayList<>();
             String[] squadre = result.split("§");
+            String[] righePerSpinner = new String[squadre.length + 1];
+            righePerSpinner[0] = "";
+            int i = 1;
             for (String s : squadre) {
                 if (!s.isEmpty() && !s.equals("\n")) {
                     String[] ss = s.split(";");
                     StrutturaSquadre sq = new StrutturaSquadre();
                     sq.setIdSquadra(Integer.parseInt(ss[0]));
                     sq.setSquadra(ss[1]);
+
+                    righePerSpinner[i] = ss[1];
+                    i++;
 
                     lista.add(sq);
                 }
@@ -476,6 +765,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             int giornate = (lista.size() - 1) * 2;
             VariabiliStaticheLazio.getInstance().setMaxGiornate(giornate);
             VariabiliStaticheLazio.getInstance().setGiornata(giornate);
+
+            VariabiliStaticheLazio.getInstance().setRighePerSquadre(righePerSpinner);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            VariabiliStaticheLazio.getInstance().getSpnSquadreGioc().setAdapter(adapter);
+            VariabiliStaticheLazio.getInstance().getSpnSquadreAll().setAdapter(adapter);
 
             VariabiliStaticheLazio.getInstance().setSquadre(lista);
 
@@ -581,7 +878,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheLazio.getInstance().setIdTipologia(1);
             for (StrutturaCompetizioni s : VariabiliStaticheLazio.getInstance().getCompetizioni()) {
                 if (s.getIdTipologia() == 1) {
-                    VariabiliStaticheLazio.getInstance().getSpnCompetizioni().setPrompt(s.getCompetizione());
+                    int spinnerPosition = adapter.getPosition(s.getCompetizione());
+                    VariabiliStaticheLazio.getInstance().getSpnCompetizioni().setSelection(spinnerPosition);
                     break;
                 }
             }
@@ -599,9 +897,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     try {
                         selected = (String) adapter.getItemAtPosition(pos).toString().trim();
 
-                        for (StrutturaCompetizioni s : VariabiliStaticheLazio.getInstance().getCompetizioni()) {
-                            if (s.getCompetizione().equals(selected)) {
-                                VariabiliStaticheLazio.getInstance().setIdTipologia(s.getIdTipologia());
+                        for (StrutturaStati s : VariabiliStaticheLazio.getInstance().getStati()) {
+                            if (s.getStato().equals(selected)) {
+                                VariabiliStaticheLazio.getInstance().setIdStato(s.getIdStato());
                                 break;
                             }
                         }
@@ -682,7 +980,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     AnniPerSpinner
             );
             VariabiliStaticheLazio.getInstance().getSpnAnni().setAdapter(adapter);
-            VariabiliStaticheLazio.getInstance().getSpnAnni().setPrompt(PrimoAnno);
+            int spinnerPosition = adapter.getPosition(PrimoAnno);
+            VariabiliStaticheLazio.getInstance().getSpnAnni().setSelection(spinnerPosition);
 
             VariabiliStaticheLazio.getInstance().setAnnoSelezionato(PrimoAnno);
             VariabiliStaticheLazio.getInstance().setIdAnnoSelezionato(idAnno);
