@@ -129,6 +129,15 @@ public class VariabiliStaticheLazio {
     private Spinner spnSquadreAll;
     private AdapterListenerAllenatori cstmAdptAllenatori;
     private LinearLayout layRuolo;
+    private int AcquistiCessioni = 1;
+
+    public int getAcquistiCessioni() {
+        return AcquistiCessioni;
+    }
+
+    public void setAcquistiCessioni(int acquistiCessioni) {
+        AcquistiCessioni = acquistiCessioni;
+    }
 
     public LinearLayout getLayRuolo() {
         return layRuolo;

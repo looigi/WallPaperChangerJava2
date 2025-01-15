@@ -174,7 +174,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     public void RitornaMercato() {
         String Urletto="RitornaMercato?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
-                "&idModalita=" + VariabiliStaticheLazio.getInstance().getModalitaMercato();
+                "&idModalita=" + VariabiliStaticheLazio.getInstance().getModalitaMercato() +
+                "&idAcqCess=" + VariabiliStaticheLazio.getInstance().getAcquistiCessioni();
 
         TipoOperazione = "RitornaMercato";
 

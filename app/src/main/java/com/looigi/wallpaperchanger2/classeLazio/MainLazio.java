@@ -421,6 +421,28 @@ public class MainLazio extends Activity {
         ChiamateWSLazio ws5 = new ChiamateWSLazio(context);
         ws5.RitornaRuoli(false);
 
+        VariabiliStaticheLazio.getInstance().setAcquistiCessioni(1);
+        RadioButton optAcquisti = findViewById(R.id.optAcquisti);
+        optAcquisti.setChecked(true);
+        optAcquisti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setAcquistiCessioni(1);
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMercato();
+            }
+        });
+
+        RadioButton optCessioni = findViewById(R.id.optCessioni);
+        optCessioni.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setAcquistiCessioni(2);
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMercato();
+            }
+        });
+
         RadioButton optEstivo = findViewById(R.id.optEstivo);
         optEstivo.setChecked(true);
         optEstivo.setOnClickListener(new View.OnClickListener() {
