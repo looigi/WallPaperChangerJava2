@@ -166,17 +166,6 @@ public class ChiamateWSV implements TaskDelegate {
                 TimeStampAttuale,
                 this
         );
-        /* bckAsyncTask = new LetturaWSAsincrona(
-                context,
-                NS,
-                Timeout,
-                SOAP_ACTION,
-                tOperazione,
-                ApriDialog,
-                Urletto,
-                TimeStampAttuale,
-                this);
-        bckAsyncTask.execute(Urletto); */
     }
 
     @Override

@@ -46,8 +46,10 @@ public class UtilityLazio {
         VariabiliStaticheLazio.getInstance().getLayStati().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLayGiocatori().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLayAllenatori().setVisibility(LinearLayout.GONE);
-        VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheLazio.getInstance().getLayMarcatori().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLayRuoli().setVisibility(LinearLayout.GONE);
+
+        VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.GONE);
 
         switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
             case 1:
@@ -84,6 +86,9 @@ public class UtilityLazio {
             case 9:
                 VariabiliStaticheLazio.getInstance().getLayAllenatori().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                break;
+            case 10:
+                VariabiliStaticheLazio.getInstance().getLayMarcatori().setVisibility(LinearLayout.VISIBLE);
                 break;
         }
     }

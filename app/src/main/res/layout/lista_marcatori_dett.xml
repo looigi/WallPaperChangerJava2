@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+    android:padding="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgElimina"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/elimina_quadrato" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCognome"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <!-- <TextView
+            android:id="@+id/txtNome"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="18sp" /> -->
+
+        <TextView
+            android:id="@+id/txtMinuto"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

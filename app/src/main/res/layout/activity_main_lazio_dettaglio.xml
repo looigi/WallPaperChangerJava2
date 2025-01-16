@@ -6,20 +6,11 @@
     android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edtData"
-        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/Rosso"
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
         android:id="@+id/layTesta"
         android:layout_marginTop="2dp"
         android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
-        android:layout_below="@+id/edtData"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:weightSum="13"
         android:gravity="center_vertical"
@@ -93,7 +84,16 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/scrollViewPrincipale"
+        android:layout_marginTop="2dp"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_below="@+id/layTesta"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- <ScrollView
         android:id="@+id/scrollViewPrincipale"
         android:layout_marginTop="2dp"
         android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
@@ -102,12 +102,458 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"> -->
 
-        </LinearLayout>
-    </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="start"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:text="Data"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtData"
+                    android:gravity="end"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="start"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:text="Arbitro"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtArbitro"
+                    android:gravity="end"
+                    android:textColor="@color/Blue"
+                    android:lines="1"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="start"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:text="Località"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtLocalita"
+                    android:gravity="end"
+                    android:textColor="@color/Blue"
+                    android:lines="1"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="start"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:text="Spettatori"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtSpettatori"
+                    android:gravity="end"
+                    android:lines="1"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="10"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggFC"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@color/Verde_Scuro"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:gravity="center_horizontal"
+                    android:text="Formazioni"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggFF"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_height="150dp">
+                <!-- Formazioni -->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstFC"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstFF"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="10"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggMC"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@color/Verde_Scuro"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:gravity="center_horizontal"
+                    android:text="Marcatori"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggMF"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="75dp">
+                <!-- Marcatori -->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstMC"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstMF"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="10"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggAC"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@color/Verde_Scuro"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:gravity="center_horizontal"
+                    android:text="Ammoniti"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggAF"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="75dp">
+                <!-- Ammoniti -->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstAC"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstAF"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="10"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggEC"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@color/Verde_Scuro"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:gravity="center_horizontal"
+                    android:text="Espulsi"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgAggEF"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icona_aggiunge" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="75dp">
+                <!-- Espulsi -->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstEC"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/lstEF"
+                        android:divider="#CCCCCC"
+                        android:dividerHeight="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="start"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:text="Note"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtNote"
+                    android:textColor="@color/Blue"
+                    android:textSize="15sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textMultiLine"
+                    android:gravity="top" />
+            </LinearLayout>
+
+        <!-- </LinearLayout>
+    </ScrollView> -->
+    </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoLazio"

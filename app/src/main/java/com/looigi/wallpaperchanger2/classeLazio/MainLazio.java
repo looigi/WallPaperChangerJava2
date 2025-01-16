@@ -62,6 +62,8 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setMascheraSelezionata(1);
         VariabiliStaticheLazio.getInstance().setLayGiocatori(findViewById(R.id.layGiocatori));
         VariabiliStaticheLazio.getInstance().setLayRuolo(findViewById(R.id.layRuolo));
+        VariabiliStaticheLazio.getInstance().setLayMarcatori(findViewById(R.id.layMarcatori));
+        VariabiliStaticheLazio.getInstance().setLstMarcatori(findViewById(R.id.lstMarcatori));
         UtilityLazio.getInstance().VisualizzaMaschera();
 
         VariabiliStaticheLazio.getInstance().setEdtCognome(findViewById(R.id.edtCognomeGiocatore));
@@ -583,6 +585,18 @@ public class MainLazio extends Activity {
         imgAllenatori.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(9);
+                UtilityLazio.getInstance().VisualizzaMaschera();
+            }
+        });
+
+        ImageView imgMarcatori = findViewById(R.id.imgMarcatori);
+        imgMarcatori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setMascheraSelezionata(10);
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMarcatori();
+
                 UtilityLazio.getInstance().VisualizzaMaschera();
             }
         });

@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Dettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
@@ -15,6 +16,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMarcatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
@@ -58,6 +60,123 @@ public class VariabiliStaticheLazioDettaglio {
     private List<StrutturaGiocatori> GiocatoriFuori = new ArrayList<>();
     private String[] GiocatoriCasaPerSpn;
     private String[] GiocatoriFuoriPerSpn;
+    private Dettaglio DettaglioPartita;
+    private ListView lstAC;
+    private ListView lstAF;
+    private ListView lstEC;
+    private ListView lstEF;
+    private ListView lstMC;
+    private ListView lstMF;
+    private ListView lstFC;
+    private ListView lstFF;
+    private EditText edtArbitro;
+    private EditText edtSpettatori;
+    private EditText edtLocalita;
+    private EditText edtNote;
+
+    public EditText getEdtNote() {
+        return edtNote;
+    }
+
+    public void setEdtNote(EditText edtNote) {
+        this.edtNote = edtNote;
+    }
+
+    public EditText getEdtArbitro() {
+        return edtArbitro;
+    }
+
+    public void setEdtArbitro(EditText edtArbitro) {
+        this.edtArbitro = edtArbitro;
+    }
+
+    public EditText getEdtLocalita() {
+        return edtLocalita;
+    }
+
+    public void setEdtLocalita(EditText edtLocalita) {
+        this.edtLocalita = edtLocalita;
+    }
+
+    public EditText getEdtSpettatori() {
+        return edtSpettatori;
+    }
+
+    public void setEdtSpettatori(EditText edtSpettatori) {
+        this.edtSpettatori = edtSpettatori;
+    }
+
+    public ListView getLstAC() {
+        return lstAC;
+    }
+
+    public void setLstAC(ListView lstAC) {
+        this.lstAC = lstAC;
+    }
+
+    public ListView getLstAF() {
+        return lstAF;
+    }
+
+    public void setLstAF(ListView lstAF) {
+        this.lstAF = lstAF;
+    }
+
+    public ListView getLstEC() {
+        return lstEC;
+    }
+
+    public void setLstEC(ListView lstEC) {
+        this.lstEC = lstEC;
+    }
+
+    public ListView getLstEF() {
+        return lstEF;
+    }
+
+    public void setLstEF(ListView lstEF) {
+        this.lstEF = lstEF;
+    }
+
+    public ListView getLstFC() {
+        return lstFC;
+    }
+
+    public void setLstFC(ListView lstFC) {
+        this.lstFC = lstFC;
+    }
+
+    public ListView getLstFF() {
+        return lstFF;
+    }
+
+    public void setLstFF(ListView lstFF) {
+        this.lstFF = lstFF;
+    }
+
+    public ListView getLstMC() {
+        return lstMC;
+    }
+
+    public void setLstMC(ListView lstMC) {
+        this.lstMC = lstMC;
+    }
+
+    public ListView getLstMF() {
+        return lstMF;
+    }
+
+    public void setLstMF(ListView lstMF) {
+        this.lstMF = lstMF;
+    }
+
+    public Dettaglio getDettaglioPartita() {
+        return DettaglioPartita;
+    }
+
+    public void setDettaglioPartita(Dettaglio dettaglioPartita) {
+        DettaglioPartita = dettaglioPartita;
+    }
 
     public String[] getGiocatoriCasaPerSpn() {
         return GiocatoriCasaPerSpn;

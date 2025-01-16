@@ -18,6 +18,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMarcatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
@@ -29,6 +30,7 @@ import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerCalendar
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerFonti;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerGiocatori;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMarcatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerSquadre;
@@ -58,8 +60,21 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         this.context = context;
     }
 
-    // GestioneMercato(idAnno As String, idModalita As String, Progressivo As String, Nominativo As String,
-    //                                 Data As String, idFonte As String, idStato As String) As String
+    public void RitornaMarcatori() {
+        String Urletto="RitornaMarcatori?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "&idTipologia=" + VariabiliStaticheLazio.getInstance().getIdTipologia();
+
+        TipoOperazione = "RitornaMarcatori";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
 
     public void RitornaAllenatori() {
         String Urletto="RitornaAllenatori?" +
@@ -353,6 +368,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "RitornaAllenatori":
                         fRitornaAllenatori(result);
                         break;
+                    case "RitornaMarcatori":
+                        fRitornaMarcatori(result);
+                        break;
                 }
             }
         };
@@ -371,6 +389,35 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaMarcatori(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno marcatori", result);
+        if (!ritorno) {
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            List<StrutturaMarcatori> lista = new ArrayList<>();
+            String[] righe = result.split("§");
+            for (String r : righe) {
+                if (!r.isEmpty() && !r.equals("\n")) {
+                    String[] campi = r.split(";");
+
+                    StrutturaMarcatori s = new StrutturaMarcatori();
+                    s.setCognome(campi[0]);
+                    s.setNome(campi[1]);
+                    s.setRuolo(campi[2]);
+                    s.setSquadra(campi[3]);
+                    s.setGoals(Integer.parseInt(campi[4]));
+
+                    lista.add(s);
+                }
+            }
+
+            VariabiliStaticheLazio.getInstance().setMarcatori(lista);
+
+            AdapterListenerMarcatori adapter = new AdapterListenerMarcatori(context, lista);
+            VariabiliStaticheLazio.getInstance().getLstMarcatori().setAdapter(adapter);
         }
     }
 
@@ -446,7 +493,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             List<StrutturaStati> lista = new ArrayList<>();
             String[] righe = result.split("§");
-            String[] righePerSpinner = new String[righe.length];
+            String[] righePerSpinner = new String[righe.length + 1];
             righePerSpinner[0] = "";
             int i = 1;
             for (String r : righe) {
@@ -519,7 +566,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             List<StrutturaRuoli> lista = new ArrayList<>();
             String[] righe = result.split("§");
-            String[] righePerSpinner = new String[righe.length];
+            String[] righePerSpinner = new String[righe.length + 1];
             righePerSpinner[0] = "";
             int i = 1;
             for (String r : righe) {
@@ -592,7 +639,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             List<StrutturaFonti> lista = new ArrayList<>();
             String[] righe = result.split("§");
-            String[] righePerSpinner = new String[righe.length];
+            String[] righePerSpinner = new String[righe.length + 1];
             righePerSpinner[0] = "";
             int i = 1;
             for (String r : righe) {

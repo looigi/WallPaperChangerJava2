@@ -3,40 +3,21 @@ package com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.webService;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Ammoniti;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Dettaglio;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Espulsi;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Formazione;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Marcatori;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Notelle;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.UtilityLazioDettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.VariabiliStaticheLazioDettaglio;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters.AdapterListenerAmmoniti;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters.AdapterListenerEspulsi;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters.AdapterListenerFormazione;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters.AdapterListenerMarcatoriD;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
-import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenatori;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerCalendario;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerFonti;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerGiocatori;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerRuoli;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerSquadre;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerStati;
-import com.looigi.wallpaperchanger2.classeLazio.webService.InterrogazioneWSLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.TaskDelegateLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,6 +175,210 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
         if (!ritorno) {
             // UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
+            String[] CampiEsterni = result.split("\\|", -1);
+
+            String[] marcCasa = CampiEsterni[0].split("§", -1);
+            List<Marcatori> listaMC = new ArrayList<>();
+            for (String mc : marcCasa) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Marcatore = mc.split(";", -1);
+
+                        Marcatori m = new Marcatori();
+                        m.setIdGiocatore(Integer.parseInt(Marcatore[0]));
+                        m.setCognome(Marcatore[1]);
+                        m.setNome(Marcatore[2]);
+                        m.setMinuto(Integer.parseInt(Marcatore[3]));
+                        m.setRigore(Marcatore[4].equals("S"));
+
+                        listaMC.add(m);
+                    }
+                }
+            }
+
+            String[] marcFuori = CampiEsterni[1].split("§", -1);
+            List<Marcatori> listaMF = new ArrayList<>();
+            for (String mc : marcFuori) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Marcatore = mc.split(";", -1);
+
+                        Marcatori m = new Marcatori();
+                        m.setIdGiocatore(Integer.parseInt(Marcatore[0]));
+                        m.setCognome(Marcatore[1]);
+                        m.setNome(Marcatore[2]);
+                        m.setMinuto(Integer.parseInt(Marcatore[3]));
+                        m.setRigore(Marcatore[4].equals("S"));
+
+                        listaMF.add(m);
+                    }
+                }
+            }
+
+            String[] ammCasa = CampiEsterni[2].split("§", -1);
+            List<Ammoniti> listaAC = new ArrayList<>();
+            for (String mc : ammCasa) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Ammonito = mc.split(";", -1);
+
+                        Ammoniti m = new Ammoniti();
+                        m.setIdGiocatore(Integer.parseInt(Ammonito[0]));
+                        m.setCognome(Ammonito[1]);
+                        m.setNome(Ammonito[2]);
+                        m.setMinuto(Integer.parseInt(Ammonito[3]));
+
+                        listaAC.add(m);
+                    }
+                }
+            }
+
+            String[] ammFuori = CampiEsterni[3].split("§", -1);
+            List<Ammoniti> listaAF = new ArrayList<>();
+            for (String mc : ammFuori) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Ammonito = mc.split(";", -1);
+
+                        Ammoniti m = new Ammoniti();
+                        m.setIdGiocatore(Integer.parseInt(Ammonito[0]));
+                        m.setCognome(Ammonito[1]);
+                        m.setNome(Ammonito[2]);
+                        m.setMinuto(Integer.parseInt(Ammonito[3]));
+
+                        listaAF.add(m);
+                    }
+                }
+            }
+
+            String[] espCasa = CampiEsterni[4].split("§", -1);
+            List<Espulsi> listaEC = new ArrayList<>();
+            for (String mc : espCasa) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Espulso = mc.split(";", -1);
+
+                        Espulsi m = new Espulsi();
+                        m.setIdGiocatore(Integer.parseInt(Espulso[0]));
+                        m.setCognome(Espulso[1]);
+                        m.setNome(Espulso[2]);
+                        m.setMinuto(Integer.parseInt(Espulso[3]));
+
+                        listaEC.add(m);
+                    }
+                }
+            }
+
+            String[] espFuori = CampiEsterni[5].split("§", -1);
+            List<Espulsi> listaEF = new ArrayList<>();
+            for (String mc : espFuori) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Espulso = mc.split(";", -1);
+
+                        Espulsi m = new Espulsi();
+                        m.setIdGiocatore(Integer.parseInt(Espulso[0]));
+                        m.setCognome(Espulso[1]);
+                        m.setNome(Espulso[2]);
+                        m.setMinuto(Integer.parseInt(Espulso[3]));
+
+                        listaEF.add(m);
+                    }
+                }
+            }
+
+            String[] formCasa = CampiEsterni[6].split("§", -1);
+            List<Formazione> listaFC = new ArrayList<>();
+            for (String mc : formCasa) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Formazione = mc.split(";", -1);
+
+                        Formazione m = new Formazione();
+                        m.setIdGiocatore(Integer.parseInt(Formazione[0]));
+                        m.setCognome(Formazione[1]);
+                        m.setNome(Formazione[2]);
+                        m.setEntrato(Integer.parseInt(Formazione[3]));
+                        m.setUscito(Integer.parseInt(Formazione[4]));
+
+                        listaFC.add(m);
+                    }
+                }
+            }
+
+            String[] formFuori = CampiEsterni[7].split("§", -1);
+            List<Formazione> listaFF = new ArrayList<>();
+            for (String mc : formFuori) {
+                if (!mc.isEmpty() && !mc.equals("\n")) {
+                    if (mc.contains(";")) {
+                        String[] Formazione = mc.split(";", -1);
+
+                        Formazione m = new Formazione();
+                        m.setIdGiocatore(Integer.parseInt(Formazione[0]));
+                        m.setCognome(Formazione[1]);
+                        m.setNome(Formazione[2]);
+                        m.setEntrato(Integer.parseInt(Formazione[3]));
+                        m.setUscito(Integer.parseInt(Formazione[4]));
+
+                        listaFF.add(m);
+                    }
+                }
+            }
+
+            String[] Notelle = CampiEsterni[8].split(";", -1);
+            Notelle n = new Notelle();
+            n.setArbitro(Notelle[0]);
+            n.setLocalita(Notelle[1]);
+            n.setSpettatori(Notelle[2]);
+            String notelline = Notelle[3];
+            if (notelline != null) {
+                notelline = notelline.replace("***PV***", ";");
+            } else {
+                notelline = "";
+            }
+            n.setNotelle(notelline);
+
+            Dettaglio d = new Dettaglio();
+            d.setAmmonitiCasa(listaAC);
+            d.setAmmonitiFuori(listaAF);
+            d.setEspulsiCasa(listaEC);
+            d.setEspulsiFuori(listaEF);
+            d.setMarcatoriCasa(listaMC);
+            d.setMarcatoriFuori(listaMF);
+            d.setFormazioneCasa(listaFC);
+            d.setFormazioneFuori(listaFF);
+            d.setNotelle(n);
+
+            VariabiliStaticheLazioDettaglio.getInstance().setDettaglioPartita(d);
+
+            VariabiliStaticheLazioDettaglio.getInstance().getEdtArbitro().setText(n.getArbitro());
+            VariabiliStaticheLazioDettaglio.getInstance().getEdtSpettatori().setText(n.getSpettatori());
+            VariabiliStaticheLazioDettaglio.getInstance().getEdtLocalita().setText(n.getLocalita());
+            VariabiliStaticheLazioDettaglio.getInstance().getEdtNote().setText(notelline);
+
+            AdapterListenerAmmoniti cstmAdptAC = new AdapterListenerAmmoniti(context, listaAC, true);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstAC().setAdapter(cstmAdptAC);
+
+            AdapterListenerAmmoniti cstmAdptAF = new AdapterListenerAmmoniti(context, listaAF, false);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstAF().setAdapter(cstmAdptAF);
+
+            AdapterListenerEspulsi cstmAdptEC = new AdapterListenerEspulsi(context, listaEC, true);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstEC().setAdapter(cstmAdptEC);
+
+            AdapterListenerEspulsi cstmAdptEF = new AdapterListenerEspulsi(context, listaEF, false);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstEF().setAdapter(cstmAdptEF);
+
+            AdapterListenerMarcatoriD cstmAdptMC = new AdapterListenerMarcatoriD(context, listaMC, true);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstMC().setAdapter(cstmAdptMC);
+
+            AdapterListenerMarcatoriD cstmAdptMF = new AdapterListenerMarcatoriD(context, listaMF, false);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstMF().setAdapter(cstmAdptMF);
+
+            AdapterListenerFormazione cstmAdptFC = new AdapterListenerFormazione(context, listaFC, true);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstFC().setAdapter(cstmAdptFC);
+
+            AdapterListenerFormazione cstmAdptFF = new AdapterListenerFormazione(context, listaFF, false);
+            VariabiliStaticheLazioDettaglio.getInstance().getLstFF().setAdapter(cstmAdptFF);
         }
     }
 }

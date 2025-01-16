@@ -15,6 +15,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCompetizioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMarcatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
@@ -130,6 +131,33 @@ public class VariabiliStaticheLazio {
     private AdapterListenerAllenatori cstmAdptAllenatori;
     private LinearLayout layRuolo;
     private int AcquistiCessioni = 1;
+    private LinearLayout layMarcatori;
+    private ListView lstMarcatori;
+    private List<StrutturaMarcatori> Marcatori;
+
+    public List<StrutturaMarcatori> getMarcatori() {
+        return Marcatori;
+    }
+
+    public void setMarcatori(List<StrutturaMarcatori> marcatori) {
+        Marcatori = marcatori;
+    }
+
+    public LinearLayout getLayMarcatori() {
+        return layMarcatori;
+    }
+
+    public void setLayMarcatori(LinearLayout layMarcatori) {
+        this.layMarcatori = layMarcatori;
+    }
+
+    public ListView getLstMarcatori() {
+        return lstMarcatori;
+    }
+
+    public void setLstMarcatori(ListView lstMarcatori) {
+        this.lstMarcatori = lstMarcatori;
+    }
 
     public int getAcquistiCessioni() {
         return AcquistiCessioni;

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -79,6 +80,67 @@ public class MainDettaglioPartita extends Activity {
 
         ImageView imgSalvaDettaglio = findViewById(R.id.imgSalvaDettaglio);
         imgSalvaDettaglio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        VariabiliStaticheLazioDettaglio.getInstance().setLstAC(findViewById(R.id.lstAC));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstAF(findViewById(R.id.lstAF));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstEC(findViewById(R.id.lstEC));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstEF(findViewById(R.id.lstEF));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstMC(findViewById(R.id.lstMC));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstMF(findViewById(R.id.lstMF));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstFC(findViewById(R.id.lstFC));
+        VariabiliStaticheLazioDettaglio.getInstance().setLstFF(findViewById(R.id.lstFF));
+        VariabiliStaticheLazioDettaglio.getInstance().setEdtArbitro(findViewById(R.id.edtArbitro));
+        VariabiliStaticheLazioDettaglio.getInstance().setEdtLocalita(findViewById(R.id.edtLocalita));
+        VariabiliStaticheLazioDettaglio.getInstance().setEdtSpettatori(findViewById(R.id.edtSpettatori));
+        VariabiliStaticheLazioDettaglio.getInstance().setEdtNote(findViewById(R.id.edtNote));
+
+        ImageView imgAggAC = findViewById(R.id.imgAggAC);
+        imgAggAC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggAF = findViewById(R.id.imgAggAF);
+        imgAggAF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggEC = findViewById(R.id.imgAggEC);
+        imgAggEC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggEF = findViewById(R.id.imgAggEF);
+        imgAggEF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggFC = findViewById(R.id.imgAggFC);
+        imgAggFC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggFF = findViewById(R.id.imgAggFF);
+        imgAggFF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggMC = findViewById(R.id.imgAggMC);
+        imgAggMC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgAggMF = findViewById(R.id.imgAggMF);
+        imgAggMF.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             }
         });
