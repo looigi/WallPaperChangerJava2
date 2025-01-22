@@ -39,6 +39,57 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
         this.context = context;
     }
 
+    public void SalvaDettaglio(
+        String idPartita,
+        String idSquadraCasa,
+        String idSquadraFuori,
+        String Risultato,
+        String Arbitro,
+        String Localita,
+        String Spettatori,
+        String marcatoriCasa,
+        String marcatoriFuori,
+        String ammonitiCasa,
+        String ammonitiFuori,
+        String espulsiCasa,
+        String espulsiFuori,
+        String formazioneCasa,
+        String formazioneFuori,
+        String note) {
+
+        String Urletto="SalvaDettaglio?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "&idTipologia=" + VariabiliStaticheLazio.getInstance().getIdTipologia()  +
+                "&idPartita=" + idPartita +
+                "&idGiornata=" + VariabiliStaticheLazio.getInstance().getGiornata() +
+                "&DataPartita=" + VariabiliStaticheLazioDettaglio.getInstance().getData() +
+                "&idSquadraCasa=" + idSquadraCasa +
+                "&idSquadraFuori=" + idSquadraFuori +
+                "&Risultato=" + Risultato +
+                "&Arbitro=" + Arbitro +
+                "&Localita=" + Localita +
+                "&Spettatori=" + Spettatori +
+                "&marcatoriCasa=" + marcatoriCasa +
+                "&marcatoriFuori=" + marcatoriFuori +
+                "&ammonitiCasa=" + ammonitiCasa +
+                "&ammonitiFuori=" + ammonitiFuori +
+                "&espulsiCasa=" + espulsiCasa +
+                "&espulsiFuori=" + espulsiFuori +
+                "&formazioneCasa=" + formazioneCasa +
+                "&formazioneFuori=" + formazioneFuori +
+                "&note=" + note;
+
+        TipoOperazione = "SalvaDettaglio";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
     public void RitornaGiocatori(String idSquadra, boolean InCasa) {
         inCasa = InCasa;
 

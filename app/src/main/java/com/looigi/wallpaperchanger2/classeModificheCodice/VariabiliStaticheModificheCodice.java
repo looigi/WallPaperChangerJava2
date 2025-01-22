@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classeModificheCodice;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -34,6 +35,8 @@ public class VariabiliStaticheModificheCodice {
         return instance;
     }
 
+    public static final String UrlWS = "http://www.wslazio.looigi.it/";
+    private Activity act;
     private List<Progetti> listaProgetti;
     private List<Moduli> listaModuli;
     private List<Sezioni> listaSezioni;
@@ -69,6 +72,14 @@ public class VariabiliStaticheModificheCodice {
     private ImageView imgModificaSezioni;
     private ImageView imgEliminaSezioni;
     private TextView txtQuante;
+
+    public Activity getAct() {
+        return act;
+    }
+
+    public void setAct(Activity act) {
+        this.act = act;
+    }
 
     public TextView getTxtQuante() {
         return txtQuante;

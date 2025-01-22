@@ -49,6 +49,7 @@ public class UtilityLazio {
         VariabiliStaticheLazio.getInstance().getLayMarcatori().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getLayRuoli().setVisibility(LinearLayout.GONE);
 
+        VariabiliStaticheLazio.getInstance().getImgAggiorna().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.GONE);
 
         switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
@@ -70,10 +71,12 @@ public class UtilityLazio {
             case 5:
                 VariabiliStaticheLazio.getInstance().getLayFonti().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgAggiorna().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 6:
                 VariabiliStaticheLazio.getInstance().getLayStati().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgAggiorna().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 7:
                 VariabiliStaticheLazio.getInstance().getLayGiocatori().setVisibility(LinearLayout.VISIBLE);
@@ -82,6 +85,7 @@ public class UtilityLazio {
             case 8:
                 VariabiliStaticheLazio.getInstance().getLayRuoli().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheLazio.getInstance().getImgNuovo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheLazio.getInstance().getImgAggiorna().setVisibility(LinearLayout.VISIBLE);
                 break;
             case 9:
                 VariabiliStaticheLazio.getInstance().getLayAllenatori().setVisibility(LinearLayout.VISIBLE);
@@ -218,6 +222,7 @@ public class UtilityLazio {
                 if (!Valore1.isEmpty()) {
                     int riga = Integer.parseInt(Valore1);
                     StrutturaMercato s = VariabiliStaticheLazio.getInstance().getMercato().get(riga);
+                    VariabiliStaticheLazio.getInstance().setIdPerOperazione(s.getProgressivo());
                     VariabiliStaticheLazio.getInstance().getEdtData().setText(s.getData());
                     VariabiliStaticheLazio.getInstance().getEdtNominativo().setText(s.getNominativo());
 
@@ -232,6 +237,7 @@ public class UtilityLazio {
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
                     String dataOdierna = sdfD.format(calendar.getTime());
+                    VariabiliStaticheLazio.getInstance().setIdPerOperazione(-1);
                     VariabiliStaticheLazio.getInstance().getEdtData().setText(dataOdierna);
                     VariabiliStaticheLazio.getInstance().getEdtNominativo().setText("");
                     VariabiliStaticheLazio.getInstance().setIdStato(0);
@@ -239,6 +245,7 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().setIdFonte(0);
                     VariabiliStaticheLazio.getInstance().getSpnFonti().setPrompt("");
                 }
+
                 VariabiliStaticheLazio.getInstance().getLayModificaMercato().setVisibility(LinearLayout.VISIBLE);
                 break;
             case "FONTI":
@@ -283,10 +290,11 @@ public class UtilityLazio {
             case "MERCATO":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
                     case "INSERT":
+                    case "NUOVO":
+                        ws.GestioneMercato();
                         break;
                     case "UPDATE":
-                        break;
-                    case "DELETE":
+                        ws.GestioneMercato();
                         break;
                 }
                 break;

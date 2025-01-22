@@ -54,13 +54,16 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     private final boolean ApriDialog = false;
     private boolean RiempieCombo;
     private boolean PerModificaCommessa;
+    private boolean PerTipoLavoro;
 
     public ChiamateWSOrari(Context context) {
         this.context = context;
     }
 
-    public void RitornaCommesseLavoro(String idLavoro, boolean PerModificaCommessa) {
+    public void RitornaCommesseLavoro(String idLavoro, boolean PerModificaCommessa, boolean PerTipoLavoro) {
         this.PerModificaCommessa = PerModificaCommessa;
+        this.PerTipoLavoro = PerTipoLavoro;
+
         String Urletto="RitornaCommesseLavoro?" +
                 "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
                 "&idLavoro=" + idLavoro;
@@ -145,7 +148,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null ||
                     VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
                 VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
-                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()), false);
+                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()), false, false);
                 return;
             }
         }
@@ -391,53 +394,69 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 }
                 VariabiliStaticheOrari.getInstance().setListaCommesse(listaCommesse);
 
-                if (PerModificaCommessa) {
-                    AdapterListenerCommesseGestione adapter =
-                            new AdapterListenerCommesseGestione(
-                                    context,
-                                    VariabiliStaticheOrari.getInstance().getListaCommesse()
-                    );
-                    VariabiliStaticheImpostazioniOrari.getInstance().getLstCommesse().setAdapter(adapter);
-                } else {
+                if (PerTipoLavoro) {
                     StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
-                    String[] lista = new String[listaCommesse.size()];
-                    int i = 0;
-                    int qualeRiga = -1;
-                    String commessaDefault = "";
-                    for (StrutturaCommesse s : listaCommesse) {
-                        if (sdg != null && sdg.isGiornoInserito()) {
-                            if (s.getDescrizione().equals(sdg.getCommessa())) {
-                                qualeRiga = i;
-                            }
-                        } else {
-                            if (s.getIdCommessa() == sdg.getCodCommessa()) {
-                                commessaDefault = s.getDescrizione();
-                            }
+                    String CommessaDefault = "";
+                    for (StrutturaCommesse s : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
+                        if (s.getIdCommessa() == sdg.getCommessaDefault()) {
+                            CommessaDefault = s.getDescrizione();
+                            sdg.setCommessa(s.getDescrizione());
+                            sdg.setCodCommessa(s.getIdCommessa());
+                            break;
                         }
-                        lista[i] = s.getDescrizione();
-                        i++;
                     }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                            (context, android.R.layout.simple_spinner_item, lista);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
-
-                    if (sdg == null || !sdg.isGiornoInserito()) {
-                        VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(commessaDefault);
+                    VariabiliStaticheOrari.getInstance().getTxtCommessa().setText(
+                            CommessaDefault
+                    );
+                } else {
+                    if (PerModificaCommessa) {
+                        AdapterListenerCommesseGestione adapter =
+                                new AdapterListenerCommesseGestione(
+                                        context,
+                                        VariabiliStaticheOrari.getInstance().getListaCommesse()
+                                );
+                        VariabiliStaticheImpostazioniOrari.getInstance().getLstCommesse().setAdapter(adapter);
                     } else {
-                        VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
-                    }
-                    VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
-
-                    if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
-                        Handler handlerTimer = new Handler(Looper.getMainLooper());
-                        Runnable rTimer = new Runnable() {
-                            public void run() {
-                                ScriveOrario();
+                        StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
+                        String[] lista = new String[listaCommesse.size()];
+                        int i = 0;
+                        int qualeRiga = -1;
+                        String commessaDefault = "";
+                        for (StrutturaCommesse s : listaCommesse) {
+                            if (sdg != null && sdg.isGiornoInserito()) {
+                                if (s.getDescrizione().equals(sdg.getCommessa())) {
+                                    qualeRiga = i;
+                                }
+                            } else {
+                                if (s.getIdCommessa() == sdg.getCodCommessa()) {
+                                    commessaDefault = s.getDescrizione();
+                                }
                             }
-                        };
-                        handlerTimer.postDelayed(rTimer, 100);
+                            lista[i] = s.getDescrizione();
+                            i++;
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                (context, android.R.layout.simple_spinner_item, lista);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
+
+                        if (sdg == null || !sdg.isGiornoInserito()) {
+                            VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(commessaDefault);
+                        } else {
+                            VariabiliStaticheOrari.getInstance().getSpnValori().setPrompt(sdg.getCommessa());
+                        }
+                        VariabiliStaticheOrari.getInstance().getSpnValori().setSelection(qualeRiga);
+
+                        if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
+                            Handler handlerTimer = new Handler(Looper.getMainLooper());
+                            Runnable rTimer = new Runnable() {
+                                public void run() {
+                                    ScriveOrario();
+                                }
+                            };
+                            handlerTimer.postDelayed(rTimer, 100);
+                        }
                     }
                 }
             } catch (Exception e) {

@@ -101,7 +101,7 @@ public class AdapterListenerLavoriGestione extends BaseAdapter {
                 } else {
                     VariabiliStaticheImpostazioniOrari.getInstance().setIdLavoro(idLavoro);
                     ChiamateWSOrari ws = new ChiamateWSOrari(context);
-                    ws.RitornaCommesseLavoro(String.valueOf(idLavoro), true);
+                    ws.RitornaCommesseLavoro(String.valueOf(idLavoro), true, false);
                 }
             }
         });

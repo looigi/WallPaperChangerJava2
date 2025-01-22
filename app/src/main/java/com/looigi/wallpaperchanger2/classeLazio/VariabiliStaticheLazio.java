@@ -81,6 +81,7 @@ public class VariabiliStaticheLazio {
     private List<StrutturaStati> Stati = new ArrayList<>();
     private List<StrutturaFonti> Fonti = new ArrayList<>();
     private ImageView imgNuovo;
+    private ImageView imgAggiorna;
     private int MaxGiornate;
     private boolean nonRicaricareMercato = false;
     private LinearLayout layModifica;
@@ -134,6 +135,23 @@ public class VariabiliStaticheLazio {
     private LinearLayout layMarcatori;
     private ListView lstMarcatori;
     private List<StrutturaMarcatori> Marcatori;
+    private int idPerOperazione;
+
+    public int getIdPerOperazione() {
+        return idPerOperazione;
+    }
+
+    public void setIdPerOperazione(int idPerOperazione) {
+        this.idPerOperazione = idPerOperazione;
+    }
+
+    public ImageView getImgAggiorna() {
+        return imgAggiorna;
+    }
+
+    public void setImgAggiorna(ImageView imgAggiorna) {
+        this.imgAggiorna = imgAggiorna;
+    }
 
     public List<StrutturaMarcatori> getMarcatori() {
         return Marcatori;

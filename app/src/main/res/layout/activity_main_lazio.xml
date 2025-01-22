@@ -783,6 +783,16 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imgAggiorna"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/icona_refresh" />
+
+    <ImageView
         android:id="@+id/imgNuovo"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

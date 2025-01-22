@@ -38,6 +38,7 @@ import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
@@ -380,6 +381,37 @@ public class MainOrari extends Activity {
                                 sdg.setQuanteOre(8);
                                 VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("8");
                             }
+
+                            String LavoroDefault = "";
+                            for (StrutturaLavoro s : VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori()) {
+                                if (s.getIdLavoro() == sdg.getLavoroDefault()) {
+                                    LavoroDefault = s.getLavoro();
+                                    sdg.setLavoro(LavoroDefault);
+                                    sdg.setIdLavoro(s.getIdLavoro());
+                                    break;
+                                }
+                            }
+                            VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(
+                                    LavoroDefault
+                            );
+
+                            if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null) {
+                                ChiamateWSOrari ws = new ChiamateWSOrari(context);
+                                ws.RitornaCommesseLavoro(Integer.toString(sdg.getLavoroDefault()), false, true);
+                            } else {
+                                String CommessaDefault = "";
+                                for (StrutturaCommesse s : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
+                                    if (s.getIdCommessa() == sdg.getCommessaDefault()) {
+                                        CommessaDefault = s.getDescrizione();
+                                        sdg.setCommessa(s.getDescrizione());
+                                        sdg.setCodCommessa(s.getIdCommessa());
+                                        break;
+                                    }
+                                }
+                                VariabiliStaticheOrari.getInstance().getTxtCommessa().setText(
+                                        CommessaDefault
+                                );
+                            }
                         } else {
                             for (String l : listaTipiLavoro) {
                                 if (l.equals(ValoreImpostato)) {
@@ -389,7 +421,8 @@ public class MainOrari extends Activity {
                                 i++;
                             }
                         }
-                        VariabiliStaticheOrari.getInstance().getTxtTipoLavoro().setText(ValoreImpostato);
+                        // VariabiliStaticheOrari.getInstance().getTxtTipoLavoro().setText(ValoreImpostato);
+                        // VariabiliStaticheOrari.getInstance().getTxtCommessa().setText("");
                         break;
                     case "ORELAVORO":
                         if (ValoreImpostato.isEmpty()) {
@@ -649,7 +682,7 @@ public class MainOrari extends Activity {
                 }
 
                 ChiamateWSOrari ws = new ChiamateWSOrari(context);
-                ws.RitornaCommesseLavoro(Integer.toString(idLavoro), false);
+                ws.RitornaCommesseLavoro(Integer.toString(idLavoro), false, false);
 
                 VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);

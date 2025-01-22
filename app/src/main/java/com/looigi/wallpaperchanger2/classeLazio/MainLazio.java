@@ -15,12 +15,17 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainLazio extends Activity {
     private Context context;
@@ -64,11 +69,41 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setLayRuolo(findViewById(R.id.layRuolo));
         VariabiliStaticheLazio.getInstance().setLayMarcatori(findViewById(R.id.layMarcatori));
         VariabiliStaticheLazio.getInstance().setLstMarcatori(findViewById(R.id.lstMarcatori));
-        UtilityLazio.getInstance().VisualizzaMaschera();
 
         VariabiliStaticheLazio.getInstance().setEdtCognome(findViewById(R.id.edtCognomeGiocatore));
         VariabiliStaticheLazio.getInstance().setEdtNome(findViewById(R.id.edtNomeGiocatore));
+
         VariabiliStaticheLazio.getInstance().setSpnRuolo(findViewById(R.id.spnRuolo));
+        final boolean[] primoIngressoR = {true};
+        VariabiliStaticheLazio.getInstance().getSpnRuolo().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoR[0]) {
+                    primoIngressoR[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaRuoli s : VariabiliStaticheLazio.getInstance().getRuoli()) {
+                        if (s.getRuolo().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdRuoloSelezionato(s.getIdRuolo());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
         VariabiliStaticheLazio.getInstance().setLayModifica(findViewById(R.id.layModifica));
         VariabiliStaticheLazio.getInstance().setLayModificaSFS(findViewById(R.id.layModificaSFS));
         VariabiliStaticheLazio.getInstance().setLayModificaCalendario(findViewById(R.id.layModificaCalendario));
@@ -77,8 +112,69 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setTxtModifica(findViewById(R.id.txtModifica));
         VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
         VariabiliStaticheLazio.getInstance().setEdtValore1(findViewById(R.id.edtValore1));
+
         VariabiliStaticheLazio.getInstance().setSpnStati(findViewById(R.id.spnStato));
+        final boolean[] primoIngressoST = {true};
+        VariabiliStaticheLazio.getInstance().getSpnStati().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoST[0]) {
+                    primoIngressoST[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaStati s : VariabiliStaticheLazio.getInstance().getStati()) {
+                        if (s.getStato().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdStato(s.getIdStato());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
         VariabiliStaticheLazio.getInstance().setSpnFonti(findViewById(R.id.spnFonte));
+        final boolean[] primoIngressoFo = {true};
+        VariabiliStaticheLazio.getInstance().getSpnFonti().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                if (primoIngressoFo[0]) {
+                    primoIngressoFo[0] = false;
+                    return;
+                }
+
+                String selected ="";
+
+                try {
+                    selected = (String) adapter.getItemAtPosition(pos).toString().trim();
+
+                    for (StrutturaFonti s : VariabiliStaticheLazio.getInstance().getFonti()) {
+                        if (s.getFonte().equals(selected)) {
+                            VariabiliStaticheLazio.getInstance().setIdFonte(s.getIdFonte());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    selected="";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
         VariabiliStaticheLazio.getInstance().setEdtData(findViewById(R.id.edtData));
         VariabiliStaticheLazio.getInstance().getEdtData().addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,6 +192,7 @@ public class MainLazio extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+
         VariabiliStaticheLazio.getInstance().setEdtDataCal(findViewById(R.id.edtDataCal));
         VariabiliStaticheLazio.getInstance().getEdtDataCal().addTextChangedListener(new TextWatcher() {
             @Override
@@ -113,6 +210,7 @@ public class MainLazio extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+
         VariabiliStaticheLazio.getInstance().setEdtRisultato(findViewById(R.id.edtRisultato));
         VariabiliStaticheLazio.getInstance().getEdtRisultato().addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,6 +228,7 @@ public class MainLazio extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+
         VariabiliStaticheLazio.getInstance().setSpnCasa(findViewById(R.id.spnCasa));
         final boolean[] primoIngressoC = {true};
         VariabiliStaticheLazio.getInstance().getSpnCasa().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -161,6 +260,7 @@ public class MainLazio extends Activity {
             }
         });
         VariabiliStaticheLazio.getInstance().setSpnFuori(findViewById(R.id.spnFuori));
+
         final boolean[] primoIngressoF = {true};
         VariabiliStaticheLazio.getInstance().getSpnCasa().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
@@ -190,6 +290,7 @@ public class MainLazio extends Activity {
 
             }
         });
+
         VariabiliStaticheLazio.getInstance().setEdtNominativo(findViewById(R.id.edtNominativo));
         VariabiliStaticheLazio.getInstance().getEdtNominativo().addTextChangedListener(new TextWatcher() {
             @Override
@@ -207,6 +308,7 @@ public class MainLazio extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+
         VariabiliStaticheLazio.getInstance().getEdtValore1().addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -223,6 +325,7 @@ public class MainLazio extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+
         VariabiliStaticheLazio.getInstance().setSpnSquadreGioc(findViewById(R.id.spnSquadreGioc));
         final boolean[] primoIngressoS = {true};
         VariabiliStaticheLazio.getInstance().getSpnSquadreGioc().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -319,6 +422,46 @@ public class MainLazio extends Activity {
             }
         });
 
+        VariabiliStaticheLazio.getInstance().setImgAggiorna(findViewById(R.id.imgAggiorna));
+        VariabiliStaticheLazio.getInstance().getImgAggiorna().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+
+                switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
+                    case 1:
+                        // Classifica
+                        break;
+                    case 2:
+                        // Calendario
+                        break;
+                    case 3:
+                        // Squadre
+                        break;
+                    case 4:
+                        // Mercato
+                        break;
+                    case 5:
+                        // Fonti
+                        ws.RitornaFonti(true);
+                        break;
+                    case 6:
+                        // Stati
+                        ws.RitornaStati(true);
+                        break;
+                    case 7:
+                        // Giocatori
+                        break;
+                    case 8:
+                        // Ruoli
+                        ws.RitornaRuoli(true);
+                        break;
+                    case 9:
+                        // Allenatori
+                        break;
+                }
+            }
+        });
+
         VariabiliStaticheLazio.getInstance().getImgNuovo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 switch (VariabiliStaticheLazio.getInstance().getMascheraSelezionata()) {
@@ -406,6 +549,8 @@ public class MainLazio extends Activity {
             }
         });
 
+        UtilityLazio.getInstance().VisualizzaMaschera();
+
         UtilityLazio.getInstance().ImpostaAttesa(false);
 
         ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
@@ -446,7 +591,6 @@ public class MainLazio extends Activity {
         });
 
         RadioButton optEstivo = findViewById(R.id.optEstivo);
-        optEstivo.setChecked(true);
         optEstivo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setModalitaMercato(1);
@@ -465,6 +609,17 @@ public class MainLazio extends Activity {
                 ws.RitornaMercato();
             }
         });
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int month = calendar.get(Calendar.MONTH);
+        if (month < 3 || month > 11) {
+            optInvernale.setChecked(true);
+            VariabiliStaticheLazio.getInstance().setModalitaMercato(2);
+        } else {
+            optEstivo.setChecked(true);
+            VariabiliStaticheLazio.getInstance().setModalitaMercato(1);
+        }
 
         RadioButton optTotale = findViewById(R.id.optTotale);
         optTotale.setChecked(true);
@@ -546,6 +701,9 @@ public class MainLazio extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(4);
                 UtilityLazio.getInstance().VisualizzaMaschera();
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaMercato();
             }
         });
 

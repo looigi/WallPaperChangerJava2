@@ -221,11 +221,68 @@
             android:gravity="start"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgCreaTesto"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/notepad" />
+            <LinearLayout
+                android:background="@drawable/bordato_non_trasparente"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Esporta"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgEsporta"
+                    android:src="@drawable/esporta"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/bordato_non_trasparente"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Importa"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgImporta"
+                    android:src="@drawable/importa"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/bordato_non_trasparente"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Crea Testo"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgCreaTesto"
+                    android:src="@drawable/notepad"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -234,11 +291,26 @@
             android:gravity="end"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgAggiungeModifica"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icona_aggiunge" />
+            <LinearLayout
+                android:background="@drawable/bordato_non_trasparente"
+                android:padding="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Nuova Mod."
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgAggiungeModifica"
+                    android:src="@drawable/icona_aggiunge"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

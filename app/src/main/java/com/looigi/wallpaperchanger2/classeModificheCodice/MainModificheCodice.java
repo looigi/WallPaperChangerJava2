@@ -22,9 +22,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
+import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -35,7 +38,7 @@ import java.util.List;
 
 public class MainModificheCodice extends Activity {
     private Context context;
-    // private Activity act;
+    private Activity act;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +46,9 @@ public class MainModificheCodice extends Activity {
         setContentView(R.layout.activity_main_modifiche);
 
         context = this;
-        // act = this;
+        act = this;
+
+        VariabiliStaticheModificheCodice.getInstance().setAct(act);
 
         db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
         db.CreazioneTabelle();
@@ -766,6 +771,36 @@ public class MainModificheCodice extends Activity {
             }
         });
 
+        ImageView imgImporta = findViewById(R.id.imgImporta);
+        imgImporta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vogliono importare i dati dal db remoto?\nTutti i dati attuali verranno sovrascritti");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                        ws.Importa();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        ImageView imgEsporta = findViewById(R.id.imgEsporta);
+        imgEsporta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.Esporta();
+            }
+        });
     }
 
     @Override

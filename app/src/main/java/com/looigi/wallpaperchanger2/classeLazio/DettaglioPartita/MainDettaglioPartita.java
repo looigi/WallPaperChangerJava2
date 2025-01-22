@@ -16,12 +16,19 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Ammoniti;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Dettaglio;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Espulsi;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Formazione;
+import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Marcatori;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.webService.ChiamateWSLazioDettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+
+import java.util.List;
 
 public class MainDettaglioPartita extends Activity {
     private Context context;
@@ -78,12 +85,6 @@ public class MainDettaglioPartita extends Activity {
             d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg");
         }
 
-        ImageView imgSalvaDettaglio = findViewById(R.id.imgSalvaDettaglio);
-        imgSalvaDettaglio.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            }
-        });
-
         VariabiliStaticheLazioDettaglio.getInstance().setLstAC(findViewById(R.id.lstAC));
         VariabiliStaticheLazioDettaglio.getInstance().setLstAF(findViewById(R.id.lstAF));
         VariabiliStaticheLazioDettaglio.getInstance().setLstEC(findViewById(R.id.lstEC));
@@ -96,6 +97,77 @@ public class MainDettaglioPartita extends Activity {
         VariabiliStaticheLazioDettaglio.getInstance().setEdtLocalita(findViewById(R.id.edtLocalita));
         VariabiliStaticheLazioDettaglio.getInstance().setEdtSpettatori(findViewById(R.id.edtSpettatori));
         VariabiliStaticheLazioDettaglio.getInstance().setEdtNote(findViewById(R.id.edtNote));
+
+        ImageView imgSalvaDettaglio = findViewById(R.id.imgSalvaDettaglio);
+        imgSalvaDettaglio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Risultato = edtRisultato.getText().toString();
+                String Arbitro = VariabiliStaticheLazioDettaglio.getInstance().getEdtArbitro().getText().toString();
+                String Localita = VariabiliStaticheLazioDettaglio.getInstance().getEdtLocalita().getText().toString();
+                String Spettatori = VariabiliStaticheLazioDettaglio.getInstance().getEdtSpettatori().getText().toString();
+                String Note = VariabiliStaticheLazioDettaglio.getInstance().getEdtNote().getText().toString().replace(";", "***PV***");
+                List<Ammoniti> listaAc = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getAmmonitiCasa();
+                String AmmonitiCasa = "";
+                for (Ammoniti lista : listaAc) {
+                    AmmonitiCasa += ";;§";
+                }
+                List<Ammoniti> listaAf = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getAmmonitiFuori();
+                String AmmonitiFuori = "";
+                for (Ammoniti lista : listaAf) {
+                    AmmonitiFuori += ";;§";
+                }
+                List<Espulsi> listaEc = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getEspulsiCasa();
+                String EspulsiCasa = "";
+                for (Espulsi lista : listaEc) {
+                    EspulsiCasa += ";;§";
+                }
+                List<Espulsi> listaEf = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getEspulsiFuori();
+                String EspulsiFuori = "";
+                for (Espulsi lista : listaEf) {
+                    EspulsiFuori += ";;§";
+                }
+                List<Formazione> listaFc = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getFormazioneCasa();
+                String FormazioneCasa = "";
+                for (Formazione lista : listaFc) {
+                    FormazioneCasa += ";;§";
+                }
+                List<Formazione> listaFf = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getFormazioneFuori();
+                String FormazioneFuori = "";
+                for (Formazione lista : listaFf) {
+                    FormazioneFuori += ";;§";
+                }
+                List<Marcatori> listaMc = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getMarcatoriCasa();
+                String MarcatoriCasa = "";
+                for (Marcatori lista : listaMc) {
+                    MarcatoriCasa += ";;§";
+                }
+                List<Marcatori> listaMf = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getMarcatoriFuori();
+                String MarcatoriFuori = "";
+                for (Marcatori lista : listaMf) {
+                    MarcatoriFuori += ";;§";
+                }
+
+                ChiamateWSLazioDettaglio ws = new ChiamateWSLazioDettaglio(context);
+                ws.SalvaDettaglio(
+                    Integer.toString(VariabiliStaticheLazioDettaglio.getInstance().getIdPartita()),
+                    Integer.toString(VariabiliStaticheLazioDettaglio.getInstance().getIdSquadraCasa()),
+                    Integer.toString(VariabiliStaticheLazioDettaglio.getInstance().getIdSquadraFuori()),
+                    Risultato,
+                    Arbitro,
+                    Localita,
+                    Spettatori,
+                    MarcatoriCasa,
+                    MarcatoriFuori,
+                    AmmonitiCasa,
+                    AmmonitiFuori,
+                    EspulsiCasa,
+                    EspulsiFuori,
+                    FormazioneCasa,
+                    FormazioneFuori,
+                    Note
+                );
+            }
+        });
 
         ImageView imgAggAC = findViewById(R.id.imgAggAC);
         imgAggAC.setOnClickListener(new View.OnClickListener() {
