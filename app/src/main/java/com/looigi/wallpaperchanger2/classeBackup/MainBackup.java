@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -49,6 +50,9 @@ public class MainBackup extends Activity {
 
         ListView lstBackups = findViewById(R.id.lstBackups);
         UtilityBackup.getInstance().setTxtSelezionato(findViewById(R.id.txtBackupSelezionato));
+
+        UtilityBackup.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoBackup));
+        UtilityBackup.getInstance().Attende(false);
 
         Button btnBackup = findViewById(R.id.btnBackup);
         btnBackup.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,29 @@ public class MainBackup extends Activity {
                 } else {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Prima selezionare un archivio");
                 }
+            }
+        });
+
+        Button btnImporta = findViewById(R.id.btnImporta);
+        btnImporta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vogliono importare i dati dal db remoto?\nTutti i dati attuali verranno sovrascritti");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                        ws.Importa("BACKUP");
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 

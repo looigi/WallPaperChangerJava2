@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeBackup;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
@@ -20,6 +21,8 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class UtilityBackup {
     private static final String NomeMaschera = "Utility_Backup";
     private static UtilityBackup instance = null;
@@ -37,6 +40,23 @@ public class UtilityBackup {
 
     private TextView txtSelezionato;
     private StrutturaBackups nomeFileZipSelezionato;
+    private GifImageView imgCaricamento;
+
+    public void Attende(boolean Attesa) {
+        if (!Attesa) {
+            imgCaricamento.setVisibility(LinearLayout.GONE);
+        } else {
+            imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+        }
+    }
+
+    public GifImageView getImgCaricamento() {
+        return imgCaricamento;
+    }
+
+    public void setImgCaricamento(GifImageView imgCaricamento) {
+        this.imgCaricamento = imgCaricamento;
+    }
 
     public TextView getTxtSelezionato() {
         return txtSelezionato;

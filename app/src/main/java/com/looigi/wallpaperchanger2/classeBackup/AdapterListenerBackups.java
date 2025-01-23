@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
@@ -112,6 +113,18 @@ public class AdapterListenerBackups extends BaseAdapter {
                     i.putExtra(Intent.EXTRA_STREAM, uri);
                     i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                     context.startActivity(Intent.createChooser(i, "Share backup"));
+                }
+            });
+
+            ImageView btnEsporta = view.findViewById(R.id.imgEsporta);
+            btnEsporta.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    StrutturaBackups NomeBackup = listaBackups.get(i);
+
+                    String Path = NomeBackup.getPath();
+
+                    ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                    ws.Esporta("BACKUP", Path);
                 }
             });
 

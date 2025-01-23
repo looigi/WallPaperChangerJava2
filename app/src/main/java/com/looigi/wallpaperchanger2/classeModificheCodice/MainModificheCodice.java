@@ -55,6 +55,9 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().setListaStati(db.RitornaStati());
         VariabiliStaticheModificheCodice.getInstance().setListaProgetti(db.RitornaProgetti());
 
+        VariabiliStaticheModificheCodice.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoModifiche));
+        VariabiliStaticheModificheCodice.getInstance().Attende(false);
+
         VariabiliStaticheModificheCodice.getInstance().setLayTipologia(findViewById(R.id.layTipologia));
         VariabiliStaticheModificheCodice.getInstance().setTxtTipologia(findViewById(R.id.txtTipologia));
         VariabiliStaticheModificheCodice.getInstance().setEdtTipologia(findViewById(R.id.edtTipologia));
@@ -780,7 +783,7 @@ public class MainModificheCodice extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                        ws.Importa();
+                        ws.Importa("MODIFICHE");
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -798,7 +801,7 @@ public class MainModificheCodice extends Activity {
         imgEsporta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                ws.Esporta();
+                ws.Esporta("MODIFICHE", "");
             }
         });
     }

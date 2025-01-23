@@ -274,7 +274,8 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="Crea Testo"
+                    android:maxLines="1"
+                    android:text="Crea e invia"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
@@ -483,4 +484,13 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout> -->
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoModifiche"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+    </pl.droidsonroids.gif.GifImageView>
 </RelativeLayout>

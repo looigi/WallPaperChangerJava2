@@ -303,9 +303,15 @@ public class VariabiliStaticheMostraImmaginiPennetta {
                             NomeFile
                     );
                 } else {
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtId().setText("");
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtCate().setText("");
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText("");
+                    if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtId() != null) {
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtId().setText("");
+                    }
+                    if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtCate() != null) {
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtCate().setText("");
+                    }
+                    if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo() != null) {
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo().setText("");
+                    }
                 }
             }
         };

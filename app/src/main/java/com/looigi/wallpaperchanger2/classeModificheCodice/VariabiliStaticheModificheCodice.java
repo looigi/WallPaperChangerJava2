@@ -21,6 +21,8 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class VariabiliStaticheModificheCodice {
     private static VariabiliStaticheModificheCodice instance = null;
 
@@ -72,6 +74,23 @@ public class VariabiliStaticheModificheCodice {
     private ImageView imgModificaSezioni;
     private ImageView imgEliminaSezioni;
     private TextView txtQuante;
+    private GifImageView imgCaricamento;
+
+    public void Attende(boolean Attesa) {
+        if (!Attesa) {
+            imgCaricamento.setVisibility(LinearLayout.GONE);
+        } else {
+            imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+        }
+    }
+
+    public GifImageView getImgCaricamento() {
+        return imgCaricamento;
+    }
+
+    public void setImgCaricamento(GifImageView imgCaricamento) {
+        this.imgCaricamento = imgCaricamento;
+    }
 
     public Activity getAct() {
         return act;
