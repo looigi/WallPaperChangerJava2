@@ -193,7 +193,7 @@ public class MainMostraPennetta extends Activity {
                     src.setDimensione("");
                     src.setDataImmagine(s.getDataCreazione());
 
-                    ChangeWallpaper c = new ChangeWallpaper(context,"PENNETTA");
+                    ChangeWallpaper c = new ChangeWallpaper(context,"PENNETTA", src);
                     c.setWallpaperLocale(context, src);
 
                     UtilityPennetta.getInstance().Attesa(false);

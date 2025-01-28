@@ -166,7 +166,27 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layConteggi"
         android:layout_below="@+id/layContenitore"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordato_non_trasparente"
+        android:padding="3dp"
+        android:orientation="vertical"
+        android:layout_margin="3dp"
+        android:layout_height="100dp">
+
+        <ListView
+            android:id="@+id/lstConteggi"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/layConteggi"
         android:layout_above="@+id/layBottoniera"
         android:background="@drawable/bordato_non_trasparente"
         android:padding="3dp"

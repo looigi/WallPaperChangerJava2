@@ -127,8 +127,8 @@
                             android:id="@+id/imgRicerca"
                             android:layout_marginEnd="5dp"
                             android:src="@drawable/icona_cerca"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp">
+                            android:layout_width="30dp"
+                            android:layout_height="30dp">
 
                         </ImageView>
 
@@ -136,8 +136,8 @@
                             android:layout_marginStart="5dp"
                             android:id="@+id/imgImpoWP"
                             android:src="@drawable/icona_equalizz"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp">
+                            android:layout_width="30dp"
+                            android:layout_height="30dp">
                         </ImageView> -->
                     </LinearLayout>
                 </LinearLayout>
@@ -172,9 +172,9 @@
 
                             <ImageView
                                 android:id="@+id/imgRefresh"
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@drawable/icona_refresh"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -201,9 +201,9 @@
 
                             <ImageView
                                 android:id="@+id/imgCambiaSubito"
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@drawable/eye"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -230,9 +230,9 @@
 
                             <ImageView
                                 android:id="@+id/imgCondividi"
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@drawable/share"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -259,9 +259,38 @@
 
                             <ImageView
                                 android:id="@+id/imgRefreshIONOS"
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@drawable/refresh2"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="6"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="Modifica Immagine"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|right"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imgModifica"
+                                android:layout_width="30dp"
+                                android:src="@drawable/edit_image"
+                                android:layout_height="30dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -298,8 +327,8 @@
                             <ImageView
                                 android:id="@+id/imgSettings"
                                 android:layout_alignParentStart="true"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
                                 android:src="@drawable/settings" />
                         </LinearLayout>
                     </LinearLayout>
@@ -357,20 +386,17 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:src="@drawable/loading" />
+    
+            <TextView
+                android:layout_below="@+id/gifAttesa"
+                android:id="@+id/txtAvanzamentoRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center_horizontal"
+                android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
-
-        <TextView
-            android:visibility="gone"
-            android:layout_below="@+id/gifAttesa"
-            android:id="@+id/txtAvanzamentoRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-            android:layout_centerInParent="true">
-
-        </TextView>
     </RelativeLayout>
 
     <!-- <RelativeLayout

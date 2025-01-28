@@ -867,7 +867,7 @@ public class impostazioni_player_interne {
                     src.setDimensione(String.valueOf(Dimensione));
                     src.setDataImmagine(Data);
 
-                    ChangeWallpaper c = new ChangeWallpaper(context, "PLAYER");
+                    ChangeWallpaper c = new ChangeWallpaper(context, "PLAYER", src);
                     c.setWallpaperLocale(context, src);
 
                     UtilityPlayer.getInstance().Attesa(false);

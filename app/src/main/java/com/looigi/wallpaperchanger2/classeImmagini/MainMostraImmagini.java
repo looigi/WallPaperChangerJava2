@@ -304,7 +304,7 @@ public class MainMostraImmagini extends Activity {
                         src.setDimensione(String.valueOf(Dimensione));
                         src.setDataImmagine(s.getDataCreazione());
 
-                        ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI");
+                        ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI", src);
                         c.setWallpaperLocale(context, src);
 
                         UtilityImmagini.getInstance().Attesa(false);

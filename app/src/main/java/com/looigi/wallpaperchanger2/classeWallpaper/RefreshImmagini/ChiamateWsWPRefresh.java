@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
@@ -105,6 +107,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
         TipoOperazione = "ScriveImmagineSuLocale";
 
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
         Esegue(
                 RadiceWS_Locale + ws_Locale + Urletto,
                 TipoOperazione,
@@ -181,6 +184,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
         TipoOperazione = "ScriveImmagineSuIoNos";
 
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
         Esegue(
                 RadiceWS_IoNos + ws_IoNos + Urletto,
                 TipoOperazione,
@@ -410,6 +414,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
     private void fScriveImmagineSuIoNos(String result) {
         UtilityPlayer.getInstance().AttesaSI(false);
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
 
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
@@ -419,6 +424,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fScriveImmagineSuLocale(String result) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityPlayer.getInstance().AttesaSI(false);
 

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeModificheCodice;
+package com.looigi.wallpaperchanger2.classeModificheCodice.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 
 import java.util.List;
 

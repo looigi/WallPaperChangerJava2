@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -23,13 +24,14 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
+import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenatori;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
@@ -54,6 +56,9 @@ public class MainModificheCodice extends Activity {
         db.CreazioneTabelle();
         VariabiliStaticheModificheCodice.getInstance().setListaStati(db.RitornaStati());
         VariabiliStaticheModificheCodice.getInstance().setListaProgetti(db.RitornaProgetti());
+
+        VariabiliStaticheModificheCodice.getInstance().setLstConteggi(findViewById(R.id.lstConteggi));
+        VariabiliStaticheModificheCodice.getInstance().ScriveConteggi(context);
 
         VariabiliStaticheModificheCodice.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoModifiche));
         VariabiliStaticheModificheCodice.getInstance().Attende(false);
@@ -122,6 +127,7 @@ public class MainModificheCodice extends Activity {
                     }
                 }
                 Testo += "\n----------------------------------------------------------------";
+                db.ChiudeDB();
 
                 String Path = context.getFilesDir() + "/Appoggio";
                 Files.getInstance().CreaCartelle(Path);
@@ -543,14 +549,16 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().setLstModifiche(findViewById(R.id.lstModifiche));
         VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.GONE);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        VariabiliStaticheModificheCodice.getInstance().setAdapterProgetti(new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaProgetti(
                         VariabiliStaticheModificheCodice.getInstance().getListaProgetti()
                 )
+        ));
+        VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setAdapter(
+                VariabiliStaticheModificheCodice.getInstance().getAdapterProgetti()
         );
-        VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setAdapter(adapter);
         VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setPrompt(
                 VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
         );

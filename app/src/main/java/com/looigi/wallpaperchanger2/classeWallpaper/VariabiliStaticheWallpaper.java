@@ -47,6 +47,7 @@ public class VariabiliStaticheWallpaper {
     public static float percAumentoX = .115F;
     public static float percAumentoY = .185F;
     private String immagineImpostataDaChi = "";
+    private String Filtro = "";
 
     // INIZIO VARIABILI ATTIVITA'
     public static final String UrlWS = "http://www.wsloovf.looigi.it";
@@ -103,6 +104,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public String getFiltro() {
+        return Filtro;
+    }
+
+    public void setFiltro(String filtro) {
+        Filtro = filtro;
     }
 
     public long getUltimoCambio() {

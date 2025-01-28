@@ -188,13 +188,8 @@ public class MainModificaImmagine extends Activity {
                     // Salvataggio immagine da maschera player
                     UtilityPlayer.getInstance().SalvataggioImmagine(context, Sovrascrive);
                     break;
-                case "WALLPAPER1":
-                    UtilityWallpaper.getInstance().SalvataggioImmagine(context,
-                            true, Sovrascrive);
-                    break;
-                case "WALLPAPER2":
-                    UtilityWallpaper.getInstance().SalvataggioImmagine(context,
-                            false, Sovrascrive);
+                case "WALLPAPER":
+                    UtilityWallpaper.getInstance().SalvataggioImmagine(context, Sovrascrive);
                     break;
             }
         } catch (IOException ignored) {

@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
+import com.looigi.wallpaperchanger2.utilities.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.utilities.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.utilities.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
@@ -726,7 +727,7 @@ public class InizializzaMascheraDetector {
 
         VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <=
                         VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
                 ) {
                     String Cartella = UtilityDetector.getInstance().PrendePath(context);
@@ -793,7 +794,7 @@ public class InizializzaMascheraDetector {
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() <=
                         VariabiliStaticheDetector.getInstance().getImmagini().size() - 1
                 ) {
                     if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {

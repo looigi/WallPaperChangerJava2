@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeDetector;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.os.Build;
 import android.text.TextUtils;

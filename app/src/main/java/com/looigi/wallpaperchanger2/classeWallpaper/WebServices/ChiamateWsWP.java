@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
@@ -33,23 +35,26 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     public void ModificaImmagine(StrutturaImmagine s, String immagine) {
-        NomeImmaginePerModifica = s.getPathImmagine().replace(
+        /* NomeImmaginePerModifica = s.getImmagine().replace(
                 VariabiliStaticheWallpaper.PercorsoImmagineSuURL, ""
-        );
+        ); */
         StringaBase64 = immagine;
 
+        String PathImmagine = "http://www.sfondi.looigi.it/" + s.getCartellaRemota();
+        NomeImmaginePerModifica = s.getCartellaRemota().replace("/", "\\");
+        PathImmagine = PathImmagine.replace("&", "-A-")
+                .replace("?", "-P-")
+                .replace(":", "-D-")
+                .replace("/", "-S-")
+                .replace("\\", "-B-");
         String Urletto="ModificaImmagineWP?" +
-                "Immagine=" + s.getPathImmagine()
-                    .replace("&", "-A-")
-                    .replace("?", "-P-")
-                    .replace(":", "-D-")
-                    .replace("/", "-S-")
-                    .replace("\\", "-B-") +
+                "Immagine=" + PathImmagine +
                 "&DatiImmagine=" + immagine;
 
         TipoOperazione = "ModificaImmagine";
         // ControllaTempoEsecuzione = false;
 
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
         Esegue(
                 RadiceWS + ws + Urletto,
                 TipoOperazione,
@@ -91,7 +96,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     public void TornaProssimaImmagine() {
-        String Urletto="TornaProssimaImmagine";
+        String Urletto="TornaProssimaImmagine?Filtro=" + VariabiliStaticheWallpaper.getInstance().getFiltro();
         TipoOperazione = "TornaProssimaImmagine";
 
         Esegue(
@@ -228,6 +233,7 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
+        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
@@ -273,6 +279,8 @@ public class ChiamateWsWP implements TaskDelegate {
                 s.setPathImmagine(VariabiliStaticheWallpaper.PercorsoImmagineSuURL + "/" + Campi[1]);
                 s.setDimensione(Campi[2]);
                 s.setDataImmagine(Campi[3]);
+                s.setCartellaRemota(Campi[1]);
+
                 lista.add(s);
             }
             VariabiliStaticheWallpaper.getInstance().setListaImmagini(lista);
@@ -313,6 +321,11 @@ public class ChiamateWsWP implements TaskDelegate {
             si.setPathImmagine(c[1]);
             si.setDimensione(c[3]);
             si.setDataImmagine(c[2]);
+            String Cartella = c[1];
+            Cartella = Cartella.replace("/var/www/html/Sfondi/", "");
+            // IA/Donne/1683475712232.jpg
+
+            si.setCartellaRemota(Cartella);
 
             VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 

@@ -235,7 +235,7 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().getSpnFonti().setSelection(spinnerPosition);
                 } else {
                     Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat sdfD = new SimpleDateFormat("dd-MM");
                     String dataOdierna = sdfD.format(calendar.getTime());
                     VariabiliStaticheLazio.getInstance().setIdPerOperazione(-1);
                     VariabiliStaticheLazio.getInstance().getEdtData().setText(dataOdierna);

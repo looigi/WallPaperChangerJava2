@@ -11,6 +11,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaConteggi;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -584,5 +585,41 @@ public class db_dati_modifiche_codice {
         VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
 
         return lista;
+    }
+
+    public void RitornaConteggi() {
+        List<StrutturaConteggi> lista = new ArrayList<>();
+        if (myDB != null) {
+            try {
+                String sql = "Select A.idProgetto, A.idModulo, A.idSezione, B.Progetto, C.Modulo, D.Sezione,  Count(*) As Quanti From Modifiche A " +
+                        "Left Join Progetti B On A.idProgetto = B.idProgetto " +
+                        "Left Join Moduli C On A.idModulo = C.idModulo " +
+                        "Left Join Sezioni D On A.idSezione = D.idSezione " +
+                        "Where A.Eliminato = 'N' And A.idStato = 0 " +
+                        "Group By A.idProgetto, A.idModulo, A.idSezione, B.Progetto, C.Modulo, D.Sezione";
+                Cursor c = myDB.rawQuery(sql, null);
+                c.moveToFirst();
+                do {
+                    try {
+                        StrutturaConteggi p = new StrutturaConteggi();
+                        p.setIdProgetto(c.getInt(0));
+                        p.setIdModulo(c.getInt(1));
+                        p.setIdSezione(c.getInt(2));
+                        p.setProgetto(c.getString(3));
+                        p.setModulo(c.getString(4));
+                        p.setSezione(c.getString(5));
+                        p.setQuante(c.getInt(6));
+
+                        lista.add(p);
+                    } catch (Exception ignored) {
+                        int i = 0;
+                    }
+                } while(c.moveToNext());
+            } catch (SQLException e) {
+                int a = 0;
+            }
+        }
+
+        VariabiliStaticheModificheCodice.getInstance().setListaConteggi(lista);
     }
 }

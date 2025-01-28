@@ -18,7 +18,11 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaConteggi;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -75,13 +79,41 @@ public class VariabiliStaticheModificheCodice {
     private ImageView imgEliminaSezioni;
     private TextView txtQuante;
     private GifImageView imgCaricamento;
+    private List<StrutturaConteggi> ListaConteggi = new ArrayList<>();
+    private ListView lstConteggi;
 
     public void Attende(boolean Attesa) {
-        if (!Attesa) {
-            imgCaricamento.setVisibility(LinearLayout.GONE);
-        } else {
-            imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+        if (imgCaricamento != null) {
+            if (!Attesa) {
+                imgCaricamento.setVisibility(LinearLayout.GONE);
+            } else {
+                imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+            }
         }
+    }
+
+    public void ScriveConteggi(Context context) {
+        db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+        db.RitornaConteggi();
+        AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context, VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
+        VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC);
+        db.ChiudeDB();
+    }
+
+    public ListView getLstConteggi() {
+        return lstConteggi;
+    }
+
+    public void setLstConteggi(ListView lstConteggi) {
+        this.lstConteggi = lstConteggi;
+    }
+
+    public List<StrutturaConteggi> getListaConteggi() {
+        return ListaConteggi;
+    }
+
+    public void setListaConteggi(List<StrutturaConteggi> listaConteggi) {
+        ListaConteggi = listaConteggi;
     }
 
     public GifImageView getImgCaricamento() {
@@ -484,6 +516,24 @@ public class VariabiliStaticheModificheCodice {
         return -1;
     }
 
+    private ArrayAdapter<String> adapterProgetti;
+
+    public void setAdapterProgetti(ArrayAdapter<String> adapterProgetti) {
+        this.adapterProgetti = adapterProgetti;
+    }
+
+    public void setAdapterModuli(ArrayAdapter<String> adapterModuli) {
+        this.adapterModuli = adapterModuli;
+    }
+
+    public void setAdapterSezioni(ArrayAdapter<String> adapterSezioni) {
+        this.adapterSezioni = adapterSezioni;
+    }
+
+    public ArrayAdapter<String> getAdapterProgetti() {
+        return adapterProgetti;
+    }
+
     private void RicaricaProgetti(Context context, db_dati_modifiche_codice db) {
         listaProgetti = db.RitornaProgetti();
 
@@ -495,12 +545,18 @@ public class VariabiliStaticheModificheCodice {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        adapterProgetti = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 RitornaStringaProgetti(listaProgetti)
         );
-        spnProgetto.setAdapter(adapter);
+        spnProgetto.setAdapter(adapterProgetti);
+    }
+
+    private ArrayAdapter<String> adapterModuli;
+
+    public ArrayAdapter<String> getAdapterModuli() {
+        return adapterModuli;
     }
 
     public List<Moduli> RicaricaModuli(Context context, db_dati_modifiche_codice db) {
@@ -514,14 +570,20 @@ public class VariabiliStaticheModificheCodice {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        adapterModuli = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 RitornaStringaModuli(listaModuli)
         );
-        spnModulo.setAdapter(adapter);
+        spnModulo.setAdapter(adapterModuli);
 
         return listaModuli;
+    }
+
+    private ArrayAdapter<String> adapterSezioni;
+
+    public ArrayAdapter<String> getAdapterSezioni() {
+        return adapterSezioni;
     }
 
     public List<Sezioni> RicaricaSezioni(Context context, db_dati_modifiche_codice db) {
@@ -535,12 +597,12 @@ public class VariabiliStaticheModificheCodice {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        adapterSezioni = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 RitornaStringaSezioni(listaSezioni)
         );
-        spnSezione.setAdapter(adapter);
+        spnSezione.setAdapter(adapterSezioni);
 
         return listaSezioni;
     }
@@ -705,6 +767,8 @@ public class VariabiliStaticheModificheCodice {
         }
 
         db.ChiudeDB();
+
+        VariabiliStaticheModificheCodice.getInstance().ScriveConteggi(context);
     }
 
     public String PrendeNumeroModifiche(Context context) {

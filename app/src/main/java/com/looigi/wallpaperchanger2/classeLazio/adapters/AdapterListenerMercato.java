@@ -33,11 +33,11 @@ public class AdapterListenerMercato extends BaseAdapter {
 
     public AdapterListenerMercato(Context applicationContext, List<StrutturaMercato> Mercato) {
         this.context = applicationContext;
-        List<StrutturaMercato> MercatoOrd = new ArrayList<>();
+        /* List<StrutturaMercato> MercatoOrd = new ArrayList<>();
         for (int i = Mercato.size() - 1; i >= 0; i--) {
             MercatoOrd.add(Mercato.get(i));
-        }
-        this.listaMercato = MercatoOrd;
+        } */
+        this.listaMercato = Mercato; // Ord;
         inflter = (LayoutInflater.from(applicationContext));
     }
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:padding="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layContenitoreLista"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtSezione"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:gravity="start|center_vertical"
+            android:layout_height="match_parent"
+            android:text="eee"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtQuante"
+            android:layout_width="0dp"
+            android:gravity="right|center_vertical"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:text="3"
+            android:textColor="@color/Rosso"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

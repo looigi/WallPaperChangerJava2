@@ -587,4 +587,21 @@ public class UtilitiesGlobali {
 
         return encodeString;
     }
+
+    public String MetteMaiuscole(String Nome) {
+        String Nominativo = Nome;
+        if (!Nominativo.isEmpty()) {
+            Nominativo = Nominativo.toLowerCase();
+            String[] n = Nominativo.split(" ");
+            Nominativo = "";
+            for (String nn : n) {
+                String PrimaLettera = nn.substring(0, 1);
+                nn = nn.substring(1, nn.length());
+                nn = PrimaLettera.toUpperCase() + nn;
+                Nominativo += nn + " ";
+            }
+        }
+
+        return Nominativo;
+    }
 }

@@ -75,7 +75,8 @@ public class AdapterListenerImmagini extends BaseAdapter {
 
         if (i < listaImmagini.size()) {
             String NomeImmagine = listaImmagini.get(i).getImmagine();
-            String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(VariabiliStaticheWallpaper.PercorsoImmagineSuURL + "/", "")
+            String PathImmagine = listaImmagini.get(i).getPathImmagine().replace(
+                    VariabiliStaticheWallpaper.PercorsoImmagineSuURL + "/", "")
                     .replace(NomeImmagine, "");
 
             // ImageView imgVisualizza = (ImageView) view.findViewById(R.id.imgVisualizza);
@@ -149,7 +150,8 @@ public class AdapterListenerImmagini extends BaseAdapter {
                         d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
                                 listaImmagini.get(i).getPathImmagine(), false, "");
                     } else {
-                        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+                        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                                VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                         c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                     }
                 }

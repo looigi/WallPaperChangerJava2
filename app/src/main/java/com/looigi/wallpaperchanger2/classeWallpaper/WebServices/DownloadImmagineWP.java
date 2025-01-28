@@ -221,9 +221,15 @@ public class DownloadImmagineWP {
                     NomeFile = "Appoggio";
                 }
 
+                String Cartella = "";
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
+                    Cartella = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getCartellaRemota();
+                }
+
                 StrutturaImmagine si = new StrutturaImmagine();
                 si.setPathImmagine(PercorsoDIR + "/" + NomeFile + ".jpg");
                 si.setImmagine(sNomeImmagine);
+                si.setCartellaRemota(Cartella);
                 if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null) {
                     si.setDataImmagine(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getDataImmagine());
                     si.setDimensione(VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getDimensione());
@@ -235,7 +241,8 @@ public class DownloadImmagineWP {
                 if(!PerModifica) {
                     VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
-                    ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+                    ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                            si);
                     c.setWallpaperLocale(context, si);
                 } else {
                     String finalNomeFile = NomeFile;

@@ -560,6 +560,18 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        EditText edtFiltro = act.findViewById(R.id.edtFiltro);
+        edtFiltro.setText(VariabiliStaticheWallpaper.getInstance().getFiltro().toString());
+        edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                VariabiliStaticheWallpaper.getInstance().setFiltro(edtFiltro.getText().toString());
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         SwitchCompat swcOffline = (SwitchCompat) act.findViewById(R.id.switchOffline);
         swcOffline.setChecked(VariabiliStaticheWallpaper.getInstance().isOffline());
         LinearLayout layOffline = (LinearLayout) act.findViewById(R.id.layOffline);

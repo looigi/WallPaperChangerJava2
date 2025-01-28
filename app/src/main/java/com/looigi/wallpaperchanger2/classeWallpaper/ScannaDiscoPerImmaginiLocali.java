@@ -84,6 +84,7 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
                         Date lastModDate = new Date(f.lastModified());
                         String Datella = lastModDate.toString();
                         String Dimensione = Long.toString(f.length());
+                        String Cartella = f.getAbsoluteFile().getPath();
 
                         si.setImmagine(Nome);
                         si.setPathImmagine(Filetto);
@@ -92,7 +93,7 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
 
                         imms.add(si);
 
-                        db.ScriveImmagineInLocale(Nome, Filetto, Datella, Dimensione);
+                        db.ScriveImmagineInLocale(Nome, Filetto, Datella, Dimensione, Cartella);
                     }
                 }
             }

@@ -5,6 +5,15 @@ public class StrutturaImmagine {
     private String PathImmagine;
     private String DataImmagine;
     private String Dimensione;
+    private String CartellaRemota;
+
+    public String getCartellaRemota() {
+        return CartellaRemota;
+    }
+
+    public void setCartellaRemota(String cartellaRemota) {
+        CartellaRemota = cartellaRemota;
+    }
 
     public String getDataImmagine() {
         return DataImmagine;

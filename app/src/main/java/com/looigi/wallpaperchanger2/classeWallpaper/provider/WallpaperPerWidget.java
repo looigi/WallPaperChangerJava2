@@ -57,7 +57,8 @@ public class WallpaperPerWidget extends Activity {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+                                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                                 c.setWallpaperLocale(context,
                                         VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                                 UtilityWallpaper.getInstance().Attesa(false);

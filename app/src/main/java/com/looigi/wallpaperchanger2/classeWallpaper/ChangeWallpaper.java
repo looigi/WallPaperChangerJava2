@@ -39,7 +39,7 @@ public class ChangeWallpaper {
 	private int SchermoX;
 	private int SchermoY;
 
-	public ChangeWallpaper(Context context, String daDove) {
+	public ChangeWallpaper(Context context, String daDove, StrutturaImmagine UltimaImmagine) {
 		UtilityWallpaper.getInstance().Attesa(true);
 		VariabiliStaticheWallpaper.getInstance().setImmagineImpostataDaChi(daDove);
 

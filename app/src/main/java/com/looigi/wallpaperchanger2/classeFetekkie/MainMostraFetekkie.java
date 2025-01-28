@@ -212,7 +212,7 @@ public class MainMostraFetekkie extends Activity {
                     src.setDimensione("");
                     src.setDataImmagine(s.getDataCreazione());
 
-                    ChangeWallpaper c = new ChangeWallpaper(context, "FETEKKIE");
+                    ChangeWallpaper c = new ChangeWallpaper(context, "FETEKKIE", src);
                     c.setWallpaperLocale(context, src);
 
                     UtilityFetekkie.getInstance().Attesa(false);

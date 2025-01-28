@@ -27,6 +27,8 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.VariabiliStaticheRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
@@ -479,12 +481,47 @@ public class InizializzaMascheraWallpaper {
         imgCaricamento.setVisibility(LinearLayout.GONE);
         VariabiliStaticheServizio.getInstance().setImgCaricamento(imgCaricamento); */
 
+        ImageView imgModifica = view.findViewById(R.id.imgModifica);
+        imgModifica.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Path = "";
+
+                switch (VariabiliStaticheWallpaper.getInstance().getImmagineImpostataDaChi()) {
+                    case "WALLPAPER":
+                    case "":
+                        Path = context.getFilesDir() + "/Download/Appoggio.jpg";
+                        break;
+                    case "PLAYER":
+                        Path = context.getFilesDir() + "/Download/AppoggioPLA.jpg";
+                        break;
+                    case "PENNETTA":
+                        Path = context.getFilesDir() + "/Download/AppoggioPEN.jpg";
+                        break;
+                    case "FETEKKIE":
+                        Path = context.getFilesDir() + "/Download/AppoggioFET.jpg";
+                        break;
+                    case "IMMAGINI":
+                        Path = context.getFilesDir() + "/Download/AppoggioMI.jpg";
+                        break;
+                }
+
+                VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("WALLPAPER");
+                VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                        Path
+                );
+                Intent i = new Intent(context, MainModificaImmagine.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
+
         imgRefresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
 
                 UtilityWallpaper.getInstance().Attesa(true);
-                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                 c.setWallpaperLocale(context,
                         VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
                 UtilityWallpaper.getInstance().Attesa(false);

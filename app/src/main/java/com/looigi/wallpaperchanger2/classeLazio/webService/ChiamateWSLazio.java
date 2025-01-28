@@ -78,7 +78,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             UtilitiesGlobali.getInstance().ApreToast(context, "Inserire il nominativo");
             return;
         } else {
-            if (!Progressivo.equals("-1")) {
+            if (Progressivo.equals("-1")) {
                 for (StrutturaMercato s : VariabiliStaticheLazio.getInstance().getMercato()) {
                     if (s.getNominativo().toUpperCase().trim().equals(Nominativo.toUpperCase().trim())) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "Nominativo già inserito per la data " + s.getData());
@@ -96,6 +96,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return;
         }
 
+        Nominativo = UtilitiesGlobali.getInstance().MetteMaiuscole(Nominativo);
+
         String Urletto="GestioneMercato?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
                 "&idModalita=" + VariabiliStaticheLazio.getInstance().getModalitaMercato() +
@@ -103,8 +105,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 "&Progressivo=" + Progressivo +
                 "&Nominativo=" + Nominativo +
                 "&Data=" + Data +
-                "&idFonte=" + idStato +
-                "&idStato=" + idFonte;
+                "&idStato=" + idStato +
+                "&idFonte=" + idFonte;
 
         TipoOperazione = "GestioneMercato";
 
@@ -555,7 +557,6 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             VariabiliStaticheLazio.getInstance().setCstmAdptAllenatori(new AdapterListenerAllenatori(context, lista));
             VariabiliStaticheLazio.getInstance().getLstAllenatori().setAdapter(VariabiliStaticheLazio.getInstance().getCstmAdptAllenatori());
-
         }
     }
 

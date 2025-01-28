@@ -16,7 +16,6 @@ import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.AdapterListenerImmaginiDaScaricare;
@@ -507,7 +506,7 @@ public class ChiamateWSMI implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
-            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
         }
     }
 
@@ -517,7 +516,7 @@ public class ChiamateWSMI implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Immagine eliminata");
-            UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
         }
     }
 

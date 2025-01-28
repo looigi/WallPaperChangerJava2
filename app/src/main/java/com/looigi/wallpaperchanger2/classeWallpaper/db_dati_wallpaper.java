@@ -82,17 +82,17 @@ public class db_dati_wallpaper {
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
                         "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR, " +
-                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR, Effetti VARCHAR);";
+                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR, Effetti VARCHAR, Filtro VARCHAR, CartellaRemota VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "ListaImmaginiLocali "
-                        + " (ImmagineNome VARCHAR, ImmaginePath VARCHAR, Data VARCHAR, Dimensione VARCHAR);";
+                        + " (ImmagineNome VARCHAR, ImmaginePath VARCHAR, Data VARCHAR, Dimensione VARCHAR, CartellaRemota VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "ListaImmaginiRemote "
-                        + " (Immagine VARCHAR, Path VARCHAR, Data VARCHAR, Dimensione VARCHAR);";
+                        + " (Immagine VARCHAR, Path VARCHAR, Data VARCHAR, Dimensione VARCHAR, CartellaRemota VARCHAR);";
                 myDB.execSQL(sql);
 
                 return true;
@@ -122,6 +122,7 @@ public class db_dati_wallpaper {
                         s.setPathImmagine(c.getString(1));
                         s.setDataImmagine(c.getString(2));
                         s.setDimensione(c.getString(3));
+                        s.setCartellaRemota(c.getString(4));
 
                         listaImmagini.add(s);
                     } while (c.moveToNext());
@@ -143,17 +144,18 @@ public class db_dati_wallpaper {
     public boolean ScriveImmagineRemote(List<StrutturaImmagine> lista) {
         if (myDB != null) {
             try {
-                myDB.execSQL("Delete From ListaImmaginiLocali");
+                myDB.execSQL("Delete From ListaImmaginiRemote");
 
                 for (StrutturaImmagine l : lista) {
                     String sql = "INSERT INTO"
                             + " ListaImmaginiRemote "
-                            + "(Immagine, Path, Data, Dimensione)"
+                            + "(Immagine, Path, Data, Dimensione, CartellaRemota)"
                             + " VALUES ("
                             + "'" + l.getImmagine().replace("'", "''") + "', "
                             + "'" + l.getPathImmagine().replace("'", "''") + "', "
                             + "'" + l.getDataImmagine().replace("'", "''") + "', "
-                            + "'" + l.getDimensione().replace("'", "''") + "' "
+                            + "'" + l.getDimensione().replace("'", "''") + "', "
+                            + "'" + l.getCartellaRemota().replace("'", "''") + "' "
                             + ")";
                     myDB.execSQL(sql);
                 }
@@ -161,7 +163,7 @@ public class db_dati_wallpaper {
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
                         UtilityWallpaper.getInstance().PrendeErroreDaException(e));
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");
-                PulisceDatiIL();
+                PulisceDatiIR();
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Creazione tabelle");
                 CreazioneTabelle();
 
@@ -182,17 +184,19 @@ public class db_dati_wallpaper {
         return true;
     }
 
-    public boolean ScriveImmagineInLocale(String Nome, String Path, String Data, String Dimensione) {
+    public boolean ScriveImmagineInLocale(String Nome, String Path, String Data, String Dimensione,
+                                          String CartellaRemota) {
         if (myDB != null) {
             try {
                 String sql = "INSERT INTO"
                         + " ListaImmaginiLocali"
-                        + " (ImmagineNome, ImmaginePath, Data, Dimensione)"
+                        + " (ImmagineNome, ImmaginePath, Data, Dimensione, CartellaRemota"
                         + " VALUES ("
                         + "'" + Nome.replace("'","''") + "', "
                         + "'" + Path.replace("'","''") + "', "
                         + "'" + Data.replace("'","''") + "', "
-                        + "'" + Dimensione.replace("'","''") + "' "
+                        + "'" + Dimensione.replace("'","''") + "', "
+                        + "'" + CartellaRemota.replace("'", "''") + "' "
                         + ")";
                 myDB.execSQL(sql);
             } catch (Exception e) {
@@ -225,6 +229,7 @@ public class db_dati_wallpaper {
                         s.setPathImmagine(c.getString(1));
                         s.setDataImmagine(c.getString(2));
                         s.setDimensione(c.getString(3));
+                        s.setCartellaRemota(c.getString(4));
 
                         listaImmagini.add(s);
                     } while (c.moveToNext());
@@ -271,10 +276,17 @@ public class db_dati_wallpaper {
                 }
                 myDB.execSQL("Delete From Impostazioni");
 
+                String CartellaRemota = "";
+                if (VariabiliStaticheWallpaper.getInstance().getUltimaImmagine() != null &&
+                        VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getCartellaRemota() != null) {
+                    CartellaRemota = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getCartellaRemota();
+                }
+
                 String sql = "INSERT INTO"
                         + " Impostazioni"
                         + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, " +
-                            "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa, SoloVolto, Effetti)"
+                            "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa, SoloVolto, Effetti, Filtro, " +
+                            "CartellaRemota)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -290,7 +302,9 @@ public class db_dati_wallpaper {
                         + "'" + (VariabiliStaticheStart.getInstance().isDetector() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isEspansa() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isSoloVolti() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheWallpaper.getInstance().isEffetti() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isEffetti() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheWallpaper.getInstance().getFiltro() + "', "
+                        + "'" + CartellaRemota + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -321,6 +335,7 @@ public class db_dati_wallpaper {
                     StrutturaImmagine si = new StrutturaImmagine();
                     si.setImmagine(c.getString(0));
                     si.setPathImmagine(c.getString(1));
+                    si.setCartellaRemota(c.getString(16));
                     VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(si);
 
                     VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(Integer.parseInt(c.getString(2)));
@@ -336,6 +351,7 @@ public class db_dati_wallpaper {
                     VariabiliStaticheWallpaper.getInstance().setEspansa(c.getString(12).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setSoloVolti(c.getString(13).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setEffetti(c.getString(14).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setFiltro(c.getString(15));
 
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
@@ -350,6 +366,7 @@ public class db_dati_wallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Immagine Espansa: " + VariabiliStaticheWallpaper.getInstance().isEspansa());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Solo Volti: " + VariabiliStaticheWallpaper.getInstance().isSoloVolti());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Effetti: " + VariabiliStaticheWallpaper.getInstance().isEffetti());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Filtro: " + VariabiliStaticheWallpaper.getInstance().getFiltro());
 
                     c.close();
 
@@ -411,6 +428,19 @@ public class db_dati_wallpaper {
             // myDB.execSQL("Delete From Ultima");
             try {
                 myDB.execSQL("Drop Table ListaImmaginiLocali");
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    public void PulisceDatiIR() {
+        // SQLiteDatabase myDB = ApreDB();
+        if (myDB != null) {
+            // myDB.execSQL("Delete From Utente");
+            // myDB.execSQL("Delete From Ultima");
+            try {
+                myDB.execSQL("Drop Table ListaImmaginiRemote");
             } catch (Exception ignored) {
 
             }

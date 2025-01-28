@@ -222,7 +222,8 @@ public class UtilityWallpaper {
     public void CambiaImmagine(Context context) {
         VariabiliStaticheWallpaper.getInstance().setImpostataConSchermoSpento(false);
 
-        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER");
+        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
         if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
             c.setWallpaper(context, null);
             UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");
@@ -301,22 +302,45 @@ public class UtilityWallpaper {
         }
     }
 
-    public void SalvataggioImmagine(Context context, boolean ImmagineGiaCaricata, boolean Sovrascrive) {
-        StrutturaImmagine s = VariabiliStaticheWallpaper.getInstance().getImmagineSelezionataDaLista();
+    public void SalvataggioImmagine(Context context, boolean Sovrascrive) {
+        String Path = "";
+        StrutturaImmagine s = VariabiliStaticheWallpaper.getInstance().getUltimaImmagine();
 
-        String NomeFile = "";
-        if (ImmagineGiaCaricata) {
-            NomeFile = "Appoggio";
-        } else {
-            NomeFile = "AppoggioWP";
+        switch (VariabiliStaticheWallpaper.getInstance().getImmagineImpostataDaChi()) {
+            case "WALLPAPER":
+            case "":
+                Path = context.getFilesDir() + "/Download/Appoggio.jpg";
+                break;
+            case "PLAYER":
+                Path = context.getFilesDir() + "/Download/AppoggioPLA.jpg";
+                break;
+            case "PENNETTA":
+                Path = context.getFilesDir() + "/Download/AppoggioPEN.jpg";
+                break;
+            case "FETEKKIE":
+                Path = context.getFilesDir() + "/Download/AppoggioFET.jpg";
+                break;
+            case "IMMAGINI":
+                Path = context.getFilesDir() + "/Download/AppoggioMI.jpg";
+                break;
         }
-        String Path = context.getFilesDir() + "/Download/" + NomeFile + ".jpg";
-
-        // ImpostaImmagineInterna(context);
 
         String encodedImage = UtilitiesGlobali.getInstance().convertBmpToBase64(Path);
 
-        ChiamateWsWP c = new ChiamateWsWP(context);
-        c.ModificaImmagine(s, encodedImage);
+        switch (VariabiliStaticheWallpaper.getInstance().getImmagineImpostataDaChi()) {
+            case "WALLPAPER":
+            case "":
+                ChiamateWsWP c = new ChiamateWsWP(context);
+                c.ModificaImmagine(s, encodedImage);
+                break;
+            case "PLAYER":
+                break;
+            case "PENNETTA":
+                break;
+            case "FETEKKIE":
+                break;
+            case "IMMAGINI":
+                break;
+        }
     }
 }
