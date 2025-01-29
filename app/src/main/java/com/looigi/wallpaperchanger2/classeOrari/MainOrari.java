@@ -135,6 +135,7 @@ public class MainOrari extends Activity {
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setGiornoInserito(true);
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setEntrata("08:00:00");
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setQuanteOre(-6); // Smart Working default
+                VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("-6");
                 UtilityOrari.getInstance().ScriveDatiGiornata(context);
             }
         });
@@ -383,12 +384,14 @@ public class MainOrari extends Activity {
                             }
 
                             String LavoroDefault = "";
-                            for (StrutturaLavoro s : VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori()) {
-                                if (s.getIdLavoro() == sdg.getLavoroDefault()) {
-                                    LavoroDefault = s.getLavoro();
-                                    sdg.setLavoro(LavoroDefault);
-                                    sdg.setIdLavoro(s.getIdLavoro());
-                                    break;
+                            if (VariabiliStaticheOrari.getInstance().getStrutturaDati() != null) {
+                                for (StrutturaLavoro s : VariabiliStaticheOrari.getInstance().getStrutturaDati().getLavori()) {
+                                    if (s.getIdLavoro() == sdg.getLavoroDefault()) {
+                                        LavoroDefault = s.getLavoro();
+                                        sdg.setLavoro(LavoroDefault);
+                                        sdg.setIdLavoro(s.getIdLavoro());
+                                        break;
+                                    }
                                 }
                             }
                             VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(
@@ -416,7 +419,8 @@ public class MainOrari extends Activity {
                             for (String l : listaTipiLavoro) {
                                 if (l.equals(ValoreImpostato)) {
                                     sdg.setQuanteOre(valoriTipoLavoro[i]);
-                                    VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(valoriTipoLavoro[i]);
+                                    String vtl = String.valueOf(valoriTipoLavoro[i]);
+                                    VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText(vtl);
                                 }
                                 i++;
                             }

@@ -136,20 +136,22 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     public void ScriveOrario() {
         StrutturaDatiGiornata s = VariabiliStaticheOrari.getInstance().getDatiGiornata();
 
-        if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
-            VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(false);
-            if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null || VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna commessa valida per il lavoro");
-                return;
+        if (s.getQuanteOre() > 0) {
+            if (VariabiliStaticheOrari.getInstance().isPrendeCommessePerSalvataggio()) {
+                VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(false);
+                if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null || VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna commessa valida per il lavoro");
+                    return;
+                }
             }
-        }
 
-        if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote()) {
-            if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null ||
-                    VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
-                VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
-                RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()), false, false);
-                return;
+            if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote()) {
+                if (VariabiliStaticheOrari.getInstance().getListaCommesse() == null ||
+                        VariabiliStaticheOrari.getInstance().getListaCommesse().isEmpty()) {
+                    VariabiliStaticheOrari.getInstance().setPrendeCommessePerSalvataggio(true);
+                    RitornaCommesseLavoro(String.valueOf(s.getIdLavoro()), false, false);
+                    return;
+                }
             }
         }
 
@@ -211,7 +213,8 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
 
         String idTempo = "";
         if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
-                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito() &&
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().getQuanteOre() > 0) {
             String Tempo = s.getTempo();
             for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
                 if (Tempo.equals(st.getTempo())) {
@@ -470,6 +473,9 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
+            if (result.isEmpty()) {
+                return;
+            }
             String PathFile = VariabiliStaticheOrari.getInstance().getPathOrari();
             String NomeFile = "Dati.txt";
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {

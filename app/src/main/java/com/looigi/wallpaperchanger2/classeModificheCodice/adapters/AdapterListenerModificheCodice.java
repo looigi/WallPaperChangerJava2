@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeModificheCodice.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,21 @@ public class AdapterListenerModificheCodice extends BaseAdapter {
             String Stato = VariabiliStaticheModificheCodice.getInstance().RitornaStringaStato(
                                 listaModifiche.get(i).getIdStato()
                             );
+
+            switch (Stato) {
+                case "Aperta":
+                    view.setBackgroundColor(Color.rgb(255,150, 150));
+                    break;
+                case "Chiusa":
+                    view.setBackgroundColor(Color.rgb(150, 255,150));
+                    break;
+                case "Da Controllare":
+                    view.setBackgroundColor(Color.rgb(150,150, 255));
+                    break;
+                case "In Dubbio":
+                    view.setBackgroundColor(Color.rgb(200,200, 200));
+                    break;
+            }
 
             ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
