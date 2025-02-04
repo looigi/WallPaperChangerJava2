@@ -18,8 +18,11 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.Display;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.GestioneImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.utilities.RilevamentoVolti;
@@ -96,13 +99,26 @@ public class ChangeWallpaper {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
 			// return false;
 		} else {
-			if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
+			switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+				case 0:
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
 
-				ChiamateWsWP c = new ChiamateWsWP(context);
-				c.TornaProssimaImmagine();
-			} else {
-				setWallpaperLocale(context, src);
+					ChiamateWsWP c = new ChiamateWsWP(context);
+					c.TornaProssimaImmagine();
+					break;
+				case 1:
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine offline");
+
+					setWallpaperLocale(context, src);
+					break;
+				case 2:
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine da immagini");
+
+					ChiamateWSMI ws = new ChiamateWSMI(context);
+					ws.RitornaProssimaImmaginePerWP(
+							VariabiliStaticheWallpaper.getInstance().getFiltro()
+					);
+					break;
 			}
 		}
 
@@ -376,34 +392,42 @@ public class ChangeWallpaper {
 		// GestioneNotifiche.getInstance().RimuoviNotifica();
 		GestioneNotificheWP.getInstance().AggiornaNotifica();
 
-		Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
-		VariabiliStaticheWallpaper.getInstance().getImgImpostata().setImageBitmap(ultima);
-
-		String path1 = context.getFilesDir() + "/Download/AppoggioImpostato.jpg";
-		if (UtilityWallpaper.getInstance().EsisteFile(path1)) {
-			Bitmap ultimaFinale = BitmapFactory.decodeFile(path1);
-			VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
-		}
-
-		VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
-
-		int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
-		int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
-
-		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
-		act.runOnUiThread(new Runnable() {
+		Handler handlerTimer = new Handler(Looper.getMainLooper());
+		Runnable rTimer = new Runnable() {
 			public void run() {
-				VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(
-						"Prossimo cambio: " +
-								VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
-								quantiGiri);
-			}
-		});
+				Bitmap ultima = BitmapFactory.decodeFile(si.getPathImmagine());
+				if (VariabiliStaticheWallpaper.getInstance().getImgImpostata() != null) {
+					VariabiliStaticheWallpaper.getInstance().getImgImpostata().setImageBitmap(ultima);
+				}
 
-		// Notifica.getInstance().AggiornaNotifica();
-		db_dati_wallpaper db = new db_dati_wallpaper(context);
-		db.ScriveImpostazioni();
-		db.ChiudeDB();
+				String path1 = context.getFilesDir() + "/Download/AppoggioImpostato.jpg";
+				if (UtilityWallpaper.getInstance().EsisteFile(path1)) {
+					Bitmap ultimaFinale = BitmapFactory.decodeFile(path1);
+					VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
+				}
+
+				VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);
+
+				int minuti = VariabiliStaticheWallpaper.getInstance().getMinutiAttesa();
+				int quantiGiri = (minuti * 60) / VariabiliStaticheWallpaper.secondiDiAttesaContatore;
+
+				Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
+				act.runOnUiThread(new Runnable() {
+					public void run() {
+						VariabiliStaticheWallpaper.getInstance().getTxtTempoAlCambio().setText(
+								"Prossimo cambio: " +
+										VariabiliStaticheWallpaper.getInstance().getSecondiPassati() + "/" +
+										quantiGiri);
+					}
+				});
+
+				// Notifica.getInstance().AggiornaNotifica();
+				db_dati_wallpaper db = new db_dati_wallpaper(context);
+				db.ScriveImpostazioni();
+				db.ChiudeDB();
+			}
+		};
+		handlerTimer.postDelayed(rTimer, 100);
 	}
 
 		private void setWallpaperLocaleEsegue(Context context, Bitmap bitmap) {

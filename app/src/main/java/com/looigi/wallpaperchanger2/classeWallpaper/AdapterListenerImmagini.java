@@ -101,14 +101,23 @@ public class AdapterListenerImmagini extends BaseAdapter {
             ImageView imgModifica = (ImageView) view.findViewById(R.id.imgModifica);
             imgModifica.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
+                    switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+                        case 0:
+                            // Web
+                            break;
+                        case 1:
+                            // Locale
+                            VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
 
-                        UtilityWallpaper.getInstance().Attesa(true);
+                            UtilityWallpaper.getInstance().Attesa(true);
 
-                        DownloadImmagineWP d = new DownloadImmagineWP();
-                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
-                                listaImmagini.get(i).getPathImmagine(), true, "MODIFICA");
+                            DownloadImmagineWP d = new DownloadImmagineWP();
+                            d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                    listaImmagini.get(i).getPathImmagine(), true, "MODIFICA");
+                            break;
+                        case 2:
+                            // Immagini
+                            break;
                     }
                 }
             });
@@ -116,43 +125,69 @@ public class AdapterListenerImmagini extends BaseAdapter {
             ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
             imgCondividi.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
+                    switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+                        case 0:
+                            // Web
+                            break;
+                        case 1:
+                            // Locale
+                            VariabiliStaticheWallpaper.getInstance().setImmagineSelezionataDaLista(listaImmagini.get(i));
 
-                        UtilityWallpaper.getInstance().Attesa(true);
+                            UtilityWallpaper.getInstance().Attesa(true);
 
-                        DownloadImmagineWP d = new DownloadImmagineWP();
-                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
-                                listaImmagini.get(i).getPathImmagine(), true, "CONDIVIDI");
+                            DownloadImmagineWP d = new DownloadImmagineWP();
+                            d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                    listaImmagini.get(i).getPathImmagine(), true, "CONDIVIDI");
+                            break;
+                        case 2:
+                            // Immagini
+                            break;
                     }
                 }
             });
 
             ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
-            if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                File imgFile = new File(listaImmagini.get(i).getPathImmagine());
-                if (imgFile.exists()) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    imgImmagine.setImageBitmap(myBitmap);
-                }
-            } else {
-                String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
-                DownloadImmagineWP d = new DownloadImmagineWP();
-                d.EsegueChiamata(context, NomeImmagine, imgImmagine, PathImmagine2, false, "");
+            switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+                case 0:
+                    // Web
+                    String PathImmagine2 = listaImmagini.get(i).getPathImmagine();
+                    DownloadImmagineWP d = new DownloadImmagineWP();
+                    d.EsegueChiamata(context, NomeImmagine, imgImmagine, PathImmagine2, false, "");
+                    break;
+                case 1:
+                    // Locale
+                    File imgFile = new File(listaImmagini.get(i).getPathImmagine());
+                    if (imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        imgImmagine.setImageBitmap(myBitmap);
+                    }
+                    break;
+                case 2:
+                    // Immagini
+                    break;
             }
+
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     VariabiliStaticheWallpaper.getInstance().setUltimaImmagine(listaImmagini.get(i));
 
-                    if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        UtilityWallpaper.getInstance().Attesa(true);
-                        DownloadImmagineWP d = new DownloadImmagineWP();
-                        d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
-                                listaImmagini.get(i).getPathImmagine(), false, "");
-                    } else {
-                        ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
-                                VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
-                        c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
+                    switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+                        case 0:
+                            // Web
+                            ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                                    VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
+                            c.setWallpaperLocale(context, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
+                            break;
+                        case 1:
+                            // Locale
+                            UtilityWallpaper.getInstance().Attesa(true);
+                            DownloadImmagineWP d = new DownloadImmagineWP();
+                            d.EsegueChiamata(context, listaImmagini.get(i).getImmagine(), null,
+                                    listaImmagini.get(i).getPathImmagine(), false, "");
+                            break;
+                        case 2:
+                            // Immagini
+                            break;
                     }
                 }
             });

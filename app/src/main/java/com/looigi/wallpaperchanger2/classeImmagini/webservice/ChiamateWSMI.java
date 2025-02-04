@@ -59,6 +59,26 @@ public class ChiamateWSMI implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
+    public void RitornaProssimaImmaginePerWP(String Filtro) {
+        String Urletto="ProssimaImmagine?" +
+                "idCategoria=" +
+                "&Filtro=" + Filtro +
+                "&idImmagine=0" +
+                "&Random=S" +
+                "&OrdinaPerVisualizzato=S";
+
+        TipoOperazione = "ProssimaImmagineWP";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                ApriDialog);
+    }
+
     public void RitornaProssimaImmagine(int idCategoria, int idImmagine, String Random) {
         if (idCategoria == -999) {
             return;
@@ -79,7 +99,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                20000,
+                60000,
                 ApriDialog);
     }
 
@@ -298,6 +318,9 @@ public class ChiamateWSMI implements TaskDelegate {
                         break;
                     case "ProssimaImmagine":
                         fProssimaImmagine(result);
+                        break;
+                    case "ProssimaImmagineWP":
+                        fProssimaImmagineWP(result);
                         break;
                     case "ModificaImmagine":
                         fModificaImmagine(result);
@@ -619,6 +642,7 @@ public class ChiamateWSMI implements TaskDelegate {
                             context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg(),
                             si.getUrlImmagine(),
+                            false,
                             false
                     );
                     // new DownloadImageMI(context, si.getUrlImmagine(),
@@ -630,6 +654,39 @@ public class ChiamateWSMI implements TaskDelegate {
             // Utility.getInstance().VisualizzaMessaggio(result);
         // } else {
         //     UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
+    }
+
+    private void fProssimaImmagineWP(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
+        if (ritorno) {
+            try {
+                JSONObject jObject = new JSONObject(result);
+                StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
+                if (si != null) {
+                    VariabiliStaticheMostraImmagini.getInstance().setImmaginePerWP(si);
+                    // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
+                    // VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
+
+                    // UtilityImmagini.getInstance().AggiungeImmagine(context, result, si);
+
+                    DownloadImmagineMI d = new DownloadImmagineMI();
+                    d.EsegueChiamata(
+                            context, si.getUrlImmagine(),
+                            VariabiliStaticheMostraImmagini.getInstance().getImg(),
+                            si.getUrlImmagine(),
+                            false,
+                            true
+                    );
+                }
+            } catch (JSONException e) {
+
+            }
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            // } else {
+            //     UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }

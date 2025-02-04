@@ -135,7 +135,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RadioGroup
                 android:id="@+id/layImpo2"
                 android:layout_below="@+id/layImpo1"
                 android:layout_marginTop="5dp"
@@ -145,13 +145,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchOffline"
+                <RadioButton
+                    android:id="@+id/optOffline"
                     android:layout_width="match_parent"
                     android:textColor="#0000CC"
-                    android:text="Modalità offline"
+                    android:text="Immagini in locale"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+
+                <RadioButton
+                    android:id="@+id/optOnline"
+                    android:layout_width="match_parent"
+                    android:textColor="#0000CC"
+                    android:text="Immagini on line"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/optImmagini"
+                    android:layout_width="match_parent"
+                    android:textColor="#0000CC"
+                    android:text="Immagini da immagini"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
 
             <LinearLayout
                 android:id="@+id/layImpo3"

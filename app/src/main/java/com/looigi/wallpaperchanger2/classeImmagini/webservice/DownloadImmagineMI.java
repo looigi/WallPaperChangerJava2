@@ -10,7 +10,10 @@ import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -19,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,7 +39,7 @@ public class DownloadImmagineMI {
     private boolean PerCopia;
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
-                               String UrlImmagine, boolean PerCopia) {
+                               String UrlImmagine, boolean PerCopia, boolean perWP) {
         isCancelled = false;
         this.NomeImmagine = NomeImmagine;
         this.context = context;
@@ -45,7 +49,11 @@ public class DownloadImmagineMI {
 
         UtilityImmagini.getInstance().Attesa(true);
 
-        PercorsoDIR = context.getFilesDir() + "/Immagini";
+        if (perWP) {
+            PercorsoDIR = context.getFilesDir() + "/Download";
+        } else {
+            PercorsoDIR = context.getFilesDir() + "/Immagini";
+        }
 
         UtilityWallpaper.getInstance().CreaCartelle(PercorsoDIR);
 
@@ -180,10 +188,12 @@ public class DownloadImmagineMI {
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            immagine.setImageBitmap(finalMIcon1);
+                            if (immagine != null) {
+                                immagine.setImageBitmap(finalMIcon1);
 
-                            if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
-                                UtilityImmagini.getInstance().RiattivaTimer();
+                                if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
+                                    UtilityImmagini.getInstance().RiattivaTimer();
+                                }
                             }
                         }
                     }, 100);
@@ -236,6 +246,23 @@ public class DownloadImmagineMI {
 
                 ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
                 ws.ScriveImmagineSuSfondiLocale(NomeImmagine, result);
+            } else {
+                // Impostare immagine su wallpaper
+                String Path = PercorsoDIR + "/AppoggioMI.jpg";
+                String[] campiNome = NomeImmagine.split("/");
+                String Nome = "";
+                for (int i = 5; i < campiNome.length; i++) {
+                    Nome += campiNome[i] + "/";
+                }
+                StrutturaImmagine src = new StrutturaImmagine();
+                src.setPathImmagine(Path);
+                src.setImmagine(Nome);
+                src.setDimensione("");
+                src.setDataImmagine(new Date().toString());
+
+                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                        src);
+                c.setWallpaperLocale(context, src);
             }
         } else {
             UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");

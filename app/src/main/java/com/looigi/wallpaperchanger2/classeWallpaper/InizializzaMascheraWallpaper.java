@@ -90,16 +90,21 @@ public class InizializzaMascheraWallpaper {
                 bckLeggeImmaginiLocali.execute();
                 // }
             } else {
-                if (VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                    int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
-                    VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
-                            "Immagini rilevate su disco: " + q
-                    );
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                            "Immagini rilevate su disco: " + q);
-                } else {
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-                            "Immagini rilevate su disco inutili: OnLine");
+                switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+                    case 0:
+                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini online");
+                        break;
+                    case 1:
+                        int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
+                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
+                                "Immagini rilevate su disco: " + q
+                        );
+                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+                                "Immagini rilevate su disco: " + q);
+                        break;
+                    case 2:
+                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini da immagini");
+                        break;
                 }
             }
             db.ChiudeDB();

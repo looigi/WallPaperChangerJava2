@@ -66,6 +66,15 @@ public class VariabiliStaticheMostraImmagini {
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
     private boolean AggiornamentoCompleto = false;
+    private StrutturaImmaginiLibrary immaginePerWP;
+
+    public StrutturaImmaginiLibrary getImmaginePerWP() {
+        return immaginePerWP;
+    }
+
+    public void setImmaginePerWP(StrutturaImmaginiLibrary immaginePerWP) {
+        this.immaginePerWP = immaginePerWP;
+    }
 
     public boolean isAggiornamentoCompleto() {
         return AggiornamentoCompleto;

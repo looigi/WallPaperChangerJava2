@@ -52,6 +52,10 @@ public class UtilityImmagini {
     }
 
     public void Attesa(boolean Acceso) {
+        if (VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento() == null) {
+            return;
+        }
+
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -199,6 +203,7 @@ public class UtilityImmagini {
                     context, s.getUrlImmagine(),
                     VariabiliStaticheMostraImmagini.getInstance().getImg(),
                     s.getUrlImmagine(),
+                    false,
                     false
             );
             // new DownloadImageMI(context, s.getUrlImmagine(),

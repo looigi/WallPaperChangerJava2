@@ -45,8 +45,16 @@ public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, Str
         db.ChiudeDB();
 
         VariabiliStaticheWallpaper.getInstance().setListaImmagini(imms);
-        if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
-            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + imms.size());
+        switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+            case 0:
+                VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini online");
+                break;
+            case 1:
+                VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + imms.size());
+                break;
+            case 2:
+                VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini da immagini");
+                break;
         }
         if (imgAttesa != null) {
             imgAttesa.setVisibility(LinearLayout.GONE);

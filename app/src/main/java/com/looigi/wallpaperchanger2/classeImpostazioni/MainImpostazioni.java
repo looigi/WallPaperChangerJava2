@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -572,41 +573,70 @@ public class MainImpostazioni extends Activity {
             }
         });
 
-        SwitchCompat swcOffline = (SwitchCompat) act.findViewById(R.id.switchOffline);
-        swcOffline.setChecked(VariabiliStaticheWallpaper.getInstance().isOffline());
+        RadioButton swcImmagini = act.findViewById(R.id.optImmagini);
+        RadioButton swcOffline = act.findViewById(R.id.optOffline);
+        RadioButton swcOnline = act.findViewById(R.id.optOnline);
+
+        if (!VariabiliStaticheStart.getInstance().isDetector()) {
+            swcImmagini.setVisibility(LinearLayout.GONE);
+        }
+
+        switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
+            case 0:
+                // Web
+                swcOnline.setChecked(true);
+                break;
+            case 1:
+                // Locale
+                swcOffline.setChecked(true);
+                break;
+            case 2:
+                // Immagini
+                swcImmagini.setChecked(true);
+                break;
+        }
+
         LinearLayout layOffline = (LinearLayout) act.findViewById(R.id.layOffline);
-        if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
+        if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0 ||
+                VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 2) {
             layOffline.setVisibility(LinearLayout.GONE);
         } else {
             layOffline.setVisibility(LinearLayout.VISIBLE);
         }
-        swcOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                VariabiliStaticheWallpaper.getInstance().setOffline(isChecked);
 
-                if (!VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                    layOffline.setVisibility(LinearLayout.GONE);
-                } else {
-                    layOffline.setVisibility(LinearLayout.VISIBLE);
-                    if(VariabiliStaticheWallpaper.getInstance().isOffline()) {
-                        if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
-                                VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() > 0) {
-                            int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
-                            VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
-                        } else {
-                            ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, imgAttesa);
-                            bckLeggeImmaginiLocali.execute();
-                        }
-                    } else {
-                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
-                                "Immagini online: " + VariabiliStaticheWallpaper.getInstance().getImmaginiOnline());
-                    }
-                }
+        swcOnline.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(0);
+                layOffline.setVisibility(LinearLayout.GONE);
 
-                // VariabiliStaticheWallpaper.getInstance().setLetteImpostazioni(true);
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
-                db.ChiudeDB();
+            }
+        });
+        swcOffline.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(1);
+                layOffline.setVisibility(LinearLayout.VISIBLE);
+                if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
+                        VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() > 0) {
+                    int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
+                    VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
+                } else {
+                    ScannaDiscoPerImmaginiLocali bckLeggeImmaginiLocali = new ScannaDiscoPerImmaginiLocali(context, imgAttesa);
+                    bckLeggeImmaginiLocali.execute();
+                }
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+            }
+        });
+        swcImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(2);
+                layOffline.setVisibility(LinearLayout.GONE);
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
             }
         });
 

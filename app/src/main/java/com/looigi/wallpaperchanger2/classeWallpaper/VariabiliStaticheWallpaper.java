@@ -60,7 +60,7 @@ public class VariabiliStaticheWallpaper {
     private int ImmaginiOnline;
     private boolean retePresente = true;
     // private boolean letteImpostazioni = false;
-    private boolean offline = false;
+    private int modalitaImmagini = 0; // 0 - Web / 1 - Locale / 2 - Immagini
     private StrutturaImmagine UltimaImmagine;
     private StrutturaImmagine UltimaImmaginePerLock;
     private ImageView imgImpostata;
@@ -477,12 +477,12 @@ public class VariabiliStaticheWallpaper {
         this.quantiGiri = quantiGiri;
     } */
 
-    public boolean isOffline() {
-        return offline;
+    public int getModoRicercaImmagine() {
+        return modalitaImmagini;
     }
 
-    public void setOffline(boolean offline) {
-        this.offline = offline;
+    public void setModoRicercaImmagine(int numero) {
+        this.modalitaImmagini = numero;
     }
 
     public boolean isRetePresente() {

@@ -292,7 +292,7 @@ public class db_dati_wallpaper {
                         + "'" + (PathImm) + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().getMinutiAttesa()) + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI()) + "', "
-                        + "'" + (VariabiliStaticheWallpaper.getInstance().isOffline() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isBlur() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isResize() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine()  ? "S" : "N") + "', "
@@ -340,7 +340,7 @@ public class db_dati_wallpaper {
 
                     VariabiliStaticheWallpaper.getInstance().setMinutiAttesa(Integer.parseInt(c.getString(2)));
                     VariabiliStaticheWallpaper.getInstance().setPercorsoIMMAGINI(c.getString(3));
-                    VariabiliStaticheWallpaper.getInstance().setOffline(c.getString(4).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(Integer.parseInt(c.getString(4)));
                     VariabiliStaticheWallpaper.getInstance().setBlur(c.getString(5).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setResize(c.getString(6).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setScriveTestoSuImmagine(c.getString(7).equals("S"));
@@ -356,7 +356,7 @@ public class db_dati_wallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Percorso immagini: " + VariabiliStaticheWallpaper.getInstance().getPercorsoIMMAGINI());
-                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Offline: " + VariabiliStaticheWallpaper.getInstance().isOffline());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Modo Ricerca Immagine: " + VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Blur: " + VariabiliStaticheWallpaper.getInstance().isBlur());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Resize: " + VariabiliStaticheWallpaper.getInstance().isResize());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Scrive testo su immagine: " + VariabiliStaticheWallpaper.getInstance().isScriveTestoSuImmagine());

@@ -495,6 +495,7 @@ public class MainMostraImmagini extends Activity {
                             context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg(),
                             si.getUrlImmagine(),
+                            false,
                             false
                     );
                     /* new DownloadImageMI(context, si.getUrlImmagine(),
@@ -592,7 +593,7 @@ public class MainMostraImmagini extends Activity {
                 String UrlImmagine = s.getUrlImmagine();
 
                 DownloadImmagineMI d = new DownloadImmagineMI();
-                d.EsegueChiamata(context, s.getNomeFile(), null, UrlImmagine, true);
+                d.EsegueChiamata(context, s.getNomeFile(), null, UrlImmagine, true, false);
             }
         });
 
