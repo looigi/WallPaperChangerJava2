@@ -144,9 +144,13 @@ public class ChangeWallpaper {
 			int rotationInDegrees = exifToDegrees(rotation);
 			Matrix matrix = new Matrix();
 			if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
-			rotatedBitmap = Bitmap.createBitmap(bitmap,0,0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+			if (bitmap != null) {
+				rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-			return rotatedBitmap;
+				return rotatedBitmap;
+			} else {
+				return null;
+			}
 		} catch(IOException ex){
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
 					"Cambio immagine. Errore rotazione: " +
@@ -921,23 +925,27 @@ public class ChangeWallpaper {
 
 		final int random1 = new Random().nextInt(15) + 1;
 
-		// Bianco / nero
 		switch (random1) {
 			case 2:
+				// Cornice
 				b = g.AddGlow(b);
 				break;
 			case 6:
+				// BN
 				b = g.ConverteBN(b);
 				break;
 			case 9:
+				// Seppia
 				b = g.ConvertSephia(b);
 				break;
 			case 12:
+				// Riflesso sotto
 				b = g.ConvertReflection(b);
 				break;
-			case 13:
+			/* case 13:
+				// Ritratto a matita
 				b = g.ConvertSketch(b);
-				break;
+				break; */
 		}
 
 		final int random2 = new Random().nextInt(5) + 1;

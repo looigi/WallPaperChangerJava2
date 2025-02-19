@@ -37,6 +37,7 @@ public class DownloadImmagineMI {
     private String Url;
     private InputStream in;
     private boolean PerCopia;
+    private boolean PerWP;
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
                                String UrlImmagine, boolean PerCopia, boolean perWP) {
@@ -46,6 +47,7 @@ public class DownloadImmagineMI {
         this.immagine = immagine;
         this.Url = UrlImmagine;
         this.PerCopia = PerCopia;
+        this.PerWP = perWP;
 
         UtilityImmagini.getInstance().Attesa(true);
 
@@ -183,20 +185,22 @@ public class DownloadImmagineMI {
             // } else {
             if (!isCancelled) {
                 if (!PerCopia) {
-                    Bitmap finalMIcon1 = mIcon11;
+                    if (!PerWP) {
+                        Bitmap finalMIcon1 = mIcon11;
 
-                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (immagine != null) {
-                                immagine.setImageBitmap(finalMIcon1);
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (immagine != null) {
+                                    immagine.setImageBitmap(finalMIcon1);
 
-                                if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
-                                    UtilityImmagini.getInstance().RiattivaTimer();
+                                    if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
+                                        UtilityImmagini.getInstance().RiattivaTimer();
+                                    }
                                 }
                             }
-                        }
-                    }, 100);
+                        }, 100);
+                    }
                 }
             }
             // }
@@ -247,22 +251,24 @@ public class DownloadImmagineMI {
                 ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
                 ws.ScriveImmagineSuSfondiLocale(NomeImmagine, result);
             } else {
-                // Impostare immagine su wallpaper
-                String Path = PercorsoDIR + "/AppoggioMI.jpg";
-                String[] campiNome = NomeImmagine.split("/");
-                String Nome = "";
-                for (int i = 5; i < campiNome.length; i++) {
-                    Nome += campiNome[i] + "/";
-                }
-                StrutturaImmagine src = new StrutturaImmagine();
-                src.setPathImmagine(Path);
-                src.setImmagine(Nome);
-                src.setDimensione("");
-                src.setDataImmagine(new Date().toString());
+                if (PerWP) {
+                    // Impostare immagine su wallpaper
+                    String Path = PercorsoDIR + "/AppoggioMI.jpg";
+                    String[] campiNome = NomeImmagine.split("/");
+                    String Nome = "";
+                    for (int i = 5; i < campiNome.length; i++) {
+                        Nome += campiNome[i] + "/";
+                    }
+                    StrutturaImmagine src = new StrutturaImmagine();
+                    src.setPathImmagine(Path);
+                    src.setImmagine(Nome);
+                    src.setDimensione("");
+                    src.setDataImmagine(new Date().toString());
 
-                ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
-                        src);
-                c.setWallpaperLocale(context, src);
+                    ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
+                            src);
+                    c.setWallpaperLocale(context, src);
+                }
             }
         } else {
             UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine.");
