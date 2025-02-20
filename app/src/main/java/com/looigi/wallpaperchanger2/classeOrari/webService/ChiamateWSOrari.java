@@ -206,7 +206,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
         int Pasticca = -1;
         if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito()) {
-            if (!s.getPranzo().isEmpty()) {
+            if (!s.getPasticca().isEmpty()) {
                 Pasticca = s.getPasticca().get(0).getIdPasticca();
             }
         }
