@@ -59,26 +59,42 @@ public class ControlloSegnale2 extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    // private boolean vecchioWifi;
+    private boolean vecchioWifi;
     private String vecchioTipoConnessione;
     private int vecchioLivello;
 
-    private void CambiatoSegnale(SignalStrength signalStrength){
+    private void CambiatoSegnale(SignalStrength signalStrength) {
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
-        VariabiliStaticheStart.getInstance().setCeWifi(wifi);
 
         String NomeMaschera = "Gestione_GPS";
-        // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-        //         "Controllo segnale segnale wifi. Attivo: " + wifi);
 
+        if (wifi != vecchioWifi) {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Controllo segnale segnale wifi. E' attivo: " + wifi);
+
+            if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+                // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
+                /* UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                        "CONTROLLO_ATTIVAZIONE",
+                        "Controllo segnale"); */
+                // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
+            }
+
+            vecchioWifi = wifi;
+        }
             // if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
                 // if (vecchioWifi != wifi) {
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+
+                    /* UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                             "Attivazione gps. Wifi: " + wifi);
 
-                    UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE");
+                    UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                            "CONTROLLO_ATTIVAZIONE",
+                            "Controllo segnale"); */
+                    // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
+
                 // }
             // }
         /* } else {

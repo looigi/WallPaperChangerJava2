@@ -231,7 +231,7 @@ public class CaricaSettaggi {
             db_dati_gps dbGPS = new db_dati_gps(context);
             if (dbGPS.DbAperto()) {
                 if (dbGPS.CreazioneTabelle()) {
-                    int ritGPS = dbGPS.CaricaImpostazioni();
+                    int ritGPS = dbGPS.CaricaImpostazioni(daDove);
                     if (ritGPS == -3 || ritGPS == -4) {
                         dbGPS.ImpostaValoriDiDefault();
                         if (dbGPS.PulisceDati()) {

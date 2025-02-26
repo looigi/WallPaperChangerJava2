@@ -119,6 +119,45 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 ApriDialog);
     }
 
+    public void GestioneAnno() {
+        String descAnno = VariabiliStaticheLazio.getInstance().getEdtDescrizioneAnno().getText().toString();
+        String punti = VariabiliStaticheLazio.getInstance().getEdtPuntiPerVittoria().getText().toString();
+
+        if (descAnno.isEmpty()) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Inserire la descrizione dell'anno");
+            return;
+        }
+        if (punti.isEmpty()) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Inserire i punti per la vittoria");
+            return;
+        }
+
+        String idAnno = "";
+        if (VariabiliStaticheLazio.getInstance().getIdAnnoPerModifica() > -1) {
+            idAnno = String.valueOf(VariabiliStaticheLazio.getInstance().getIdAnnoPerModifica());
+        }
+
+        String Urletto="AggiungeModificaAnno?" +
+                "Descrizione=" + descAnno +
+                "&idAnno=" + idAnno +
+                "&PuntiVittoria=" + punti +
+                "&SquadreScudetto=1" +
+                "&SquadreCL=4" +
+                "&SquadrePCL=2" +
+                "&SquadreEL=2"  +
+                "&SquadreRetrocessioni=4";
+
+        TipoOperazione = "AggiungeModificaAnno";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
     public void EliminaMercato() {
         String Progressivo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdPerOperazione());
 
@@ -456,6 +495,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "EliminaMercato":
                         fEliminaMercato(result);
                         break;
+                    case "AggiungeModificaAnno":
+                        fAggiungeModificaAnno(result);
+                        break;
                 }
             }
         };
@@ -474,6 +516,15 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fAggiungeModificaAnno(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno gestione anno", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Modifiche effettuate");
         }
     }
 
@@ -773,6 +824,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         boolean ritorno = ControllaRitorno("Ritorno mercato", result);
         if (!ritorno) {
             // UtilitiesGlobali.getInstance().ApreToast(context, result);
+            VariabiliStaticheLazio.getInstance().getLstMercato().setAdapter(null);
         } else {
             List<StrutturaMercato> lista = new ArrayList<>();
             String[] righe = result.split("§", -1);

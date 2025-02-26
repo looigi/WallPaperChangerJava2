@@ -174,12 +174,12 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
     }
 
-    public int CaricaImpostazioni() {
+    public int CaricaImpostazioni(String daDove) {
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Impostazioni", null);
                 if (c.getCount() > 0) {
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni");
+                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,"Riga rilevata su db per carica impostazioni. Provengo da " + daDove);
                     c.moveToFirst();
 
                     try {

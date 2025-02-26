@@ -267,6 +267,28 @@ public class UtilityLazio {
         ChiamateWSLazio ws = new ChiamateWSLazio(context);
 
         switch (VariabiliStaticheLazio.getInstance().getCosaStoModificando()) {
+            case "ANNO":
+                switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
+                    case "INSERT":
+                        ws.GestioneAnno();
+                        break;
+                    case "UPDATE":
+                        ws.GestioneAnno();
+                        break;
+                    case "DELETE":
+                        break;
+                }
+                break;
+            case "COMPETIZIONE":
+                switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
+                    case "INSERT":
+                        break;
+                    case "UPDATE":
+                        break;
+                    case "DELETE":
+                        break;
+                }
+                break;
             case "CALENDARIO":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
                     case "INSERT":

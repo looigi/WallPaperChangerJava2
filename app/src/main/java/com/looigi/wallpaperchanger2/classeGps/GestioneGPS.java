@@ -74,7 +74,7 @@ public class GestioneGPS extends Service {
                 } else { */
                     AbilitaTimer(context);
 
-                    ControlloAccSpegn();
+                    ControlloAccSpegn("OnStartCommand Classe GestioneGPS");
 
                     // UtilitiesGlobali.getInstance().ApreToast(context, "GPS Partito");
 
@@ -86,13 +86,44 @@ public class GestioneGPS extends Service {
             // }
         // }
 
-        return START_REDELIVER_INTENT ;
+        UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                "CONTROLLO_ATTIVAZIONE",
+                "GestioneGPS");
+
+        // return START_REDELIVER_INTENT ;
+        return START_STICKY;
     }
 
     @Override
     public void onCreate() {
-        super.onCreate();
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Gestione GPS. ON CREATE");
 
+        super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Gestione GPS. ON DESTROY!!!");
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Gestione GPS. ON LOW MEMORY!!!");
+
+        super.onLowMemory();
+    }
+
+    @Override
+    public void onTimeout(int startId) {
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Gestione GPS. ON TIMEOUT!!!");
+
+        super.onTimeout(startId);
     }
 
     /* @Override
@@ -252,7 +283,7 @@ public class GestioneGPS extends Service {
         }
     }
 
-    public void ControlloAccSpegn() {
+    public void ControlloAccSpegn(String daDove) {
         /* if (context == null) {
             context = UtilitiesGlobali.getInstance().tornaContextValido();
             if (context == null) {
@@ -271,14 +302,14 @@ public class GestioneGPS extends Service {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Disattivo per blocco da tasto");
+                        "Controllo disattivazione/attivazione. Disattivo per blocco da tasto. Da " + daDove);
 
-                BloccaGPS("Controllo Acc Spegn 3");
+                BloccaGPS("Controllo Acc Spegn 3. Da " + daDove);
             } else {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto");
+                        "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto. Da " + daDove);
             }
 
             return;
@@ -297,15 +328,19 @@ public class GestioneGPS extends Service {
             wifi = false;
         }
 
+        // METTO PER DEBUG
+        wifi = false;
+        // METTO PER DEBUG
+
         if (wifi) {
             if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Disattivo. " +
-                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
+                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi() + ". Da " + daDove);
 
-                BloccaGPS("Controllo Acc Spegn 2");
+                BloccaGPS("Controllo Acc Spegn 2. Da " + daDove);
             } /* else {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
@@ -318,9 +353,9 @@ public class GestioneGPS extends Service {
                         context,
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Riattivo. " +
-                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
+                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi() + ". Da " + daDove);
 
-                AbilitaGPS("Controllo Acc/Spegn");
+                AbilitaGPS("Controllo Acc/Spegn. Da " + daDove);
             } /* else {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
@@ -780,7 +815,8 @@ public class GestioneGPS extends Service {
         if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
             if (VariabiliStaticheStart.getInstance().isCeWifi()) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Evito il controllo PS. C'è il wifi");
+                        "Evito il controllo PS. Wifi attivo");
+
                 return false;
             }
         }

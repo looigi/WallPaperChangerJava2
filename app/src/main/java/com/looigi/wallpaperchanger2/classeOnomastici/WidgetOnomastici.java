@@ -112,7 +112,7 @@ public class WidgetOnomastici extends AppWidgetProvider {
 		}
 		QueryWhere="Where "+QueryWhere.substring(0,QueryWhere.length()-4);
 		
-        try {
+        /* try {
         	String Sql="SELECT Count(*) FROM Rubrica "+QueryWhere+";";
     		Cursor c = myDB.rawQuery(Sql , null);
     		c.moveToFirst();
@@ -120,7 +120,7 @@ public class WidgetOnomastici extends AppWidgetProvider {
     		c.close();
         } catch (Exception ignored) {
         	
-        }		
+        } */
 		GestDB.ChiudeDB(myDB);
 		
 		for (int i = 0; i < N; i++) {

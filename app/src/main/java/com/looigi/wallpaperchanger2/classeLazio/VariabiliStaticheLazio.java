@@ -136,6 +136,33 @@ public class VariabiliStaticheLazio {
     private ListView lstMarcatori;
     private List<StrutturaMarcatori> Marcatori;
     private int idPerOperazione;
+    private int idAnnoPerModifica;
+    private EditText edtDescrizioneAnno;
+    private EditText edtPuntiPerVittoria;
+
+    public EditText getEdtDescrizioneAnno() {
+        return edtDescrizioneAnno;
+    }
+
+    public void setEdtDescrizioneAnno(EditText edtDescrizioneAnno) {
+        this.edtDescrizioneAnno = edtDescrizioneAnno;
+    }
+
+    public EditText getEdtPuntiPerVittoria() {
+        return edtPuntiPerVittoria;
+    }
+
+    public void setEdtPuntiPerVittoria(EditText edtPuntiPerVittoria) {
+        this.edtPuntiPerVittoria = edtPuntiPerVittoria;
+    }
+
+    public int getIdAnnoPerModifica() {
+        return idAnnoPerModifica;
+    }
+
+    public void setIdAnnoPerModifica(int idAnnoPerModifica) {
+        this.idAnnoPerModifica = idAnnoPerModifica;
+    }
 
     public int getIdPerOperazione() {
         return idPerOperazione;

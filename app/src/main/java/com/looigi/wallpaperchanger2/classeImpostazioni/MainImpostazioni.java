@@ -422,7 +422,7 @@ public class MainImpostazioni extends Activity {
                                     VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
                                     UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                                            "CONTROLLO_ATTIVAZIONE");
+                                            "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Wallpaper");
 
                                     // VariabiliStaticheStart.getInstance().setServizioForegroundGPS(new Intent(context, ServizioDiAvvioGPS.class));
                                     // startForegroundService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
@@ -835,7 +835,7 @@ public class MainImpostazioni extends Activity {
                 db.ChiudeDB();
 
                 UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                        "CONTROLLO_ATTIVAZIONE");
+                        "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Detector");
             }
         });
 
@@ -885,7 +885,7 @@ public class MainImpostazioni extends Activity {
                         db.ChiudeDB();
 
                         UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                                "CONTROLLO_ATTIVAZIONE");
+                                "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Mappa");
                     }
                 }
             }
@@ -905,7 +905,7 @@ public class MainImpostazioni extends Activity {
                         db.ChiudeDB();
 
                         UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                                "CONTROLLO_ATTIVAZIONE");
+                                "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Mappa 2");
                     }
                 }
             }
@@ -998,7 +998,7 @@ public class MainImpostazioni extends Activity {
                 db.ChiudeDB();
 
                 UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                        "CONTROLLO_ATTIVAZIONE");
+                        "CONTROLLO_ATTIVAZIONE", "Main impostazioni Mappa 3");
             }
         });
 

@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -408,16 +409,48 @@ public class MainLazio extends Activity {
             }
         });
 
+        LinearLayout layGestioneAnno = findViewById(R.id.layGestioneAnno);
+        layGestioneAnno.setVisibility(LinearLayout.GONE);
+
+        ImageView imgSalvaAnno = findViewById(R.id.imgSalvaAnno);
+        imgSalvaAnno.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityLazio.getInstance().SalvaValori(context);
+
+                layGestioneAnno.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        ImageView imgAnnullaAnno = findViewById(R.id.imgAnnullaAnno);
+        imgAnnullaAnno.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layGestioneAnno.setVisibility(LinearLayout.GONE);
+            }
+        });
+
+        VariabiliStaticheLazio.getInstance().setEdtDescrizioneAnno(findViewById(R.id.edtDescrizioneAnno));
+        VariabiliStaticheLazio.getInstance().setEdtPuntiPerVittoria(findViewById(R.id.edtPuntiVittoria));
+
         ImageView imgNuovoAnno = findViewById(R.id.imgNuovoAnno);
         imgNuovoAnno.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityLazio.getInstance().SalvaValori(context);
+                VariabiliStaticheLazio.getInstance().getEdtDescrizioneAnno().setText("");
+                VariabiliStaticheLazio.getInstance().getEdtPuntiPerVittoria().setText("3");
+                VariabiliStaticheLazio.getInstance().setIdAnnoPerModifica(-1);
+
+                VariabiliStaticheLazio.getInstance().setCosaStoModificando("ANNO");
+                VariabiliStaticheLazio.getInstance().setModalitaModifica("INSERT");
+
+                layGestioneAnno.setVisibility(LinearLayout.VISIBLE);
             }
         });
 
         ImageView imgNuovaCompetizione = findViewById(R.id.imgNuovaCompetizione);
         imgNuovaCompetizione.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setCosaStoModificando("COMPETIZIONE");
+                VariabiliStaticheLazio.getInstance().setModalitaModifica("INSERT");
+
                 UtilityLazio.getInstance().SalvaValori(context);
             }
         });

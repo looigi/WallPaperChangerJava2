@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -129,11 +131,13 @@ public class UtilitiesGlobali {
         return mimeType;
     }
 
-    public void ImpostaServizioGPS(Context context, String Azione) {
+    public void ImpostaServizioGPS(Context context, String Azione, String daDove) {
         switch(Azione) {
             case "CONTROLLO_ATTIVAZIONE":
                 if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
-                    VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn();
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().ControlloAccSpegn(
+                            "Imposta Servizio GPS da " + daDove
+                    );
                 }
                 break;
         }
@@ -549,7 +553,14 @@ public class UtilitiesGlobali {
     public boolean checkWifiOnAndConnected() {
         Context context = UtilitiesGlobali.instance.tornaContextValido();
         if (context != null) {
-            WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            boolean hasInternet = nc != null && nc.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            VariabiliStaticheStart.getInstance().setCeWifi(hasInternet);
+
+            return hasInternet;
+
+            /* WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
             if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
 
@@ -562,7 +573,7 @@ public class UtilitiesGlobali {
                 return true; // Connected to an access point
             } else {
                 return false; // Wi-Fi adapter is OFF
-            }
+            } */
         } else {
             return false; // Context nullo
         }

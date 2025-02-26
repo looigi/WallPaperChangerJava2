@@ -118,7 +118,7 @@ public class ServizioInterno extends Service {
             intentGPS = new Intent(this, GestioneGPS.class);
             startForegroundService(intentGPS);
 
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            /* Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -129,7 +129,7 @@ public class ServizioInterno extends Service {
                     startForegroundService(intentGPS);
                 }
             };
-            handlerTimer.postDelayed(rTimer, 500);
+            handlerTimer.postDelayed(rTimer, 500); */
         }
         // SERVIZIO GPS
 
