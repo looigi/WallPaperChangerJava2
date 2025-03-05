@@ -91,13 +91,13 @@ public class AndroidCameraApi extends Activity {
         act = this;
         context = this;
 
-        String rit = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "AndroidCamera");
+        /* String rit = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "AndroidCamera");
         if (!rit.equals("OK")) {
             UtilitiesGlobali.getInstance().ApreToast(this,
                     "Impossibile leggere le impostazioni");
 
             return;
-        }
+        } */
 
         Attiva();
     }

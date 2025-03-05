@@ -88,6 +88,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:enabled="false"
+                    android:textColor="@color/Nero"
                     android:layout_height="wrap_content"
                     android:text="JPG" />
 
@@ -95,6 +96,7 @@
                     android:id="@+id/optMascherata"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:textColor="@color/Nero"
                     android:enabled="false"
                     android:layout_height="wrap_content"
                     android:checked="true"

@@ -396,7 +396,7 @@ public class GestioneNotificheTasti {
                 Notification notification = StartNotifica(context);
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(VariabiliStaticheTasti.NOTIFICATION_CHANNEL_ID, notification);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

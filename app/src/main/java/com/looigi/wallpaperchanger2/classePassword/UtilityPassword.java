@@ -1,18 +1,13 @@
 package com.looigi.wallpaperchanger2.classePassword;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.os.HandlerThread;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.utilities.LogInterno;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 public class UtilityPassword {

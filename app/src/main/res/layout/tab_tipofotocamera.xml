@@ -33,6 +33,7 @@
             <RadioButton
                 android:id="@+id/optFrontale"
                 android:layout_width="wrap_content"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content"
                 android:text="Frontale" />
 
@@ -46,6 +47,7 @@
                     android:id="@+id/optRetro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/Nero"
                     android:checked="true"
                     android:text="Retro" />
             </LinearLayout>

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.Segnale;
+package com.looigi.wallpaperchanger2.utilities.Segnale;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,7 +13,6 @@ import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
@@ -21,7 +20,6 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.watchDog.VariabiliStaticheWatchdog;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class ControlloSegnale2 extends Service {
@@ -74,13 +72,13 @@ public class ControlloSegnale2 extends Service {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Controllo segnale segnale wifi. E' attivo: " + wifi);
 
-            if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+            /* if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
                 // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
                 /* UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                         "CONTROLLO_ATTIVAZIONE",
-                        "Controllo segnale"); */
+                        "Controllo segnale"); * /
                 // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
-            }
+            } */
 
             vecchioWifi = wifi;
         }

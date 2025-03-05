@@ -45,11 +45,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:textSize="16dp"
                         android:text="Wallpaper"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -79,10 +78,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="LooWebPlayer"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -112,10 +110,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Onomastici"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -145,10 +142,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Password"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -177,11 +173,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:textSize="16dp"
                         android:text="Films"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -213,6 +208,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:textSize="16dp"
                         android:text="Detector"
                         android:layout_height="wrap_content">
@@ -357,6 +353,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:textSize="16dp"
                         android:text="Mappa"
                         android:layout_height="wrap_content">
@@ -391,10 +388,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Fetekkie"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -424,10 +420,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Modifiche"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -457,10 +452,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Orari"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -490,10 +484,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Impostazioni"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -524,9 +517,8 @@
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
                         android:text="Backup / Restore"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:textColor="@color/Verde_Scuro"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -556,10 +548,9 @@
                         android:layout_weight="6"
                         android:layout_marginTop="10dp"
                         android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
                         android:text="Uscita"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

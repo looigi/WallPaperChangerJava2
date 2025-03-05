@@ -13,11 +13,11 @@
         android:id="@+id/txtImmagineDati"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
+        android:textColor="@color/Nero"
         android:background="@drawable/bordato"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="1dp"
-        android:layout_height="wrap_content">
-    </TextView>
+        android:layout_height="wrap_content" />
 
     <com.canhub.cropper.CropImageView
         android:visibility="gone"
@@ -57,6 +57,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:text="Contrasto"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content" />
 
             <SeekBar
@@ -266,9 +267,7 @@
             android:layout_width="wrap_content"
             android:textColor="@color/Blue"
             android:layout_height="wrap_content"
-            android:text="Modalità salvataggio">
-
-        </TextView>
+            android:text="Modalità salvataggio" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -320,9 +319,7 @@
                     android:layout_weight="3"
                     android:gravity="left"
                     android:layout_height="wrap_content"
-                    android:text="Angolo">
-
-                </TextView>
+                    android:text="Angolo" />
 
                 <EditText
                     android:id="@+id/txtAngolo"
@@ -414,9 +411,7 @@
                 android:layout_width="match_parent"
                 android:lines="1"
                 android:layout_height="wrap_content"
-                android:text="Percentuale">
-
-            </TextView>
+                android:text="Percentuale" />
 
             <SeekBar
                 android:id="@+id/seekBarDimensioni"

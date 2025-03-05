@@ -113,7 +113,7 @@
 
                 <TextView
                     android:gravity="start"
-                    android:textColor="@color/Blue"
+                    android:textColor="@color/Nero"
                     android:textSize="15sp"
                     android:layout_width="0dp"
                     android:text="Data"
@@ -137,7 +137,7 @@
 
                 <TextView
                     android:gravity="start"
-                    android:textColor="@color/Blue"
+                    android:textColor="@color/Nero"
                     android:textSize="15sp"
                     android:layout_width="0dp"
                     android:text="Arbitro"
@@ -162,7 +162,7 @@
 
                 <TextView
                     android:gravity="start"
-                    android:textColor="@color/Blue"
+                    android:textColor="@color/Nero"
                     android:textSize="15sp"
                     android:layout_width="0dp"
                     android:text="Località"
@@ -187,7 +187,7 @@
 
                 <TextView
                     android:gravity="start"
-                    android:textColor="@color/Blue"
+                    android:textColor="@color/Nero"
                     android:textSize="15sp"
                     android:layout_width="0dp"
                     android:text="Spettatori"

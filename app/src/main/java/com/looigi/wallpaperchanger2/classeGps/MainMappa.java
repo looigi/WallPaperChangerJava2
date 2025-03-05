@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.FileProvider;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -49,7 +52,9 @@ import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -59,7 +64,8 @@ import java.util.Date;
 import java.util.List;
 
 public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
-    SupportMapFragment mapFragment;
+    private static final String NomeMaschera = "Gestione_GPS";
+    private SupportMapFragment mapFragment;
     private Handler handlerTimer;
     private Runnable rTimer;
     private String dataOdierna;
@@ -76,6 +82,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private final int livelloZoomStandard = 16;
     private Polyline polylineSegnale;
     private Polyline polylineVelocita;
+    private List<Circle> circolettiPS;
+    private List<Marker> markersPS;
+    private List<Marker> markersPA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +94,13 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         this.context = this;
         this.act = this;
         primoPassaggio = true;
+
+        VariabiliStaticheGPS.getInstance().setMappeAperte(true);
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Apertura mappa");
 
         // db_dati_gps db = new db_dati_gps(context);
         // db.CaricaImpostazioni();
@@ -230,11 +246,76 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
                 DisegnaPath();
+                disegnaMarkersPS();
+                AggiungeMarkers(mappa);
 
                 GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
                 UtilitiesGlobali.getInstance().ApreToast(context,
                         "Eliminati dati gps per la data " + dataOdierna);
+            }
+        });
+
+        ImageView imgEs = act.findViewById(R.id.imgMappaEstrai);
+        imgEs.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db_dati_gps db = new db_dati_gps(context);
+                String Dati = db.EstraiPosizioni(dataOdierna);
+                db.ChiudeDB();
+
+                if (!Dati.isEmpty()) {
+                    String Cartella = context.getFilesDir() + "/DatiGPS";
+                    String SoloNome = "DatiGPS_" + dataOdierna.replace("/", "_") + ".csv";
+                    Files.getInstance().CreaCartelle(context.getFilesDir() + "/DatiGPS");
+                    Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome);
+                    Files.getInstance().ScriveFile(
+                            Cartella,
+                            SoloNome,
+                            Dati);
+
+                    File f = new File(Cartella + "/" + SoloNome);
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, SoloNome);
+                    i.putExtra(Intent.EXTRA_TEXT, "Path GPS " + dataOdierna);
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                    i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i, "Share Dati GPS"));
+
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome);
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 10000);
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessun dato presente");
+                }
+            }
+        });
+
+        ImageView imgET = act.findViewById(R.id.imgMappaEliminaTutto);
+        imgET.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db_dati_gps db = new db_dati_gps(context);
+                db.EliminaTutto();
+                db.ChiudeDB();
+
+                VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
+
+                DisegnaPath();
+                disegnaMarkersPS();
+                AggiungeMarkers(mappa);
+
+                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                UtilitiesGlobali.getInstance().ApreToast(context,
+                        "Eliminati tutti i dati gps");
             }
         });
 
@@ -313,6 +394,27 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (circolettiPS != null) { circolettiPS.clear(); }
+        if (markersPS != null) { markersPS.clear(); }
+        if (markersPA != null) { markersPA.clear(); }
+
+        if (mappa != null) { mappa.clear(); }
+
+        if (polylineSegnale != null) polylineSegnale.remove();
+        if (polylineVelocita != null) polylineVelocita.remove();
+
+        VariabiliStaticheGPS.getInstance().setMappeAperte(false);
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Chiusura mappa");
     }
 
     private int ritornaColoreSegnale(StrutturaGps s) {
@@ -423,12 +525,22 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
         handlerTimer.postDelayed(rTimer, 10000);
 
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Timer disegno mappa attivato");
+
         DisegnaPath();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // if (handlerTimer == null) {
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Mappa pronta");
+
             mappa = googleMap;
 
             mappa.setOnMapClickListener(new GoogleMap.OnMapClickListener()
@@ -504,6 +616,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             });
 
             // googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            // googleMap.setMaxZoomPreference(18.0f);
 
             disegnaMarkersPS();
 
@@ -516,10 +629,19 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             return;
         }
 
+        circolettiPS = new ArrayList<>();
+        markersPS = new ArrayList<>();
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Disegno markers PS");
+
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 boolean aggiungePunti = (bcs == 0);
+
                 for (StrutturaPuntiSpegnimento loc : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
                     BitmapDrawable bitmapDraw = (BitmapDrawable) getResources().getDrawable(R.drawable.satellite_off);
                     Bitmap b = bitmapDraw.getBitmap();
@@ -535,24 +657,40 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                         bcs++;
                     }
 
-                    mappa.addCircle(new CircleOptions()
+                    Circle circolo = mappa.addCircle(new CircleOptions()
                             .center(ll)
                             .radius(VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS())
                             .strokeWidth(0f)
                             .fillColor(0x440000FF));
-                    
-                    mappa.addMarker(new MarkerOptions()
+                    circolettiPS.add(circolo);
+
+                    Marker marcher = mappa.addMarker(new MarkerOptions()
                             .position(ll)
                             .title(loc.getNome())
                             .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
                     );
+                    markersPS.add(marcher);
                 }
+
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Disegno markers. Quanti: " + markersPS.size());
             }
         }, 100);
     }
 
     private void DisegnaPath() {
         if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+            return;
+        }
+
+        if (!VariabiliStaticheGPS.getInstance().isMappeAperte()) {
+            mappa.clear();
+
+            if (polylineSegnale != null) polylineSegnale.remove();
+            if (polylineVelocita != null) polylineVelocita.remove();
+
             return;
         }
 
@@ -577,6 +715,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         }
 
         List<StrutturaGps> listaGPS = VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti();
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Disegno punti. Quanti: " + listaGPS.size());
 
         if (listaGPS.isEmpty()) {
             mappa.clear();
@@ -711,20 +854,28 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             return;
         }
 
+        markersPA = new ArrayList<>();
+
         StrutturaGps s = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
         if (s != null) {
-            int height = 120;
-            int width = 120;
+            int height = 80;
+            int width = 80;
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.marker);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-            googleMap.addMarker(new MarkerOptions()
+            Marker m = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(s.getLat(), s.getLon()))
                     .title("Posizione Attuale")
                     .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
             );
+            markersPA.add(m);
         }
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Disegno marker posizione attuale");
     }
 
     @Override
@@ -750,12 +901,22 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     protected void onRestart() {
         super.onRestart();
 
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Restart mappa");
+
         disegnaMarkersPS();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        UtilityGPS.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Resume mappa");
 
         disegnaMarkersPS();
     }

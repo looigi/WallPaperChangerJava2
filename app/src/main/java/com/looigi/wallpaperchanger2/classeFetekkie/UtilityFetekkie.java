@@ -18,7 +18,7 @@ import com.looigi.wallpaperchanger2.classeFetekkie.webservice.ChiamateWSFET;
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.DownloadImmagineFET;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

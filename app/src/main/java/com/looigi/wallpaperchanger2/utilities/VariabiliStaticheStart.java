@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
+
 public class VariabiliStaticheStart {
     private static VariabiliStaticheStart instance = null;
 

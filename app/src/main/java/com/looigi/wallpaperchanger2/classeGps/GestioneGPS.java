@@ -323,16 +323,16 @@ public class GestioneGPS extends Service {
                 NomeMaschera,
                 "Controllo disattivazione/attivazione. Controllo wifi connesso: " + wifi); */
 
-        boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
+        /* boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
         if (!VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
             wifi = false;
         }
 
         // METTO PER DEBUG
         wifi = false;
-        // METTO PER DEBUG
+        // METTO PER DEBUG */
 
-        if (wifi) {
+        /* if (wifi) {
             if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
@@ -346,14 +346,14 @@ public class GestioneGPS extends Service {
                         context,
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Non faccio nulla. Già bloccato");
-            } */
-        } else {
+            } * /
+        } else { */
             if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Riattivo. " +
-                                "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi() + ". Da " + daDove);
+                        "Controllo disattivazione/attivazione. Riattivo. "); // +
+                             //   "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi() + ". Da " + daDove);
 
                 AbilitaGPS("Controllo Acc/Spegn. Da " + daDove);
             } /* else {
@@ -362,7 +362,7 @@ public class GestioneGPS extends Service {
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Non faccio nulla. Già attivo");
             } */
-        }
+        // }
 
         /*
         StrutturaAccensioneGPS s = VariabiliStaticheGPS.getInstance().getAccensioneGPS();
@@ -812,14 +812,14 @@ public class GestioneGPS extends Service {
         boolean DentroPuntoDiSpegnimento = false;
         String Nome = "";
 
-        if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+        /* if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
             if (VariabiliStaticheStart.getInstance().isCeWifi()) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                         "Evito il controllo PS. Wifi attivo");
 
                 return false;
             }
-        }
+        } */
 
         for (StrutturaPuntiSpegnimento s : VariabiliStaticheGPS.getInstance().getListaPuntiDiSpegnimento()) {
             double distanza = meterDistanceBetweenPoints(

@@ -46,12 +46,12 @@
                 android:layout_height="wrap_content"
                 android:text="Visualizza Percorso" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <!-- <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sWifi"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Blocco per wifi attivo" />
+                android:text="Blocco per wifi attivo" /> -->
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sPuntiDiSospensione"

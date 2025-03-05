@@ -280,7 +280,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 TipoOperazione,
                 NS,
                 SA,
-                10000,
+                30000,
                 ApriDialog);
     }
 

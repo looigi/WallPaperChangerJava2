@@ -76,6 +76,8 @@
 
         <activity
             android:name=".MainStart"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -339,7 +341,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".Segnale.ControlloSegnale2" />
+        <service android:name=".utilities.Segnale.ControlloSegnale2" />
 
         <service android:name=".classePlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 

@@ -145,7 +145,8 @@ public class db_dati_gps {
                         + "'" + (VariabiliStaticheGPS.getInstance().isMostraPercorso() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() ? "S" : "N") + "', "
-                        + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
+                        // + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
+                        + "'N' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -171,7 +172,7 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setMostraPercorso(true);
         VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(true);
         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(true);
-        VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
+        // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
     }
 
     public int CaricaImpostazioni(String daDove) {
@@ -188,7 +189,7 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setMostraPercorso(c.getString(2).equals("S"));
                         VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(c.getString(3).equals("S"));
                         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(c.getString(4).equals("S"));
-                        VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
+                        // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
 
                         return 0;
                     } catch (Exception e) {
@@ -528,6 +529,20 @@ public class db_dati_gps {
         }
     }
 
+    public void EliminaTutto() {
+        if (myDB != null) {
+            try {
+                String sql = "DELETE FROM posizioni";
+                myDB.execSQL(sql);
+
+                CompattaDB();
+            } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore eliminazione tutti i dati: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e));
+            }
+        }
+    }
+
     public List<StrutturaGps> RitornaPosizioni(String Data) {
         List<StrutturaGps> lista = new ArrayList<>();
 
@@ -578,6 +593,59 @@ public class db_dati_gps {
         }
 
         return lista;
+    }
+
+    public String EstraiPosizioni(String Data) {
+        String Ritorno = "";
+
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM posizioni Where data = '" + Data + "' Order By ora", null);
+                c.moveToFirst();
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+                    do {
+                        StrutturaGps s = new StrutturaGps();
+                        s.setData(c.getString(0));
+                        s.setOra(c.getString(1));
+                        s.setLat(Double.parseDouble(c.getString(2)));
+                        s.setLon(Double.parseDouble(c.getString(3)));
+                        s.setSpeed(Float.parseFloat(c.getString(4)));
+                        s.setAltitude(Float.parseFloat(c.getString(5)));
+                        s.setAccuracy(Float.parseFloat(c.getString(6)));
+                        s.setDistanza(Float.parseFloat(c.getString(7)));
+                        s.setWifi(c.getString(8).equals("S"));
+                        s.setLivelloSegnale(c.getInt(9));
+                        s.setTipoSegnale(c.getString(10));
+                        s.setLevel(c.getInt(11));
+
+                        Ritorno += s.getData() + ";" +
+                                s.getOra() + ";" +
+                                s.getLat() + ";" +
+                                s.getLon() + ";" +
+                                s.getSpeed() + ";" +
+                                s.getAltitude() + ";" +
+                                s.getAccuracy() + ";" +
+                                s.getDistanza() + ";" +
+                                s.isWifi() + ";" +
+                                s.getLivelloSegnale() + ";" +
+                                s.getTipoSegnale() + ";" +
+                                s.getLevel() + ";\n";
+                    } while (c.moveToNext());
+                } else {
+                    return Ritorno;
+                }
+                c.close();
+            } catch (Exception e) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore estrazione dati: " + UtilityWallpaper.getInstance().PrendeErroreDaException(e) +
+                                " Riprova: " + Riprova);
+            }
+        } else {
+            return Ritorno;
+        }
+
+        return Ritorno;
     }
 
     public StrutturaGps RitornaUltimaPosizione(String Data) {

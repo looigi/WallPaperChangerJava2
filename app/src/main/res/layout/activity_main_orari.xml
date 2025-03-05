@@ -127,6 +127,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
                         android:text="Impostazioni"
                         android:layout_height="wrap_content"/>
 
@@ -148,6 +149,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
                         android:text="Statistiche"
                         android:layout_height="wrap_content"/>
 
@@ -169,6 +171,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
                         android:text="Elimina Giornata"
                         android:layout_height="wrap_content"/>
 
@@ -190,6 +193,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
                         android:text="Salva"
                         android:layout_height="wrap_content"/>
 
@@ -279,6 +283,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="8"
                                 android:text="Ore Lavorative:"
+                                android:textColor="@color/Nero"
                                 android:textStyle="bold"
                                 android:singleLine="true"
                                 android:textSize="16sp"
@@ -287,6 +292,7 @@
                             <EditText
                                 android:inputType="number"
                                 android:id="@+id/txtOreLavoro"
+                                android:textColor="@color/Blue"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:singleLine="true"
@@ -318,6 +324,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="7"
                                 android:text="Entrata:"
+                                android:textColor="@color/Nero"
                                 android:textStyle="bold"
                                 android:singleLine="true"
                                 android:textSize="16sp"
@@ -326,6 +333,7 @@
                             <EditText
                                 android:id="@+id/txtEntrata"
                                 android:layout_width="0dp"
+                                android:textColor="@color/Blue"
                                 android:layout_weight="2"
                                 android:singleLine="true"
                                 android:textSize="16sp"
@@ -357,6 +365,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="4"
                                 android:text="Lavoro:"
+                                android:textColor="@color/Nero"
                                 android:textStyle="bold"
                                 android:singleLine="true"
                                 android:textSize="16sp"
@@ -398,6 +407,7 @@
                                 android:layout_weight="4"
                                 android:text="Commessa:"
                                 android:textStyle="bold"
+                                android:textColor="@color/Nero"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -593,6 +603,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="4"
                                 android:text="Tempo:"
+                                android:textColor="@color/Nero"
                                 android:textStyle="bold"
                                 android:singleLine="true"
                                 android:textSize="16sp"
@@ -634,6 +645,7 @@
                                 android:layout_weight="6"
                                 android:text="Gradi:"
                                 android:textStyle="bold"
+                                android:textColor="@color/Nero"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -643,6 +655,7 @@
                                 android:id="@+id/txtGradi"
                                 android:layout_width="0dp"
                                 android:layout_weight="3"
+                                android:textColor="@color/Blue"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -683,6 +696,7 @@
                                 android:layout_weight="4"
                                 android:text="Pasticca:"
                                 android:textStyle="bold"
+                                android:textColor="@color/Nero"
                                 android:singleLine="true"
                                 android:textSize="16sp"
                                 android:layout_height="wrap_content" />
@@ -725,6 +739,7 @@
                     <EditText
                         android:id="@+id/edtNote"
                         android:enabled="false"
+                        android:textColor="@color/Blue"
                         android:layout_width="0dp"
                         android:layout_weight="9"
                         android:maxLines="5"
@@ -844,6 +859,7 @@
 
         <EditText
             android:id="@+id/edtValori"
+            android:textColor="@color/Blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -923,6 +939,7 @@
                 <EditText
                     android:id="@+id/edtTestoRicercaNuovo"
                     android:layout_width="0dp"
+                    android:textColor="@color/Blue"
                     android:layout_weight="4"
                     android:layout_height="wrap_content" />
 

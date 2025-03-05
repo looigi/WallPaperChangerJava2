@@ -30,6 +30,7 @@
                 android:id="@+id/edtAlias1"
                 android:layout_width="0dp"
                 android:layout_weight="6"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -73,6 +74,7 @@
                 android:inputType="number"
                 android:layout_width="0dp"
                 android:layout_weight="6"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -129,6 +131,7 @@
                 android:id="@+id/edtTag"
                 android:layout_width="0dp"
                 android:layout_weight="6"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 

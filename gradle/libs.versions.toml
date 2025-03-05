@@ -4,6 +4,8 @@ afAndroidSdk = "6.15.1"
 agp = "8.7.3"
 androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
+androidMailVersion = "1.6.2"
+androidMapsUtilsVersion = "3.11.1"
 core = "1.13.1"
 faceDetection = "16.1.7"
 googleApiClientAndroid = "1.22.0"
@@ -39,10 +41,13 @@ acra-mail = { module = "ch.acra:acra-mail", version.ref = "acraVersion" }
 acra-notification = { module = "ch.acra:acra-notification", version.ref = "acraVersion" }
 acra-toast = { module = "ch.acra:acra-toast", version.ref = "acraVersion" }
 af-android-sdk = { module = "com.appsflyer:af-android-sdk", version.ref = "afAndroidSdk" }
+android-activation = { module = "com.sun.mail:android-activation", version.ref = "androidMailVersion" }
 android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
+android-mail-v162 = { module = "com.sun.mail:android-mail", version.ref = "androidMailVersion" }
 core = { module = "androidx.core:core", version.ref = "core" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
+google-android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtilsVersion" }
 google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
 google-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "googleApiServicesDrive" }
 google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientGson" }

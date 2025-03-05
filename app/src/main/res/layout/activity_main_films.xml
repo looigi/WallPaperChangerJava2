@@ -23,14 +23,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Categoria"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtFiltroCategoriaFilms"
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content">
 
             </EditText>
@@ -67,14 +67,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Filtro"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtFiltroFilms"
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -303,16 +303,15 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Filtro"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtSpostaFiltroCategoria"
                 android:layout_width="0dp"
                 android:layout_weight="3"
-                android:layout_height="wrap_content">
-
-            </EditText>
+                android:textColor="@color/Blue"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -324,8 +323,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Categoria"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnSpostaCategorie"

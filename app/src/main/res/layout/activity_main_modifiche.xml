@@ -253,6 +253,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="Esporta"
+                    android:textColor="@color/Nero"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
@@ -274,6 +275,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="Importa"
+                    android:textColor="@color/Nero"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
@@ -295,6 +297,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:maxLines="1"
+                    android:textColor="@color/Nero"
                     android:text="Crea e invia"
                     android:layout_height="wrap_content"/>
 
@@ -324,6 +327,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="Nuova Mod."
+                    android:textColor="@color/Nero"
                     android:layout_height="wrap_content"/>
 
                 <ImageView

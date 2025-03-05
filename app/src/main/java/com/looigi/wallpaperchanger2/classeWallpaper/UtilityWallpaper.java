@@ -2,24 +2,18 @@ package com.looigi.wallpaperchanger2.classeWallpaper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
-import com.looigi.wallpaperchanger2.utilities.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

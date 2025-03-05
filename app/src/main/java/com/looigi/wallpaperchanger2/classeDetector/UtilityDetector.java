@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.utilities.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.RichiestaPath;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;

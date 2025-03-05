@@ -76,7 +76,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
         android:padding="3dp"
-        android:background="@drawable/bianco_trasparente"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -86,54 +85,202 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/sSegue"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text="Segue" />
+            <HorizontalScrollView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgMappeSalvate"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/mappe">
-            </ImageView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgMappaRefresh"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icona_refresh">
-            </ImageView>
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/sSegue"
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:text="Segue " />
 
-            <ImageView
-                android:id="@+id/imgScattaFotoMappa"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/screenshot">
-            </ImageView>
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgMappaElimina"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/elimina">
-            </ImageView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Salvate"
+                            android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:id="@+id/imgMappaCerca"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icona_cerca">
-            </ImageView>
+                        <ImageView
+                            android:id="@+id/imgMappeSalvate"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/mappe" />
+                    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/settings" />
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Refresh"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaRefresh"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icona_refresh" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Foto"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgScattaFotoMappa"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/screenshot" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Salva"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaEstrai"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/download" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Elimina"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaElimina"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/elimina" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="El. Tutto"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaEliminaTutto"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/elimina_quadrato" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Cerca"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaCerca"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icona_cerca" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Settings"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgSettings"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/settings" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
     </RelativeLayout>
 

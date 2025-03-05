@@ -86,6 +86,16 @@ public class GestioneMappa {
         listaGPS = new ArrayList<>();
     }
 
+    public int RitornaQuantiPunti() {
+        int rit = 0;
+
+        if (listaGPS != null) {
+            rit = listaGPS.size();
+        }
+
+        return rit;
+    }
+
     public List<StrutturaGps> RitornaPunti() {
         calcolaDistanza();
 

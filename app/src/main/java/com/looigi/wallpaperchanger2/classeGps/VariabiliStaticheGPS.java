@@ -51,7 +51,16 @@ public class VariabiliStaticheGPS {
     private String ultimoDataPunto = "";
     private boolean puntiSospensioneAttivi = true;
     private boolean accuracyAttiva = true;
-    private boolean bloccoPerWifi = true;
+    // private boolean bloccoPerWifi = true;
+    private boolean MappeAperte = false;
+
+    public boolean isMappeAperte() {
+        return MappeAperte;
+    }
+
+    public void setMappeAperte(boolean mappeAperte) {
+        MappeAperte = mappeAperte;
+    }
 
     public int getQuantiPuntiSumappa() {
         return quantiPuntiSumappa;
@@ -61,13 +70,13 @@ public class VariabiliStaticheGPS {
         this.quantiPuntiSumappa = quantiPuntiSumappa;
     }
 
-    public boolean isBloccoPerWifi() {
+    /* public boolean isBloccoPerWifi() {
         return bloccoPerWifi;
     }
 
     public void setBloccoPerWifi(boolean bloccoPerWifi) {
         this.bloccoPerWifi = bloccoPerWifi;
-    }
+    } */
 
     public boolean isAccuracyAttiva() {
         return accuracyAttiva;

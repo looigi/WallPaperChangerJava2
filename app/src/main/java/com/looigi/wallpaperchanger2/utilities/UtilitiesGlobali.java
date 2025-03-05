@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
@@ -22,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
-import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
@@ -36,6 +33,7 @@ import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
 import java.io.BufferedInputStream;
@@ -53,6 +51,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static androidx.core.app.ActivityCompat.finishAffinity;
+
+import javax.mail.MessagingException;
 
 public class UtilitiesGlobali {
     private static final String NomeMaschera = "Utilities_Globali";
@@ -614,5 +614,16 @@ public class UtilitiesGlobali {
         }
 
         return Nominativo;
+    }
+
+    public void InvioMail(Context context, String Mail, String Oggetto, String Corpo) {
+        new Thread(() -> {
+            try {
+                sendMail sender = new sendMail();
+                sender.sendMail(Mail, Oggetto, Corpo);
+            } catch (MessagingException e) {
+                ApreToast(context, "Mail non inviata");
+            }
+        }).start();
     }
 }

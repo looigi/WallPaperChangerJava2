@@ -24,6 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="4"
                 android:text="Anno"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content" />
 
             <Spinner
@@ -85,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:lines="1"
+                android:textColor="@color/Nero"
                 android:text="Competizione" />
 
             <Spinner
@@ -165,6 +167,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:textSize="20sp"
+                    android:textColor="@color/Nero"
                     android:gravity="center_horizontal"
                     android:text="Giornata"
                     android:layout_height="wrap_content" />
@@ -216,6 +219,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Classifica"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -237,6 +241,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Marcatori"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -258,6 +263,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Calendario"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -279,6 +285,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Squadre"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -300,6 +307,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Giocatori"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -321,6 +329,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Allenatori"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -342,6 +351,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Mercato"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -363,6 +373,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Fonti"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -384,6 +395,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Stati"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -405,7 +417,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Ruoli"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content" />
 
                     <ImageView
                         android:id="@+id/imgRuoli"
@@ -442,6 +455,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="Totale"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content" />
 
                     <RadioButton
@@ -629,6 +643,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"
                         android:text="Squadra" />
 
@@ -676,6 +691,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"
                         android:text="Squadra" />
 
@@ -739,12 +755,14 @@
                         android:id="@+id/optAcquisti"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:text="Acquisti"
                         android:layout_height="wrap_content" />
 
                     <RadioButton
                         android:id="@+id/optCessioni"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="1"
                         android:text="Cessioni"
                         android:layout_height="wrap_content" />
@@ -761,6 +779,7 @@
                         android:id="@+id/optInvernale"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:text="Invernale"
                         android:layout_height="wrap_content" />
 
@@ -768,6 +787,7 @@
                         android:id="@+id/optEstivo"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:text="Estivo"
                         android:layout_height="wrap_content" />
                 </RadioGroup>
@@ -821,6 +841,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Anno"
+            android:textColor="@color/Nero"
             android:textSize="16dp"
             android:gravity="center_horizontal" />
 
@@ -832,6 +853,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="3"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content"
                 android:text="Descrizione" />
 
@@ -839,6 +861,7 @@
                 android:id="@+id/edtDescrizioneAnno"
                 android:layout_width="0dp"
                 android:layout_weight="7"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -850,6 +873,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="3"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content"
                 android:text="Punti vittoria" />
 
@@ -858,6 +882,7 @@
                 android:layout_width="0dp"
                 android:inputType="number"
                 android:layout_weight="7"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 

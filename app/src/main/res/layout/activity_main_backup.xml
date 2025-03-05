@@ -31,6 +31,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
+                    android:textColor="@color/Nero"
                     android:text="Effettua backup"
                     android:layout_height="wrap_content">
 
@@ -66,6 +67,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
+                    android:textColor="@color/Nero"
                     android:text="Effettua restore"
                     android:layout_height="wrap_content">
 
@@ -101,6 +103,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
+                    android:textColor="@color/Nero"
                     android:text="Importa dalla rete"
                     android:layout_height="wrap_content">
 

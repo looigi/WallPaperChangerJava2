@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeAvvio.db_debug;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 
 import java.util.ArrayList;
 
@@ -149,6 +150,11 @@ public class CaricaSettaggi {
     }
 
     public String CaricaImpostazioniGlobali(Context c, String daDove) {
+        UtilitiesGlobali.getInstance().InvioMail(c,
+                "looigi@gmail.com",
+                "Wallpaper Changer II",
+                "Carica Impostazioni Globali. Proveniente da " + daDove);
+
         String ritorno = "OK";
 
         Context context = c;

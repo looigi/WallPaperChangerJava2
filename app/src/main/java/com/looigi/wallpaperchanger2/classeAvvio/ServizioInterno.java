@@ -14,16 +14,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainStart;
-import com.looigi.wallpaperchanger2.Segnale.ControlloSegnale2;
+import com.looigi.wallpaperchanger2.utilities.Segnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 // import com.looigi.wallpaperchanger2.classeGps.ServizioDiAvvioGPS;
-import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
@@ -35,14 +33,12 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
-import com.looigi.wallpaperchanger2.utilities.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.utilities.cuffie.GestioneTastiCuffieNuovo;
 import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
-
-import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
 
 // implements SensorEventListener2
 public class ServizioInterno extends Service {

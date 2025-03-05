@@ -19,7 +19,7 @@
             android:layout_weight="4"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:text="Tipologia"></TextView>
+            android:text="Tipologia" />
 
         <Spinner
             android:id="@+id/spnTipologie"

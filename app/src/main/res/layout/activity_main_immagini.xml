@@ -23,14 +23,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Categoria"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtFiltroCategoriaMI"
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content">
 
             </EditText>
@@ -67,14 +67,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Filtro"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtFiltroImmagimi"
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -140,6 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Nuova cat."
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -162,6 +163,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Aggiunge"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -183,6 +185,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Modifica"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -204,6 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Elimina"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -225,6 +229,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Imm. Uguali"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -246,6 +251,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Imm. Fuori Cat."
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -267,6 +273,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Share"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -288,6 +295,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Imposta WP"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -309,6 +317,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Slideshow"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -330,6 +339,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Sposta Cat."
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -351,6 +361,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Copia su Sfondi"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -372,6 +383,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:text="Settings"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -431,16 +443,15 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Filtro"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtSpostaFiltroCategoria"
                 android:layout_width="0dp"
                 android:layout_weight="3"
-                android:layout_height="wrap_content">
-
-            </EditText>
+                android:textColor="@color/Blue"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -452,8 +463,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Categoria"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnSpostaCategorie"

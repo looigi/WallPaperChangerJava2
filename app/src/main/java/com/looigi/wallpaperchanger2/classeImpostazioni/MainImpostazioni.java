@@ -986,7 +986,7 @@ public class MainImpostazioni extends Activity {
             }
         });
 
-        SwitchCompat sWifi = act.findViewById(R.id.sWifi);
+        /* SwitchCompat sWifi = act.findViewById(R.id.sWifi);
         sWifi.setChecked(VariabiliStaticheGPS.getInstance().isBloccoPerWifi());
         sWifi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1000,7 +1000,7 @@ public class MainImpostazioni extends Activity {
                 UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                         "CONTROLLO_ATTIVAZIONE", "Main impostazioni Mappa 3");
             }
-        });
+        }); */
 
         SwitchCompat sAccuracy = act.findViewById(R.id.sAccuracy);
         sAccuracy.setChecked(VariabiliStaticheGPS.getInstance().isAccuracyAttiva());

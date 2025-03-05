@@ -1,8 +1,10 @@
-package com.looigi.wallpaperchanger2.utilities;
+package com.looigi.wallpaperchanger2.utilities.log;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -117,6 +119,10 @@ public class LogInterno {
 
 		if (lista == null) {
 			lista = new ArrayList<>();
+		}
+
+		if (Maschera == null) {
+			Maschera = "Maschera_Nulla";
 		}
 
 		StrutturaLog s = new StrutturaLog();

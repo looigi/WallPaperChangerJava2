@@ -66,7 +66,7 @@ public class GestioneNotificaGPS {
             setListenersTasti(contentView, context);
             setListeners(contentView);
 
-            Bitmap bmGps;
+            /* Bitmap bmGps;
             if (!VariabiliStaticheGPS.getInstance().isGpsAttivo() ||
                     VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
                 bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
@@ -97,14 +97,13 @@ public class GestioneNotificaGPS {
                     contentView.setViewVisibility(R.id.imgStop2, LinearLayout.VISIBLE);
                 }
             }
-            contentView.setImageViewBitmap(R.id.imgAreaPS, bmGpsPS);
+            contentView.setImageViewBitmap(R.id.imgAreaPS, bmGpsPS); */
 
-            if (VariabiliStaticheGPS.getInstance().getMappa() != null &&
-                    VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti() != null) {
+            if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                 long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
                 float dist = Math.round((distanza / 1000F) * 100) / 100F;
                 contentView.setTextViewText(R.id.txtPunti,
-                        "P.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size()) + "\n" +
+                        "Pt.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaQuantiPunti()) + " Dist.: " +
                                 "" + Float.toString(dist) + " Km.");
             } else {
                 contentView.setTextViewText(R.id.txtPunti,
@@ -112,7 +111,7 @@ public class GestioneNotificaGPS {
             }
 
             contentView.setTextViewText(R.id.txtData,
-                    "Last:\n" +
+                    "Last: " +
                     VariabiliStaticheGPS.getInstance().getUltimoDataPunto());
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheGPS.NOTIFICATION_CHANNEL_STRING);
@@ -180,11 +179,11 @@ public class GestioneNotificaGPS {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            Intent gps = new Intent(ctx, NotificationActionServiceGPS.class);
+            /* Intent gps = new Intent(ctx, NotificationActionServiceGPS.class);
             gps.putExtra("DO", "gps");
             PendingIntent pGps = PendingIntent.getService(ctx, 870, gps,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps);
+            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps); */
         }
     }
 

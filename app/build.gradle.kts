@@ -68,6 +68,9 @@ dependencies {
     implementation(libs.acra.toast)
     implementation(libs.acra.notification)
 
+    implementation (libs.android.mail.v162)
+    implementation (libs.android.activation)
+
     implementation(libs.ksoap2.android)
 
     implementation(libs.android.gif.drawable)

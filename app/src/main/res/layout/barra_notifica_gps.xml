@@ -45,25 +45,33 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:weightSum="10"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgSwitchGPSTasti"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/satellite" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgSwitchGPSTasti"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/satellite" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtPunti"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_gravity="start|center_vertical"
             android:layout_marginStart="5dp"
             android:layout_height="wrap_content"
-            android:text="Punti: 0\nDistanza: 0">
+            android:text="Punti: 0 Distanza: 0" />
 
-        </TextView>
-
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/imgAreaPS"
             android:layout_marginStart="5dp"
             android:layout_width="40dp"
@@ -89,16 +97,16 @@
             android:layout_marginStart="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/noenter" />
+            android:src="@drawable/noenter" /> -->
 
         <TextView
             android:id="@+id/txtData"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_weight="3"
             android:layout_marginStart="2dp"
             android:layout_height="wrap_content"
-            android:text="Punti: 0">
-
-        </TextView>
+            android:text="Data: " />
 
     </LinearLayout>
 

@@ -1023,12 +1023,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="Tempo"
+                android:textColor="@color/Nero"
                 android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/edtTempo"
                 android:layout_width="0dp"
                 android:layout_weight="4"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 

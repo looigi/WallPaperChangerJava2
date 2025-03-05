@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainStart  extends Activity {
+public class MainStart extends Activity {
     private static String NomeMaschera = "Main_Start";
     private Context context;
     private Activity act;
@@ -62,6 +62,11 @@ public class MainStart  extends Activity {
 
         context = this;
         act = this;
+
+        UtilitiesGlobali.getInstance().InvioMail(context,
+                "looigi@gmail.com",
+                "Wallpaper Changer II",
+                "Start Activity Principale.\nGià partito: " + VariabiliStaticheStart.getInstance().isGiaPartito());
 
         TextView txtTitolo = findViewById(R.id.txtStartTitolo);
         txtTitolo.setShadowLayer(
@@ -711,6 +716,28 @@ public class MainStart  extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("key", "valore_importante");
+
+        UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Save Instance State");
+
+        UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            String valore = savedInstanceState.getString("key");
+
+            UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Restore Instance State");
+
+            UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "onRestoreInstanceState");
+        }
     }
 
 }
