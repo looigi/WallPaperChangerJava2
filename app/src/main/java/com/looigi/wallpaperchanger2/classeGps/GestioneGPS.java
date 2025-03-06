@@ -579,9 +579,27 @@ public class GestioneGPS extends Service {
             //     return;
             // }
 
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            double altitude = location.getAltitude();
+            float speed = location.getSpeed();
+            float accuracy = location.getAccuracy();
+
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
             String currentDate = sdfD.format(calendar.getTime());
+
+            SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
+            String currentHour = sdfO.format(calendar.getTime());
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "\n\nLocation changed. Ingresso: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
+                            "Accuracy: " + location.getAccuracy() + "\n" +
+                            "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
+                            "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
+                            "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
+                            "Ora: " + currentHour
+            );
 
             // ultimoTSLocation = new Date().getTime();
 
@@ -672,15 +690,6 @@ public class GestioneGPS extends Service {
                 }
             } */
 
-            SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
-            String currentHour = sdfO.format(calendar.getTime());
-
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            double altitude = location.getAltitude();
-            float speed = location.getSpeed();
-            float accuracy = location.getAccuracy();
-
             StrutturaGps s = new StrutturaGps();
             s.setLat(latitude);
             s.setLon(longitude);
@@ -705,14 +714,7 @@ public class GestioneGPS extends Service {
                 VariabiliStaticheGPS.getInstance().setUltimoDataPunto(currentHour);
 
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "\n\nLocation changed: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
-                                "Accuracy: " + location.getAccuracy() + "\n" +
-                                "Distanza: " + distanza + "\n" +
-                                "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
-                                "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
-                                "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
-                                "OK: " + ok + "\n" +
-                                "Ora: " + currentHour
+                        "Location changed. SCRITTURA"
                 );
 
                 /* UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -777,7 +779,8 @@ public class GestioneGPS extends Service {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "\n\nOn Flush complete. RequestCode: " + requestCode + "\n\n");
         }
-/* @Override
+
+        /* @Override
         public void onLocationChanged(@NonNull List<Location> locations) {
             LocationListener.super.onLocationChanged(locations);
 
@@ -788,7 +791,7 @@ public class GestioneGPS extends Service {
         @Override
         public void onProviderDisabled(String provider) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "\n\nProvider disabilitato Provider: \" + provider + \"\n\n");
+                    "\n\nProvider disabilitato Provider: " + provider + "\n\n");
         }
     };
 

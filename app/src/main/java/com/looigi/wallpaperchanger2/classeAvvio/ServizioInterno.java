@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainStart;
@@ -85,6 +87,16 @@ public class ServizioInterno extends Service {
         wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 VariabiliStaticheWallpaper.channelName);
         wl.acquire();
+
+        /* Intent intentPM = new Intent();
+        String packageName = getPackageName();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            intentPM.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intentPM.setData(Uri.parse("package:" + packageName));
+            startActivity(intentPM);
+        } */
+        // CPU Attiva
 
         // CONTROLLO SEGNALE
         intentSegnale = new Intent(this, ControlloSegnale2.class);

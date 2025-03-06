@@ -599,38 +599,37 @@ public class db_dati_gps {
         String Ritorno = "";
 
         if (myDB != null) {
+            Ritorno += "DATA;" +
+                    "ORA;" +
+                    "LAT;" +
+                    "LON;" +
+                    "SPEED;" +
+                    "ALTITUDE;" +
+                    "ACCURACY;" +
+                    "DISTANZA;" +
+                    "WIFI;" +
+                    "LIV_SEGN;" +
+                    "TIPO_SEGN;" +
+                    "LEVEL;\n";
+
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM posizioni Where data = '" + Data + "' Order By ora", null);
                 c.moveToFirst();
                 if (c.getCount() > 0) {
                     c.moveToFirst();
                     do {
-                        StrutturaGps s = new StrutturaGps();
-                        s.setData(c.getString(0));
-                        s.setOra(c.getString(1));
-                        s.setLat(Double.parseDouble(c.getString(2)));
-                        s.setLon(Double.parseDouble(c.getString(3)));
-                        s.setSpeed(Float.parseFloat(c.getString(4)));
-                        s.setAltitude(Float.parseFloat(c.getString(5)));
-                        s.setAccuracy(Float.parseFloat(c.getString(6)));
-                        s.setDistanza(Float.parseFloat(c.getString(7)));
-                        s.setWifi(c.getString(8).equals("S"));
-                        s.setLivelloSegnale(c.getInt(9));
-                        s.setTipoSegnale(c.getString(10));
-                        s.setLevel(c.getInt(11));
-
-                        Ritorno += s.getData() + ";" +
-                                s.getOra() + ";" +
-                                s.getLat() + ";" +
-                                s.getLon() + ";" +
-                                s.getSpeed() + ";" +
-                                s.getAltitude() + ";" +
-                                s.getAccuracy() + ";" +
-                                s.getDistanza() + ";" +
-                                s.isWifi() + ";" +
-                                s.getLivelloSegnale() + ";" +
-                                s.getTipoSegnale() + ";" +
-                                s.getLevel() + ";\n";
+                        Ritorno += c.getString(0) + ";" +
+                                c.getString(1) + ";" +
+                                c.getString(2) + ";" +
+                                c.getString(3) + ";" +
+                                c.getString(4) + ";" +
+                                c.getString(5) + ";" +
+                                c.getString(6) + ";" +
+                                c.getString(7) + ";" +
+                                c.getString(8) + ";" +
+                                c.getString(9) + ";" +
+                                c.getString(10) + ";" +
+                                c.getString(11) + ";\n";
                     } while (c.moveToNext());
                 } else {
                     return Ritorno;
