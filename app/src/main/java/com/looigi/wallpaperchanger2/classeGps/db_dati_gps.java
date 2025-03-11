@@ -85,7 +85,7 @@ public class db_dati_gps {
                         + "posizioni "
                         + " (data VARCHAR, ora VARCHAR, latitudine VARCHAR, longitudine VARCHAR, speed VARCHAR, " +
                         "altitude VARCHAR, accuracy VARCHAR, distanza VARCHAR, wifi VARCHAR, livelloSegnale VARCHAR, " +
-                        "tipoConnessione VARCHAR, livello VARCHAR);";
+                        "tipoConnessione VARCHAR, livello VARCHAR, direzione VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS " +
@@ -476,7 +476,7 @@ public class db_dati_gps {
                 sql = "INSERT INTO"
                         + " posizioni"
                         + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, "
-                        + "distanza, wifi, livelloSegnale, tipoConnessione, livello)"
+                        + "distanza, wifi, livelloSegnale, tipoConnessione, livello, direzione)"
                         + " VALUES ("
                         + "'" + s.getData() + "', "
                         + "'" + s.getOra() + "', "
@@ -489,7 +489,8 @@ public class db_dati_gps {
                         + "'" + (s.isWifi()  ? "S" : "N") + "', "
                         + "'" + s.getLivelloSegnale() + "', "
                         + "'" + s.getTipoSegnale() + "', "
-                        + "'" + s.getLevel() + "' "
+                        + "'" + s.getLevel() + "', "
+                        + "'" + s.getDirezione() + "'"
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -566,6 +567,7 @@ public class db_dati_gps {
                         s.setLivelloSegnale(c.getInt(9));
                         s.setTipoSegnale(c.getString(10));
                         s.setLevel(c.getInt(11));
+                        s.setDirezione(c.getFloat(12));
 
                         lista.add(s);
                     } while (c.moveToNext());
@@ -610,7 +612,8 @@ public class db_dati_gps {
                     "WIFI;" +
                     "LIV_SEGN;" +
                     "TIPO_SEGN;" +
-                    "LEVEL;\n";
+                    "LEVEL;" +
+                    "DIREZIONE;\n";
 
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM posizioni Where data = '" + Data + "' Order By ora", null);
@@ -629,7 +632,8 @@ public class db_dati_gps {
                                 c.getString(8) + ";" +
                                 c.getString(9) + ";" +
                                 c.getString(10) + ";" +
-                                c.getString(11) + ";\n";
+                                c.getString(11) + ";" +
+                                c.getString(12) + ";\n";
                     } while (c.moveToNext());
                 } else {
                     return Ritorno;
@@ -666,6 +670,11 @@ public class db_dati_gps {
                     s.setAltitude(Float.parseFloat(c.getString(5)));
                     s.setAccuracy(Float.parseFloat(c.getString(6)));
                     s.setDistanza(Float.parseFloat(c.getString(7)));
+                    s.setWifi(c.getString(8).equals("S"));
+                    s.setLivelloSegnale(c.getInt(9));
+                    s.setTipoSegnale(c.getString(10));
+                    s.setLevel(c.getInt(11));
+                    s.setDirezione(c.getFloat(12));
 
                     lista = s;
                 }

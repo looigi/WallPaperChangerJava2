@@ -120,7 +120,7 @@ public class VariabiliStaticheWatchdog {
             Ritorno += "P.: " + VariabiliStaticheGPS.getInstance().getMappa().RitornaPunti().size() + " ";
         }
         Ritorno += "D.: " + VariabiliStaticheGPS.getInstance().getDistanzaTotale() + " ";
-        Ritorno += "PS: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti();
+        // Ritorno += "PS: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti();
 
         return Ritorno;
     }

@@ -33,6 +33,7 @@ public class VariabiliStaticheGPS {
     private Context context;
     private int idNotifica = 111119;
     public static String channelName = "WallPaperChangerII_GPS";
+    public static int puntiPerFreccia = 7;
     public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
     public static int NOTIFICATION_CHANNEL_ID = 9;
     private StrutturaAccensioneGPS accensioneGPS;
@@ -47,7 +48,7 @@ public class VariabiliStaticheGPS {
     private List<StrutturaPuntiSpegnimento> listaPuntiDiSpegnimento = new ArrayList<>();
     private int DistanzaMetriPerPS = 50;
     private ImmagineZoomabile imgMappa;
-    private boolean NonScriverePunti = false;
+    // private boolean NonScriverePunti = false;
     private String ultimoDataPunto = "";
     private boolean puntiSospensioneAttivi = true;
     private boolean accuracyAttiva = true;
@@ -102,13 +103,13 @@ public class VariabiliStaticheGPS {
         this.ultimoDataPunto = ultimoDataPunto;
     }
 
-    public boolean isNonScriverePunti() {
+    /* public boolean isNonScriverePunti() {
         return NonScriverePunti;
     }
 
     public void setNonScriverePunti(boolean nonScriverePunti) {
         NonScriverePunti = nonScriverePunti;
-    }
+    } */
 
     public ImmagineZoomabile getImgMappa() {
         return imgMappa;

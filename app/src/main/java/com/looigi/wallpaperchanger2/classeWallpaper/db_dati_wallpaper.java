@@ -187,10 +187,12 @@ public class db_dati_wallpaper {
     public boolean ScriveImmagineInLocale(String Nome, String Path, String Data, String Dimensione,
                                           String CartellaRemota) {
         if (myDB != null) {
+            String sql = "";
+
             try {
-                String sql = "INSERT INTO"
+                sql = "INSERT INTO"
                         + " ListaImmaginiLocali"
-                        + " (ImmagineNome, ImmaginePath, Data, Dimensione, CartellaRemota"
+                        + " (ImmagineNome, ImmaginePath, Data, Dimensione, CartellaRemota) "
                         + " VALUES ("
                         + "'" + Nome.replace("'","''") + "', "
                         + "'" + Path.replace("'","''") + "', "
@@ -200,6 +202,8 @@ public class db_dati_wallpaper {
                         + ")";
                 myDB.execSQL(sql);
             } catch (Exception e) {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " + sql);
+
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE Su scrittura immagini locali: " +
                         UtilityWallpaper.getInstance().PrendeErroreDaException(e));
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Pulizia tabelle");

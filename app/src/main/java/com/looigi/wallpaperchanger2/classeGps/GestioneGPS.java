@@ -13,13 +13,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
@@ -27,15 +24,11 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
-import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
-import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class GestioneGPS extends Service {
     private static final String NomeMaschera = "Gestione_GPS";
@@ -61,7 +54,7 @@ public class GestioneGPS extends Service {
 
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
         VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
-        VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
+        // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
         /* if (intent != null && intent.getAction() != null && intent.getAction().equals("CONTROLLO_ATTIVAZIONE")) {
             ControlloAccSpegn();
@@ -584,6 +577,7 @@ public class GestioneGPS extends Service {
             double altitude = location.getAltitude();
             float speed = location.getSpeed();
             float accuracy = location.getAccuracy();
+            float direzione = location.hasBearing() ? location.getBearing() : 0.0f;
 
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
@@ -597,7 +591,6 @@ public class GestioneGPS extends Service {
                             "Accuracy: " + location.getAccuracy() + "\n" +
                             "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
                             "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
-                            "NON Scrittura: " + VariabiliStaticheGPS.getInstance().isNonScriverePunti() + "\n" +
                             "Ora: " + currentHour
             );
 
@@ -703,11 +696,12 @@ public class GestioneGPS extends Service {
             s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
             s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
             s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
+            s.setDirezione(direzione);
 
             VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
             if (ok && VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi()) {
-                ok = controlloPuntiImpostatiPerSblocco(location);
+                ok = controlloSeStiamoSuPS(location);
             }
 
             if (ok) {
@@ -811,7 +805,7 @@ public class GestioneGPS extends Service {
         return 6366000 * tt;
     }
 
-    private boolean controlloPuntiImpostatiPerSblocco(Location location) {
+    private boolean controlloSeStiamoSuPS(Location location) {
         boolean DentroPuntoDiSpegnimento = false;
         String Nome = "";
 
@@ -846,7 +840,7 @@ public class GestioneGPS extends Service {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Fuori da tutti i ps");
 
-            VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
+            // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
             GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
@@ -855,7 +849,7 @@ public class GestioneGPS extends Service {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Blocco GPS per posizione " + Nome);
 
-            VariabiliStaticheGPS.getInstance().setNonScriverePunti(true);
+            // VariabiliStaticheGPS.getInstance().setNonScriverePunti(true);
 
             GestioneNotificaGPS.getInstance().AggiornaNotifica();
 

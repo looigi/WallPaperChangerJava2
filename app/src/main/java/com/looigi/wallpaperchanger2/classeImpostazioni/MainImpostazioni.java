@@ -419,7 +419,7 @@ public class MainImpostazioni extends Activity {
 
                                     VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
                                     VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
-                                    VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
+                                    // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
                                     UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                                             "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Wallpaper");

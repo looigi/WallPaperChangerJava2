@@ -13,6 +13,15 @@ public class StrutturaGps {
     private int livelloSegnale;
     private String tipoSegnale;
     private int level;
+    private float direzione;
+
+    public float getDirezione() {
+        return direzione;
+    }
+
+    public void setDirezione(float direzione) {
+        this.direzione = direzione;
+    }
 
     public int getLevel() {
         return level;

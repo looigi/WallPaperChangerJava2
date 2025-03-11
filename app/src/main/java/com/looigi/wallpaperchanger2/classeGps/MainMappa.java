@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
@@ -41,7 +45,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeMappeSalvate.MainMappeSalvate;
@@ -51,8 +54,8 @@ import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegniment
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.utilities.ClasseZip;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private static final String NomeMaschera = "Gestione_GPS";
@@ -80,11 +84,12 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private LatLngBounds.Builder bc;
     private int bcs = 0;
     private final int livelloZoomStandard = 16;
-    private Polyline polylineSegnale;
-    private Polyline polylineVelocita;
+    // private Polyline polylineSegnale;
+    // private Polyline polylineVelocita;
     private List<Circle> circolettiPS;
     private List<Marker> markersPS;
     private List<Marker> markersPA;
+    private List<Marker> markersPATH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +199,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgI.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mappa != null) {
+                    primoPassaggio = true;
+                    vecchiDati = -1;
+
                     Calendar c = Calendar.getInstance();
                     c.setTime(dataAttuale);
                     c.add(Calendar.DATE, -1);
@@ -205,8 +213,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath();
-                    disegnaMarkersPS();
-                    AggiungeMarkers(mappa);
+                    // disegnaMarkersPS();
+                    // AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -217,6 +225,9 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mappa != null) {
+                    primoPassaggio = true;
+                    vecchiDati = -1;
+
                     Calendar c = Calendar.getInstance();
                     c.setTime(dataAttuale);
                     c.add(Calendar.DATE, 1);
@@ -228,8 +239,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
                     DisegnaPath();
-                    disegnaMarkersPS();
-                    AggiungeMarkers(mappa);
+                    // disegnaMarkersPS();
+                    // AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
                 }
@@ -265,15 +276,26 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 if (!Dati.isEmpty()) {
                     String Cartella = context.getFilesDir() + "/DatiGPS";
-                    String SoloNome = "DatiGPS_" + dataOdierna.replace("/", "_") + ".csv";
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String sDataAttuale = sdf.format(dataAttuale);
+                    String SoloNome = "DatiGPS_" + sDataAttuale;
                     Files.getInstance().CreaCartelle(context.getFilesDir() + "/DatiGPS");
                     Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome);
                     Files.getInstance().ScriveFile(
                             Cartella,
-                            SoloNome,
+                            SoloNome + ".csv",
                             Dati);
 
-                    File f = new File(Cartella + "/" + SoloNome);
+                    Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome + ".zip");
+
+                    List<String> lfz = new ArrayList<>();
+                    lfz.add(Cartella + "/" + SoloNome + ".csv");
+                    ClasseZip z = new ClasseZip();
+                    z.ZippaFile(context, Cartella + "/", lfz, SoloNome);
+
+                    Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome + ".csv");
+
+                    File f = new File(Cartella + "/" + SoloNome + ".zip");
                     Uri uri = FileProvider.getUriForFile(context,
                             context.getApplicationContext().getPackageName() + ".provider",
                             f);
@@ -281,18 +303,18 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
                     i.putExtra(Intent.EXTRA_SUBJECT, SoloNome);
-                    i.putExtra(Intent.EXTRA_TEXT, "Path GPS " + dataOdierna);
+                    i.putExtra(Intent.EXTRA_TEXT, "Path GPS " + sDataAttuale);
                     i.putExtra(Intent.EXTRA_STREAM, uri);
                     i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                     context.startActivity(Intent.createChooser(i, "Share Dati GPS"));
 
-                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    /* Handler handlerTimer = new Handler(Looper.getMainLooper());
                     Runnable rTimer = new Runnable() {
                         public void run() {
                             Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome);
                         }
                     };
-                    handlerTimer.postDelayed(rTimer, 10000);
+                    handlerTimer.postDelayed(rTimer, 10000); */
                 } else {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessun dato presente");
                 }
@@ -406,8 +428,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
         if (mappa != null) { mappa.clear(); }
 
-        if (polylineSegnale != null) polylineSegnale.remove();
-        if (polylineVelocita != null) polylineVelocita.remove();
+        // if (polylineSegnale != null) polylineSegnale.remove();
+        // if (polylineVelocita != null) polylineVelocita.remove();
 
         VariabiliStaticheGPS.getInstance().setMappeAperte(false);
 
@@ -460,7 +482,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void AggiungePolyLineVelocita(GoogleMap googleMap, List<StrutturaGps> lista, int colore) {
-        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+        /* if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             return;
         }
 
@@ -483,34 +505,106 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
             );
         } catch (Exception ignored) {
 
-        }
+        } */
     }
 
     private void AggiungePolyLineSegnale(List<StrutturaGps> lista, int colore) {
-        if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
+        /* if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             return;
         }
 
         try {
             LatLng[] path = new LatLng[lista.size()];
+            String[] ora = new String[lista.size()];
+            float[] direzione = new float[lista.size()];
+
             int c = 0;
 
             for (StrutturaGps l : lista) {
                 if (c < lista.size()) {
                     path[c] = new LatLng(l.getLat(), l.getLon());
+                    ora[c] = l.getOra();
+                    direzione[c] = l.getDirezione();
+
                     c++;
                 }
             }
 
-            polylineSegnale = mappa.addPolyline(new PolylineOptions()
+            /* polylineSegnale = mappa.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(path)
                     .width(20)
                     .color(colore)
-            );
+            ); * /
+
+            int i = 0;
+            for (LatLng punto : path) {  // 'path' è l'elenco dei punti
+                mappa.addMarker(new MarkerOptions()
+                        .position(punto)
+                        .icon(creaPuntoConBordo(colore))
+                        .rotation(direzione[i])          // Angolo in gradi (0-360)
+                        .anchor(0.5f, 0.5f)           // Centra l'icona rispetto al punto
+                        .flat(true)
+                        .title("Punto Path")
+                        .snippet(ora[i])
+                );
+                i++;
+            }
         } catch (Exception ignored) {
 
-        }
+        } */
+    }
+
+    private BitmapDescriptor creaPallinoConBordo(int coloreInterno, int coloreBordo) {
+        int raggio = 5;  // Raggio del pallino
+        int diametro = raggio * 2;
+
+        Bitmap bitmap = Bitmap.createBitmap(diametro + 8, diametro + 8, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        // Disegna il bordo del pallino
+        Paint paintBordo = new Paint();
+        paintBordo.setColor(coloreBordo);          // Colore del bordo
+        paintBordo.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(diametro / 2f + 4, diametro / 2f + 4, raggio + 4, paintBordo);  // Cerchio con bordo
+
+        // Disegna l'interno del pallino
+        Paint paintInterno = new Paint();
+        paintInterno.setColor(coloreInterno);       // Colore interno del pallino
+        paintInterno.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(diametro / 2f + 4, diametro / 2f + 4, raggio, paintInterno);    // Cerchio interno
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private BitmapDescriptor creaFrecciaConBordo(int coloreInterno, int coloreVelocita) {
+        int larghezza = 35;  // Larghezza della freccia
+        int altezza = 35;    // Altezza della freccia
+
+        Bitmap bitmap = Bitmap.createBitmap(larghezza, altezza, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        // Disegna la freccia
+        Paint paintBordo = new Paint();
+        paintBordo.setColor(coloreInterno);          // Colore del bordo
+        paintBordo.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintBordo.setStrokeWidth(4);              // Spessore del bordo
+
+        Path path = new Path();
+        path.moveTo(larghezza / 2f, 0);           // Punta della freccia
+        path.lineTo(0, altezza);                  // Angolo sinistro in basso
+        path.lineTo(larghezza / 2f, altezza * 0.7f);  // Centro in basso
+        path.lineTo(larghezza, altezza);          // Angolo destro in basso
+        path.close();
+        canvas.drawPath(path, paintBordo);        // Disegna la freccia con il bordo
+
+        // Disegna il riempimento della freccia
+        Paint paintInterno = new Paint();
+        paintInterno.setColor(coloreVelocita);     // Colore interno della freccia
+        paintInterno.setStyle(Paint.Style.FILL);
+        canvas.drawPath(path, paintInterno);      // Disegna il riempimento
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void AttivaTimer() {
@@ -587,28 +681,34 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 public boolean onMarkerClick(@NonNull Marker marker) {
                     String nome = marker.getTitle();
 
-                    if (!nome.equals("Posizione Attuale")) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Si vuole rimuovere il punto di spegnimento?");
+                    if (nome.equals("Punto Path")) {
+                        if (marker.getSnippet() != null) {  // Controlla se c'è uno snippet
+                            marker.showInfoWindow();        // Mostra il popup con lo snippet
+                        }
+                    } else {
+                        if (!nome.equals("Posizione Attuale")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Si vuole rimuovere il punto di spegnimento?");
 
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                db_dati_gps db = new db_dati_gps(context);
-                                db.EliminaPuntoDiSpegnimento(nome);
-                                db.ChiudeDB();
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db_dati_gps db = new db_dati_gps(context);
+                                    db.EliminaPuntoDiSpegnimento(nome);
+                                    db.ChiudeDB();
 
-                                disegnaMarkersPS();
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                                    disegnaMarkersPS();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                        builder.show();
+                            builder.show();
+                        }
                     }
 
                     return false;
@@ -688,8 +788,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         if (!VariabiliStaticheGPS.getInstance().isMappeAperte()) {
             mappa.clear();
 
-            if (polylineSegnale != null) polylineSegnale.remove();
-            if (polylineVelocita != null) polylineVelocita.remove();
+            // if (polylineSegnale != null) polylineSegnale.remove();
+            // if (polylineVelocita != null) polylineVelocita.remove();
+            if (markersPS != null) markersPS.clear();
+            if (markersPA != null) markersPA.clear();
+            if (markersPATH != null) markersPATH.clear();
 
             return;
         }
@@ -730,37 +833,75 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
             mappa.clear();
 
-            if (polylineSegnale != null) polylineSegnale.remove();
-            if (polylineVelocita != null) polylineVelocita.remove();
+            if (markersPS != null) markersPS.clear();
+            if (markersPA != null) markersPA.clear();
+            if (markersPATH != null) markersPATH.clear();
+
+            // if (polylineSegnale != null) polylineSegnale.remove();
+            // if (polylineVelocita != null) polylineVelocita.remove();
 
             txtMappa.setText("Data " + dataOdierna + "\nPosizioni: " + listaGPS.size());
 
-            int vecchioColore = -1;
-            List<StrutturaGps> lista = new ArrayList<>();
+            // int vecchioColore = -1;
+            // List<StrutturaGps> lista = new ArrayList<>();
             StrutturaGps ultimoPunto = null;
+
+            bc = new LatLngBounds.Builder();
 
             if (VariabiliStaticheGPS.getInstance().isMostraSegnale()) {
                 // Aggiunta path segnale
+                int coloreSegnale;
+                int coloreVelocita;
+                int c = VariabiliStaticheGPS.puntiPerFreccia;
+
                 for (int i = listaGPS.size() - 1; i >= 0; i--) {
                     StrutturaGps s = listaGPS.get(i);
-                    int colore = ritornaColoreSegnale(s);
+                    coloreSegnale = ritornaColoreSegnale(s);
 
-                    lista.add(s);
+                    float speed = Math.round(s.getSpeed()) * 3.5F;
+                    coloreVelocita = ritornaColoreVelocita(speed);
 
-                    if (vecchioColore != colore) {
+                    LatLng punto  = new LatLng(s.getLat(), s.getLon());
+                    ultimoPunto = s;
+
+                    bc.include(punto);
+                    bcs++;
+
+                    BitmapDescriptor icona;
+                    c++;
+                    if (c > VariabiliStaticheGPS.puntiPerFreccia) {
+                        c = 0;
+                        icona = creaFrecciaConBordo(coloreSegnale, coloreVelocita);
+                    } else {
+                        icona = creaPallinoConBordo(coloreSegnale, coloreVelocita);
+                    }
+
+                    mappa.addMarker(new MarkerOptions()
+                            .position(punto)
+                            .icon(icona)
+                            .rotation(s.getDirezione())          // Angolo in gradi (0-360)
+                            .anchor(0.5f, 0.5f)           // Centra l'icona rispetto al punto
+                            .flat(true)
+                            .title("Punto Path")
+                            .snippet(s.getOra() + " Vel.: " + s.getSpeed())
+                    );
+
+                    /* lista.add(s);
+
+                    if (vecchioColore != coloreSegnale) {
                         if (vecchioColore != -1) {
-                            AggiungePolyLineSegnale(lista, colore);
+                            AggiungePolyLineSegnale(lista, coloreSegnale);
                             lista = new ArrayList<>();
                         }
 
-                        vecchioColore = colore;
-                    }
+                        vecchioColore = coloreSegnale;
+                    } */
                     // }
                 }
 
-                if (!lista.isEmpty()) {
+                /* if (!lista.isEmpty()) {
                     AggiungePolyLineSegnale(lista, vecchioColore);
-                }
+                } */
             }
 
             /* if (!listaGPS.isEmpty()) {
@@ -775,22 +916,22 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                                 .width(1)
                                 .color(Color.TRANSPARENT)
                 );
-            } */
+            }
 
             bc = new LatLngBounds.Builder();
             vecchioColore = -1;
-            bcs = 0;
+            bcs = 0; */
 
-            if (VariabiliStaticheGPS.getInstance().isMostraPercorso()) {
+            // if (VariabiliStaticheGPS.getInstance().isMostraPercorso()) {
                 // Aggiunta path velocità
-                for (StrutturaGps s : listaGPS) {
+                /* for (StrutturaGps s : listaGPS) {
                     ultimoPunto = s;
 
                 /* if (s.getLat() == -1 && s.getLon() == -1) {
                     AggiungePolyLine(googleMap, lista, Color.TRANSPARENT);
 
                     lista = new ArrayList<>();
-                } else { */
+                } else { * /
                     LatLng ll = new LatLng(s.getLat(), s.getLon());
                     bc.include(ll);
                     bcs++;
@@ -813,12 +954,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                 if (!lista.isEmpty()) {
                     AggiungePolyLineVelocita(mappa, lista, vecchioColore);
-                }
-
-                AggiungeMarkers(mappa);
-            }
-
-            disegnaMarkersPS();
+                } */
 
             if (primoPassaggio) {
                 int finalBcs = bcs;
@@ -845,8 +981,38 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 }
             }
         } else {
-            txtMappa.setText("Data " + dataOdierna + "\nPosizioni: 0");
+            if (primoPassaggio) {
+                txtMappa.setText("Data " + dataOdierna + "\nPosizioni: 0");
+
+                StrutturaGps ultimoPunto = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
+                if (ultimoPunto != null) {
+                    LatLng ll = new LatLng(ultimoPunto.getLat(), ultimoPunto.getLon());
+                    bc = new LatLngBounds.Builder();
+                    bc.include(ll);
+                }
+
+                mappa.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        if (ultimoPunto != null) {
+                            CameraPosition cameraPosition = new CameraPosition.Builder()
+                                    .target(new LatLng(ultimoPunto.getLat(),
+                                            ultimoPunto.getLon())).zoom(livelloZoomStandard).build();
+
+                            mappa.animateCamera(CameraUpdateFactory
+                                    .newCameraPosition(cameraPosition));
+                        } else {
+                            mappa.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                        }
+                    }
+                });
+
+                primoPassaggio = false;
+            }
         }
+
+        AggiungeMarkers(mappa);
+        disegnaMarkersPS();
     }
 
     private void AggiungeMarkers(GoogleMap googleMap) {

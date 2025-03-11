@@ -17,6 +17,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
+import com.looigi.wallpaperchanger2.utilities.ClasseZip;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.BufferedInputStream;
@@ -29,8 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class MainBackup extends Activity {
     private static final String NomeMaschera = "MainBackup";
@@ -78,7 +77,8 @@ public class MainBackup extends Activity {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            UtilityBackup.getInstance().UnzippaArchivio(context, NomeBackup.getNome());
+                            ClasseZip z = new ClasseZip();
+                            z.UnzippaArchivio(context, NomeBackup.getNome());
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -136,53 +136,10 @@ public class MainBackup extends Activity {
             }
         }
         if (!NomeFile.isEmpty()) {
-            ZippaFile(context, NomeFile);
+            ClasseZip z = new ClasseZip();
+            z.ZippaFile(context, PathBackup, NomeFile, "");
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Nessun DB presente");
-        }
-    }
-
-    private void ZippaFile(Context context, List<String> NomeFile) {
-        String NomeFileZip1 = UtilitiesGlobali.getInstance().TornaNomeFileConData();
-
-        String NomeFileZip = PathBackup + NomeFileZip1 + ".zip";
-
-        UtilityBackup.getInstance().ScriveLog(context, NomeMaschera,"Zip files");
-
-        int BUFFER_SIZE = 1024;
-        byte data[] = new byte[BUFFER_SIZE];
-
-        BufferedInputStream origin = null;
-        try {
-            ZipOutputStream out = new ZipOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream(NomeFileZip)));
-            for (String filetto : NomeFile) {
-                UtilityBackup.getInstance().ScriveLog(context, NomeMaschera,"Zip files: " + filetto);
-
-                File f = new File(filetto);
-                FileInputStream fi = new FileInputStream(f);
-                origin = new BufferedInputStream(fi, BUFFER_SIZE);
-                try {
-                    ZipEntry entry = new ZipEntry(f.getAbsoluteFile().getName());
-                    out.putNextEntry(entry);
-                    int count;
-                    while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
-                        out.write(data, 0, count);
-                    }
-                } catch (IOException e) {
-                    UtilityBackup.getInstance().ScriveLog(context, NomeMaschera,
-                            "Errore su zip files 1: " +
-                                    UtilityDetector.getInstance().PrendeErroreDaException(e));
-                } finally {
-                    origin.close();
-                }
-            }
-            out.close();
-        } catch (IOException e) {
-            UtilityBackup.getInstance().ScriveLog(context, NomeMaschera,
-                    "Errore su zip files 2: " +
-                            UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
     }
 
