@@ -1,10 +1,13 @@
 package com.looigi.wallpaperchanger2.classeBackup;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
@@ -43,11 +46,19 @@ public class UtilityBackup {
     private GifImageView imgCaricamento;
 
     public void Attende(boolean Attesa) {
-        if (!Attesa) {
-            imgCaricamento.setVisibility(LinearLayout.GONE);
-        } else {
-            imgCaricamento.setVisibility(LinearLayout.VISIBLE);
-        }
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (imgCaricamento != null) {
+                    if (!Attesa) {
+                        imgCaricamento.setVisibility(LinearLayout.GONE);
+                    } else {
+                        imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+                    }
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public GifImageView getImgCaricamento() {

@@ -471,9 +471,7 @@ public class db_dati_gps {
     public Boolean AggiungePosizione(StrutturaGps s) {
         if (myDB != null) {
             try {
-                String sql = "";
-
-                sql = "INSERT INTO"
+                String sql = "INSERT INTO"
                         + " posizioni"
                         + " (data, ora, latitudine, longitudine, speed, altitude, accuracy, "
                         + "distanza, wifi, livelloSegnale, tipoConnessione, livello, direzione)"
@@ -597,23 +595,49 @@ public class db_dati_gps {
         return lista;
     }
 
-    public String EstraiPosizioni(String Data) {
+    public List<String> RitornaDatePresenti() {
+        List<String> lista = new ArrayList<>();
+
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT distinct(data) FROM posizioni", null);
+                c.moveToFirst();
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+                    do {
+                        lista.add(c.getString(0));
+                    } while (c.moveToNext());
+                } else {
+                }
+                c.close();
+            } catch (Exception e) {
+            }
+        } else {
+            return lista;
+        }
+
+        return lista;
+    }
+
+    public String EstraiPosizioni(String Data, boolean Intestazione) {
         String Ritorno = "";
 
         if (myDB != null) {
-            Ritorno += "DATA;" +
-                    "ORA;" +
-                    "LAT;" +
-                    "LON;" +
-                    "SPEED;" +
-                    "ALTITUDE;" +
-                    "ACCURACY;" +
-                    "DISTANZA;" +
-                    "WIFI;" +
-                    "LIV_SEGN;" +
-                    "TIPO_SEGN;" +
-                    "LEVEL;" +
-                    "DIREZIONE;\n";
+            if (Intestazione) {
+                Ritorno += "DATA;" +
+                        "ORA;" +
+                        "LAT;" +
+                        "LON;" +
+                        "SPEED;" +
+                        "ALTITUDE;" +
+                        "ACCURACY;" +
+                        "DISTANZA;" +
+                        "WIFI;" +
+                        "LIV_SEGN;" +
+                        "TIPO_SEGN;" +
+                        "LEVEL;" +
+                        "DIREZIONE;\n";
+            }
 
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM posizioni Where data = '" + Data + "' Order By ora", null);

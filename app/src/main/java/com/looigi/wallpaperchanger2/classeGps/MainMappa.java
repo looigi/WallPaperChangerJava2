@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,13 +45,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeMappeSalvate.MainMappeSalvate;
+import com.looigi.wallpaperchanger2.classeGps.classeMappeSalvate.MainMappeSalvate;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
+import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
@@ -106,6 +107,19 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 context,
                 NomeMaschera,
                 "Apertura mappa");
+
+        VariabiliStaticheGPS.getInstance().setImgAttesa(findViewById(R.id.imgCaricamentoGPS));
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        LinearLayout layFilesRemoti = findViewById(R.id.layFilesRemoti);
+        layFilesRemoti.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheGPS.getInstance().setLstFilesRemoti(findViewById(R.id.lstFilesRemoti));
+        ImageView imgChiudeFilesRemoti = findViewById(R.id.imgChiudeFilesRemoti);
+        imgChiudeFilesRemoti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layFilesRemoti.setVisibility(LinearLayout.GONE);
+            }
+        });
 
         // db_dati_gps db = new db_dati_gps(context);
         // db.CaricaImpostazioni();
@@ -199,6 +213,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgI.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mappa != null) {
+                    UtilityGPS.getInstance().ImpostaAttesa(true);
+
                     primoPassaggio = true;
                     vecchiDati = -1;
 
@@ -217,6 +233,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     // AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                    UtilityGPS.getInstance().ImpostaAttesa(false);
                 }
             }
         });
@@ -225,6 +243,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mappa != null) {
+                    UtilityGPS.getInstance().ImpostaAttesa(true);
+
                     primoPassaggio = true;
                     vecchiDati = -1;
 
@@ -243,27 +263,126 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     // AggiungeMarkers(mappa);
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                    UtilityGPS.getInstance().ImpostaAttesa(false);
                 }
+            }
+        });
+
+        ImageView imgArchivia = act.findViewById(R.id.imgMappaArchiviaTutto);
+        imgArchivia.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MandaDatiADBRemoto m = new MandaDatiADBRemoto();
+
+                final AlertDialog.Builder[] builder = {new AlertDialog.Builder(context)};
+                builder[0].setTitle("Data Attuale o tutto il db ?");
+                builder[0].setPositiveButton("Data Attuale", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio ?");
+                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                m.inviaDatiPresentiSulDB(context, true, true, dataOdierna);
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                m.inviaDatiPresentiSulDB(context, false, true, dataOdierna);
+                            }
+                        });
+                        builder.setNeutralButton("Annulla", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+                    }
+                });
+                builder[0].setNegativeButton("Tutto il DB", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio ?");
+                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                m.inviaDatiPresentiSulDB(context, true, false, dataOdierna);
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                m.inviaDatiPresentiSulDB(context, false, false, dataOdierna);
+                            }
+                        });
+                        builder.setNeutralButton("Annulla", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+                    }
+                });
+                builder[0].setNeutralButton("Annulla", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder[0].show();
+            }
+        });
+
+        ImageView imgRipristina = act.findViewById(R.id.imgMappaRirpistina);
+        imgRipristina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layFilesRemoti.setVisibility(LinearLayout.VISIBLE);
+
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaFilesRemoti();
             }
         });
 
         ImageView imgE = act.findViewById(R.id.imgMappaElimina);
         imgE.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                db_dati_gps db = new db_dati_gps(context);
-                db.EliminaPosizioni(dataOdierna);
-                db.ChiudeDB();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vogliono eliminare i dati della data visualizzata ?");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db_dati_gps db = new db_dati_gps(context);
+                        db.EliminaPosizioni(dataOdierna);
+                        db.ChiudeDB();
 
-                VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
+                        VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                DisegnaPath();
-                disegnaMarkersPS();
-                AggiungeMarkers(mappa);
+                        DisegnaPath();
+                        // disegnaMarkersPS();
+                        // AggiungeMarkers(mappa);
 
-                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-                UtilitiesGlobali.getInstance().ApreToast(context,
-                        "Eliminati dati gps per la data " + dataOdierna);
+                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                "Eliminati dati gps per la data " + dataOdierna);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -271,7 +390,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgEs.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 db_dati_gps db = new db_dati_gps(context);
-                String Dati = db.EstraiPosizioni(dataOdierna);
+                String Dati = db.EstraiPosizioni(dataOdierna, true);
                 db.ChiudeDB();
 
                 if (!Dati.isEmpty()) {
@@ -324,20 +443,35 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         ImageView imgET = act.findViewById(R.id.imgMappaEliminaTutto);
         imgET.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                db_dati_gps db = new db_dati_gps(context);
-                db.EliminaTutto();
-                db.ChiudeDB();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Si vogliono eliminare tutti i dati presenti in archivio ?");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db_dati_gps db = new db_dati_gps(context);
+                        db.EliminaTutto();
+                        db.ChiudeDB();
 
-                VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
+                        VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                DisegnaPath();
-                disegnaMarkersPS();
-                AggiungeMarkers(mappa);
+                        DisegnaPath();
+                        disegnaMarkersPS();
+                        AggiungeMarkers(mappa);
 
-                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-                UtilitiesGlobali.getInstance().ApreToast(context,
-                        "Eliminati tutti i dati gps");
+                        UtilitiesGlobali.getInstance().ApreToast(context,
+                                "Eliminati tutti i dati gps");
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -364,7 +498,6 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         ImageView imgC = act.findViewById(R.id.imgMappaCerca);
         imgC.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Indirizzo");
 

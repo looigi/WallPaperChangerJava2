@@ -791,7 +791,7 @@ public class MainModificheCodice extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                        ws.Importa("MODIFICHE");
+                        ws.Importa("MODIFICHE", "");
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

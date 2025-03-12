@@ -104,7 +104,7 @@ public class MainBackup extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                        ws.Importa("BACKUP");
+                        ws.Importa("BACKUP", "");
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

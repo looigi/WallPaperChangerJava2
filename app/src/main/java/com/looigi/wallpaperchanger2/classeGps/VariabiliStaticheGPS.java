@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classeGps;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaAccensioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
@@ -11,6 +12,8 @@ import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheGPS {
     private static VariabiliStaticheGPS instance = null;
@@ -54,6 +57,24 @@ public class VariabiliStaticheGPS {
     private boolean accuracyAttiva = true;
     // private boolean bloccoPerWifi = true;
     private boolean MappeAperte = false;
+    private GifImageView imgAttesa;
+    private ListView lstFilesRemoti;
+
+    public ListView getLstFilesRemoti() {
+        return lstFilesRemoti;
+    }
+
+    public void setLstFilesRemoti(ListView lstFilesRemoti) {
+        this.lstFilesRemoti = lstFilesRemoti;
+    }
+
+    public GifImageView getImgAttesa() {
+        return imgAttesa;
+    }
+
+    public void setImgAttesa(GifImageView imgAttesa) {
+        this.imgAttesa = imgAttesa;
+    }
 
     public boolean isMappeAperte() {
         return MappeAperte;

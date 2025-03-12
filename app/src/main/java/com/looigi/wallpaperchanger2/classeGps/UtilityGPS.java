@@ -1,7 +1,13 @@
 package com.looigi.wallpaperchanger2.classeGps;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -19,6 +25,22 @@ public class UtilityGPS {
         }
 
         return instance;
+    }
+
+    public void ImpostaAttesa(boolean come) {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStaticheGPS.getInstance().getImgAttesa() != null) {
+                    if (come) {
+                        VariabiliStaticheGPS.getInstance().getImgAttesa().setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        VariabiliStaticheGPS.getInstance().getImgAttesa().setVisibility(LinearLayout.GONE);
+                    }
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     public void ScriveLog(Context context, String Maschera, String Log) {

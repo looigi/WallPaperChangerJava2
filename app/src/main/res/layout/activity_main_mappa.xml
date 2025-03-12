@@ -23,7 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="10"
+            android:weightSum="13"
             android:gravity="center_vertical"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -66,8 +66,17 @@
                     android:layout_height="35dp">
 
                 </ImageView>
-
             </LinearLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sSegue"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:text="Segue " />
+
         </LinearLayout>
     </RelativeLayout>
 
@@ -94,15 +103,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/sSegue"
-                        android:background="@drawable/bordato_non_trasparente"
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:text="Segue " />
 
                     <LinearLayout
                         android:background="@drawable/bordato_non_trasparente"
@@ -204,6 +204,50 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:textColor="@color/Nero"
+                            android:text="Archivia"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaArchiviaTutto"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/backup" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
+                            android:text="Ripristina"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgMappaRirpistina"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icona_aggiunge" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/Nero"
                             android:text="Elimina"
                             android:layout_height="wrap_content"/>
 
@@ -283,5 +327,59 @@
             </HorizontalScrollView>
         </LinearLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layFilesRemoti"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:padding="5dp"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:text="Files GPS Remoti"
+                android:textSize="16dp"
+                android:textColor="@color/Verde_Scuro" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgChiudeFilesRemoti"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstFilesRemoti"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoGPS"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+    </pl.droidsonroids.gif.GifImageView>
 
 </RelativeLayout>

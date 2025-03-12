@@ -7,13 +7,23 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.telecom.QueryLocationException;
+import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
+import com.looigi.wallpaperchanger2.classeGps.AdapterListenerFilesRemoti;
+import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
+import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
+import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaNomeFileRemoti;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classeModificheCodice.db_dati_modifiche_codice;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.BufferedInputStream;
@@ -27,6 +37,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -99,10 +110,45 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         return base64File;
     }
 
+    public void RitornaFilesRemoti() {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaFilesGPS";
+
+        TipoOperazione = "RitornaFilesGPS";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaFileRemoto(String QualeFile, String NomeFile) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaFile?" +
+                "&TipoFile=" + QualeFile +
+                "&NomeFile=" + NomeFile;
+
+        TipoOperazione = "EliminaFileRemoto";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
     public void Esporta(String QualeFile, String NomeFile) {
         this.TipoFile = QualeFile;
         String PathModifiche = "";
         String b64 = "";
+        String sNomeFile = "";
 
         switch (QualeFile) {
             case "MODIFICHE":
@@ -115,11 +161,19 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 PathModifiche = NomeFile;
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
+            case "GPS":
+                UtilityGPS.getInstance().ImpostaAttesa(false);
+                PathModifiche = NomeFile;
+                String[] n = NomeFile.split("/");
+                sNomeFile = n[n.length - 1];
+                b64 = ConvertFileToBase64(PathModifiche);
+                break;
         }
 
         String Urletto="Esporta?" +
                 "Filetto=" + b64 +
-                "&TipoFile=" + QualeFile;
+                "&TipoFile=" + QualeFile +
+                "&sNomeFile=" + sNomeFile;
 
         TipoOperazione = "Esporta";
 
@@ -132,7 +186,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
-    public void Importa(String TipoFile) {
+    public void Importa(String TipoFile, String NomeFile) {
         this.TipoFile = TipoFile;
 
         switch (TipoFile) {
@@ -142,9 +196,14 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             case "BACKUP":
                 UtilityBackup.getInstance().Attende(true);
                 break;
+            case "GPS":
+                UtilityGPS.getInstance().ImpostaAttesa(true);
+                break;
         }
 
-        String Urletto="Importa?TipoFile=" + TipoFile;
+        String Urletto="Importa?" +
+                "TipoFile=" + TipoFile +
+                "&sNomeFile=" + NomeFile;
 
         TipoOperazione = "Importa";
 
@@ -193,6 +252,12 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     case "Importa":
                         fImporta(result);
                         break;
+                    case "RitornaFilesGPS":
+                        fRitornaFilesGPS(result);
+                        break;
+                    case "EliminaFileRemoto":
+                        fEliminaFileRemoto(result);
+                        break;
                 }
             }
         };
@@ -212,6 +277,52 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         } else {
             return true;
         }
+    }
+
+    private void fEliminaFileRemoto(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina file GPS", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaFilesRemoti();
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+    }
+
+    private void fRitornaFilesGPS(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna files GPS", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        List<StrutturaNomeFileRemoti> files = new ArrayList<>();
+        String[] filesGPS = result.split(";");
+        for (String f : filesGPS) {
+            String[] ff = f.split("/");
+            String Nome = ff[ff.length - 1];
+
+            StrutturaNomeFileRemoti s = new StrutturaNomeFileRemoti();
+            s.setPath(f);
+            s.setNomeFile(Nome);
+
+            files.add(s);
+        }
+
+        AdapterListenerFilesRemoti customAdapterT = new AdapterListenerFilesRemoti(context,
+                files);
+        VariabiliStaticheGPS.getInstance().getLstFilesRemoti().setAdapter(customAdapterT);
     }
 
     private void fImporta(String result) {
@@ -298,6 +409,69 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
                     UtilityBackup.getInstance().Attende(false);
                     break;
+                case "GPS":
+                    Files.getInstance().CreaCartelle(context.getFilesDir() + "/Appoggio/BackupGPS");
+                    File dir = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
+                    for(File file: Objects.requireNonNull(dir.listFiles()))
+                        if (!file.isDirectory())
+                            file.delete();
+
+                    String PathGPS = context.getFilesDir() + "/Appoggio/Backup/BackupGPS.zip";
+                    decodedBytes = Base64.getDecoder().decode(result);
+                    try (FileOutputStream fos = new FileOutputStream(PathGPS)) {
+                        fos.write(decodedBytes);
+                        fos.close();
+
+                        File fileZip = new File(PathGPS);
+                        File fileUnzip = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
+                        if (unzip(fileZip, fileUnzip)) {
+                            Files.getInstance().EliminaFileUnico(PathGPS);
+                        }
+
+                        int posizioniAggiunte = 0;
+                        db_dati_gps db = new db_dati_gps(context);
+                        for(File file: Objects.requireNonNull(dir.listFiles())) {
+                            if (!file.isDirectory()) {
+                                String Filetto = file.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
+                                String Nome = file.getAbsoluteFile().getName(); // Questo contiene solo il nome del file
+                                String AppoNome = Nome.replace("DatiGPS_", "").replace(".csv", "");
+                                String[] d = AppoNome.split("-");
+                                String Data = d[2] + "/" + d[1] + "/" + d[0];
+                                db.EliminaPosizioni(Data);
+                                String dati = Files.getInstance().LeggeFileUnico(Filetto);
+                                String[] righe = dati.split("\n");
+                                for (String r : righe) {
+                                    String[] c = r.split(";");
+
+                                    StrutturaGps s = new StrutturaGps();
+                                    s.setData(c[0]);
+                                    s.setOra(c[1]);
+                                    s.setLat(Double.parseDouble(c[2]));
+                                    s.setLon(Double.parseDouble(c[3]));
+                                    s.setSpeed(Float.parseFloat(c[4]));
+                                    s.setAltitude(Double.parseDouble(c[5]));
+                                    s.setAccuracy(Float.parseFloat(c[6]));
+                                    s.setDistanza(Float.parseFloat(c[7]));
+                                    s.setWifi(c[8].equals("S"));
+                                    s.setLivelloSegnale(Integer.parseInt(c[9]));
+                                    s.setTipoSegnale(c[10]);
+                                    s.setLevel(Integer.parseInt(c[11]));
+                                    s.setDirezione(Float.parseFloat(c[12]));
+
+                                    db.AggiungePosizione(s);
+                                    posizioniAggiunte++;
+                                }
+
+                                Files.getInstance().EliminaFileUnico(Filetto);
+                            }
+                        };
+
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Posizioni aggiunte: " + posizioniAggiunte);
+                    } catch (IOException e) {
+                        UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
+                    }
+                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    break;
             }
         }
     }
@@ -306,16 +480,21 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         boolean ritorno = ControllaRitorno("Ritorno esporta", result);
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
-        } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, "DB esportato");
+            return;
         }
 
         switch (this.TipoFile) {
             case "MODIFICHE":
+                UtilitiesGlobali.getInstance().ApreToast(context, "DB esportato");
                 VariabiliStaticheModificheCodice.getInstance().Attende(false);
                 break;
             case "BACKUP":
+                UtilitiesGlobali.getInstance().ApreToast(context, "DB esportato");
                 UtilityBackup.getInstance().Attende(false);
+                break;
+            case "GPS":
+                UtilitiesGlobali.getInstance().ApreToast(context, "Files GPS esportato");
+                UtilityGPS.getInstance().ImpostaAttesa(false);
                 break;
         }
     }
