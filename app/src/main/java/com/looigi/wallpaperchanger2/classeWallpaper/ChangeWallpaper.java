@@ -201,7 +201,7 @@ public class ChangeWallpaper {
 						UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Mette bordo a immagine");
 
 						if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
-							bitmap = applicaEffetti(bitmap);
+							bitmap = applicaEffetti(context, bitmap);
 						}
 
 						bitmap = MetteBordoAImmagine(context, bitmap, src);
@@ -220,6 +220,7 @@ public class ChangeWallpaper {
 
 							String finalPath = path;
 							Bitmap finalBitmap = bitmap;
+							final int[] contatoreAttesa = {0};
 
 							Runnable r1 = new Runnable() {
 								public void run() {
@@ -307,14 +308,25 @@ public class ChangeWallpaper {
 											r2.set(inizioVisoX, inizioVisoY, larghezzaViso, altezzaViso);
 											bitmap = disegnaRettangolo(bitmap, r2, Color.RED); */
 
-											try {
-												bmpAppoggio = Bitmap.createBitmap(
-														bitmap,
-														inizioVisoX,
-														inizioVisoY,
-														larghezzaViso,
-														altezzaViso
-												);
+											int percY = (int) ((altezzaViso * 1F / altezzaImmagine) * 100);
+											int percX = (int) ((larghezzaViso * 1F / larghezzaImmagine) * 100);
+
+											if (percY <= 20 || percX <= 20) {
+												UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+														"Cambio immagine. Immagine troppo piccola: " + larghezzaViso + "x" +
+														altezzaViso + " -> " + larghezzaImmagine + "x" + altezzaImmagine + " : " +
+														percX + "% x " + percY + "%");
+
+												bmpAppoggio = finalBitmap;
+											} else {
+												try {
+													bmpAppoggio = Bitmap.createBitmap(
+															bitmap,
+															inizioVisoX,
+															inizioVisoY,
+															larghezzaViso,
+															altezzaViso
+													);
 
 												/* bmpAppoggio = Bitmap.createBitmap(
 														bitmap,
@@ -330,19 +342,20 @@ public class ChangeWallpaper {
 														SchermoY,
 														true
 												); */
-											} catch (Exception e) {
-												UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-														"Cambio immagine. Errore conversione: " +
-																UtilityDetector.getInstance().PrendeErroreDaException(e));
+												} catch (Exception e) {
+													UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
+															"Cambio immagine. Errore conversione: " +
+																	UtilityDetector.getInstance().PrendeErroreDaException(e));
 
-												bmpAppoggio = finalBitmap;
+													bmpAppoggio = finalBitmap;
+												}
 											}
 										} else {
 											bmpAppoggio = finalBitmap;
 										}
 
 										if (VariabiliStaticheWallpaper.getInstance().isEffetti()) {
-											bmpAppoggio = applicaEffetti(bmpAppoggio);
+											bmpAppoggio = applicaEffetti(context, bmpAppoggio);
 										}
 
 										bmpAppoggio = MetteBordoAImmagine(context, bmpAppoggio, src);
@@ -353,20 +366,37 @@ public class ChangeWallpaper {
 										// }
 										UtilityWallpaper.getInstance().Attesa(false);
 									} else {
-										handler1.postDelayed(this, 1000);
+										contatoreAttesa[0]++;
+										UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Attesa per volto: " + contatoreAttesa[0]);
+										if (contatoreAttesa[0] <= 10) {
+											handler1.postDelayed(this, 1000);
+										} else {
+											handler1.removeCallbacksAndMessages(this);
+											handler1.removeCallbacks(this);
+
+											UtilitiesGlobali.getInstance().ApreToast(context, "Attesa troppo lunga per il volto");
+											UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Attesa troppo lunga per il volto");
+											UtilityWallpaper.getInstance().Attesa(false);
+										}
 									}
 								}
 							};
 							handler1.postDelayed(r1, 1000);
 						} catch (Exception e) {
+							UtilitiesGlobali.getInstance().ApreToast(context, "Errore preview");
 							UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore preview");
 							UtilityWallpaper.getInstance().Attesa(false);
 						}
 					}
 				} else {
+					UtilitiesGlobali.getInstance().ApreToast(context, "Errore rotazione");
 					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Errore rotazione");
 					UtilityWallpaper.getInstance().Attesa(false);
 				}
+			} else {
+				UtilitiesGlobali.getInstance().ApreToast(context, "Nessun file rilevato: " + path);
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine. Nessun file rilevato: " + path);
+				UtilityWallpaper.getInstance().Attesa(false);
 			}
 		}
 	}
@@ -434,7 +464,7 @@ public class ChangeWallpaper {
 		handlerTimer.postDelayed(rTimer, 100);
 	}
 
-		private void setWallpaperLocaleEsegue(Context context, Bitmap bitmap) {
+	private void setWallpaperLocaleEsegue(Context context, Bitmap bitmap) {
 		// boolean Ritorno = true;
 		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine: Caricamento bitmap.");
 
@@ -919,27 +949,32 @@ public class ChangeWallpaper {
 		return Immaginona;
 	}
 
-	public Bitmap applicaEffetti(Bitmap bitmap) {
+	public Bitmap applicaEffetti(Context context, Bitmap bitmap) {
 		Bitmap b = bitmap;
 		GestioneImmagini g = new GestioneImmagini();
 
 		final int random1 = new Random().nextInt(15) + 1;
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Valore random: " + random1);
 
 		switch (random1) {
 			case 2:
 				// Cornice
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Effetto cornice");
 				b = g.AddGlow(b);
 				break;
 			case 6:
 				// BN
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Effetto B/N");
 				b = g.ConverteBN(b);
 				break;
 			case 9:
 				// Seppia
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Effetto seppia");
 				b = g.ConvertSephia(b);
 				break;
 			case 12:
 				// Riflesso sotto
+				UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Effetto riflesso");
 				b = g.ConvertReflection(b);
 				break;
 			/* case 13:
@@ -948,9 +983,16 @@ public class ChangeWallpaper {
 				break; */
 		}
 
+		if (b == null) {
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Bitmap nulla. Metto quella originale");
+			b = bitmap;
+		}
+
 		final int random2 = new Random().nextInt(5) + 1;
+		UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Valore random 2");
 
 		if (random2 == 2) {
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Applica effetti. Flip immagine");
 			b = g.FlipImmagine(b,true);
 		}
 

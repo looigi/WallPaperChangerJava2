@@ -106,7 +106,7 @@ public class db_dati_gps {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni "
                         + "(Segue VARCHAR, PathSegnale VARCHAR, PathPercorso VARCHAR, PsAttivi VARCHAR,"
-                        + "Accuracy VARCHAR, BloccoWiFi VARCHAR);";
+                        + "Accuracy VARCHAR, BloccoWiFi VARCHAR, polyLines VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -146,7 +146,8 @@ public class db_dati_gps {
                         + "'" + (VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() ? "S" : "N") + "', "
                         // + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
-                        + "'N' "
+                        + "'N', "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -173,6 +174,7 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(true);
         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(true);
         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
+        VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(false);
     }
 
     public int CaricaImpostazioni(String daDove) {
@@ -190,6 +192,7 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setPuntiSospensioneAttivi(c.getString(3).equals("S"));
                         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(c.getString(4).equals("S"));
                         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(c.getString(6).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

@@ -10,7 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 public class GestioneMappa {
-    private List<StrutturaGps> listaGPS;
+    // private List<StrutturaGps> listaGPS;
+    private List<StrutturaGps> listaGPSCompleta;
     private Context context;
     private Date dataAttuale;
     private int conta = 0;
@@ -26,11 +27,14 @@ public class GestioneMappa {
 
         dataAttuale = new Date();
 
-        listaGPS = db.RitornaPosizioni(dataOdierna);
-        listaGPS = togliePuntiEccessivi(listaGPS);
+        listaGPSCompleta = db.RitornaPosizioni(dataOdierna);
+
+        /* if (listaGPS.size() > VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa()) {
+            listaGPS = togliePuntiEccessivi(listaGPS);
+        } */
 
         UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
-                "Lettura punti: " + listaGPS.size()
+                "Lettura punti: " + listaGPSCompleta.size() //  + " (" + listaGPSC.size() + ")"
         );
 
         calcolaDistanza();
@@ -39,35 +43,49 @@ public class GestioneMappa {
     }
 
     public void ChiudeMaschera() {
-        listaGPS = null;
+        listaGPSCompleta = null;
     }
 
-    private List<StrutturaGps> togliePuntiEccessivi(List<StrutturaGps> list) {
-        List<StrutturaGps> listaGPS = new ArrayList<>();
+    public List<StrutturaGps> togliePuntiEccessivi(List<StrutturaGps> list) {
+        VariabiliStaticheGPS.getInstance().setPuntiTotali(list.size());
 
-        if (listaGPS.size() <= VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa()) {
-            listaGPS = list;
+        int maxPunti = -1;
+
+        if (VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline()) {
+            maxPunti = 1000;
         } else {
+            maxPunti = VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa();
+        }
+
+        if (list.size() > maxPunti) {
+            // list = list;
+        // } else {
             int passo = (int) Math.round((float) list.size() /
-                    VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa());
+                    maxPunti);
             UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
                     "Passo per toglie punti eccessivi: " + passo
                     );
+            List<StrutturaGps> listaGPSSezionata = new ArrayList<>();
             for (int i = 0; i < list.size(); i += passo) {
-                listaGPS.add(list.get(i));
+                listaGPSSezionata.add(list.get(i));
             }
+            list = listaGPSSezionata;
+
             UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
-                    "Punti totali tagliati: " + listaGPS.size()
+                    "Punti totali tagliati: " + listaGPSSezionata.size()
             );
         }
 
-        return listaGPS;
+        return list;
     }
 
     public void AggiungePosizione(StrutturaGps g) {
-        listaGPS.add(g);
+        // listaGPS.add(g);
+        listaGPSCompleta.add(g);
 
-        listaGPS = togliePuntiEccessivi(listaGPS);
+        /* if (listaGPS.size() > VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa()) {
+            listaGPS = togliePuntiEccessivi(listaGPS);
+        } */
 
         long d = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
         long dist = Math.round(g.getDistanza());
@@ -76,21 +94,21 @@ public class GestioneMappa {
         if (conta > 10) {
             conta = 0;
             UtilityGPS.getInstance().ScriveLog(context, "Gestione_GPS",
-                    "Punti totali memorizzati su lista: " + listaGPS.size()
+                    "Punti totali memorizzati su lista: " + listaGPSCompleta.size()
             );
             GestioneNotificheTasti.getInstance().AggiornaNotifica();
         }
     }
 
     public void PuliscePunti() {
-        listaGPS = new ArrayList<>();
+        listaGPSCompleta = new ArrayList<>();
     }
 
     public int RitornaQuantiPunti() {
         int rit = 0;
 
-        if (listaGPS != null) {
-            rit = listaGPS.size();
+        if (listaGPSCompleta != null) {
+            rit = listaGPSCompleta.size();
         }
 
         return rit;
@@ -99,14 +117,16 @@ public class GestioneMappa {
     public List<StrutturaGps> RitornaPunti() {
         calcolaDistanza();
 
-        return listaGPS;
+        return listaGPSCompleta;
     }
 
     private void calcolaDistanza() {
         long d = 0;
-        for (StrutturaGps g : listaGPS) {
+
+        for (StrutturaGps g : listaGPSCompleta) {
             d += (long) g.getDistanza();
         }
+
         VariabiliStaticheGPS.getInstance().setDistanzaTotale(d);
     }
 }

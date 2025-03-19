@@ -810,6 +810,7 @@ public class MainImpostazioni extends Activity {
         SwitchCompat sVibrazione = (SwitchCompat) act.findViewById(R.id.sVibrazione);
         SwitchCompat sToast = (SwitchCompat) act.findViewById(R.id.sToast);
         SwitchCompat sGpsPreciso = (SwitchCompat) act.findViewById(R.id.sGpsPreciso);
+        SwitchCompat sGpsModalita = (SwitchCompat) act.findViewById(R.id.sGpsModalita);
 
         sVibrazione.setChecked(VariabiliStaticheDetector.getInstance().isVibrazione());
         sVibrazione.setOnClickListener(new View.OnClickListener() {
@@ -819,6 +820,25 @@ public class MainImpostazioni extends Activity {
 
                 Impostazioni i = new Impostazioni();
                 i.ImpostaVibrazione(context, sVibrazione.isChecked());
+            }
+        });
+
+        sGpsModalita.setChecked(VariabiliStaticheDetector.getInstance().getModalitaGps());
+        sGpsModalita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheDetector.getInstance().setModalitaGps(sGpsModalita.isChecked());
+
+                db_dati_detector db = new db_dati_detector(context);
+                db.ScriveImpostazioni(context, "SET MODALITA GPS");
+                db.ChiudeDB();
+
+                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().RefreshImpostazioni();
+                }
+
+                UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                        "MODALITA_GPS", "Main Impostazioni Detector");
             }
         });
 
@@ -833,6 +853,10 @@ public class MainImpostazioni extends Activity {
                 db_dati_detector db = new db_dati_detector(context);
                 db.ScriveImpostazioni(context, "SET GPS PRECISO");
                 db.ChiudeDB();
+
+                if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                    VariabiliStaticheGPS.getInstance().getGestioneGPS().RefreshImpostazioni();
+                }
 
                 UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                         "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Detector");
@@ -884,6 +908,10 @@ public class MainImpostazioni extends Activity {
                         db.ScriveImpostazioni(context, "SET GPS MS");
                         db.ChiudeDB();
 
+                        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().RefreshImpostazioni();
+                        }
+
                         UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                                 "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Mappa");
                     }
@@ -903,6 +931,10 @@ public class MainImpostazioni extends Activity {
                         db_dati_detector db = new db_dati_detector(context);
                         db.ScriveImpostazioni(context, "SET GPS METERS");
                         db.ChiudeDB();
+
+                        if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().RefreshImpostazioni();
+                        }
 
                         UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                                 "CONTROLLO_ATTIVAZIONE", "Main Impostazioni Mappa 2");
@@ -948,6 +980,39 @@ public class MainImpostazioni extends Activity {
         });
 
         SwitchCompat sSegnale = act.findViewById(R.id.sSegnale);
+        SwitchCompat sPercorso = act.findViewById(R.id.sPercorso);
+
+        SwitchCompat sPolyline = act.findViewById(R.id.sPolyLines);
+        sPolyline.setChecked(VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline());
+        sPolyline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(sPolyline.isChecked());
+
+                if (sPolyline.isChecked()) {
+                    sSegnale.setVisibility(LinearLayout.VISIBLE);
+                    sPercorso.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    sSegnale.setVisibility(LinearLayout.GONE);
+                    sPercorso.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_gps db = new db_dati_gps(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+
+                UtilityGPS.getInstance().DisegnaPath(context, "");
+            }
+        });
+
+        if (sPolyline.isChecked()) {
+            sSegnale.setVisibility(LinearLayout.VISIBLE);
+            sPercorso.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            sSegnale.setVisibility(LinearLayout.GONE);
+            sPercorso.setVisibility(LinearLayout.GONE);
+        }
+
         sSegnale.setChecked(true);
         sSegnale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -957,10 +1022,11 @@ public class MainImpostazioni extends Activity {
                 db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
+
+                UtilityGPS.getInstance().DisegnaPath(context, "");
             }
         });
 
-        SwitchCompat sPercorso = act.findViewById(R.id.sPercorso);
         sPercorso.setChecked(true);
         sPercorso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -970,6 +1036,8 @@ public class MainImpostazioni extends Activity {
                 db_dati_gps db = new db_dati_gps(context);
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
+
+                UtilityGPS.getInstance().DisegnaPath(context, "");
             }
         });
 

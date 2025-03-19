@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
+import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
@@ -152,29 +154,68 @@ public class UtilitiesGlobali {
 
         VariabiliStaticheWallpaper.getInstance().setSbragaTutto(true);
 
-        GestioneNotificheWP.getInstance().RimuoviNotifica();
-        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
-        GestioneNotificheTasti.getInstance().RimuoviNotifica();
-        GestioneNotificheDetector.getInstance().RimuoviNotifica();
-        GestioneNotificaGPS.getInstance().RimuoviNotifica();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica WP");
+                GestioneNotificheWP.getInstance().RimuoviNotifica();
 
-        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica Player");
+                        GestioneNotifichePlayer.getInstance().RimuoviNotifica();
 
-        if (VariabiliStaticheStart.getInstance().getServizioForeground() != null) {
-            context.stopService(VariabiliStaticheStart.getInstance().getServizioForeground());
-            VariabiliStaticheStart.getInstance().setServizioForeground(null);
-        }
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica Tasti");
+                                GestioneNotificheTasti.getInstance().RimuoviNotifica();
 
-        /* if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
-            context.stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
-            VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
-        } */
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica Detector");
+                                        GestioneNotificheDetector.getInstance().RimuoviNotifica();
 
-        if (act != null) {
-            finishAffinity(act);
-        }
+                                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica GPS");
+                                                GestioneNotificaGPS.getInstance().RimuoviNotifica();
 
-        System.exit(0);
+                                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
+
+                                                        if (VariabiliStaticheStart.getInstance().getServizioForeground() != null) {
+                                                            context.stopService(VariabiliStaticheStart.getInstance().getServizioForeground());
+                                                            VariabiliStaticheStart.getInstance().setServizioForeground(null);
+                                                        }
+
+                                                        /* if (VariabiliStaticheStart.getInstance().getServizioForegroundGPS() != null) {
+                                                            context.stopService(VariabiliStaticheStart.getInstance().getServizioForegroundGPS());
+                                                            VariabiliStaticheStart.getInstance().setServizioForegroundGPS(null);
+                                                        } */
+
+                                                        if (act != null) {
+                                                            finishAffinity(act);
+                                                        }
+
+                                                        System.exit(0);
+                                                    }
+                                                }, 500);
+                                            }
+                                        }, 500);
+                                    }
+                                }, 500);
+                            }
+                        }, 500);
+                    }
+                }, 500);
+            }
+        }, 500);
     }
 
     public void EliminaLogs(Context context, String qualeLog) {

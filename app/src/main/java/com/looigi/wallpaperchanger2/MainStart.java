@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeLazio.MainLazio;
 import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
@@ -63,11 +64,6 @@ public class MainStart extends Activity {
         context = this;
         act = this;
 
-        UtilitiesGlobali.getInstance().InvioMail(context,
-                "looigi@gmail.com",
-                "Wallpaper Changer II",
-                "Start Activity Principale.\nGià partito: " + VariabiliStaticheStart.getInstance().isGiaPartito());
-
         TextView txtTitolo = findViewById(R.id.txtStartTitolo);
         txtTitolo.setShadowLayer(
                 15f,     // radius: The radius of the shadow
@@ -77,6 +73,11 @@ public class MainStart extends Activity {
         );
 
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
+            UtilitiesGlobali.getInstance().InvioMail(context,
+                    "looigi@gmail.com",
+                    "Wallpaper Changer II",
+                    "Start Activity Principale.\nGià partito: " + VariabiliStaticheStart.getInstance().isGiaPartito());
+
             VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 
             Intent intent1 = new Intent(MainStart.this, RunServiceOnBoot.class);
@@ -88,41 +89,42 @@ public class MainStart extends Activity {
             // UtilityWallpaper.getInstance().generaPath(this);
 
             Permessi pp = new Permessi();
-            // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
-            // }
-        }
-
-        laySplash = findViewById(R.id.laySplash);
-        laySplash.setVisibility(LinearLayout.VISIBLE);
-
-        String ritorno = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "MAIN");
-        if (!ritorno.equals("OK")) {
-            UtilityDetector.getInstance().VisualizzaPOPUP(
-                    context, ritorno, false, -1
-            );
-        } else {
-            if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
-                StartActivities();
-
-                Handler handlerTimer = new Handler(Looper.getMainLooper());
-                Runnable rTimer = new Runnable() {
-                    public void run() {
-                        laySplash.setVisibility(LinearLayout.GONE);
-
-                        impostaSchermata();
-                    }
-                };
-                handlerTimer.postDelayed(rTimer, 3000);
-            } else {
-                Permessi pp = new Permessi();
-                // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
-                }
-                // }
-
             }
+
+            laySplash = findViewById(R.id.laySplash);
+            laySplash.setVisibility(LinearLayout.VISIBLE);
+
+            String ritorno = CaricaSettaggi.getInstance().CaricaImpostazioniGlobali(context, "MAIN");
+            if (!ritorno.equals("OK")) {
+                UtilityDetector.getInstance().VisualizzaPOPUP(
+                        context, ritorno, false, -1
+                );
+            } else {
+                if (VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                    StartActivities();
+
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            laySplash.setVisibility(LinearLayout.GONE);
+
+                            impostaSchermata();
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 3000);
+                } else {
+                    // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        VariabiliStaticheWallpaper.getInstance().setCiSonoPermessi(pp.ControllaPermessi(this));
+                    }
+                    // }
+
+                }
+            }
+        } else {
+            impostaSchermata();
         }
     }
 
@@ -393,6 +395,31 @@ public class MainStart extends Activity {
                     @Override
                     public void run() {
                         Intent i = new Intent(context, MainOrari.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgLazio = (ImageView) findViewById(R.id.imgStartLazio);
+        imgLazio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(context, MainLazio.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }

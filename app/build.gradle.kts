@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.acra.toast)
     implementation(libs.acra.notification)
 
+    implementation(libs.play.services.location)
+
     implementation (libs.android.mail.v162)
     implementation (libs.android.activation)
 

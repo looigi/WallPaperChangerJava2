@@ -150,6 +150,9 @@ public class ChiamateWSV implements TaskDelegate {
                        boolean ApriDialog) {
 
         UtilityVideo.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
+        if (VariabiliStaticheVideo.getInstance().getPbLoading() != null) {
+            VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(LinearLayout.VISIBLE);
+        }
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -174,6 +177,9 @@ public class ChiamateWSV implements TaskDelegate {
         Runnable rTimer = new Runnable() {
             public void run() {
                 UtilityVideo.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
+                if (VariabiliStaticheVideo.getInstance().getPbLoading() != null) {
+                    VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(LinearLayout.GONE);
+                }
 
                 switch (TipoOperazione) {
                     case "RitornaProssimoVideo":

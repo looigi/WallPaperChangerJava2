@@ -72,7 +72,7 @@ public class db_dati_detector {
                         "Risoluzione VARCHAR, Estensione VARCHAR, Vibrazione VARCHAR, NumeroScatti VARCHAR, " +
                         "Anteprima VARCHAR, Orientamento VARCHAR, Lingua VARCHAR, DimensioniThumbs VARCHAR, DimensioniThumbsM VARCHAR, " +
                         "VisualizzaToast VARCHAR, GpsPreciso VARCHAR, GpsMS VARCHAR, GPSMeters VARCHAR, FotoPower VARCHAR, " +
-                        "MetriPS VARCHAR, QuantiPunti VARCHAR);";
+                        "MetriPS VARCHAR, QuantiPunti VARCHAR, ModalitaGPS VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -123,12 +123,13 @@ public class db_dati_detector {
         VariabiliStaticheDetector.getInstance().setDimensioniThumbs(70);
         VariabiliStaticheDetector.getInstance().setDimensioniThumbsM(50);
         VariabiliStaticheDetector.getInstance().setVisualizzaToast(true);
-        VariabiliStaticheDetector.getInstance().setGpsPreciso(true);
-        VariabiliStaticheDetector.getInstance().setGpsMs(1000);
+        VariabiliStaticheDetector.getInstance().setGpsPreciso(false);
+        VariabiliStaticheDetector.getInstance().setGpsMs(10000);
         VariabiliStaticheDetector.getInstance().setGpsMeters(5);
         VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(true);
-        VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(50);
-        VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(100);
+        VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(75);
+        VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(2000);
+        VariabiliStaticheDetector.getInstance().setModalitaGps(true);
     }
 
     public int CaricaImpostazioni() {
@@ -163,6 +164,7 @@ public class db_dati_detector {
                         VariabiliStaticheDetector.getInstance().setFotoSuTriploTastoCuffie(c.getString(17).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDistanzaMetriPerPS(Integer.parseInt(c.getString(18)));
                         VariabiliStaticheGPS.getInstance().setQuantiPuntiSumappa(Integer.parseInt(c.getString(19)));
+                        VariabiliStaticheDetector.getInstance().setModalitaGps(c.getString(20).equals("S"));
 
                         return 0; // "Impostazioni caricate correttamente. Risoluzione: " + VariabiliStatiche.getInstance().getRisoluzione();
                     } catch (Exception e) {
@@ -261,7 +263,8 @@ public class db_dati_detector {
                         + " " + VariabiliStaticheDetector.getInstance().getGpsMeters() + ", "
                         + "'" + (VariabiliStaticheDetector.getInstance().isFotoSuTriploTastoCuffie() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheGPS.getInstance().getDistanzaMetriPerPS() + "', "
-                        + "'" + VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa() + "' "
+                        + "'" + VariabiliStaticheGPS.getInstance().getQuantiPuntiSumappa() + "', "
+                        + "'" + (VariabiliStaticheDetector.getInstance().getModalitaGps() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
 

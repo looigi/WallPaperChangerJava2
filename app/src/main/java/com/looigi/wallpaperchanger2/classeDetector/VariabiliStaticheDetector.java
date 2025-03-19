@@ -86,6 +86,7 @@ public class VariabiliStaticheDetector {
     // private boolean giaPartito = false;
     // private Button btnLayModificaImmagine;
     private boolean riaperturaSenzaReimpostazione = false;
+    private boolean modalitaGps = true;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -94,6 +95,14 @@ public class VariabiliStaticheDetector {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public boolean getModalitaGps() {
+        return modalitaGps;
+    }
+
+    public void setModalitaGps(boolean modalitaGps) {
+        this.modalitaGps = modalitaGps;
     }
 
     public ImageView getImgCondividiImmagine() {

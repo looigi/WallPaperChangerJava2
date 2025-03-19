@@ -3,15 +3,19 @@ package com.looigi.wallpaperchanger2.classeModificheCodice.webService;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.telecom.QueryLocationException;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeGps.AdapterListenerFilesRemoti;
+import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
@@ -410,70 +414,98 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     UtilityBackup.getInstance().Attende(false);
                     break;
                 case "GPS":
-                    Files.getInstance().CreaCartelle(context.getFilesDir() + "/Appoggio/BackupGPS");
-                    File dir = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
-                    for(File file: Objects.requireNonNull(dir.listFiles()))
-                        if (!file.isDirectory())
-                            file.delete();
-
-                    String PathGPS = context.getFilesDir() + "/Appoggio/Backup/BackupGPS.zip";
-                    decodedBytes = Base64.getDecoder().decode(result);
-                    try (FileOutputStream fos = new FileOutputStream(PathGPS)) {
-                        fos.write(decodedBytes);
-                        fos.close();
-
-                        File fileZip = new File(PathGPS);
-                        File fileUnzip = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
-                        if (unzip(fileZip, fileUnzip)) {
-                            Files.getInstance().EliminaFileUnico(PathGPS);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Si vogliono eliminare i dati presenti in archivio per le date caricate ?");
+                    builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EsegueCaricamento(result, true);
                         }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EsegueCaricamento(result, false);
+                        }
+                    });
 
-                        int posizioniAggiunte = 0;
-                        db_dati_gps db = new db_dati_gps(context);
-                        for(File file: Objects.requireNonNull(dir.listFiles())) {
-                            if (!file.isDirectory()) {
-                                String Filetto = file.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
-                                String Nome = file.getAbsoluteFile().getName(); // Questo contiene solo il nome del file
-                                String AppoNome = Nome.replace("DatiGPS_", "").replace(".csv", "");
-                                String[] d = AppoNome.split("-");
-                                String Data = d[2] + "/" + d[1] + "/" + d[0];
-                                db.EliminaPosizioni(Data);
-                                String dati = Files.getInstance().LeggeFileUnico(Filetto);
-                                String[] righe = dati.split("\n");
-                                for (String r : righe) {
-                                    String[] c = r.split(";");
-
-                                    StrutturaGps s = new StrutturaGps();
-                                    s.setData(c[0]);
-                                    s.setOra(c[1]);
-                                    s.setLat(Double.parseDouble(c[2]));
-                                    s.setLon(Double.parseDouble(c[3]));
-                                    s.setSpeed(Float.parseFloat(c[4]));
-                                    s.setAltitude(Double.parseDouble(c[5]));
-                                    s.setAccuracy(Float.parseFloat(c[6]));
-                                    s.setDistanza(Float.parseFloat(c[7]));
-                                    s.setWifi(c[8].equals("S"));
-                                    s.setLivelloSegnale(Integer.parseInt(c[9]));
-                                    s.setTipoSegnale(c[10]);
-                                    s.setLevel(Integer.parseInt(c[11]));
-                                    s.setDirezione(Float.parseFloat(c[12]));
-
-                                    db.AggiungePosizione(s);
-                                    posizioniAggiunte++;
-                                }
-
-                                Files.getInstance().EliminaFileUnico(Filetto);
-                            }
-                        };
-
-                        UtilitiesGlobali.getInstance().ApreToast(context, "Posizioni aggiunte: " + posizioniAggiunte);
-                    } catch (IOException e) {
-                        UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
-                    }
-                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    builder.show();
                     break;
             }
         }
+    }
+
+    private void EsegueCaricamento(String result, boolean EliminaVecchiDati) {
+        byte[] decodedBytes;
+
+        Files.getInstance().CreaCartelle(context.getFilesDir() + "/Appoggio/BackupGPS");
+        File dir = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
+        for(File file: Objects.requireNonNull(dir.listFiles()))
+            if (!file.isDirectory())
+                file.delete();
+
+        String PathGPS = context.getFilesDir() + "/Appoggio/Backup/BackupGPS.zip";
+        decodedBytes = Base64.getDecoder().decode(result);
+        try (FileOutputStream fos = new FileOutputStream(PathGPS)) {
+            fos.write(decodedBytes);
+            fos.close();
+
+            File fileZip = new File(PathGPS);
+            File fileUnzip = new File(context.getFilesDir() + "/Appoggio/BackupGPS");
+            if (unzip(fileZip, fileUnzip)) {
+                Files.getInstance().EliminaFileUnico(PathGPS);
+            }
+
+            int posizioniAggiunte = 0;
+            db_dati_gps db = new db_dati_gps(context);
+            String ultimaData = "";
+            for(File file: Objects.requireNonNull(dir.listFiles())) {
+                if (!file.isDirectory()) {
+                    String Filetto = file.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
+                    String Nome = file.getAbsoluteFile().getName(); // Questo contiene solo il nome del file
+                    String AppoNome = Nome.replace("DatiGPS_", "").replace(".csv", "");
+                    String[] d = AppoNome.split("-");
+                    String Data = d[2] + "/" + d[1] + "/" + d[0];
+                    ultimaData = Data;
+                    if (EliminaVecchiDati) {
+                        db.EliminaPosizioni(Data);
+                    }
+                    String dati = Files.getInstance().LeggeFileUnico(Filetto);
+                    String[] righe = dati.split("\n");
+                    for (String r : righe) {
+                        String[] c = r.split(";");
+
+                        StrutturaGps s = new StrutturaGps();
+                        s.setData(c[0]);
+                        s.setOra(c[1]);
+                        s.setLat(Double.parseDouble(c[2]));
+                        s.setLon(Double.parseDouble(c[3]));
+                        s.setSpeed(Float.parseFloat(c[4]));
+                        s.setAltitude(Double.parseDouble(c[5]));
+                        s.setAccuracy(Float.parseFloat(c[6]));
+                        s.setDistanza(Float.parseFloat(c[7]));
+                        s.setWifi(c[8].equals("S"));
+                        s.setLivelloSegnale(Integer.parseInt(c[9]));
+                        s.setTipoSegnale(c[10]);
+                        s.setLevel(Integer.parseInt(c[11]));
+                        s.setDirezione(Float.parseFloat(c[12]));
+
+                        db.AggiungePosizione(s);
+                        posizioniAggiunte++;
+                    }
+
+                    Files.getInstance().EliminaFileUnico(Filetto);
+                }
+            };
+            if (!ultimaData.isEmpty()) {
+                UtilityGPS.getInstance().DisegnaPath(context, ultimaData);
+            }
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Posizioni aggiunte: " + posizioniAggiunte);
+        } catch (IOException e) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
+        }
+        UtilityGPS.getInstance().ImpostaAttesa(false);
     }
 
     private void fEsporta(String result) {

@@ -19,7 +19,9 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.notificaTasti.VariabiliStaticheTasti;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -99,12 +101,20 @@ public class GestioneNotificaGPS {
             }
             contentView.setImageViewBitmap(R.id.imgAreaPS, bmGpsPS); */
 
+            Bitmap bmGpsPS;
+            if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+            } else {
+                bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+            }
+            contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGpsPS);
+
             if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                 long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
                 float dist = Math.round((distanza / 1000F) * 100) / 100F;
                 contentView.setTextViewText(R.id.txtPunti,
-                        "Pt.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaQuantiPunti()) + " Dist.: " +
-                                "" + Float.toString(dist) + " Km.");
+                        "Pt.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaQuantiPunti()) +
+                                " Dist.: " + Float.toString(dist) + " Km.");
             } else {
                 contentView.setTextViewText(R.id.txtPunti,
                         "");
@@ -179,11 +189,11 @@ public class GestioneNotificaGPS {
 
     private void setListenersTasti(RemoteViews view, Context ctx) {
         if (view != null) {
-            /* Intent gps = new Intent(ctx, NotificationActionServiceGPS.class);
-            gps.putExtra("DO", "gps");
-            PendingIntent pGps = PendingIntent.getService(ctx, 870, gps,
+            Intent scatta = new Intent(ctx, NotificationActionServiceGPS.class);
+            scatta.putExtra("DO", "gps");
+            PendingIntent pScatta = PendingIntent.getService(ctx, 31, scatta,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pGps); */
+            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pScatta);
         }
     }
 

@@ -33,6 +33,13 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sPolyLines"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Percorso PolyLines" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sSegnale"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -87,6 +94,14 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_marginTop="10dp"
+                android:id="@+id/sGpsModalita"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fused Locator" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_marginTop="10dp"
                 android:id="@+id/sGpsPreciso"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -112,9 +127,7 @@
                     android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="wrap_content">
-
-                </EditText>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -137,9 +150,7 @@
                     android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="wrap_content">
-
-                </EditText>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -162,9 +173,7 @@
                     android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="wrap_content">
-
-                </EditText>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -187,9 +196,7 @@
                     android:textColor="@color/black"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="wrap_content">
-
-                </EditText>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

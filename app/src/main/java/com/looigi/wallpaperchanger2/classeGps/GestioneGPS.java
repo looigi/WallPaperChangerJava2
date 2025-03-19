@@ -13,13 +13,22 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
@@ -29,11 +38,15 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class GestioneGPS extends Service {
     private static final String NomeMaschera = "Gestione_GPS";
     private LocationManager locationManager;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
     private Context context;
+
     // private boolean ultimoNull = false;
     // private HandlerThread handlerThreadAccensione;
     // private Handler handlerAccensione;
@@ -170,15 +183,6 @@ public class GestioneGPS extends Service {
             rAccensione = null;
         } */
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Bloccato da " + daDove);
-
-        if (locationManager != null) {
-            locationManager.removeUpdates(locationListenerGPS);
-        }
-
-        // db_dati_gps db = new db_dati_gps(context);
-        // db.ScriveAccensioni(context);
-
         Bitmap bmGps;
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
             bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
@@ -192,6 +196,25 @@ public class GestioneGPS extends Service {
         GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Aggiornata Notifica " + daDove);
+
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Bloccato da " + daDove);
+
+        // if (VariabiliStaticheDetector.getInstance().getModalitaGps()) {
+            if (fusedLocationClient != null && locationCallback != null) {
+                fusedLocationClient.removeLocationUpdates(locationCallback);
+                locationCallback = null;
+                fusedLocationClient = null;
+            }
+        // } else {
+            if (locationManager != null) {
+                locationManager.removeUpdates(locationListenerGPS);
+                locationListenerGPS = null;
+                locationManager = null;
+            }
+        // }
+
+        // db_dati_gps db = new db_dati_gps(context);
+        // db.ScriveAccensioni(context);
     }
 
     public void BloccaTimer() {
@@ -306,6 +329,20 @@ public class GestioneGPS extends Service {
             }
 
             return;
+        } else {
+            if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Attivo. Da " + daDove);
+
+                AbilitaGPS("Controllo Acc Spegn 3. Da " + daDove);
+            } else {
+                UtilityGPS.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Controllo disattivazione/attivazione. Esco dal controllo perché gps già attivo. Da " + daDove);
+            }
         }
 
         // wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
@@ -340,7 +377,7 @@ public class GestioneGPS extends Service {
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Non faccio nulla. Già bloccato");
             } * /
-        } else { */
+        } else { * /
             if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
@@ -349,11 +386,12 @@ public class GestioneGPS extends Service {
                              //   "Blocco WIFI: " + VariabiliStaticheGPS.getInstance().isBloccoPerWifi() + ". Da " + daDove);
 
                 AbilitaGPS("Controllo Acc/Spegn. Da " + daDove);
-            } /* else {
-                UtilityGPS.getInstance().ScriveLog(
+            // } else {
+                /* UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Non faccio nulla. Già attivo");
+            }
             } */
         // }
 
@@ -458,6 +496,67 @@ public class GestioneGPS extends Service {
         */
     }
 
+    private void abilitaGPSModalitaNuova() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(VariabiliStaticheStart.getInstance().getMainActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        if (fusedLocationClient != null && locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+            locationCallback = null;
+            fusedLocationClient = null;
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Milli: " + VariabiliStaticheDetector.getInstance().getGpsMs());
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
+
+        int priorita = -1;
+
+        if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
+            priorita = Priority.PRIORITY_HIGH_ACCURACY;
+        } else {
+            priorita = Priority.PRIORITY_BALANCED_POWER_ACCURACY;
+        }
+
+        /* LocationRequest locationRequest = new LocationRequest.Builder(
+                priorita,
+                VariabiliStaticheDetector.getInstance().getGpsMs())
+                .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters())
+                .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
+                .build(); */
+
+        LocationRequest locationRequest = new LocationRequest.Builder(priorita, VariabiliStaticheDetector.getInstance().getGpsMs())
+                .setMinUpdateDistanceMeters((float) VariabiliStaticheDetector.getInstance().getGpsMeters())
+                .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
+                .setIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
+                .setMinUpdateIntervalMillis(1000)
+                .build();
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult location) {
+                if (location == null) return;
+
+                funzioneDiScritturaPosizioni(Objects.requireNonNull(location.getLastLocation()));
+            }
+        };
+
+        HandlerThread handlerThread = new HandlerThread("LocationThreadPerGPS");
+        handlerThread.start();
+        Looper looper = handlerThread.getLooper();
+
+        // Avvia gli aggiornamenti della posizione
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, looper);
+
+        VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+
+        GestioneNotificaGPS.getInstance().AggiornaNotifica();
+    }
+
     public void AbilitaGPS(String daDove) {
         if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -477,76 +576,79 @@ public class GestioneGPS extends Service {
             }
         }
 
-        if (locationManager != null) {
-            locationManager.removeUpdates(locationListenerGPS);
-            locationManager = null;
-            // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-            //         "Abilita GPS. Esco per location manager non nullo da " + daDove);
-            // return;
-        }
-
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                "Abilita GPS da " + daDove);
-
-        VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        GestioneNotificaGPS.getInstance().AggiornaNotifica();
-        // GestioneNotificheTasti.getInstance().AggiornaNotifica();
-
-        // ultimoTSLocation = new Date().getTime();
-        // VariabiliStaticheGPS.getInstance().setCoordinateAttuali(null);
-
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (VariabiliStaticheDetector.getInstance().getModalitaGps()) {
+            abilitaGPSModalitaNuova();
+        } else {
+            if (locationManager != null) {
+                locationManager.removeUpdates(locationListenerGPS);
+                locationManager = null;
+                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                //         "Abilita GPS. Esco per location manager non nullo da " + daDove);
+                // return;
+            }
 
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "Abilita GPS. ESCO PER PERMESSI NULLI");
-            return;
-        }
+                    "Abilita GPS da " + daDove);
 
-        String provider;
+            VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
-            provider = LocationManager.GPS_PROVIDER;
+            GestioneNotificaGPS.getInstance().AggiornaNotifica();
+            // GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Preciso");
-        } else {
-            provider = LocationManager.NETWORK_PROVIDER;
+            // ultimoTSLocation = new Date().getTime();
+            // VariabiliStaticheGPS.getInstance().setCoordinateAttuali(null);
 
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Network");
-        }
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                "Milli: " + VariabiliStaticheDetector.getInstance().getGpsMs());
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Abilita GPS. ESCO PER PERMESSI NULLI");
+                return;
+            }
 
-        locationManager.requestLocationUpdates(
-                provider,
-                VariabiliStaticheDetector.getInstance().getGpsMs(),
-                VariabiliStaticheDetector.getInstance().getGpsMeters(),
-                locationListenerGPS);
+            String provider;
 
-        if (!locationManager.isProviderEnabled(provider)) {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(context);
-            alertDialog.setTitle("Attiva Location");
-            alertDialog.setMessage("L'impostazione delle tue posizioni non è abilitata. " +
-                    "Si prega di abilitarlo nel menu delle impostazioni.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog, int which){
-                    Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    context.startActivity(intent);
-                }
-            });
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog, int which){
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = alertDialog.create();
-            alert.show();
-        } /* else {
+            if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
+                provider = LocationManager.GPS_PROVIDER;
+
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Preciso");
+            } else {
+                provider = LocationManager.NETWORK_PROVIDER;
+
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Provider Network");
+            }
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Milli: " + VariabiliStaticheDetector.getInstance().getGpsMs());
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
+
+            locationManager.requestLocationUpdates(
+                    provider,
+                    VariabiliStaticheDetector.getInstance().getGpsMs(),
+                    VariabiliStaticheDetector.getInstance().getGpsMeters(),
+                    locationListenerGPS);
+
+            if (!locationManager.isProviderEnabled(provider)) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setTitle("Attiva Location");
+                alertDialog.setMessage("L'impostazione delle tue posizioni non è abilitata. " +
+                        "Si prega di abilitarlo nel menu delle impostazioni.");
+                alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = alertDialog.create();
+                alert.show();
+            } /* else {
             AlertDialog.Builder alertDialog=new AlertDialog.Builder(context);
             alertDialog.setTitle("Conferma Location");
             alertDialog.setMessage("Location abilitata");
@@ -559,77 +661,77 @@ public class GestioneGPS extends Service {
             alert.show();
         } */
 
-        // TOLTO PER TEST
-        // ControlloAccSpegn(context);
+            // TOLTO PER TEST
+            // ControlloAccSpegn(context);
+        }
 
-        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "GPS Abilitato");
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "GPS Abilitato con modalità Fused Locator " + VariabiliStaticheDetector.getInstance().getModalitaGps());
     }
 
-    private final LocationListener locationListenerGPS = new LocationListener() {
-        @Override
-        public void onLocationChanged(@NonNull Location location) {
-            // if (!controllaSpegnimentoPerGPS()) {
-            //     return;
-            // }
+    private void funzioneDiScritturaPosizioni(Location location) {
+        if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+            return;
+        }
 
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            double altitude = location.getAltitude();
-            float speed = location.getSpeed();
-            float accuracy = location.getAccuracy();
-            float direzione = location.hasBearing() ? location.getBearing() : 0.0f;
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        double altitude = location.getAltitude();
+        float speed = location.getSpeed();
+        float accuracy = location.getAccuracy();
+        float direzione = location.hasBearing() ? location.getBearing() : 0.0f;
 
-            Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
-            String currentDate = sdfD.format(calendar.getTime());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdfD = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = sdfD.format(calendar.getTime());
 
-            SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
-            String currentHour = sdfO.format(calendar.getTime());
+        SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:ss");
+        String currentHour = sdfO.format(calendar.getTime());
 
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "\n\nLocation changed. Ingresso: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
+                        "Accuracy: " + location.getAccuracy() + "\n" +
+                        "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
+                        "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
+                        "Ora: " + currentHour
+        );
+
+        // ultimoTSLocation = new Date().getTime();
+
+        if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() == null) {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "\n\nLocation changed. Ingresso: " + location.getLatitude() + ", " + location.getLongitude() + "\n" +
-                            "Accuracy: " + location.getAccuracy() + "\n" +
-                            "Wifi: " + VariabiliStaticheStart.getInstance().isCeWifi() + "\n" +
-                            "Abilitato: " + VariabiliStaticheGPS.getInstance().isGpsAttivo() + "\n" +
-                            "Ora: " + currentHour
-            );
+                    "Coordinate attuali nulle");
 
-            // ultimoTSLocation = new Date().getTime();
+            db_dati_gps db = new db_dati_gps(context);
+            StrutturaGps s = db.RitornaUltimaPosizione(currentDate);
+            if (s != null) {
+                VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
-            if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() == null) {
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Coordinate attuali nulle");
+                        "Coordinate attuali lette: " + s.getLat() + " " + s.getLon() + " " +
+                                s.getData());
+            } else {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Coordinate attuali nulle sul db");
+            }
+            db.ChiudeDB();
 
-                db_dati_gps db = new db_dati_gps(context);
-                StrutturaGps s = db.RitornaUltimaPosizione(currentDate);
-                if (s != null) {
-                    VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
-
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Coordinate attuali lette: " + s.getLat() + " " + s.getLon() + " " +
-                            s.getData());
-                } else {
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Coordinate attuali nulle sul db");
-                }
-                db.ChiudeDB();
-
-                if (s != null) {
-                    String dataUltimoPunto = s.getOra();
-                    VariabiliStaticheGPS.getInstance().setUltimoDataPunto(dataUltimoPunto);
-                } else {
-                    VariabiliStaticheGPS.getInstance().setUltimoDataPunto("--");
-                }
-
-                GestioneNotificaGPS.getInstance().AggiornaNotifica();
+            if (s != null) {
+                String dataUltimoPunto = s.getOra();
+                VariabiliStaticheGPS.getInstance().setUltimoDataPunto(dataUltimoPunto);
+            } else {
+                VariabiliStaticheGPS.getInstance().setUltimoDataPunto("--");
             }
 
-            boolean ok = true;
+            GestioneNotificaGPS.getInstance().AggiornaNotifica();
+        }
 
-            double distanza = 0;
+        boolean ok = true;
 
-            if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
-                StrutturaGps vecchia = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
+        double distanza = 0;
+
+        if (VariabiliStaticheGPS.getInstance().getCoordinateAttuali() != null) {
+            StrutturaGps vecchia = VariabiliStaticheGPS.getInstance().getCoordinateAttuali();
 
                 /* float[] results = new float[1];
                 Location.distanceBetween(
@@ -639,40 +741,40 @@ public class GestioneGPS extends Service {
                         location.getLongitude(),
                         results); */
 
-                distanza = meterDistanceBetweenPoints(
-                        vecchia.getLat(),
-                        vecchia.getLon(),
-                        location.getLatitude(),
-                        location.getLongitude()
-                );
+            distanza = meterDistanceBetweenPoints(
+                    vecchia.getLat(),
+                    vecchia.getLon(),
+                    location.getLatitude(),
+                    location.getLongitude()
+            );
 
-                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Distanza con l'ultimo punto: " + distanza);
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Distanza con l'ultimo punto: " + distanza);
 
-                // if (distanza > 75) {
-                //     ok = false;
-                // }
+            // if (distanza > 75) {
+            //     ok = false;
+            // }
 
                 /* distanza = results[0];
                 if (results[0] > 75) {
                     ok = false;
                 } */
-            } else {
+        } else {
+            ok = false;
+
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Coordinate attuali nulle");
+        }
+
+        if (ok) {
+            if (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() &&
+                    location.getAccuracy() > 100) {
                 ok = false;
 
                 UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Coordinate attuali nulle");
+                        "Skippo posizione per Accuracy elevata: " + location.getAccuracy());
             }
-
-            if (ok) {
-                if (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() &&
-                        location.getAccuracy() > 100) {
-                    ok = false;
-
-                    UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Skippo posizione per Accuracy elevata: " + location.getAccuracy());
-                }
-            }
+        }
 
             /* if (ok) {
                 if (VariabiliStaticheGPS.getInstance().isNonScriverePunti()) {
@@ -683,33 +785,33 @@ public class GestioneGPS extends Service {
                 }
             } */
 
-            StrutturaGps s = new StrutturaGps();
-            s.setLat(latitude);
-            s.setLon(longitude);
-            s.setData(currentDate);
-            s.setOra(currentHour);
-            s.setAltitude(altitude);
-            s.setSpeed(speed);
-            s.setAccuracy(accuracy);
-            s.setDistanza((float) distanza);
-            s.setWifi(VariabiliStaticheStart.getInstance().isCeWifi());
-            s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
-            s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
-            s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
-            s.setDirezione(direzione);
+        StrutturaGps s = new StrutturaGps();
+        s.setLat(latitude);
+        s.setLon(longitude);
+        s.setData(currentDate);
+        s.setOra(currentHour);
+        s.setAltitude(altitude);
+        s.setSpeed(speed);
+        s.setAccuracy(accuracy);
+        s.setDistanza((float) distanza);
+        s.setWifi(VariabiliStaticheStart.getInstance().isCeWifi());
+        s.setLivelloSegnale(VariabiliStaticheStart.getInstance().getLivelloSegnaleConnessione());
+        s.setTipoSegnale(VariabiliStaticheStart.getInstance().getTipoConnessione());
+        s.setLevel(VariabiliStaticheStart.getInstance().getLivello());
+        s.setDirezione(direzione);
 
-            VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
+        VariabiliStaticheGPS.getInstance().setCoordinateAttuali(s);
 
-            if (ok && VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi()) {
-                ok = controlloSeStiamoSuPS(location);
-            }
+        if (ok && VariabiliStaticheGPS.getInstance().isPuntiSospensioneAttivi()) {
+            ok = controlloSeStiamoSuPS(location);
+        }
 
-            if (ok) {
-                VariabiliStaticheGPS.getInstance().setUltimoDataPunto(currentHour);
+        if (ok) {
+            VariabiliStaticheGPS.getInstance().setUltimoDataPunto(currentHour);
 
-                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                        "Location changed. SCRITTURA"
-                );
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Location changed. SCRITTURA"
+            );
 
                 /* UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                         "---Punto scritto: " + VariabiliStaticheGPS.getInstance().getUltimoDataPunto() + "---\n\n"
@@ -733,25 +835,34 @@ public class GestioneGPS extends Service {
                 } else {
                     ultimoNull = false;
                 } */
-                // ultimoNull = false;
+            // ultimoNull = false;
 
-                if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
-                    VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
+            if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
+                VariabiliStaticheGPS.getInstance().getMappa().AggiungePosizione(s);
                 /* } else {
                     UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                             "---MAPPA NON PRESENTE---"); */
-                }
-
-                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                //         "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
-
-                VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
-
-                GestioneNotificaGPS.getInstance().AggiornaNotifica();
-            // } else {
-                // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
-                //         location.getLatitude() + ", " + location.getLongitude() + " NON Valida");
             }
+
+            // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+            //         "Aggiunta posizione GPS ad array: " + s.getLat() + " " + s.getLon());
+
+            VariabiliStaticheGPS.getInstance().AggiungeGPS(context, s);
+
+            GestioneNotificaGPS.getInstance().AggiornaNotifica();
+            // } else {
+            // UtilityGPS.getInstance().ScriveLog(context, NomeMaschera, "Location changed: " +
+            //         location.getLatitude() + ", " + location.getLongitude() + " NON Valida");
+        }
+    }
+
+    private LocationListener locationListenerGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            // if (!controllaSpegnimentoPerGPS()) {
+            //     return;
+            // }
+            funzioneDiScritturaPosizioni(location);
         }
 
         @Override
@@ -894,5 +1005,25 @@ public class GestioneGPS extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public void RefreshImpostazioni() {
+        UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                "Refresh impostazioni");
+
+        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+            BloccaGPS("Refresh Impostazioni");
+
+            Handler handler1 = new Handler(Looper.getMainLooper());
+            Runnable r1 = new Runnable() {
+                public void run() {
+                    AbilitaGPS("Refresh Impostazioni");
+                }
+            };
+            handler1.postDelayed(r1, 1000);
+        } else {
+            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                    "Non faccio nulla in quanto il gps è bloccato");
+        }
     }
 }

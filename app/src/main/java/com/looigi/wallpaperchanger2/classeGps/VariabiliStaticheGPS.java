@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaAccensioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaPuntiSpegnimento;
@@ -59,6 +64,115 @@ public class VariabiliStaticheGPS {
     private boolean MappeAperte = false;
     private GifImageView imgAttesa;
     private ListView lstFilesRemoti;
+    private TextView txtMappa;
+    private boolean primoPassaggio = true;
+    private int vecchiDati = -1;
+    private int livelloZoomStandard = 16;
+    private List<Circle> circolettiPS;
+    private List<Marker> markersPS;
+    private List<Marker> markersPA;
+    private GoogleMap mappetta;
+    // private List<Marker> markersPATH;
+    private int puntiTotali;
+    private boolean disegnaPathComePolyline;
+    /* private Polyline polylineSegnale;
+    // private Polyline polylineVelocita;
+
+    public Polyline getPolylineVelocita() {
+        return polylineVelocita;
+    }
+
+    public void setPolylineVelocita(Polyline polylineVelocita) {
+        this.polylineVelocita = polylineVelocita;
+    }
+
+    public Polyline getPolylineSegnale() {
+        return polylineSegnale;
+    }
+
+    public void setPolylineSegnale(Polyline polylineSegnale) {
+        this.polylineSegnale = polylineSegnale;
+    } */
+
+    public boolean isDisegnaPathComePolyline() {
+        return disegnaPathComePolyline;
+    }
+
+    public void setDisegnaPathComePolyline(boolean disegnaPathComePolyline) {
+        this.disegnaPathComePolyline = disegnaPathComePolyline;
+    }
+
+    public int getPuntiTotali() {
+        return puntiTotali;
+    }
+
+    public void setPuntiTotali(int puntiTotali) {
+        this.puntiTotali = puntiTotali;
+    }
+
+    public GoogleMap getMappetta() {
+        return mappetta;
+    }
+
+    public void setMappetta(GoogleMap mappetta) {
+        this.mappetta = mappetta;
+    }
+
+    public List<Circle> getCircolettiPS() {
+        return circolettiPS;
+    }
+
+    public void setCircolettiPS(List<Circle> circolettiPS) {
+        this.circolettiPS = circolettiPS;
+    }
+
+    public List<Marker> getMarkersPS() {
+        return markersPS;
+    }
+
+    public void setMarkersPS(List<Marker> markersPS) {
+        this.markersPS = markersPS;
+    }
+
+    public List<Marker> getMarkersPA() {
+        return markersPA;
+    }
+
+    public void setMarkersPA(List<Marker> markersPA) {
+        this.markersPA = markersPA;
+    }
+
+    public int getLivelloZoomStandard() {
+        return livelloZoomStandard;
+    }
+
+    public void setLivelloZoomStandard(int livelloZoomStandard) {
+        this.livelloZoomStandard = livelloZoomStandard;
+    }
+
+    public int getVecchiDati() {
+        return vecchiDati;
+    }
+
+    public void setVecchiDati(int vecchiDati) {
+        this.vecchiDati = vecchiDati;
+    }
+
+    public boolean isPrimoPassaggio() {
+        return primoPassaggio;
+    }
+
+    public void setPrimoPassaggio(boolean primoPassaggio) {
+        this.primoPassaggio = primoPassaggio;
+    }
+
+    public TextView getTxtMappa() {
+        return txtMappa;
+    }
+
+    public void setTxtMappa(TextView txtMappa) {
+        this.txtMappa = txtMappa;
+    }
 
     public ListView getLstFilesRemoti() {
         return lstFilesRemoti;
