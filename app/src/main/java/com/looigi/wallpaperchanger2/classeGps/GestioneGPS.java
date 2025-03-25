@@ -523,19 +523,12 @@ public class GestioneGPS extends Service {
             priorita = Priority.PRIORITY_BALANCED_POWER_ACCURACY;
         }
 
-        /* LocationRequest locationRequest = new LocationRequest.Builder(
-                priorita,
-                VariabiliStaticheDetector.getInstance().getGpsMs())
-                .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters())
-                .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
-                .build(); */
-
         LocationRequest locationRequest = new LocationRequest.Builder(
                 VariabiliStaticheDetector.getInstance().getGpsMs()
             )
-                .setPriority(priorita)
                 .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
-                .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
+                .setMinUpdateIntervalMillis(10000)
+                .setPriority(priorita)
                 .build();
 
         locationCallback = new LocationCallback() {
@@ -546,13 +539,6 @@ public class GestioneGPS extends Service {
                 for (Location location : locationResult.getLocations()) {
                     // funzioneDiScritturaPosizioni(Objects.requireNonNull(location.getLastLocation()));
                     funzioneDiScritturaPosizioni(location);
-
-                    /* Log.d("GPS", "Nuova posizione ricevuta - " +
-                            "Lat: " + location.getLatitude() + ", " +
-                            "Lng: " + location.getLongitude() + ", " +
-                            "Accuratezza: " + location.getAccuracy() + "m, " +
-                            "Velocità: " + location.getSpeed() + "m/s, " +
-                            "Timestamp: " + location.getTime()); */
                 }
             }
         };
@@ -689,7 +675,11 @@ public class GestioneGPS extends Service {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         double altitude = location.getAltitude();
+
         float speed = location.getSpeed();
+        float velocityInMps = speed;
+        speed = velocityInMps * 3.6F;
+
         float accuracy = location.getAccuracy();
         float direzione = location.hasBearing() ? location.getBearing() : 0.0f;
 
