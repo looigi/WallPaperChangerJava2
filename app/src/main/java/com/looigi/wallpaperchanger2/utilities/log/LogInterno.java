@@ -149,9 +149,11 @@ public class LogInterno {
 							handler = null;
 						}
 					} else {
-						handler.removeCallbacksAndMessages(this);
-						handler.removeCallbacks(this);
-						handler = null;
+						if (handler != null) {
+							handler.removeCallbacksAndMessages(this);
+							handler.removeCallbacks(this);
+							handler = null;
+						}
 					}
 				}
 			};

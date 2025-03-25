@@ -31,6 +31,8 @@ photoview = "2.0.0"
 picasso = "2.8"
 playServicesAuth = "21.2.0"
 playServicesAuthVersion = "17.0.0"
+playServicesLocation = "15.0.1"
+playServicesLocationVersion = "21.0.1"
 playServicesMaps = "19.0.0"
 playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
@@ -72,6 +74,8 @@ play-services-auth-v1601 = { module = "com.google.android.gms:play-services-auth
 play-services-auth-v1700 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
 play-services-auth-v2130 = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuth" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "googlePlayServicesAuth" }
+play-services-location-v1501 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+play-services-location-v2101 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 play-services-mlkit-language-id = { module = "com.google.android.gms:play-services-mlkit-language-id", version.ref = "playServicesMapsVersion" }

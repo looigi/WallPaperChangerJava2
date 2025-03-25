@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeGps;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
@@ -529,19 +530,30 @@ public class GestioneGPS extends Service {
                 .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
                 .build(); */
 
-        LocationRequest locationRequest = new LocationRequest.Builder(priorita, VariabiliStaticheDetector.getInstance().getGpsMs())
-                .setMinUpdateDistanceMeters((float) VariabiliStaticheDetector.getInstance().getGpsMeters())
+        LocationRequest locationRequest = new LocationRequest.Builder(
+                VariabiliStaticheDetector.getInstance().getGpsMs()
+            )
+                .setPriority(priorita)
+                .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
                 .setMinUpdateIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
-                .setIntervalMillis(VariabiliStaticheDetector.getInstance().getGpsMs())
-                .setMinUpdateIntervalMillis(1000)
                 .build();
 
         locationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult location) {
-                if (location == null) return;
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) return;
 
-                funzioneDiScritturaPosizioni(Objects.requireNonNull(location.getLastLocation()));
+                for (Location location : locationResult.getLocations()) {
+                    // funzioneDiScritturaPosizioni(Objects.requireNonNull(location.getLastLocation()));
+                    funzioneDiScritturaPosizioni(location);
+
+                    /* Log.d("GPS", "Nuova posizione ricevuta - " +
+                            "Lat: " + location.getLatitude() + ", " +
+                            "Lng: " + location.getLongitude() + ", " +
+                            "Accuratezza: " + location.getAccuracy() + "m, " +
+                            "Velocità: " + location.getSpeed() + "m/s, " +
+                            "Timestamp: " + location.getTime()); */
+                }
             }
         };
 
