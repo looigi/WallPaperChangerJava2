@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
+import com.looigi.wallpaperchanger2.utilities.meteo.struttura.StrutturaMeteo;
+
+import java.util.Date;
 
 public class VariabiliStaticheStart {
     private static VariabiliStaticheStart instance = null;
@@ -42,6 +45,60 @@ public class VariabiliStaticheStart {
     // private Intent servizioForegroundGPS;
     private boolean segnaleAttivo = true;
     public static final String UrlWSGlobale = "http://looigi.ddnsfree.com"; // http://looigi.no-ip.biz:1071/";
+    private int accensioniDiSchermo = 0;
+    private int chiamate = 0;
+    private Date oraEntrata;
+    private boolean haFattoTraduzione;
+    private boolean haPresoMeteo;
+    private StrutturaMeteo meteo;
+
+    public StrutturaMeteo getMeteo() {
+        return meteo;
+    }
+
+    public void setMeteo(StrutturaMeteo meteo) {
+        this.meteo = meteo;
+    }
+
+    public boolean isHaPresoMeteo() {
+        return haPresoMeteo;
+    }
+
+    public void setHaPresoMeteo(boolean haPresoMeteo) {
+        this.haPresoMeteo = haPresoMeteo;
+    }
+
+    public boolean isHaFattoTraduzione() {
+        return haFattoTraduzione;
+    }
+
+    public void setHaFattoTraduzione(boolean haFattoTraduzione) {
+        this.haFattoTraduzione = haFattoTraduzione;
+    }
+
+    public Date getOraEntrata() {
+        return oraEntrata;
+    }
+
+    public void setOraEntrata(Date oraEntrata) {
+        this.oraEntrata = oraEntrata;
+    }
+
+    public int getChiamate() {
+        return chiamate;
+    }
+
+    public void setChiamate(int chiamate) {
+        this.chiamate = chiamate;
+    }
+
+    public int getAccensioniDiSchermo() {
+        return accensioniDiSchermo;
+    }
+
+    public void setAccensioniDiSchermo(int accensioniDiSchermo) {
+        this.accensioniDiSchermo = accensioniDiSchermo;
+    }
 
     public boolean isSegnaleAttivo() {
         return segnaleAttivo;

@@ -240,10 +240,16 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().setIdPerOperazione(-1);
                     VariabiliStaticheLazio.getInstance().getEdtData().setText(dataOdierna);
                     VariabiliStaticheLazio.getInstance().getEdtNominativo().setText("");
-                    VariabiliStaticheLazio.getInstance().setIdStato(0);
-                    VariabiliStaticheLazio.getInstance().getSpnStati().setPrompt("");
+
+                    VariabiliStaticheLazio.getInstance().setIdStato(1);
+                    int spinnerPosition = VariabiliStaticheLazio.getInstance().getAdapterStati().getPosition("Voce");
+                    VariabiliStaticheLazio.getInstance().getSpnStati().setSelection(spinnerPosition);
+                    // VariabiliStaticheLazio.getInstance().getSpnStati().setPrompt("Voce");
+
                     VariabiliStaticheLazio.getInstance().setIdFonte(0);
-                    VariabiliStaticheLazio.getInstance().getSpnFonti().setPrompt("");
+                    int spinnerPositionF = VariabiliStaticheLazio.getInstance().getAdapterFonti().getPosition("");
+                    VariabiliStaticheLazio.getInstance().getSpnFonti().setSelection(spinnerPositionF);
+                    // VariabiliStaticheLazio.getInstance().getSpnFonti().setPrompt("");
                 }
 
                 VariabiliStaticheLazio.getInstance().getLayModificaMercato().setVisibility(LinearLayout.VISIBLE);

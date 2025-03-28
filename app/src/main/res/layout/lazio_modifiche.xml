@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+    android:layout_margin="5dp"
     android:layout_height="match_parent">
 
     <TextView
@@ -84,8 +85,22 @@
             <Spinner
                 android:id="@+id/spnFonte"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshFonti"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/icona_refresh" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -104,8 +119,22 @@
             <Spinner
                 android:id="@+id/spnStato"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefreshStati"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/icona_refresh" />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

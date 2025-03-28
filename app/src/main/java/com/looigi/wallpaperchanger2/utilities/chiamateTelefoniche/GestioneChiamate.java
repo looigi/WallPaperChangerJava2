@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.Date;
 
@@ -85,6 +86,9 @@ public abstract class GestioneChiamate extends BroadcastReceiver {
                 }
                 switch (state) {
                     case TelephonyManager.CALL_STATE_RINGING:
+                        int chiamate = VariabiliStaticheStart.getInstance().getChiamate();
+                        VariabiliStaticheStart.getInstance().setChiamate(chiamate + 1);
+
                         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera, "onCallStateChanged: CALL STATE RINGING");
                         isIncoming = true;
                         callStartTime = new Date();

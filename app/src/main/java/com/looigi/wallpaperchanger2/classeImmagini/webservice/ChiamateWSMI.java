@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
@@ -680,9 +681,12 @@ public class ChiamateWSMI implements TaskDelegate {
                             false,
                             true
                     );
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Immagine scaricata non valida");
                 }
             } catch (JSONException e) {
-
+                UtilitiesGlobali.getInstance().ApreToast(context, "Errore su cambio immagine: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
             }
             // Utility.getInstance().VisualizzaMessaggio(result);
             // } else {

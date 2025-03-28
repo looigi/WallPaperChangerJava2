@@ -47,6 +47,7 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,6 +131,8 @@ public class MainStart extends Activity {
 
     private void impostaSchermata() {
         // new Chiacchierone(context, "App Quality Insights");
+
+        VariabiliStaticheStart.getInstance().setOraEntrata(new Date());
 
         LinearLayout layStart = findViewById(R.id.layStart);
 

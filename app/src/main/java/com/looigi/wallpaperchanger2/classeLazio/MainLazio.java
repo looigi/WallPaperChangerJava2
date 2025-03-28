@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeLazio;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,11 +17,13 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.MainApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -455,6 +458,15 @@ public class MainLazio extends Activity {
             }
         });
 
+        ImageView imgAF = findViewById(R.id.imgApiFootball);
+        imgAF.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iI = new Intent(context, MainApiFootball.class);
+                iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iI);
+            }
+        });
+
         VariabiliStaticheLazio.getInstance().setImgAggiorna(findViewById(R.id.imgAggiorna));
         VariabiliStaticheLazio.getInstance().getImgAggiorna().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -694,6 +706,22 @@ public class MainLazio extends Activity {
                 VariabiliStaticheLazio.getInstance().getLstClassifica().setAdapter(
                         VariabiliStaticheLazio.getInstance().getCstmAdptClassifica()
                 );
+            }
+        });
+
+        ImageView imgRefreshFonti = findViewById(R.id.imgRefreshFonti);
+        imgRefreshFonti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaFonti(true);
+            }
+        });
+
+        ImageView imgRefreshStati = findViewById(R.id.imgRefreshStati);
+        imgRefreshStati.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaStati(true);
             }
         });
 

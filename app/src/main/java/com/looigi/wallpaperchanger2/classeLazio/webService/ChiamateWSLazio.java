@@ -642,6 +642,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     private void fRitornaStati(String result) {
         boolean ritorno = ControllaRitorno("Ritorno stati", result);
+
         if (!ritorno) {
             // UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {

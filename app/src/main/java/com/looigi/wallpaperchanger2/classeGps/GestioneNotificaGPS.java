@@ -112,16 +112,19 @@ public class GestioneNotificaGPS {
             if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                 long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
                 float dist = Math.round((distanza / 1000F) * 100) / 100F;
+
                 contentView.setTextViewText(R.id.txtPunti,
-                        "Pt.: " + Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaQuantiPunti()) +
-                                " Dist.: " + Float.toString(dist) + " Km.");
+                        Integer.toString(VariabiliStaticheGPS.getInstance().getMappa().RitornaQuantiPunti()));
+                contentView.setTextViewText(R.id.txtDistanza,
+                                Float.toString(dist) + " Km.");
             } else {
                 contentView.setTextViewText(R.id.txtPunti,
                         "");
+                contentView.setTextViewText(R.id.txtDistanza,
+                        "");
             }
 
-            contentView.setTextViewText(R.id.txtData,
-                    "Last: " +
+            contentView.setTextViewText(R.id.txtLast,
                     VariabiliStaticheGPS.getInstance().getUltimoDataPunto());
 
             notificationBuilder = new NotificationCompat.Builder(context, VariabiliStaticheGPS.NOTIFICATION_CHANNEL_STRING);

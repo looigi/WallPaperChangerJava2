@@ -112,6 +112,8 @@ public class DownloadImmagineMI {
                     UtilityImmagini.getInstance().Attesa(false);
                     BloccaTimer();
                     BloccaEsecuzione();
+
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Timeout nel download");
                 } else {
                     if (handler != null) {
                         handler.postDelayed(this, 1000);
@@ -180,6 +182,8 @@ public class DownloadImmagineMI {
                     // }
                     Errore = true;
                 }
+            } else {
+                UtilitiesGlobali.getInstance().ApreToast(context, "Struttura non esistente per il download");
             }
 
             // } else {

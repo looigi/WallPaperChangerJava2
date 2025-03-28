@@ -64,6 +64,8 @@ import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.utilities.meteo.classeMeteo;
+import com.looigi.wallpaperchanger2.utilities.meteo.struttura.StrutturaMeteo;
 
 import org.w3c.dom.Text;
 
@@ -81,6 +83,8 @@ public class MainOrari extends Activity {
     private AdapterListenerMezzi cstmAdptMezziAndata = null;
     private AdapterListenerMezzi cstmAdptMezziRitorno = null;
     private boolean ApertoDP = true;
+    private Handler handlerTimerMeteo;
+    private Runnable rTimerMeteo;
 
     public MainOrari() {
         ApertoDP = true;
@@ -471,6 +475,8 @@ public class MainOrari extends Activity {
                         break;
                     case "TEMPO":
                         sdg.setTempo(ValoreImpostato);
+                        UtilityOrari.getInstance().disegnaIconaTempo(context, sdg.getTempo());
+
                         VariabiliStaticheOrari.getInstance().getTxtTempo().setText(ValoreImpostato);
                         break;
                     case "GRADI":
@@ -708,6 +714,81 @@ public class MainOrari extends Activity {
 
                 VariabiliStaticheOrari.getInstance().getLayBloccoSfondo().setVisibility(LinearLayout.VISIBLE);
                 layGestione.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        VariabiliStaticheOrari.getInstance().setImgIconaTempo(findViewById(R.id.imgIconaTempo));
+        VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.GONE);
+
+        ImageView imgTrovaTempo = findViewById(R.id.imgTrovaTempo);
+        imgTrovaTempo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                classeMeteo cl = new classeMeteo();
+                cl.RitornaMeteo(context, "ORARI");
+
+                VariabiliStaticheStart.getInstance().setHaPresoMeteo(false);
+
+                handlerTimerMeteo = new Handler(Looper.getMainLooper());
+                rTimerMeteo = new Runnable() {
+                    public void run() {
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (VariabiliStaticheStart.getInstance().isHaPresoMeteo()) {
+                                    handlerTimerMeteo.removeCallbacksAndMessages(rTimerMeteo);
+
+                                    StrutturaMeteo s = VariabiliStaticheStart.getInstance().getMeteo();
+                                    UtilityOrari.getInstance().disegnaIconaTempo(context, s.getTesto());
+
+                                    VariabiliStaticheOrari.getInstance().getTxtTempo().setText(s.getTesto());
+                                    VariabiliStaticheOrari.getInstance().getEdtGradi().setText(Double.toString(s.getTemperatura()));
+
+                                    // Controlla se il meteo è già esistente oppure devo aggiungerlo
+                                    boolean ok = false;
+                                    int massimo = 0;
+                                    for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+                                        if (s.getTesto().equals(st.getTempo())) {
+                                            ok = true;
+                                        }
+                                        if (st.getIdTempo() > massimo) {
+                                            massimo = st.getIdTempo();
+                                        }
+                                    }
+                                    if (!ok) {
+                                        StrutturaTempo st = new StrutturaTempo();
+                                        st.setTempo(s.getTesto());
+                                        st.setIdTempo(massimo + 1);
+                                        st.setUrlIcona(s.getIcona());
+
+                                        VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi().add(st);
+
+                                        String PathFile = VariabiliStaticheOrari.getInstance().getPathOrari();
+                                        String NomeFile = "Dati.txt";
+                                        if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
+                                            Files.getInstance().EliminaFile(PathFile, NomeFile);
+                                        }
+
+                                        String[] lista = new String[VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi().size()];
+                                        int i = 0;
+                                        for (StrutturaTempo st2 : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+                                            lista[i] = st2.getTempo();
+                                        }
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                                (context, android.R.layout.simple_spinner_item, lista);
+                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
+
+                                        ChiamateWSOrari c = new ChiamateWSOrari(context);
+                                        c.AggiungeMeteo(String.valueOf(st.getIdTempo()), st.getTempo(), st.getUrlIcona());
+                                    }
+                                } else {
+                                    handlerTimerMeteo.postDelayed(rTimerMeteo, 500);
+                                }
+                            }
+                        }, 500);
+                    }
+                };
+                handlerTimerMeteo.postDelayed(rTimerMeteo, 500);
             }
         });
 

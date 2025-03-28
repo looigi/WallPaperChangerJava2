@@ -803,6 +803,15 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imgApiFootball"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/download" />
+
+    <ImageView
         android:id="@+id/imgAggiorna"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

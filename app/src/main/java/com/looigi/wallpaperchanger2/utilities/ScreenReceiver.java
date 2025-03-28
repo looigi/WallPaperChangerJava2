@@ -13,6 +13,7 @@ import com.looigi.wallpaperchanger2.classeAvvio.Esecuzione;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
 import java.util.Objects;
 
@@ -75,6 +76,10 @@ public class ScreenReceiver extends BroadcastReceiver {
 
         if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
             screenOff = false;
+
+            int acc = VariabiliStaticheStart.getInstance().getAccensioniDiSchermo();
+            VariabiliStaticheStart.getInstance().setAccensioniDiSchermo(acc + 1);
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
             GestioneNotificheWP.getInstance().AggiornaNotifica();
 

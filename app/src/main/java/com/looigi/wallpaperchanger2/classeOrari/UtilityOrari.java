@@ -3,12 +3,17 @@ package com.looigi.wallpaperchanger2.classeOrari;
 import android.content.Context;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.adapters.AdapterListenerPortate;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
+import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaTempo;
 import com.looigi.wallpaperchanger2.classeOrari.webService.ChiamateWSOrari;
+import com.looigi.wallpaperchanger2.classeOrari.webService.DownloadImmagineOrari;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -207,6 +212,13 @@ public class UtilityOrari {
             VariabiliStaticheOrari.getInstance().getTxtLavoro().setText(sdg.getLavoro());
             VariabiliStaticheOrari.getInstance().getTxtCommessa().setText(sdg.getCommessa());
             VariabiliStaticheOrari.getInstance().getTxtTempo().setText(sdg.getTempo());
+
+            if (sdg.getTempo() != null && !sdg.getTempo().isEmpty()) {
+                disegnaIconaTempo(context, sdg.getTempo());
+            } else {
+                VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.GONE);
+            }
+
             if (sdg.getGradi().equals("999")) {
                 sdg.setGradi("");
             }
@@ -240,6 +252,28 @@ public class UtilityOrari {
                 // MEZZI
                 RiempieMezzi(context);
             }
+        }
+    }
+
+    public void disegnaIconaTempo(Context context, String Tempo) {
+        boolean ok = false;
+
+        for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+            if (Tempo.equals(st.getTempo())) {
+                if (!st.getUrlIcona().isEmpty()) {
+                    ok = true;
+
+                    VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.VISIBLE);
+
+                    DownloadImmagineOrari d = new DownloadImmagineOrari();
+                    d.EsegueChiamata(context,
+                            VariabiliStaticheOrari.getInstance().getImgIconaTempo(),
+                            "http:" + st.getUrlIcona());
+                }
+            }
+        }
+        if (!ok) {
+            VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.GONE);
         }
     }
 

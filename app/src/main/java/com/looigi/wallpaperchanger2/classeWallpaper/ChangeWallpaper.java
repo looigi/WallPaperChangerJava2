@@ -318,6 +318,8 @@ public class ChangeWallpaper {
 														percX + "% x " + percY + "%");
 
 												bmpAppoggio = finalBitmap;
+
+												// UtilitiesGlobali.getInstance().ApreToast(context, "Immagine scaricata troppo piccola");
 											} else {
 												try {
 													bmpAppoggio = Bitmap.createBitmap(
@@ -348,6 +350,10 @@ public class ChangeWallpaper {
 																	UtilityDetector.getInstance().PrendeErroreDaException(e));
 
 													bmpAppoggio = finalBitmap;
+
+													// UtilitiesGlobali.getInstance().ApreToast(context,
+													// 		"Errore conversione immagine: " +
+													// 				UtilityDetector.getInstance().PrendeErroreDaException(e));
 												}
 											}
 										} else {

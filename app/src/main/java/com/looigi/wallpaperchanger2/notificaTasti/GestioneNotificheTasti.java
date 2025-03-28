@@ -44,6 +44,8 @@ import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -149,8 +151,10 @@ public class GestioneNotificheTasti {
                 contentView.setViewVisibility(R.id.imgImmaginiPennetta, LinearLayout.GONE);
             } */
 
+            String testo = "";
+
             boolean wifi = VariabiliStaticheStart.getInstance().isCeWifi();
-            String testo = (wifi ? "WiFi" : "Mobile");
+            testo += (wifi ? "WiFi" : "Mobile");
             if (!wifi) {
                 testo += " " + VariabiliStaticheStart.getInstance().getTipoConnessione();
             }
@@ -162,9 +166,49 @@ public class GestioneNotificheTasti {
                     " (" + livello + ")";
             testo += "\nDl: " +
                     VariabiliStaticheStart.getInstance().getVelocitaDownload() +
-                    " - Ul: " + VariabiliStaticheStart.getInstance().getVelocitaUpload() + " " +
-                    VariabiliStaticheStart.getInstance().getUltimoControlloRete();
-            contentView.setTextViewText(R.id.txtSegnale, testo);
+                    " - Ul: " + VariabiliStaticheStart.getInstance().getVelocitaUpload() +
+                    " - Chiamate: " + VariabiliStaticheStart.getInstance().getChiamate();
+            contentView.setTextViewText(R.id.txtInfoSopra, testo);
+
+            String testo2 = "Accensioni: " + VariabiliStaticheStart.getInstance().getAccensioniDiSchermo() + " - ";
+            if (VariabiliStaticheStart.getInstance().getOraEntrata() != null) {
+                Date datella = VariabiliStaticheStart.getInstance().getOraEntrata();
+                Calendar thatDay = Calendar.getInstance();
+                thatDay.setTime(datella);
+
+                Calendar today = Calendar.getInstance();
+
+                long diff = (today.getTimeInMillis() - thatDay.getTimeInMillis()) / 1000;
+                int minuti = 0;
+                int ore = 0;
+
+                while (diff > 60) {
+                    minuti++;
+                    if (minuti == 60) {
+                        minuti = 0;
+                        ore++;
+                    }
+                    diff -= 60;
+                }
+
+                String sOre = Integer.toString(ore).trim();
+                if (sOre.length() == 1) {
+                    sOre = "0" + sOre;
+                }
+                String sMinuti = Integer.toString(minuti).trim();
+                if (sMinuti.length() == 1) {
+                    sMinuti = "0" + sMinuti;
+                }
+                String sSecondi = Long.toString(diff).trim();
+                if (sSecondi.length() == 1) {
+                    sSecondi = "0" + sSecondi;
+                }
+
+                testo2 += "Tempo accensione: " + sOre + ":" + sMinuti + ":" + sSecondi;
+            } else {
+                testo2 += "Tempo accensione: 00:00:00";
+            }
+            contentView.setTextViewText(R.id.txtInfoSotto, testo2);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context,
                     VariabiliStaticheTasti.NOTIFICATION_CHANNEL_STRING);

@@ -335,6 +335,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
         android:padding="5dp"
+        android:layout_margin="5dp"
         android:layout_centerInParent="true">
 
         <LinearLayout

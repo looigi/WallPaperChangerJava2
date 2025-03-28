@@ -39,7 +39,7 @@ public class VariabiliStaticheWallpaper {
     public static int channelIdIntentOverlay = 152;
     // private String NomeFileDiLog = "";
     // private String PercorsoDIRLog = "";
-    public static int secondiDiAttesaContatore = 30;
+    public static int secondiDiAttesaContatore = 60;
     private boolean staPartendo = true;
     private int errori = 0;
     // private boolean Detector = false;

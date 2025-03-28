@@ -213,8 +213,8 @@ public class UtilityGPS {
 
                     for (int i = listaGPS.size() - 1; i >= 0; i--) {
                         StrutturaGps s = listaGPS.get(i);
-                        float speed = Math.round(s.getSpeed()) * 3.5F;
-                        int colore = ritornaColoreVelocita(speed);
+                        // float speed = Math.round(s.getSpeed()) * 3.5F;
+                        int colore = ritornaColoreVelocita(s.getSpeed());
 
                         LatLng punto = new LatLng(s.getLat(), s.getLon());
                         bc.include(punto);
@@ -237,6 +237,10 @@ public class UtilityGPS {
                             c = 0;
                             icona = creaFrecciaConBordo(colore, colore);
 
+                            float speed = s.getSpeed();
+                            float velocityInMps = speed;
+                            speed = velocityInMps * 3.6F;
+
                             VariabiliStaticheGPS.getInstance().getMappetta().addMarker(new MarkerOptions()
                                     .position(punto)
                                     .icon(icona)
@@ -244,7 +248,7 @@ public class UtilityGPS {
                                     .anchor(0.5f, 0.5f)           // Centra l'icona rispetto al punto
                                     .flat(true)
                                     .title("Punto Path")
-                                    .snippet(s.getOra() + " Vel.: " + s.getSpeed())
+                                    .snippet(s.getOra() + " Vel.: " + speed)
                             );
                         }
 
@@ -269,8 +273,8 @@ public class UtilityGPS {
                     StrutturaGps s = listaGPS.get(i);
                     coloreSegnale = ritornaColoreSegnale(s);
 
-                    float speed = Math.round(s.getSpeed()) * 3.5F;
-                    coloreVelocita = ritornaColoreVelocita(speed);
+                    // float speed = Math.round(s.getSpeed()) * 3.5F;
+                    coloreVelocita = ritornaColoreVelocita(s.getSpeed());
 
                     LatLng punto = new LatLng(s.getLat(), s.getLon());
                     ultimoPunto = s;
@@ -287,6 +291,10 @@ public class UtilityGPS {
                         icona = creaPallinoConBordo(coloreSegnale, coloreVelocita);
                     }
 
+                    float speed = s.getSpeed();
+                    float velocityInMps = speed;
+                    speed = velocityInMps * 3.6F;
+
                     VariabiliStaticheGPS.getInstance().getMappetta().addMarker(new MarkerOptions()
                             .position(punto)
                             .icon(icona)
@@ -294,7 +302,7 @@ public class UtilityGPS {
                             .anchor(0.5f, 0.5f)           // Centra l'icona rispetto al punto
                             .flat(true)
                             .title("Punto Path")
-                            .snippet(s.getOra() + " Vel.: " + s.getSpeed())
+                            .snippet(s.getOra() + " Vel.: " + speed)
                     );
                 }
             }
@@ -540,22 +548,22 @@ public class UtilityGPS {
     private int ritornaColoreVelocita(float speed) {
         int sp = (int) speed;
 
-        if (sp < 40) {
-            return Color.BLACK;
+        if (sp < 0) {
+            return Color.GRAY; // Velocità non valida
+        } else if (sp < 10) {
+            return Color.BLUE; // Molto bassa
+        } else if (sp < 30) {
+            return Color.GREEN; // Bassa
+        } else if (sp < 50) {
+            return 0xFF9ACD32; // Verde-Giallastro (YellowGreen)
+        } else if (sp < 70) {
+            return Color.YELLOW; // Media
+        } else if (sp < 90) {
+            return 0xFFFFA500; // Arancione
+        } else if (sp < 110) {
+            return 0xFFB22222; // Rosso scuro (Firebrick)
         } else {
-            if (sp > 39 && sp < 70) {
-                return Color.GREEN;
-            } else {
-                if (sp > 69 && sp < 90) {
-                    return Color.BLUE;
-                } else {
-                    if (sp > 89 && sp < 110) {
-                        return Color.RED;
-                    } else {
-                        return Color.YELLOW;
-                    }
-                }
-            }
+            return Color.RED; // Estrema
         }
     }
 

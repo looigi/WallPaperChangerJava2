@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -30,6 +29,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.android.gms.location.LocationRequest;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
@@ -47,6 +47,8 @@ public class GestioneGPS extends Service {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private Context context;
+    private HandlerThread handlerThread;
+    private Looper looper;
 
     // private boolean ultimoNull = false;
     // private HandlerThread handlerThreadAccensione;
@@ -213,6 +215,13 @@ public class GestioneGPS extends Service {
                 locationManager = null;
             }
         // }
+
+        if (handlerThread != null && looper != null) {
+            handlerThread.quitSafely();
+            looper.quit();
+            handlerThread = null;
+            looper = null;
+        }
 
         // db_dati_gps db = new db_dati_gps(context);
         // db.ScriveAccensioni(context);
@@ -525,11 +534,11 @@ public class GestioneGPS extends Service {
 
         LocationRequest locationRequest = new LocationRequest.Builder(
                 VariabiliStaticheDetector.getInstance().getGpsMs()
-            )
-                .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
-                .setMinUpdateIntervalMillis(10000)
-                .setPriority(priorita)
-                .build();
+        )
+        .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
+        .setMinUpdateIntervalMillis(10000)
+        .setPriority(priorita)
+        .build();
 
         locationCallback = new LocationCallback() {
             @Override
@@ -543,9 +552,15 @@ public class GestioneGPS extends Service {
             }
         };
 
-        HandlerThread handlerThread = new HandlerThread("LocationThreadPerGPS");
+        if (handlerThread != null && looper != null) {
+            handlerThread.quitSafely();
+            looper.quit();
+            handlerThread = null;
+            looper = null;
+        }
+        handlerThread = new HandlerThread("LocationThreadPerGPS");
         handlerThread.start();
-        Looper looper = handlerThread.getLooper();
+        looper = handlerThread.getLooper();
 
         // Avvia gli aggiornamenti della posizione
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, looper);

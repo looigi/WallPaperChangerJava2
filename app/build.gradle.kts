@@ -70,6 +70,8 @@ dependencies {
 
     implementation(libs.play.services.location)
 
+    implementation(libs.gson)
+
     implementation (libs.android.mail.v162)
     implementation (libs.android.activation)
 

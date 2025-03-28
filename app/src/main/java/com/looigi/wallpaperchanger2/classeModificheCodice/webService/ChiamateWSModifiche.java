@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -323,6 +324,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
             files.add(s);
         }
+
+        files.sort((t1, t2) -> t2.getNomeFile().compareTo(t1.getNomeFile()));
 
         AdapterListenerFilesRemoti customAdapterT = new AdapterListenerFilesRemoti(context,
                 files);

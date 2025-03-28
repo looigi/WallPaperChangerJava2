@@ -14,6 +14,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -31,6 +32,7 @@ public class Esecuzione {
     private Runnable r;
     private HandlerThread handlerThread;
     private int Giri = 0;
+    private int GiriPerAggiornamentoNotifica = 0;
 
     public Esecuzione(Context context) {
         this.context = context;
@@ -38,6 +40,8 @@ public class Esecuzione {
         VariabiliStaticheWallpaper.getInstance().setErrori(0);
 
         Giri = 0;
+        GiriPerAggiornamentoNotifica = 0;
+
         VariabiliStaticheWatchdog.getInstance().setInfo1("Starting");
         VariabiliStaticheWatchdog.getInstance().setInfo2("");
 
@@ -276,6 +280,14 @@ public class Esecuzione {
         ControlloGPSAttivo();
 
         Giri++;
+
+        GiriPerAggiornamentoNotifica++;
+        if (GiriPerAggiornamentoNotifica > 5) {
+            GiriPerAggiornamentoNotifica = 0;
+
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        }
+
         String quando = UtilitiesGlobali.getInstance().RitornaOra();
         VariabiliStaticheWatchdog.getInstance().setInfo1("Loops: " + Giri + " - Last: " + quando + " - Ctx: "
                 + (context != null));

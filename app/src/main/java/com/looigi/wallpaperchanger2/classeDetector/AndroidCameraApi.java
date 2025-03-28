@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classeDetector;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ExifInterface;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.util.Range;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.KeyEvent;
@@ -61,6 +64,7 @@ public class AndroidCameraApi extends Activity {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
     private String cameraId;
+    private CameraManager manager;
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
     protected CaptureRequest captureRequest;
@@ -82,6 +86,7 @@ public class AndroidCameraApi extends Activity {
     private int QuantiScatti = 3;
     private int Scatto = 0;
     private Activity act;
+    private boolean CePocaLuce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,6 +288,9 @@ public class AndroidCameraApi extends Activity {
         @Override
         public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
+
+            // CePocaLuce = ControllaSeCePocaLuce(manager, result, "OnCaptureCompleted 1");
+
             // Toast.makeText(AndroidCameraApi.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
             UtilityDetector.getInstance().ScriveLog(
                     context,
@@ -334,7 +342,7 @@ public class AndroidCameraApi extends Activity {
                 NomeMaschera,
                 "Scatto " + (Scatto + 1) + "/" + QuantiScatti);
 
-        CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+        manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
         try {
             cameraId = manager.getCameraIdList()[cameraFronteRetro];
@@ -495,6 +503,9 @@ public class AndroidCameraApi extends Activity {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
+
+                    // CePocaLuce = ControllaSeCePocaLuce(request);
+
                     // Toast.makeText(AndroidCameraApi.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
                     createCameraPreview();
                 }
@@ -563,6 +574,40 @@ public class AndroidCameraApi extends Activity {
             Surface surface = new Surface(texture);
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(surface);
+
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, true);
+
+            // **Attivare la stabilizzazione dell'immagine**
+            captureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE,
+                    CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
+            // **Bloccare la messa a fuoco per evitare cambi improvvisi**
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+            // **Usare una velocità di scatto più alta**
+            Range<Integer> fpsRange = new Range<>(30, 30); // Mantiene il frame rate stabile
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fpsRange);
+            // **Disattivare il flash per evitare sfocature da luce improvvisa**
+            captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+
+            /* if (CePocaLuce) {
+                // Impostare l'ISO alto per aumentare la sensibilità alla luce
+                captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 1600); // Regola in base alla scena
+                // Allungare il tempo di esposizione per raccogliere più luce (es. 1/4 di secondo)
+                captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 400000000L); // In nanosecondi
+                // Aprire il diaframma (se supportato) per far entrare più luce
+                captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f); // Regola in base al dispositivo
+                // Bloccare il bilanciamento del bianco per evitare cambi improvvisi
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
+            } else { */
+                //// Aprire il diaframma (se supportato) per far entrare più luce
+                captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f); // Regola in base al dispositivo
+                // **Impostare un tempo di esposizione breve per evitare il mosso**
+                captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 40000000L); // 50ms
+                // **Impostare un ISO adeguato per compensare la luce**
+                captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 800);
+                //// Bloccare il bilanciamento del bianco per evitare cambi improvvisi
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
+            // }
+
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
@@ -613,7 +658,7 @@ public class AndroidCameraApi extends Activity {
             assert map != null;
             imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
 
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -779,5 +824,54 @@ public class AndroidCameraApi extends Activity {
         UtilityDetector.getInstance().AccendeSchermo(context);
 
         act.finish();
+    }
+
+    private boolean ControllaSeCePocaLuce(ImageReader reader) {
+        /* CameraCharacteristics characteristics = null;
+        boolean ritorno = false;
+
+        UtilityDetector.getInstance().ScriveLog(
+                context,
+                NomeMaschera,
+                "Controllo poca luce. Chiamato da " + daDove);
+
+        if (manager != null) {
+            try {
+                characteristics = manager.getCameraCharacteristics(cameraId);
+                Range<Integer> isoRange = characteristics.get(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE);
+
+                if (isoRange != null) {
+                    int minISO = isoRange.getLower();
+                    int maxISO = isoRange.getUpper();
+                    int currentISO = captureResult.get(CaptureResult.SENSOR_SENSITIVITY);
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Controllo poca luce. Iso Attuale: " + currentISO + " - Minimo: " + maxISO);
+
+                    if (currentISO < maxISO / 2) {
+                        UtilityDetector.getInstance().ScriveLog(
+                                context,
+                                NomeMaschera,
+                                "Poca luce");
+
+                        ritorno = true;
+                    }
+                }
+            } catch (CameraAccessException e) {
+                UtilityDetector.getInstance().ScriveLog(
+                        context,
+                        NomeMaschera,
+                        "Errore su controllo poca luce: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Errore su controllo poca luce. Manager camera nullo");
+        }
+
+        return ritorno; */
+        return false;
     }
 }

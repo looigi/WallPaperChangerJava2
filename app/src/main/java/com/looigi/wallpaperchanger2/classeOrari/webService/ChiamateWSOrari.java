@@ -79,6 +79,25 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 ApriDialog);
     }
 
+    public void AggiungeMeteo(String idMeteo, String Meteo, String Icona) {
+        String Urletto="AggiungeMeteo?" +
+                "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
+                "&idMeteo=" + idMeteo +
+                "&Meteo=" + Meteo +
+                "&Icona=" + (Icona.replace("/", "-SL-").replace(":", "-2P-")
+                    .replace("&", "-AN-").replace("?", "-PI-"));
+
+        TipoOperazione = "AggiungeMeteo";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
     public void RitornaDatiPerModifica(boolean RefreshDati, boolean RiempieCombo) {
         this.RiempieCombo = RiempieCombo;
         if (!RefreshDati) {
@@ -328,6 +347,9 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     case "EliminaOrario":
                         fEliminaOrario(result);
                         break;
+                    case "AggiungeMeteo":
+                        fAggiungeMeteo(result);
+                        break;
                 }
 
                 VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
@@ -348,6 +370,15 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fAggiungeMeteo(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno aggiunge meteo", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+
         }
     }
 
@@ -496,6 +527,10 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                     StrutturaTempo s = new StrutturaTempo();
                     s.setIdTempo(objTempi.getInt("idTempo"));
                     s.setTempo(objTempi.getString("Tempo"));
+                    String icona = objTempi.getString("Icona");
+                    icona = icona.replace("-SL-","/").replace("-2P-", ":")
+                            .replace("-AN-", "&").replace("-PI-","?");
+                    s.setUrlIcona(icona);
 
                     listaTempi.add(s);
                 }

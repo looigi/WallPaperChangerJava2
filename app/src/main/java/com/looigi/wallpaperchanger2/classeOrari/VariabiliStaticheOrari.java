@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeOrari;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -69,6 +70,15 @@ public class VariabiliStaticheOrari {
     private List<StrutturaMezziStandard> listaMezziAndataStandard;
     private List<StrutturaMezziStandard> listaMezziRitornoStandard;
     private LinearLayout layNote;
+    private ImageView imgIconaTempo;
+
+    public ImageView getImgIconaTempo() {
+        return imgIconaTempo;
+    }
+
+    public void setImgIconaTempo(ImageView imgIconaTempo) {
+        this.imgIconaTempo = imgIconaTempo;
+    }
 
     public LinearLayout getLayNote() {
         return layNote;
