@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainApiFootball extends Activity {
     private Context context;
@@ -23,31 +26,82 @@ public class MainApiFootball extends Activity {
         context = this;
         act = this;
 
-        VariabiliStaticheApiFootball.getInstance().setPathApiFootball(context.getFilesDir() + "/ApiFootball");
-        Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball());
-        VariabiliStaticheApiFootball.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoAF));
-        UtilityApiFootball.getInstance().ImpostaAttesa(false);
-        VariabiliStaticheApiFootball.getInstance().setLstSquadre(findViewById(R.id.lstSquadre));
-        VariabiliStaticheApiFootball.getInstance().setLstPartite(findViewById(R.id.lstPartite));
-        VariabiliStaticheApiFootball.getInstance().setLstGiocatoriCasa(findViewById(R.id.lstGiocatoriCasa));
-        VariabiliStaticheApiFootball.getInstance().setLstGiocatoriFuori(findViewById(R.id.lstGiocatoriFuori));
+        VariabiliStaticheApiFootball.getInstance().setTxtAvanzamento(findViewById(R.id.txtAvanzamento));
+        VariabiliStaticheApiFootball.getInstance().getTxtAvanzamento().setText("");
 
-        VariabiliStaticheApiFootball.getInstance().setAnnoScelto(2023);
+        Bundle b = getIntent().getExtras();
+        int idAnnoScelto = -1;
+        String annoScelto = "";
+        if(b != null) {
+            idAnnoScelto = b.getInt("idAnnoScelto");
+            annoScelto = b.getString("AnnoScelto");
+        }
+        if (idAnnoScelto > 1) {
+            String[] a = annoScelto.split("-");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(Integer.parseInt(a[0]));
 
-        TextView txtAnno = findViewById(R.id.txtAnno);
-        txtAnno.setText("Anno: " + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoScelto()));
+            VariabiliStaticheApiFootball.getInstance().setIdAnnoScelto(idAnnoScelto);
+            VariabiliStaticheApiFootball.getInstance().setAnnoScelto(annoScelto);
 
-        // Prende Squadre anno scelto
-        String urlString = "https://v3.football.api-sports.io/teams?" +
-                "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
-                "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoScelto();
-        UtilityApiFootball.getInstance().EffettuaChiamata(
-                context,
-                urlString,
-                "Squadre.json",
-                false,
-                "SQUADRE_LEGA"
-        );
+            VariabiliStaticheApiFootball.getInstance().setPathApiFootball(context.getFilesDir() + "/ApiFootball");
+            Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball());
+            VariabiliStaticheApiFootball.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoAF));
+            UtilityApiFootball.getInstance().ImpostaAttesa(false);
+            VariabiliStaticheApiFootball.getInstance().setLstSquadre(findViewById(R.id.lstSquadre));
+            VariabiliStaticheApiFootball.getInstance().setLstPartite(findViewById(R.id.lstPartite));
+            VariabiliStaticheApiFootball.getInstance().setLstGiocatoriCasa(findViewById(R.id.lstGiocatoriCasa));
+            VariabiliStaticheApiFootball.getInstance().setLstGiocatoriFuori(findViewById(R.id.lstGiocatoriFuori));
+
+            TextView txtAnno = findViewById(R.id.txtAnno);
+            txtAnno.setText("Anno: " + VariabiliStaticheApiFootball.getInstance().getAnnoScelto());
+
+            // Prende Squadre anno scelto
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale());
+            UtilityApiFootball.getInstance().EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadre.json",
+                    false,
+                    "SQUADRE_LEGA"
+            );
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "id Anno non valido");
+        }
+
+        ImageView imgSalvaTutteLeSquadre = findViewById(R.id.imgSalvaTutteLeSquadre);
+        imgSalvaTutteLeSquadre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLeSquadre(0);
+                VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLeSquadre(true);
+                VariabiliStaticheApiFootball.getInstance().setSquadreAggiunte(0);
+
+                UtilityApiFootball.getInstance().SalvaTutteLeSquadre(context);
+            }
+        });
+
+        ImageView imgSalvaTutteLePartite = findViewById(R.id.imgSalvaTutteLePartite);
+        imgSalvaTutteLePartite.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(true);
+                VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLePartite(0);
+
+                UtilityApiFootball.getInstance().SalvaTutteLePartite(context);
+            }
+        });
+
+        /* ImageView imgSalvaTuttiIGiocatoriCasa = findViewById(R.id.imgSalvaTuttiIGiocatoriCasa);
+        imgSalvaTuttiIGiocatoriCasa.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        });
+
+        ImageView imgSalvaTuttiIGiocatoriFuori = findViewById(R.id.imgSalvaTuttiIGiocatoriFuori);
+        imgSalvaTuttiIGiocatoriFuori.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        }); */
     }
 
     @Override

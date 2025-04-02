@@ -88,19 +88,23 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Dettaglio partita
                 int idPartita = listaPartite.get(i).fixture.id;
-                VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
 
-                String urlString = " https://v3.football.api-sports.io/fixtures?" +
-                        "id=" + idPartita;
-                UtilityApiFootball.getInstance().EffettuaChiamata(
-                        context,
-                        urlString,
-                        "Partita_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + "_" + idPartita + ".json",
-                        false,
-                        "PARTITA"
-                );
+                VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
+                UtilityApiFootball.getInstance().CaricaPartita(context, idPartita);
+            }
+        });
+
+        ImageView imgSalva = view.findViewById(R.id.imgSalvaPartita);
+        imgSalva.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int idPartita = listaPartite.get(i).fixture.id;
+
+                VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(true);
+
+                VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
+                VariabiliStaticheApiFootball.getInstance().setIdPartitaDaSalvare(i);
+                UtilityApiFootball.getInstance().CaricaPartita(context, idPartita);
             }
         });
 

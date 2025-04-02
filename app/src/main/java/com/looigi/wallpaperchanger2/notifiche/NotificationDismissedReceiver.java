@@ -30,6 +30,10 @@ import java.util.Objects;
 public class NotificationDismissedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Continua(context, intent);
+    }
+
+    private void Continua(Context context, Intent intent) {
         int notificationId = Objects.requireNonNull(intent.getExtras()).getInt("com.looigi.wallpaperchanger2.notificationId");
 
         if (!VariabiliStaticheWallpaper.getInstance().isSbragaTutto()) {

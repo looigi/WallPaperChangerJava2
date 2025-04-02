@@ -3,10 +3,10 @@ package com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Allenato
 import java.util.List;
 
 public class Coach {
-    private int id;
-    private String name;
-    private String firstname;
-    private String lastname;
+    public int id;
+    public String name;
+    public String firstname;
+    public String lastname;
     private int age;
     private Birth birth;
     private String nationality;

@@ -10,5 +10,5 @@ public class Allenatori {
     private List<Object> errors;
     private int results;
     private Paging paging;
-    private List<Coach> response;
+    public List<Coach> response;
 }

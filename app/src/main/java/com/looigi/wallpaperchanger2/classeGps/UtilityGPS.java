@@ -186,8 +186,6 @@ public class UtilityGPS {
                         bc.include(punto);
                         bcs++;
 
-                        lista.add(s);
-
                         if (vecchioColore != colore) {
                             if (vecchioColore != -1) {
                                 AggiungePolyLineSegnale(lista, colore);
@@ -196,6 +194,8 @@ public class UtilityGPS {
 
                             vecchioColore = colore;
                         }
+
+                        lista.add(s);
                     }
 
                     if (!lista.isEmpty()) {
@@ -220,8 +220,6 @@ public class UtilityGPS {
                         bc.include(punto);
                         bcs++;
 
-                        lista.add(s);
-
                         if (vecchioColore != colore) {
                             if (vecchioColore != -1) {
                                 AggiungePolyLineVelocita(lista, colore);
@@ -230,6 +228,8 @@ public class UtilityGPS {
 
                             vecchioColore = colore;
                         }
+
+                        lista.add(s);
 
                         BitmapDescriptor icona;
                         c++;

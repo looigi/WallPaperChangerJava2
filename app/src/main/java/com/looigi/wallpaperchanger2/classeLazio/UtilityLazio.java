@@ -30,10 +30,12 @@ public class UtilityLazio {
     }
 
     public void ImpostaAttesa(boolean Come) {
-        if (Come) {
-            VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
-        } else {
-            VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        if (VariabiliStaticheLazio.getInstance().getImgCaricamento() != null) {
+            if (Come) {
+                VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+            }
         }
     }
 

@@ -6,12 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Squadre.TeamResponse;
+import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeOrari.webService.DownloadImmagineOrari;
 
 import java.util.List;
@@ -46,11 +50,11 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.lista_squadre_af, null);
 
-        String Nome = listaSquadre.get(i).team.name;
+        String NomeSquadra = listaSquadre.get(i).team.name;
         String Logo = listaSquadre.get(i).team.logo;
 
         TextView txtSquadra = view.findViewById(R.id.txtSquadra);
-        txtSquadra.setText(Nome);
+        txtSquadra.setText(NomeSquadra);
 
         ImageView imgLogo = view.findViewById(R.id.imgLogo);
 
@@ -62,9 +66,11 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
                 // Partite Per Squadra
                 int idSquadra = listaSquadre.get(i).team.id;
                 VariabiliStaticheApiFootball.getInstance().setIdSquadra(idSquadra);
+                VariabiliStaticheApiFootball.getInstance().setNomeSquadraScelta(NomeSquadra);
+
                 String urlString = "https://v3.football.api-sports.io/fixtures?" +
                         "team=" + idSquadra + "&" +
-                        "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoScelto();
+                        "season=" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale());
                 UtilityApiFootball.getInstance().EffettuaChiamata(
                         context,
                         urlString,
@@ -72,6 +78,41 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
                         false,
                         "PARTITE_SQUADRA"
                 );
+            }
+        });
+
+        ImageView imgSalva = view.findViewById(R.id.imgSalvaSquadra);
+        List<StrutturaSquadre> squadre = VariabiliStaticheLazio.getInstance().getSquadre();
+        if (squadre != null) {
+            boolean ok = false;
+            // String SquadraConfronto = ((NomeSquadra.replace("AC ", "")).replace("AS ", "")).toUpperCase().trim();
+            String SquadraConfronto = NomeSquadra.toUpperCase().trim();
+
+            for (StrutturaSquadre s : squadre) {
+                // String Squadra = ((s.getSquadra().replace("AC ", "")).replace("AS ", "")).toUpperCase().trim();
+                String Squadra = s.getSquadra().toUpperCase().trim();
+                if (Squadra.equals(SquadraConfronto)) {
+                    ok = true;
+                    break;
+                }
+            }
+            if (ok) {
+                imgSalva.setVisibility(LinearLayout.GONE);
+            } else {
+                imgSalva.setVisibility(LinearLayout.VISIBLE);
+            }
+        }
+
+        imgSalva.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.AggiungeSquadra(
+                        VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato(),
+                        NomeSquadra,
+                        1
+                );
+
+                imgSalva.setVisibility(LinearLayout.GONE);
             }
         });
 

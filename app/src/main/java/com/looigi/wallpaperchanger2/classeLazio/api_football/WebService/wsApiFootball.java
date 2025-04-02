@@ -37,12 +37,12 @@ public class wsApiFootball {
 
                         Files.getInstance().EliminaFileUnico(
                                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
-                                VariabiliStaticheApiFootball.getInstance().getAnnoScelto() + "/" +
+                                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
                                 NomeFile
                         );
                         Files.getInstance().ScriveFile(
                                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball(),
-                                VariabiliStaticheApiFootball.getInstance().getAnnoScelto() + "/" + NomeFile,
+                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" + NomeFile,
                                 response.toString());
 
                         VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);

@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.MainApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -461,9 +462,12 @@ public class MainLazio extends Activity {
         ImageView imgAF = findViewById(R.id.imgApiFootball);
         imgAF.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent iI = new Intent(context, MainApiFootball.class);
-                iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(iI);
+                Intent intent = new Intent(context, MainApiFootball.class);
+                Bundle b = new Bundle();
+                b.putInt("idAnnoScelto", VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+                b.putString("AnnoScelto", VariabiliStaticheLazio.getInstance().getAnnoSelezionato());
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
             }
         });
 
