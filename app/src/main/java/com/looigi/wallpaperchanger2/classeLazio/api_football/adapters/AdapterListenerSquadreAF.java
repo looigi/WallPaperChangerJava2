@@ -71,7 +71,8 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
                 String urlString = "https://v3.football.api-sports.io/fixtures?" +
                         "team=" + idSquadra + "&" +
                         "season=" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale());
-                UtilityApiFootball.getInstance().EffettuaChiamata(
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.EffettuaChiamata(
                         context,
                         urlString,
                         "Partite_" + idSquadra + "_" + listaSquadre.get(i).team.name + ".json",

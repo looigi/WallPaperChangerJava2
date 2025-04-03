@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Commesse.MainCommessa;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
@@ -126,9 +128,26 @@ public class AdapterListenerClassifica extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra);
             imgLogo.setImageBitmap(bmp);
         } else {
-            String url = VariabiliStaticheLazio.UrlMedia + NomeSquadra + ".Jpg";
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                    "name=" + Squadra;
+
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.setImg(imgLogo);
+            u.setNomeSquadra(NomeSquadra);
+            u.EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadra_" + NomeSquadra + ".json",
+                    false,
+                    "SQUADRA"
+            );
+            /* String url = VariabiliStaticheLazio.UrlMedia + NomeSquadra + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgLogo, url, NomeSquadra + ".Jpg");
+            d.EsegueChiamata(context, imgLogo, url, NomeSquadra + ".Jpg"); */
         }
 
         return view;

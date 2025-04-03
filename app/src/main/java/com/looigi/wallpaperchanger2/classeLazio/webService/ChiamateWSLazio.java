@@ -216,7 +216,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaGiocatoriPerSalvataggio(int Dove) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         DovePerSalvataggioGiocatori = Dove;
 
@@ -298,7 +298,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaGiocatori() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String Urletto="RitornaGiocatori?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -317,7 +317,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaRuoli(boolean RefreshDati) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -326,7 +326,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
                 if (!Dati.isEmpty()) {
                     UtilityLazio.getInstance().ImpostaAttesa(false);
-                    UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
                     fRitornaRuoli(Dati);
                     return;
@@ -349,7 +349,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaStati(boolean RefreshDati) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -360,7 +360,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     fRitornaStati(Dati);
 
                     UtilityLazio.getInstance().ImpostaAttesa(false);
-                    UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
                     return;
                 }
             }
@@ -381,7 +381,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaFonti(boolean RefreshDati) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -392,7 +392,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     fRitornaFonti(Dati);
 
                     UtilityLazio.getInstance().ImpostaAttesa(false);
-                    UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
                     return;
                 }
             }
@@ -413,7 +413,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaMercato() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String Urletto="RitornaMercato?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -433,7 +433,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaCalendario() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String Urletto="RitornaCalendario?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -453,7 +453,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaClassifica() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String Urletto="RitornaClassifica?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -473,7 +473,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void AggiungeTuttiGliAllenatori() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         Allenatori allenatori = VariabiliStaticheApiFootball.getInstance().getAllenatoriSquadraScelta();
         String Cognomi = "";
@@ -547,7 +547,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     ApriDialog); */
         } else {
             UtilityLazio.getInstance().ImpostaAttesa(false);
-            UtilityApiFootball.getInstance().ImpostaAttesa(false);
+            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Squadra non rilevata: " +
                     VariabiliStaticheApiFootball.getInstance().getNomeSquadraScelta());
@@ -556,7 +556,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaSquadre() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String Urletto="RitornaSquadre?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -575,7 +575,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaCompetizioni(boolean RefreshDati) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -586,7 +586,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     fRitornaCompetizioni(Dati);
 
                     UtilityLazio.getInstance().ImpostaAttesa(false);
-                    UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
                     return;
                 }
             }
@@ -623,7 +623,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void AggiungeSquadra(int Anno, String Squadra, int idTipologia) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         String NomeSquadra = Squadra; // .replace("AC ", "").replace("AS ", "")
                 // .replace("Ac ", "").replace("As ", "");
@@ -647,7 +647,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void RitornaAnni(boolean RefreshDati) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -658,7 +658,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     fRitornaAnni(Dati);
 
                     UtilityLazio.getInstance().ImpostaAttesa(false);
-                    UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
                     return;
                 }
             }
@@ -679,7 +679,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void AggiungeModificaCalendario(String idPartita) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         FixtureData datiPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                 VariabiliStaticheApiFootball.getInstance().getIdPartitaDaSalvare()
@@ -767,7 +767,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void AggiungeGiocatori(int Dove) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         DovePerSalvataggioGiocatori = Dove;
 
@@ -843,7 +843,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             }
         } else {
             UtilityLazio.getInstance().ImpostaAttesa(false);
-            UtilityApiFootball.getInstance().ImpostaAttesa(false);
+            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
             if (Dove == 0) {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
@@ -895,7 +895,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
     public void SalvaDettaglio() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         FixtureData datiPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                 VariabiliStaticheApiFootball.getInstance().getIdPartitaDaSalvare()
@@ -1067,7 +1067,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = Long.toString(tsLong);
@@ -1161,7 +1161,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 }
 
                 UtilityLazio.getInstance().ImpostaAttesa(false);
-                UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
@@ -1198,12 +1198,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLePartite(attuale + 1);
             if (VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite() < quantePartite ) {
                 String testo = "Partita " + (attuale + 1) + "/" + quantePartite + " salvata";
-                UtilityApiFootball.getInstance().ScriveAvanzamento(testo);
+                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento(testo);
                 UtilitiesGlobali.getInstance().ApreToast(context, testo);
 
-                UtilityApiFootball.getInstance().SalvaTutteLePartite(context);
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.SalvaTutteLePartite(context);
             } else {
-                UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(false);
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(false);
@@ -1213,12 +1214,12 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 VariabiliStaticheApiFootball.getInstance().setIdPartitaSalvata(-1);
                 VariabiliStaticheApiFootball.getInstance().setGiocatoriCasaPS(null);
                 VariabiliStaticheApiFootball.getInstance().setGiocatoriFuoriPS(null);
-                UtilityApiFootball.getInstance().ScriveAvanzamento("Partite salvate: " + attuale);
+                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partite salvate: " + attuale);
 
                 UtilitiesGlobali.getInstance().ApreToast(context, "Partite salvate: " + attuale);
             }
         } else {
-            UtilityApiFootball.getInstance().ImpostaAttesa(false);
+            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
             VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(false);
 
@@ -1226,7 +1227,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheApiFootball.getInstance().setIdPartitaSalvata(-1);
             VariabiliStaticheApiFootball.getInstance().setGiocatoriCasaPS(null);
             VariabiliStaticheApiFootball.getInstance().setGiocatoriFuoriPS(null);
-            UtilityApiFootball.getInstance().ScriveAvanzamento("Partita e dettaglio salvati");
+            VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita e dettaglio salvati");
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Partita e dettaglio salvati");
         }
@@ -1338,7 +1339,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                             VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLeSquadre(i + 1);
                             if (VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLeSquadre() <
                                     VariabiliStaticheApiFootball.getInstance().getListaSquadreAnno().response.size()) {
-                                UtilityApiFootball.getInstance().SalvaTutteLeSquadre(context);
+                                UtilityApiFootball u = new UtilityApiFootball();
+                                u.SalvaTutteLeSquadre(context);
                             } else {
                                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLeSquadre(false);
 

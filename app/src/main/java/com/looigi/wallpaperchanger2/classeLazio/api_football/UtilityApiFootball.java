@@ -1,11 +1,14 @@
 package com.looigi.wallpaperchanger2.classeLazio.api_football;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.WebService.wsApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.adapters.AdapterListenerGiocatoriPartitaAF;
@@ -18,13 +21,12 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.F
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.Partite;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Squadre.StrutturaSquadreLega;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class UtilityApiFootball {
-    private static UtilityApiFootball instance = null;
-    private Handler handlerTimerAF;
-    private Runnable rTimerAF;
+    /* private static UtilityApiFootball instance = null;
 
     private UtilityApiFootball() {
     }
@@ -35,20 +37,24 @@ public class UtilityApiFootball {
         }
 
         return instance;
+    } */
+
+    private Handler handlerTimerAF;
+    private Runnable rTimerAF;
+    private ImageView imgLogo;
+    private String NomeSquadra;
+
+    public void setImg(ImageView imgLogo) {
+        this.imgLogo = imgLogo;
     }
 
-    public void ImpostaAttesa(boolean Come) {
-        if (VariabiliStaticheApiFootball.getInstance().getImgCaricamento() != null) {
-            if (Come) {
-                VariabiliStaticheApiFootball.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
-            } else {
-                VariabiliStaticheApiFootball.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
-            }
-        }
+
+    public void setNomeSquadra(String NomeSquadra) {
+        this.NomeSquadra = NomeSquadra;
     }
 
     public void EffettuaChiamata(Context context, String urlString, String NomeFile, boolean Refresh, String Operazione) {
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
         Files.getInstance().CreaCartelle(
                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
@@ -130,6 +136,12 @@ public class UtilityApiFootball {
 
         if (!errore) {
             switch (Operazione) {
+                case "SQUADRA":
+                    gestisceSquadra(context, Contenuto);
+                    break;
+                case "GIOCATORE":
+                    gestisceGiocatore(context, Contenuto);
+                    break;
                 case "SQUADRE_LEGA":
                     gestisceSquadreLega(context, Contenuto);
                     break;
@@ -150,7 +162,23 @@ public class UtilityApiFootball {
             int a = 0;
         }
 
-        UtilityApiFootball.getInstance().ImpostaAttesa(false);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+    }
+
+    private void gestisceGiocatore(Context context, String Contenuto) {
+        Gson gson = new Gson();
+        GiocatoriPartita g = gson.fromJson(Contenuto, GiocatoriPartita.class);
+        String Url = g.response.get(0).players.get(0).player.photo;
+        DownloadImmagineLazio d = new DownloadImmagineLazio();
+        d.EsegueChiamata(context, imgLogo, Url, NomeSquadra + ".Jpg");
+    }
+
+    private void gestisceSquadra(Context context, String Contenuto) {
+        Gson gson = new Gson();
+        StrutturaSquadreLega s = gson.fromJson(Contenuto, StrutturaSquadreLega.class);
+        String Url = s.response.get(0).team.logo;
+        DownloadImmagineLazio d = new DownloadImmagineLazio();
+        d.EsegueChiamata(context, imgLogo, Url, NomeSquadra + ".Jpg");
     }
 
     private void gestisceSquadreLega(Context context, String Contenuto) {
@@ -184,7 +212,7 @@ public class UtilityApiFootball {
         // Prende Allenatori Squadra scelta
         String urlString = "https://v3.football.api-sports.io/coachs?" +
                 "team=" + VariabiliStaticheApiFootball.getInstance().getIdSquadra();
-        UtilityApiFootball.getInstance().EffettuaChiamata(
+        EffettuaChiamata(
                 context,
                 urlString,
                 "Allenatori_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + ".json",
@@ -204,7 +232,7 @@ public class UtilityApiFootball {
         String urlString = "https://v3.football.api-sports.io/fixtures/players?" +
                 "fixture=" + VariabiliStaticheApiFootball.getInstance().getIdPartita(); // + "&" +
                 // "team=" + VariabiliStaticheApiFootball.getInstance().getIdSquadra();
-        UtilityApiFootball.getInstance().EffettuaChiamata(
+        EffettuaChiamata(
                 context,
                 urlString,
                 "GiocatoriPartita_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + "_" +
@@ -240,7 +268,7 @@ public class UtilityApiFootball {
     public void CaricaPartita(Context context, int idPartita) {
         String urlString = "https://v3.football.api-sports.io/fixtures?" +
                 "id=" + idPartita;
-        UtilityApiFootball.getInstance().EffettuaChiamata(
+        EffettuaChiamata(
                 context,
                 urlString,
                 "Partita_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + "_" + idPartita + ".json",
@@ -304,7 +332,7 @@ public class UtilityApiFootball {
         // Prende Allenatori Squadra scelta
         /* String urlString = "https://v3.football.api-sports.io/coachs?" +
                 "team=" + idSquadra;
-        UtilityApiFootball.getInstance().EffettuaChiamata(
+        EffettuaChiamata(
                 context,
                 urlString,
                 "Allenatori_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + ".json",
@@ -320,26 +348,14 @@ public class UtilityApiFootball {
         );
     }
 
-    public void ScriveAvanzamento(String Testo) {
-        if (VariabiliStaticheApiFootball.getInstance().getTxtAvanzamento() != null) {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
-            Runnable rTimer = new Runnable() {
-                public void run() {
-                    VariabiliStaticheApiFootball.getInstance().getTxtAvanzamento().setText(Testo);
-                };
-            };
-            handlerTimer.postDelayed(rTimer, 100);
-        }
-    }
-
     public void SalvaTutteLePartite(Context context) {
-        UtilityApiFootball.getInstance().ImpostaAttesa(true);
-        ScriveAvanzamento("Inizio salvataggio partite");
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Inizio salvataggio partite");
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilityApiFootball.getInstance().ImpostaAttesa(false);
+                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
                 int idPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                         VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()

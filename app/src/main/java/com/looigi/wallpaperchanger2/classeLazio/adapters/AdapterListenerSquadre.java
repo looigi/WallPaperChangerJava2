@@ -14,6 +14,8 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 
@@ -66,9 +68,23 @@ public class AdapterListenerSquadre extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra);
             imgLogo.setImageBitmap(bmp);
         } else {
-            String url = VariabiliStaticheLazio.UrlMedia + NomeSquadra + ".Jpg";
-            DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgLogo, url, NomeSquadra + ".Jpg");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                    "name=" + Squadra;
+
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.setImg(imgLogo);
+            u.setNomeSquadra(NomeSquadra);
+            u.EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadra_" + NomeSquadra + ".json",
+                    false,
+                    "SQUADRA"
+            );
         }
 
         ImageView imgModifica = view.findViewById(R.id.imgModifica);

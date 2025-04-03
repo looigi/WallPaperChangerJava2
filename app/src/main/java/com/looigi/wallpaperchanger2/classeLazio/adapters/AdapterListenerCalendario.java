@@ -21,6 +21,8 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
@@ -80,9 +82,26 @@ public class AdapterListenerCalendario extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraCasa);
             imgCasa.setImageBitmap(bmp);
         } else {
-            String url = VariabiliStaticheLazio.UrlMedia + NomeSquadraCasa + ".Jpg";
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                    "name=" + Casa;
+
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.setImg(imgCasa);
+            u.setNomeSquadra(NomeSquadraCasa);
+            u.EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadra_" + NomeSquadraCasa + ".json",
+                    false,
+                    "SQUADRA"
+            );
+            /* String url = VariabiliStaticheLazio.UrlMedia + NomeSquadraCasa + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgCasa, url, NomeSquadraCasa + ".Jpg");
+            d.EsegueChiamata(context, imgCasa, url, NomeSquadraCasa + ".Jpg"); */
         }
 
         ImageView imgFuori = view.findViewById(R.id.imgFuori);
@@ -91,9 +110,26 @@ public class AdapterListenerCalendario extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraFuori);
             imgFuori.setImageBitmap(bmp);
         } else {
-            String url = VariabiliStaticheLazio.UrlMedia + NomeSquadraFuori + ".Jpg";
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                    "name=" + Fuori;
+
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.setImg(imgFuori);
+            u.setNomeSquadra(NomeSquadraFuori);
+            u.EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadra_" + NomeSquadraFuori + ".json",
+                    false,
+                    "SQUADRA"
+            );
+            /* String url = VariabiliStaticheLazio.UrlMedia + NomeSquadraFuori + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg");
+            d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg"); */
         }
 
         ImageView imgVisualizza = view.findViewById(R.id.imgVisualizza);

@@ -1,5 +1,8 @@
 package com.looigi.wallpaperchanger2.classeLazio.api_football;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -332,5 +335,27 @@ public class VariabiliStaticheApiFootball {
 
     public void setPathApiFootball(String pathApiFootball) {
         PathApiFootball = pathApiFootball;
+    }
+
+    public void ScriveAvanzamento(String Testo) {
+        if (txtAvanzamento != null) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    txtAvanzamento.setText(Testo);
+                };
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    public void ImpostaAttesa(boolean Come) {
+        if (imgCaricamento != null) {
+            if (Come) {
+                imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                imgCaricamento.setVisibility(LinearLayout.GONE);
+            }
+        }
     }
 }

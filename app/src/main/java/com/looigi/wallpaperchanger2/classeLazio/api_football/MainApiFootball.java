@@ -46,7 +46,7 @@ public class MainApiFootball extends Activity {
             VariabiliStaticheApiFootball.getInstance().setPathApiFootball(context.getFilesDir() + "/ApiFootball");
             Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball());
             VariabiliStaticheApiFootball.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoAF));
-            UtilityApiFootball.getInstance().ImpostaAttesa(false);
+            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
             VariabiliStaticheApiFootball.getInstance().setLstSquadre(findViewById(R.id.lstSquadre));
             VariabiliStaticheApiFootball.getInstance().setLstPartite(findViewById(R.id.lstPartite));
             VariabiliStaticheApiFootball.getInstance().setLstGiocatoriCasa(findViewById(R.id.lstGiocatoriCasa));
@@ -59,7 +59,8 @@ public class MainApiFootball extends Activity {
             String urlString = "https://v3.football.api-sports.io/teams?" +
                     "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
                     "season=" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale());
-            UtilityApiFootball.getInstance().EffettuaChiamata(
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.EffettuaChiamata(
                     context,
                     urlString,
                     "Squadre.json",
@@ -77,7 +78,8 @@ public class MainApiFootball extends Activity {
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLeSquadre(true);
                 VariabiliStaticheApiFootball.getInstance().setSquadreAggiunte(0);
 
-                UtilityApiFootball.getInstance().SalvaTutteLeSquadre(context);
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.SalvaTutteLeSquadre(context);
             }
         });
 
@@ -87,7 +89,8 @@ public class MainApiFootball extends Activity {
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(true);
                 VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLePartite(0);
 
-                UtilityApiFootball.getInstance().SalvaTutteLePartite(context);
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.SalvaTutteLePartite(context);
             }
         });
 

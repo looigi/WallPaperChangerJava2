@@ -91,7 +91,8 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
                 int idPartita = listaPartite.get(i).fixture.id;
 
                 VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
-                UtilityApiFootball.getInstance().CaricaPartita(context, idPartita);
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.CaricaPartita(context, idPartita);
             }
         });
 
@@ -104,7 +105,8 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
 
                 VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
                 VariabiliStaticheApiFootball.getInstance().setIdPartitaDaSalvare(i);
-                UtilityApiFootball.getInstance().CaricaPartita(context, idPartita);
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.CaricaPartita(context, idPartita);
             }
         });
 
