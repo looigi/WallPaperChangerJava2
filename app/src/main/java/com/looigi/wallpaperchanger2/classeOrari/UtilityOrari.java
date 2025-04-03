@@ -258,17 +258,20 @@ public class UtilityOrari {
     public void disegnaIconaTempo(Context context, String Tempo) {
         boolean ok = false;
 
-        for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
-            if (Tempo.equals(st.getTempo())) {
-                if (!st.getUrlIcona().isEmpty()) {
-                    ok = true;
+        if (VariabiliStaticheOrari.getInstance().getStrutturaDati() != null &&
+                VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi() != null) {
+            for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
+                if (Tempo.equals(st.getTempo())) {
+                    if (!st.getUrlIcona().isEmpty()) {
+                        ok = true;
 
-                    VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheOrari.getInstance().getImgIconaTempo().setVisibility(LinearLayout.VISIBLE);
 
-                    DownloadImmagineOrari d = new DownloadImmagineOrari();
-                    d.EsegueChiamata(context,
-                            VariabiliStaticheOrari.getInstance().getImgIconaTempo(),
-                            "http:" + st.getUrlIcona());
+                        DownloadImmagineOrari d = new DownloadImmagineOrari();
+                        d.EsegueChiamata(context,
+                                VariabiliStaticheOrari.getInstance().getImgIconaTempo(),
+                                "http:" + st.getUrlIcona());
+                    }
                 }
             }
         }
