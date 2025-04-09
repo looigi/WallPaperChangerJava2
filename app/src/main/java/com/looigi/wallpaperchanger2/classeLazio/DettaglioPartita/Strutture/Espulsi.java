@@ -6,6 +6,15 @@ public class Espulsi {
     private String Cognome;
     private String Nome;
     private int Minuto;
+    private int idApiFootball;
+
+    public int getIdApiFootball() {
+        return idApiFootball;
+    }
+
+    public void setIdApiFootball(int idApiFootball) {
+        this.idApiFootball = idApiFootball;
+    }
 
     public String getCognome() {
         return Cognome;

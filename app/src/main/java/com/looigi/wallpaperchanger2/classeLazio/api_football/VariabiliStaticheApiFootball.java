@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.adapters.AdapterListenerPartiteAF;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Allenatori.Allenatori;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.GiocatoriPartita;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partita.Partita;
@@ -64,6 +65,8 @@ public class VariabiliStaticheApiFootball {
     private String SquadraFuoriDaSalvare;
     private int idTipologiaDaSalvare;
     private int SquadraCheStaSalvando = -1;
+    private int QuantePartite;
+    private AdapterListenerPartiteAF customAdapterPartiteAF;
 
     // Dati
     private StrutturaSquadreLega listaSquadreAnno;
@@ -72,6 +75,22 @@ public class VariabiliStaticheApiFootball {
     private Partita PartitaSelezionata;
     private GiocatoriPartita GiocatoriDellaPartita;
     // Dati
+
+    public AdapterListenerPartiteAF getCustomAdapterPartiteAF() {
+        return customAdapterPartiteAF;
+    }
+
+    public void setCustomAdapterPartiteAF(AdapterListenerPartiteAF customAdapterPartiteAF) {
+        this.customAdapterPartiteAF = customAdapterPartiteAF;
+    }
+
+    public int getQuantePartite() {
+        return QuantePartite;
+    }
+
+    public void setQuantePartite(int quantePartite) {
+        QuantePartite = quantePartite;
+    }
 
     public TextView getTxtAvanzamento() {
         return txtAvanzamento;

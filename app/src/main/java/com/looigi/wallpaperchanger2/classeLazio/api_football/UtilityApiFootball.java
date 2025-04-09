@@ -15,6 +15,8 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.adapters.AdapterLis
 import com.looigi.wallpaperchanger2.classeLazio.api_football.adapters.AdapterListenerPartiteAF;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.adapters.AdapterListenerSquadreAF;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Allenatori.Allenatori;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.GiocatoreSquadra.PlayersTeamsResponse;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.GiocatoreSquadra.TeamInfo;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.GiocatoriPartita;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partita.Partita;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.FixtureData;
@@ -24,6 +26,8 @@ import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+
+import java.util.List;
 
 public class UtilityApiFootball {
     /* private static UtilityApiFootball instance = null;
@@ -43,11 +47,15 @@ public class UtilityApiFootball {
     private Runnable rTimerAF;
     private ImageView imgLogo;
     private String NomeSquadra;
+    private String Cartella;
 
     public void setImg(ImageView imgLogo) {
         this.imgLogo = imgLogo;
     }
 
+    public void setCartella(String Cartella) {
+        this.Cartella = Cartella;
+    }
 
     public void setNomeSquadra(String NomeSquadra) {
         this.NomeSquadra = NomeSquadra;
@@ -139,9 +147,6 @@ public class UtilityApiFootball {
                 case "SQUADRA":
                     gestisceSquadra(context, Contenuto);
                     break;
-                case "GIOCATORE":
-                    gestisceGiocatore(context, Contenuto);
-                    break;
                 case "SQUADRE_LEGA":
                     gestisceSquadreLega(context, Contenuto);
                     break;
@@ -159,26 +164,75 @@ public class UtilityApiFootball {
                     break;
             }
         } else {
-            int a = 0;
+            UtilitiesGlobali.getInstance().VisualizzaMessaggio(
+                    context,
+                    "Api Football",
+                    "Errore nel download: " + Operazione + "\n" + Contenuto
+                    );
         }
 
         VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
     }
 
-    private void gestisceGiocatore(Context context, String Contenuto) {
-        Gson gson = new Gson();
-        GiocatoriPartita g = gson.fromJson(Contenuto, GiocatoriPartita.class);
-        String Url = g.response.get(0).players.get(0).player.photo;
-        DownloadImmagineLazio d = new DownloadImmagineLazio();
-        d.EsegueChiamata(context, imgLogo, Url, NomeSquadra + ".Jpg");
+    public void AggiornaFileFatti(String NomeSquadra, int Quale, boolean chkFatto) {
+        String Contenuto = "";
+        if (Files.getInstance().EsisteFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt")) {
+            Contenuto = Files.getInstance().LeggeFile(
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
+                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+        }
+
+        if (Contenuto.isEmpty()) {
+            for (int ii = 0; ii < VariabiliStaticheApiFootball.getInstance().getQuantePartite(); ii++) {
+                Contenuto += "N";
+            }
+        }
+        if (!chkFatto) {
+            Contenuto = Contenuto.substring(0, Quale) + "N" + Contenuto.substring(Quale + 1, Contenuto.length());
+        } else {
+            Contenuto = Contenuto.substring(0, Quale) + "S" + Contenuto.substring(Quale + 1, Contenuto.length());
+        }
+        Files.getInstance().EliminaFileUnico(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+        Files.getInstance().ScriveFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt",
+                Contenuto);
+        VariabiliStaticheApiFootball.getInstance().getCustomAdapterPartiteAF().notifyDataSetChanged();
+    }
+
+    public boolean RitornaFileFatti(String NomeSquadra, int Quale) {
+        String Contenuto = "";
+        if (Files.getInstance().EsisteFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt")) {
+            Contenuto = Files.getInstance().LeggeFile(
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
+                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+            String c = Contenuto.substring(Quale, Quale + 1);
+            if (c.equals("S")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void gestisceSquadra(Context context, String Contenuto) {
         Gson gson = new Gson();
-        StrutturaSquadreLega s = gson.fromJson(Contenuto, StrutturaSquadreLega.class);
-        String Url = s.response.get(0).team.logo;
-        DownloadImmagineLazio d = new DownloadImmagineLazio();
-        d.EsegueChiamata(context, imgLogo, Url, NomeSquadra + ".Jpg");
+        if (!Contenuto.contains("ERROR")) {
+            StrutturaSquadreLega s = gson.fromJson(Contenuto, StrutturaSquadreLega.class);
+            String Url = s.response.get(0).team.logo;
+            DownloadImmagineLazio d = new DownloadImmagineLazio();
+            d.EsegueChiamata(context, imgLogo, Url, NomeSquadra + ".png", Cartella);
+        } else {
+            UtilitiesGlobali.getInstance().VisualizzaMessaggio(
+                    context,
+                    "Api Football",
+                    "Errore nel download: Squadra\n" + Contenuto
+            );
+        }
     }
 
     private void gestisceSquadreLega(Context context, String Contenuto) {
@@ -204,6 +258,9 @@ public class UtilityApiFootball {
         AdapterListenerPartiteAF customAdapterT = new AdapterListenerPartiteAF(
                 context,
                 p.response
+        );
+        VariabiliStaticheApiFootball.getInstance().setCustomAdapterPartiteAF(
+            customAdapterT
         );
         VariabiliStaticheApiFootball.getInstance().getLstPartite().setAdapter(
                 customAdapterT
@@ -350,7 +407,7 @@ public class UtilityApiFootball {
 
     public void SalvaTutteLePartite(Context context) {
         VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Inizio salvataggio partite");
+        // VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Inizio salvataggio partite");
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {

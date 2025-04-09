@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -94,13 +95,15 @@ public class MainApiFootball extends Activity {
             }
         });
 
-        /* ImageView imgSalvaTuttiIGiocatoriCasa = findViewById(R.id.imgSalvaTuttiIGiocatoriCasa);
+        ImageView imgSalvaTuttiIGiocatoriCasa = findViewById(R.id.imgScriveRisultati);
         imgSalvaTuttiIGiocatoriCasa.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.ScriveRisultati();
             }
         });
 
-        ImageView imgSalvaTuttiIGiocatoriFuori = findViewById(R.id.imgSalvaTuttiIGiocatoriFuori);
+        /* ImageView imgSalvaTuttiIGiocatoriFuori = findViewById(R.id.imgSalvaTuttiIGiocatoriFuori);
         imgSalvaTuttiIGiocatoriFuori.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             }

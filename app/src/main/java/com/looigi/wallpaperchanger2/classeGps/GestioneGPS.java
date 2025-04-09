@@ -49,11 +49,15 @@ public class GestioneGPS extends Service {
     private Context context;
     private HandlerThread handlerThread;
     private Looper looper;
+    private HandlerThread handlerThreadGps;
+    private Looper looperGps;
+    private long lastLocationTimestamp;
+    private Location vecchiaLocation;
 
     // private boolean ultimoNull = false;
     // private HandlerThread handlerThreadAccensione;
-    // private Handler handlerAccensione;
-    // private Runnable rAccensione;
+    private Handler handlerGps;
+    private Runnable rGps;
     // private long ultimoTSLocation = -1;
     // private boolean statoAttivo = true;
     // private HandlerThread handlerThread1;
@@ -221,6 +225,13 @@ public class GestioneGPS extends Service {
             looper.quit();
             handlerThread = null;
             looper = null;
+        }
+
+        if (handlerThreadGps != null && looperGps != null) {
+            handlerThreadGps.quitSafely();
+            looperGps.quit();
+            handlerThreadGps = null;
+            looperGps = null;
         }
 
         // db_dati_gps db = new db_dati_gps(context);
@@ -536,14 +547,68 @@ public class GestioneGPS extends Service {
                 VariabiliStaticheDetector.getInstance().getGpsMs()
         )
         .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
-        .setMinUpdateIntervalMillis(10000)
+        .setMinUpdateIntervalMillis(5000)
         .setPriority(priorita)
         .build();
+
+        lastLocationTimestamp = System.currentTimeMillis();
+
+        int finalPriorita = priorita;
+
+        if (handlerThreadGps != null && looperGps != null) {
+            handlerThreadGps.quitSafely();
+            looperGps.quit();
+            handlerThreadGps = null;
+            looperGps = null;
+        }
+
+        // HANDLER PER PUNTI RITARDATI
+        handlerThreadGps = new HandlerThread("LocationThreadPerGPSBloccato");
+        handlerThreadGps.start();
+        looperGps = handlerThreadGps.getLooper();
+
+        handlerGps = new Handler(looperGps);
+        rGps = new Runnable() {
+            @SuppressLint("MissingPermission")
+            public void run() {
+                long now = System.currentTimeMillis();
+
+                UtilityGPS.getInstance().ScriveLog(context, "ThreadBlocco",
+                        "Check Secondi: " + now + " - Differenza: " + (now - lastLocationTimestamp));
+
+                if (now - lastLocationTimestamp > VariabiliStaticheDetector.getInstance().getGpsMs()) {
+                    fusedLocationClient.getCurrentLocation(finalPriorita, null)
+                            .addOnSuccessListener(location -> {
+                                if (location != null) {
+                                    lastLocationTimestamp = System.currentTimeMillis();
+
+                                    float distanzaInMetri = 999;
+                                    if (vecchiaLocation != null) {
+                                        distanzaInMetri = location.distanceTo(vecchiaLocation);
+                                    }
+                                    if (distanzaInMetri >= (VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)) {
+                                        UtilityGPS.getInstance().ScriveLog(context, "ThreadBlocco",
+                                                "-----> Acquisito");
+
+                                        vecchiaLocation = location;
+                                        funzioneDiScritturaPosizioni(location);
+                                    }
+                                }
+                            });
+                }
+
+                handlerGps.postDelayed(this, VariabiliStaticheDetector.getInstance().getGpsMs());
+            }
+        };
+        handlerGps.postDelayed(rGps, VariabiliStaticheDetector.getInstance().getGpsMs());
+        // HANDLER PER PUNTI RITARDATI
 
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) return;
+
+                lastLocationTimestamp = System.currentTimeMillis();
 
                 for (Location location : locationResult.getLocations()) {
                     // funzioneDiScritturaPosizioni(Objects.requireNonNull(location.getLastLocation()));

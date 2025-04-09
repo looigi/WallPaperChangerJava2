@@ -1,6 +1,8 @@
 package com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,9 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Ammoniti;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
-import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
@@ -45,7 +48,7 @@ public class AdapterListenerAmmoniti extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.lista_ammoniti, null);
+        view = inflter.inflate(R.layout.lista_dettaglio_ammoniti, null);
 
         String Nome = lista.get(i).getNome();
         String Cognome = lista.get(i).getCognome();
@@ -68,6 +71,20 @@ public class AdapterListenerAmmoniti extends BaseAdapter {
             public void onClick(View v) {
             }
         });
+
+        ImageView imgLogo = view.findViewById(R.id.imgLogo);
+        String id = String.valueOf(lista.get(i).getIdApiFootball());
+
+        String NomeGiocatore = Nome + " " + Cognome;
+        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Giocatori";
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeGiocatore + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeGiocatore + ".png");
+            imgLogo.setImageBitmap(bmp);
+        } else {
+            String Url = "https://media.api-sports.io/football/players/" + id + ".png";
+            DownloadImmagineLazio d = new DownloadImmagineLazio();
+            d.EsegueChiamata(context, imgLogo, Url, NomeGiocatore + ".Jpg", "Giocatori");
+        }
 
         return view;
     }

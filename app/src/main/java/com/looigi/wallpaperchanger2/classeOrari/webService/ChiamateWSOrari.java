@@ -189,10 +189,12 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             QuanteOre = s.getQuanteOre();
 
             if (s.getCommessa() != null && !s.getCommessa().isEmpty()) {
-                for (StrutturaCommesse sc : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
-                    if (s.getCommessa().equals(sc.getDescrizione())) {
-                        idCommessa = sc.getIdCommessa();
-                        break;
+                if (VariabiliStaticheOrari.getInstance().getListaCommesse() != null) {
+                    for (StrutturaCommesse sc : VariabiliStaticheOrari.getInstance().getListaCommesse()) {
+                        if (s.getCommessa().equals(sc.getDescrizione())) {
+                            idCommessa = sc.getIdCommessa();
+                            break;
+                        }
                     }
                 }
             }
@@ -234,10 +236,11 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
         if (!VariabiliStaticheOrari.getInstance().getDatiGiornata().isSoloNote() &&
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().isGiornoInserito() &&
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().getQuanteOre() > 0) {
-            String Tempo = s.getTempo();
+            String Tempo = VariabiliStaticheOrari.getInstance().getTxtTempo().getText().toString(); // s.getTempo();
             for (StrutturaTempo st : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
                 if (Tempo.equals(st.getTempo())) {
-                    idTempo = st.getIdTempo() + ";";
+                    String Gradi = VariabiliStaticheOrari.getInstance().getEdtGradi().getText().toString();
+                    idTempo = st.getIdTempo() + ";" + Gradi;
                     break;
                 }
             }

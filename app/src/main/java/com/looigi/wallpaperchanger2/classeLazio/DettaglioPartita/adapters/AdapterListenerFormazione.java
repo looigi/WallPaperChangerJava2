@@ -1,6 +1,8 @@
 package com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Ammoniti;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Formazione;
-import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
@@ -45,7 +48,7 @@ public class AdapterListenerFormazione extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.lista_formazione, null);
+        view = inflter.inflate(R.layout.lista_dettaglio_formazione, null);
 
         String Nome = lista.get(i).getNome();
         String Cognome = lista.get(i).getCognome();
@@ -57,6 +60,7 @@ public class AdapterListenerFormazione extends BaseAdapter {
         if (!Uscito.isEmpty()) {
             Uscito += "°";
         }
+        String id = String.valueOf(lista.get(i).getIdApiFootball());
 
         // TextView txtNome = view.findViewById(R.id.txtNome);
         // txtNome.setText(Nome);
@@ -75,6 +79,19 @@ public class AdapterListenerFormazione extends BaseAdapter {
             public void onClick(View v) {
             }
         });
+
+        ImageView imgLogo = view.findViewById(R.id.imgLogo);
+
+        String NomeGiocatore = Nome + " " + Cognome;
+        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Giocatori";
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeGiocatore + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeGiocatore + ".png");
+            imgLogo.setImageBitmap(bmp);
+        } else {
+            String Url = "https://media.api-sports.io/football/players/" + id + ".png";
+            DownloadImmagineLazio d = new DownloadImmagineLazio();
+            d.EsegueChiamata(context, imgLogo, Url, NomeGiocatore + ".Jpg", "Giocatori");
+        }
 
         return view;
     }

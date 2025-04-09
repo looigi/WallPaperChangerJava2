@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.FixtureData;
 import com.looigi.wallpaperchanger2.classeOrari.webService.DownloadImmagineOrari;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
     public AdapterListenerPartiteAF(Context applicationContext, List<FixtureData> Partite) {
         this.context = applicationContext;
         this.listaPartite = Partite;
+        VariabiliStaticheApiFootball.getInstance().setQuantePartite(Partite.size());
         inflter = (LayoutInflater.from(applicationContext));
     }
 
@@ -45,6 +48,8 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.lista_partite_af, null);
+
+        String NomeSquadra = VariabiliStaticheApiFootball.getInstance().getNomeSquadraScelta();
 
         String NomeCasa = listaPartite.get(i).teams.home.name;
         String NomeFuori = listaPartite.get(i).teams.away.name;
@@ -107,6 +112,37 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
                 VariabiliStaticheApiFootball.getInstance().setIdPartitaDaSalvare(i);
                 UtilityApiFootball u = new UtilityApiFootball();
                 u.CaricaPartita(context, idPartita);
+            }
+        });
+
+        CheckBox chkFatto = view.findViewById(R.id.chkFatta);
+        // chkFatto.setEnabled(false);
+        String NomeFileFatto = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt";
+        Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte");
+        if (Files.getInstance().EsisteFile(NomeFileFatto)) {
+            String Contenuto = Files.getInstance().LeggeFile(
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
+                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+            boolean Fatta = false;
+            if (!Contenuto.isEmpty()) {
+                String c = Contenuto.substring(i, i + 1);
+                if (c.equals("S")) {
+                    Fatta = true;
+                }
+            }
+            if (Fatta) {
+                chkFatto.setChecked(true);
+            } else {
+                chkFatto.setChecked(false);
+            }
+        } else {
+            chkFatto.setChecked(false);
+        }
+        chkFatto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.AggiornaFileFatti(NomeSquadra, i, chkFatto.isChecked());
             }
         });
 

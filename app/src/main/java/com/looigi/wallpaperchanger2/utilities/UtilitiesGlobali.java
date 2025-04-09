@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.utilities;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
@@ -666,5 +668,19 @@ public class UtilitiesGlobali {
                 ApreToast(context, "Mail non inviata");
             }
         }).start();
+    }
+
+    public void VisualizzaMessaggio(Context context, String Titolo, String Messaggio) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(Titolo);
+        builder.setMessage(Messaggio);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

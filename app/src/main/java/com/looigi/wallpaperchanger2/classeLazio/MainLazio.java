@@ -742,6 +742,9 @@ public class MainLazio extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(1);
                 UtilityLazio.getInstance().VisualizzaMaschera();
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaClassifica();
             }
         });
 
@@ -750,6 +753,9 @@ public class MainLazio extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(2);
                 UtilityLazio.getInstance().VisualizzaMaschera();
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaCalendario();
             }
         });
 
@@ -758,6 +764,9 @@ public class MainLazio extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheLazio.getInstance().setMascheraSelezionata(3);
                 UtilityLazio.getInstance().VisualizzaMaschera();
+
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.RitornaSquadre();
             }
         });
 

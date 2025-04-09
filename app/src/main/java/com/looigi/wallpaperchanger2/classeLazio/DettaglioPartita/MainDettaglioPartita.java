@@ -71,7 +71,7 @@ public class MainDettaglioPartita extends Activity {
         } else {
             String url = VariabiliStaticheLazioDettaglio.UrlMedia + NomeSquadraCasa + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgCasa, url, NomeSquadraCasa + ".Jpg");
+            d.EsegueChiamata(context, imgCasa, url, NomeSquadraCasa + ".Jpg", "Stemmi");
         }
 
         ImageView imgFuori = findViewById(R.id.imgFuori);
@@ -82,7 +82,7 @@ public class MainDettaglioPartita extends Activity {
         } else {
             String url = VariabiliStaticheLazioDettaglio.UrlMedia + NomeSquadraFuori + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
-            d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg");
+            d.EsegueChiamata(context, imgFuori, url, NomeSquadraFuori + ".Jpg", "Stemmi");
         }
 
         VariabiliStaticheLazioDettaglio.getInstance().setLstAC(findViewById(R.id.lstAC));
@@ -105,7 +105,11 @@ public class MainDettaglioPartita extends Activity {
                 String Arbitro = VariabiliStaticheLazioDettaglio.getInstance().getEdtArbitro().getText().toString();
                 String Localita = VariabiliStaticheLazioDettaglio.getInstance().getEdtLocalita().getText().toString();
                 String Spettatori = VariabiliStaticheLazioDettaglio.getInstance().getEdtSpettatori().getText().toString();
-                String Note = VariabiliStaticheLazioDettaglio.getInstance().getEdtNote().getText().toString().replace(";", "***PV***");
+                String Note =
+                        Arbitro + ";" +
+                        Localita + ";" +
+                        Spettatori + ";" +
+                        VariabiliStaticheLazioDettaglio.getInstance().getEdtNote().getText().toString().replace(";", "***PV***");
                 List<Ammoniti> listaAc = VariabiliStaticheLazioDettaglio.getInstance().getDettaglioPartita().getAmmonitiCasa();
                 String AmmonitiCasa = "";
                 for (Ammoniti lista : listaAc) {

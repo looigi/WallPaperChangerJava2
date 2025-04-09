@@ -6,6 +6,15 @@ public class StrutturaMarcatori {
     private String Squadra;
     private String Ruolo;
     private int Goals;
+    private int idApiFootball;
+
+    public int getIdApiFootball() {
+        return idApiFootball;
+    }
+
+    public void setIdApiFootball(int idApiFootball) {
+        this.idApiFootball = idApiFootball;
+    }
 
     public String getRuolo() {
         return Ruolo;

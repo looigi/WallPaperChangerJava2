@@ -7,6 +7,15 @@ public class Formazione {
     private String Nome;
     private int Entrato;
     private int Uscito;
+    private int idApiFootball;
+
+    public int getIdApiFootball() {
+        return idApiFootball;
+    }
+
+    public void setIdApiFootball(int idApiFootball) {
+        this.idApiFootball = idApiFootball;
+    }
 
     public String getCognome() {
         return Cognome;

@@ -1,10 +1,13 @@
 package com.looigi.wallpaperchanger2.classeLazio.api_football.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +20,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheAp
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Squadre.TeamResponse;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeOrari.webService.DownloadImmagineOrari;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.util.List;
 
@@ -56,10 +60,60 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
         TextView txtSquadra = view.findViewById(R.id.txtSquadra);
         txtSquadra.setText(NomeSquadra);
 
+        CheckBox chkFatto = view.findViewById(R.id.chkFatto);
+        String NomeFileFatto = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt";
+        Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte");
+        if (Files.getInstance().EsisteFile(NomeFileFatto)) {
+            String Contenuto = Files.getInstance().LeggeFile(
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
+                            NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt"
+            );
+            if (Contenuto.contains("N")) {
+                chkFatto.setChecked(false);
+            } else {
+                chkFatto.setChecked(true);
+            }
+        } else {
+            chkFatto.setChecked(false);
+        }
+
         ImageView imgLogo = view.findViewById(R.id.imgLogo);
 
-        DownloadImmagineOrari d = new DownloadImmagineOrari();
-        d.EsegueChiamata(context, imgLogo, Logo);
+        String Squadra = NomeSquadra.toUpperCase().trim();
+        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + Squadra + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + Squadra + ".png");
+            imgLogo.setImageBitmap(bmp);
+        } else {
+            String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
+            String[] a = Anno.split("-");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
+                    Integer.parseInt(a[0])
+            );
+            if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
+                VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
+                        context.getFilesDir() + "/ApiFootball"
+                );
+            }
+
+            String urlString = "https://v3.football.api-sports.io/teams?" +
+                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                    "name=" + NomeSquadra;
+
+            UtilityApiFootball u = new UtilityApiFootball();
+            u.setImg(imgLogo);
+            u.setNomeSquadra(Squadra);
+            u.setCartella("Stemmi");
+            u.EffettuaChiamata(
+                    context,
+                    urlString,
+                    "Squadra_" + Squadra + ".json",
+                    false,
+                    "SQUADRA"
+            );
+        }
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -91,8 +145,8 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
 
             for (StrutturaSquadre s : squadre) {
                 // String Squadra = ((s.getSquadra().replace("AC ", "")).replace("AS ", "")).toUpperCase().trim();
-                String Squadra = s.getSquadra().toUpperCase().trim();
-                if (Squadra.equals(SquadraConfronto)) {
+                String sSquadra = s.getSquadra().toUpperCase().trim();
+                if (sSquadra.equals(SquadraConfronto)) {
                     ok = true;
                     break;
                 }

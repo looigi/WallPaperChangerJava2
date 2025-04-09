@@ -82,7 +82,16 @@ public class AdapterListenerCalendario extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraCasa);
             imgCasa.setImageBitmap(bmp);
         } else {
-            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+            String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
+            String[] a = Anno.split("-");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
+                    Integer.parseInt(a[0])
+            );
+            if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
+                VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
+                        context.getFilesDir() + "/ApiFootball"
+                );
+            }
 
             String urlString = "https://v3.football.api-sports.io/teams?" +
                     "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
@@ -91,6 +100,7 @@ public class AdapterListenerCalendario extends BaseAdapter {
 
             UtilityApiFootball u = new UtilityApiFootball();
             u.setImg(imgCasa);
+            u.setCartella("Stemmi");
             u.setNomeSquadra(NomeSquadraCasa);
             u.EffettuaChiamata(
                     context,
@@ -110,7 +120,16 @@ public class AdapterListenerCalendario extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraFuori);
             imgFuori.setImageBitmap(bmp);
         } else {
-            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+            String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
+            String[] a = Anno.split("-");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
+                    Integer.parseInt(a[0])
+            );
+            if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
+                VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
+                        context.getFilesDir() + "/ApiFootball"
+                );
+            }
 
             String urlString = "https://v3.football.api-sports.io/teams?" +
                     "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
@@ -119,6 +138,7 @@ public class AdapterListenerCalendario extends BaseAdapter {
 
             UtilityApiFootball u = new UtilityApiFootball();
             u.setImg(imgFuori);
+            u.setCartella("Stemmi");
             u.setNomeSquadra(NomeSquadraFuori);
             u.EffettuaChiamata(
                     context,

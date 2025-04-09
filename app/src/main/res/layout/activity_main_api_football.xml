@@ -44,6 +44,19 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/icona_salva" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Blue"
+                android:textSize="17dp"
+                android:text=" Aggiorna Ris. " />
+
+            <ImageView
+                android:id="@+id/imgScriveRisultati"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/classifica" />
         </LinearLayout>
 
         <ListView

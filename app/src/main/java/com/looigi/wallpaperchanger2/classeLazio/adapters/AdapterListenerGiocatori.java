@@ -55,6 +55,7 @@ public class AdapterListenerGiocatori extends BaseAdapter {
         String Nome = listaGiocatori.get(i).getNome();
         String Cognome = listaGiocatori.get(i).getCognome();
         String Ruolo = listaGiocatori.get(i).getRuolo();
+        String id = String.valueOf(listaGiocatori.get(i).getIdApiFootball());
 
         TextView txtNome = view.findViewById(R.id.txtNome);
         txtNome.setText(Nome);
@@ -78,32 +79,18 @@ public class AdapterListenerGiocatori extends BaseAdapter {
             }
         });
 
-        // Per l'immagine del giocatore su ApiFootball serve l'id
-        /* ImageView imgLogo = view.findViewById(R.id.imgLogo);
+        ImageView imgLogo = view.findViewById(R.id.imgLogo);
 
         String NomeGiocatore = Nome + " " + Cognome;
         String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Giocatori";
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeGiocatore)) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeGiocatore);
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeGiocatore + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeGiocatore + ".png");
             imgLogo.setImageBitmap(bmp);
         } else {
-            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
-            String urlString = "https://v3.football.api-sports.io/teams?" +
-                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
-                    "season=" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "&" +
-                    "name=" + NomeGiocatore;
-
-            UtilityApiFootball u = new UtilityApiFootball();
-            u.setImg(imgLogo);
-            u.setNomeSquadra(NomeGiocatore);
-            u.EffettuaChiamata(
-                    context,
-                    urlString,
-                    "Squadra_" + NomeGiocatore + ".json",
-                    false,
-                    "GIOCATORE"
-            );
-        } */
+            String Url = "https://media.api-sports.io/football/players/" + id + ".png";
+            DownloadImmagineLazio d = new DownloadImmagineLazio();
+            d.EsegueChiamata(context, imgLogo, Url, NomeGiocatore + ".Jpg", "Giocatori");
+        }
 
         return view;
     }

@@ -136,8 +136,13 @@ public class MainOrari extends Activity {
         ImageView imgNuovoOrario = findViewById(R.id.imgNuovoOrario);
         imgNuovoOrario.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MINUTE, -5);
+                SimpleDateFormat sdfO = new SimpleDateFormat("HH:mm:00");
+                String currentHour = sdfO.format(calendar.getTime());
+
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setGiornoInserito(true);
-                VariabiliStaticheOrari.getInstance().getDatiGiornata().setEntrata("08:00:00");
+                VariabiliStaticheOrari.getInstance().getDatiGiornata().setEntrata(currentHour);
                 VariabiliStaticheOrari.getInstance().getDatiGiornata().setQuanteOre(-6); // Smart Working default
                 VariabiliStaticheOrari.getInstance().getEdtOreLavoro().setText("-6");
                 UtilityOrari.getInstance().ScriveDatiGiornata(context);

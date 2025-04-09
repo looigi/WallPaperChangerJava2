@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -29,13 +30,15 @@ public class DownloadImmagineLazio {
     private String Url;
     private InputStream in;
     private String NomeImmagine;
+    private String Cartella;
 
-    public void EsegueChiamata(Context context, ImageView immagine, String UrlImmagine, String NomeImmagine) {
+    public void EsegueChiamata(Context context, ImageView immagine, String UrlImmagine, String NomeImmagine, String Cartella) {
         isCancelled = false;
         this.context = context;
         this.immagine = immagine;
         this.Url = UrlImmagine;
         this.NomeImmagine = NomeImmagine;
+        this.Cartella = Cartella;
 
         AttivaTimer();
 
@@ -118,11 +121,12 @@ public class DownloadImmagineLazio {
                 mIcon11 = BitmapFactory.decodeStream(in);
 
                 FileOutputStream outStream;
-                String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi/" + NomeImmagine;
+                String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/" + Cartella + "/" + NomeImmagine;
+                Files.getInstance().CreaCartelle(VariabiliStaticheLazio.getInstance().getPathLazio() + "/" + Cartella + "/");
                 try {
                     outStream = new FileOutputStream(PathImmagini); // .getPathImmagine());
                     if (outStream != null & mIcon11 != null) {
-                        mIcon11.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                        mIcon11.compress(Bitmap.CompressFormat.PNG, 100, outStream);
                     }
 
                     outStream.flush();

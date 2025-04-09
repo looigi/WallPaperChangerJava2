@@ -6,6 +6,24 @@ public class StrutturaGiocatori {
     private String Nome;
     private String Ruolo;
     private int idRuolo;
+    private int idApiFootball;
+    // private String Logo;
+
+    /* public String getLogo() {
+        return Logo;
+    }
+
+    public void setLogo(String logo) {
+        Logo = logo;
+    } */
+
+    public int getIdApiFootball() {
+        return idApiFootball;
+    }
+
+    public void setIdApiFootball(int idApiFootball) {
+        this.idApiFootball = idApiFootball;
+    }
 
     public int getIdGiocatore() {
         return idGiocatore;

@@ -64,11 +64,20 @@ public class AdapterListenerSquadre extends BaseAdapter {
 
         String NomeSquadra = Squadra.toUpperCase().trim();
         String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadra)) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra);
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadra + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra + ".png");
             imgLogo.setImageBitmap(bmp);
         } else {
-            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato());
+            String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
+            String[] a = Anno.split("-");
+            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
+                    Integer.parseInt(a[0])
+            );
+            if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
+                VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
+                        context.getFilesDir() + "/ApiFootball"
+                );
+            }
 
             String urlString = "https://v3.football.api-sports.io/teams?" +
                     "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
@@ -78,6 +87,7 @@ public class AdapterListenerSquadre extends BaseAdapter {
             UtilityApiFootball u = new UtilityApiFootball();
             u.setImg(imgLogo);
             u.setNomeSquadra(NomeSquadra);
+            u.setCartella("Stemmi");
             u.EffettuaChiamata(
                     context,
                     urlString,

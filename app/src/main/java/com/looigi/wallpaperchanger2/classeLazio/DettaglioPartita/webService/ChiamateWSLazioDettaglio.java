@@ -241,6 +241,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setNome(Marcatore[2]);
                         m.setMinuto(Integer.parseInt(Marcatore[3]));
                         m.setRigore(Marcatore[4].equals("S"));
+                        m.setIdApiFootball(Integer.parseInt(Marcatore[5]));
 
                         listaMC.add(m);
                     }
@@ -260,6 +261,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setNome(Marcatore[2]);
                         m.setMinuto(Integer.parseInt(Marcatore[3]));
                         m.setRigore(Marcatore[4].equals("S"));
+                        m.setIdApiFootball(Integer.parseInt(Marcatore[5]));
 
                         listaMF.add(m);
                     }
@@ -278,6 +280,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setCognome(Ammonito[1]);
                         m.setNome(Ammonito[2]);
                         m.setMinuto(Integer.parseInt(Ammonito[3]));
+                        m.setIdApiFootball(Integer.parseInt(Ammonito[4]));
 
                         listaAC.add(m);
                     }
@@ -296,6 +299,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setCognome(Ammonito[1]);
                         m.setNome(Ammonito[2]);
                         m.setMinuto(Integer.parseInt(Ammonito[3]));
+                        m.setIdApiFootball(Integer.parseInt(Ammonito[4]));
 
                         listaAF.add(m);
                     }
@@ -314,6 +318,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setCognome(Espulso[1]);
                         m.setNome(Espulso[2]);
                         m.setMinuto(Integer.parseInt(Espulso[3]));
+                        m.setIdApiFootball(Integer.parseInt(Espulso[4]));
 
                         listaEC.add(m);
                     }
@@ -332,6 +337,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setCognome(Espulso[1]);
                         m.setNome(Espulso[2]);
                         m.setMinuto(Integer.parseInt(Espulso[3]));
+                        m.setIdApiFootball(Integer.parseInt(Espulso[4]));
 
                         listaEF.add(m);
                     }
@@ -351,6 +357,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setNome(Formazione[2]);
                         m.setEntrato(Integer.parseInt(Formazione[3]));
                         m.setUscito(Integer.parseInt(Formazione[4]));
+                        m.setIdApiFootball(Integer.parseInt(Formazione[4]));
 
                         listaFC.add(m);
                     }
@@ -370,6 +377,7 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         m.setNome(Formazione[2]);
                         m.setEntrato(Integer.parseInt(Formazione[3]));
                         m.setUscito(Integer.parseInt(Formazione[4]));
+                        m.setIdApiFootball(Integer.parseInt(Formazione[5]));
 
                         listaFF.add(m);
                     }
