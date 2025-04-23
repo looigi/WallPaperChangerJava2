@@ -175,7 +175,7 @@ public class UtilityGPS {
                     // if (VariabiliStaticheGPS.getInstance().getPolylineSegnale() != null)
                     //     VariabiliStaticheGPS.getInstance().getPolylineSegnale().remove();
 
-                    int vecchioColore = -1;
+                    int vecchioColore = Color.BLUE;
                     List<StrutturaGps> lista = new ArrayList<>();
 
                     for (int i = listaGPS.size() - 1; i >= 0; i--) {
@@ -186,11 +186,11 @@ public class UtilityGPS {
                         bc.include(punto);
                         bcs++;
 
-                        if (vecchioColore != colore) {
-                            if (vecchioColore != -1) {
-                                AggiungePolyLineSegnale(lista, colore);
-                                lista = new ArrayList<>();
-                            }
+                        if (vecchioColore != colore && lista.size() > 3 &&
+                                VariabiliStaticheGPS.getInstance().isCambiaColoreAllaMappaPerVelocita()) {
+                            lista.add(s);
+                            AggiungePolyLineSegnale(lista, colore);
+                            lista = new ArrayList<>();
 
                             vecchioColore = colore;
                         }
@@ -207,12 +207,15 @@ public class UtilityGPS {
                     // if (VariabiliStaticheGPS.getInstance().getPolylineVelocita() != null)
                     //     VariabiliStaticheGPS.getInstance().getPolylineVelocita().remove();
 
-                    int vecchioColore = -1;
+                    int vecchioColore = Color.BLUE;
                     int c = 0;
                     List<StrutturaGps> lista = new ArrayList<>();
 
                     for (int i = listaGPS.size() - 1; i >= 0; i--) {
                         StrutturaGps s = listaGPS.get(i);
+
+                        if (s.getLat() == 0 || s.getLon() == 0) continue;
+
                         // float speed = Math.round(s.getSpeed()) * 3.5F;
                         int colore = ritornaColoreVelocita(s.getSpeed());
 
@@ -220,11 +223,11 @@ public class UtilityGPS {
                         bc.include(punto);
                         bcs++;
 
-                        if (vecchioColore != colore) {
-                            if (vecchioColore != -1) {
-                                AggiungePolyLineVelocita(lista, colore);
-                                lista = new ArrayList<>();
-                            }
+                        if (vecchioColore != colore && lista.size() > 3 &&
+                                VariabiliStaticheGPS.getInstance().isCambiaColoreAllaMappaPerVelocita()) {
+                            lista.add(s);
+                            AggiungePolyLineVelocita(lista, colore);
+                            lista = new ArrayList<>();
 
                             vecchioColore = colore;
                         }
@@ -385,7 +388,7 @@ public class UtilityGPS {
             Polyline polylineVelocita = VariabiliStaticheGPS.getInstance().getMappetta().addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(path)
-                    .width(10)
+                    .width(7)
                     .color(colore)
             );
         } catch (Exception ignored) {
@@ -418,7 +421,7 @@ public class UtilityGPS {
             Polyline polylineSegnale = VariabiliStaticheGPS.getInstance().getMappetta().addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(path)
-                    .width(20)
+                    .width(10)
                     .color(colore)
             );
 

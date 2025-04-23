@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class wsApiFootball {
-    public void RitornaDati(Context context, String urlString, String NomeFile) {
+    public void RitornaDati(Context context, String urlString, String NomeFile, String Operazione) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -38,11 +38,14 @@ public class wsApiFootball {
                         Files.getInstance().EliminaFileUnico(
                                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
                                         Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                                NomeFile
+                                        Operazione + "/" +
+                                        NomeFile.replace(" ", "_")
                         );
                         Files.getInstance().ScriveFile(
                                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball(),
-                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" + NomeFile,
+                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                        Operazione + "/" +
+                                        NomeFile.replace(" ", "_"),
                                 response.toString());
 
                         VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);

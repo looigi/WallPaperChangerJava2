@@ -181,6 +181,33 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 ApriDialog);
     }
 
+    public void AggiungeModificaGiocatore() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String Cognome = VariabiliStaticheLazio.getInstance().getEdtCognome().getText().toString();
+        String Nome = VariabiliStaticheLazio.getInstance().getEdtNome().getText().toString();
+        String idRuolo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdRuoloSelezionato());
+
+        String Urletto="AggiungeModificaGiocatore?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() + "&" +
+                "Cognome=" + Cognome + "&" +
+                "Nome=" + Nome + "&" +
+                "idRuolo=" + idRuolo + "&" +
+                "idGiocatore=" + VariabiliStaticheLazio.getInstance().getIdGiocatorePerModifica() + "&" +
+                "idGiocApiFootball=" + VariabiliStaticheLazio.getInstance().getIdApiFootballPerModifica() + "&";
+
+        TipoOperazione = "AggiungeModificaGiocatore";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
     public void EliminaMercato() {
         String Progressivo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdPerOperazione());
 
@@ -750,8 +777,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             int idCasa = datiPartita.teams.home.id;
             int idFuori = datiPartita.teams.away.id;
 
-            int goalCasa = datiPartita.score.fulltime.home;
-            int goalFuori = datiPartita.score.fulltime.away;
+            int goalCasa = 0;
+            if (datiPartita.score.fulltime.home != null) {
+                goalCasa = datiPartita.score.fulltime.home;
+            }
+            int goalFuori = 0;
+            if (datiPartita.score.fulltime.away != null) {
+                goalFuori = datiPartita.score.fulltime.away;
+            }
 
             VariabiliStaticheApiFootball.getInstance().setSquadraDiCasaDaSalvare(datiPartita.teams.home.name);
             VariabiliStaticheApiFootball.getInstance().setSquadraFuoriDaSalvare(datiPartita.teams.away.name);
@@ -1199,6 +1232,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "ScriveRisultati":
                         fScriveRisultati(result);
                         break;
+                    case "AggiungeModificaGiocatore":
+                        fAggiungeModificaGiocatore(result);
+                        break;
                 }
 
                 UtilityLazio.getInstance().ImpostaAttesa(false);
@@ -1220,6 +1256,17 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fAggiungeModificaGiocatore(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno aggiunge modifica giocatore", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Aggiunge modifica giocatore: " + result);
+        } else {
+            VariabiliStaticheLazio.getInstance().getLayModificaGiocatore().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheLazio.getInstance().getLayRuolo().setVisibility(LinearLayout.GONE);
+            UtilitiesGlobali.getInstance().ApreToast(context, "Giocatore salvato");
         }
     }
 
@@ -1253,6 +1300,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
                 while (u.RitornaFileFatti(VariabiliStaticheApiFootball.getInstance().getNomeSquadraScelta(), attuale)) {
                     attuale++;
+                    VariabiliStaticheApiFootball.getInstance().setIndiceSalvataggioTutteLePartite(attuale);
                 }
 
                 String testo = "Partita " + (attuale + 1) + "/" + quantePartite + " salvata";

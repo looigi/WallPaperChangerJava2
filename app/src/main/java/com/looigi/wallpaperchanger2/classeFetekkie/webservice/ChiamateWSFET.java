@@ -75,7 +75,7 @@ public class ChiamateWSFET implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                5000,
+                30000,
                 ApriDialog);
     }
 

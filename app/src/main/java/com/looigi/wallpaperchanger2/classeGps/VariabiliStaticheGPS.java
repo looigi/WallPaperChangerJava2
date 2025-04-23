@@ -75,6 +75,15 @@ public class VariabiliStaticheGPS {
     // private List<Marker> markersPATH;
     private int puntiTotali;
     private boolean disegnaPathComePolyline;
+    private boolean cambiaColoreAllaMappaPerVelocita = true;
+
+    public boolean isCambiaColoreAllaMappaPerVelocita() {
+        return cambiaColoreAllaMappaPerVelocita;
+    }
+
+    public void setCambiaColoreAllaMappaPerVelocita(boolean cambiaColoreAllaMappaPerVelocita) {
+        this.cambiaColoreAllaMappaPerVelocita = cambiaColoreAllaMappaPerVelocita;
+    }
     /* private Polyline polylineSegnale;
     // private Polyline polylineVelocita;
 

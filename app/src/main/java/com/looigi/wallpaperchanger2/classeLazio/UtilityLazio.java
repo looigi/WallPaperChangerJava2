@@ -361,8 +361,10 @@ public class UtilityLazio {
             case "GIOCATORI":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
                     case "INSERT":
+                        // ws.AggiungeModificaGiocatore();
                         break;
                     case "UPDATE":
+                        ws.AggiungeModificaGiocatore();
                         break;
                     case "DELETE":
                         break;

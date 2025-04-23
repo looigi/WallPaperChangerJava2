@@ -145,7 +145,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/map" />
 
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/imgUscitaTasti"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -153,7 +153,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/shutdown" />
 
-        <!-- <ImageView
+        <ImageView
             android:id="@+id/imgImmaginiTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"

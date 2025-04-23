@@ -10,16 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainStart;
-import com.looigi.wallpaperchanger2.utilities.Segnale.ControlloSegnale2;
+import com.looigi.wallpaperchanger2.utilities.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
@@ -47,7 +44,7 @@ public class ServizioInterno extends Service {
     private static final String NomeMaschera = "Servizio_Interno";
     private Context context;
     private ScreenReceiver mScreenReceiver;
-    private PowerManager.WakeLock wl;
+    // private PowerManager.WakeLock wl;
     private Intent intentSegnale;
     private Intent intentCuffie;
     private Intent intentGPS;
@@ -83,10 +80,10 @@ public class ServizioInterno extends Service {
         context = this;
 
         // CPU Attiva
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        /* PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 VariabiliStaticheWallpaper.channelName);
-        wl.acquire();
+        wl.acquire(); */
 
         /* Intent intentPM = new Intent();
         String packageName = getPackageName();
@@ -293,9 +290,9 @@ public class ServizioInterno extends Service {
         //     mSensorManager.unregisterListener(this);
         // }
 
-        if (wl != null) {
+        /* if (wl != null) {
             wl.release();
-        }
+        } */
 
         GestioneNotificheWP.getInstance().RimuoviNotifica();
 

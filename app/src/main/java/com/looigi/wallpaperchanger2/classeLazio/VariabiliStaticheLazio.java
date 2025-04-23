@@ -139,6 +139,24 @@ public class VariabiliStaticheLazio {
     private int idAnnoPerModifica;
     private EditText edtDescrizioneAnno;
     private EditText edtPuntiPerVittoria;
+    private String idApiFootballPerModifica;
+    private String idGiocatorePerModifica;
+
+    public String getIdApiFootballPerModifica() {
+        return idApiFootballPerModifica;
+    }
+
+    public void setIdApiFootballPerModifica(String idApiFootballPerModifica) {
+        this.idApiFootballPerModifica = idApiFootballPerModifica;
+    }
+
+    public String getIdGiocatorePerModifica() {
+        return idGiocatorePerModifica;
+    }
+
+    public void setIdGiocatorePerModifica(String idGiocatorePerModifica) {
+        this.idGiocatorePerModifica = idGiocatorePerModifica;
+    }
 
     public EditText getEdtDescrizioneAnno() {
         return edtDescrizioneAnno;

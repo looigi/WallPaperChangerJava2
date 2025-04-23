@@ -381,14 +381,14 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgBackupTasti, pBac);
 
-            Intent uscita = new Intent(ctx, ActivityDiStart.class);
+            /* Intent uscita = new Intent(ctx, ActivityDiStart.class);
             uscita.addCategory(Intent.CATEGORY_LAUNCHER);
             uscita.setAction(Intent.ACTION_MAIN );
             uscita.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             uscita.putExtra("DO", "uscita");
             PendingIntent pUscita = PendingIntent.getActivity(ctx, 210, uscita,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita);
+            view.setOnClickPendingIntent(R.id.imgUscitaTasti, pUscita); */
 
             Intent mod = new Intent(ctx, ActivityDiStart.class);
             mod.addCategory(Intent.CATEGORY_LAUNCHER);

@@ -76,10 +76,11 @@ public class AdapterListenerCalendario extends BaseAdapter {
         txtRisultato.setText(Risultato);
 
         ImageView imgCasa = view.findViewById(R.id.imgCasa);
+
         String NomeSquadraCasa = Casa.toUpperCase().trim();
         String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadraCasa)) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraCasa);
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadraCasa + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraCasa + ".png");
             imgCasa.setImageBitmap(bmp);
         } else {
             String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
@@ -116,8 +117,8 @@ public class AdapterListenerCalendario extends BaseAdapter {
 
         ImageView imgFuori = view.findViewById(R.id.imgFuori);
         String NomeSquadraFuori = Fuori.toUpperCase().trim();
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadraFuori)) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraFuori);
+        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadraFuori + ".png")) {
+            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadraFuori + ".png");
             imgFuori.setImageBitmap(bmp);
         } else {
             String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();

@@ -52,10 +52,11 @@ public class AdapterListenerGiocatori extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.lista_giocatori, null);
 
+        String idGiocatore = String.valueOf(listaGiocatori.get(i).getIdGiocatore());
         String Nome = listaGiocatori.get(i).getNome();
         String Cognome = listaGiocatori.get(i).getCognome();
         String Ruolo = listaGiocatori.get(i).getRuolo();
-        String id = String.valueOf(listaGiocatori.get(i).getIdApiFootball());
+        String idApiFootball = String.valueOf(listaGiocatori.get(i).getIdApiFootball());
 
         TextView txtNome = view.findViewById(R.id.txtNome);
         txtNome.setText(Nome);
@@ -69,6 +70,9 @@ public class AdapterListenerGiocatori extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setIdApiFootballPerModifica(idApiFootball);
+                VariabiliStaticheLazio.getInstance().setIdGiocatorePerModifica(idGiocatore);
+
                 UtilityLazio.getInstance().ApreModifica(context, "GIOCATORI", "UPDATE",
                         "Modifica giocatore", String.valueOf(i));
             }
@@ -87,7 +91,7 @@ public class AdapterListenerGiocatori extends BaseAdapter {
             Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeGiocatore + ".png");
             imgLogo.setImageBitmap(bmp);
         } else {
-            String Url = "https://media.api-sports.io/football/players/" + id + ".png";
+            String Url = "https://media.api-sports.io/football/players/" + idApiFootball + ".png";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
             d.EsegueChiamata(context, imgLogo, Url, NomeGiocatore + ".Jpg", "Giocatori");
         }

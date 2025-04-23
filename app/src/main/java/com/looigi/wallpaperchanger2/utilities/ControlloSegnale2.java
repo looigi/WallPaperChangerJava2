@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.utilities.Segnale;
+package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Service;
 import android.content.Context;
@@ -14,10 +14,7 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.watchDog.VariabiliStaticheWatchdog;
 
 import java.util.List;
@@ -65,6 +62,7 @@ public class ControlloSegnale2 extends Service {
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
+        VariabiliStaticheStart.getInstance().setCeWifi(wifi);
 
         String NomeMaschera = "Gestione_GPS";
 

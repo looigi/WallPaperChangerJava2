@@ -48,6 +48,7 @@ public class UtilityApiFootball {
     private ImageView imgLogo;
     private String NomeSquadra;
     private String Cartella;
+    private String OperazioneOriginale;
 
     public void setImg(ImageView imgLogo) {
         this.imgLogo = imgLogo;
@@ -64,33 +65,40 @@ public class UtilityApiFootball {
     public void EffettuaChiamata(Context context, String urlString, String NomeFile, boolean Refresh, String Operazione) {
         VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
 
+        OperazioneOriginale = Operazione;
+        String OperazioneRidotta = RitornaOperazioneSistemata(Operazione);
+
         Files.getInstance().CreaCartelle(
                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
-                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale())
+                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() )+ "/" +
+                        OperazioneRidotta
         );
 
         if (!Refresh && Files.getInstance().EsisteFile(
                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
                         Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                        NomeFile)
+                        OperazioneRidotta + "/" +
+                        NomeFile.replace(" ", "_"))
         ) {
             String Contenuto = Files.getInstance().LeggeFile(
                     VariabiliStaticheApiFootball.getInstance().getPathApiFootball(),
-                    Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" + NomeFile
+                    Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                            OperazioneRidotta + "/" +
+                            NomeFile.replace(" ", "_")
             );
-            boolean errore = ControllaErroreSuRitorno(Contenuto, NomeFile);
+            boolean errore = ControllaErroreSuRitorno(Contenuto, NomeFile, OperazioneRidotta);
 
             if (!errore) {
-                ElaboraChiamata(context, NomeFile, Operazione);
+                ElaboraChiamata(context, NomeFile, OperazioneRidotta);
             } else {
-                EsegueChiamata(context, urlString, NomeFile, Operazione);
+                EsegueChiamata(context, urlString, NomeFile, OperazioneRidotta);
             }
         } else {
-            EsegueChiamata(context, urlString, NomeFile, Operazione);
+            EsegueChiamata(context, urlString, NomeFile, OperazioneRidotta);
         }
     }
 
-    private boolean ControllaErroreSuRitorno(String Contenuto, String NomeFile) {
+    private boolean ControllaErroreSuRitorno(String Contenuto, String NomeFile, String Operazione) {
         String errori = Contenuto.substring(Contenuto.indexOf("\"errors\":") + 9);
         boolean errore = false;
 
@@ -100,7 +108,9 @@ public class UtilityApiFootball {
             if (!errori.equals("[]")) {
                 Files.getInstance().EliminaFileUnico(
                         VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
-                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" + NomeFile
+                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                Operazione + "/" +
+                                NomeFile.replace(" ", "_")
                 );
                 errore = true;
             }
@@ -109,11 +119,33 @@ public class UtilityApiFootball {
         return errore;
     }
 
+    private String RitornaOperazioneSistemata(String Ope) {
+        String Operazione = Ope.toLowerCase();
+
+        if (Operazione.equals("giocatoripartita")) {
+            Operazione = "GiocatoriPartita";
+        } else {
+            if (Operazione.contains("_")) {
+                String[] O = Operazione.split("_");
+                String O2 = "";
+                for (String Oo : O) {
+                    O2 += UtilitiesGlobali.getInstance().MetteMaiuscole(Oo).trim() + "_";
+                }
+                Operazione = O2.substring(0, O2.length() - 1).trim();
+            } else {
+                Operazione = UtilitiesGlobali.getInstance().MetteMaiuscole(Operazione);
+            }
+        }
+        Operazione = Operazione.trim();
+
+        return Operazione;
+    }
+
     private void EsegueChiamata(Context context, String urlString, String NomeFile, String Operazione) {
         VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(true);
 
         wsApiFootball ws = new wsApiFootball();
-        ws.RitornaDati(context, urlString, NomeFile);
+        ws.RitornaDati(context, urlString, NomeFile, Operazione);
 
         handlerTimerAF = new Handler(Looper.getMainLooper());
         rTimerAF = new Runnable() {
@@ -138,12 +170,16 @@ public class UtilityApiFootball {
     private void ElaboraChiamata(Context context, String NomeFile, String Operazione) {
         String Contenuto = Files.getInstance().LeggeFile(
                 VariabiliStaticheApiFootball.getInstance().getPathApiFootball(),
-                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" + NomeFile
+                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                        Operazione + "/" +
+                        NomeFile.replace(" ", "_")
         );
-        boolean errore = ControllaErroreSuRitorno(Contenuto, NomeFile);
+        boolean errore = ControllaErroreSuRitorno(Contenuto,
+                NomeFile.replace(" ", "_"),
+                Operazione);
 
         if (!errore) {
-            switch (Operazione) {
+            switch (OperazioneOriginale) {
                 case "SQUADRA":
                     gestisceSquadra(context, Contenuto);
                     break;
