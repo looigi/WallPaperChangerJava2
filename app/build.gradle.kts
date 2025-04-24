@@ -88,4 +88,12 @@ dependencies {
     implementation(libs.media)
 
     implementation(libs.language.id)
+
+    implementation(libs.play.services.auth.v2070)
+    implementation(libs.google.api.client.android.v1341)
+    implementation(libs.google.api.services.drive.vv3rev2021250)
+    implementation(libs.play.services.auth.v2130)
+    implementation(libs.google.api.client.gson)
+    implementation(libs.google.http.client.android)
+    implementation(libs.google.api.services.drive)
 }

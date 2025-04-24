@@ -20,6 +20,7 @@ import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
@@ -638,6 +639,10 @@ public class MainStart extends Activity {
         Intent i = new Intent(context, MainOrari.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i); */
+
+        Intent iL = new Intent(context, GoogleDrive.class);
+        iL.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(iL);
     }
 
     @Override

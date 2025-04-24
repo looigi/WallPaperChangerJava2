@@ -6,10 +6,14 @@ androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
 androidMailVersion = "1.6.2"
 androidMapsUtilsVersion = "3.11.1"
+comGoogleAndroidGmsPlayServicesAuth = "20.7.0"
 core = "1.13.1"
 faceDetection = "16.1.7"
 googleApiClientAndroid = "1.22.0"
+googleApiClientAndroidVersion = "1.34.1"
 googleApiServicesDrive = "v3-rev75-1.22.0"
+googleApiServicesDriveVersion = "v3-rev202-1.25.0"
+googleHttpClientAndroid = "1.34.1"
 googleHttpClientGson = "1.26.0"
 googlePlayServicesAuth = "21.3.0"
 googlePlayServicesAuthVersion = "16.0.1"
@@ -52,7 +56,11 @@ core = { module = "androidx.core:core", version.ref = "core" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
 google-android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtilsVersion" }
 google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
+google-api-client-android-v1341 = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroidVersion" }
+google-api-client-gson = { module = "com.google.api-client:google-api-client-gson", version.ref = "googleApiClientAndroidVersion" }
 google-api-services-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "googleApiServicesDrive" }
+google-api-services-drive-vv3rev2021250 = { module = "com.google.apis:google-api-services-drive", version.ref = "googleApiServicesDriveVersion" }
+google-http-client-android = { module = "com.google.http-client:google-http-client-android", version.ref = "googleHttpClientAndroid" }
 google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientGson" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -74,6 +82,7 @@ picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-auth-v1601 = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuthVersion" }
 play-services-auth-v1700 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
+play-services-auth-v2070 = { module = "com.google.android.gms:play-services-auth", version.ref = "comGoogleAndroidGmsPlayServicesAuth" }
 play-services-auth-v2130 = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuth" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "googlePlayServicesAuth" }
 play-services-location-v1501 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
