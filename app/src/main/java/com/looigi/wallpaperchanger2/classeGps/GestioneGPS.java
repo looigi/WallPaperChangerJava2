@@ -65,6 +65,7 @@ public class GestioneGPS extends Service {
     // private Runnable r1;
     // private boolean wifi;
     // private boolean nonScriverePunti = false;
+    private CalcoloVelocita cv;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -72,6 +73,7 @@ public class GestioneGPS extends Service {
 
         VariabiliStaticheGPS.getInstance().setContext(this);
 
+        cv = new CalcoloVelocita();
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
         VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
         // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
@@ -234,6 +236,7 @@ public class GestioneGPS extends Service {
             looperGps = null;
         }
 
+        cv = null;
         // db_dati_gps db = new db_dati_gps(context);
         // db.ScriveAccensioni(context);
     }
@@ -535,6 +538,7 @@ public class GestioneGPS extends Service {
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                 "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
 
+        cv = new CalcoloVelocita();
         int priorita = -1;
 
         if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
@@ -756,9 +760,12 @@ public class GestioneGPS extends Service {
         double longitude = location.getLongitude();
         double altitude = location.getAltitude();
 
-        float speed = location.getSpeed();
+        if (cv == null) { cv = new CalcoloVelocita(); }
+        float speed = cv.calculateRobustSpeed(location);
+
+        /* float speed = location.getSpeed();
         float velocityInMps = speed;
-        speed = velocityInMps * 3.6F;
+        speed = velocityInMps * 3.6F; */
 
         float accuracy = location.getAccuracy();
         float direzione = location.hasBearing() ? location.getBearing() : 0.0f;
