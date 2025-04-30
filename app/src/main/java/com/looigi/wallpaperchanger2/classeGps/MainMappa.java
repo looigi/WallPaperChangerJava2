@@ -79,12 +79,14 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
     private db_dati_gps db;
     private Activity act;
     private Date dataAttuale;
+    private CalcoloVelocita cv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_mappa);
 
+        cv = new CalcoloVelocita();
         this.context = this;
         this.act = this;
         VariabiliStaticheGPS.getInstance().setPrimoPassaggio(true);
@@ -216,7 +218,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
-                    UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                    UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
                     // disegnaMarkersPS();
                     // AggiungeMarkers(mappa);
 
@@ -246,7 +248,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     VariabiliStaticheGPS.getInstance().getMappa().LeggePunti(dataOdierna);
 
-                    UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                    UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
                     // disegnaMarkersPS();
                     // AggiungeMarkers(mappa);
 
@@ -353,7 +355,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                         VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                        UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                        UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
                         // disegnaMarkersPS();
                         // AggiungeMarkers(mappa);
 
@@ -442,7 +444,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                         VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
 
-                        UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                        UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
                         // disegnaMarkersPS();
                         // AggiungeMarkers(mappa);
 
@@ -466,7 +468,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         ImageView imgR = act.findViewById(R.id.imgMappaRefresh);
         imgR.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
             }
         });
 
@@ -566,7 +568,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         handlerTimer = new Handler(Looper.getMainLooper());
         rTimer = new Runnable() {
             public void run() {
-                UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+                UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
 
                 handlerTimer.postDelayed(rTimer, 10000);
             }
@@ -579,7 +581,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 NomeMaschera,
                 "Timer disegno mappa attivato");
 
-        UtilityGPS.getInstance().DisegnaPath(context, dataOdierna);
+        UtilityGPS.getInstance().DisegnaPath(context, cv, dataOdierna);
     }
 
     @Override

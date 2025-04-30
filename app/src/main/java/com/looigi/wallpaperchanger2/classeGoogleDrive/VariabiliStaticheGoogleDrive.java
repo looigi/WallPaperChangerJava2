@@ -1,0 +1,146 @@
+package com.looigi.wallpaperchanger2.classeGoogleDrive;
+
+import android.widget.ListView;
+
+import com.google.api.services.drive.Drive;
+import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+
+import pl.droidsonroids.gif.GifImageView;
+
+public class VariabiliStaticheGoogleDrive {
+    private static VariabiliStaticheGoogleDrive instance = null;
+    // private db_dati_gps db;
+
+    private VariabiliStaticheGoogleDrive() {
+    }
+
+    public static VariabiliStaticheGoogleDrive getInstance() {
+        if (instance == null) {
+            instance = new VariabiliStaticheGoogleDrive();
+        }
+
+        return instance;
+    }
+
+    private GoogleDriveHelper driveHelper;
+    private GifImageView imgAttesa;
+    private boolean Connesso = false;
+    private String ErroreConnessione = "";
+    private ListView lstFolders;
+    private ListView lstFiles;
+    private String idFolderCreato;
+    private String OperazioneApiFootball;
+    private String NomeFileApiFootball;
+    private String checkFolder;
+    private Drive driveService;
+    private String OperazioneDaEffettuare;
+
+    public String getOperazioneDaEffettuare() {
+        return OperazioneDaEffettuare;
+    }
+
+    public void setOperazioneDaEffettuare(String operazioneDaEffettuare) {
+        OperazioneDaEffettuare = operazioneDaEffettuare;
+    }
+
+    public Drive getDriveService() {
+        return driveService;
+    }
+
+    public void setDriveService(Drive driveService) {
+        this.driveService = driveService;
+    }
+
+    public String getCheckFolder() {
+        return checkFolder;
+    }
+
+    public void setCheckFolder(String checkFolder) {
+        this.checkFolder = checkFolder;
+    }
+
+    public String getOperazioneApiFootball() {
+        return OperazioneApiFootball;
+    }
+
+    public void setOperazioneApiFootball(String operazioneApiFootball) {
+        OperazioneApiFootball = operazioneApiFootball;
+    }
+
+    public String getNomeFileApiFootball() {
+        return NomeFileApiFootball;
+    }
+
+    public void setNomeFileApiFootball(String nomeFileApiFootball) {
+        NomeFileApiFootball = nomeFileApiFootball;
+    }
+
+    public String getIdFolderCreato() {
+        return idFolderCreato;
+    }
+
+    public void setIdFolderCreato(String idFolderCreato) {
+        this.idFolderCreato = idFolderCreato;
+    }
+
+    private String rootId = "";
+    public static String wallpaperFolderID = "1arfyRhdmLkyUYCFpsU5DNXICR2IuyNC1";
+    public static String apiFootballID = "1bCHQ0iaKa_T70AnpzafPflqBhhFt0E03";
+    public static String nuovaVersioneID = "1asjix2w7NKaJLJpyTXIHGu-nW4wybFyO";
+
+    public String getRootId() {
+        return rootId;
+    }
+
+    public void setRootId(String rootID) {
+        this.rootId = rootID;
+    }
+
+    public ListView getLstFiles() {
+        return lstFiles;
+    }
+
+    public void setLstFiles(ListView lstFiles) {
+        this.lstFiles = lstFiles;
+    }
+
+    public GoogleDriveHelper getDriveHelper() {
+        return driveHelper;
+    }
+
+    public void setDriveHelper(GoogleDriveHelper driveHelper) {
+        this.driveHelper = driveHelper;
+    }
+
+    public ListView getLstFolders() {
+        return lstFolders;
+    }
+
+    public void setLstFolders(ListView lstFolders) {
+        this.lstFolders = lstFolders;
+    }
+
+    public String getErroreConnessione() {
+        return ErroreConnessione;
+    }
+
+    public void setErroreConnessione(String erroreConnessione) {
+        ErroreConnessione = erroreConnessione;
+    }
+
+    public boolean isConnesso() {
+        return Connesso;
+    }
+
+    public void setConnesso(boolean connesso) {
+        Connesso = connesso;
+    }
+
+    public GifImageView getImgAttesa() {
+        return imgAttesa;
+    }
+
+    public void setImgAttesa(GifImageView imgAttesa) {
+        this.imgAttesa = imgAttesa;
+    }
+}

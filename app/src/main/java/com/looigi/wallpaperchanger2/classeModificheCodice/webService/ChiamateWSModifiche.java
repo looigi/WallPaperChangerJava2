@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeGps.AdapterListenerFilesRemoti;
+import com.looigi.wallpaperchanger2.classeGps.CalcoloVelocita;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
@@ -501,7 +502,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 }
             };
             if (!ultimaData.isEmpty()) {
-                UtilityGPS.getInstance().DisegnaPath(context, ultimaData);
+                CalcoloVelocita cv = new CalcoloVelocita();
+                UtilityGPS.getInstance().DisegnaPath(context, cv, ultimaData);
             }
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Posizioni aggiunte: " + posizioniAggiunte);

@@ -106,6 +106,14 @@
             android:src="@drawable/lazio" />
 
         <ImageView
+            android:id="@+id/imgDriveTasti"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/drive" />
+
+        <ImageView
             android:id="@+id/imgOnomasticiTasti"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -145,15 +153,15 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/map" />
 
-        <!-- <ImageView
-            android:id="@+id/imgUscitaTasti"
+        <ImageView
+            android:id="@+id/imgUpdateTasti"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:src="@drawable/shutdown" />
+            android:src="@drawable/update" />
 
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/imgImmaginiTasti"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"

@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,13 +23,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.UtilityGoogleDrive;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -37,6 +43,7 @@ import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
@@ -682,5 +689,47 @@ public class UtilitiesGlobali {
         });
 
         builder.show();
+    }
+
+    public void ControllaNuovaVersione(Context ctx) {
+        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("RilevaVersione");
+        Intent apre = new Intent(ctx, GoogleDrive.class);
+        apre.addCategory(Intent.CATEGORY_LAUNCHER);
+        apre.setAction(Intent.ACTION_MAIN );
+        apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+        // apre.putExtra("DO", "RilevaVersione");
+        ctx.startActivity(apre);
+    }
+
+    public void ControllaNuovaVersione2(Context context) {
+        String fileLocale = context.getFilesDir() + "/UltimaVersione.txt";
+        String fileScaricato = context.getFilesDir() + "/GoogleDrive/UltimaVersione.txt" ;
+
+        String VersioneLocale = "";
+        String VersioneScaricata = "";
+
+        if (Files.getInstance().EsisteFile(fileLocale)) {
+            VersioneLocale = Files.getInstance().LeggeFileUnico(fileLocale).replace("\n", "");
+        }
+        if (Files.getInstance().EsisteFile(fileScaricato)) {
+            VersioneScaricata = Files.getInstance().LeggeFileUnico(fileScaricato).replace("\n", "");
+        }
+
+        if (VersioneLocale.isEmpty() && !VersioneScaricata.isEmpty()) {
+            Files.getInstance().ScriveFile(String.valueOf(context.getFilesDir()), "UltimaVersione.txt", VersioneScaricata);
+        }
+
+        if (!VersioneLocale.isEmpty() && !VersioneScaricata.isEmpty() && !VersioneLocale.equals(VersioneScaricata)) {
+            VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("RilevaVersione");
+            Intent apre = new Intent(context, GoogleDrive.class);
+            apre.addCategory(Intent.CATEGORY_LAUNCHER);
+            apre.setAction(Intent.ACTION_MAIN );
+            apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            // apre.putExtra("DO", "RilevaVersione");
+            context.startActivity(apre);
+
+            Files.getInstance().EliminaFileUnico(fileLocale);
+            Files.getInstance().ScriveFile(String.valueOf(context.getFilesDir()), "UltimaVersione.txt", VersioneScaricata);
+        }
     }
 }

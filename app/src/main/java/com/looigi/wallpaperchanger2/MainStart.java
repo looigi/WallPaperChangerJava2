@@ -21,6 +21,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
@@ -496,6 +497,32 @@ public class MainStart extends Activity {
             }
         });
 
+        ImageView imgDrive = findViewById(R.id.imgStartDrive);
+        imgDrive.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("");
+                        Intent i = new Intent(context, GoogleDrive.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        act.finish();
+                        VariabiliStaticheDetector.getInstance().ChiudeActivity(true);
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                    }
+                }, 100);
+            }
+        });
+
         ImageView imgBackup = findViewById(R.id.imgBackupSettings);
         imgBackup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -638,11 +665,7 @@ public class MainStart extends Activity {
 
         Intent i = new Intent(context, MainOrari.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i); */
-
-        Intent iL = new Intent(context, GoogleDrive.class);
-        iL.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(iL);
+        context.startActivity(i);*/
     }
 
     @Override
@@ -758,7 +781,7 @@ public class MainStart extends Activity {
         super.onSaveInstanceState(outState);
         outState.putString("key", "valore_importante");
 
-        UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Save Instance State");
+        // UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Save Instance State");
 
         UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "onSaveInstanceState");
     }
@@ -769,7 +792,7 @@ public class MainStart extends Activity {
         if (savedInstanceState != null) {
             String valore = savedInstanceState.getString("key");
 
-            UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Restore Instance State");
+            // UtilitiesGlobali.getInstance().InvioMail(context, "looigi@gmail.com", "Wallpaper Changer II", "On Restore Instance State");
 
             UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "onRestoreInstanceState");
         }

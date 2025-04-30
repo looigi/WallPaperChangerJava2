@@ -151,10 +151,10 @@ public class CaricaSettaggi {
 
     public String CaricaImpostazioniGlobali(Context c, String daDove) {
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
-            UtilitiesGlobali.getInstance().InvioMail(c,
+            /* UtilitiesGlobali.getInstance().InvioMail(c,
                     "looigi@gmail.com",
                     "Wallpaper Changer II",
-                    "Carica Impostazioni Globali. Proveniente da " + daDove);
+                    "Carica Impostazioni Globali. Proveniente da " + daDove); */
 
             String ritorno = "OK";
 

@@ -1,7 +1,10 @@
 package com.looigi.wallpaperchanger2.classeLazio.api_football.WebService;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classePlayer.Files;
 
@@ -48,7 +51,18 @@ public class wsApiFootball {
                                         NomeFile.replace(" ", "_"),
                                 response.toString());
 
-                        VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);
+                        // GESTIONE GOOGLE DRIVE
+                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneApiFootball(Operazione);
+                        VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
+
+                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFileApiFootball");
+                        Intent apre = new Intent(context, GoogleDrive.class);
+                        apre.addCategory(Intent.CATEGORY_LAUNCHER);
+                        apre.setAction(Intent.ACTION_MAIN );
+                        apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                        context.startActivity(apre);
+
+                        // VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);
                     } else {
                         VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);
                     }

@@ -161,6 +161,38 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
+                            android:id="@+id/imgStartDrive"
+                            android:layout_width="50dp"
+                            android:src="@drawable/drive"
+                            android:layout_height="50dp">
+
+                        </ImageView>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16dp"
+                        android:textColor="@color/Verde_Scuro"
+                        android:text="Drive"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
                             android:id="@+id/imgStartFilms"
                             android:layout_width="50dp"
                             android:src="@drawable/video2"

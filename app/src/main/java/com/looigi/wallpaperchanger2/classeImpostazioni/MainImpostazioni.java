@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeGps.CalcoloVelocita;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
@@ -1001,7 +1002,8 @@ public class MainImpostazioni extends Activity {
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
 
-                UtilityGPS.getInstance().DisegnaPath(context, "");
+                CalcoloVelocita cv = new CalcoloVelocita();
+                UtilityGPS.getInstance().DisegnaPath(context, cv,"");
             }
         });
 
@@ -1023,7 +1025,8 @@ public class MainImpostazioni extends Activity {
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
 
-                UtilityGPS.getInstance().DisegnaPath(context, "");
+                CalcoloVelocita cv = new CalcoloVelocita();
+                UtilityGPS.getInstance().DisegnaPath(context, cv,"");
             }
         });
 
@@ -1037,7 +1040,8 @@ public class MainImpostazioni extends Activity {
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
 
-                UtilityGPS.getInstance().DisegnaPath(context, "");
+                CalcoloVelocita cv = new CalcoloVelocita();
+                UtilityGPS.getInstance().DisegnaPath(context, cv, "");
             }
         });
 

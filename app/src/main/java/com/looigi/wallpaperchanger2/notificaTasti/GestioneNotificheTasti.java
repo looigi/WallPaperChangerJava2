@@ -363,6 +363,24 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgLazioTasti, pLazio);
 
+            Intent drive = new Intent(ctx, ActivityDiStart.class);
+            drive.addCategory(Intent.CATEGORY_LAUNCHER);
+            drive.setAction(Intent.ACTION_MAIN );
+            drive.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            drive.putExtra("DO", "drive");
+            PendingIntent pDrive = PendingIntent.getActivity(ctx, 215, drive,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgDriveTasti, pDrive);
+
+            Intent update = new Intent(ctx, ActivityDiStart.class);
+            update.addCategory(Intent.CATEGORY_LAUNCHER);
+            update.setAction(Intent.ACTION_MAIN );
+            update.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            update.putExtra("DO", "update");
+            PendingIntent pUpdate = PendingIntent.getActivity(ctx, 217, update,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgUpdateTasti, pUpdate);
+
             Intent pwd = new Intent(ctx, ActivityDiStart.class);
             pwd.addCategory(Intent.CATEGORY_LAUNCHER);
             pwd.setAction(Intent.ACTION_MAIN );

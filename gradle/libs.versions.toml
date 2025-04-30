@@ -17,6 +17,7 @@ googleHttpClientAndroid = "1.34.1"
 googleHttpClientGson = "1.26.0"
 googlePlayServicesAuth = "21.3.0"
 googlePlayServicesAuthVersion = "16.0.1"
+googleServices = "4.4.2"
 gson = "2.10.1"
 guava = "27.0.1-android"
 junit = "4.13.2"
@@ -62,6 +63,7 @@ google-api-services-drive = { module = "com.google.apis:google-api-services-driv
 google-api-services-drive-vv3rev2021250 = { module = "com.google.apis:google-api-services-drive", version.ref = "googleApiServicesDriveVersion" }
 google-http-client-android = { module = "com.google.http-client:google-http-client-android", version.ref = "googleHttpClientAndroid" }
 google-http-client-gson = { module = "com.google.http-client:google-http-client-gson", version.ref = "googleHttpClientGson" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

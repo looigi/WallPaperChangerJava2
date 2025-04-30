@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
@@ -100,7 +101,7 @@ public class UtilityGPS {
     private LatLngBounds.Builder bc;
     private int bcs = 0;
 
-    public void DisegnaPath(Context context, String dataOdierna) {
+    public void DisegnaPath(Context context, CalcoloVelocita cv, String dataOdierna) {
         if (!VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             return;
         }
@@ -240,9 +241,15 @@ public class UtilityGPS {
                             c = 0;
                             icona = creaFrecciaConBordo(colore, colore);
 
-                            float speed = s.getSpeed();
+                            Location location = new Location("custom"); // "custom" is a provider name
+                            location.setLatitude(s.getLat());
+                            location.setLongitude(s.getLon());
+                            if (cv == null) { cv = new CalcoloVelocita(); }
+                            float speed = cv.calculateRobustSpeed(location);
+
+                            /* float speed = s.getSpeed();
                             float velocityInMps = speed;
-                            speed = velocityInMps * 3.6F;
+                            speed = velocityInMps * 3.6F; */
 
                             VariabiliStaticheGPS.getInstance().getMappetta().addMarker(new MarkerOptions()
                                     .position(punto)
@@ -294,9 +301,14 @@ public class UtilityGPS {
                         icona = creaPallinoConBordo(coloreSegnale, coloreVelocita);
                     }
 
-                    float speed = s.getSpeed();
+                    Location location = new Location("custom"); // "custom" is a provider name
+                    location.setLatitude(s.getLat());
+                    location.setLongitude(s.getLon());
+                    if (cv == null) { cv = new CalcoloVelocita(); }
+                    float speed = cv.calculateRobustSpeed(location);
+                    /* float speed = s.getSpeed();
                     float velocityInMps = speed;
-                    speed = velocityInMps * 3.6F;
+                    speed = velocityInMps * 3.6F; */
 
                     VariabiliStaticheGPS.getInstance().getMappetta().addMarker(new MarkerOptions()
                             .position(punto)
