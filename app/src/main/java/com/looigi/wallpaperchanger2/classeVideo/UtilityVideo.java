@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;

@@ -1,7 +1,6 @@
 package com.looigi.wallpaperchanger2.utilities;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,18 +22,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
-import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
-import com.looigi.wallpaperchanger2.classeGoogleDrive.UtilityGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -43,7 +37,6 @@ import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 
@@ -720,16 +713,24 @@ public class UtilitiesGlobali {
         }
 
         if (!VersioneLocale.isEmpty() && !VersioneScaricata.isEmpty() && !VersioneLocale.equals(VersioneScaricata)) {
-            VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("RilevaVersione");
-            Intent apre = new Intent(context, GoogleDrive.class);
-            apre.addCategory(Intent.CATEGORY_LAUNCHER);
-            apre.setAction(Intent.ACTION_MAIN );
-            apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
-            // apre.putExtra("DO", "RilevaVersione");
-            context.startActivity(apre);
+            String finalVersioneScaricata = VersioneScaricata;
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("AggiornaVersione");
+                    Intent apre = new Intent(context, GoogleDrive.class);
+                    apre.addCategory(Intent.CATEGORY_LAUNCHER);
+                    apre.setAction(Intent.ACTION_MAIN );
+                    apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                    context.startActivity(apre);
 
-            Files.getInstance().EliminaFileUnico(fileLocale);
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Installo versione aggiornata: " + finalVersioneScaricata);
+                }
+            }, 100);
+
             Files.getInstance().ScriveFile(String.valueOf(context.getFilesDir()), "UltimaVersione.txt", VersioneScaricata);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna nuova versione aggiornata");
         }
     }
 }

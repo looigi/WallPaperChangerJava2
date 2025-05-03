@@ -2,7 +2,6 @@ package com.looigi.wallpaperchanger2.classePlayer.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

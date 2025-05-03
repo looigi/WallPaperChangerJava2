@@ -1,32 +1,16 @@
 package com.looigi.wallpaperchanger2.classeImmaginiUguali.webService;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.widget.ImageView;
 
-import androidx.core.content.FileProvider;
-
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
-import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

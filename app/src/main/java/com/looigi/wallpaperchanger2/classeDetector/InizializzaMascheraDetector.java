@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -29,7 +30,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
 import com.looigi.wallpaperchanger2.utilities.PrendeModelloTelefono;
@@ -549,7 +550,7 @@ public class InizializzaMascheraDetector {
         VariabiliStaticheDetector.getInstance().setTxtImm((TextView) act.findViewById(R.id.txtImmagini));
         VariabiliStaticheDetector.getInstance().setTxtNomeImm((TextView) act.findViewById(R.id.txtNomeImm));
         final LinearLayout lScatti = (LinearLayout) act.findViewById(R.id.layScatti);
-        final LinearLayout lTasti = (LinearLayout) act.findViewById(R.id.layTasti);
+        final HorizontalScrollView lTasti = (HorizontalScrollView) act.findViewById(R.id.layTasti);
         final LinearLayout lFrecce = (LinearLayout) act.findViewById(R.id.layFrecce);
         final LinearLayout lNomeImm = (LinearLayout) act.findViewById(R.id.layNomeImmagine);
         lScatti.setVisibility(LinearLayout.GONE);
@@ -608,10 +609,21 @@ public class InizializzaMascheraDetector {
             }
         }); */
 
+        ImageView bSpostaSuDrive = act.findViewById(R.id.imgSpostaSuDrive);
+        bSpostaSuDrive.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityDetector.getInstance().SpostaFileSuDrive(
+                        VariabiliStaticheDetector.getInstance().getContext()
+                );
+            }
+        });
+
         ImageView bSposta = act.findViewById(R.id.imgSposta);
         bSposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityDetector.getInstance().SpostaFile(VariabiliStaticheDetector.getInstance().getContext());
+                UtilityDetector.getInstance().SpostaFile(
+                        VariabiliStaticheDetector.getInstance().getContext()
+                );
             }
         });
 

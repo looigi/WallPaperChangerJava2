@@ -1,7 +1,6 @@
 package com.looigi.wallpaperchanger2.classeLazio.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -16,13 +15,8 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
-import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Commesse.MainCommessa;
-import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerClassifica extends BaseAdapter {

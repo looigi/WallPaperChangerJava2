@@ -4,28 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.MainDettaglioPartita;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.VariabiliStaticheLazioDettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
-import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
-import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
 import java.util.List;
 

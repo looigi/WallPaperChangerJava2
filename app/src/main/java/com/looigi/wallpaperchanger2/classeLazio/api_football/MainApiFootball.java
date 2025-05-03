@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainApiFootball extends Activity {

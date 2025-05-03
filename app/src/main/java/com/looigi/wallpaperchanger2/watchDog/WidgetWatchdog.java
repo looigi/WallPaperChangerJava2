@@ -1,31 +1,14 @@
 package com.looigi.wallpaperchanger2.watchDog;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.widget.RemoteViews;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
-import com.looigi.wallpaperchanger2.classeOnomastici.PrendeSantoClass;
-import com.looigi.wallpaperchanger2.classeOnomastici.VariabiliStaticheOnomastici;
-import com.looigi.wallpaperchanger2.classeOnomastici.db.DBLocaleOnomastici;
-import com.looigi.wallpaperchanger2.classeOnomastici.db.GestioneDB;
-import com.looigi.wallpaperchanger2.classeOnomastici.strutture.CampiRitornoSanti;
-import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import java.util.Calendar;
 
 public class WidgetWatchdog extends AppWidgetProvider {
     @Override

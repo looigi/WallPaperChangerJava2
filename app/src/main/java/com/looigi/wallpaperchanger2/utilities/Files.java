@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePlayer;
+package com.looigi.wallpaperchanger2.utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -168,5 +168,21 @@ public class Files {
                 }
             }
         }
+    }
+
+    public boolean deleteFolder(File folder) {
+        if (folder != null && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteFolder(file); // chiamata ricorsiva per sottocartelle
+                    } else {
+                        file.delete(); // elimina file
+                    }
+                }
+            }
+        }
+        return folder != null && folder.delete(); // elimina la cartella
     }
 }

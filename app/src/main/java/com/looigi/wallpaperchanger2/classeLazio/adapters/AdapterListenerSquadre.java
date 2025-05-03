@@ -16,10 +16,8 @@ import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
-import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
-import java.io.File;
 import java.util.List;
 
 public class AdapterListenerSquadre extends BaseAdapter {

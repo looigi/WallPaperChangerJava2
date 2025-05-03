@@ -3,15 +3,12 @@ package com.looigi.wallpaperchanger2.classeBackup;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,16 +17,10 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerBackups extends BaseAdapter {

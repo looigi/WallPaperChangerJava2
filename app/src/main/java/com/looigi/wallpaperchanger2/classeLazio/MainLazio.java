@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,7 +16,6 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
@@ -25,12 +23,13 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.MainApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
-import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainLazio extends Activity {
     private Context context;
@@ -873,6 +872,27 @@ public class MainLazio extends Activity {
                 UtilityLazio.getInstance().LeggeAnno(context);
             }
         });
+
+        PulisceFiles();
+    }
+
+    private void PulisceFiles() {
+        File directory = new File(context.getFilesDir() + "/ApiFootball");
+
+        if (directory.exists() && directory.isDirectory()) {
+            File[] files = directory.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        String Nome = file.getName();
+                        if (!Nome.equalsIgnoreCase("FATTE")) {
+                            Files.getInstance().deleteFolder(file);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

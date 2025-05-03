@@ -9,10 +9,8 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

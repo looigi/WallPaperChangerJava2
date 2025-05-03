@@ -1,9 +1,6 @@
 package com.looigi.wallpaperchanger2.classePlayer.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
-import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaImmagini;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerBraniOnline extends BaseAdapter {

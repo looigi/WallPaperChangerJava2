@@ -6,23 +6,8 @@ import android.os.Looper;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
-import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import pl.droidsonroids.gif.GifImageView;
 

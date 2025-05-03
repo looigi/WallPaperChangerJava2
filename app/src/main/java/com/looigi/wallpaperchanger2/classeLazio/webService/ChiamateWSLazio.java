@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.VariabiliStaticheLazioDettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAnni;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
@@ -46,7 +45,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.Statistics;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.FixtureData;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Squadre.TeamResponse;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.UtilityApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.FixtureData;
 import com.looigi.wallpaperchanger2.classeOrari.webService.DownloadImmagineOrari;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
 import java.util.List;
 

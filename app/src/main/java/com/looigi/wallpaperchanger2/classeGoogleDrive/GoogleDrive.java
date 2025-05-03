@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
@@ -14,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.api_football.GestioneGoogleDrivePerApiFootball;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;
@@ -57,6 +58,8 @@ public class GoogleDrive extends Activity {
         context = this;
         act = this;
 
+        VariabiliStaticheGoogleDrive.getInstance().setAct(this);
+
         VariabiliStaticheGoogleDrive.getInstance().setConnesso(false);
         VariabiliStaticheGoogleDrive.getInstance().setErroreConnessione("");
 
@@ -76,6 +79,9 @@ public class GoogleDrive extends Activity {
     private Handler handlerTimerAF;
     private Runnable rTimerAF;
     private int Conta = 0;
+    private Handler handler;
+    private Runnable r;
+    private HandlerThread handlerThread;
 
     public void AttendeConnessione() {
         UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
@@ -91,12 +97,19 @@ public class GoogleDrive extends Activity {
                             UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
                             handlerTimerAF.removeCallbacksAndMessages(rTimerAF);
 
+                            GestioneGoogleDrive g = new GestioneGoogleDrive();
                             switch (Modalita) {
-                                case "ScriveFileApiFootball":
-                                    GestioneGoogleDrivePerApiFootball g = new GestioneGoogleDrivePerApiFootball();
-                                    g.ScriveFileSuGoogleDrive(context,
-                                            VariabiliStaticheGoogleDrive.getInstance().getOperazioneApiFootball(),
-                                            VariabiliStaticheGoogleDrive.getInstance().getNomeFileApiFootball());
+                                case "LeggeFile":
+                                    g.GestioneFileSuGoogleDrive(context,
+                                            VariabiliStaticheGoogleDrive.getInstance().getPathOperazione(),
+                                            VariabiliStaticheGoogleDrive.getInstance().getNomeFileApiFootball(),
+                                            "LETTURA", false);
+                                    break;
+                                case "ScriveFile":
+                                    g.GestioneFileSuGoogleDrive(context,
+                                            VariabiliStaticheGoogleDrive.getInstance().getPathOperazione(),
+                                            VariabiliStaticheGoogleDrive.getInstance().getNomeFileApiFootball(),
+                                            "SCRITTURA", true);
                                     break;
                                 case "AggiornaVersione":
                                     String pathDestinazione1 = context.getFilesDir() + "/GoogleDrive";
@@ -112,22 +125,40 @@ public class GoogleDrive extends Activity {
                                             pathDestinazione1 + "/Wallpaper Changer II.apk"
                                     );
 
-                                    if (Files.getInstance().EsisteFile(pathDestinazione1 + "/Wallpaper Changer II.apk")) {
-                                        java.io.File f = new File(pathDestinazione1 + "/Wallpaper Changer II.apk");
-                                        Uri uri = FileProvider.getUriForFile(context,
-                                                context.getApplicationContext().getPackageName() + ".provider",
-                                                f
-                                        );
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                        startActivity(intent);
-                                    } else {
-                                        UtilitiesGlobali.getInstance().ApreToast(context, "Problemi nell'aggiornamento della versione");
-                                    }
+                                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(true);
 
-                                    act.finish();
+                                    handlerThread = new HandlerThread("background-thread_DownloadUVAPK_" +
+                                            VariabiliStaticheWallpaper.channelName);
+                                    handlerThread.start();
+
+                                    handler = new Handler(handlerThread.getLooper());
+                                    r = new Runnable() {
+                                        public void run() {
+                                            if (!VariabiliStaticheGoogleDrive.getInstance().isStaScaricandoFile()) {
+                                                if (Files.getInstance().EsisteFile(pathDestinazione1 + "/Wallpaper Changer II.apk")) {
+                                                    java.io.File f = new File(pathDestinazione1 + "/Wallpaper Changer II.apk");
+                                                    Uri uri = FileProvider.getUriForFile(context,
+                                                            context.getApplicationContext().getPackageName() + ".provider",
+                                                            f
+                                                    );
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                    intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                                    startActivity(intent);
+                                                } else {
+                                                    UtilitiesGlobali.getInstance().ApreToast(context, "Problemi nell'aggiornamento della versione");
+                                                }
+
+                                                act.finish();
+                                            } else {
+                                                if (handler != null) {
+                                                    handler.postDelayed(this, 100);
+                                                }
+                                            }
+                                        }
+                                    };
+                                    handler.postDelayed(r, 100);
 
                                     break;
                                 case "RilevaVersione":
@@ -140,9 +171,28 @@ public class GoogleDrive extends Activity {
                                             "UltimaVersione.txt",
                                             pathDestinazione + "/UltimaVersione.txt"
                                     );
-                                    UtilitiesGlobali.getInstance().ControllaNuovaVersione2(context);
 
-                                    act.finish();
+                                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(true);
+
+                                    handlerThread = new HandlerThread("background-thread_DownloadUV_" +
+                                            VariabiliStaticheWallpaper.channelName);
+                                    handlerThread.start();
+
+                                    handler = new Handler(handlerThread.getLooper());
+                                    r = new Runnable() {
+                                        public void run() {
+                                            if (!VariabiliStaticheGoogleDrive.getInstance().isStaScaricandoFile()) {
+                                                UtilitiesGlobali.getInstance().ControllaNuovaVersione2(context);
+
+                                                act.finish();
+                                            } else {
+                                                if (handler != null) {
+                                                    handler.postDelayed(this, 100);
+                                                }
+                                            }
+                                        }
+                                    };
+                                    handler.postDelayed(r, 100);
 
                                     break;
                                 default:

@@ -1,9 +1,9 @@
 package com.looigi.wallpaperchanger2.classeGoogleDrive;
 
+import android.app.Activity;
 import android.widget.ListView;
 
 import com.google.api.services.drive.Drive;
-import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -22,6 +22,12 @@ public class VariabiliStaticheGoogleDrive {
         return instance;
     }
 
+    private String rootId = "";
+    public static String wallpaperFolderID = "1arfyRhdmLkyUYCFpsU5DNXICR2IuyNC1";
+    public static String apiFootballID = "1bCHQ0iaKa_T70AnpzafPflqBhhFt0E03";
+    public static String nuovaVersioneID = "1asjix2w7NKaJLJpyTXIHGu-nW4wybFyO";
+
+    private Activity act;
     private GoogleDriveHelper driveHelper;
     private GifImageView imgAttesa;
     private boolean Connesso = false;
@@ -29,11 +35,46 @@ public class VariabiliStaticheGoogleDrive {
     private ListView lstFolders;
     private ListView lstFiles;
     private String idFolderCreato;
-    private String OperazioneApiFootball;
+    private String PathOperazione;
     private String NomeFileApiFootball;
     private String checkFolder;
     private Drive driveService;
     private String OperazioneDaEffettuare;
+    private boolean staCheckandoFile = false;
+    private boolean staScaricandoFile = false;
+    private String fileDiOrigine;
+
+    public String getFileDiOrigine() {
+        return fileDiOrigine;
+    }
+
+    public void setFileDiOrigine(String fileDiOrigine) {
+        this.fileDiOrigine = fileDiOrigine;
+    }
+
+    public Activity getAct() {
+        return act;
+    }
+
+    public void setAct(Activity act) {
+        this.act = act;
+    }
+
+    public boolean isStaScaricandoFile() {
+        return staScaricandoFile;
+    }
+
+    public void setStaScaricandoFile(boolean staScaricandoFile) {
+        this.staScaricandoFile = staScaricandoFile;
+    }
+
+    public boolean isStaCheckandoFile() {
+        return staCheckandoFile;
+    }
+
+    public void setStaCheckandoFile(boolean staCheckandoFile) {
+        this.staCheckandoFile = staCheckandoFile;
+    }
 
     public String getOperazioneDaEffettuare() {
         return OperazioneDaEffettuare;
@@ -59,12 +100,12 @@ public class VariabiliStaticheGoogleDrive {
         this.checkFolder = checkFolder;
     }
 
-    public String getOperazioneApiFootball() {
-        return OperazioneApiFootball;
+    public String getPathOperazione() {
+        return PathOperazione;
     }
 
-    public void setOperazioneApiFootball(String operazioneApiFootball) {
-        OperazioneApiFootball = operazioneApiFootball;
+    public void setPathOperazione(String pathOperazione) {
+        PathOperazione = pathOperazione;
     }
 
     public String getNomeFileApiFootball() {
@@ -82,11 +123,6 @@ public class VariabiliStaticheGoogleDrive {
     public void setIdFolderCreato(String idFolderCreato) {
         this.idFolderCreato = idFolderCreato;
     }
-
-    private String rootId = "";
-    public static String wallpaperFolderID = "1arfyRhdmLkyUYCFpsU5DNXICR2IuyNC1";
-    public static String apiFootballID = "1bCHQ0iaKa_T70AnpzafPflqBhhFt0E03";
-    public static String nuovaVersioneID = "1asjix2w7NKaJLJpyTXIHGu-nW4wybFyO";
 
     public String getRootId() {
         return rootId;

@@ -1,15 +1,12 @@
 package com.looigi.wallpaperchanger2.classePlayer.scan;
 
 import android.content.Context;
-import android.icu.util.UniversalTimeScale;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.File;
 import java.util.ArrayList;

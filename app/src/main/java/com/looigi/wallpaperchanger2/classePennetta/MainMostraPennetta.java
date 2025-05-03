@@ -31,7 +31,7 @@ import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.DownloadImmaginePEN;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;

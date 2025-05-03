@@ -4,16 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.scan.PuliziaBraniEccedentiLoSpazio;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.ClasseZip;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

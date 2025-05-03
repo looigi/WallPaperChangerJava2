@@ -24,6 +24,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.*;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.FileOutputStream;
@@ -138,11 +139,14 @@ public class GoogleDriveHelper {
             );
 
             File uploadedFile = create.setFields("id").execute();
+
+            VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
             return uploadedFile.getId();
             // Log.d(TAG, "File caricato con ID: " + uploadedFile.getId());
         } catch (IOException e) {
             // Log.e(TAG, "Errore nel caricamento del file", e);
-            return "";
+            VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
+            return "ERROR";
         }
     }
 
@@ -384,20 +388,40 @@ public class GoogleDriveHelper {
         void onFolderNotFound();
         void onError(Exception e);
     }
-
-    public void deleteFileOrFolder(String fileId) {
+    /**
+     * Elimina un file con nome specifico dentro una cartella Google Drive.
+     * @param folderId ID della cartella dove cercare
+     * @param fileName Nome esatto del file da eliminare
+     */
+    public void deleteFileByNameInFolder(String folderId, String fileName) {
         if (driveService == null) {
-            UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+            Log.e(TAG, "Servizio Drive non inizializzato");
             return;
         }
 
         new Thread(() -> {
             try {
-                driveService.files().delete(fileId).execute();
-                Log.d(TAG, "File o cartella eliminato con ID: " + fileId);
+                // Cerca il file nella cartella
+                String query = "name = '" + fileName + "' and '" + folderId + "' in parents and trashed = false";
+
+                FileList result = driveService.files().list()
+                        .setQ(query)
+                        .setSpaces("drive")
+                        .setFields("files(id, name)")
+                        .execute();
+
+                List<File> files = result.getFiles();
+
+                if (files != null && !files.isEmpty()) {
+                    for (File file : files) {
+                        driveService.files().delete(file.getId()).execute();
+                        // Log.d(TAG, "File eliminato: " + file.getName());
+                    }
+                } else {
+                    // Log.d(TAG, "Nessun file trovato con il nome specificato.");
+                }
             } catch (IOException e) {
-                Log.e(TAG, "Errore durante l'eliminazione", e);
+                // Log.e(TAG, "Errore durante l'eliminazione del file", e);
             }
         }).start();
     }
@@ -427,15 +451,18 @@ public class GoogleDriveHelper {
                     outputStream.close();
 
                     // Log.d(TAG, "Download completato: " + outputFile.getAbsolutePath());
+                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
                 } else {
                     // Log.d(TAG, "Nessun file trovato con il nome: " + fileName);
+                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
                 }
-
             } catch (UserRecoverableAuthIOException e) {
                 // Log.w(TAG, "Autorizzazione necessaria: " + e.getMessage());
                 // activity.startActivityForResult(e.getIntent(), REQUEST_CODE_AUTHORIZATION);
+                VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
             } catch (IOException e) {
                 // Log.e(TAG, "Errore durante il download del file", e);
+                VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(false);
             }
         }).start();
     }
@@ -463,6 +490,34 @@ public class GoogleDriveHelper {
             return folders != null && !folders.isEmpty();
         } catch (IOException e) {
             Log.e(TAG, "Errore durante il controllo della cartella", e);
+            return false;
+        }
+    }
+
+    /**
+     * Verifica se un file con nome specifico esiste dentro una cartella su Google Drive.
+     * @param folderId ID della cartella in cui cercare
+     * @param fileName Nome esatto del file da cercare
+     * @return true se il file esiste, false altrimenti
+     */
+    public boolean fileExistsInFolder(String folderId, String fileName) {
+        if (driveService == null) {
+            Log.e(TAG, "Servizio Drive non inizializzato");
+            return false;
+        }
+
+        try {
+            String query = "name = '" + fileName + "' and '" + folderId + "' in parents and trashed = false";
+
+            FileList result = driveService.files().list()
+                    .setQ(query)
+                    .setSpaces("drive")
+                    .setFields("files(id)")
+                    .execute();
+
+            return result.getFiles() != null && !result.getFiles().isEmpty();
+        } catch (IOException e) {
+            Log.e(TAG, "Errore durante la verifica del file", e);
             return false;
         }
     }

@@ -2,11 +2,13 @@ package com.looigi.wallpaperchanger2.classeLazio.api_football.WebService;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,18 +53,40 @@ public class wsApiFootball {
                                         NomeFile.replace(" ", "_"),
                                 response.toString());
 
-                        // GESTIONE GOOGLE DRIVE
-                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneApiFootball(Operazione);
+                        // GESTIONE GOOGLE DRIVE - SALVATAGGIO FILE ON LINE
+                        VariabiliStaticheGoogleDrive.getInstance().setPathOperazione(
+                                "ApiFootball/" +
+                                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                        Operazione
+                        );
                         VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
+                        VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
+                                VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
+                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                        Operazione + "/" +
+                                        NomeFile.replace(" ", "_")
+                        );
 
-                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFileApiFootball");
+                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFile");
                         Intent apre = new Intent(context, GoogleDrive.class);
                         apre.addCategory(Intent.CATEGORY_LAUNCHER);
                         apre.setAction(Intent.ACTION_MAIN );
                         apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
                         context.startActivity(apre);
 
-                        // VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);
+                        /* handlerThread = new HandlerThread("background-thread_SF_" +
+                                VariabiliStaticheWallpaper.channelName);
+                        handlerThread.start();
+
+                        handler = new Handler(handlerThread.getLooper());
+                        r = new Runnable() {
+                            public void run() {
+                                if (!VariabiliStaticheApiFootball.getInstance().isStaLeggendoWS()) {
+
+                                }
+                            }
+                        };
+                        handler.postDelayed(r, 100); */
                     } else {
                         VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(false);
                     }

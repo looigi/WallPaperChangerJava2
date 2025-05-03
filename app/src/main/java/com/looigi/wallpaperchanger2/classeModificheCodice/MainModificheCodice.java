@@ -16,22 +16,18 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenatori;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
-import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.io.File;

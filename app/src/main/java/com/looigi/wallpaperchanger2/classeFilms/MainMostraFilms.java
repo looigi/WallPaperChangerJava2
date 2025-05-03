@@ -18,18 +18,8 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
-import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
-import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraFilms extends Activity {

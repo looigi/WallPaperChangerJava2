@@ -3,38 +3,17 @@ package com.looigi.wallpaperchanger2.classeOrari.impostazioni.webService;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.UtilityImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaIndirizzi;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaLavoro;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezziStandard;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPasticca;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPranzo;
-import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaRicorrenze;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaTempo;
-import com.looigi.wallpaperchanger2.classeOrari.webService.InterrogazioneWSOrari;
-import com.looigi.wallpaperchanger2.classeOrari.webService.TaskDelegateOrari;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class ChiamateWSImpostazioniOrari implements TaskDelegateImpostazioniOrari {
     private static final String NomeMaschera = "Chiamate_WS_IMPOSTAZIONI_ORARI";

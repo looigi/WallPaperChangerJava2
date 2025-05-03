@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

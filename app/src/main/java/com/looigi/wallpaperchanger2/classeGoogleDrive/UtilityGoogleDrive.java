@@ -46,6 +46,19 @@ public class UtilityGoogleDrive {
         }
     }
 
+    public void esisteFileInFolder(Context context, String folderId, String NomeFile) {
+        new Thread(() -> {
+            boolean esiste = VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().fileExistsInFolder(
+                    folderId,
+                    NomeFile);
+            if (esiste) {
+                VariabiliStaticheGoogleDrive.getInstance().setIdFolderCreato("TRUE");
+            } else {
+                VariabiliStaticheGoogleDrive.getInstance().setIdFolderCreato("FALSE");
+            }
+        }).start();
+    }
+
     public String upload(Context context, String path, String File, String folderId) {
         return VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().uploadFile(
                 context,
@@ -201,8 +214,11 @@ public class UtilityGoogleDrive {
         );
     }
 
-    public void deleteFileOrFolder(String fileId) {
-        VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().deleteFileOrFolder(fileId);
+    public void deleteFileOrFolder(String folderId, String FileName) {
+        VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().deleteFileByNameInFolder(
+                folderId,
+                FileName
+        );
     }
 
     public void EsisteFolder(String folderId, String folderName) {

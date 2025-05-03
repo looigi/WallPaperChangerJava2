@@ -15,6 +15,7 @@ import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -23,7 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.google.mlkit.nl.languageid.internal.LanguageIdentifierImpl;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.RichiestaPath;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -44,6 +49,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -981,6 +987,81 @@ public class UtilityDetector {
                 VariabiliStaticheWallpaper.getInstance().getMainActivity(),
                 RichiestaPath.class);
         VariabiliStaticheWallpaper.getInstance().getMainActivity().startActivity(myIntent);
+    }
+
+    private int idImmagineDaSpostare;
+    private Handler handler;
+    private Runnable r;
+    private HandlerThread handlerThread;
+
+    public void SpostaFileSuDrive(Context context) {
+        DeCriptaFiles(context);
+
+        idImmagineDaSpostare = 0;
+        SpostaImmagineSuDrive(context);
+    }
+
+    private void SpostaImmagineSuDrive(Context context) {
+        String Cartella = UtilityDetector.getInstance().PrendePath(context);
+        String Immagine = VariabiliStaticheDetector.getInstance().getImmagini().get(idImmagineDaSpostare);
+
+        LocalDateTime currDate = LocalDateTime.now();
+        int Anno = currDate.getYear();
+
+        VariabiliStaticheGoogleDrive.getInstance().setPathOperazione(
+                "Detector/" + Integer.toString(Anno)
+        );
+        String[] I = Immagine.split("/");
+        String NomeImmagine = I[I.length - 1];
+        VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeImmagine);
+        VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
+                Cartella + Immagine
+        );
+
+        VariabiliStaticheApiFootball.getInstance().setStaLeggendoWS(true);
+
+        handlerThread = new HandlerThread("background-thread_SpostaDetector_" +
+                VariabiliStaticheWallpaper.channelName);
+        handlerThread.start();
+
+        handler = new Handler(handlerThread.getLooper());
+        r = new Runnable() {
+            public void run() {
+                if (!VariabiliStaticheApiFootball.getInstance().isStaLeggendoWS()) {
+                    idImmagineDaSpostare++;
+                    if (idImmagineDaSpostare < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+                        SpostaImmagineSuDrive(context);
+                    } else {
+                        UtilityDetector.getInstance().EliminaPV3Inutili(context);
+
+                        int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+                        UtilityDetector.getInstance().CaricaMultimedia(context);
+                        appo--;
+                        if (appo < 0) appo = 0;
+                        VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
+                        UtilityDetector.getInstance().VisualizzaMultimedia(context);
+                        UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
+
+                        UtilityDetector.getInstance().ContaFiles(context);
+
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagini spostate su drive: " +
+                                (VariabiliStaticheDetector.getInstance().getImmagini().size()));
+                    }
+                } else {
+                    if (handler != null) {
+                        handler.postDelayed(this, 100);
+                    }
+                }
+            }
+        };
+        handler.postDelayed(r, 100);
+
+        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFile");
+        Intent apre = new Intent(context, GoogleDrive.class);
+        apre.addCategory(Intent.CATEGORY_LAUNCHER);
+        apre.setAction(Intent.ACTION_MAIN );
+        apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+        context.startActivity(apre);
     }
 
     public void ContaFiles(Context context) {

@@ -369,12 +369,17 @@ public class VariabiliStaticheApiFootball {
     }
 
     public void ImpostaAttesa(boolean Come) {
-        if (imgCaricamento != null) {
-            if (Come) {
-                imgCaricamento.setVisibility(LinearLayout.VISIBLE);
-            } else {
-                imgCaricamento.setVisibility(LinearLayout.GONE);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (imgCaricamento != null) {
+                    if (Come) {
+                        imgCaricamento.setVisibility(LinearLayout.VISIBLE);
+                    } else {
+                        imgCaricamento.setVisibility(LinearLayout.GONE);
+                    }
+                }
             }
-        }
+        }, 100);
     }
 }

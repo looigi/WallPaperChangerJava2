@@ -9,24 +9,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Ammoniti;
-import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Dettaglio;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Espulsi;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Formazione;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.Strutture.Marcatori;
 import com.looigi.wallpaperchanger2.classeLazio.DettaglioPartita.webService.ChiamateWSLazioDettaglio;
-import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
-import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
-import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.DownloadImmagineLazio;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 
 import java.util.List;
 

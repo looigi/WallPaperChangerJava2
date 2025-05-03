@@ -18,6 +18,7 @@ import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 // import com.looigi.wallpaperchanger2.classiPlayer.WebServices.RipristinoChiamate;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.DownloadImmagine;
 import com.looigi.wallpaperchanger2.utilities.Chiacchierone;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;

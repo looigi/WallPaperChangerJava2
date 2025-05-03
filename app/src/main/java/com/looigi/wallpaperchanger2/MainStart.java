@@ -28,6 +28,7 @@ import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeLazio.MainLazio;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
@@ -665,7 +666,24 @@ public class MainStart extends Activity {
 
         Intent i = new Intent(context, MainOrari.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);*/
+        context.startActivity(i);
+
+        String Operazione = "ApiFootball/Buttami1/Buttami2/Buttami3";
+        String NomeFile = "Buttami.json";
+
+        VariabiliStaticheGoogleDrive.getInstance().setOperazioneApiFootball(Operazione);
+        VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
+        VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
+                context.getFilesDir() + "/ApiFootball/" +
+                        "Fatte/Atalanta_2023.txt"
+        );
+
+        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("LeggeFileApiFootball");
+        Intent apre = new Intent(context, GoogleDrive.class);
+        apre.addCategory(Intent.CATEGORY_LAUNCHER);
+        apre.setAction(Intent.ACTION_MAIN);
+        apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+        context.startActivity(apre);*/
     }
 
     @Override

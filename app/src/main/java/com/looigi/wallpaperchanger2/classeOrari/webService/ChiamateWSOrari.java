@@ -1,9 +1,6 @@
 package com.looigi.wallpaperchanger2.classeOrari.webService;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Path;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ArrayAdapter;
@@ -13,7 +10,6 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeOrari.UtilityOrari;
 import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerCommesseGestione;
-import com.looigi.wallpaperchanger2.classeOrari.impostazioni.Adapters.AdapterListenerLavoriGestione;
 import com.looigi.wallpaperchanger2.classeOrari.impostazioni.VariabiliStaticheImpostazioniOrari;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
@@ -26,8 +22,7 @@ import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPasticca;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaPranzo;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaRicorrenze;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaTempo;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -38,8 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class ChiamateWSOrari implements TaskDelegateOrari {
     private static final String NomeMaschera = "Chiamate_WS_ORARI";

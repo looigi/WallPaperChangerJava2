@@ -15,7 +15,7 @@ import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerRicerca
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaRicerca;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerPreferiti;
-import com.looigi.wallpaperchanger2.classePlayer.Files;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaFiltroBrano;
