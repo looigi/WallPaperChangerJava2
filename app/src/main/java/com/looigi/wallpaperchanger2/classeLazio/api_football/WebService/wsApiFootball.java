@@ -40,16 +40,17 @@ public class wsApiFootball {
                         }
                         in.close();
 
+                        String Cartella = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
+                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                Operazione + "/";
+                        Files.getInstance().CreaCartelle(Cartella);
+
                         Files.getInstance().EliminaFileUnico(
-                                VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
-                                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                                        Operazione + "/" +
+                                Cartella +
                                         NomeFile.replace(" ", "_")
                         );
                         Files.getInstance().ScriveFile(
-                                VariabiliStaticheApiFootball.getInstance().getPathApiFootball(),
-                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                                        Operazione + "/" +
+                                Cartella,
                                         NomeFile.replace(" ", "_"),
                                 response.toString());
 
@@ -61,9 +62,7 @@ public class wsApiFootball {
                         );
                         VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
                         VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
-                                VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
-                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                                        Operazione + "/" +
+                                Cartella +
                                         NomeFile.replace(" ", "_")
                         );
 

@@ -109,7 +109,7 @@ public class GoogleDrive extends Activity {
                                     g.GestioneFileSuGoogleDrive(context,
                                             VariabiliStaticheGoogleDrive.getInstance().getPathOperazione(),
                                             VariabiliStaticheGoogleDrive.getInstance().getNomeFileApiFootball(),
-                                            "SCRITTURA", true);
+                                            "SCRITTURA", false);
                                     break;
                                 case "AggiornaVersione":
                                     String pathDestinazione1 = context.getFilesDir() + "/GoogleDrive";

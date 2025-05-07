@@ -136,8 +136,17 @@ public class UtilityApiFootball {
     }
 
     private boolean ControllaErroreSuRitorno(String Contenuto, String NomeFile, String Operazione) {
-        String errori = Contenuto.substring(Contenuto.indexOf("\"errors\":") + 9);
         boolean errore = false;
+        if (Contenuto.contains("ERROR:")) {
+            Files.getInstance().EliminaFileUnico(
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
+                            Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                            Operazione + "/" +
+                            NomeFile.replace(" ", "_")
+            );
+            return true;
+        }
+        String errori = Contenuto.substring(Contenuto.indexOf("\"errors\":") + 9);
 
         if (errori.contains(",")) {
             errori = errori.substring(0, errori.indexOf(","));
@@ -353,7 +362,7 @@ public class UtilityApiFootball {
                 );
 
                 // Prende Allenatori Squadra scelta
-                String urlString = "https://v3.football.api-sports.io/coachs?" +
+                /* String urlString = "https://v3.football.api-sports.io/coachs?" +
                         "team=" + VariabiliStaticheApiFootball.getInstance().getIdSquadra();
                 EffettuaChiamata(
                         context,
@@ -361,7 +370,9 @@ public class UtilityApiFootball {
                         "Allenatori_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + ".json",
                         false,
                         "ALLENATORI"
-                );
+                ); */
+
+                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
                 // UtilitiesGlobali.getInstance().ApreToast(context, "Partite scaricate");
             }
@@ -406,6 +417,8 @@ public class UtilityApiFootball {
                     ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
                     ws1.AggiungeTuttiGliAllenatori();
                 }
+
+                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
 
         /* if (VariabiliStaticheApiFootball.getInstance().isStaSalvandoTutteLeSquadre()) {
             ChiamateWSLazio ws = new ChiamateWSLazio(context);
