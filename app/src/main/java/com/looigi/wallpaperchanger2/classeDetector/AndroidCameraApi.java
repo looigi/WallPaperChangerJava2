@@ -575,38 +575,20 @@ public class AndroidCameraApi extends Activity {
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(surface);
 
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, true);
-
-            // **Attivare la stabilizzazione dell'immagine**
-            captureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE,
-                    CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
-            // **Bloccare la messa a fuoco per evitare cambi improvvisi**
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, false);
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
-            // **Usare una velocità di scatto più alta**
-            Range<Integer> fpsRange = new Range<>(30, 30); // Mantiene il frame rate stabile
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fpsRange);
-            // **Disattivare il flash per evitare sfocature da luce improvvisa**
+            captureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_OFF);
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<>(15, 30));
             captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-
-            /* if (CePocaLuce) {
-                // Impostare l'ISO alto per aumentare la sensibilità alla luce
-                captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 1600); // Regola in base alla scena
-                // Allungare il tempo di esposizione per raccogliere più luce (es. 1/4 di secondo)
-                captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 400000000L); // In nanosecondi
-                // Aprire il diaframma (se supportato) per far entrare più luce
-                captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f); // Regola in base al dispositivo
-                // Bloccare il bilanciamento del bianco per evitare cambi improvvisi
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
-            } else { */
-                //// Aprire il diaframma (se supportato) per far entrare più luce
-                captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f); // Regola in base al dispositivo
-                // **Impostare un tempo di esposizione breve per evitare il mosso**
-                captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 40000000L); // 50ms
-                // **Impostare un ISO adeguato per compensare la luce**
-                captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 800);
-                //// Bloccare il bilanciamento del bianco per evitare cambi improvvisi
-                captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
-            // }
+            // Esposizione breve (1/125s)
+            captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 8000000L);
+            // ISO medio
+            captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 400);
+            // Diaframma aperto
+            captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f);
+            // Bilanciamento del bianco bloccato (opzionale)
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
 
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
                 @Override

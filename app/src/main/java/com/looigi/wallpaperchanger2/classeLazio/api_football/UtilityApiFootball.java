@@ -264,10 +264,12 @@ public class UtilityApiFootball {
     public void AggiornaFileFatti(String NomeSquadra, int Quale, boolean chkFatto) {
         String Contenuto = "";
         if (Files.getInstance().EsisteFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt")) {
+                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                NomeSquadra + ".txt")) {
             Contenuto = Files.getInstance().LeggeFile(
-                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
-                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                            Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
+                    NomeSquadra + ".txt");
         }
 
         if (Contenuto.isEmpty()) {
@@ -276,14 +278,16 @@ public class UtilityApiFootball {
             }
         }
         if (!chkFatto) {
-            Contenuto = Contenuto.substring(0, Quale) + "N" + Contenuto.substring(Quale + 1, Contenuto.length());
+            Contenuto = Contenuto.substring(0, Quale) + "N" + Contenuto.substring(Quale + 1);
         } else {
-            Contenuto = Contenuto.substring(0, Quale) + "S" + Contenuto.substring(Quale + 1, Contenuto.length());
+            Contenuto = Contenuto.substring(0, Quale) + "S" + Contenuto.substring(Quale + 1);
         }
         Files.getInstance().EliminaFileUnico(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
-        Files.getInstance().ScriveFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt",
+                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                NomeSquadra + ".txt");
+        Files.getInstance().ScriveFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
+                NomeSquadra + ".txt",
                 Contenuto);
         VariabiliStaticheApiFootball.getInstance().getCustomAdapterPartiteAF().notifyDataSetChanged();
     }
@@ -291,10 +295,12 @@ public class UtilityApiFootball {
     public boolean RitornaFileFatti(String NomeSquadra, int Quale) {
         String Contenuto = "";
         if (Files.getInstance().EsisteFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt")) {
+                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                NomeSquadra + ".txt")) {
             Contenuto = Files.getInstance().LeggeFile(
-                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
-                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                            Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
+                    NomeSquadra + ".txt");
             String c = Contenuto.substring(Quale, Quale + 1);
             if (c.equals("S")) {
                 return true;

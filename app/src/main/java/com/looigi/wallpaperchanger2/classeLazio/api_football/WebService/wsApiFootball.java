@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
@@ -54,24 +55,29 @@ public class wsApiFootball {
                                         NomeFile.replace(" ", "_"),
                                 response.toString());
 
-                        // GESTIONE GOOGLE DRIVE - SALVATAGGIO FILE ON LINE
-                        VariabiliStaticheGoogleDrive.getInstance().setPathOperazione(
-                                "ApiFootball/" +
-                                        Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
-                                        Operazione
-                        );
-                        VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
-                        VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
-                                Cartella +
-                                        NomeFile.replace(" ", "_")
-                        );
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // GESTIONE GOOGLE DRIVE - SALVATAGGIO FILE ON LINE
+                                VariabiliStaticheGoogleDrive.getInstance().setPathOperazione(
+                                        "ApiFootball/" +
+                                                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                                                Operazione
+                                );
+                                VariabiliStaticheGoogleDrive.getInstance().setNomeFileApiFootball(NomeFile);
+                                VariabiliStaticheGoogleDrive.getInstance().setFileDiOrigine(
+                                        Cartella +
+                                                NomeFile.replace(" ", "_")
+                                );
 
-                        VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFile");
-                        Intent apre = new Intent(context, GoogleDrive.class);
-                        apre.addCategory(Intent.CATEGORY_LAUNCHER);
-                        apre.setAction(Intent.ACTION_MAIN );
-                        apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
-                        context.startActivity(apre);
+                                VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("ScriveFile");
+                                Intent apre = new Intent(context, GoogleDrive.class);
+                                apre.addCategory(Intent.CATEGORY_LAUNCHER);
+                                apre.setAction(Intent.ACTION_MAIN );
+                                apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                                context.startActivity(apre);
+                            }
+                        }, 100);
 
                         /* handlerThread = new HandlerThread("background-thread_SF_" +
                                 VariabiliStaticheWallpaper.channelName);

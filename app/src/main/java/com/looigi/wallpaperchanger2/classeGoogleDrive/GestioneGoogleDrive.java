@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classeGoogleDrive;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -23,11 +24,13 @@ public class GestioneGoogleDrive {
     private List<String> folderId;
     private int idOperazione;
     private boolean EliminaOrigine;
+    private Activity Chiamante;
 
     public void GestioneFileSuGoogleDrive(Context context, String Operazione, String NomeFile, String Scrittura,
-                                          boolean EliminaOrigine) {
+                                          boolean EliminaOrigine, Activity act) {
         this.Scrittura = Scrittura;
         this.EliminaOrigine = EliminaOrigine;
+        this.Chiamante = act;
 
         if (Scrittura.equals("SCRITTURA")) {
             if (VariabiliStaticheGoogleDrive.getInstance().getFileDiOrigine().isEmpty()) {
@@ -114,10 +117,14 @@ public class GestioneGoogleDrive {
                                     } else {
                                         switch(Scrittura) {
                                             case "ELIMINA":
+                                                VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                                                 staLeggendo = false;
+                                                Chiamante.finish();
                                                 break;
                                             case "LETTURA":
+                                                VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                                                 staLeggendo = false;
+                                                Chiamante.finish();
                                                 break;
                                             case "SCRITTURA":
                                                 CreaFolder(context, NomeFile);
@@ -135,10 +142,14 @@ public class GestioneGoogleDrive {
                     } else {
                         switch(Scrittura) {
                             case "ELIMINA":
+                                VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                                 staLeggendo = false;
+                                Chiamante.finish();
                                 break;
                             case "LETTURA":
+                                VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                                 staLeggendo = false;
+                                Chiamante.finish();
                                 break;
                             case "SCRITTURA":
                                 CreaFolder(context, NomeFile);
@@ -255,6 +266,7 @@ public class GestioneGoogleDrive {
                                     VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                                     VariabiliStaticheGoogleDrive.getInstance().getAct().finish();
                                     staLeggendo = false;
+                                    Chiamante.finish();
                                 } else {
                                     if (handler != null) {
                                         handler.postDelayed(this, 100);
@@ -267,6 +279,7 @@ public class GestioneGoogleDrive {
                         VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                         VariabiliStaticheGoogleDrive.getInstance().getAct().finish();
                         staLeggendo = false;
+                        Chiamante.finish();
                     }
                 } else {
                     if (handler != null) {
@@ -333,6 +346,7 @@ public class GestioneGoogleDrive {
                         VariabiliStaticheGoogleDrive.getInstance().setStaCheckandoFile(false);
                         VariabiliStaticheGoogleDrive.getInstance().getAct().finish();
                         staLeggendo = false;
+                        Chiamante.finish();
                     }
                 } else {
                     if (handler != null) {

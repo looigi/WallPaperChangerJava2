@@ -118,12 +118,14 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
         CheckBox chkFatto = view.findViewById(R.id.chkFatta);
         // chkFatto.setEnabled(false);
         String NomeFileFatto = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt";
+                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                NomeSquadra + ".txt";
         Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte");
         if (Files.getInstance().EsisteFile(NomeFileFatto)) {
             String Contenuto = Files.getInstance().LeggeFile(
-                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
-                    NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt");
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                            Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
+                    NomeSquadra + ".txt");
             boolean Fatta = false;
             if (!Contenuto.isEmpty()) {
                 String c = Contenuto.substring(i, i + 1);

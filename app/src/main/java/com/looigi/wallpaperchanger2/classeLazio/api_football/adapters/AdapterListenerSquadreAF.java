@@ -61,12 +61,14 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
 
         CheckBox chkFatto = view.findViewById(R.id.chkFatto);
         String NomeFileFatto = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
-                NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt";
+                Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
+                NomeSquadra + ".txt";
         Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte");
         if (Files.getInstance().EsisteFile(NomeFileFatto)) {
             String Contenuto = Files.getInstance().LeggeFile(
-                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/",
-                            NomeSquadra + "_" + Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + ".txt"
+                    VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
+                            Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
+                            NomeSquadra + ".txt"
             );
             if (Contenuto.contains("N")) {
                 chkFatto.setChecked(false);

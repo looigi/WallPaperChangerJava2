@@ -271,12 +271,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             // Squadra = Squadra.replace("AC ", "").replace("AS ", "")
             //         .replace("Ac ", "").replace("As ", "");
             int idSquadra = -1;
-            for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
-                String Confronto = s.getSquadra(); // .replace("AC ", "").replace("AS ", "")
-                        // .replace("Ac ", "").replace("As ", "");
-                if (Confronto.equals(Squadra)) {
-                    idSquadra = s.getIdSquadra();
-                    break;
+            if (VariabiliStaticheLazio.getInstance().getSquadre() != null) {
+                for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                    String Confronto = s.getSquadra(); // .replace("AC ", "").replace("AS ", "")
+                    // .replace("Ac ", "").replace("As ", "");
+                    if (Confronto.equals(Squadra)) {
+                        idSquadra = s.getIdSquadra();
+                        break;
+                    }
                 }
             }
             if (idSquadra == -1) {
@@ -830,12 +832,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             // Squadra = Squadra.replace("AC ", "").replace("AS ", "")
             //         .replace("Ac ", "").replace("As ", "");
             int idSquadra = -1;
-            for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
-                String Confronto = s.getSquadra(); // .replace("AC ", "").replace("AS ", "")
-                // .replace("Ac ", "").replace("As ", "");
-                if (Confronto.equals(Squadra)) {
-                    idSquadra = s.getIdSquadra();
-                    break;
+            if (VariabiliStaticheLazio.getInstance().getSquadre() != null) {
+                for (StrutturaSquadre s : VariabiliStaticheLazio.getInstance().getSquadre()) {
+                    String Confronto = s.getSquadra(); // .replace("AC ", "").replace("AS ", "")
+                    // .replace("Ac ", "").replace("As ", "");
+                    if (Confronto.equals(Squadra)) {
+                        idSquadra = s.getIdSquadra();
+                        break;
+                    }
                 }
             }
             if (idSquadra == -1) {
@@ -995,8 +999,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         int idCasa = datiPartita.teams.home.id;
         int idFuori = datiPartita.teams.away.id;
 
-        int goalCasa = datiPartita.score.fulltime.home;
-        int goalFuori = datiPartita.score.fulltime.away;
+        int goalCasa = 0;
+        if (datiPartita.score != null && datiPartita.score.fulltime != null && datiPartita.score.fulltime.home != null) {
+            goalCasa = datiPartita.score.fulltime.home;
+        }
+        int goalFuori = 0;
+        if (datiPartita.score != null && datiPartita.score.fulltime != null && datiPartita.score.fulltime.away != null) {
+            goalFuori = datiPartita.score.fulltime.away;
+        }
 
         String Localita = datiPartita.fixture.venue.name + " (" + datiPartita.fixture.venue.city + ")";
         if (Localita == null) { Localita = ""; }
@@ -1625,7 +1635,31 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     private void fRitornaGiocatoriPS(String result) {
         boolean ritorno = ControllaRitorno("Ritorno giocatori ps", result);
         if (!ritorno) {
-            // UtilitiesGlobali.getInstance().ApreToast(context, result);
+            if (DovePerSalvataggioGiocatori == 0) {
+                VariabiliStaticheApiFootball.getInstance().setGiocatoriCasaPS(null);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                        ws.RitornaGiocatoriPerSalvataggio(1);
+                    }
+                }, 500);
+            } else {
+                VariabiliStaticheApiFootball.getInstance().setGiocatoriFuoriPS(null);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FixtureData datiPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
+                                VariabiliStaticheApiFootball.getInstance().getIdPartitaDaSalvare()
+                        );
+
+                        ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                        ws.SalvaDettaglio();
+                    }
+                }, 500);
+            }
         } else {
             List<StrutturaGiocatori> lista = new ArrayList<>();
             String[] righe = result.split("§", -1);
@@ -1684,8 +1718,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             String NomeFile = "Stati.txt";
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
                 Files.getInstance().EliminaFileUnico(PathFile + "/" + NomeFile);
+                Files.getInstance().ScriveFile(PathFile, NomeFile, result);
             }
-            Files.getInstance().ScriveFile(PathFile, NomeFile, result);
 
             List<StrutturaStati> lista = new ArrayList<>();
             String[] righe = result.split("§", -1);
