@@ -24,6 +24,7 @@
         <Spinner
             android:id="@+id/spnTipologie"
             android:layout_width="0dp"
+            android:theme="@style/spinnerTheme"
             android:layout_weight="5"
             android:layout_height="wrap_content" />
 

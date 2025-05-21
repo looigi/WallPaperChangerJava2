@@ -70,6 +70,8 @@ public class VariabiliStaticheWallpaper {
     private boolean onOff = true;
     private boolean home = true;
     private boolean lock = false;
+    private boolean perData = false;
+    private int giorniDifferenza = 7;
     private boolean resize = true;
     private boolean effetti = false;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
@@ -104,6 +106,22 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public int getGiorniDifferenza() {
+        return giorniDifferenza;
+    }
+
+    public void setGiorniDifferenza(int giorniDifferenza) {
+        this.giorniDifferenza = giorniDifferenza;
+    }
+
+    public boolean isPerData() {
+        return perData;
+    }
+
+    public void setPerData(boolean perData) {
+        this.perData = perData;
     }
 
     public String getFiltro() {

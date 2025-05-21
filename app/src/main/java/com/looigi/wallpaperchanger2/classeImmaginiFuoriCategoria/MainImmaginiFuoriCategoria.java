@@ -97,8 +97,12 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
         Spinner spnAndOr = findViewById(R.id.spnAndOr);
         String[] l = { "And", "Or" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                l
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnAndOr.setAdapter(adapter);
         spnAndOr.setPrompt(VariabiliImmaginiFuoriCategoria.getInstance().getAndOr());

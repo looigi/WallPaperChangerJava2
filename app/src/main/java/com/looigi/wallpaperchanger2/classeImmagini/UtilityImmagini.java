@@ -270,9 +270,13 @@ public class UtilityImmagini {
             c++;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                l
+        );
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setAdapter(adapter);
 
         if (!VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale().isEmpty()) {
@@ -298,9 +302,13 @@ public class UtilityImmagini {
             c++;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                l
+        );
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
     }
 

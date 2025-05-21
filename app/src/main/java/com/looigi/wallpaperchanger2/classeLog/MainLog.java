@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.io.BufferedReader;
@@ -75,13 +76,20 @@ public class MainLog extends Activity {
         });
 
         List<String> l = new ArrayList<>();
+
         for (File f : VariabiliStaticheLog.getInstance().getListaFiles()) {
             String nome = f.getName();
             l.add(nome);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] ll = l.toArray(new String[0]);
+
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                ll
+        );
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFile.setAdapter(adapter);
 
         EditText edtRighe = act.findViewById(R.id.edtRighe);

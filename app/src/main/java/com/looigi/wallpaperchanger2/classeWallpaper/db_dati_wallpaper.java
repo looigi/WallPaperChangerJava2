@@ -82,7 +82,8 @@ public class db_dati_wallpaper {
                         + "Impostazioni "
                         + " (UltimaImmagineNome VARCHAR, UltimaImmaginePath VARCHAR, SecondiAlcambio VARCHAR, PathImmagini VARCHAR, Offline VARCHAR, " +
                         "Blur VARCHAR, Resize VARCHAR, ScriveTesto VARCHAR, OnOff VARCHAR, Home VARCHAR, Lock VARCHAR, " +
-                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR, Effetti VARCHAR, Filtro VARCHAR, CartellaRemota VARCHAR);";
+                        "Detector VARCHAR, Espansa VARCHAR, SoloVolto VARCHAR, Effetti VARCHAR, Filtro VARCHAR, CartellaRemota VARCHAR, " +
+                        "PerData VARCHAR, GiorniDifferenza VARCHAR);";
                 myDB.execSQL(sql);
 
                 sql = "CREATE TABLE IF NOT EXISTS "
@@ -290,7 +291,7 @@ public class db_dati_wallpaper {
                         + " Impostazioni"
                         + " (UltimaImmagineNome, UltimaImmaginePath, SecondiAlCambio, PathImmagini, Offline, Blur, " +
                             "Resize, ScriveTesto, OnOff, Home, Lock, Detector, Espansa, SoloVolto, Effetti, Filtro, " +
-                            "CartellaRemota)"
+                            "CartellaRemota, PerData, GiorniDifferenza)"
                         + " VALUES ("
                         + "'" + (Imm) + "', "
                         + "'" + (PathImm) + "', "
@@ -308,7 +309,9 @@ public class db_dati_wallpaper {
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isSoloVolti() ? "S" : "N") + "', "
                         + "'" + (VariabiliStaticheWallpaper.getInstance().isEffetti() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheWallpaper.getInstance().getFiltro() + "', "
-                        + "'" + CartellaRemota + "' "
+                        + "'" + CartellaRemota + "', "
+                        + "'" + (VariabiliStaticheWallpaper.getInstance().isPerData() ? "S" : "N") + "', "
+                        + "'" + VariabiliStaticheWallpaper.getInstance().getGiorniDifferenza() + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -356,6 +359,8 @@ public class db_dati_wallpaper {
                     VariabiliStaticheWallpaper.getInstance().setSoloVolti(c.getString(13).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setEffetti(c.getString(14).equals("S"));
                     VariabiliStaticheWallpaper.getInstance().setFiltro(c.getString(15));
+                    VariabiliStaticheWallpaper.getInstance().setPerData(c.getString(17).equals("S"));
+                    VariabiliStaticheWallpaper.getInstance().setGiorniDifferenza(Integer.parseInt(c.getString(18)));
 
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ON/OFF: " + VariabiliStaticheWallpaper.getInstance().isOnOff());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Secondi al cambio: " + VariabiliStaticheWallpaper.getInstance().getMinutiAttesa());
@@ -371,6 +376,8 @@ public class db_dati_wallpaper {
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Solo Volti: " + VariabiliStaticheWallpaper.getInstance().isSoloVolti());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Effetti: " + VariabiliStaticheWallpaper.getInstance().isEffetti());
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Filtro: " + VariabiliStaticheWallpaper.getInstance().getFiltro());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Per Data: " + VariabiliStaticheWallpaper.getInstance().isPerData());
+                    UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Giorni Differenza: " + VariabiliStaticheWallpaper.getInstance().getGiorniDifferenza());
 
                     c.close();
 

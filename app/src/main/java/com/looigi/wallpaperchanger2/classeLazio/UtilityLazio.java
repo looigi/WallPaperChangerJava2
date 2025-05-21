@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -157,9 +158,13 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().getSpnFuori().setPrompt("");
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, righePerSpinner);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                        context,
+                        righePerSpinner
+                );
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 VariabiliStaticheLazio.getInstance().getSpnCasa().setAdapter(adapter);
                 VariabiliStaticheLazio.getInstance().getSpnFuori().setAdapter(adapter);
 

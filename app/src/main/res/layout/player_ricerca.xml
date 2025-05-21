@@ -24,6 +24,7 @@
             android:id="@+id/edtRicercaBrano"
             android:autofillHints="Testo da ricercare"
             android:layout_width="0dp"
+            android:textColor="@color/Blue"
             android:inputType="text"
             android:layout_weight="3"
             android:layout_height="50dp" />

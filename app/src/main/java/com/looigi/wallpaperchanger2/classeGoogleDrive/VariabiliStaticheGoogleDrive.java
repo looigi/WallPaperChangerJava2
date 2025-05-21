@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeGoogleDrive;
 
 import android.app.Activity;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.api.services.drive.Drive;
 
@@ -26,10 +27,12 @@ public class VariabiliStaticheGoogleDrive {
     public static String wallpaperFolderID = "1arfyRhdmLkyUYCFpsU5DNXICR2IuyNC1";
     public static String apiFootballID = "1bCHQ0iaKa_T70AnpzafPflqBhhFt0E03";
     public static String nuovaVersioneID = "1asjix2w7NKaJLJpyTXIHGu-nW4wybFyO";
+    public static String nomeFileAPK = "Wallpaper Changer II.apk";
 
     private Activity act;
     private GoogleDriveHelper driveHelper;
     private GifImageView imgAttesa;
+    private TextView txtDettaglio;
     private boolean Connesso = false;
     private String ErroreConnessione = "";
     private ListView lstFolders;
@@ -43,6 +46,14 @@ public class VariabiliStaticheGoogleDrive {
     private boolean staCheckandoFile = false;
     private boolean staScaricandoFile = false;
     private String fileDiOrigine;
+
+    public TextView getTxtDettaglio() {
+        return txtDettaglio;
+    }
+
+    public void setTxtDettaglio(TextView txtDettaglio) {
+        this.txtDettaglio = txtDettaglio;
+    }
 
     public String getFileDiOrigine() {
         return fileDiOrigine;

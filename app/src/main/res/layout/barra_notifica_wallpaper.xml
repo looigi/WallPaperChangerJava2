@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="65dp"
     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
 
     <ImageView
@@ -11,52 +11,94 @@
         android:scaleType="centerCrop"
         android:src="@drawable/logo" />
 
-    <TextView
+    <!-- <TextView
         android:id="@+id/txtTitoloNotificaSfondo"
         android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
+        android:layout_marginStart="56dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="3dp"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="16sp" />
+        android:textSize="12sp" /> -->
 
     <TextView
         android:id="@+id/txtTitoloNotifica"
+        android:layout_marginStart="52dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
+        android:layout_marginTop="3dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:singleLine="true"
+        android:shadowColor="@color/Bianco"
+        android:shadowDx="1"
+        android:shadowDy="1"
         android:text="@string/app_name"
-        android:textColor="#00AA00"
+        android:textColor="@color/Rosso"
         android:textStyle="bold"
-        android:textSize="16sp" />
+        android:textSize="12sp" />
 
     <RelativeLayout
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="37dp">
+        android:paddingStart="3dp"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/txtDettaglio"
-            android:layout_alignParentBottom="true"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:layout_marginStart="1dp"
-            android:layout_marginBottom="8dp"
-            android:text="Wallpaper Changer"
-            android:textColor="#AA0000" />
+            android:weightSum="10"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtDettaglio"
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:shadowColor="@color/Bianco"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:textSize="12sp"
+                android:text="Wallpaper Changer"
+                android:textColor="@color/Rosso" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgProssima"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/eye" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgRefresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icona_refresh" />
+            </LinearLayout>
+        </LinearLayout>
 
         <!-- <ImageView
             android:layout_alignParentTop="true"
@@ -92,31 +134,10 @@
     <ImageView
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
-        android:paddingStart="2dp"
+        android:layout_marginTop="-7dp"
         android:id="@+id/imgOnOff"
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:src="@drawable/on" />
-
-    <ImageView
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:paddingEnd="2dp"
-        android:id="@+id/imgProssima"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/eye" />
-
-    <ImageView
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp"
-        android:paddingEnd="2dp"
-        android:id="@+id/imgRefresh"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icona_refresh" />
 
 </RelativeLayout>

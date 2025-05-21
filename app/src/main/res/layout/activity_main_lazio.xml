@@ -30,6 +30,7 @@
             <Spinner
                 android:id="@+id/spnAnni"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="7"
                 android:layout_height="50dp" />
 
@@ -92,6 +93,7 @@
             <Spinner
                 android:id="@+id/spnCompetizione"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_height="50dp"
                 android:layout_weight="7" />
 
@@ -650,6 +652,7 @@
                     <Spinner
                         android:id="@+id/spnSquadreGioc"
                         android:layout_width="0dp"
+                        android:theme="@style/spinnerTheme"
                         android:layout_weight="3"
                         android:layout_height="50dp" />
                 </LinearLayout>
@@ -698,6 +701,7 @@
                     <Spinner
                         android:id="@+id/spnSquadreAll"
                         android:layout_width="0dp"
+                        android:theme="@style/spinnerTheme"
                         android:layout_weight="3"
                         android:layout_height="50dp" />
                 </LinearLayout>

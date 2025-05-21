@@ -1289,9 +1289,13 @@ public class InizializzaMascheraDetector {
         Cartell[3]="180";
         Cartell[4]="270";
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
+                Cartell
+        ); */
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
                 Cartell
         );
         Spinner spinner=(Spinner) act.findViewById(R.id.spnOrient);

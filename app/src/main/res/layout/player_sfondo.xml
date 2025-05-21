@@ -87,10 +87,9 @@
                                 android:inputType="number"
                                 android:id="@+id/edtNumeroImmagine"
                                 android:layout_width="0dp"
+                                android:textColor="@color/Blue"
                                 android:layout_weight="2"
-                                android:layout_height="wrap_content">
-
-                            </EditText>
+                                android:layout_height="wrap_content" />
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -207,6 +206,7 @@
                         <EditText
                             android:id="@+id/edtTempoCambio"
                             android:layout_width="0dp"
+                            android:textColor="@color/Blue"
                             android:layout_weight="2"
                             android:inputType="number"
                             android:layout_height="wrap_content" />

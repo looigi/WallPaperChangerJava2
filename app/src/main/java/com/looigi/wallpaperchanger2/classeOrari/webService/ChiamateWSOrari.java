@@ -466,9 +466,13 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                             i++;
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                (context, android.R.layout.simple_spinner_item, lista);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        //         (context, android.R.layout.simple_spinner_item, lista);
+                        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                                context,
+                                lista
+                        );
                         VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                         if (sdg == null || !sdg.isGiornoInserito()) {

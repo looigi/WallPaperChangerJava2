@@ -23,12 +23,14 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:text="Progetto"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnProgetto"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="5"
                 android:layout_height="wrap_content" />
 
@@ -75,12 +77,14 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:text="Modulo"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnModulo"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="5"
                 android:layout_height="wrap_content" />
 
@@ -127,12 +131,14 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
+                android:textColor="@color/Blue"
                 android:text="Sezione"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnSezione"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="5"
                 android:layout_height="wrap_content" />
 
@@ -359,6 +365,7 @@
         <EditText
             android:id="@+id/edtTipologia"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:maxLines="5"
             android:layout_height="wrap_content"/>
 
@@ -372,11 +379,13 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:text="Stato"
+                android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spnStato"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="7"
                 android:layout_height="wrap_content" />
 
@@ -514,7 +523,5 @@
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
-        android:layout_height="100dp">
-
-    </pl.droidsonroids.gif.GifImageView>
+        android:layout_height="100dp" />
 </RelativeLayout>

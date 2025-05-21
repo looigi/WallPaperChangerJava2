@@ -2,6 +2,9 @@ package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +24,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -545,9 +549,14 @@ public class VariabiliStaticheModificheCodice {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
         }
 
-        adapterProgetti = new ArrayAdapter<String>(
+        /* adapterProgetti = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
+                RitornaStringaProgetti(listaProgetti)
+        ); */
+
+        ArrayAdapter<String> adapterProgetti = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
                 RitornaStringaProgetti(listaProgetti)
         );
         spnProgetto.setAdapter(adapterProgetti);
@@ -610,9 +619,13 @@ public class VariabiliStaticheModificheCodice {
     private void RicaricaStati(Context context, db_dati_modifiche_codice db) {
         listaStati = db.RitornaStati();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
+                RitornaStringaStati(listaStati)
+        ); */
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
                 RitornaStringaStati(listaStati)
         );
         spnStati.setAdapter(adapter);

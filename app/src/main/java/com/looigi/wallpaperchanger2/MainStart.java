@@ -77,10 +77,10 @@ public class MainStart extends Activity {
         );
 
         if (!VariabiliStaticheStart.getInstance().isGiaPartito()) {
-            UtilitiesGlobali.getInstance().InvioMail(context,
-                    "looigi@gmail.com",
-                    "Wallpaper Changer II",
-                    "Start Activity Principale.\nGià partito: " + VariabiliStaticheStart.getInstance().isGiaPartito());
+            // UtilitiesGlobali.getInstance().InvioMail(context,
+            //         "looigi@gmail.com",
+            //         "Wallpaper Changer II",
+            //         "Start Activity Principale.\nGià partito: " + VariabiliStaticheStart.getInstance().isGiaPartito());
 
             VariabiliStaticheStart.getInstance().setPlayerAperto(false);
 

@@ -329,10 +329,15 @@ public class UtilityVideo {
                 l.add(s);
             }
         }
+        String[] ll = l.toArray(new String[0]);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                ll
+        );
         VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter);
     }
 
@@ -345,10 +350,15 @@ public class UtilityVideo {
                 l.add(s);
             }
         }
+        String[] ll = l.toArray(new String[0]);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                ll
+        );
         VariabiliStaticheVideo.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
     }
 }

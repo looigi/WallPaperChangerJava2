@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="45dp"
     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
 
     <!-- <ImageView
@@ -47,17 +47,21 @@
         android:gravity="center_horizontal|center_vertical"
         android:textColor="#AA0000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" />
 
-    </TextView>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:orientation="horizontal"
         android:layout_below="@+id/txtDettaglio"
-        android:weightSum="3"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:orientation="horizontal">
         <!-- <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -82,8 +86,8 @@
 
                 <ImageView
                     android:id="@+id/imgPhoto"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/photo" />
             </LinearLayout>
 
@@ -95,8 +99,8 @@
 
                 <ImageView
                     android:id="@+id/imgVideo"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/video" />
             </LinearLayout>
 
@@ -108,11 +112,11 @@
 
                 <ImageView
                     android:id="@+id/imgAudio"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/audio" />
             </LinearLayout>
-
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -85,11 +85,11 @@ public class AdapterListenerPartiteAF extends BaseAdapter {
         ImageView imgLogoCasa = view.findViewById(R.id.imgLogoCasa);
         ImageView imgLogoFuori = view.findViewById(R.id.imgLogoFuori);
 
-        DownloadImmagineOrari dC = new DownloadImmagineOrari();
+        /* DownloadImmagineOrari dC = new DownloadImmagineOrari();
         dC.EsegueChiamata(context, imgLogoCasa, LogoCasa);
 
         DownloadImmagineOrari dF = new DownloadImmagineOrari();
-        dF.EsegueChiamata(context, imgLogoFuori, LogoFuori);
+        dF.EsegueChiamata(context, imgLogoFuori, LogoFuori); */
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

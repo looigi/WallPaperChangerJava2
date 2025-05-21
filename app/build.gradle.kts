@@ -52,6 +52,15 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/*")
     }
+
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.forEach { output ->
+            // val apkName = "MyApp-${variant.versionName}-${variant.name}.apk"
+            val apkName = "Wallpaper Changer II.apk"
+            (output as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = apkName
+        }
+    }
 }
 
 dependencies {

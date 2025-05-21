@@ -84,14 +84,14 @@ public class GestioneNotificheWP {
                         contentView.setImageViewBitmap(R.id.imgCopertina, bmImg);
 
                         contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
-                        contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
+                        // contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
                     }
                 } else {
                     Bitmap imm = BitmapFactory.decodeResource(context.getResources(), R.drawable.eye);
                     contentView.setImageViewBitmap(R.id.imgCopertina, imm);
 
                     contentView.setTextViewText(R.id.txtTitoloNotifica, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
-                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
+                    // contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, VariabiliStaticheWallpaper.getInstance().getUltimaImmagine().getImmagine());
                 }
             } else {
                 if (contentView != null) {
@@ -99,7 +99,7 @@ public class GestioneNotificheWP {
                     contentView.setImageViewBitmap(R.id.imgCopertina, imm);
 
                     contentView.setTextViewText(R.id.txtTitoloNotifica, "");
-                    contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
+                    // contentView.setTextViewText(R.id.txtTitoloNotificaSfondo, "");
                 }
             }
 

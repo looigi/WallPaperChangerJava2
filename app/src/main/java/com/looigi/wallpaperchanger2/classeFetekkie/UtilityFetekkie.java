@@ -262,9 +262,13 @@ public class UtilityFetekkie {
             c++;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                l
+        );
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setAdapter(adapter);
 
         if (!VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale().isEmpty()) {
@@ -290,9 +294,13 @@ public class UtilityFetekkie {
             c++;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, l);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                l
+        );
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
     }
 

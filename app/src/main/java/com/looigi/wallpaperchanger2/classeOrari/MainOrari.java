@@ -517,9 +517,13 @@ public class MainOrari extends Activity {
                 VariabiliStaticheOrari.getInstance().getSpnValori().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheOrari.getInstance().getEdtValori().setVisibility(LinearLayout.GONE);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, listaTipiLavoro);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                //         (context, android.R.layout.simple_spinner_item, listaTipiLavoro);
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                        context,
+                        listaTipiLavoro
+                );
                 VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                 StrutturaDatiGiornata sdg = VariabiliStaticheOrari.getInstance().getDatiGiornata();
@@ -628,9 +632,13 @@ public class MainOrari extends Activity {
                     i++;
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, lista);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                //         (context, android.R.layout.simple_spinner_item, lista);
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                        context,
+                        lista
+                );
                 VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                 if (sdg == null || !sdg.isGiornoInserito()) {
@@ -751,9 +759,13 @@ public class MainOrari extends Activity {
                                         for (StrutturaTempo st2 : VariabiliStaticheOrari.getInstance().getStrutturaDati().getTempi()) {
                                             lista[i] = st2.getTempo();
                                         }
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                                (context, android.R.layout.simple_spinner_item, lista);
-                                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                                        //         (context, android.R.layout.simple_spinner_item, lista);
+                                        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                                                context,
+                                                lista
+                                        );
                                         VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                                         ChiamateWSOrari c = new ChiamateWSOrari(context);
@@ -794,9 +806,13 @@ public class MainOrari extends Activity {
                     i++;
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, lista);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                //         (context, android.R.layout.simple_spinner_item, lista);
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                        context,
+                        lista
+                );
                 VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                 if (sdg == null || !sdg.isGiornoInserito()) {
@@ -852,9 +868,13 @@ public class MainOrari extends Activity {
                     i++;
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, lista);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                //         (context, android.R.layout.simple_spinner_item, lista);
+                // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                        context,
+                        lista
+                );
                 VariabiliStaticheOrari.getInstance().getSpnValori().setAdapter(adapter);
 
                 if (sdg == null || !sdg.isGiornoInserito()) {

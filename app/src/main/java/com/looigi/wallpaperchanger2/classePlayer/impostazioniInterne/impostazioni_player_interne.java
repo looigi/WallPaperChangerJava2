@@ -1176,9 +1176,13 @@ public class impostazioni_player_interne {
         String[] lista = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
         String Stelle = Integer.toString(VariabiliStatichePlayer.getInstance().getStelleDaRicercare());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, lista);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, lista);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                lista
+        );
         spinner.setAdapter(adapter);
 
         if (!Stelle.isEmpty()) {
@@ -1194,9 +1198,11 @@ public class impostazioni_player_interne {
 
         List<String> lista2 = new ArrayList<>();
         lista2.add(StringaNessuno);
+
         for (StrutturaSalvataggi l : lista) {
             lista2.add(l.getSalvataggio());
         };
+        String[] ll = lista2.toArray(new String[0]);
 
         String id = db.RitornaSalvataggioDefault();
         String salvataggioDefault = "";
@@ -1207,9 +1213,13 @@ public class impostazioni_player_interne {
             }
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (context, android.R.layout.simple_spinner_item, lista2);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        //         (context, android.R.layout.simple_spinner_item, lista2);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
+                ll
+        );
         adapterSalvataggi = adapter;
         spinner.setAdapter(adapter);
 

@@ -96,7 +96,17 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     public void TornaProssimaImmagine() {
-        String Urletto="TornaProssimaImmagine?Filtro=" + VariabiliStaticheWallpaper.getInstance().getFiltro();
+        String perData = "";
+
+        if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0) {
+            if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
+                perData = String.valueOf(VariabiliStaticheWallpaper.getInstance().getGiorniDifferenza()).trim();
+            }
+        }
+
+        String Urletto="TornaProssimaImmagine?" +
+                "Filtro=" + VariabiliStaticheWallpaper.getInstance().getFiltro() + "&" +
+                "PerData=" + perData;
         TipoOperazione = "TornaProssimaImmagine";
 
         Esegue(

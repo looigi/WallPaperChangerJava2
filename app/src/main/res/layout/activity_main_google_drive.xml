@@ -37,7 +37,16 @@
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
-        android:layout_height="100dp">
+        android:layout_height="100dp" />
 
-    </pl.droidsonroids.gif.GifImageView>
+    <TextView
+        android:id="@+id/txtDettaglio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_below="@id/imgCaricamentoGoogleDrive"
+        android:layout_centerInParent="true"
+        android:textColor="@color/Verde_Scuro"
+        android:shadowColor="@color/black"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp" />"
 </RelativeLayout>

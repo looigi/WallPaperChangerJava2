@@ -89,7 +89,7 @@ public class GestioneNotificheDetector {
                     .setContent(contentView)
                     .build();
 
-            notifica.bigContentView = contentView;
+            // notifica.bigContentView = contentView;
 
             manager.notify(VariabiliStaticheDetector.NOTIFICATION_CHANNEL_ID, notifica);
 

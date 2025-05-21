@@ -1,12 +1,15 @@
 package com.looigi.wallpaperchanger2.classeLazio.webService;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
@@ -553,9 +556,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             VariabiliStaticheLazio.getInstance().setRighePerSquadre(righePerSpinner);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+            //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    righePerSpinner
+            );
+            // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             VariabiliStaticheLazio.getInstance().getSpnSquadreGioc().setAdapter(adapter);
             VariabiliStaticheLazio.getInstance().getSpnSquadreAll().setAdapter(adapter);
 
@@ -1753,9 +1760,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 i++;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+            //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    righePerSpinner
+            );
             VariabiliStaticheLazio.getInstance().getSpnStati().setAdapter(adapter);
             VariabiliStaticheLazio.getInstance().setAdapterStati(adapter);
 
@@ -1813,9 +1824,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 i++;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+            //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    righePerSpinner
+            );
             VariabiliStaticheLazio.getInstance().getSpnRuolo().setAdapter(adapter);
             VariabiliStaticheLazio.getInstance().setAdapterRuoli(adapter);
 
@@ -1873,9 +1888,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 i++;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+            //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    righePerSpinner
+            );
             VariabiliStaticheLazio.getInstance().getSpnFonti().setAdapter(adapter);
             VariabiliStaticheLazio.getInstance().setAdapterFonti(adapter);
 
@@ -2014,9 +2033,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             VariabiliStaticheLazio.getInstance().setRighePerSquadre(righePerSpinner);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (context, android.R.layout.simple_spinner_item, righePerSpinner);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>
+            //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    righePerSpinner
+            );
             VariabiliStaticheLazio.getInstance().getSpnSquadreGioc().setAdapter(adapter);
             VariabiliStaticheLazio.getInstance().getSpnSquadreAll().setAdapter(adapter);
 
@@ -2113,12 +2136,16 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             }
             VariabiliStaticheLazio.getInstance().setCompetizioni(lista);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+            /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     context,
                     R.layout.spinner_text,
                     CompetizioniPerSpinner
-            );
+            ); */
 
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
+                    CompetizioniPerSpinner
+            );
             VariabiliStaticheLazio.getInstance().getSpnCompetizioni().setAdapter(adapter);
 
             VariabiliStaticheLazio.getInstance().setIdTipologia(1);
@@ -2220,9 +2247,14 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             VariabiliStaticheLazio.getInstance().setAnni(anni);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+            /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     context,
                     R.layout.spinner_text,
+                    AnniPerSpinner
+            ); */
+
+            ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                    context,
                     AnniPerSpinner
             );
             VariabiliStaticheLazio.getInstance().getSpnAnni().setAdapter(adapter);

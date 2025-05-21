@@ -510,9 +510,15 @@ public class MainModificheCodice extends Activity {
         }); */
 
         VariabiliStaticheModificheCodice.getInstance().setSpnStati(findViewById(R.id.spnStato));
-        ArrayAdapter<String> adapterS = new ArrayAdapter<String>(
+        /* ArrayAdapter<String> adapterS = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
+                VariabiliStaticheModificheCodice.getInstance().RitornaStringaStati(
+                        VariabiliStaticheModificheCodice.getInstance().getListaStati()
+                )
+        ); */
+        ArrayAdapter<String> adapterS = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                context,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaStati(
                         VariabiliStaticheModificheCodice.getInstance().getListaStati()
                 )

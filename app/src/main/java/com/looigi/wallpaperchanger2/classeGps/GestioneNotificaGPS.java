@@ -149,7 +149,7 @@ public class GestioneNotificaGPS {
                     .setContent(contentView)
                     .build();
 
-            notifica.bigContentView = contentView;
+            // notifica.bigContentView = contentView;
 
             manager.notify(VariabiliStaticheGPS.NOTIFICATION_CHANNEL_ID, notifica);
 

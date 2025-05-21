@@ -377,6 +377,7 @@
                 <EditText
                     android:id="@+id/edtTestoRicerca"
                     android:layout_width="0dp"
+                    android:textColor="@color/Blue"
                     android:layout_weight="4"
                     android:layout_height="wrap_content" />
 
@@ -456,6 +457,7 @@
             <EditText
                 android:id="@+id/edtPortata"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -541,6 +543,7 @@
             <EditText
                 android:id="@+id/edtMezzo"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -560,6 +563,7 @@
             <EditText
                 android:id="@+id/edtMezzoDettaglio"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -742,6 +746,7 @@
             <EditText
                 android:id="@+id/edtLavoro"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:autofillHints="Lavoro" />
@@ -761,6 +766,7 @@
 
             <EditText
                 android:id="@+id/edtIndirizzo"
+                android:textColor="@color/Blue"
                 android:layout_width="0dp"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
@@ -782,6 +788,7 @@
             <EditText
                 android:id="@+id/edtDataInizio"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:autofillHints="Data Inizio" />
@@ -802,6 +809,7 @@
             <EditText
                 android:id="@+id/edtDataFine"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:autofillHints="Data Fine" />
@@ -824,6 +832,7 @@
                 android:id="@+id/edtLatLng"
                 android:enabled="false"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="3"
                 android:lines="1"
                 android:layout_height="wrap_content"
@@ -1115,6 +1124,7 @@
             <EditText
                 android:id="@+id/edtPasticca"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="4"
                 android:layout_height="wrap_content" />
         </LinearLayout>

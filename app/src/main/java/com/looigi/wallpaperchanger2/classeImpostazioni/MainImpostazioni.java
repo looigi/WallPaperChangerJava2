@@ -562,9 +562,71 @@ public class MainImpostazioni extends Activity {
             }
         });
 
+        LinearLayout layGiorniDifferenza = (LinearLayout) act.findViewById(R.id.layGiorniDifferenza);
+        EditText edtGiorniDifferenza = (EditText) act.findViewById(R.id.edtGiorniDifferenza);
+        edtGiorniDifferenza.setText(Integer.toString(VariabiliStaticheWallpaper.getInstance().getGiorniDifferenza()));
+
+        ImageView imgSalvaGiorni = act.findViewById(R.id.imgSalvaGiorni);
+        imgSalvaGiorni.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setGiorniDifferenza(Integer.parseInt(edtGiorniDifferenza.getText().toString()));
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
+        /* edtGiorniDifferenza.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    {
+                        VariabiliStaticheWallpaper.getInstance().setGiorniDifferenza(Integer.parseInt(edtGiorniDifferenza.getText().toString()));
+
+                        db_dati_wallpaper db = new db_dati_wallpaper(context);
+                        db.ScriveImpostazioni();
+                        db.ChiudeDB();
+                    }
+                }
+            }
+        }); */
+
+        SwitchCompat switchPerData = (SwitchCompat) act.findViewById(R.id.switchPerData);
+        switchPerData.setChecked(VariabiliStaticheWallpaper.getInstance().isPerData());
+        if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
+            layGiorniDifferenza.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+        }
+        switchPerData.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VariabiliStaticheWallpaper.getInstance().setPerData(isChecked);
+                if (isChecked) {
+                    layGiorniDifferenza.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+                }
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
+            }
+        });
+
         EditText edtFiltro = act.findViewById(R.id.edtFiltro);
+        ImageView imgSalvaFiltro = act.findViewById(R.id.imgSalvaTestoRicerca);
+        imgSalvaFiltro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheWallpaper.getInstance().setFiltro(edtFiltro.getText().toString());
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+            }
+        });
+
         edtFiltro.setText(VariabiliStaticheWallpaper.getInstance().getFiltro().toString());
-        edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 VariabiliStaticheWallpaper.getInstance().setFiltro(edtFiltro.getText().toString());
@@ -572,7 +634,7 @@ public class MainImpostazioni extends Activity {
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
             }
-        });
+        }); */
 
         RadioButton swcImmagini = act.findViewById(R.id.optImmagini);
         RadioButton swcOffline = act.findViewById(R.id.optOffline);
@@ -605,10 +667,38 @@ public class MainImpostazioni extends Activity {
             layOffline.setVisibility(LinearLayout.VISIBLE);
         }
 
+        if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0) {
+            switchPerData.setVisibility(LinearLayout.VISIBLE);
+            if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
+                VariabiliStaticheWallpaper.getInstance().setPerData(false);
+                switchPerData.setChecked(false);
+                layGiorniDifferenza.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheWallpaper.getInstance().setPerData(false);
+                switchPerData.setChecked(false);
+                layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+            }
+        } else {
+            VariabiliStaticheWallpaper.getInstance().setPerData(false);
+            switchPerData.setChecked(false);
+            switchPerData.setVisibility(LinearLayout.GONE);
+            layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+        }
+
         swcOnline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(0);
                 layOffline.setVisibility(LinearLayout.GONE);
+                switchPerData.setVisibility(LinearLayout.VISIBLE);
+                if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
+                    VariabiliStaticheWallpaper.getInstance().setPerData(false);
+                    switchPerData.setChecked(false);
+                    layGiorniDifferenza.setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    VariabiliStaticheWallpaper.getInstance().setPerData(false);
+                    switchPerData.setChecked(false);
+                    layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+                }
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
@@ -617,9 +707,12 @@ public class MainImpostazioni extends Activity {
         swcOffline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(1);
+                switchPerData.setVisibility(LinearLayout.GONE);
+                layGiorniDifferenza.setVisibility(LinearLayout.GONE);
                 layOffline.setVisibility(LinearLayout.VISIBLE);
+
                 if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
-                        VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() > 0) {
+                        !VariabiliStaticheWallpaper.getInstance().getListaImmagini().isEmpty()) {
                     int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
                     VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini rilevate su disco: " + q);
                 } else {
@@ -635,6 +728,8 @@ public class MainImpostazioni extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(2);
                 layOffline.setVisibility(LinearLayout.GONE);
+                switchPerData.setVisibility(LinearLayout.GONE);
+                layGiorniDifferenza.setVisibility(LinearLayout.GONE);
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();

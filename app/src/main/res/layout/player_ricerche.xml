@@ -34,6 +34,7 @@
                 <Spinner
                     android:id="@+id/spnSalvataggi"
                     android:layout_width="0dp"
+                    android:theme="@style/spinnerTheme"
                     android:layout_weight="5"
                     android:layout_height="wrap_content" />
 
@@ -101,6 +102,7 @@
                     <Spinner
                         android:id="@+id/spnStelle"
                         android:layout_width="0dp"
+                        android:theme="@style/spinnerTheme"
                         android:layout_weight="1"
                         android:layout_height="wrap_content" />
 
@@ -152,6 +154,7 @@
                         android:id="@+id/edtRicercaTesto"
                         android:autofillHints="Testo da ricercare"
                         android:layout_width="0dp"
+                        android:textColor="@color/Blue"
                         android:inputType="text"
                         android:layout_weight="3"
                         android:layout_height="50dp" />
@@ -173,6 +176,7 @@
                         android:id="@+id/edtRicercaNonTesto"
                         android:layout_width="0dp"
                         android:autofillHints="Testo da escludere"
+                        android:textColor="@color/Blue"
                         android:inputType="text"
                         android:layout_weight="3"
                         android:layout_height="50dp" />

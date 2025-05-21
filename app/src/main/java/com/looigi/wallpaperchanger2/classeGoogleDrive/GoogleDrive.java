@@ -36,7 +36,9 @@ public class GoogleDrive extends Activity {
         cont.setVisibility(LinearLayout.GONE);
 
         VariabiliStaticheGoogleDrive.getInstance().setImgAttesa(findViewById(R.id.imgCaricamentoGoogleDrive));
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheGoogleDrive.getInstance().setTxtDettaglio(findViewById(R.id.txtDettaglio));
+
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
         VariabiliStaticheGoogleDrive.getInstance().setLstFolders(findViewById(R.id.lstFolders));
         VariabiliStaticheGoogleDrive.getInstance().setLstFiles(findViewById(R.id.lstFiles));
 
@@ -84,7 +86,7 @@ public class GoogleDrive extends Activity {
     private HandlerThread handlerThread;
 
     public void AttendeConnessione() {
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
         Conta = 0;
 
         handlerTimerAF = new Handler(Looper.getMainLooper());
@@ -94,7 +96,7 @@ public class GoogleDrive extends Activity {
                     @Override
                     public void run() {
                         if (VariabiliStaticheGoogleDrive.getInstance().isConnesso()) {
-                            UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
                             handlerTimerAF.removeCallbacksAndMessages(rTimerAF);
 
                             GestioneGoogleDrive g = new GestioneGoogleDrive();
@@ -115,28 +117,47 @@ public class GoogleDrive extends Activity {
                                     String pathDestinazione1 = context.getFilesDir() + "/GoogleDrive";
 
                                     Files.getInstance().CreaCartelle(pathDestinazione1);
-                                    if (Files.getInstance().EsisteFile(pathDestinazione1 + "/Wallpaper Changer II.apk")) {
-                                        Files.getInstance().EliminaFileUnico(pathDestinazione1 + "/Wallpaper Changer II.apk");
+                                    if (Files.getInstance().EsisteFile(pathDestinazione1 + "/" +
+                                            VariabiliStaticheGoogleDrive.nomeFileAPK)) {
+                                        Files.getInstance().EliminaFileUnico(pathDestinazione1 + "/" +
+                                                VariabiliStaticheGoogleDrive.nomeFileAPK);
                                     }
+
+                                    UtilityGoogleDrive.getInstance().ImpostaAttesa(true, true);
+                                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(true);
 
                                     UtilityGoogleDrive.getInstance().dowload(
                                             VariabiliStaticheGoogleDrive.nuovaVersioneID, // Folder versioni
-                                            "Wallpaper Changer II.apk",
-                                            pathDestinazione1 + "/Wallpaper Changer II.apk"
+                                            VariabiliStaticheGoogleDrive.nomeFileAPK,
+                                            pathDestinazione1 + "/" +
+                                                    VariabiliStaticheGoogleDrive.nomeFileAPK
                                     );
-
-                                    VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(true);
 
                                     handlerThread = new HandlerThread("background-thread_DownloadUVAPK_" +
                                             VariabiliStaticheWallpaper.channelName);
                                     handlerThread.start();
 
+                                    final int[] secondi = {0};
+                                    final int[] decimi = {0};
+
                                     handler = new Handler(handlerThread.getLooper());
                                     r = new Runnable() {
                                         public void run() {
+                                            decimi[0]++;
+                                            if (decimi[0] > 9) {
+                                                decimi[0] = 0;
+
+                                                secondi[0]++;
+                                                UtilityGoogleDrive.getInstance().ImpostaDettaglioGD("Download in corso " + secondi[0]);
+                                            }
+
                                             if (!VariabiliStaticheGoogleDrive.getInstance().isStaScaricandoFile()) {
-                                                if (Files.getInstance().EsisteFile(pathDestinazione1 + "/Wallpaper Changer II.apk")) {
-                                                    java.io.File f = new File(pathDestinazione1 + "/Wallpaper Changer II.apk");
+                                                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+
+                                                if (Files.getInstance().EsisteFile(pathDestinazione1 + "/" +
+                                                        VariabiliStaticheGoogleDrive.nomeFileAPK)) {
+                                                    java.io.File f = new File(pathDestinazione1 + "/" +
+                                                            VariabiliStaticheGoogleDrive.nomeFileAPK);
                                                     Uri uri = FileProvider.getUriForFile(context,
                                                             context.getApplicationContext().getPackageName() + ".provider",
                                                             f
@@ -209,7 +230,7 @@ public class GoogleDrive extends Activity {
                             }
                         } else {
                             if (Conta > 20) {
-                                UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+                                UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
                                 handlerTimerAF.removeCallbacksAndMessages(rTimerAF);
 
                                 UtilitiesGlobali.getInstance().ApreToast(context,

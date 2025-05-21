@@ -102,8 +102,8 @@ public class AdapterListenerGiocatoriPartitaAF extends BaseAdapter {
 
         ImageView imgLogo = view.findViewById(R.id.imgFoto);
 
-        DownloadImmagineOrari d = new DownloadImmagineOrari();
-        d.EsegueChiamata(context, imgLogo, foto);
+        // DownloadImmagineOrari d = new DownloadImmagineOrari();
+        // d.EsegueChiamata(context, imgLogo, foto);
 
         return view;
     }

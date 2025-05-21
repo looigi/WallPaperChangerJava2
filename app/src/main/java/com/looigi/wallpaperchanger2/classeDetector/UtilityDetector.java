@@ -715,8 +715,13 @@ public class UtilityDetector {
         // VariabiliStaticheDetector.getInstance().setNumMultimedia(VariabiliStaticheDetector.getInstance().getTotImmagini() - 1);
 
         if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-            VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
-            VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    VariabiliStaticheDetector.getInstance().getImg().setImageDrawable(null);
+                    VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
+                }
+            }, 1000);
         }
     }
 

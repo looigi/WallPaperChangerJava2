@@ -578,16 +578,13 @@ public class AndroidCameraApi extends Activity {
             captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
             captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, false);
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
-            captureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_OFF);
+            captureRequestBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_ON);
             captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<>(15, 30));
             captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
-            // Esposizione breve (1/125s)
-            captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 8000000L);
-            // ISO medio
-            captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 400);
-            // Diaframma aperto
+            // Esposizione più breve per evitare mosso
+            captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 4000000L); // 1/250s
+            captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 800); // ISO più alto
             captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f);
-            // Bilanciamento del bianco bloccato (opzionale)
             captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
 
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){

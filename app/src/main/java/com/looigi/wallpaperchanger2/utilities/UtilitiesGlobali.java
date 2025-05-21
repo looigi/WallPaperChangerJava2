@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
@@ -15,8 +16,13 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
 import android.util.Base64;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -650,7 +656,7 @@ public class UtilitiesGlobali {
             Nominativo = "";
             for (String nn : n) {
                 String PrimaLettera = nn.substring(0, 1);
-                nn = nn.substring(1, nn.length());
+                nn = nn.substring(1);
                 nn = PrimaLettera.toUpperCase() + nn;
                 Nominativo += nn + " ";
             }
@@ -732,5 +738,35 @@ public class UtilitiesGlobali {
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna nuova versione aggiornata");
         }
+    }
+
+    public ArrayAdapter<String> CreaAdapterSpinner(Context context, String[] Dati) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context,
+                android.R.layout.simple_spinner_item,
+                Dati) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Questo è il valore selezionato mostrato nello Spinner (non il dropdown)
+                View view = super.getView(position, convertView, parent);
+                view.setBackgroundColor(Color.WHITE);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setTextColor(Color.BLUE); // Colore personalizzato
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                // Questo è il layout degli elementi nel menu a discesa
+                View view = super.getDropDownView(position, convertView, parent);
+                view.setBackgroundColor(Color.WHITE);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setTextColor(Color.BLUE); // Colore per la lista a discesa
+                return view;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        return adapter;
     }
 }

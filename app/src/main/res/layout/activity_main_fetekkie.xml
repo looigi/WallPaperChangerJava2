@@ -39,6 +39,7 @@
                 android:id="@+id/spnCategorie"
                 android:layout_width="0dp"
                 android:layout_weight="3"
+                android:theme="@style/spinnerTheme"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
@@ -363,6 +364,7 @@
             <EditText
                 android:id="@+id/edtSpostaFiltroCategoria"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="3"
                 android:layout_height="wrap_content">
 
@@ -384,6 +386,7 @@
             <Spinner
                 android:id="@+id/spnSpostaCategorie"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="3"
                 android:layout_height="wrap_content" />
         </LinearLayout>

@@ -51,6 +51,7 @@
             <EditText
                 android:id="@+id/edtAlias2"
                 android:layout_width="0dp"
+                android:textColor="@color/Blue"
                 android:layout_weight="6"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -90,11 +91,12 @@
                 android:layout_weight="4"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="And/Or"></TextView>
+                android:text="And/Or" />
 
             <Spinner
                 android:id="@+id/spnAndOr"
                 android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
                 android:layout_weight="6"
                 android:layout_height="wrap_content" />
         </LinearLayout>

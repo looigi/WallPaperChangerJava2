@@ -25,10 +25,9 @@
 				 <EditText
 					 android:id="@+id/edtMessaggio"
 					 android:layout_width="0dp"
+					 android:textColor="@color/Blue"
 					 android:layout_weight="7"
-					 android:layout_height="match_parent">
-
-				 </EditText>
+					 android:layout_height="match_parent" />
 
 				 <LinearLayout
 					 android:layout_width="0dp"

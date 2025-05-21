@@ -30,16 +30,36 @@ public class UtilityGoogleDrive {
         return instance;
     }
 
-    public void ImpostaAttesa(boolean Come) {
+    public void ImpostaAttesa(boolean Come, boolean Dettaglio) {
         if (VariabiliStaticheGoogleDrive.getInstance().getImgAttesa() != null) {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
                     if (Come) {
                         VariabiliStaticheGoogleDrive.getInstance().getImgAttesa().setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setText("");
+                        if (Dettaglio) {
+                            VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setVisibility(LinearLayout.VISIBLE);
+                        } else {
+                            VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setVisibility(LinearLayout.GONE);
+                        }
                     } else {
                         VariabiliStaticheGoogleDrive.getInstance().getImgAttesa().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setText("");
                     }
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    public void ImpostaDettaglioGD(String Dettaglio) {
+        if (VariabiliStaticheGoogleDrive.getInstance().getImgAttesa() != null) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    VariabiliStaticheGoogleDrive.getInstance().getTxtDettaglio().setText(Dettaglio);
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);
@@ -76,14 +96,14 @@ public class UtilityGoogleDrive {
     }
 
     public void listaRootFolder(Context context) {
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
 
         folders = new ArrayList<>();
 
         VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().listRootFolders(new GoogleDriveHelper.RootFolderListCallback() {
             @Override
             public void onRootFolderListed(List<File> folders) {
-                UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
 
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
@@ -91,7 +111,7 @@ public class UtilityGoogleDrive {
                         AdapterListenerFolders adapter = new AdapterListenerFolders(context, folders);
                         VariabiliStaticheGoogleDrive.getInstance().getLstFolders().setAdapter(adapter);
 
-                        UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+                        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
                         UtilityGoogleDrive.getInstance().listaFilesInFolder(
                                 context,
                                 VariabiliStaticheGoogleDrive.getInstance().getRootId()
@@ -103,7 +123,7 @@ public class UtilityGoogleDrive {
 
             @Override
             public void onError(Exception e) {
-                UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
 
                 // Log.e("FoldersTest", "Errore caricamento cartelle", e);
             }
@@ -111,14 +131,14 @@ public class UtilityGoogleDrive {
     }
 
     public void listaFolders(Context context, String id) {
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true);
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
 
         folders = new ArrayList<>();
 
         VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().listFolders(new GoogleDriveHelper.FoldersListCallback() {
             @Override
             public void onFoldersListed(List<File> folders) {
-                UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
 
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {
@@ -137,7 +157,7 @@ public class UtilityGoogleDrive {
 
             @Override
             public void onError(Exception e) {
-                UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
 
                 // Log.e("FoldersTest", "Errore caricamento cartelle", e);
             }
@@ -148,7 +168,7 @@ public class UtilityGoogleDrive {
         VariabiliStaticheGoogleDrive.getInstance().getDriveHelper().listFilesInFolder(folderId, new GoogleDriveHelper.FilesListCallback() {
             @Override
             public void onFilesListed(List<com.google.api.services.drive.model.File> files) {
-                UtilityGoogleDrive.getInstance().ImpostaAttesa(false);
+                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
 
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
                 Runnable rTimer = new Runnable() {

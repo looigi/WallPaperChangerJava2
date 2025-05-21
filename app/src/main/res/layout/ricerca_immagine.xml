@@ -30,6 +30,7 @@
                     android:id="@+id/edtFiltro"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/Blue"
                     android:layout_weight="5"
                     android:ems="10"
                     android:inputType="text"
