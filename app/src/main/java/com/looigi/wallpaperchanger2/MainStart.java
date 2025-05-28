@@ -37,6 +37,7 @@ import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.Permessi;
 import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
 import com.looigi.wallpaperchanger2.classeGps.GestioneMappa;
@@ -45,6 +46,7 @@ import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.utilities.CaricaSettaggi;
+import com.looigi.wallpaperchanger2.utilities.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
@@ -684,6 +686,15 @@ public class MainStart extends Activity {
         apre.setAction(Intent.ACTION_MAIN);
         apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
         context.startActivity(apre);*/
+
+        PrendeModelloTelefono p = new PrendeModelloTelefono();
+        String modello = p.getDeviceName();
+        if (!modello.contains("sdk_gphone64")) {
+            String FileControllo = context.getFilesDir() + "/Controllo.txt";
+            if (Files.getInstance().EsisteFile(FileControllo)) {
+                UtilitiesGlobali.getInstance().ControllaNuovaVersione(context);
+            }
+        }
     }
 
     @Override

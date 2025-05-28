@@ -39,6 +39,13 @@
                 android:text="Attiva Debug"
                 android:layout_height="wrap_content" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchControllo"
+                android:layout_width="match_parent"
+                android:textColor="#0000CC"
+                android:text="Controlla nuova versione all'avvio"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="5"

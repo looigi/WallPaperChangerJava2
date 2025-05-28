@@ -748,54 +748,59 @@ public class UtilityDetector {
         StopAudio();
         StopVideo();
 
-        if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
-            // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
-            // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
-            // String Cartella = Environment.getExternalStorageDirectory() + "/" +
-            //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
-            String Path = PrendePath(context);
-            if (VariabiliStaticheDetector.getInstance().getNumMultimedia() > -1) {
-                String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (VariabiliStaticheDetector.getInstance().getNumMultimedia() < VariabiliStaticheDetector.getInstance().getImmagini().size()) {
+                    // String Origine= Environment.getExternalStorageDirectory().getAbsolutePath();
+                    // String Cartella=VariabiliStatiche.getInstance().PathApplicazione;
+                    // String Cartella = Environment.getExternalStorageDirectory() + "/" +
+                    //         Environment.DIRECTORY_DOWNLOADS + "/LooigiSoft/" + VariabiliStaticheDetector.channelName + "/DataBase";
+                    String Path = PrendePath(context);
+                    if (VariabiliStaticheDetector.getInstance().getNumMultimedia() > -1) {
+                        String NomeMultimedia = VariabiliStaticheDetector.getInstance().getImmagini().get(VariabiliStaticheDetector.getInstance().getNumMultimedia());
 
-                if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
-                    File f = new File(Path, "Appoggio.jpg");
-                    File o = new File(Path, NomeMultimedia);
+                        if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
+                            File f = new File(Path, "Appoggio.jpg");
+                            File o = new File(Path, NomeMultimedia);
 
-                    try {
-                        copyFile(o, f);
-                    } catch (IOException ignored) {
+                            try {
+                                copyFile(o, f);
+                            } catch (IOException ignored) {
 
-                    }
-                    removeKeyFromFile(Path, NomeMultimedia, "Appoggio.jpg");
+                            }
+                            removeKeyFromFile(Path, NomeMultimedia, "Appoggio.jpg");
 
-                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-                        VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(BitmapFactory.decodeFile(Path + "Appoggio.jpg"));
-                    }
+                            if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(
+                                        BitmapFactory.decodeFile(Path + "Appoggio.jpg")
+                                );
+                            }
 
-                    f.delete();
+                            f.delete();
 
-                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-                        PhotoViewAttacher photoAttacher;
-                        photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
-                        photoAttacher.update();
-                    }
+                            if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                PhotoViewAttacher photoAttacher;
+                                photoAttacher = new PhotoViewAttacher(VariabiliStaticheDetector.getInstance().getImg());
+                                photoAttacher.update();
+                            }
 
-                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-                        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
-                    }
-                    if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
-                        VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
-                    }
-                    if (VariabiliStaticheDetector.getInstance().getvView() != null) {
-                        VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
-                    }
+                            if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.VISIBLE);
+                            }
+                            if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
+                                VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
+                            }
+                            if (VariabiliStaticheDetector.getInstance().getvView() != null) {
+                                VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                            }
 
-                    if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
-                        VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
-                    }
-                    if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
-                        VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.VISIBLE);
-                    }
+                            if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
+                                VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.VISIBLE);
+                            }
+                            if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                                VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.VISIBLE);
+                            }
 
                     /* if (NomeMultimedia.toUpperCase().contains(".DBF")) {
                         VariabiliStaticheDetector.getInstance().getBtnFlipX().setVisibility(LinearLayout.GONE);
@@ -809,77 +814,79 @@ public class UtilityDetector {
                         VariabiliStaticheDetector.getInstance().getBtnRuotaSin().setVisibility(LinearLayout.VISIBLE);
                     } */
 
-                    if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
-                                "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
-                    }
-                } else {
-                    if (NomeMultimedia.toUpperCase().contains(".3GP") || NomeMultimedia.toUpperCase().contains(".DBA")) {
-                        if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-                            VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
-                        }
-                        if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
-                            VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.VISIBLE);
-                        }
-                        if (VariabiliStaticheDetector.getInstance().getvView() != null) {
-                            VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
-                        }
-
-                        if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
-                            VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
-                        }
-                        if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
-                            VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
-                        }
-
-                        if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                            VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
-                                    "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
-                        }
-                    } else {
-                        if (NomeMultimedia.toUpperCase().contains(".MP4") || NomeMultimedia.toUpperCase().contains(".DBV")) {
-                            if (VariabiliStaticheDetector.getInstance().getImg() != null) {
-                                VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
-                            }
-                            if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
-                                VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
-                            }
-                            if (VariabiliStaticheDetector.getInstance().getvView() != null) {
-                                VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
-                            }
-
-                            if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
-                                VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
-                            }
-
-                            if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
-                                VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
-                            }
-
                             if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                                VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                VariabiliStaticheDetector.getInstance().getTxtImm().setText("File immagine " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
                                         "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
                             }
+                        } else {
+                            if (NomeMultimedia.toUpperCase().contains(".3GP") || NomeMultimedia.toUpperCase().contains(".DBA")) {
+                                if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                    VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
+                                }
+                                if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
+                                    VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.VISIBLE);
+                                }
+                                if (VariabiliStaticheDetector.getInstance().getvView() != null) {
+                                    VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.GONE);
+                                }
+
+                                if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
+                                    VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
+                                }
+                                if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                                    VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
+                                }
+
+                                if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
+                                    VariabiliStaticheDetector.getInstance().getTxtImm().setText("File audio " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                            "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
+                                }
+                            } else {
+                                if (NomeMultimedia.toUpperCase().contains(".MP4") || NomeMultimedia.toUpperCase().contains(".DBV")) {
+                                    if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                        VariabiliStaticheDetector.getInstance().getImg().setVisibility(LinearLayout.GONE);
+                                    }
+                                    if (VariabiliStaticheDetector.getInstance().getAudio() != null) {
+                                        VariabiliStaticheDetector.getInstance().getAudio().setVisibility(LinearLayout.GONE);
+                                    }
+                                    if (VariabiliStaticheDetector.getInstance().getvView() != null) {
+                                        VariabiliStaticheDetector.getInstance().getvView().setVisibility(LinearLayout.VISIBLE);
+                                    }
+
+                                    if (VariabiliStaticheDetector.getInstance().getImgModificaImmagine() != null) {
+                                        VariabiliStaticheDetector.getInstance().getImgModificaImmagine().setVisibility(LinearLayout.GONE);
+                                    }
+
+                                    if (VariabiliStaticheDetector.getInstance().getImgCondividiImmagine() != null) {
+                                        VariabiliStaticheDetector.getInstance().getImgCondividiImmagine().setVisibility(LinearLayout.GONE);
+                                    }
+
+                                    if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
+                                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("File video " + (VariabiliStaticheDetector.getInstance().getNumMultimedia() + 1) +
+                                                "/" + VariabiliStaticheDetector.getInstance().getTotImmagini());
+                                    }
+                                }
+                            }
+                        }
+
+                        if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
+                            VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText(NomeMultimedia);
+                        }
+                    } else {
+                        if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
+                            VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
                         }
                     }
-                }
-
-                if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
-                    VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText(NomeMultimedia);
-                }
-            } else {
-                if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
-                    VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
+                } else {
+                    if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
+                        VariabiliStaticheDetector.getInstance().getTxtImm().setText("Nessuna immagine rilevata");
+                    }
+                    if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
+                        VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
+                    }
                 }
             }
-        } else {
-            if (VariabiliStaticheDetector.getInstance().getTxtImm() != null) {
-                VariabiliStaticheDetector.getInstance().getTxtImm().setText("Nessuna immagine rilevata");
-            }
-            if (VariabiliStaticheDetector.getInstance().getTxtNomeImm() != null) {
-                VariabiliStaticheDetector.getInstance().getTxtNomeImm().setText("");
-            }
-        }
+        }, 100);
     }
 
     public void SpegneSchermo(Context context) {

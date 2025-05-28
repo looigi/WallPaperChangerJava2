@@ -61,6 +61,7 @@ import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.db_dati_player;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.RichiestaPathImmaginiLocali;
 import com.looigi.wallpaperchanger2.classeAvvio.db_debug;
 import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
@@ -1767,6 +1768,23 @@ public class MainImpostazioni extends Activity {
                 db_debug db = new db_debug(context);
                 db.ScriveImpostazioni();
                 db.ChiudeDB();
+            }
+        });
+
+        SwitchCompat swcControllo = (SwitchCompat) act.findViewById(R.id.switchControllo);
+        String FileControllo = context.getFilesDir() + "/Controllo.txt";
+        if (Files.getInstance().EsisteFile(FileControllo)) {
+            swcControllo.setChecked(true);
+        } else {
+            swcControllo.setChecked(false);
+        }
+        swcControllo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (!swcControllo.isChecked()) {
+                    Files.getInstance().EliminaFileUnico(FileControllo);
+                } else {
+                    Files.getInstance().ScriveFile(context.getFilesDir().toString(), "Controllo.txt", "OK");
+                }
             }
         });
 
