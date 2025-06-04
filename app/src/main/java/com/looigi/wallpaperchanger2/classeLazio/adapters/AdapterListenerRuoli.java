@@ -12,6 +12,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaRuoli;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class AdapterListenerRuoli extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaRuoli.get(i).getIdRuolo());
                 UtilityLazio.getInstance().ApreModifica(context, "RUOLI", "UPDATE",
                         "Modifica ruolo", Ruolo);
             }
@@ -60,6 +62,11 @@ public class AdapterListenerRuoli extends BaseAdapter {
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setCosaStoModificando("RUOLI");
+                VariabiliStaticheLazio.getInstance().setModalitaModifica("DELETE");
+
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaRuoli.get(i).getIdRuolo());
+                UtilityLazio.getInstance().SalvaValori(context);
             }
         });
 

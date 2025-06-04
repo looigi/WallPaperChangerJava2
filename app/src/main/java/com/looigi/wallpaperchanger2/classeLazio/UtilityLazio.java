@@ -345,21 +345,29 @@ public class UtilityLazio {
                 break;
             case "FONTI":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
+                    case "NUOVO":
                     case "INSERT":
+                        ws.GestioneFonte();
                         break;
                     case "UPDATE":
+                        ws.GestioneFonte();
                         break;
                     case "DELETE":
+                        ws.EliminaFonte();
                         break;
                 }
                 break;
             case "STATI":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
+                    case "NUOVO":
                     case "INSERT":
+                        ws.GestioneStato();
                         break;
                     case "UPDATE":
+                        ws.GestioneStato();
                         break;
                     case "DELETE":
+                        ws.EliminaStato();
                         break;
                 }
                 break;
@@ -377,11 +385,15 @@ public class UtilityLazio {
                 break;
             case "RUOLI":
                 switch (VariabiliStaticheLazio.getInstance().getModalitaModifica()) {
+                    case "NUOVO":
                     case "INSERT":
+                        ws.GestioneRuolo();
                         break;
                     case "UPDATE":
+                        ws.GestioneRuolo();
                         break;
                     case "DELETE":
+                        ws.EliminaRuolo();
                         break;
                 }
                 break;

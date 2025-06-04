@@ -156,17 +156,31 @@ public class GoogleDrive extends Activity {
 
                                                 if (Files.getInstance().EsisteFile(pathDestinazione1 + "/" +
                                                         VariabiliStaticheGoogleDrive.nomeFileAPK)) {
-                                                    java.io.File f = new File(pathDestinazione1 + "/" +
-                                                            VariabiliStaticheGoogleDrive.nomeFileAPK);
-                                                    Uri uri = FileProvider.getUriForFile(context,
-                                                            context.getApplicationContext().getPackageName() + ".provider",
-                                                            f
-                                                    );
-                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                    intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                                    startActivity(intent);
+                                                    if (VariabiliStaticheGoogleDrive.getInstance().getVersioneScaricata() == null || VariabiliStaticheGoogleDrive.getInstance().getVersioneScaricata().isEmpty()) {
+                                                        UtilitiesGlobali.getInstance().ApreToast(context, "Versione non valida.");
+                                                    } else {
+                                                        java.io.File f = new File(pathDestinazione1 + "/" +
+                                                                VariabiliStaticheGoogleDrive.nomeFileAPK);
+                                                        Uri uri = FileProvider.getUriForFile(context,
+                                                                context.getApplicationContext().getPackageName() + ".provider",
+                                                                f
+                                                        );
+                                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                                        startActivity(intent);
+
+                                                        if (Files.getInstance().EsisteFile(context.getFilesDir() + "/UltimaVersione.txt")) {
+                                                            Files.getInstance().EliminaFileUnico(context.getFilesDir() + "/UltimaVersione.txt");
+                                                        }
+                                                        
+                                                        Files.getInstance().ScriveFile(String.valueOf(
+                                                                        context.getFilesDir()),
+                                                                "UltimaVersione.txt",
+                                                                VariabiliStaticheGoogleDrive.getInstance().getVersioneScaricata()
+                                                        );
+                                                    }
                                                 } else {
                                                     UtilitiesGlobali.getInstance().ApreToast(context, "Problemi nell'aggiornamento della versione");
                                                 }

@@ -368,7 +368,9 @@ public class UtilityGPS {
                             VariabiliStaticheGPS.getInstance().getMappetta().animateCamera(CameraUpdateFactory
                                     .newCameraPosition(cameraPosition));
                         } else {
-                            VariabiliStaticheGPS.getInstance().getMappetta().moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                            if (bc != null) {
+                                VariabiliStaticheGPS.getInstance().getMappetta().moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+                            }
                         }
                     }
                 });

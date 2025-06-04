@@ -126,7 +126,7 @@ public class UtilityPlayer {
             if (Acceso) {
                 VariabiliStatichePlayer.getInstance().getMp().start();
                 bmpStart = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
-                FaiRipartireTimer();
+                FaiRipartireTimer(context);
                 VariabiliStatichePlayer.getInstance().setStaSuonando(true);
             } else {
                 VariabiliStatichePlayer.getInstance().getMp().pause();
@@ -968,7 +968,7 @@ public class UtilityPlayer {
     }
 
     public void FaiPartireTimer(Context context) {
-        ScriveLog(context, NomeMaschera, "Fatto Partire Timer");
+        ScriveLog(context, NomeMaschera, "Fatto (Ri)Partire Timer");
 
         SecondiPassati = 0;
         VariabiliStatichePlayer.getInstance().setSecondiPassati(SecondiPassati);
@@ -1019,7 +1019,10 @@ public class UtilityPlayer {
         }, 1000);
     }
 
-    public void FaiRipartireTimer() {
+    public void FaiRipartireTimer(Context context) {
+        if (handlerTimer == null) {
+            FaiPartireTimer(context);
+        }
         VariabiliStatichePlayer.getInstance().setFermaTimer(false);
     }
 

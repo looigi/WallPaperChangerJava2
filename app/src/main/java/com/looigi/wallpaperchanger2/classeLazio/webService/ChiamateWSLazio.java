@@ -404,6 +404,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
             String NomeFile = "Stati.txt";
+
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
                 String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
                 if (!Dati.isEmpty()) {
@@ -436,6 +437,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
             String NomeFile = "Fonti.txt";
+
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
                 String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
                 if (!Dati.isEmpty()) {
@@ -451,6 +453,138 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         String Urletto="RitornaFonti";
 
         TipoOperazione = "RitornaFonti";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void GestioneFonte() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idFonte = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        String Fonte = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="GestioneFonte?" +
+            "idFonte=" + idFonte + "&"+
+            "Fonte=" + Fonte;
+
+        TipoOperazione = "GestioneFonte";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void EliminaFonte() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idFonte = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="EliminaFonte?" +
+                "idFonte=" + idFonte;
+
+        TipoOperazione = "EliminaFonte";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void GestioneStato() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idStato = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        String Stato = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="GestioneStato?" +
+                "idStato=" + idStato + "&"+
+                "Stato=" + Stato;
+
+        TipoOperazione = "GestioneFonte";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void EliminaStato() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idStato = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="EliminaStato?" +
+                "idStato=" + idStato;
+
+        TipoOperazione = "EliminaStato";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void GestioneRuolo() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idRuolo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        String Ruolo = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="GestioneRuoli?" +
+                "idRuolo=" + idRuolo + "&"+
+                "Ruolo=" + Ruolo;
+
+        TipoOperazione = "GestioneRuoli";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
+    public void EliminaRuolo() {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String idRuolo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
+        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
+
+        String Urletto="EliminaRuolo?" +
+                "idRuolo=" + idRuolo;
+
+        TipoOperazione = "EliminaRuolo";
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -1206,6 +1340,24 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "RitornaFonti":
                         fRitornaFonti(result);
                         break;
+                    case "EliminaFonte":
+                        fEliminaFonte(result);
+                        break;
+                    case "GestioneFonte":
+                        fGestioneFonte(result);
+                        break;
+                    case "EliminaStato":
+                        fEliminaStato(result);
+                        break;
+                    case "GestioneStati":
+                        fGestioneStati(result);
+                        break;
+                    case "EliminaRuolo":
+                        fEliminaRuolo(result);
+                        break;
+                    case "GestioneRuoli":
+                        fGestioneRuoli(result);
+                        break;
                     case "RitornaGiocatori":
                         fRitornaGiocatori(result);
                         break;
@@ -1841,6 +1993,120 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
             AdapterListenerRuoli cstmAdptRuoli = new AdapterListenerRuoli(context, lista);
             VariabiliStaticheLazio.getInstance().getLstRuoli().setAdapter(cstmAdptRuoli);
+        }
+    }
+
+    private void fGestioneFonte(String result) {
+        boolean ritorno = ControllaRitorno("Gestione fonte", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaFonti(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+        }
+    }
+
+    private void fEliminaFonte(String result) {
+        boolean ritorno = ControllaRitorno("Elimina fonte", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaFonti(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+        }
+    }
+
+    private void fGestioneStati(String result) {
+        boolean ritorno = ControllaRitorno("Gestione stati", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaStati(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+        }
+    }
+
+    private void fEliminaStato(String result) {
+        boolean ritorno = ControllaRitorno("Elimina stato", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaStati(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+        }
+    }
+
+    private void fGestioneRuoli(String result) {
+        boolean ritorno = ControllaRitorno("Gestione ruoli", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaRuoli(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+        }
+    }
+
+    private void fEliminaRuolo(String result) {
+        boolean ritorno = ControllaRitorno("Elimina ruolo", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                    ws.RitornaRuoli(true);
+
+                    VariabiliStaticheLazio.getInstance().getLayModifica().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheLazio.getInstance().getLayModificaSFS().setVisibility(LinearLayout.GONE);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
         }
     }
 

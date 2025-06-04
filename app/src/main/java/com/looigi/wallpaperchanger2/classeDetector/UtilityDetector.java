@@ -700,8 +700,9 @@ public class UtilityDetector {
                 if (n.toUpperCase().contains(".JPG") || n.toUpperCase().contains(".DBF") ||
                         n.toUpperCase().contains(".MP4") || n.toUpperCase().contains(".DBV") ||
                         n.toUpperCase().contains(".3GP") || n.toUpperCase().contains(".DBA")) {
-                    if (!n.toUpperCase().contains(".PV3")) {
+                    if (!n.toUpperCase().contains(".PV3") && !n.toUpperCase().contains("APPOGGIO")) {
                         immagini.add(n);
+
                         totImmagini++;
                     }
                 }
@@ -714,7 +715,7 @@ public class UtilityDetector {
 
         // VariabiliStaticheDetector.getInstance().setNumMultimedia(VariabiliStaticheDetector.getInstance().getTotImmagini() - 1);
 
-        if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+        /* if (VariabiliStaticheDetector.getInstance().getImg() != null) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -722,7 +723,7 @@ public class UtilityDetector {
                     VariabiliStaticheDetector.getInstance().getImg().setImageResource(0);
                 }
             }, 1000);
-        }
+        } */
     }
 
     private void copyFile(File src, File dst) throws IOException {
@@ -762,6 +763,10 @@ public class UtilityDetector {
 
                         if (NomeMultimedia.toUpperCase().contains(".JPG") || NomeMultimedia.toUpperCase().contains(".DBF")) {
                             File f = new File(Path, "Appoggio.jpg");
+                            if (f.exists()) {
+                                f.delete();
+                            }
+
                             File o = new File(Path, NomeMultimedia);
 
                             try {
@@ -777,7 +782,7 @@ public class UtilityDetector {
                                 );
                             }
 
-                            f.delete();
+                            // f.delete();
 
                             if (VariabiliStaticheDetector.getInstance().getImg() != null) {
                                 PhotoViewAttacher photoAttacher;
@@ -1088,7 +1093,7 @@ public class UtilityDetector {
                 }
             }
             if (list != null) {
-                String Messaggio = "Detector. J: " + q;
+                String Messaggio = String.valueOf(q);
 
                 GestioneNotificheDetector.getInstance().AggiornaNotifica(Messaggio);
             } else {

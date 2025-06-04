@@ -253,7 +253,7 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio ?");
+                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio (" + dataOdierna + ") ?");
                         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

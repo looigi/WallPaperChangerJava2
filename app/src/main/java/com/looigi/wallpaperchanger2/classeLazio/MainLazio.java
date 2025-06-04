@@ -532,11 +532,13 @@ public class MainLazio extends Activity {
                         break;
                     case 5:
                         // Fonti
+                        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
                         UtilityLazio.getInstance().ApreModifica(context, "FONTI", "NUOVO",
                                 "Nuova fonte", "");
                         break;
                     case 6:
                         // Stati
+                        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
                         UtilityLazio.getInstance().ApreModifica(context, "STATI", "NUOVO",
                                 "Nuovo stato", "");
                         break;
@@ -549,6 +551,7 @@ public class MainLazio extends Activity {
                         break;
                     case 8:
                         // Ruoli
+                        VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
                         UtilityLazio.getInstance().ApreModifica(context, "RUOLI", "NUOVO",
                                 "Nuovo ruolo", "");
                         break;

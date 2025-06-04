@@ -46,6 +46,15 @@ public class VariabiliStaticheGoogleDrive {
     private boolean staCheckandoFile = false;
     private boolean staScaricandoFile = false;
     private String fileDiOrigine;
+    private String VersioneScaricata;
+
+    public String getVersioneScaricata() {
+        return VersioneScaricata;
+    }
+
+    public void setVersioneScaricata(String versioneScaricata) {
+        VersioneScaricata = versioneScaricata;
+    }
 
     public TextView getTxtDettaglio() {
         return txtDettaglio;

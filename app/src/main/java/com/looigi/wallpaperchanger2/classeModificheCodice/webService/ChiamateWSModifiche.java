@@ -437,7 +437,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             if (!file.isDirectory())
                 file.delete();
 
-        String PathGPS = context.getFilesDir() + "/Appoggio/Backup/BackupGPS.zip";
+        String PathGPS = context.getFilesDir() + "/Appoggio/BackupGPS/BackupGPS.zip";
         decodedBytes = Base64.getDecoder().decode(result);
         try (FileOutputStream fos = new FileOutputStream(PathGPS)) {
             fos.write(decodedBytes);

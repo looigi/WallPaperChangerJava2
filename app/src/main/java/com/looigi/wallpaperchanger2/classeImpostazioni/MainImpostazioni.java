@@ -1111,7 +1111,7 @@ public class MainImpostazioni extends Activity {
             sPercorso.setVisibility(LinearLayout.GONE);
         }
 
-        sSegnale.setChecked(true);
+        sSegnale.setChecked(VariabiliStaticheGPS.getInstance().isMostraSegnale());
         sSegnale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1126,7 +1126,7 @@ public class MainImpostazioni extends Activity {
             }
         });
 
-        sPercorso.setChecked(true);
+        sPercorso.setChecked(VariabiliStaticheGPS.getInstance().isMostraPercorso());
         sPercorso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

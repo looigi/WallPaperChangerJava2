@@ -566,7 +566,7 @@ public class AndroidCameraApi extends Activity {
         exif.saveAttributes();
     }
 
-    protected void createCameraPreview() {
+    protected void createCameraPreview_OLD() {
         try {
             SurfaceTexture texture = textureView.getSurfaceTexture();
             assert texture != null;
@@ -582,7 +582,7 @@ public class AndroidCameraApi extends Activity {
             captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<>(15, 30));
             captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
             // Esposizione più breve per evitare mosso
-            captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 4000000L); // 1/250s
+            captureRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 2000000L); // 1/250s
             captureRequestBuilder.set(CaptureRequest.SENSOR_SENSITIVITY, 800); // ISO più alto
             captureRequestBuilder.set(CaptureRequest.LENS_APERTURE, 1.8f);
             captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF);
@@ -619,6 +619,74 @@ public class AndroidCameraApi extends Activity {
                     NomeMaschera,
                     "Create Camera Preview: Camera Access Exception: " +
                     UtilityDetector.getInstance().PrendeErroreDaException(e));
+        }
+    }
+
+    protected void createCameraPreview() {
+        try {
+            SurfaceTexture texture = textureView.getSurfaceTexture();
+            assert texture != null;
+            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
+            Surface surface = new Surface(texture);
+
+            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequestBuilder.addTarget(surface);
+
+            // Modalità automatica esposizione e messa a fuoco
+            captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+
+            // Autofocus continuo per immagini statiche
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+
+            // Stabilizzazione ottica
+            captureRequestBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE,
+                    CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_ON);
+
+            // FPS target
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<>(15, 30));
+
+            // Rimuoviamo impostazioni manuali rischiose per evitare sfocature
+            // Esposizione automatica per evitare errori in condizioni di luce variabili
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, false);
+
+            // Lasciamo fare al sistema il bilanciamento del bianco automatico
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_AUTO);
+
+            // Disattiva flash di default
+            captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF);
+
+            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
+                @Override
+                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    if (cameraDevice == null) {
+                        return;
+                    }
+
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Create Camera Preview: onConfigured");
+
+                    cameraCaptureSessions = cameraCaptureSession;
+                    updatePreview();
+                }
+
+                @Override
+                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    UtilityDetector.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Create Camera Preview: onConfiguredFailed");
+                }
+            }, null);
+
+        } catch (CameraAccessException e) {
+            UtilityDetector.getInstance().ScriveLog(
+                    context,
+                    NomeMaschera,
+                    "Create Camera Preview: Camera Access Exception: " +
+                            UtilityDetector.getInstance().PrendeErroreDaException(e));
         }
     }
 

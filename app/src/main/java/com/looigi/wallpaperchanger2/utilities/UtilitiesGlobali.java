@@ -718,6 +718,7 @@ public class UtilitiesGlobali {
             Files.getInstance().ScriveFile(String.valueOf(context.getFilesDir()), "UltimaVersione.txt", VersioneScaricata);
         }
 
+        VariabiliStaticheGoogleDrive.getInstance().setVersioneScaricata("");
         if (!VersioneLocale.isEmpty() && !VersioneScaricata.isEmpty() && !VersioneLocale.equals(VersioneScaricata)) {
             String finalVersioneScaricata = VersioneScaricata;
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -730,6 +731,7 @@ public class UtilitiesGlobali {
                     apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
                     context.startActivity(apre);
 
+                    VariabiliStaticheGoogleDrive.getInstance().setVersioneScaricata(finalVersioneScaricata);
                     UtilitiesGlobali.getInstance().ApreToast(context, "Installo versione aggiornata: " + finalVersioneScaricata);
                 }
             }, 100);

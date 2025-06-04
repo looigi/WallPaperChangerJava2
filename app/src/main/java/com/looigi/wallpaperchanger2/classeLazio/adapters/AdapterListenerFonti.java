@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 
 import java.util.List;
 
@@ -52,12 +53,18 @@ public class AdapterListenerFonti extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaFonti.get(i).getIdFonte());
                 UtilityLazio.getInstance().ApreModifica(context, "FONTI", "UPDATE", "Modifica fonte", Fonte);
             }
         });
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setCosaStoModificando("FONTI");
+                VariabiliStaticheLazio.getInstance().setModalitaModifica("DELETE");
+
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaFonti.get(i).getIdFonte());
+                UtilityLazio.getInstance().SalvaValori(context);
             }
         });
 

@@ -89,6 +89,7 @@ public class VariabiliStaticheLazio {
     private String CosaStoModificando;
     private String ModalitaModifica;
     private EditText edtValore1;
+    private int idOggettoModificato;
     private String ValoreImpostato1;
     private String ValoreImpostato2;
     private LinearLayout layModificaSFS;
@@ -141,6 +142,14 @@ public class VariabiliStaticheLazio {
     private EditText edtPuntiPerVittoria;
     private String idApiFootballPerModifica;
     private String idGiocatorePerModifica;
+
+    public int getIdOggettoModificato() {
+        return idOggettoModificato;
+    }
+
+    public void setIdOggettoModificato(int idOggettoModificato) {
+        this.idOggettoModificato = idOggettoModificato;
+    }
 
     public String getIdApiFootballPerModifica() {
         return idApiFootballPerModifica;

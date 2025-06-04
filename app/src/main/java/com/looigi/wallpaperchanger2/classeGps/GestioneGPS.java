@@ -531,6 +531,7 @@ public class GestioneGPS extends Service {
             fusedLocationClient = null;
         }
 
+        // Inizializzazione
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
 
         UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
@@ -539,23 +540,62 @@ public class GestioneGPS extends Service {
                 "Metri: " + VariabiliStaticheDetector.getInstance().getGpsMeters());
 
         cv = new CalcoloVelocita();
-        int priorita = -1;
 
-        if (VariabiliStaticheDetector.getInstance().isGpsPreciso()) {
-            priorita = Priority.PRIORITY_HIGH_ACCURACY;
-        } else {
-            priorita = Priority.PRIORITY_BALANCED_POWER_ACCURACY;
-        }
+        // Imposta priorità dinamica
+        int priorita = VariabiliStaticheDetector.getInstance().isGpsPreciso()
+                ? Priority.PRIORITY_HIGH_ACCURACY
+                : Priority.PRIORITY_BALANCED_POWER_ACCURACY;
 
+        // Crea LocationRequest robusto
         LocationRequest locationRequest = new LocationRequest.Builder(
                 VariabiliStaticheDetector.getInstance().getGpsMs()
         )
-        .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters() * 1F)
-        .setMinUpdateIntervalMillis(5000)
-        .setPriority(priorita)
-        .build();
+                .setMinUpdateIntervalMillis(5000) // minimo 5 secondi tra update
+                .setMinUpdateDistanceMeters(VariabiliStaticheDetector.getInstance().getGpsMeters())
+                .setMaxUpdateDelayMillis(10000) // forza update anche se il sistema "raggruppa"
+                .setPriority(priorita)
+                .build();
 
-        lastLocationTimestamp = System.currentTimeMillis();
+        // Callback location
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) return;
+
+                lastLocationTimestamp = System.currentTimeMillis();
+
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        // Filtro opzionale su distanza, se necessario
+                        if (vecchiaLocation == null || location.distanceTo(vecchiaLocation) >= VariabiliStaticheDetector.getInstance().getGpsMeters()) {
+                            vecchiaLocation = location;
+
+                            funzioneDiScritturaPosizioni(location);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Pulisce thread vecchio (se esiste)
+        if (handlerThread != null) {
+            handlerThread.quitSafely();
+            handlerThread = null;
+        }
+        if (looper != null) {
+            looper.quit();
+            looper = null;
+        }
+
+        // Crea nuovo HandlerThread
+        handlerThread = new HandlerThread("LocationThreadGPS");
+        handlerThread.start();
+        looper = handlerThread.getLooper();
+
+        // Avvia aggiornamenti GPS
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, looper);
+
+        /* lastLocationTimestamp = System.currentTimeMillis();
 
         int finalPriorita = priorita;
 
@@ -622,6 +662,7 @@ public class GestioneGPS extends Service {
         };
 
         if (handlerThread != null && looper != null) {
+            handlerThread.interrupt();
             handlerThread.quitSafely();
             looper.quit();
             handlerThread = null;
@@ -633,6 +674,7 @@ public class GestioneGPS extends Service {
 
         // Avvia gli aggiornamenti della posizione
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, looper);
+        */
 
         VariabiliStaticheGPS.getInstance().setGpsAttivo(true);
 
@@ -761,7 +803,7 @@ public class GestioneGPS extends Service {
         double altitude = location.getAltitude();
 
         if (cv == null) { cv = new CalcoloVelocita(); }
-        float speed = cv.calculateRobustSpeed(location);
+        float speed = location.getSpeed(); // cv.calculateRobustSpeed(location);
 
         /* float speed = location.getSpeed();
         float velocityInMps = speed;

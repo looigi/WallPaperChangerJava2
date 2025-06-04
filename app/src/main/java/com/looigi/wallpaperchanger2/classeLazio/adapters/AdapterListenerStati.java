@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class AdapterListenerStati extends BaseAdapter {
         ImageView imgModifica = view.findViewById(R.id.imgModifica);
         imgModifica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaStati.get(i).getIdStato());
                 UtilityLazio.getInstance().ApreModifica(context, "STATI", "UPDATE",
                         "Modifica stato", Stato);
             }
@@ -59,6 +61,11 @@ public class AdapterListenerStati extends BaseAdapter {
         ImageView imgElimina = view.findViewById(R.id.imgElimina);
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                VariabiliStaticheLazio.getInstance().setCosaStoModificando("STATI");
+                VariabiliStaticheLazio.getInstance().setModalitaModifica("DELETE");
+
+                VariabiliStaticheLazio.getInstance().setIdOggettoModificato(listaStati.get(i).getIdStato());
+                UtilityLazio.getInstance().SalvaValori(context);
             }
         });
 

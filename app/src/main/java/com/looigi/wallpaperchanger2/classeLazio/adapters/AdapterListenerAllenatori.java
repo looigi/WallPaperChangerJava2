@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaAllenatori;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
+import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 
 import java.util.List;
 
