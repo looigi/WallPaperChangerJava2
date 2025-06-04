@@ -1097,6 +1097,22 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         return "";
     }
 
+    private String SistemaNome(String Nome) {
+        String Ritorno = "";
+        String Caratteri = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        for (int i = 0; i < Nome.length(); i++) {
+            String Carattere = Nome.substring(i, i + 1);
+            if (Caratteri.contains(Carattere)) {
+                Ritorno += Carattere;
+            } else {
+                Ritorno += "_";
+            }
+        }
+
+        return Ritorno;
+    }
+
     public void SalvaDettaglio() {
         UtilityLazio.getInstance().ImpostaAttesa(true);
         VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
@@ -1110,10 +1126,10 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         String Casa = datiPartita.teams.home.name.toUpperCase().trim();
         String Fuori = datiPartita.teams.away.name.toUpperCase().trim();
 
-        if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
+        /* if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
             controllaProsecuzioneSalvaDettaglio();
             return;
-        }
+        } */
 
         String Arbitro = datiPartita.fixture.referee;
         if (Arbitro == null) { Arbitro = ""; }
@@ -1174,13 +1190,16 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 for (PlayerStatistics player : g.response.get(i).players) {
                     int idGiocatore = -1;
                     String Nome = player.player.name;
+                    Nome = SistemaNome(Nome.toUpperCase().trim());
 
                     if (i == 0) {
                         if (VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS() != null) {
                             for (StrutturaGiocatori sg : VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS()) {
                                 String Nome2 = sg.getNome() + " " + sg.getCognome();
+                                Nome2 = SistemaNome(Nome2.toUpperCase().trim());
                                 if (Nome.equals(Nome2)) {
                                     idGiocatore = sg.getIdGiocatore();
+
                                     break;
                                 }
                             }
@@ -1189,62 +1208,69 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                         if (VariabiliStaticheApiFootball.getInstance().getGiocatoriFuoriPS() != null) {
                             for (StrutturaGiocatori sg : VariabiliStaticheApiFootball.getInstance().getGiocatoriFuoriPS()) {
                                 String Nome2 = sg.getNome() + " " + sg.getCognome();
+                                Nome2 = SistemaNome(Nome2.toUpperCase().trim());
                                 if (Nome.equals(Nome2)) {
                                     idGiocatore = sg.getIdGiocatore();
+
                                     break;
                                 }
                             }
                         }
                     }
 
-                    if (idGiocatore > 0) {
-                        Statistics statistics = player.statistics.get(0);
-                        Games ga = statistics.games;
-                        int minutiGiocati = ga.minutes;
-                        if (minutiGiocati > 0) {
-                            int Entrato = 90 - minutiGiocati;
-                            int Uscito = Entrato + minutiGiocati;
+                    if (idGiocatore == -1) {
+                        int a = 0;
+                    }
 
+                    Statistics statistics = player.statistics.get(0);
+                    Games ga = statistics.games;
+                    int minutiGiocati = ga.minutes;
+                    if (minutiGiocati > 0) {
+                        int Entrato = 90 - minutiGiocati;
+                        int Uscito = Entrato + minutiGiocati;
+
+                        if (i == 0) {
+                            FormazioneCasa += idGiocatore + ";" + Entrato + ";" + Uscito + "§";
+                        } else {
+                            FormazioneFuori += idGiocatore + ";" + Entrato + ";" + Uscito + "§";
+                        }
+
+                        Cards cartellini = statistics.cards;
+                        int cartelliniGialli = cartellini.yellow;
+                        if (cartelliniGialli > 0) {
+                            String Minuto = "0";
                             if (i == 0) {
-                                FormazioneCasa += idGiocatore + ";" + Entrato + ";" + Uscito + "§";
+                                AmmonitiCasa += idGiocatore + ";" + Minuto + "§";
                             } else {
-                                FormazioneFuori += idGiocatore + ";" + Entrato + ";" + Uscito + "§";
+                                AmmonitiFuori += idGiocatore + ";" + Minuto + "§";
                             }
+                        }
 
-                            Cards cartellini = statistics.cards;
-                            int cartelliniGialli = cartellini.yellow;
-                            if (cartelliniGialli > 0) {
-                                String Minuto = "0";
-                                if (i == 0) {
-                                    AmmonitiCasa += idGiocatore + ";" + Minuto + "§";
-                                } else {
-                                    AmmonitiFuori += idGiocatore + ";" + Minuto + "§";
-                                }
-                            }
-                            int cartelliniRossi = cartellini.red;
-                            if (cartelliniRossi > 0) {
-                                String Minuto = "0";
-                                if (i == 0) {
-                                    EspulsiCasa += idGiocatore + ";" + Minuto + "§";
-                                } else {
-                                    EspulsiFuori += idGiocatore + ";" + Minuto + "§";
-                                }
-                            }
-
-                            Goals goals = statistics.goals;
-                            if (goals.total != null) {
-                                String Minuto = "0";
-                                String Rigore = "";
-
-                                if (i == 0) {
-                                    MarcatoriCasa += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
-                                } else {
-                                    MarcatoriFuori += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
-                                }
+                        int cartelliniRossi = cartellini.red;
+                        if (cartelliniRossi > 0) {
+                            String Minuto = "0";
+                            if (i == 0) {
+                                EspulsiCasa += idGiocatore + ";" + Minuto + "§";
+                            } else {
+                                EspulsiFuori += idGiocatore + ";" + Minuto + "§";
                             }
                         }
                     }
+
+                    Goals goals = statistics.goals;
+                    if (goals.total != null) {
+                        String Minuto = "0";
+                        String Rigore = "";
+
+                        if (i == 0) {
+                            MarcatoriCasa += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
+                        } else {
+                            MarcatoriFuori += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
+                        }
+                    }
+
                 }
+
             }
         }
 
