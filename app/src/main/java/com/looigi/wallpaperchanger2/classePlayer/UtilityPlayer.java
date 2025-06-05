@@ -1349,9 +1349,11 @@ public class UtilityPlayer {
 
     public void ScriveInfoImmagine() {
         if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-            VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
-                    VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                    "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+            if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null && VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini() != null) {
+                VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
+                        VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
+                        "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+            }
         }
 
         if (VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine() != null) {

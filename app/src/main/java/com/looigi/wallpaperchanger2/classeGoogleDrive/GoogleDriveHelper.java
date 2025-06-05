@@ -479,15 +479,19 @@ public class GoogleDriveHelper {
                     "and name = '" + folderName + "' " +
                     "and '" + parentFolderId + "' in parents";
 
-            FileList result = driveService.files().list()
-                    .setQ(query)
-                    .setSpaces("drive")
-                    .setFields("files(id, name)")
-                    .execute();
+            if (driveService != null && driveService.files() != null) {
+                FileList result = driveService.files().list()
+                        .setQ(query)
+                        .setSpaces("drive")
+                        .setFields("files(id, name)")
+                        .execute();
 
-            List<File> folders = result.getFiles();
+                List<File> folders = result.getFiles();
 
-            return folders != null && !folders.isEmpty();
+                return folders != null && !folders.isEmpty();
+            } else {
+                return false;
+            }
         } catch (IOException e) {
             Log.e(TAG, "Errore durante il controllo della cartella", e);
             return false;

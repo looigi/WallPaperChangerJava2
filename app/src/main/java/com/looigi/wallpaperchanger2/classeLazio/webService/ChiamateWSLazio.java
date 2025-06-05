@@ -1105,8 +1105,8 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             String Carattere = Nome.substring(i, i + 1);
             if (Caratteri.contains(Carattere)) {
                 Ritorno += Carattere;
-            } else {
-                Ritorno += "_";
+            // } else {
+            //     Ritorno += "_";
             }
         }
 
@@ -1126,10 +1126,10 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         String Casa = datiPartita.teams.home.name.toUpperCase().trim();
         String Fuori = datiPartita.teams.away.name.toUpperCase().trim();
 
-        /* if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
+        if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
             controllaProsecuzioneSalvaDettaglio();
             return;
-        } */
+        }
 
         String Arbitro = datiPartita.fixture.referee;
         if (Arbitro == null) { Arbitro = ""; }
@@ -1188,11 +1188,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         for (int i = 0; i < 2; i++) {
             if (!g.response.isEmpty() && g.response.get(i) != null) {
                 for (PlayerStatistics player : g.response.get(i).players) {
-                    int idGiocatore = -1;
-                    String Nome = player.player.name;
-                    Nome = SistemaNome(Nome.toUpperCase().trim());
+                    // int idGiocatore = -1;
+                    // String Nome = player.player.name;
+                    // Nome = SistemaNome(Nome.toUpperCase().trim());
 
-                    if (i == 0) {
+                    int idGiocatore = player.player.id;
+
+                    /* if (i == 0) {
                         if (VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS() != null) {
                             for (StrutturaGiocatori sg : VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS()) {
                                 String Nome2 = sg.getNome() + " " + sg.getCognome();
@@ -1216,7 +1218,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                                 }
                             }
                         }
-                    }
+                    } */
 
                     if (idGiocatore == -1) {
                         int a = 0;
@@ -1260,7 +1262,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     Goals goals = statistics.goals;
                     if (goals.total != null) {
                         String Minuto = "0";
-                        String Rigore = "";
+                        String Rigore = "N";
 
                         if (i == 0) {
                             MarcatoriCasa += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
