@@ -65,6 +65,16 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
+    private String idSquadraDaAggiungereCasa;
+    private String SquadraDaAggiungereCasa;
+    private String CognomiDaAggiungereCasa = "";
+    private String NomiDaAggiungereCasa = "";
+    private String idSDaAggiungereCasa = "";
+    private String idSquadraDaAggiungereFuori;
+    private String SquadraDaAggiungereFuori;
+    private String CognomiDaAggiungereFuori = "";
+    private String NomiDaAggiungereFuori = "";
+    private String idSDaAggiungereFuori = "";
 
     public ChiamateWSLazio(Context context) {
         this.context = context;
@@ -960,6 +970,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     private int DovePerSalvataggioGiocatori;
+    private String AggiuntaGiocatori = "";
 
     public void AggiungeGiocatori(int Dove) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
@@ -1126,10 +1137,10 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         String Casa = datiPartita.teams.home.name.toUpperCase().trim();
         String Fuori = datiPartita.teams.away.name.toUpperCase().trim();
 
-        if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
+        /* if (!Casa.equals("LAZIO") && !Fuori.equals("LAZIO")) {
             controllaProsecuzioneSalvaDettaglio();
             return;
-        }
+        } */
 
         String Arbitro = datiPartita.fixture.referee;
         if (Arbitro == null) { Arbitro = ""; }
@@ -1183,23 +1194,34 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         String AmmonitiFuori = "";
         String EspulsiFuori = "";
         String MarcatoriFuori = "";
+        idSquadraDaAggiungereCasa = String.valueOf(idCasa);
+        SquadraDaAggiungereCasa = Casa;
+        CognomiDaAggiungereCasa = "";
+        NomiDaAggiungereCasa = "";
+        idSDaAggiungereCasa = "";
+        idSquadraDaAggiungereFuori = String.valueOf(idFuori);
+        SquadraDaAggiungereFuori = Fuori;
+        CognomiDaAggiungereFuori = "";
+        NomiDaAggiungereFuori = "";
+        idSDaAggiungereFuori = "";
 
         GiocatoriPartita g = VariabiliStaticheApiFootball.getInstance().getGiocatoriDellaPartita();
         for (int i = 0; i < 2; i++) {
             if (!g.response.isEmpty() && g.response.get(i) != null) {
                 for (PlayerStatistics player : g.response.get(i).players) {
-                    // int idGiocatore = -1;
-                    // String Nome = player.player.name;
-                    // Nome = SistemaNome(Nome.toUpperCase().trim());
+                    int idGiocatore = -1;
+                    String Nome = player.player.name;
+                    Nome = SistemaNome(Nome.toUpperCase().trim());
 
-                    int idGiocatore = player.player.id;
+                    int idGiocatoreApiFootball = player.player.id;
 
-                    /* if (i == 0) {
+                    if (i == 0) {
                         if (VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS() != null) {
                             for (StrutturaGiocatori sg : VariabiliStaticheApiFootball.getInstance().getGiocatoriCasaPS()) {
-                                String Nome2 = sg.getNome() + " " + sg.getCognome();
+                                /* String Nome2 = sg.getNome() + " " + sg.getCognome();
                                 Nome2 = SistemaNome(Nome2.toUpperCase().trim());
-                                if (Nome.equals(Nome2)) {
+                                if (Nome.equals(Nome2)) { */
+                                if (sg.getIdApiFootball() == idGiocatoreApiFootball) {
                                     idGiocatore = sg.getIdGiocatore();
 
                                     break;
@@ -1209,19 +1231,39 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     } else {
                         if (VariabiliStaticheApiFootball.getInstance().getGiocatoriFuoriPS() != null) {
                             for (StrutturaGiocatori sg : VariabiliStaticheApiFootball.getInstance().getGiocatoriFuoriPS()) {
-                                String Nome2 = sg.getNome() + " " + sg.getCognome();
+                                /* String Nome2 = sg.getNome() + " " + sg.getCognome();
                                 Nome2 = SistemaNome(Nome2.toUpperCase().trim());
-                                if (Nome.equals(Nome2)) {
+                                if (Nome.equals(Nome2)) { */
+                                if (sg.getIdApiFootball() == idGiocatoreApiFootball) {
                                     idGiocatore = sg.getIdGiocatore();
 
                                     break;
                                 }
                             }
                         }
-                    } */
+                    }
 
                     if (idGiocatore == -1) {
-                        int a = 0;
+                        String[] n = player.player.name.split(" ");
+                        String NomeGiocatore = n[0];
+                        String Cognome = "";
+                        String id = String.valueOf(player.player.id);
+
+                        for (int ii = 1; ii < n.length; ii++) {
+                            Cognome += n[ii] + " ";
+                        }
+
+                        if (i == 0) {
+                            CognomiDaAggiungereCasa += Cognome.trim() + ";";
+                            NomiDaAggiungereCasa += NomeGiocatore.trim() + ";";
+                            idSDaAggiungereCasa += id.trim() + ";";
+                        } else {
+                            CognomiDaAggiungereFuori += Cognome.trim() + ";";
+                            NomiDaAggiungereFuori += NomeGiocatore.trim() + ";";
+                            idSDaAggiungereFuori += id.trim() + ";";
+                        }
+
+                        idGiocatore = Integer.parseInt(id);
                     }
 
                     Statistics statistics = player.statistics.get(0);
@@ -1270,9 +1312,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                             MarcatoriFuori += idGiocatore + ";" + Minuto + ";" + Rigore + "§";
                         }
                     }
-
                 }
-
             }
         }
 
@@ -1482,7 +1522,33 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Salva dettaglio: " + result);
         } else {
-            controllaProsecuzioneSalvaDettaglio();
+            if (!CognomiDaAggiungereCasa.isEmpty()) {
+                String Urletto = "AggiungeGiocatori?" +
+                        "idAnno=" + VariabiliStaticheApiFootball.getInstance().getIdAnnoScelto() +
+                        "&idSquadra=" + idSquadraDaAggiungereCasa +
+                        "&Cognomi=" + CognomiDaAggiungereCasa +
+                        "&Nomi=" + NomiDaAggiungereCasa +
+                        "&idGiocApiFootball=" + idSDaAggiungereCasa +
+                        "&Squadra=" + SquadraDaAggiungereCasa;
+                // "&Loghi=" + Loghi;
+
+                TipoOperazione = "AggiungeGiocatori";
+                if (!CognomiDaAggiungereFuori.isEmpty()) {
+                    AggiuntaGiocatori = "MANCANOFUORI";
+                } else {
+                    AggiuntaGiocatori = "BASTA";
+                }
+
+                Esegue(
+                        RadiceWS + ws + Urletto,
+                        TipoOperazione,
+                        NS,
+                        SA,
+                        10000,
+                        ApriDialog);
+            } else {
+                controllaProsecuzioneSalvaDettaglio();
+            }
         }
     }
 
@@ -1556,24 +1622,57 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Aggiunge giocatori: " + result);
         } else {
-            if (DovePerSalvataggioGiocatori == 0) {
-                Handler handlerTimer = new Handler(Looper.getMainLooper());
-                Runnable rTimer = new Runnable() {
-                    public void run() {
-                        ChiamateWSLazio ws = new ChiamateWSLazio(context);
-                        ws.AggiungeGiocatori(1);
-                    };
-                };
-                handlerTimer.postDelayed(rTimer, 100);
+            if (!AggiuntaGiocatori.isEmpty()) {
+                if (AggiuntaGiocatori.equals("BASTA")) {
+                    AggiuntaGiocatori = "";
+                    controllaProsecuzioneSalvaDettaglio();
+                } else {
+                    if (AggiuntaGiocatori.equals("MANCANOFUORI")) {
+                        String Urletto = "AggiungeGiocatori?" +
+                                "idAnno=" + VariabiliStaticheApiFootball.getInstance().getIdAnnoScelto() +
+                                "&idSquadra=" + idSquadraDaAggiungereFuori +
+                                "&Cognomi=" + CognomiDaAggiungereFuori +
+                                "&Nomi=" + NomiDaAggiungereFuori +
+                                "&idGiocApiFootball=" + idSDaAggiungereFuori +
+                                "&Squadra=" + SquadraDaAggiungereFuori;
+                        // "&Loghi=" + Loghi;
+
+                        TipoOperazione = "AggiungeGiocatori";
+                        AggiuntaGiocatori = "BASTA";
+
+                        Esegue(
+                                RadiceWS + ws + Urletto,
+                                TipoOperazione,
+                                NS,
+                                SA,
+                                10000,
+                                ApriDialog);
+                    }
+                }
             } else {
-                Handler handlerTimer = new Handler(Looper.getMainLooper());
-                Runnable rTimer = new Runnable() {
-                    public void run() {
-                        ChiamateWSLazio ws = new ChiamateWSLazio(context);
-                        ws.RitornaGiocatoriPerSalvataggio(0);
+                if (DovePerSalvataggioGiocatori == 0) {
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                            ws.AggiungeGiocatori(1);
+                        }
+
+                        ;
                     };
-                };
-                handlerTimer.postDelayed(rTimer, 100);
+                    handlerTimer.postDelayed(rTimer, 100);
+                } else {
+                    Handler handlerTimer = new Handler(Looper.getMainLooper());
+                    Runnable rTimer = new Runnable() {
+                        public void run() {
+                            ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                            ws.RitornaGiocatoriPerSalvataggio(0);
+                        }
+
+                        ;
+                    };
+                    handlerTimer.postDelayed(rTimer, 100);
+                }
             }
         }
     }

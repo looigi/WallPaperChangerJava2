@@ -53,105 +53,107 @@ public class AdapterListenerClassifica extends BaseAdapter {
         view = inflter.inflate(R.layout.lista_classifica, null);
 
         String Squadra = listaClassifica.get(i).getSquadra();
-        String Punti = String.valueOf(listaClassifica.get(i).getPunti());
-        String Giocate = String.valueOf(listaClassifica.get(i).getGiocate());
-        String MediaInglese = String.valueOf(listaClassifica.get(i).getMediaInglese());
+        if (!Squadra.isEmpty()) {
+            String Punti = String.valueOf(listaClassifica.get(i).getPunti());
+            String Giocate = String.valueOf(listaClassifica.get(i).getGiocate());
+            String MediaInglese = String.valueOf(listaClassifica.get(i).getMediaInglese());
 
-        String Vinte = "";
-        String Pareggiate = "";
-        String Perse = "";
-        String GF = "";
-        String GS = "";
+            String Vinte = "";
+            String Pareggiate = "";
+            String Perse = "";
+            String GF = "";
+            String GS = "";
 
-        switch (VariabiliStaticheLazio.getInstance().getModalitaClassifica()) {
-            case 1:
-                Vinte = String.valueOf(listaClassifica.get(i).getVinte());
-                Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiate());
-                Perse = String.valueOf(listaClassifica.get(i).getPerse());
-                GF = String.valueOf(listaClassifica.get(i).getGoalFatti());
-                GS = String.valueOf(listaClassifica.get(i).getGoalSubiti());
-                break;
-            case 2:
-                Vinte = String.valueOf(listaClassifica.get(i).getVinteCasa());
-                Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiateCasa());
-                Perse = String.valueOf(listaClassifica.get(i).getPerseCasa());
-                GF = String.valueOf(listaClassifica.get(i).getGoalFattiCasa());
-                GS = String.valueOf(listaClassifica.get(i).getGoalSubitiCasa());
-                break;
-            case 3:
-                Vinte = String.valueOf(listaClassifica.get(i).getVinteFuori());
-                Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiateFuori());
-                Perse = String.valueOf(listaClassifica.get(i).getPerseFuori());
-                GF = String.valueOf(listaClassifica.get(i).getGoalFattiFuori());
-                GS = String.valueOf(listaClassifica.get(i).getGoalSubitiFuori());
-                break;
-        }
-
-        TextView txtSquadra = view.findViewById(R.id.txtSquadra);
-        txtSquadra.setText(Squadra);
-
-        TextView txtPunti = view.findViewById(R.id.txtPunti);
-        txtPunti.setText(Punti);
-
-        TextView txtGiocate = view.findViewById(R.id.txtGiocate);
-        txtGiocate.setText(Giocate);
-
-        TextView txtVinte = view.findViewById(R.id.txtVinte);
-        txtVinte.setText(Vinte);
-
-        TextView txtPareggiate = view.findViewById(R.id.txtPareggiate);
-        txtPareggiate.setText(Pareggiate);
-
-        TextView txtPerse = view.findViewById(R.id.txtPerse);
-        txtPerse.setText(Perse);
-
-        TextView txtGF = view.findViewById(R.id.txtGF);
-        txtGF.setText(GF);
-
-        TextView txtGS = view.findViewById(R.id.txtGS);
-        txtGS.setText(GS);
-
-        TextView txtMedia = view.findViewById(R.id.txtMedia);
-        txtMedia.setText(MediaInglese);
-
-        ImageView imgLogo = view.findViewById(R.id.imgLogo);
-
-        String NomeSquadra = Squadra.toUpperCase().trim();
-        String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
-        if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadra + ".png")) {
-            Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra + ".png");
-            imgLogo.setImageBitmap(bmp);
-        } else {
-            String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
-            String[] a = Anno.split("-");
-            VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
-                    Integer.parseInt(a[0])
-            );
-            if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
-                VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
-                        context.getFilesDir() + "/ApiFootball"
-                );
+            switch (VariabiliStaticheLazio.getInstance().getModalitaClassifica()) {
+                case 1:
+                    Vinte = String.valueOf(listaClassifica.get(i).getVinte());
+                    Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiate());
+                    Perse = String.valueOf(listaClassifica.get(i).getPerse());
+                    GF = String.valueOf(listaClassifica.get(i).getGoalFatti());
+                    GS = String.valueOf(listaClassifica.get(i).getGoalSubiti());
+                    break;
+                case 2:
+                    Vinte = String.valueOf(listaClassifica.get(i).getVinteCasa());
+                    Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiateCasa());
+                    Perse = String.valueOf(listaClassifica.get(i).getPerseCasa());
+                    GF = String.valueOf(listaClassifica.get(i).getGoalFattiCasa());
+                    GS = String.valueOf(listaClassifica.get(i).getGoalSubitiCasa());
+                    break;
+                case 3:
+                    Vinte = String.valueOf(listaClassifica.get(i).getVinteFuori());
+                    Pareggiate = String.valueOf(listaClassifica.get(i).getPareggiateFuori());
+                    Perse = String.valueOf(listaClassifica.get(i).getPerseFuori());
+                    GF = String.valueOf(listaClassifica.get(i).getGoalFattiFuori());
+                    GS = String.valueOf(listaClassifica.get(i).getGoalSubitiFuori());
+                    break;
             }
 
-            String urlString = "https://v3.football.api-sports.io/teams?" +
-                    "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
-                    "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
-                    "name=" + Squadra;
+            TextView txtSquadra = view.findViewById(R.id.txtSquadra);
+            txtSquadra.setText(Squadra);
 
-            UtilityApiFootball u = new UtilityApiFootball();
-            u.setImg(imgLogo);
-            u.setNomeSquadra(NomeSquadra);
-            u.setCartella("Stemmi");
-            u.EffettuaChiamata(
-                    context,
-                    urlString,
-                    "Squadra_" + NomeSquadra + ".json",
-                    false,
-                    "SQUADRA"
-            );
+            TextView txtPunti = view.findViewById(R.id.txtPunti);
+            txtPunti.setText(Punti);
+
+            TextView txtGiocate = view.findViewById(R.id.txtGiocate);
+            txtGiocate.setText(Giocate);
+
+            TextView txtVinte = view.findViewById(R.id.txtVinte);
+            txtVinte.setText(Vinte);
+
+            TextView txtPareggiate = view.findViewById(R.id.txtPareggiate);
+            txtPareggiate.setText(Pareggiate);
+
+            TextView txtPerse = view.findViewById(R.id.txtPerse);
+            txtPerse.setText(Perse);
+
+            TextView txtGF = view.findViewById(R.id.txtGF);
+            txtGF.setText(GF);
+
+            TextView txtGS = view.findViewById(R.id.txtGS);
+            txtGS.setText(GS);
+
+            TextView txtMedia = view.findViewById(R.id.txtMedia);
+            txtMedia.setText(MediaInglese);
+
+            ImageView imgLogo = view.findViewById(R.id.imgLogo);
+
+            String NomeSquadra = Squadra.toUpperCase().trim();
+            String PathImmagini = VariabiliStaticheLazio.getInstance().getPathLazio() + "/Stemmi";
+            if (Files.getInstance().EsisteFile(PathImmagini + "/" + NomeSquadra + ".png")) {
+                Bitmap bmp = BitmapFactory.decodeFile(PathImmagini + "/" + NomeSquadra + ".png");
+                imgLogo.setImageBitmap(bmp);
+            } else {
+                String Anno = VariabiliStaticheLazio.getInstance().getAnnoSelezionato();
+                String[] a = Anno.split("-");
+                VariabiliStaticheApiFootball.getInstance().setAnnoIniziale(
+                        Integer.parseInt(a[0])
+                );
+                if (VariabiliStaticheApiFootball.getInstance().getPathApiFootball() == null) {
+                    VariabiliStaticheApiFootball.getInstance().setPathApiFootball(
+                            context.getFilesDir() + "/ApiFootball"
+                    );
+                }
+
+                String urlString = "https://v3.football.api-sports.io/teams?" +
+                        "league=" + VariabiliStaticheApiFootball.idLegaSerieA + "&" +
+                        "season=" + VariabiliStaticheApiFootball.getInstance().getAnnoIniziale() + "&" +
+                        "name=" + Squadra;
+
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.setImg(imgLogo);
+                u.setNomeSquadra(NomeSquadra);
+                u.setCartella("Stemmi");
+                u.EffettuaChiamata(
+                        context,
+                        urlString,
+                        "Squadra_" + NomeSquadra + ".json",
+                        false,
+                        "SQUADRA"
+                );
             /* String url = VariabiliStaticheLazio.UrlMedia + NomeSquadra + ".Jpg";
             DownloadImmagineLazio d = new DownloadImmagineLazio();
             d.EsegueChiamata(context, imgLogo, url, NomeSquadra + ".Jpg"); */
+            }
         }
 
         return view;

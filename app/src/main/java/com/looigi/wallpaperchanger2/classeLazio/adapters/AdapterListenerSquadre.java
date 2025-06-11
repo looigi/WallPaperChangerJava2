@@ -54,6 +54,7 @@ public class AdapterListenerSquadre extends BaseAdapter {
         view = inflter.inflate(R.layout.lista_squadre, null);
 
         String Squadra = listaSquadre.get(i).getSquadra();
+        String idSquadra = String.valueOf(listaSquadre.get(i).getIdSquadra());
 
         TextView txtSquadra = view.findViewById(R.id.txtSquadra);
         txtSquadra.setText(Squadra);

@@ -198,10 +198,10 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                     String[] campi = r.split(";");
 
                     StrutturaGiocatori s = new StrutturaGiocatori();
-                    s.setIdGiocatore(Integer.parseInt(campi[0]));
+                    s.setIdGiocatore(campi[0].isEmpty() ? 0 : Integer.parseInt(campi[0]));
                     s.setCognome(campi[1]);
                     s.setNome(campi[2]);
-                    s.setIdRuolo(Integer.parseInt(campi[3]));
+                    s.setIdRuolo(campi[3].isEmpty() ? 0 : Integer.parseInt(campi[3]));
                     s.setRuolo(campi[4]);
 
                     righePerSpinner[i] = s.getCognome() + " " + s.getNome();
@@ -236,12 +236,12 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Marcatore = mc.split(";", -1);
 
                         Marcatori m = new Marcatori();
-                        m.setIdGiocatore(Integer.parseInt(Marcatore[0]));
+                        m.setIdGiocatore(Marcatore[0].isEmpty() ? 0 : Integer.parseInt(Marcatore[0]));
                         m.setCognome(Marcatore[1]);
                         m.setNome(Marcatore[2]);
-                        m.setMinuto(Integer.parseInt(Marcatore[3]));
+                        m.setMinuto(Marcatore[3].isEmpty() ? 0 : Integer.parseInt(Marcatore[3]));
                         m.setRigore(Marcatore[4].equals("S"));
-                        m.setIdApiFootball(Integer.parseInt(Marcatore[5]));
+                        m.setIdApiFootball(Marcatore[5].isEmpty() ? 0 : Integer.parseInt(Marcatore[5]));
 
                         listaMC.add(m);
                     }
@@ -256,12 +256,12 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Marcatore = mc.split(";", -1);
 
                         Marcatori m = new Marcatori();
-                        m.setIdGiocatore(Integer.parseInt(Marcatore[0]));
+                        m.setIdGiocatore(Marcatore[0].isEmpty() ? 0 : Integer.parseInt(Marcatore[0]));
                         m.setCognome(Marcatore[1]);
                         m.setNome(Marcatore[2]);
-                        m.setMinuto(Integer.parseInt(Marcatore[3]));
+                        m.setMinuto(Marcatore[3].isEmpty() ? 0 : Integer.parseInt(Marcatore[3]));
                         m.setRigore(Marcatore[4].equals("S"));
-                        m.setIdApiFootball(Integer.parseInt(Marcatore[5]));
+                        m.setIdApiFootball(Marcatore[5].isEmpty() ? 0 : Integer.parseInt(Marcatore[5]));
 
                         listaMF.add(m);
                     }
@@ -276,11 +276,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Ammonito = mc.split(";", -1);
 
                         Ammoniti m = new Ammoniti();
-                        m.setIdGiocatore(Integer.parseInt(Ammonito[0]));
+                        m.setIdGiocatore(Ammonito[0].isEmpty() ? 0 : Integer.parseInt(Ammonito[0]));
                         m.setCognome(Ammonito[1]);
                         m.setNome(Ammonito[2]);
-                        m.setMinuto(Integer.parseInt(Ammonito[3]));
-                        m.setIdApiFootball(Integer.parseInt(Ammonito[4]));
+                        m.setMinuto(Ammonito[3].isEmpty() ? 0 : Integer.parseInt(Ammonito[3]));
+                        m.setIdApiFootball(Ammonito[4].isEmpty() ? 0 : Integer.parseInt(Ammonito[4]));
 
                         listaAC.add(m);
                     }
@@ -295,11 +295,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Ammonito = mc.split(";", -1);
 
                         Ammoniti m = new Ammoniti();
-                        m.setIdGiocatore(Integer.parseInt(Ammonito[0]));
+                        m.setIdGiocatore(Ammonito[0].isEmpty() ? 0 : Integer.parseInt(Ammonito[0]));
                         m.setCognome(Ammonito[1]);
                         m.setNome(Ammonito[2]);
-                        m.setMinuto(Integer.parseInt(Ammonito[3]));
-                        m.setIdApiFootball(Integer.parseInt(Ammonito[4]));
+                        m.setMinuto(Ammonito[3].isEmpty() ? 0 : Integer.parseInt(Ammonito[3]));
+                        m.setIdApiFootball(Ammonito[4].isEmpty() ? 0 : Integer.parseInt(Ammonito[4]));
 
                         listaAF.add(m);
                     }
@@ -314,11 +314,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Espulso = mc.split(";", -1);
 
                         Espulsi m = new Espulsi();
-                        m.setIdGiocatore(Integer.parseInt(Espulso[0]));
+                        m.setIdGiocatore(Espulso[0].isEmpty() ? 0 : Integer.parseInt(Espulso[0]));
                         m.setCognome(Espulso[1]);
                         m.setNome(Espulso[2]);
-                        m.setMinuto(Integer.parseInt(Espulso[3]));
-                        m.setIdApiFootball(Integer.parseInt(Espulso[4]));
+                        m.setMinuto(Espulso[3].isEmpty() ? 0 : Integer.parseInt(Espulso[3]));
+                        m.setIdApiFootball(Espulso[4].isEmpty() ? 0 : Integer.parseInt(Espulso[4]));
 
                         listaEC.add(m);
                     }
@@ -333,11 +333,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Espulso = mc.split(";", -1);
 
                         Espulsi m = new Espulsi();
-                        m.setIdGiocatore(Integer.parseInt(Espulso[0]));
+                        m.setIdGiocatore(Espulso[0].isEmpty() ? 0 : Integer.parseInt(Espulso[0]));
                         m.setCognome(Espulso[1]);
                         m.setNome(Espulso[2]);
-                        m.setMinuto(Integer.parseInt(Espulso[3]));
-                        m.setIdApiFootball(Integer.parseInt(Espulso[4]));
+                        m.setMinuto(Espulso[3].isEmpty() ? 0 : Integer.parseInt(Espulso[3]));
+                        m.setIdApiFootball(Espulso[4].isEmpty() ? 0 : Integer.parseInt(Espulso[4]));
 
                         listaEF.add(m);
                     }
@@ -352,12 +352,12 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Formazione = mc.split(";", -1);
 
                         Formazione m = new Formazione();
-                        m.setIdGiocatore(Integer.parseInt(Formazione[0]));
+                        m.setIdGiocatore(Formazione[0].isEmpty() ? 0 : Integer.parseInt(Formazione[0]));
                         m.setCognome(Formazione[1]);
                         m.setNome(Formazione[2]);
-                        m.setEntrato(Integer.parseInt(Formazione[3]));
-                        m.setUscito(Integer.parseInt(Formazione[4]));
-                        m.setIdApiFootball(Integer.parseInt(Formazione[4]));
+                        m.setEntrato(Formazione[3].isEmpty() ? 0 : Integer.parseInt(Formazione[3]));
+                        m.setUscito(Formazione[4].isEmpty() ? 0 : Integer.parseInt(Formazione[4]));
+                        m.setIdApiFootball(Formazione[5].isEmpty() ? 0 : Integer.parseInt(Formazione[5]));
 
                         listaFC.add(m);
                     }
@@ -372,12 +372,12 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
                         String[] Formazione = mc.split(";", -1);
 
                         Formazione m = new Formazione();
-                        m.setIdGiocatore(Integer.parseInt(Formazione[0]));
+                        m.setIdGiocatore(Formazione[0].isEmpty() ? 0 : Integer.parseInt(Formazione[0]));
                         m.setCognome(Formazione[1]);
                         m.setNome(Formazione[2]);
-                        m.setEntrato(Integer.parseInt(Formazione[3]));
-                        m.setUscito(Integer.parseInt(Formazione[4]));
-                        m.setIdApiFootball(Integer.parseInt(Formazione[5]));
+                        m.setEntrato(Formazione[3].isEmpty() ? 0 : Integer.parseInt(Formazione[3]));
+                        m.setUscito(Formazione[4].isEmpty() ? 0 : Integer.parseInt(Formazione[4]));
+                        m.setIdApiFootball(Formazione[5].isEmpty() ? 0 : Integer.parseInt(Formazione[5]));
 
                         listaFF.add(m);
                     }
