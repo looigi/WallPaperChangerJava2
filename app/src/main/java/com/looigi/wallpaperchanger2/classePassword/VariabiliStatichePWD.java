@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.classePassword.strutture.StrutturaPassword;
 import com.looigi.wallpaperchanger2.classePassword.strutture.StrutturaUtente;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class VariabiliStatichePWD {
         return instance;
     }
 
-    private String UrlWS = "http://www.wspassword.looigi.it";
+    private String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaPassword + "/"; // "http://www.wspassword.looigi.it";
     private int idUtente;
     private Context context;
     private String Ricerca = "";

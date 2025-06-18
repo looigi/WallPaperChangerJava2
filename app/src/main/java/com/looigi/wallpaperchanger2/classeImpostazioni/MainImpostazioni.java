@@ -647,12 +647,12 @@ public class MainImpostazioni extends Activity {
 
         switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
             case 0:
-                // Web
-                swcOnline.setChecked(true);
-                break;
-            case 1:
                 // Locale
                 swcOffline.setChecked(true);
+                break;
+            case 1:
+                // Web
+                swcOnline.setChecked(true);
                 break;
             case 2:
                 // Immagini
@@ -688,7 +688,7 @@ public class MainImpostazioni extends Activity {
 
         swcOnline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(0);
+                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(1);
                 layOffline.setVisibility(LinearLayout.GONE);
                 switchPerData.setVisibility(LinearLayout.VISIBLE);
                 if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
@@ -707,7 +707,7 @@ public class MainImpostazioni extends Activity {
         });
         swcOffline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(1);
+                VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(0);
                 switchPerData.setVisibility(LinearLayout.GONE);
                 layGiorniDifferenza.setVisibility(LinearLayout.GONE);
                 layOffline.setVisibility(LinearLayout.VISIBLE);

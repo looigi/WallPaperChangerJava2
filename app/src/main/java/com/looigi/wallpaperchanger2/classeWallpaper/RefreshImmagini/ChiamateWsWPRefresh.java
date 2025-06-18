@@ -16,13 +16,14 @@ import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.InterrogazioneWSWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.TaskDelegate;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ChiamateWsWPRefresh implements TaskDelegate {
-    private final String RadiceWS_IoNos = "http://www.wsloovf.looigi.it/";
+    private final String RadiceWS_IoNos = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLooVF + "/"; // "http://www.wsloovf.looigi.it/";
     private final String ws_IoNos = "looRefreshImmagini.asmx/";
     private final String NS_IoNos ="http://looRefresh.org/";
     private final String SA_IoNos ="http://looRefresh.org/";

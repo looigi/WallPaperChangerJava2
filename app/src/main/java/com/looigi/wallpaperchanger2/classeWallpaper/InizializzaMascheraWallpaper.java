@@ -292,7 +292,7 @@ public class InizializzaMascheraWallpaper {
         VariabiliStaticheWallpaper.getInstance().setTxtAvanzamentoRefresh(view.findViewById(R.id.txtAvanzamentoRefresh));
         VariabiliStaticheWallpaper.getInstance().getTxtAvanzamentoRefresh().setVisibility(LinearLayout.GONE);
 
-        ImageView imgRefreshImmagini = (ImageView) view.findViewById(R.id.imgRefreshIONOS);
+        /* ImageView imgRefreshImmagini = (ImageView) view.findViewById(R.id.imgRefreshIONOS);
         imgRefreshImmagini.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -314,11 +314,11 @@ public class InizializzaMascheraWallpaper {
                     public void onClick(DialogInterface dialog, int which) {
                         EsegueAggiornamento(context, 3);
                     }
-                }); */
+                }); * /
 
                 builder.show();
             }
-        });
+        }); */
 
         ImageView imgCondividi = (ImageView) view.findViewById(R.id.imgCondividi);
         imgCondividi.setOnClickListener(new View.OnClickListener() {

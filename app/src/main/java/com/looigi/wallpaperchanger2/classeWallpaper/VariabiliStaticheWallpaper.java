@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +52,8 @@ public class VariabiliStaticheWallpaper {
     private String Filtro = "";
 
     // INIZIO VARIABILI ATTIVITA'
-    public static final String UrlWS = "http://www.wsloovf.looigi.it";
-    public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLooVF + "/"; // "http://www.wsloovf.looigi.it";
+    public static final String PercorsoImmagineSuURL = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Sfondi/"; // "http://www.sfondi.looigi.it";
     // private ImageView imgCaricamento;
     private boolean screenOn = true;
     private String DataAppoggio;

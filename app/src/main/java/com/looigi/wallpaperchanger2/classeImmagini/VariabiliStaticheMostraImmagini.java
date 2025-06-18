@@ -36,8 +36,8 @@ public class VariabiliStaticheMostraImmagini {
 
     private Activity act;
     private Context ctx;
-    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1071/"; // "http://looigi.no-ip.biz:1071/";
-    public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLooVF + "/"; // "http://looigi.no-ip.biz:1071/";
+    // public static final String PercorsoImmagineSuURL = "http://www.sfondi.looigi.it";
     public static final int TimeoutImmagine = 25;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;

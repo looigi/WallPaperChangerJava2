@@ -35,8 +35,8 @@ public class VariabiliStaticheMostraImmaginiPennetta {
 
     private Activity act;
     private Context ctx;
-    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1071/"; // "http://looigi.no-ip.biz:1071/";
-    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":1085/Materiale/Pennetta/"; // "http://looigi.no-ip.biz:1085/Materiale/Pennetta/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLooVF + "/"; // "http://looigi.no-ip.biz:1071/";
+    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Materiale/Pennetta/"; // "http://looigi.no-ip.biz:1085/Materiale/Pennetta/";
     public static final int TimeoutImmagine = 5;
     private ImmagineZoomabile img;
     private StrutturaImmaginiLibrary ultimaImmagineCaricata;

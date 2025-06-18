@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaCon
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class VariabiliStaticheModificheCodice {
         return instance;
     }
 
-    public static final String UrlWS = "http://www.wslazio.looigi.it/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLazio + "/"; // "http://www.wslazio.looigi.it/";
     private Activity act;
     private List<Progetti> listaProgetti;
     private List<Moduli> listaModuli;

@@ -23,6 +23,16 @@ public class VariabiliStaticheStart {
         return instance;
     }
 
+    public static final String UrlWSGlobale = "http://looigi.ddnsfree.com"; // http://looigi.no-ip.biz:1071/";
+    public static final String PortaLooVF = "1071";
+    public static final String PortaLazio = "1072";
+    public static final String PortaPassword = "1073";
+    public static final String PortaOrari = "1074";
+    public static final String PortaVecchioLooVF = "1084";
+    public static final String PortaPlayer = "1081";
+    public static final String PortaTotoMioImmagini = "1083";
+    public static final String PortaDiscoPublic = "1085";
+
     private Context context;
     private LogInterno l;
     private Activity mainActivity;
@@ -44,7 +54,6 @@ public class VariabiliStaticheStart {
     private Intent servizioForeground;
     // private Intent servizioForegroundGPS;
     private boolean segnaleAttivo = true;
-    public static final String UrlWSGlobale = "http://looigi.ddnsfree.com"; // http://looigi.no-ip.biz:1071/";
     private int accensioniDiSchermo = 0;
     private int chiamate = 0;
     private Date oraEntrata;

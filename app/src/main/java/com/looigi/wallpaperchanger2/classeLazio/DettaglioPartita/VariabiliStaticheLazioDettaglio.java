@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerAllenato
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerMercato;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,8 @@ public class VariabiliStaticheLazioDettaglio {
         return instance;
     }
 
-    public static final String UrlWS = "http://www.wslazio.looigi.it/";
-    public static final String UrlMedia = "http://www.totomiomedia.looigi.it/StemmiSquadre/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLazio + "/"; // "http://www.wslazio.looigi.it/";
+    public static final String UrlMedia = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaTotoMioImmagini + "/StemmiSquadre/"; // "http://www.totomiomedia.looigi.it/StemmiSquadre/";
     private GifImageView imgCaricamento;
     private String PathLazio;
     private int idPartita;

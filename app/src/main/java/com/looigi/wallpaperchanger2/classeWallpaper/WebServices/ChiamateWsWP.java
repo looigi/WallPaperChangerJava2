@@ -13,6 +13,8 @@ import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
 public class ChiamateWsWP implements TaskDelegate {
     // private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = "http://www.wsloovf.looigi.it/";
+    private final String RadiceWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaVecchioLooVF + "/"; // "http://www.wsloovf.looigi.it/";
     private String TipoOperazione = "";
     private Context context;
     private final String ws = "looVF.asmx/";
@@ -40,7 +42,9 @@ public class ChiamateWsWP implements TaskDelegate {
         ); */
         StringaBase64 = immagine;
 
-        String PathImmagine = "http://www.sfondi.looigi.it/" + s.getCartellaRemota();
+        String PathImmagine = VariabiliStaticheStart.UrlWSGlobale + ":" +
+                VariabiliStaticheStart.PortaDiscoPublic + "/Sfondi/" +
+                s.getCartellaRemota(); // "http://www.sfondi.looigi.it/" + s.getCartellaRemota();
         NomeImmaginePerModifica = s.getCartellaRemota().replace("/", "\\");
         PathImmagine = PathImmagine.replace("&", "-A-")
                 .replace("?", "-P-")
@@ -310,12 +314,12 @@ public class ChiamateWsWP implements TaskDelegate {
 
     private void fTornaProssimaImmagine(String result) {
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
-            UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             // 2433;/var/www/html/CartelleCondivise/SfondiDir/Donne/MetalWomen/df89106251200cc0021db5ae3e32.jpg
             String[] c = result.split(";");
             String quanteImmagini = c[0];
-            String Immagine = c[1].replace("/var/www/html/Sfondi", "");
+            String Immagine = c[1].replace("C:\\gDrive\\Sfondi\\", "").replace("\\", "/");
             String Datella = c[2];
             String Dimensioni = c[3];
             VariabiliStaticheWallpaper.getInstance().setDataAppoggio(Datella);
@@ -332,7 +336,7 @@ public class ChiamateWsWP implements TaskDelegate {
             si.setDimensione(c[3]);
             si.setDataImmagine(c[2]);
             String Cartella = c[1];
-            Cartella = Cartella.replace("/var/www/html/Sfondi/", "");
+            Cartella = Cartella.replace("C:\\gDrive\\Sfondi\\", "");
             // IA/Donne/1683475712232.jpg
 
             si.setCartellaRemota(Cartella);

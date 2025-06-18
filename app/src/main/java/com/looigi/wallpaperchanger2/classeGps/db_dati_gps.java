@@ -148,6 +148,7 @@ public class db_dati_gps {
                         // + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
                         + "'N', "
                         + "'" + (VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline() ? "S" : "N") + "' "
+                        // + "'" +  (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -175,6 +176,7 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(true);
         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
         VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(false);
+        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(true);
     }
 
     public int CaricaImpostazioni(String daDove) {
@@ -193,6 +195,7 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(c.getString(4).equals("S"));
                         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(c.getString(6).equals("S"));
+                        // VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(c.getString(7).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

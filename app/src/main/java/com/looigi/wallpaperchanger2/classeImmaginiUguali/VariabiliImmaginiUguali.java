@@ -33,7 +33,7 @@ public class VariabiliImmaginiUguali {
         return instance;
     }
 
-    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":1085/Materiale/newPLibrary/"; // "http://looigi.no-ip.biz:1085/Materiale/Pennetta/";
+    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Materiale/newPLibrary/"; // "http://looigi.no-ip.biz:1085/Materiale/Pennetta/";
     private List<StrutturaImmaginiUguali> lista = new ArrayList<>();
     private String TipoImpostato = "";
     private ListView lstTipi;

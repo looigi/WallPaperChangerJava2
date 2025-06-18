@@ -27,8 +27,8 @@ public class VariabiliStaticheFilms {
         return instance;
     }
 
-    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":1071/"; // "http://looigi.no-ip.biz:1071/";
-    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":1085/Video/"; // "http://looigi.no-ip.biz:1085/Video/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLooVF + "/"; // "http://looigi.no-ip.biz:1071/";
+    public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Video/"; // "http://looigi.no-ip.biz:1085/Video/";
     private String Random = "S";
     private String UltimoLink;
     private VideoView FilmsView;

@@ -101,15 +101,15 @@ public class ChangeWallpaper {
 		} else {
 			switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
 				case 0:
+					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine offline");
+
+					setWallpaperLocale(context, src);
+					break;
+				case 1:
 					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine online");
 
 					ChiamateWsWP c = new ChiamateWsWP(context);
 					c.TornaProssimaImmagine();
-					break;
-				case 1:
-					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine offline");
-
-					setWallpaperLocale(context, src);
 					break;
 				case 2:
 					UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"Cambio immagine da immagini");

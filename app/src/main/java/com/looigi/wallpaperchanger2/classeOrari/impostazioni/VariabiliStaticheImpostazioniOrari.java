@@ -17,6 +17,7 @@ import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaCommesse;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDati;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaDatiGiornata;
 import com.looigi.wallpaperchanger2.classeOrari.strutture.StrutturaMezzi;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class VariabiliStaticheImpostazioniOrari {
         return instance;
     }
 
-    public static final String UrlWS = "http://www.wsorari.looigi.it/"; // "http://looigi.no-ip.biz:1071/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaOrari + "/"; // "http://www.wsorari.looigi.it/"; // "http://looigi.no-ip.biz:1071/";
     private GifImageView imgCaricamento;
     private LinearLayout layGestione;
     private String Modalita;

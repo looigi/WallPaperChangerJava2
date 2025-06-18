@@ -32,7 +32,7 @@ public class VariabiliStaticheOnomastici {
         return instance;
     }
 
-    public static final String UrlImmagini = VariabiliStaticheStart.UrlWSGlobale + ":1085/"; // "http://looigi.no-ip.biz:1085/";
+    public static final String UrlImmagini = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/"; // "http://looigi.no-ip.biz:1085/";
     private ContentResolver Rubrica;
     private AssetManager Assets;
     private Context context;

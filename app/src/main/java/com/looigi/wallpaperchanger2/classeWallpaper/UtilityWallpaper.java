@@ -221,7 +221,7 @@ public class UtilityWallpaper {
                 VariabiliStaticheWallpaper.getInstance().getUltimaImmagine());
         switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
             case 0:
-                // Web
+                // Locale
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Cambio Immagine---");
                 int numeroRandom = UtilityWallpaper.getInstance().GeneraNumeroRandom(
                         VariabiliStaticheWallpaper.getInstance().getListaImmagini().size() - 1);
@@ -233,7 +233,7 @@ public class UtilityWallpaper {
                 }
                 break;
             case 1:
-                // Locale
+                // Online
                 c.setWallpaper(context, null);
                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"---Immagine cambiata manualmente");
                 break;

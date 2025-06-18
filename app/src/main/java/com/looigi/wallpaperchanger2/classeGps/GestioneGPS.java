@@ -75,7 +75,8 @@ public class GestioneGPS extends Service {
 
         cv = new CalcoloVelocita();
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
+        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(true);
+
         // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
         /* if (intent != null && intent.getAction() != null && intent.getAction().equals("CONTROLLO_ATTIVAZIONE")) {
@@ -87,6 +88,7 @@ public class GestioneGPS extends Service {
                 if (intent != null && intent.getAction() != null && intent.getAction().equals("ABILITA_GPS")) {
                     AbilitaGPS("NOTIFICA");
                 } else { */
+
                     AbilitaTimer(context);
 
                     ControlloAccSpegn("OnStartCommand Classe GestioneGPS");
