@@ -30,7 +30,9 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 import com.looigi.wallpaperchanger2.classeModificheCodice.db_dati_modifiche_codice;
 import com.looigi.wallpaperchanger2.utilities.Files;
@@ -700,6 +702,69 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
+        }
+
+        // {"idProgetto": 1,"idModulo": 2,"idSezione": 3,"Progetto": "Wallpaper%20changer%20ii","Modulo": "Applicazione","Sezione": "Detector","Quanti": 1}
+        List<StrutturaConteggi> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                StrutturaConteggi p = new StrutturaConteggi();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdProgetto(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdModulo(Integer.parseInt(value));
+
+                keyValue = fields[2].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdSezione(Integer.parseInt(value));
+
+                keyValue = fields[3].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setProgetto(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setProgetto("ERROR");
+                }
+
+                keyValue = fields[4].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setModulo(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setModulo("ERROR");
+                }
+
+                keyValue = fields[5].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setSezione(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setSezione("ERROR");
+                }
+
+                keyValue = fields[6].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setQuante(Integer.parseInt(value));
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaConteggi(lista);
+
+            AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context,
+                    VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
+            VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC);
         }
     }
 

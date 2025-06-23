@@ -105,8 +105,8 @@ public class VariabiliStaticheModificheCodice {
     public void ScriveConteggi(Context context) {
         db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
         db.RitornaConteggi();
-        AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context, VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
-        VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC);
+        /* AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context, VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
+        VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC); */
         db.ChiudeDB();
     }
 

@@ -134,6 +134,8 @@ public class AdapterListenerModificheCodice extends BaseAdapter {
                 StatoModifica.setText("Stato: " + Stato);
             }
         } else {
+            LinearLayout layContenitore = view.findViewById(R.id.layContenitoreLista);
+            layContenitore.setVisibility(LinearLayout.GONE);
             view.setVisibility(LinearLayout.GONE);
         }
 
