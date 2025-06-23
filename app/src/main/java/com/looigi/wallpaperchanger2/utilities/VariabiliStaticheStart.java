@@ -32,6 +32,7 @@ public class VariabiliStaticheStart {
     public static final String PortaPlayer = "1081";
     public static final String PortaTotoMioImmagini = "1083";
     public static final String PortaDiscoPublic = "1085";
+    public static final String PortaWallPaperChanger = "1086";
 
     private Context context;
     private LogInterno l;

@@ -12,7 +12,6 @@ import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +25,6 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
-import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -50,8 +48,6 @@ public class MainModificheCodice extends Activity {
 
         db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
         db.CreazioneTabelle();
-        VariabiliStaticheModificheCodice.getInstance().setListaStati(db.RitornaStati());
-        VariabiliStaticheModificheCodice.getInstance().setListaProgetti(db.RitornaProgetti());
 
         VariabiliStaticheModificheCodice.getInstance().setLstConteggi(findViewById(R.id.lstConteggi));
         VariabiliStaticheModificheCodice.getInstance().ScriveConteggi(context);
@@ -72,23 +68,31 @@ public class MainModificheCodice extends Activity {
         ImageView imgAggiungeProgetto = findViewById(R.id.imgAggiungeProgetto);
         VariabiliStaticheModificheCodice.getInstance().setImgModificaProgetto(findViewById(R.id.imgModificaProgetto));
         VariabiliStaticheModificheCodice.getInstance().setImgEliminaProgetto(findViewById(R.id.imgEliminaProgetto));
-        ImageView imgAggiungeModulo = findViewById(R.id.imgAggiungeModulo);
+        VariabiliStaticheModificheCodice.getInstance().setImgAggiungeModulo(findViewById(R.id.imgAggiungeModulo));
         VariabiliStaticheModificheCodice.getInstance().setImgModificaModulo(findViewById(R.id.imgModificaModulo));
         VariabiliStaticheModificheCodice.getInstance().setImgEliminaModulo(findViewById(R.id.imgEliminaModulo));
-        ImageView imgAggiungeSezione = findViewById(R.id.imgAggiungeSezione);
+        VariabiliStaticheModificheCodice.getInstance().setImgAggiungeSezione(findViewById(R.id.imgAggiungeSezione));
         VariabiliStaticheModificheCodice.getInstance().setImgModificaSezioni(findViewById(R.id.imgModificaSezione));
         VariabiliStaticheModificheCodice.getInstance().setImgEliminaSezioni(findViewById(R.id.imgEliminaSezione));
-        ImageView imgAggiungeModifica = findViewById(R.id.imgAggiungeModifica);
+        VariabiliStaticheModificheCodice.getInstance().setImgAggiungeModifica(findViewById(R.id.imgAggiungeModifica));
         VariabiliStaticheModificheCodice.getInstance().setSpnProgetto(findViewById(R.id.spnProgetto));
         VariabiliStaticheModificheCodice.getInstance().setSpnModulo(findViewById(R.id.spnModulo));
         VariabiliStaticheModificheCodice.getInstance().setSpnSezione(findViewById(R.id.spnSezione));
         VariabiliStaticheModificheCodice.getInstance().setTxtQuante(findViewById(R.id.txtQuante));
         ImageView imgCreaTesto = findViewById(R.id.imgCreaTesto);
         VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText("");
+        VariabiliStaticheModificheCodice.getInstance().setSpnStati(findViewById(R.id.spnStato));
+        VariabiliStaticheModificheCodice.getInstance().setLstModifiche(findViewById(R.id.lstModifiche));
+
+        VariabiliStaticheModificheCodice.getInstance().setEseguitaLetturaIniziale(false);
+
+        db.RitornaStati();
+        db.RitornaProgetti();
+        db.RitornaConteggi();
 
         imgCreaTesto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+                /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
 
                 List<Modifiche> listaModificaIniziale = VariabiliStaticheModificheCodice.getInstance().getListaModifiche();
                 boolean check = VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked();
@@ -155,13 +159,60 @@ public class MainModificheCodice extends Activity {
                 }, 30000);
 
                 VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setChecked(check);
-                VariabiliStaticheModificheCodice.getInstance().setListaModifiche(listaModificaIniziale);
+                VariabiliStaticheModificheCodice.getInstance().setListaModifiche(listaModificaIniziale); */
+            }
+        });
+
+        ImageView imgSalvaOnline = findViewById(R.id.imgSalvaOnline);
+        imgSalvaOnline.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+
+                VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setChecked(false);
+
+                List<String> ListaFinale = new ArrayList<>();
+                List<Progetti> progetti = db.RitornaProgetti();
+                for (Progetti p : progetti) {
+                    ListaFinale.add("PROGETTO;" + p.getIdProgetto() + ";;;;" + p.getProgetto() + ";;;");
+
+                    List<Moduli> moduli = db.RitornaModuli(p.getIdProgetto());
+                    for (Moduli m : moduli) {
+                        ListaFinale.add("MODULO;" + p.getIdProgetto() + ";" + m.getIdModulo() + ";;;" + m.getModulo() + ";;;");
+
+                        List<Sezioni> sezioni = db.RitornaSezioni(p.getIdProgetto(), m.getIdModulo());
+                        for (Sezioni s : sezioni) {
+                            ListaFinale.add("SEZIONE;" + p.getIdProgetto() + ";" + m.getIdModulo() + ";" + s.getIdSezione() + ";;" +
+                                    s.getSezione() + ";;;");
+
+                            List<Modifiche> modifiche = db.RitornaModifiche(p.getIdProgetto(), m.getIdModulo(), s.getIdSezione());
+                            for (Modifiche modif : modifiche) {
+                                /* List<Stati> stati = db.RitornaStati();
+                                String Stato = "";
+                                for (Stati st : stati) {
+                                    if (st.getIdStato() == modif.getIdStato()) {
+                                        Stato = st.getStato();
+                                    }
+                                }
+                                ListaFinale.add("MODIFICA;" + p.getIdProgetto() + ";" + m.getIdModulo() + ";" + s.getIdSezione() + ";" +
+                                        modif.getIdModifica() + ";" + modif.getModifica() + ";" + modif.getIdStato() + ";" + Stato + ";"); * /
+                            }
+                        }
+                    }
+                }
+                db.ChiudeDB();
+
+                VariabiliStaticheModificheCodice.getInstance().setListaAppoggioDaSalvare(ListaFinale);
+                VariabiliStaticheModificheCodice.getInstance().setQualeIdDaSalvare(0);
+                VariabiliStaticheModificheCodice.getInstance().setStaSalvandoTutto(true);
+
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.SalvaTuttiIDati(); */
             }
         });
 
         VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+                /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
                 db.RitornaModifiche(
                         VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
                         VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
@@ -171,37 +222,34 @@ public class MainModificheCodice extends Activity {
                 VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(
                         VariabiliStaticheModificheCodice.getInstance().PrendeNumeroModifiche(context)
                 );
-                db.ChiudeDB();
+                db.ChiudeDB(); */
 
-                AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(
+                /* AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(
                         context,
                         VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
-                VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT);
+                VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT); */
+
+                VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche().notifyDataSetChanged();
             }
         });
 
-        if (!VariabiliStaticheModificheCodice.getInstance().getListaProgetti().isEmpty()) {
+        /* if (!VariabiliStaticheModificheCodice.getInstance().getListaProgetti().isEmpty()) {
             VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
         } else {
             VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
-        }
+        } */
         db.LeggeUltimeSelezioni();
 
-        if (!VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato().isEmpty()) {
+        /* if (!VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato().isEmpty()) {
             VariabiliStaticheModificheCodice.getInstance().setIdProgetto(
                 VariabiliStaticheModificheCodice.getInstance().TornaIdProgetto(
                         VariabiliStaticheModificheCodice.getInstance().getListaProgetti(),
                         VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
                 )
             );
-
-            /* List<Moduli> listaModuli = VariabiliStaticheModifiche.getInstance().RicaricaModuli(context, db);
-            VariabiliStaticheModifiche.getInstance().setListaModuli(
-                    listaModuli
-            ); */
-        }
+        } */
 
         /* if (!VariabiliStaticheModifiche.getInstance().getModuloSelezionato().isEmpty()) {
             VariabiliStaticheModifiche.getInstance().setIdModulo(
@@ -296,7 +344,7 @@ public class MainModificheCodice extends Activity {
             }
         });
 
-        imgAggiungeModulo.setOnClickListener(new View.OnClickListener() {
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheModificheCodice.getInstance().setTipologia("MODULO");
                 VariabiliStaticheModificheCodice.getInstance().setOperazione("INSERT");
@@ -346,7 +394,7 @@ public class MainModificheCodice extends Activity {
             }
         });
 
-        imgAggiungeSezione.setOnClickListener(new View.OnClickListener() {
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheModificheCodice.getInstance().setTipologia("SEZIONE");
                 VariabiliStaticheModificheCodice.getInstance().setOperazione("INSERT");
@@ -396,7 +444,7 @@ public class MainModificheCodice extends Activity {
             }
         });
 
-        imgAggiungeModifica.setOnClickListener(new View.OnClickListener() {
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheModificheCodice.getInstance().setTipologia("MODIFICA");
                 VariabiliStaticheModificheCodice.getInstance().setOperazione("INSERT");
@@ -415,15 +463,15 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
 
-        imgAggiungeModulo.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
 
-        imgAggiungeSezione.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
 
-        imgAggiungeModifica.setVisibility(LinearLayout.GONE);
+        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
 
         /* TextView txtTipoStato = findViewById(R.id.txtStato);
         VariabiliStaticheModifiche.getInstance().setEdtStato(findViewById(R.id.edtStato));
@@ -509,14 +557,13 @@ public class MainModificheCodice extends Activity {
             }
         }); */
 
-        VariabiliStaticheModificheCodice.getInstance().setSpnStati(findViewById(R.id.spnStato));
         /* ArrayAdapter<String> adapterS = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaStati(
                         VariabiliStaticheModificheCodice.getInstance().getListaStati()
                 )
-        ); */
+        );
         ArrayAdapter<String> adapterS = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaStati(
@@ -532,7 +579,7 @@ public class MainModificheCodice extends Activity {
 
                 /* VariabiliStaticheModifiche.getInstance().getEdtStato().setText(
                         VariabiliStaticheModifiche.getInstance().getStatoSelezionato()
-                ); */
+                ); * /
 
                 VariabiliStaticheModificheCodice.getInstance().setIdStato(
                         VariabiliStaticheModificheCodice.getInstance().TornaIdStato(
@@ -546,9 +593,9 @@ public class MainModificheCodice extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
 
             }
-        });
+        }); */
 
-        VariabiliStaticheModificheCodice.getInstance().setLstModifiche(findViewById(R.id.lstModifiche));
+        /* VariabiliStaticheModificheCodice.getInstance().setLstModifiche(findViewById(R.id.lstModifiche));
         VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.GONE);
 
         VariabiliStaticheModificheCodice.getInstance().setAdapterProgetti(new ArrayAdapter<String>(
@@ -649,9 +696,9 @@ public class MainModificheCodice extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
 
             }
-        });
+        }); */
 
-        VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setPrompt(
+        /* VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setPrompt(
                 VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
         );
         VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -696,22 +743,22 @@ public class MainModificheCodice extends Activity {
 
                         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.VISIBLE);
 
-                        imgAggiungeSezione.setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.VISIBLE);
 
                         if (!VariabiliStaticheModificheCodice.getInstance().getListaSezioni().isEmpty()) {
                             VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
                             VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
                         }
 
-                        imgAggiungeModifica.setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
                     } else {
                         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.GONE);
 
-                        imgAggiungeSezione.setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.GONE);
                         VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
                         VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
 
-                        imgAggiungeModifica.setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
                     }
                 } catch (Exception e) {
                     VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato("");
@@ -722,9 +769,9 @@ public class MainModificheCodice extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
 
             }
-        });
+        }); */
 
-        VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setPrompt(
+        /* VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setPrompt(
                 VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
         );
         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -765,11 +812,11 @@ public class MainModificheCodice extends Activity {
                                 VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
                         VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT);
 
-                        imgAggiungeModifica.setVisibility(LinearLayout.VISIBLE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.VISIBLE);
 
                         VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.VISIBLE);
                     } else {
-                        imgAggiungeModifica.setVisibility(LinearLayout.GONE);
+                        VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
 
                         VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.GONE);
                     }
@@ -782,9 +829,9 @@ public class MainModificheCodice extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) {
 
             }
-        });
+        }); */
 
-        ImageView imgImporta = findViewById(R.id.imgImporta);
+        /* ImageView imgImporta = findViewById(R.id.imgImporta);
         imgImporta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -811,9 +858,9 @@ public class MainModificheCodice extends Activity {
         imgEsporta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                ws.Esporta("MODIFICHE", "");
+                ws.Esporta("MODIFICHE", "Modifiche");
             }
-        });
+        }); */
     }
 
     @Override

@@ -2,9 +2,6 @@ package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,7 +43,7 @@ public class VariabiliStaticheModificheCodice {
         return instance;
     }
 
-    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLazio + "/"; // "http://www.wslazio.looigi.it/";
+    public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaWallPaperChanger + "/"; // "http://www.wslazio.looigi.it/";
     private Activity act;
     private List<Progetti> listaProgetti;
     private List<Moduli> listaModuli;
@@ -86,6 +83,14 @@ public class VariabiliStaticheModificheCodice {
     private GifImageView imgCaricamento;
     private List<StrutturaConteggi> ListaConteggi = new ArrayList<>();
     private ListView lstConteggi;
+    private List<String> listaAppoggioDaSalvare;
+    private int qualeIdDaSalvare;
+    private boolean staSalvandoTutto = false;
+    private ImageView imgAggiungeModulo;
+    private ImageView imgAggiungeSezione;
+    private ImageView imgAggiungeModifica;
+    private boolean eseguitaLetturaIniziale = false;
+    private AdapterListenerModificheCodice adapterModifiche;
 
     public void Attende(boolean Attesa) {
         if (imgCaricamento != null) {
@@ -103,6 +108,70 @@ public class VariabiliStaticheModificheCodice {
         AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context, VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
         VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC);
         db.ChiudeDB();
+    }
+
+    public AdapterListenerModificheCodice getAdapterModifiche() {
+        return adapterModifiche;
+    }
+
+    public void setAdapterModifiche(AdapterListenerModificheCodice adapterModifiche) {
+        this.adapterModifiche = adapterModifiche;
+    }
+
+    public boolean isEseguitaLetturaIniziale() {
+        return eseguitaLetturaIniziale;
+    }
+
+    public void setEseguitaLetturaIniziale(boolean eseguitaLetturaIniziale) {
+        this.eseguitaLetturaIniziale = eseguitaLetturaIniziale;
+    }
+
+    public boolean isStaSalvandoTutto() {
+        return staSalvandoTutto;
+    }
+
+    public ImageView getImgAggiungeModifica() {
+        return imgAggiungeModifica;
+    }
+
+    public void setImgAggiungeModifica(ImageView imgAggiungeModifica) {
+        this.imgAggiungeModifica = imgAggiungeModifica;
+    }
+
+    public ImageView getImgAggiungeSezione() {
+        return imgAggiungeSezione;
+    }
+
+    public void setImgAggiungeSezione(ImageView imgAggiungeSezione) {
+        this.imgAggiungeSezione = imgAggiungeSezione;
+    }
+
+    public ImageView getImgAggiungeModulo() {
+        return imgAggiungeModulo;
+    }
+
+    public void setImgAggiungeModulo(ImageView imgAggiungeModulo) {
+        this.imgAggiungeModulo = imgAggiungeModulo;
+    }
+
+    public void setStaSalvandoTutto(boolean staSalvandoTutto) {
+        this.staSalvandoTutto = staSalvandoTutto;
+    }
+
+    public List<String> getListaAppoggioDaSalvare() {
+        return listaAppoggioDaSalvare;
+    }
+
+    public void setListaAppoggioDaSalvare(List<String> listaAppoggioDaSalvare) {
+        this.listaAppoggioDaSalvare = listaAppoggioDaSalvare;
+    }
+
+    public int getQualeIdDaSalvare() {
+        return qualeIdDaSalvare;
+    }
+
+    public void setQualeIdDaSalvare(int qualeIdDaSalvare) {
+        this.qualeIdDaSalvare = qualeIdDaSalvare;
     }
 
     public ListView getLstConteggi() {
@@ -455,7 +524,7 @@ public class VariabiliStaticheModificheCodice {
 
     public int TornaIdProgetto(List<Progetti> lista, String Progetto) {
         for (Progetti p : lista) {
-            if (p.getProgetto().equals(Progetto)) {
+            if (p.getProgetto().toUpperCase().trim().equals(Progetto.toUpperCase().trim())) {
                 return p.getIdProgetto();
             }
         }
@@ -479,7 +548,7 @@ public class VariabiliStaticheModificheCodice {
 
     public int TornaIdModulo(List<Moduli> lista, String Modulo) {
         for (Moduli p : lista) {
-            if (p.getModulo().equals(Modulo)) {
+            if (p.getModulo().toUpperCase().trim().equals(Modulo.toUpperCase().trim())) {
                 return p.getIdModulo();
             }
         }
@@ -503,7 +572,7 @@ public class VariabiliStaticheModificheCodice {
 
     public int TornaIdStato(List<Stati> lista, String Stato) {
         for (Stati p : lista) {
-            if (p.getStato().equals(Stato)) {
+            if (p.getStato().toUpperCase().trim().equals(Stato.toUpperCase().trim())) {
                 return p.getIdStato();
             }
         }
@@ -540,27 +609,7 @@ public class VariabiliStaticheModificheCodice {
     }
 
     private void RicaricaProgetti(Context context, db_dati_modifiche_codice db) {
-        listaProgetti = db.RitornaProgetti();
-
-        if (!listaProgetti.isEmpty()) {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
-        } else {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
-        }
-
-        /* adapterProgetti = new ArrayAdapter<String>(
-                context,
-                R.layout.spinner_text,
-                RitornaStringaProgetti(listaProgetti)
-        ); */
-
-        ArrayAdapter<String> adapterProgetti = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
-                context,
-                RitornaStringaProgetti(listaProgetti)
-        );
-        spnProgetto.setAdapter(adapterProgetti);
+        db.RitornaProgetti();
     }
 
     private ArrayAdapter<String> adapterModuli;
@@ -569,25 +618,8 @@ public class VariabiliStaticheModificheCodice {
         return adapterModuli;
     }
 
-    public List<Moduli> RicaricaModuli(Context context, db_dati_modifiche_codice db) {
-        listaModuli = db.RitornaModuli(idProgetto);
-
-        if (!listaModuli.isEmpty()) {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
-        } else {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
-        }
-
-        adapterModuli = new ArrayAdapter<String>(
-                context,
-                R.layout.spinner_text,
-                RitornaStringaModuli(listaModuli)
-        );
-        spnModulo.setAdapter(adapterModuli);
-
-        return listaModuli;
+    public void RicaricaModuli(Context context, db_dati_modifiche_codice db) {
+        db.RitornaModuli(idProgetto);
     }
 
     private ArrayAdapter<String> adapterSezioni;
@@ -596,47 +628,25 @@ public class VariabiliStaticheModificheCodice {
         return adapterSezioni;
     }
 
-    public List<Sezioni> RicaricaSezioni(Context context, db_dati_modifiche_codice db) {
-        listaSezioni = db.RitornaSezioni(idProgetto, idModulo);
-
-        if (!listaSezioni.isEmpty()) {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
-        } else {
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
-        }
-
-        adapterSezioni = new ArrayAdapter<String>(
-                context,
-                R.layout.spinner_text,
-                RitornaStringaSezioni(listaSezioni)
-        );
-        spnSezione.setAdapter(adapterSezioni);
-
-        return listaSezioni;
+    public void RicaricaSezioni(Context context, db_dati_modifiche_codice db) {
+        db.RitornaSezioni(idProgetto, idModulo);
     }
 
     private void RicaricaStati(Context context, db_dati_modifiche_codice db) {
-        listaStati = db.RitornaStati();
+        db.RitornaStati();
 
         /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 RitornaStringaStati(listaStati)
         ); */
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
-                context,
-                RitornaStringaStati(listaStati)
-        );
-        spnStati.setAdapter(adapter);
     }
 
-    private void RicaricaModifiche(Context context, db_dati_modifiche_codice db) {
-        listaModifiche = db.RitornaModifiche(idProgetto, idModulo, idSezione);
+    public void RicaricaModifiche(Context context, db_dati_modifiche_codice db) {
+        db.RitornaModifiche(idProgetto, idModulo, idSezione);
 
-        AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(context, VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
-        lstModifiche.setAdapter(customAdapterT);
+        // AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(context, VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
+        // lstModifiche.setAdapter(customAdapterT);
     }
 
     public void EffettuaSalvataggio(Context context) {

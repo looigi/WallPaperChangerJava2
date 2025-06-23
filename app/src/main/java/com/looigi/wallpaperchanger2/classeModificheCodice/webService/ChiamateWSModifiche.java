@@ -7,10 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.MainStart;
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeGps.AdapterListenerFilesRemoti;
 import com.looigi.wallpaperchanger2.classeGps.CalcoloVelocita;
@@ -19,7 +24,15 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaNomeFileRemoti;
+import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneSpinner;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
+import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
+import com.looigi.wallpaperchanger2.classeModificheCodice.db_dati_modifiche_codice;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -29,6 +42,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -41,9 +59,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheModificheCodice.UrlWS;
-    private final String ws = "wsModifiche.asmx/";
-    private final String NS="http://looModifiche.it/";
-    private final String SA="http://looModifiche.it/";
+    private final String ws = "modifiche.asmx/";
+    private final String NS="http://wallpaperChangerWS_Modifiche.it/";
+    private final String SA="http://wallpaperChangerWS_Modifiche.it/";
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
@@ -105,6 +123,346 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         return base64File;
     }
 
+    private String SistemaTestoPerInvio(String Cosa) {
+        String Ritorno = null;
+        try {
+            URI uri = new URI(null, null, Cosa, null);
+            Ritorno = uri.toASCIIString();
+        } catch (URISyntaxException e) {
+            Ritorno = "";
+        }
+
+        return Ritorno;
+    }
+
+    public void SalvaTuttiIDati() {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Riga = VariabiliStaticheModificheCodice.getInstance().getListaAppoggioDaSalvare().get(
+                VariabiliStaticheModificheCodice.getInstance().getQualeIdDaSalvare()
+        );
+        String[] r = Riga.split(";", -1);
+        String Tipo = r[0];
+        String idProgetto = r[1];
+        String idModulo = r[2];
+        String idSezione = r[3];
+        String idModifica = r[4];
+        String Valore = SistemaTestoPerInvio(r[5]);
+        String idStato = r[6];
+        String Stato = r[7];
+
+        String Urletto = "";
+
+        switch (Tipo) {
+            case "PROGETTO":
+                Urletto = "InserisceModificaProgetto?idProgetto=" + idProgetto + "&Progetto=" + Valore;
+                TipoOperazione = "InserisceModificaProgetto";
+                break;
+            case "MODULO":
+                Urletto = "InserisceModificaModulo?idProgetto=" + idProgetto + "&idModulo=" + idModulo +
+                        "&Modulo=" + Valore;
+                TipoOperazione = "InserisceModificaModulo";
+                break;
+            case "SEZIONE":
+                Urletto = "InserisceModificaSezione?idProgetto=" + idProgetto + "&idModulo=" + idModulo +
+                        "&idSezione=" + idSezione + "&Sezione=" + Valore;
+                TipoOperazione = "InserisceModificaSezione";
+                break;
+            case "MODIFICA":
+                Urletto = "InserisceModificaModifica?idProgetto=" + idProgetto + "&idModulo=" + idModulo +
+                        "&idSezione=" + idSezione + "&idModifica=" + idModifica + "&Modifica=" + Valore + "&idStato=" + idStato;
+                TipoOperazione = "InserisceModificaModifica";
+                break;
+        }
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaConteggi() {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaConteggi";
+
+        TipoOperazione = "RitornaConteggi";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void InserisceModificaStato(String idStato, String Stato) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="InserisceModificaStato?" +
+                "idStato=" + idStato +
+                "&Stato=" + SistemaTestoPerInvio(Stato);
+
+        TipoOperazione = "InserisceModificaStato";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void InserisceModificaProgetto(String idProgetto, String Valore) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="InserisceModificaProgetto?" +
+                "idProgetto=" + idProgetto +
+                "&Progetto=" + SistemaTestoPerInvio(Valore);
+
+        TipoOperazione = "InserisceModificaProgetto";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void InserisceModificaModulo(String idProgetto, String idModulo, String Valore) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="InserisceModificaModulo?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo +
+                "&Modulo=" + SistemaTestoPerInvio(Valore);
+
+        TipoOperazione = "InserisceModificaModulo";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void InserisceModificaSezione(String idProgetto, String idModulo, String idSezione, String Valore) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="InserisceModificaSezione?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo +
+                "&idSezione=" + idSezione +
+                "&Sezione=" + SistemaTestoPerInvio(Valore);
+
+        TipoOperazione = "InserisceModificaSezione";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void InserisceModificaModifica(String idProgetto, String idModulo, String idSezione, String idModifica, String Valore, String idStato) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="InserisceModificaModifica?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo +
+                "&idSezione=" + idSezione +
+                "&idModifica=" + idModifica +
+                "&Modifica=" + SistemaTestoPerInvio(Valore) +
+                "&idStato=" + idStato;
+
+        TipoOperazione = "InserisceModificaModifica";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaStato(String idStato) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaStato?idStato=" + idStato;
+
+        TipoOperazione = "EliminaStato";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaProgetto(String idProgetto) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaProgetto?idProgetto=" + idProgetto;
+
+        TipoOperazione = "EliminaProgetto";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaModulo(String idProgetto, String idModulo) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaModulo?idProgetto=" + idProgetto + "&idModulo=" + idModulo;
+
+        TipoOperazione = "EliminaModulo";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaSezione(String idProgetto, String idModulo, String idSezione) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaSezione?idProgetto=" + idProgetto + "&idModulo=" + idModulo + "&idSezione=" + idSezione;
+
+        TipoOperazione = "EliminaSezione";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void EliminaModifica(String idProgetto, String idModulo, String idSezione, String idModifica) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="EliminaModifica?idProgetto=" + idProgetto + "&idModulo=" + idModulo + "&idSezione=" + idSezione + "&idModifica=" + idModifica;
+
+        TipoOperazione = "EliminaModifica";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaStati() {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaStati";
+
+        TipoOperazione = "RitornaStati";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaProgetti() {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaProgetti";
+
+        TipoOperazione = "RitornaProgetti";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaModuli(String idProgetto) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaModuli?" +
+                "idProgetto=" + idProgetto;
+
+        TipoOperazione = "RitornaModuli";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaSezioni(String idProgetto, String idModulo) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaSezioni?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo;
+
+        TipoOperazione = "RitornaSezioni";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
+    public void RitornaModifiche(String idProgetto, String idModulo, String idSezione) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaModifiche?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo +
+                "&idSezione=" + idSezione;
+
+        TipoOperazione = "RitornaModifiche";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
     public void RitornaFilesRemoti() {
         UtilityGPS.getInstance().ImpostaAttesa(true);
 
@@ -159,7 +517,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             case "GPS":
                 UtilityGPS.getInstance().ImpostaAttesa(false);
                 PathModifiche = NomeFile;
-                String[] n = NomeFile.split("/");
+                String[] n = NomeFile.split("\\\\");
                 sNomeFile = n[n.length - 1];
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
@@ -247,11 +605,59 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     case "Importa":
                         fImporta(result);
                         break;
+                    case "RitornaConteggi":
+                        fRitornaConteggi(result);
+                        break;
                     case "RitornaFilesGPS":
                         fRitornaFilesGPS(result);
                         break;
                     case "EliminaFileRemoto":
                         fEliminaFileRemoto(result);
+                        break;
+                    case "InserisceModificaStato":
+                        fInserisceModificaStato(result);
+                        break;
+                    case "InserisceModificaProgetto":
+                        fInserisceModificaProgetto(result);
+                        break;
+                    case "InserisceModificaModulo":
+                        fInserisceModificaModulo(result);
+                        break;
+                    case "InserisceModificaSezione":
+                        fInserisceModificaSezione(result);
+                        break;
+                    case "InserisceModificaModifica":
+                        fInserisceModificaModifica(result);
+                        break;
+                    case "EliminaStato":
+                        fEliminaStato(result);
+                        break;
+                    case "EliminaProgetto":
+                        fEliminaProgetto(result);
+                        break;
+                    case "EliminaModulo":
+                        fEliminaModulo(result);
+                        break;
+                    case "EliminaSezione":
+                        fEliminaSezione(result);
+                        break;
+                    case "EliminaModifica":
+                        fEliminaModifica(result);
+                        break;
+                    case "RitornaStati":
+                        fRitornaStati(result);
+                        break;
+                    case "RitornaProgetti":
+                        fRitornaProgetti(result);
+                        break;
+                    case "RitornaModuli":
+                        fRitornaModuli(result);
+                        break;
+                    case "RitornaSezioni":
+                        fRitornaSezioni(result);
+                        break;
+                    case "RitornaModifiche":
+                        fRitornaModifiche(result);
                         break;
                 }
             }
@@ -271,6 +677,583 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void ContinuaSalvataggio() {
+        int q = VariabiliStaticheModificheCodice.getInstance().getQualeIdDaSalvare();
+        VariabiliStaticheModificheCodice.getInstance().setQualeIdDaSalvare(q + 1);
+
+        if (VariabiliStaticheModificheCodice.getInstance().getQualeIdDaSalvare() <
+                VariabiliStaticheModificheCodice.getInstance().getListaAppoggioDaSalvare().size()) {
+            ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+            ws.SalvaTuttiIDati();
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Operazione effettuata");
+        }
+    }
+
+    private void fRitornaConteggi(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna conteggi", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+    }
+
+    private void fRitornaStati(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna stati", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        // [{"idStato": 0,"Stato": "Aperta"},{"idStato": 2,"Stato": "Chiusa"},{"idStato": 1,"Stato": "Da%20Controllare"},{"idStato": 3,"Stato": "In%20Dubbio"}]
+        List<Stati> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                Stati p = new Stati();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdStato(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setStato(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setStato("ERROR");
+                }
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
+            GestioneSpinner.getInstance().GestioneSpinnerStati(context);
+        }
+    }
+
+    private void fRitornaProgetti(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna progetti", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        // [{"idProgetto": 1,"Progetto": "Wallpaper%20changer%20ii"}]
+        List<Progetti> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                Progetti p = new Progetti();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdProgetto(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setProgetto(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setProgetto("ERROR");
+                }
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaProgetti(lista);
+
+            if (!lista.isEmpty()) {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.GONE);
+            }
+
+            GestioneSpinner.getInstance().GestioneSpinnerProgetti(context);
+
+            int idProgetto = -1;
+            if (!VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato().isEmpty()) {
+                idProgetto = VariabiliStaticheModificheCodice.getInstance().TornaIdProgetto(
+                        VariabiliStaticheModificheCodice.getInstance().getListaProgetti(),
+                        VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
+                );
+            }
+            if (idProgetto == -1) {
+                if (lista.isEmpty()) {
+                    idProgetto = -1;
+                } else {
+                    idProgetto = lista.get(0).getIdProgetto();
+                    VariabiliStaticheModificheCodice.getInstance().setProgettoSelezionato(
+                            (String) lista.get(0).getProgetto().toString().trim()
+                    );
+
+                    VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setPrompt(
+                            VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
+                    );
+                }
+            }
+            VariabiliStaticheModificheCodice.getInstance().setIdProgetto(idProgetto);
+
+            db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+            db.ModificaUltimeSelezioni();
+            VariabiliStaticheModificheCodice.getInstance().RicaricaModuli(context, db);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setVisibility(LinearLayout.VISIBLE);
+
+            if (VariabiliStaticheModificheCodice.getInstance().getListaModuli() != null && !VariabiliStaticheModificheCodice.getInstance().getListaModuli().isEmpty()) {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
+        }
+    }
+
+    private void fRitornaModuli(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna moduli", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        // [{"idProgetto": 1,"idModulo": 2,"Modulo": "Applicazione"},{"idProgetto": 1,"idModulo": 1,"Modulo": "Web%20service"}]
+        List<Moduli> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                Moduli p = new Moduli();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdProgetto(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdModulo(Integer.parseInt(value));
+
+                keyValue = fields[2].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setModulo(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setModulo("ERROR");
+                }
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaModuli(lista);
+
+            GestioneSpinner.getInstance().GestioneSpinnerModuli(context);
+
+            int idModulo = 1;
+            if (!VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato().isEmpty()) {
+                idModulo = VariabiliStaticheModificheCodice.getInstance().TornaIdModulo(
+                        VariabiliStaticheModificheCodice.getInstance().getListaModuli(),
+                        VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
+                );
+            }
+            if (idModulo == -1) {
+                if (lista.isEmpty()) {
+                    idModulo = 1;
+                } else {
+                    idModulo = lista.get(0).getIdModulo();
+                    VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato(
+                            (String) lista.get(0).getModulo().toString().trim()
+                    );
+
+                    VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setPrompt(
+                            VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
+                    );
+                }
+            }
+            VariabiliStaticheModificheCodice.getInstance().setIdModulo(idModulo);
+
+            db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+            db.ModificaUltimeSelezioni();
+            VariabiliStaticheModificheCodice.getInstance().RicaricaSezioni(context, db);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setVisibility(LinearLayout.VISIBLE);
+
+            if (!VariabiliStaticheModificheCodice.getInstance().getListaModuli().isEmpty()) {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
+        }
+    }
+
+    private void fRitornaSezioni(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna sezioni", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        // [{"idProgetto": 1,"idModulo": 2,"idSezione": 2,"Sezione": "Backup"},
+        List<Sezioni> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                Sezioni p = new Sezioni();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdProgetto(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdModulo(Integer.parseInt(value));
+
+                keyValue = fields[2].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdSezione(Integer.parseInt(value));
+
+                keyValue = fields[3].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setSezione(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setSezione("ERROR");
+                }
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaSezioni(lista);
+
+            GestioneSpinner.getInstance().GestioneSpinnerSezioni(context);
+
+            int idSezione = 1;
+            if (!VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato().isEmpty()) {
+                idSezione = VariabiliStaticheModificheCodice.getInstance().TornaIdSezione(
+                        VariabiliStaticheModificheCodice.getInstance().getListaSezioni(),
+                        VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
+                );
+            }
+            if (idSezione == -1) {
+                if (lista.isEmpty()) {
+                    idSezione = 1;
+                } else {
+                    idSezione = lista.get(0).getIdModulo();
+                    VariabiliStaticheModificheCodice.getInstance().setSezioneSelezionata(
+                            (String) lista.get(0).getSezione().toString().trim()
+                    );
+
+                    VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setPrompt(
+                            VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
+                    );
+                }
+            }
+            VariabiliStaticheModificheCodice.getInstance().setIdSezione(idSezione);
+
+            db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+            db.ModificaUltimeSelezioni();
+            VariabiliStaticheModificheCodice.getInstance().RicaricaModifiche(context, db);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.VISIBLE);
+
+            if (!VariabiliStaticheModificheCodice.getInstance().getListaSezioni().isEmpty()) {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
+        }
+    }
+
+    private void fRitornaModifiche(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna modifiche", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        String idStato = "";
+        if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
+            idStato = "0";
+        }
+
+        List<Modifiche> lista = new ArrayList<>();
+        String resultSenzaQuadre = result.substring(1, result.length() - 1);
+        if (!resultSenzaQuadre.isEmpty()) {
+            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            for (String obj : righe) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                Modifiche p = new Modifiche();
+                String[] keyValue = fields[0].split(":");
+                String value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdProgetto(Integer.parseInt(value));
+
+                keyValue = fields[1].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdModulo(Integer.parseInt(value));
+
+                keyValue = fields[2].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdSezione(Integer.parseInt(value));
+
+                keyValue = fields[3].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdModifica(Integer.parseInt(value));
+
+                keyValue = fields[4].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                try {
+                    String decoded = URLDecoder.decode(value, "UTF-8");
+                    p.setModifica(decoded);
+                } catch (UnsupportedEncodingException e) {
+                    p.setModifica("ERROR");
+                }
+
+                keyValue = fields[5].split(":");
+                value = keyValue[1].replaceAll("\"", "").trim();
+                p.setIdStato(Integer.parseInt(value));
+
+                lista.add(p);
+            }
+
+            VariabiliStaticheModificheCodice.getInstance().setListaModifiche(lista);
+
+            // GestioneSpinner.getInstance().GestioneSpinnerModifiche(context);
+
+            VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(
+                    VariabiliStaticheModificheCodice.getInstance().PrendeNumeroModifiche(context)
+            );
+
+            AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(
+                    context,
+                    VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
+            VariabiliStaticheModificheCodice.getInstance().setAdapterModifiche(customAdapterT);
+            VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.VISIBLE);
+
+            VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.VISIBLE);
+
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    VariabiliStaticheModificheCodice.getInstance().setEseguitaLetturaIniziale(true);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 1000);
+        }
+    }
+
+    private void fEliminaStato(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina stato", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+        UtilitiesGlobali.getInstance().ApreToast(context, "Stato eliminato");
+    }
+
+    private void fEliminaProgetto(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina progetto", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+        UtilitiesGlobali.getInstance().ApreToast(context, "Progetto eliminato");
+    }
+
+    private void fEliminaModulo(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina modulo", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+        UtilitiesGlobali.getInstance().ApreToast(context, "Modulo eliminato");
+    }
+
+    private void fEliminaSezione(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina sezione", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+        UtilitiesGlobali.getInstance().ApreToast(context, "Sezione eliminata");
+    }
+
+    private void fEliminaModifica(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Elimina modifica", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+        UtilitiesGlobali.getInstance().ApreToast(context, "Modifica eliminata");
+    }
+
+    private void fInserisceModificaStato(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Inserisce modifica stato", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Stato inserito/modificato");
+    }
+
+    private void fInserisceModificaProgetto(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Inserisce modifica progetto", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ContinuaSalvataggio();
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    private void fInserisceModificaModulo(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Inserisce modifica modulo", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ContinuaSalvataggio();
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    private void fInserisceModificaSezione(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Inserisce modifica sezione", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ContinuaSalvataggio();
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
+    }
+
+    private void fInserisceModificaModifica(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Inserisce modifica modifica", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    ContinuaSalvataggio();
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
         }
     }
 
@@ -305,7 +1288,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<StrutturaNomeFileRemoti> files = new ArrayList<>();
         String[] filesGPS = result.split(";");
         for (String f : filesGPS) {
-            String[] ff = f.split("/");
+            String[] ff = f.split("\\\\");
             String Nome = ff[ff.length - 1];
 
             StrutturaNomeFileRemoti s = new StrutturaNomeFileRemoti();

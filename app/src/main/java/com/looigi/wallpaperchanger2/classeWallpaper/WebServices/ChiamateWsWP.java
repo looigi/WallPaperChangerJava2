@@ -23,12 +23,12 @@ import java.util.List;
 public class ChiamateWsWP implements TaskDelegate {
     // private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaVecchioLooVF + "/"; // "http://www.wsloovf.looigi.it/";
+    private final String RadiceWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaWallPaperChanger + "/"; // "http://www.wsloovf.looigi.it/";
     private String TipoOperazione = "";
     private Context context;
-    private final String ws = "looVF.asmx/";
-    private final String NS="http://looVF.org/";
-    private final String SA="http://looVF.org/";
+    private final String ws = "wallPaperChangerWS.asmx/";
+    private final String NS="http://wallpaperChangerWS.it/";
+    private final String SA="http://wallpaperChangerWS.it/";
     private String NomeImmaginePerModifica;
     private String StringaBase64;
 

@@ -12,6 +12,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.StrutturaConteggi;
+import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -148,7 +149,10 @@ public class db_dati_modifiche_codice {
     }
 
     public void InserisceNuovoProgetto(String Progetto) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaProgetto("", Progetto);
+
+        /* if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT Coalesce(Max(idProgetto), 0) + 1 FROM Progetti", null);
                 if (c.getCount() > 0) {
@@ -166,11 +170,14 @@ public class db_dati_modifiche_codice {
                 int a = 0;
             }
         } else {
-        }
+        } */
     }
 
     public void ModificaProgetto(int idProgetto, String Progetto) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaProgetto(String.valueOf(idProgetto), Progetto);
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Progetti Set " +
                         "Progetto='" + Progetto.replace("'", "''") + "' " +
@@ -179,11 +186,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void EliminaProgetto(int idProgetto) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.EliminaProgetto(String.valueOf(idProgetto));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Progetti Set " +
                         "Eliminato='S' " +
@@ -192,11 +202,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
-    public List<Progetti> RitornaProgetti() {
-        List<Progetti> lista = new ArrayList<>();
+    public void RitornaProgetti() {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaProgetti();
+
+        /* List<Progetti> lista = new ArrayList<>();
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Progetti Where Eliminato='N' Order By Progetto", null);
@@ -217,11 +230,14 @@ public class db_dati_modifiche_codice {
             }
         }
 
-        return lista;
+        return lista; */
     }
 
     public void InserisceNuovoModulo(int idProgetto, String Modulo) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaModulo(String.valueOf(idProgetto), "", Modulo);
+
+        /* if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT Coalesce(Max(idModulo), 0) + 1 FROM Moduli " +
                         "Where idProgetto=" + idProgetto, null);
@@ -240,11 +256,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void ModificaModulo(int idProgetto, int idModulo, String Modulo) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaModulo(String.valueOf(idProgetto), String.valueOf(idModulo), Modulo);
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Moduli Set " +
                         "Modulo='" + Modulo.replace("'", "''") + "' " +
@@ -253,11 +272,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void EliminaModulo(int idProgetto, int idModulo) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.EliminaModulo(String.valueOf(idProgetto), String.valueOf(idModulo));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Moduli Set " +
                         "Eliminato='S' " +
@@ -266,11 +288,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
-    public List<Moduli> RitornaModuli(int idProgetto) {
-        List<Moduli> lista = new ArrayList<>();
+    public void RitornaModuli(int idProgetto) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaModuli(String.valueOf(idProgetto));
+
+        /* List<Moduli> lista = new ArrayList<>();
 
         if (myDB != null) {
             try {
@@ -294,11 +319,14 @@ public class db_dati_modifiche_codice {
             }
         }
 
-        return lista;
+        return lista; */
     }
 
     public void InserisceNuovaSezione(int idProgetto, int idModulo, String Sezione) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaSezione(String.valueOf(idProgetto), String.valueOf(idModulo), "", Sezione);
+
+        /* if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT Coalesce(Max(idSezione), 0) + 1 FROM Sezioni " +
                         "Where idProgetto=" + idProgetto + " And idModulo=" + idModulo, null);
@@ -318,11 +346,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void ModificaSezione(int idProgetto, int idModulo, int idSezione, String Sezione) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaSezione(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione), Sezione);
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Sezioni Set " +
                         "Sezione='" + Sezione.replace("'", "''") + "' " +
@@ -332,11 +363,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void EliminaSezione(int idProgetto, int idModulo, int idSezione) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.EliminaSezione(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Sezioni Set " +
                         "Eliminato='S' " +
@@ -346,11 +380,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
-    public List<Sezioni> RitornaSezioni(int idProgetto, int idModulo) {
-        List<Sezioni> lista = new ArrayList<>();
+    public void RitornaSezioni(int idProgetto, int idModulo) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaSezioni(String.valueOf(idProgetto), String.valueOf(idModulo));
+
+        /* List<Sezioni> lista = new ArrayList<>();
 
         if (myDB != null) {
             try {
@@ -375,11 +412,14 @@ public class db_dati_modifiche_codice {
             }
         }
 
-        return lista;
+        return lista; */
     }
 
     public void InserisceNuovaModifica(int idProgetto, int idModulo, int idSezione, String Modifica) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaModifica(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione), "", Modifica, "0");
+
+        /* if (myDB != null) {
             try {
                 String sql = "";
 
@@ -420,12 +460,15 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void ModificaModifica(int idProgetto, int idModulo, int idSezione, int idModifica,
                                  String Modifica, int idStato) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaModifica(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione), String.valueOf(idModifica), Modifica, String.valueOf(idStato));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Modifiche Set " +
                         "Modifica='" + Modifica.replace("'", "''") + "', " +
@@ -436,11 +479,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void EliminaModifica(int idProgetto, int idModulo, int idSezione, int idModifica) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.EliminaModifica(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione), String.valueOf(idModifica));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Modifiche Set " +
                         "Eliminato='S' " +
@@ -450,11 +496,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
-    public List<Modifiche> RitornaModifiche(int idProgetto, int idModulo, int idSezione) {
-        List<Modifiche> lista = new ArrayList<>();
+    public void RitornaModifiche(int idProgetto, int idModulo, int idSezione) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaModifiche(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione));
+
+        /* List<Modifiche> lista = new ArrayList<>();
 
         if (myDB != null) {
             try {
@@ -492,11 +541,13 @@ public class db_dati_modifiche_codice {
 
         VariabiliStaticheModificheCodice.getInstance().setListaModifiche(lista);
 
-        return lista;
+        return lista; */
     }
 
     public int RitornaNumeroModificheTotali(int idProgetto, int idModulo, int idSezione) {
-        if (myDB != null) {
+        return 0;
+
+        /* if (myDB != null) {
             try {
                 String sql = "SELECT Coalesce(Count(*), 0) FROM Modifiche Where " +
                         "idProgetto=" + idProgetto + " And idModulo=" + idModulo +
@@ -510,11 +561,14 @@ public class db_dati_modifiche_codice {
             }
         }
 
-        return 0;
+        return 0; */
     }
 
     public void InserisceNuovoStato(String Stato) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaStato("", Stato);
+
+        /* if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT Coalesce(Max(idStato), 0) + 1 FROM Stati", null);
                 if (c.getCount() > 0) {
@@ -531,11 +585,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void ModificaStato(int idStato, String Stato) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.InserisceModificaStato(String.valueOf(idStato), Stato);
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Stati Set " +
                         "Stato='" + Stato.replace("'", "''") + "' " +
@@ -544,11 +601,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
     public void EliminaStati(int idStato) {
-        if (myDB != null) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.EliminaStato(String.valueOf(idStato));
+
+        /* if (myDB != null) {
             try {
                 String sql = "Update Stati Set " +
                         "Eliminato='S' " +
@@ -557,11 +617,14 @@ public class db_dati_modifiche_codice {
             } catch (SQLException e) {
                 int i = 0;
             }
-        }
+        } */
     }
 
-    public List<Stati> RitornaStati() {
-        List<Stati> lista = new ArrayList<>();
+    public void RitornaStati() {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaStati();
+
+        /* List<Stati> lista = new ArrayList<>();
         if (myDB != null) {
             try {
                 Cursor c = myDB.rawQuery("SELECT * FROM Stati Where Eliminato='N' Order By Stato", null);
@@ -584,11 +647,14 @@ public class db_dati_modifiche_codice {
 
         VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
 
-        return lista;
+        return lista; */
     }
 
     public void RitornaConteggi() {
-        List<StrutturaConteggi> lista = new ArrayList<>();
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaConteggi();
+
+        /* List<StrutturaConteggi> lista = new ArrayList<>();
         if (myDB != null) {
             try {
                 String sql = "Select A.idProgetto, A.idModulo, A.idSezione, B.Progetto, C.Modulo, D.Sezione,  Count(*) As Quanti From Modifiche A " +
@@ -620,6 +686,6 @@ public class db_dati_modifiche_codice {
             }
         }
 
-        VariabiliStaticheModificheCodice.getInstance().setListaConteggi(lista);
+        VariabiliStaticheModificheCodice.getInstance().setListaConteggi(lista); */
     }
 }
