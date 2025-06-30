@@ -291,7 +291,7 @@
                     android:layout_height="35dp"/>
             </LinearLayout> -->
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:background="@drawable/bordato_non_trasparente"
                 android:padding="2dp"
                 android:layout_marginEnd="5dp"
@@ -312,7 +312,7 @@
                     android:src="@drawable/notepad"
                     android:layout_width="35dp"
                     android:layout_height="35dp"/>
-            </LinearLayout>
+            </LinearLayout> -->
 
             <LinearLayout
                 android:background="@drawable/bordato_non_trasparente"
@@ -327,12 +327,12 @@
                     android:layout_width="wrap_content"
                     android:maxLines="1"
                     android:textColor="@color/Nero"
-                    android:text="Salva online"
+                    android:text="Gestione Stati"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
-                    android:id="@+id/imgSalvaOnline"
-                    android:src="@drawable/icona_salva"
+                    android:id="@+id/imgGestioneStati"
+                    android:src="@drawable/stato"
                     android:layout_width="35dp"
                     android:layout_height="35dp"/>
             </LinearLayout>

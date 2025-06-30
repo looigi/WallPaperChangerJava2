@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneStati.adapters.AdapterListenerModificheStati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
@@ -50,6 +51,7 @@ public class VariabiliStaticheModificheCodice {
     private List<Sezioni> listaSezioni;
     private List<Modifiche> listaModifiche;
     private List<Stati> listaStati;
+    private List<Stati> listaStatiPerGestione;
     private int idProgetto;
     private int idModulo;
     private int idSezione;
@@ -67,6 +69,7 @@ public class VariabiliStaticheModificheCodice {
     private String SezioneSelezionata;
     private String ModificaSelezionata;
     private ListView lstModifiche;
+    private ListView lstModificheStati;
     private int idStato;
     private LinearLayout layStato;
     private String statoSelezionato;
@@ -91,6 +94,10 @@ public class VariabiliStaticheModificheCodice {
     private ImageView imgAggiungeModifica;
     private boolean eseguitaLetturaIniziale = false;
     private AdapterListenerModificheCodice adapterModifiche;
+    private AdapterListenerModificheStati adapterModificheStati;
+    private LinearLayout layGestioneStato;
+    private EditText edtGestioneStato;
+    private int idGestioneStato;
 
     public void Attende(boolean Attesa) {
         if (imgCaricamento != null) {
@@ -108,6 +115,54 @@ public class VariabiliStaticheModificheCodice {
         /* AdapterListenerConteggi adapterC = (new AdapterListenerConteggi(context, VariabiliStaticheModificheCodice.getInstance().getListaConteggi()));
         VariabiliStaticheModificheCodice.getInstance().getLstConteggi().setAdapter(adapterC); */
         db.ChiudeDB();
+    }
+
+    public int getIdGestioneStato() {
+        return idGestioneStato;
+    }
+
+    public void setIdGestioneStato(int idGestioneStato) {
+        this.idGestioneStato = idGestioneStato;
+    }
+
+    public EditText getEdtGestioneStato() {
+        return edtGestioneStato;
+    }
+
+    public void setEdtGestioneStato(EditText edtGestioneStato) {
+        this.edtGestioneStato = edtGestioneStato;
+    }
+
+    public LinearLayout getLayGestioneStato() {
+        return layGestioneStato;
+    }
+
+    public void setLayGestioneStato(LinearLayout layGestioneStato) {
+        this.layGestioneStato = layGestioneStato;
+    }
+
+    public ListView getLstModificheStati() {
+        return lstModificheStati;
+    }
+
+    public void setLstModificheStati(ListView lstModificheStati) {
+        this.lstModificheStati = lstModificheStati;
+    }
+
+    public AdapterListenerModificheStati getAdapterModificheStati() {
+        return adapterModificheStati;
+    }
+
+    public void setAdapterModificheStati(AdapterListenerModificheStati adapterModificheStati) {
+        this.adapterModificheStati = adapterModificheStati;
+    }
+
+    public List<Stati> getListaStatiPerGestione() {
+        return listaStatiPerGestione;
+    }
+
+    public void setListaStatiPerGestione(List<Stati> listaStatiPerGestione) {
+        this.listaStatiPerGestione = listaStatiPerGestione;
     }
 
     public AdapterListenerModificheCodice getAdapterModifiche() {
@@ -795,21 +850,15 @@ public class VariabiliStaticheModificheCodice {
         VariabiliStaticheModificheCodice.getInstance().ScriveConteggi(context);
     }
 
-    public String PrendeNumeroModifiche(Context context) {
+    public void PrendeNumeroModifiche(Context context) {
         db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
 
-        int modificheTotali = db.RitornaNumeroModificheTotali(
+        db.RitornaNumeroModificheTotali(
           VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
           VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
           VariabiliStaticheModificheCodice.getInstance().getIdSezione()
         );
 
-        String Ritorno = "Modifiche: " +
-                VariabiliStaticheModificheCodice.getInstance().getListaModifiche().size() +
-                "/" + modificheTotali;
-
         db.ChiudeDB();
-
-        return Ritorno;
     }
 }

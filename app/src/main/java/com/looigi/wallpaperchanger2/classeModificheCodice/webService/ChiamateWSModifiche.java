@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeGps.db_dati_gps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaGps;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaNomeFileRemoti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneSpinner;
+import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneStati.adapters.AdapterListenerModificheStati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
@@ -130,6 +131,12 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         try {
             URI uri = new URI(null, null, Cosa, null);
             Ritorno = uri.toASCIIString();
+
+            Ritorno = Ritorno.replace(",", "*V*");
+            Ritorno = Ritorno.replace("/", "*S*");
+            Ritorno = Ritorno.replace("\\", "*BS*");
+            Ritorno = Ritorno.replace("&", "*A*");
+            Ritorno = Ritorno.replace(":", "*2P*");
         } catch (URISyntaxException e) {
             Ritorno = "";
         }
@@ -137,6 +144,17 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         return Ritorno;
     }
 
+    private String SistemaTestoPerRitorno(String Cosa) {
+        String Ritorno = Cosa;
+
+        Ritorno = Ritorno.replace("*V*", ",");
+        Ritorno = Ritorno.replace( "*S*", "/");
+        Ritorno = Ritorno.replace("*BS*", "\\");
+        Ritorno = Ritorno.replace("*A*", "&");
+        Ritorno = Ritorno.replace("*2P*", ":");
+
+        return Ritorno;
+    }
     public void SalvaTuttiIDati() {
         UtilityGPS.getInstance().ImpostaAttesa(true);
 
@@ -186,6 +204,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
+    public void RitornaNumeroModificheTotali(String idProgetto, String idModulo, String idSezione) {
+        UtilityGPS.getInstance().ImpostaAttesa(true);
+
+        String Urletto="RitornaNumeroModificheTotali?" +
+                "idProgetto=" + idProgetto +
+                "&idModulo=" + idModulo + "" +
+                "&idSezione=" + idSezione;
+
+        TipoOperazione = "RitornaNumeroModificheTotali";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                30000,
+                ApriDialog);
+    }
+
     public void RitornaConteggi() {
         UtilityGPS.getInstance().ImpostaAttesa(true);
 
@@ -202,8 +239,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
-    public void InserisceModificaStato(String idStato, String Stato) {
+    public void InserisceModificaStato(String idStato, String Stato, boolean DaGestioneStati) {
         UtilityGPS.getInstance().ImpostaAttesa(true);
+        this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="InserisceModificaStato?" +
                 "idStato=" + idStato +
@@ -299,8 +337,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
-    public void EliminaStato(String idStato) {
+    public void EliminaStato(String idStato, boolean DaGestioneStati) {
         UtilityGPS.getInstance().ImpostaAttesa(true);
+        this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="EliminaStato?idStato=" + idStato;
 
@@ -379,8 +418,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
-    public void RitornaStati() {
+    private boolean DaGestioneStati = false;
+
+    public void RitornaStati(boolean DaGestioneStati) {
         UtilityGPS.getInstance().ImpostaAttesa(true);
+        this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="RitornaStati";
 
@@ -519,7 +561,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             case "GPS":
                 UtilityGPS.getInstance().ImpostaAttesa(false);
                 PathModifiche = NomeFile;
-                String[] n = NomeFile.split("\\\\");
+                String[] n = NomeFile.split("\\\\", -1);
                 sNomeFile = n[n.length - 1];
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
@@ -661,6 +703,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     case "RitornaModifiche":
                         fRitornaModifiche(result);
                         break;
+                    case "RitornaNumeroModificheTotali":
+                        fRitornaNumeroModificheTotali(result);
+                        break;
                 }
             }
         };
@@ -695,6 +740,28 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         }
     }
 
+    private void fRitornaNumeroModificheTotali(String result) {
+        UtilityGPS.getInstance().ImpostaAttesa(false);
+
+        boolean ritorno = ControllaRitorno("Ritorna numero modifiche", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            return;
+        }
+
+        if (VariabiliStaticheModificheCodice.getInstance().getTxtQuante() != null) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    String Ritorno = "Modifiche: " +
+                            VariabiliStaticheModificheCodice.getInstance().getListaModifiche().size() +
+                            "/" + result;
+                    VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(Ritorno);
+                }
+            }, 100);
+        }
+    }
+
     private void fRitornaConteggi(String result) {
         UtilityGPS.getInstance().ImpostaAttesa(false);
 
@@ -708,25 +775,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<StrutturaConteggi> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 StrutturaConteggi p = new StrutturaConteggi();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdProgetto(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdModulo(Integer.parseInt(value));
 
-                keyValue = fields[2].split(":");
+                keyValue = fields[2].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdSezione(Integer.parseInt(value));
 
-                keyValue = fields[3].split(":");
+                keyValue = fields[3].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
@@ -735,7 +802,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     p.setProgetto("ERROR");
                 }
 
-                keyValue = fields[4].split(":");
+                keyValue = fields[4].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
@@ -744,7 +811,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     p.setModulo("ERROR");
                 }
 
-                keyValue = fields[5].split(":");
+                keyValue = fields[5].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
@@ -753,7 +820,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     p.setSezione("ERROR");
                 }
 
-                keyValue = fields[6].split(":");
+                keyValue = fields[6].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setQuante(Integer.parseInt(value));
 
@@ -781,17 +848,17 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<Stati> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 Stati p = new Stati();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdStato(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
 
                 try {
@@ -804,8 +871,19 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 lista.add(p);
             }
 
-            VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
-            GestioneSpinner.getInstance().GestioneSpinnerStati(context);
+            if (DaGestioneStati) {
+                VariabiliStaticheModificheCodice.getInstance().setListaStatiPerGestione(lista);
+
+                AdapterListenerModificheStati customAdapterT = new AdapterListenerModificheStati(
+                        context,
+                        VariabiliStaticheModificheCodice.getInstance().getListaStatiPerGestione());
+                VariabiliStaticheModificheCodice.getInstance().setAdapterModificheStati(customAdapterT);
+                VariabiliStaticheModificheCodice.getInstance().getLstModificheStati().setAdapter(customAdapterT);
+            } else {
+                VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
+
+                GestioneSpinner.getInstance().GestioneSpinnerStati(context);
+            }
         }
     }
 
@@ -822,21 +900,22 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<Progetti> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 Progetti p = new Progetti();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdProgetto(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
 
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
+                    decoded = SistemaTestoPerRitorno(decoded);
                     p.setProgetto(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setProgetto("ERROR");
@@ -865,17 +944,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 );
             }
             if (idProgetto == -1) {
-                if (lista.isEmpty()) {
-                    idProgetto = -1;
-                } else {
+                if (!lista.isEmpty()) {
+                    // idProgetto = -1;
+                // } else {
                     idProgetto = lista.get(0).getIdProgetto();
                     VariabiliStaticheModificheCodice.getInstance().setProgettoSelezionato(
-                            (String) lista.get(0).getProgetto().toString().trim()
+                            (String) lista.get(0).getProgetto().trim()
                     );
 
                     VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setPrompt(
                             VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
                     );
+                }
+            } else {
+                for (Progetti p: lista) {
+                    if (idProgetto == p.getIdProgetto()) {
+                        VariabiliStaticheModificheCodice.getInstance().setProgettoSelezionato(
+                                p.getProgetto().trim()
+                        );
+                    }
                 }
             }
             VariabiliStaticheModificheCodice.getInstance().setIdProgetto(idProgetto);
@@ -922,24 +1009,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<Moduli> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 Moduli p = new Moduli();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdProgetto(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdModulo(Integer.parseInt(value));
 
-                keyValue = fields[2].split(":");
+                keyValue = fields[2].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
+                    decoded = SistemaTestoPerRitorno(decoded);
                     p.setModulo(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setModulo("ERROR");
@@ -960,17 +1048,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 );
             }
             if (idModulo == -1) {
-                if (lista.isEmpty()) {
-                    idModulo = 1;
-                } else {
+                if (!lista.isEmpty()) {
+                    // idModulo = 1;
+                // } else {
                     idModulo = lista.get(0).getIdModulo();
                     VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato(
-                            (String) lista.get(0).getModulo().toString().trim()
+                            (String) lista.get(0).getModulo().trim()
                     );
 
                     VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setPrompt(
                             VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
                     );
+                }
+            } else {
+                for (Moduli p: lista) {
+                    if (idModulo == p.getIdModulo()) {
+                        VariabiliStaticheModificheCodice.getInstance().setModuloSelezionato(
+                                p.getModulo().trim()
+                        );
+                    }
                 }
             }
             VariabiliStaticheModificheCodice.getInstance().setIdModulo(idModulo);
@@ -979,8 +1075,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             db.ModificaUltimeSelezioni();
             VariabiliStaticheModificheCodice.getInstance().RicaricaSezioni(context, db);
 
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+            // VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            // VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
 
             VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setVisibility(LinearLayout.VISIBLE);
 
@@ -1001,6 +1097,26 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
 
             VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
+        } else {
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModulo().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().setListaModuli(new ArrayList<>());
+            VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setVisibility(LinearLayout.GONE);
+
+            GestioneSpinner.getInstance().GestioneSpinnerModuli(context);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().setListaSezioni(new ArrayList<>());
+            VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.GONE);
+
+            GestioneSpinner.getInstance().GestioneSpinnerSezioni(context);
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
         }
     }
 
@@ -1017,28 +1133,29 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<Sezioni> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 Sezioni p = new Sezioni();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdProgetto(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdModulo(Integer.parseInt(value));
 
-                keyValue = fields[2].split(":");
+                keyValue = fields[2].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdSezione(Integer.parseInt(value));
 
-                keyValue = fields[3].split(":");
+                keyValue = fields[3].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
+                    decoded = SistemaTestoPerRitorno(decoded);
                     p.setSezione(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setSezione("ERROR");
@@ -1052,7 +1169,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             GestioneSpinner.getInstance().GestioneSpinnerSezioni(context);
 
             int idSezione = 1;
-            if (!VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato().isEmpty()) {
+            if (!VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata().isEmpty()) {
                 idSezione = VariabiliStaticheModificheCodice.getInstance().TornaIdSezione(
                         VariabiliStaticheModificheCodice.getInstance().getListaSezioni(),
                         VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
@@ -1064,12 +1181,20 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 } else {
                     idSezione = lista.get(0).getIdModulo();
                     VariabiliStaticheModificheCodice.getInstance().setSezioneSelezionata(
-                            (String) lista.get(0).getSezione().toString().trim()
+                            (String) lista.get(0).getSezione().trim()
                     );
 
                     VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setPrompt(
                             VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
                     );
+                }
+            } else {
+                for (Sezioni p: lista) {
+                    if (idSezione == p.getIdSezione()) {
+                        VariabiliStaticheModificheCodice.getInstance().setSezioneSelezionata(
+                                p.getSezione().trim()
+                        );
+                    }
                 }
             }
             VariabiliStaticheModificheCodice.getInstance().setIdSezione(idSezione);
@@ -1078,15 +1203,29 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             db.ModificaUltimeSelezioni();
             VariabiliStaticheModificheCodice.getInstance().RicaricaModifiche(context, db);
 
-            VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
-            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE);
+            /* VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setVisibility(LinearLayout.VISIBLE); */
 
             VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.VISIBLE);
 
             if (!VariabiliStaticheModificheCodice.getInstance().getListaSezioni().isEmpty()) {
                 VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.VISIBLE);
+            } else {
+                VariabiliStaticheModificheCodice.getInstance().getImgModificaSezioni().setVisibility(LinearLayout.GONE);
+                VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
             }
+
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            VariabiliStaticheModificheCodice.getInstance().getImgAggiungeSezione().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStaticheModificheCodice.getInstance().getImgModificaModulo().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
+
+            VariabiliStaticheModificheCodice.getInstance().setListaSezioni(new ArrayList<>());
+            VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.GONE);
+
+            GestioneSpinner.getInstance().GestioneSpinnerSezioni(context);
 
             VariabiliStaticheModificheCodice.getInstance().getImgAggiungeModifica().setVisibility(LinearLayout.GONE);
         }
@@ -1109,40 +1248,45 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<Modifiche> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
         if (!resultSenzaQuadre.isEmpty()) {
-            String[] righe = resultSenzaQuadre.split("\\},\\{");
+            String[] righe = resultSenzaQuadre.split("\\},\\{", -1);
             for (String obj : righe) {
                 obj = obj.replace("{", "").replace("}", "");
-                String[] fields = obj.split(",");
+                String[] fields = obj.split(",", -1);
 
                 Modifiche p = new Modifiche();
-                String[] keyValue = fields[0].split(":");
+                String[] keyValue = fields[0].split(":", -1);
                 String value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdProgetto(Integer.parseInt(value));
 
-                keyValue = fields[1].split(":");
+                keyValue = fields[1].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdModulo(Integer.parseInt(value));
 
-                keyValue = fields[2].split(":");
+                keyValue = fields[2].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdSezione(Integer.parseInt(value));
 
-                keyValue = fields[3].split(":");
+                keyValue = fields[3].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 p.setIdModifica(Integer.parseInt(value));
 
-                keyValue = fields[4].split(":");
+                keyValue = fields[4].split(":", -1);
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
+                    decoded = SistemaTestoPerRitorno(decoded);
                     p.setModifica(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setModifica("ERROR");
                 }
 
-                keyValue = fields[5].split(":");
-                value = keyValue[1].replaceAll("\"", "").trim();
-                p.setIdStato(Integer.parseInt(value));
+                keyValue = fields[5].split(":", -1);
+                try {
+                    value = keyValue[1].replaceAll("\"", "").trim();
+                    p.setIdStato(Integer.parseInt(value));
+                } catch (Exception e) {
+                    p.setIdStato(-1);
+                }
 
                 lista.add(p);
             }
@@ -1151,9 +1295,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
             // GestioneSpinner.getInstance().GestioneSpinnerModifiche(context);
 
-            VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(
-                    VariabiliStaticheModificheCodice.getInstance().PrendeNumeroModifiche(context)
-            );
+            VariabiliStaticheModificheCodice.getInstance().PrendeNumeroModifiche(context);
 
             AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(
                     context,
@@ -1183,6 +1325,16 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaStati(DaGestioneStati);
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Stato eliminato");
     }
 
@@ -1194,6 +1346,16 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaProgetti();
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Progetto eliminato");
     }
 
@@ -1205,6 +1367,18 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaModuli(
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto())
+                );
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Modulo eliminato");
     }
 
@@ -1216,6 +1390,19 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaSezioni(
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto()),
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdModulo())
+                );
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Sezione eliminata");
     }
 
@@ -1227,6 +1414,20 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
+
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaModifiche(
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto()),
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdModulo()),
+                        String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdSezione())
+                );
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Modifica eliminata");
     }
 
@@ -1239,7 +1440,22 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaStati(DaGestioneStati);
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+
         UtilitiesGlobali.getInstance().ApreToast(context, "Stato inserito/modificato");
+
+        if (DaGestioneStati) {
+            VariabiliStaticheModificheCodice.getInstance().getLayGestioneStato().setVisibility(LinearLayout.GONE);
+            VariabiliStaticheModificheCodice.getInstance().getEdtGestioneStato().setText("");
+            VariabiliStaticheModificheCodice.getInstance().setIdGestioneStato(-1);
+        }
     }
 
     private void fInserisceModificaProgetto(String result) {
@@ -1251,15 +1467,18 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
-            Runnable rTimer = new Runnable() {
-                public void run() {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
                     ContinuaSalvataggio();
+                } else {
+                    ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                    ws.RitornaProgetti();
                 }
-            };
-            handlerTimer.postDelayed(rTimer, 100);
-        }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     private void fInserisceModificaModulo(String result) {
@@ -1271,15 +1490,20 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
-            Runnable rTimer = new Runnable() {
-                public void run() {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
                     ContinuaSalvataggio();
+                } else {
+                    ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                    ws.RitornaModuli(
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto())
+                    );
                 }
-            };
-            handlerTimer.postDelayed(rTimer, 100);
-        }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     private void fInserisceModificaSezione(String result) {
@@ -1291,15 +1515,21 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
-            Runnable rTimer = new Runnable() {
-                public void run() {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
                     ContinuaSalvataggio();
+                } else {
+                    ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                    ws.RitornaSezioni(
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto()),
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdModulo())
+                    );
                 }
-            };
-            handlerTimer.postDelayed(rTimer, 100);
-        }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     private void fInserisceModificaModifica(String result) {
@@ -1311,15 +1541,22 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
-            Runnable rTimer = new Runnable() {
-                public void run() {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                if (VariabiliStaticheModificheCodice.getInstance().isStaSalvandoTutto()) {
                     ContinuaSalvataggio();
+                } else {
+                    ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                    ws.RitornaModifiche(
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdProgetto()),
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdModulo()),
+                            String.valueOf(VariabiliStaticheModificheCodice.getInstance().getIdSezione())
+                    );
                 }
-            };
-            handlerTimer.postDelayed(rTimer, 100);
-        }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
     }
 
     private void fEliminaFileRemoto(String result) {
@@ -1351,9 +1588,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         }
 
         List<StrutturaNomeFileRemoti> files = new ArrayList<>();
-        String[] filesGPS = result.split(";");
+        String[] filesGPS = result.split(";", -1);
         for (String f : filesGPS) {
-            String[] ff = f.split("\\\\");
+            String[] ff = f.split("\\\\", -1);
             String Nome = ff[ff.length - 1];
 
             StrutturaNomeFileRemoti s = new StrutturaNomeFileRemoti();
@@ -1505,16 +1742,16 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     String Filetto = file.getAbsoluteFile().getPath(); // Questo contiene tutto, sia il path che il nome del file
                     String Nome = file.getAbsoluteFile().getName(); // Questo contiene solo il nome del file
                     String AppoNome = Nome.replace("DatiGPS_", "").replace(".csv", "");
-                    String[] d = AppoNome.split("-");
+                    String[] d = AppoNome.split("-", -1);
                     String Data = d[2] + "/" + d[1] + "/" + d[0];
                     ultimaData = Data;
                     if (EliminaVecchiDati) {
                         db.EliminaPosizioni(Data);
                     }
                     String dati = Files.getInstance().LeggeFileUnico(Filetto);
-                    String[] righe = dati.split("\n");
+                    String[] righe = dati.split("\n", -1);
                     for (String r : righe) {
-                        String[] c = r.split(";");
+                        String[] c = r.split(";", -1);
 
                         StrutturaGps s = new StrutturaGps();
                         s.setData(c[0]);

@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
+import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneStati.GestioneStati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Sezioni;
@@ -79,7 +81,7 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().setSpnModulo(findViewById(R.id.spnModulo));
         VariabiliStaticheModificheCodice.getInstance().setSpnSezione(findViewById(R.id.spnSezione));
         VariabiliStaticheModificheCodice.getInstance().setTxtQuante(findViewById(R.id.txtQuante));
-        ImageView imgCreaTesto = findViewById(R.id.imgCreaTesto);
+        // ImageView imgCreaTesto = findViewById(R.id.imgCreaTesto);
         VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText("");
         VariabiliStaticheModificheCodice.getInstance().setSpnStati(findViewById(R.id.spnStato));
         VariabiliStaticheModificheCodice.getInstance().setLstModifiche(findViewById(R.id.lstModifiche));
@@ -90,9 +92,9 @@ public class MainModificheCodice extends Activity {
         db.RitornaProgetti();
         db.RitornaConteggi();
 
-        imgCreaTesto.setOnClickListener(new View.OnClickListener() {
+        /* imgCreaTesto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+                db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
 
                 List<Modifiche> listaModificaIniziale = VariabiliStaticheModificheCodice.getInstance().getListaModifiche();
                 boolean check = VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked();
@@ -159,11 +161,11 @@ public class MainModificheCodice extends Activity {
                 }, 30000);
 
                 VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setChecked(check);
-                VariabiliStaticheModificheCodice.getInstance().setListaModifiche(listaModificaIniziale); */
+                VariabiliStaticheModificheCodice.getInstance().setListaModifiche(listaModificaIniziale);
             }
-        });
+        }); */
 
-        ImageView imgSalvaOnline = findViewById(R.id.imgSalvaOnline);
+        /* ImageView imgSalvaOnline = findViewById(R.id.imgSalvaOnline);
         imgSalvaOnline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
@@ -206,9 +208,9 @@ public class MainModificheCodice extends Activity {
                 VariabiliStaticheModificheCodice.getInstance().setStaSalvandoTutto(true);
 
                 ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                ws.SalvaTuttiIDati(); */
+                ws.SalvaTuttiIDati();
             }
-        });
+        }); */
 
         VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -229,7 +231,9 @@ public class MainModificheCodice extends Activity {
                         VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
                 VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT); */
 
-                VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche().notifyDataSetChanged();
+                if (VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche() != null) {
+                    VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche().notifyDataSetChanged();
+                }
             }
         });
 
@@ -861,6 +865,15 @@ public class MainModificheCodice extends Activity {
                 ws.Esporta("MODIFICHE", "Modifiche");
             }
         }); */
+
+        ImageView imgStati = findViewById(R.id.imgGestioneStati);
+        imgStati.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iDR = new Intent(context, GestioneStati.class);
+                iDR.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iDR);
+            }
+        });
     }
 
     @Override
@@ -876,4 +889,5 @@ public class MainModificheCodice extends Activity {
 
         return false;
     }
+
 }

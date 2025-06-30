@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".classeWallpaper.MainWallpaper">
+
+    <ListView
+        android:id="@+id/lstStati"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:dividerHeight="1dp"
+        android:listSelector="#9999EE" />
+
+    <LinearLayout
+        android:id="@+id/layStato"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bordato_non_trasparente"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/txtTipologia"
+            android:textColor="@color/Rosso"
+            android:layout_width="match_parent"
+            android:text="Stato"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edtStato"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:maxLines="5"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSalva"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnulla"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgNuovoStato"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:padding="5dp"
+        android:src="@drawable/icona_aggiunge"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+</RelativeLayout>

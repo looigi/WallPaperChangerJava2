@@ -239,6 +239,12 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
             }
         }
 
+        String km = "";
+        if (!s.getKm().isEmpty()) {
+            km = s.getKm();
+            km = km.replace(",", ".");
+        }
+
         String Urletto = "ScriveOrario?" +
                 "idUtente=" + VariabiliStaticheOrari.getInstance().getIdUtente() +
                 "&Giorno=" + Giorno +
@@ -251,7 +257,7 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                 "&Entrata=" + s.getEntrata() +
                 "&idLavoro=" + s.getIdLavoro() +
                 "&idIndirizzo=" + s.getIdIndirizzo() +
-                "&Km=" + s.getKm() +
+                "&Km=" + km +
                 "&Pranzo=" + Pranzo +
                 "&Pasticca=" + Pasticca +
                 "&MezziAndata=" + MezziAndata +

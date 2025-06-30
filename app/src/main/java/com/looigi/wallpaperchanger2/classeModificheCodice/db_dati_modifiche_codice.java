@@ -544,8 +544,9 @@ public class db_dati_modifiche_codice {
         return lista; */
     }
 
-    public int RitornaNumeroModificheTotali(int idProgetto, int idModulo, int idSezione) {
-        return 0;
+    public void RitornaNumeroModificheTotali(int idProgetto, int idModulo, int idSezione) {
+        ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+        ws.RitornaNumeroModificheTotali(String.valueOf(idProgetto), String.valueOf(idModulo), String.valueOf(idSezione));
 
         /* if (myDB != null) {
             try {
@@ -566,7 +567,7 @@ public class db_dati_modifiche_codice {
 
     public void InserisceNuovoStato(String Stato) {
         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-        ws.InserisceModificaStato("", Stato);
+        ws.InserisceModificaStato("", Stato, false);
 
         /* if (myDB != null) {
             try {
@@ -590,7 +591,7 @@ public class db_dati_modifiche_codice {
 
     public void ModificaStato(int idStato, String Stato) {
         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-        ws.InserisceModificaStato(String.valueOf(idStato), Stato);
+        ws.InserisceModificaStato(String.valueOf(idStato), Stato, false);
 
         /* if (myDB != null) {
             try {
@@ -606,7 +607,7 @@ public class db_dati_modifiche_codice {
 
     public void EliminaStati(int idStato) {
         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-        ws.EliminaStato(String.valueOf(idStato));
+        ws.EliminaStato(String.valueOf(idStato), false);
 
         /* if (myDB != null) {
             try {
@@ -622,7 +623,7 @@ public class db_dati_modifiche_codice {
 
     public void RitornaStati() {
         ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-        ws.RitornaStati();
+        ws.RitornaStati(false);
 
         /* List<Stati> lista = new ArrayList<>();
         if (myDB != null) {
