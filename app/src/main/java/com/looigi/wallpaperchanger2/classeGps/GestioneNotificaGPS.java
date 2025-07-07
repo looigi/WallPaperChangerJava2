@@ -103,11 +103,24 @@ public class GestioneNotificaGPS {
 
             Bitmap bmGpsPS;
             if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
-                bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+                if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                    bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
+                } else {
+                    bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
+                }
             } else {
                 bmGpsPS = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
             }
+
+            Bitmap bmGpsOnOff;
+            if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                bmGpsOnOff = BitmapFactory.decodeResource(context.getResources(), R.drawable.on);
+            } else {
+                bmGpsOnOff = BitmapFactory.decodeResource(context.getResources(), R.drawable.off);
+            }
+
             contentView.setImageViewBitmap(R.id.imgSwitchGPSTasti, bmGpsPS);
+            contentView.setImageViewBitmap(R.id.imgOnOff, bmGpsOnOff);
 
             if (VariabiliStaticheGPS.getInstance().getMappa() != null) {
                 long distanza = VariabiliStaticheGPS.getInstance().getDistanzaTotale();
@@ -196,7 +209,7 @@ public class GestioneNotificaGPS {
             scatta.putExtra("DO", "gps");
             PendingIntent pScatta = PendingIntent.getService(ctx, 31, scatta,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgSwitchGPSTasti, pScatta);
+            view.setOnClickPendingIntent(R.id.imgOnOff, pScatta);
         }
     }
 

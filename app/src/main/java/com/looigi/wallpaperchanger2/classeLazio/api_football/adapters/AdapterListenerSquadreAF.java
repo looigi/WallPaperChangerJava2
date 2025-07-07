@@ -60,6 +60,10 @@ public class AdapterListenerSquadreAF extends BaseAdapter {
         txtSquadra.setText(NomeSquadra);
 
         CheckBox chkFatto = view.findViewById(R.id.chkFatto);
+
+        // ChiamateWSLazio ws = new ChiamateWSLazio(context);
+        // ws.RitornaFatte(chkFatto, NomeSquadra);
+
         String NomeFileFatto = VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
                 Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
                 NomeSquadra + ".txt";

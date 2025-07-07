@@ -263,6 +263,7 @@ public class UtilityApiFootball {
 
     public void AggiornaFileFatti(String NomeSquadra, int Quale, boolean chkFatto) {
         String Contenuto = "";
+
         if (Files.getInstance().EsisteFile(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
                         Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/" +
                 NomeSquadra + ".txt")) {
@@ -289,6 +290,8 @@ public class UtilityApiFootball {
                         Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
                 NomeSquadra + ".txt",
                 Contenuto);
+
+
         VariabiliStaticheApiFootball.getInstance().getCustomAdapterPartiteAF().notifyDataSetChanged();
     }
 
@@ -301,11 +304,15 @@ public class UtilityApiFootball {
                     VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/Fatte/" +
                             Integer.toString(VariabiliStaticheApiFootball.getInstance().getAnnoIniziale()) + "/",
                     NomeSquadra + ".txt");
-            String c = Contenuto.substring(Quale, Quale + 1);
-            if (c.equals("S")) {
-                return true;
-            } else {
+            if (Contenuto.isEmpty()) {
                 return false;
+            } else {
+                String c = Contenuto.substring(Quale, Quale + 1);
+                if (c.equals("S")) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } else {
             return false;

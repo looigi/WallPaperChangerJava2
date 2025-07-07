@@ -75,7 +75,7 @@ public class GestioneGPS extends Service {
 
         cv = new CalcoloVelocita();
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(true);
+        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
 
         // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
@@ -181,7 +181,7 @@ public class GestioneGPS extends Service {
 
         // statoAttivo = false;
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-        GestioneNotificaGPS.getInstance().AggiornaNotifica();
+        // GestioneNotificaGPS.getInstance().AggiornaNotifica();
 
         /* if (handlerThreadAccensione != null) {
             handlerThreadAccensione.stop();
@@ -194,12 +194,7 @@ public class GestioneGPS extends Service {
             rAccensione = null;
         } */
 
-        Bitmap bmGps;
-        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite);
-        } else {
-            bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
-        }
+        Bitmap bmGps = BitmapFactory.decodeResource(context.getResources(), R.drawable.satellite_off);
         if (VariabiliStaticheGPS.getInstance().getBitmapHome() != null) {
             VariabiliStaticheGPS.getInstance().getBitmapHome().setImageBitmap(bmGps);
         }
@@ -353,8 +348,6 @@ public class GestioneGPS extends Service {
                         NomeMaschera,
                         "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto. Da " + daDove);
             }
-
-            return;
         } else {
             if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
                 UtilityGPS.getInstance().ScriveLog(

@@ -22,7 +22,7 @@ secrets {
 
 android {
     namespace = "com.looigi.wallpaperchanger2"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.looigi.wallpaperchanger2"
@@ -105,4 +105,6 @@ dependencies {
     implementation(libs.google.api.client.gson)
     implementation(libs.google.http.client.android)
     implementation(libs.google.api.services.drive)
+
+    implementation(libs.work.runtime)
 }

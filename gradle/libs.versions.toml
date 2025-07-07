@@ -1,7 +1,7 @@
 [versions]
 acraVersion = "5.11.2"
 afAndroidSdk = "6.15.1"
-agp = "8.7.3"
+agp = "8.10.1"
 androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
 androidMailVersion = "1.6.2"
@@ -42,6 +42,7 @@ playServicesLocationVersion = "21.0.1"
 playServicesMaps = "19.0.0"
 playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
+workRuntime = "2.10.2"
 
 [libraries]
 acra-core = { module = "ch.acra:acra-core", version.ref = "acraVersion" }
@@ -93,6 +94,7 @@ play-services-maps = { module = "com.google.android.gms:play-services-maps", ver
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 play-services-mlkit-language-id = { module = "com.google.android.gms:play-services-mlkit-language-id", version.ref = "playServicesMapsVersion" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

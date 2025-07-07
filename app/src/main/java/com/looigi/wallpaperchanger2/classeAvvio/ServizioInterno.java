@@ -10,13 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.widget.Toast;
 
 import com.looigi.wallpaperchanger2.MainStart;
-import com.looigi.wallpaperchanger2.utilities.ControlloSegnale2;
+import com.looigi.wallpaperchanger2.classeControlloSegnale.ControlloSegnale2;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
@@ -32,6 +33,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.classeControlloSegnale.WifiConnectionReceiver;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.ScreenReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -49,6 +51,7 @@ public class ServizioInterno extends Service {
     private Intent intentCuffie;
     private Intent intentGPS;
     private PresenzaCuffie mCuffieInseriteReceiver;
+    private WifiConnectionReceiver wifiReceiver;
 
     /* private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -110,6 +113,13 @@ public class ServizioInterno extends Service {
         // GESTIONE TASTI CUFFIE
         intentCuffie = new Intent(this, GestioneTastiCuffieNuovo.class);
         startService(intentCuffie);
+
+        // GESTIONE WIFI
+        wifiReceiver = new WifiConnectionReceiver();
+        IntentFilter filterWiFi = new IntentFilter();
+        filterWiFi.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(wifiReceiver, filterWiFi);
+        // GESTIONE WIFI
 
         // SERVIZIO GPS
         boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
@@ -270,6 +280,10 @@ public class ServizioInterno extends Service {
 
         if (mScreenReceiver != null) {
             context.unregisterReceiver(mScreenReceiver);
+        }
+
+        if (wifiReceiver != null) {
+            context.unregisterReceiver(wifiReceiver);
         }
 
         if (intentCuffie != null) {

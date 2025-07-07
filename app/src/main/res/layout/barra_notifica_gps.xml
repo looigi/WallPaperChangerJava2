@@ -52,20 +52,27 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="center_horizontal|center_vertical"
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/imgOnOff"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:src="@drawable/on" />
+
+            <ImageView
                 android:id="@+id/imgSwitchGPSTasti"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_marginStart="3dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/satellite" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:padding="2dp"
             android:orientation="vertical"
             android:layout_height="match_parent">

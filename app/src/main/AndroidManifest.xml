@@ -359,7 +359,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".utilities.ControlloSegnale2" />
+        <service android:name=".classeControlloSegnale.ControlloSegnale2" />
 
         <service android:name=".classePlayer.GestioneNotifichePlayer$NotificationActionServicePlayer" />
 

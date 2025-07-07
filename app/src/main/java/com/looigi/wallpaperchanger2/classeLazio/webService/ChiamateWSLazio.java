@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -183,6 +184,28 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato();
 
         TipoOperazione = "ScriveRisultati";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                300000,
+                ApriDialog);
+    }
+
+    private CheckBox chkFatta;
+
+    public void RitornaFatte(CheckBox chkFatta, String Squadra) {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        this.chkFatta = chkFatta;
+
+        String Urletto="RitornaFatte?" +
+                "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
+                "Squadra=" + Squadra;
+
+        TipoOperazione = "RitornaFatteSquadre";
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -1471,6 +1494,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "AggiungeModificaGiocatore":
                         fAggiungeModificaGiocatore(result);
                         break;
+                    case "RitornaFatteSquadre":
+                        fRitornaFatteSquadre(result);
+                        break;
                 }
 
                 UtilityLazio.getInstance().ImpostaAttesa(false);
@@ -1492,6 +1518,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fRitornaFatteSquadre(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno fatte squadre", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Ritorno fatte squadre: " + result);
+        } else {
+            if (result.equals("S")) {
+                chkFatta.setChecked(true);
+            } else {
+                chkFatta.setChecked(false);
+            }
         }
     }
 

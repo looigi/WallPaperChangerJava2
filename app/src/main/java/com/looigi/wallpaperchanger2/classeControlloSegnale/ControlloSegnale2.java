@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.utilities;
+package com.looigi.wallpaperchanger2.classeControlloSegnale;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,9 +13,9 @@ import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 
-import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
-import com.looigi.wallpaperchanger2.watchDog.VariabiliStaticheWatchdog;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.List;
 
@@ -61,38 +61,22 @@ public class ControlloSegnale2 extends Service {
     private void CambiatoSegnale(SignalStrength signalStrength) {
         Context context = UtilitiesGlobali.getInstance().tornaContextValido();
 
-        boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
-        VariabiliStaticheStart.getInstance().setCeWifi(wifi);
+        // boolean wifi = UtilitiesGlobali.getInstance().checkWifiOnAndConnected();
+        // VariabiliStaticheStart.getInstance().setCeWifi(wifi);
 
         String NomeMaschera = "Gestione_GPS";
 
-        if (wifi != vecchioWifi) {
-            UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                    "Controllo segnale segnale wifi. E' attivo: " + wifi);
+        /*
+        // if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
+            if (vecchioWifi != wifi) {
+                UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
+                        "Attivazione gps. Wifi: " + wifi);
 
-            /* if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
-                // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
-                /* UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
+                UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
                         "CONTROLLO_ATTIVAZIONE",
-                        "Controllo segnale"); * /
-                // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
-            } */
-
-            vecchioWifi = wifi;
-        }
-            // if (VariabiliStaticheGPS.getInstance().isBloccoPerWifi()) {
-                // if (vecchioWifi != wifi) {
-
-                    /* UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
-                            "Attivazione gps. Wifi: " + wifi);
-
-                    UtilitiesGlobali.getInstance().ImpostaServizioGPS(context,
-                            "CONTROLLO_ATTIVAZIONE",
-                            "Controllo segnale"); */
-                    // PER ORA LO TOLGO - VEDIAMO SE E' QUESTO CHE FA CASINO AL GPS
-
-                // }
-            // }
+                        "Controllo segnale");
+            }
+        // } */
         /* } else {
             UtilityGPS.getInstance().ScriveLog(context, NomeMaschera,
                     "Classe GPS non istanziata...");
@@ -152,11 +136,11 @@ public class ControlloSegnale2 extends Service {
                 }
             }
 
-            String livello = UtilitiesGlobali.getInstance().getLevelString(
+            /* String livello = UtilitiesGlobali.getInstance().getLevelString(
                     VariabiliStaticheStart.getInstance().getLivello()
             );
             VariabiliStaticheWatchdog.getInstance().setSegnale((wifi ? "WiFi" : "Mobile") + ": " +
-                     livello);
+                     livello); */
 
             /* if (VariabiliStatichePlayer.getInstance().getTxtInformazioniPlayer() != null) {
                 String testo = (wifi ? "WiFi" : "Mobile");

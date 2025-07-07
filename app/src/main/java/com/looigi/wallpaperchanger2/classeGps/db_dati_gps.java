@@ -176,7 +176,7 @@ public class db_dati_gps {
         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(true);
         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(true);
         VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(false);
-        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(true);
+        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
     }
 
     public int CaricaImpostazioni(String daDove) {
