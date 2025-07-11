@@ -400,20 +400,8 @@ public class UtilityApiFootball {
                 Partita p = gson.fromJson(Contenuto, Partita.class);
                 VariabiliStaticheApiFootball.getInstance().setPartitaSelezionata(p);
 
-                // Caricamento Giocatori partita
-                String urlString = "https://v3.football.api-sports.io/fixtures/players?" +
-                        "fixture=" + VariabiliStaticheApiFootball.getInstance().getIdPartita(); // + "&" +
-                // "team=" + VariabiliStaticheApiFootball.getInstance().getIdSquadra();
-                EffettuaChiamata(
-                        context,
-                        urlString,
-                        "GiocatoriPartita_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + "_" +
-                                VariabiliStaticheApiFootball.getInstance().getIdPartita() + ".json",
-                        false,
-                        "GIOCATORI"
-                );
-
-                // UtilitiesGlobali.getInstance().ApreToast(context, "Dettaglio Partita scaricata");
+                ChiamateWSLazio ws = new ChiamateWSLazio(context);
+                ws.ControllaSeEsistePartita(p);
             }
         }, 100);
     }

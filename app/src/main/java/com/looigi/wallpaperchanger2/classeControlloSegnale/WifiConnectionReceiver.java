@@ -22,6 +22,7 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         boolean wifi = isWifiConnected(context);
         VariabiliStaticheStart.getInstance().setCeWifi(wifi);
+        VariabiliStaticheStart.getInstance().setPresoWiFi(true);
 
         if (wifi != vecchioWifi) {
             UtilityGPS.getInstance().ScriveLog(context, "WIFI_WORKER",

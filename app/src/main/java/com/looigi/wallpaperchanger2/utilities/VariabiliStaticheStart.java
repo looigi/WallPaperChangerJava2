@@ -41,6 +41,7 @@ public class VariabiliStaticheStart {
     private String PercorsoDIRLog;
     private boolean Detector;
     private boolean ceWifi = false;
+    private boolean presoWiFi = false;
     private int livelloSegnaleConnessione;
     private String tipoConnessione;
     private int velocitaUpload;
@@ -61,6 +62,14 @@ public class VariabiliStaticheStart {
     private boolean haFattoTraduzione;
     private boolean haPresoMeteo;
     private StrutturaMeteo meteo;
+
+    public boolean isPresoWiFi() {
+        return presoWiFi;
+    }
+
+    public void setPresoWiFi(boolean presoWiFi) {
+        this.presoWiFi = presoWiFi;
+    }
 
     public StrutturaMeteo getMeteo() {
         return meteo;

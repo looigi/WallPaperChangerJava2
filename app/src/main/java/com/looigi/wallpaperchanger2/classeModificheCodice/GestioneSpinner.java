@@ -302,6 +302,7 @@ public class GestioneSpinner {
         );
 
         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.VISIBLE);
+        VariabiliStaticheModificheCodice.getInstance().setEseguitaLetturaIniziale(true);
 
         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {

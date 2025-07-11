@@ -106,7 +106,7 @@ public class db_dati_gps {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni "
                         + "(Segue VARCHAR, PathSegnale VARCHAR, PathPercorso VARCHAR, PsAttivi VARCHAR,"
-                        + "Accuracy VARCHAR, BloccoWiFi VARCHAR, polyLines VARCHAR);";
+                        + "Accuracy VARCHAR, BloccoWiFi VARCHAR, polyLines VARCHAR, GpsBloccato VARCHAR);";
 
                 myDB.execSQL(sql);
 
@@ -147,8 +147,8 @@ public class db_dati_gps {
                         + "'" + (VariabiliStaticheGPS.getInstance().isAccuracyAttiva() ? "S" : "N") + "', "
                         // + "'" + (VariabiliStaticheGPS.getInstance().isBloccoPerWifi() ? "S" : "N") + "' "
                         + "'N', "
-                        + "'" + (VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline() ? "S" : "N") + "' "
-                        // + "'" +  (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheGPS.getInstance().isDisegnaPathComePolyline() ? "S" : "N") + "', "
+                        + "'" +  (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto() ? "S" : "N") + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -195,7 +195,7 @@ public class db_dati_gps {
                         VariabiliStaticheGPS.getInstance().setAccuracyAttiva(c.getString(4).equals("S"));
                         // VariabiliStaticheGPS.getInstance().setBloccoPerWifi(c.getString(5).equals("S"));
                         VariabiliStaticheGPS.getInstance().setDisegnaPathComePolyline(c.getString(6).equals("S"));
-                        // VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(c.getString(7).equals("S"));
+                        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(c.getString(7).equals("S"));
 
                         return 0;
                     } catch (Exception e) {

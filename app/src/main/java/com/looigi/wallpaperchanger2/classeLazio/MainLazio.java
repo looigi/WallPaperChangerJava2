@@ -888,10 +888,10 @@ public class MainLazio extends Activity {
             if (files != null) {
                 for (File file : files) {
                     if (file.isDirectory()) {
-                        // String Nome = file.getName();
-                        // if (!Nome.equalsIgnoreCase("FATTE")) {
+                        String Nome = file.getName();
+                        if (!Nome.equalsIgnoreCase("FATTE")) {
                             Files.getInstance().deleteFolder(file);
-                        // }
+                        }
                     }
                 }
             }

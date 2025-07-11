@@ -47,6 +47,7 @@ import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.Goals;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.PlayerStatistics;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Giocatori.Statistics;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partita.Partita;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Partite.FixtureData;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.strutture.Squadre.TeamResponse;
 import com.looigi.wallpaperchanger2.utilities.Files;
@@ -842,6 +843,37 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 ApriDialog);
     }
 
+
+
+    public void ControllaSeEsistePartita(Partita p) {
+        UtilityLazio.getInstance().ImpostaAttesa(true);
+        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+
+        String Casa = p.response.get(0).teams.home.name;
+        String Fuori = p.response.get(0).teams.away.name;
+        String goalCasa = String.valueOf(p.response.get(0).goals.home);
+        String goalFuori = String.valueOf(p.response.get(0).goals.away);
+        String Competizione = RitornaTipologiaPartita(p.response.get(0).league.name, "");
+
+        String Urletto="ControllaSeEsistePartita?" +
+                "idAnno=" + VariabiliStaticheApiFootball.getInstance().getIdAnnoScelto() +
+                "&SquadraCasa=" + Casa +
+                "&SquadraFuori=" + Fuori +
+                "&GoalCasa=" + goalCasa +
+                "&GoalFuori=" + goalFuori +
+                "&idCompetizione=" + Competizione;
+
+        TipoOperazione = "ControllaSeEsistePartita";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                10000,
+                ApriDialog);
+    }
+
     public void AggiungeSquadra(int Anno, String Squadra, int idTipologia) {
         UtilityLazio.getInstance().ImpostaAttesa(true);
         VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
@@ -1497,6 +1529,9 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     case "RitornaFatteSquadre":
                         fRitornaFatteSquadre(result);
                         break;
+                    case "ControllaSeEsistePartita":
+                        fControllaSeEsistePartita(result);
+                        break;
                 }
 
                 UtilityLazio.getInstance().ImpostaAttesa(false);
@@ -1518,6 +1553,31 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fControllaSeEsistePartita(String result) {
+        boolean ritorno = ControllaRitorno("Ritorno controllo partita", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Ritorno controllo partita: " + result);
+        } else {
+            if (result.contains("Nessuna partita")) {
+                // Caricamento Giocatori partita
+                String urlString = "https://v3.football.api-sports.io/fixtures/players?" +
+                        "fixture=" + VariabiliStaticheApiFootball.getInstance().getIdPartita(); // + "&" +
+                // "team=" + VariabiliStaticheApiFootball.getInstance().getIdSquadra();
+                UtilityApiFootball u = new UtilityApiFootball();
+                u.EffettuaChiamata(
+                        context,
+                        urlString,
+                        "GiocatoriPartita_" + VariabiliStaticheApiFootball.getInstance().getIdSquadra() + "_" +
+                                VariabiliStaticheApiFootball.getInstance().getIdPartita() + ".json",
+                        false,
+                        "GIOCATORI"
+                );
+            } else {
+                controllaProsecuzioneSalvaDettaglio(true);
+            }
         }
     }
 
@@ -1586,12 +1646,12 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                         10000,
                         ApriDialog);
             } else {
-                controllaProsecuzioneSalvaDettaglio();
+                controllaProsecuzioneSalvaDettaglio(false);
             }
         }
     }
 
-    private void controllaProsecuzioneSalvaDettaglio() {
+    private void controllaProsecuzioneSalvaDettaglio(boolean daControlloPartita) {
         if (VariabiliStaticheApiFootball.getInstance().isStaSalvandoTutteLePartite()) {
             int quantePartite = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.size();
             int attuale = VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite();
@@ -1650,9 +1710,15 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheApiFootball.getInstance().setIdPartitaSalvata(-1);
             VariabiliStaticheApiFootball.getInstance().setGiocatoriCasaPS(null);
             VariabiliStaticheApiFootball.getInstance().setGiocatoriFuoriPS(null);
-            VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita e dettaglio salvati");
+            if (daControlloPartita) {
+                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita già esistnte");
 
-            UtilitiesGlobali.getInstance().ApreToast(context, "Partita e dettaglio salvati");
+                UtilitiesGlobali.getInstance().ApreToast(context, "Partita già esistente");
+            } else {
+                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita e dettaglio salvati");
+
+                UtilitiesGlobali.getInstance().ApreToast(context, "Partita e dettaglio salvati");
+            }
         }
     }
     
@@ -1664,7 +1730,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             if (!AggiuntaGiocatori.isEmpty()) {
                 if (AggiuntaGiocatori.equals("BASTA")) {
                     AggiuntaGiocatori = "";
-                    controllaProsecuzioneSalvaDettaglio();
+                    controllaProsecuzioneSalvaDettaglio(false);
                 } else {
                     if (AggiuntaGiocatori.equals("MANCANOFUORI")) {
                         String Urletto = "AggiungeGiocatori?" +

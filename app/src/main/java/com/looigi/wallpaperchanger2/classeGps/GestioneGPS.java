@@ -75,7 +75,7 @@ public class GestioneGPS extends Service {
 
         cv = new CalcoloVelocita();
         VariabiliStaticheGPS.getInstance().setGpsAttivo(false);
-        VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
+        // VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(false);
 
         // VariabiliStaticheGPS.getInstance().setNonScriverePunti(false);
 
@@ -334,33 +334,34 @@ public class GestioneGPS extends Service {
             context = ctx;
         } */
 
-        if (VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
-            if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                UtilityGPS.getInstance().ScriveLog(
-                        context,
-                        NomeMaschera,
-                        "Controllo disattivazione/attivazione. Disattivo per blocco da tasto. Da " + daDove);
+        if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+            if (VariabiliStaticheStart.getInstance().isCeWifi()) {
+                if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                    BloccaGPS("Controllo Acc Spegn 3. Da " + daDove);
 
-                BloccaGPS("Controllo Acc Spegn 3. Da " + daDove);
+                    UtilityGPS.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Controllo disattivazione/attivazione. Disattivo perché c'è wifi attivo");
+                }
             } else {
-                UtilityGPS.getInstance().ScriveLog(
-                        context,
-                        NomeMaschera,
-                        "Controllo disattivazione/attivazione. Esco dal controllo perché bloccato da tasto. Da " + daDove);
+                if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                    AbilitaGPS("Controllo Acc Spegn 3. Da " + daDove);
+
+                    UtilityGPS.getInstance().ScriveLog(
+                            context,
+                            NomeMaschera,
+                            "Controllo disattivazione/attivazione. Attivo perché NON c'è wifi attivo");
+                }
             }
         } else {
-            if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                UtilityGPS.getInstance().ScriveLog(
-                        context,
-                        NomeMaschera,
-                        "Controllo disattivazione/attivazione. Attivo. Da " + daDove);
+            if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                BloccaGPS("Controllo Acc Spegn 3. Da " + daDove);
 
-                AbilitaGPS("Controllo Acc Spegn 3. Da " + daDove);
-            } else {
                 UtilityGPS.getInstance().ScriveLog(
                         context,
                         NomeMaschera,
-                        "Controllo disattivazione/attivazione. Esco dal controllo perché gps già attivo. Da " + daDove);
+                        "Controllo disattivazione/attivazione. Disattivo perché premuto il tasto di blocco");
             }
         }
 

@@ -274,6 +274,9 @@ public class GestioneNotificaGPS {
                         boolean attivo = VariabiliStaticheGPS.getInstance().isBloccatoDaTasto();
                         VariabiliStaticheGPS.getInstance().setBloccatoDaTasto(!attivo);
 
+                        db_dati_gps db = new db_dati_gps(context);
+                        db.ScriveImpostazioni();
+
                         UtilitiesGlobali.getInstance().ImpostaServizioGPS(context, "CONTROLLO_ATTIVAZIONE", "Notifica GPS");
 
                         GestioneNotificaGPS.getInstance().AggiornaNotifica();
