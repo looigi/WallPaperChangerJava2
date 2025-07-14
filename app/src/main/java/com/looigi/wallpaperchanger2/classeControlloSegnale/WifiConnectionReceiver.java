@@ -9,8 +9,12 @@ import android.net.NetworkInfo;
 import android.net.Network;
 import android.os.Build;
 
+import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
+import com.looigi.wallpaperchanger2.classeGps.GestioneGPS;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 import com.looigi.wallpaperchanger2.watchDog.VariabiliStaticheWatchdog;
@@ -28,16 +32,32 @@ public class WifiConnectionReceiver extends BroadcastReceiver {
             UtilityGPS.getInstance().ScriveLog(context, "WIFI_WORKER",
                     "Controllo segnale segnale wifi. E' attivo: " + wifi);
 
-            if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
-                if (wifi) {
-                    if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS(
-                                "Controllo Acc Spegn. Da " + "Controllo Segnale");
-                    }
-                } else {
-                    if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
-                        VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(
-                                "Controllo Acc Spegn. Da " + "Controllo Segnale");
+            if (VariabiliStaticheGPS.getInstance().getGestioneGPS() == null) {
+                if (VariabiliStaticheStart.getInstance().isDetector() &&
+                        !VariabiliStaticheDetector.getInstance().isMascheraPartita() &&
+                        VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
+                    VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
+
+                    UtilityGPS.getInstance().ScriveLog(context, "WIFI_WORKER",
+                            "Controllo segnale segnale wifi. Intent gps nullo. Lo attivo");
+
+                    VariabiliStaticheStart.getInstance().setIntentGPS(new Intent(context, GestioneGPS.class));
+                    context.startForegroundService(VariabiliStaticheStart.getInstance().getIntentGPS());
+                }
+            }
+
+            if (VariabiliStaticheGPS.getInstance().getGestioneGPS() != null) {
+                if (!VariabiliStaticheGPS.getInstance().isBloccatoDaTasto()) {
+                    if (wifi) {
+                        if (VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().BloccaGPS(
+                                    "Controllo Acc Spegn. Da " + "Controllo Segnale");
+                        }
+                    } else {
+                        if (!VariabiliStaticheGPS.getInstance().isGpsAttivo()) {
+                            VariabiliStaticheGPS.getInstance().getGestioneGPS().AbilitaGPS(
+                                    "Controllo Acc Spegn. Da " + "Controllo Segnale");
+                        }
                     }
                 }
             }

@@ -63,8 +63,8 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().getLayTipologia().setVisibility(LinearLayout.GONE);
         VariabiliStaticheModificheCodice.getInstance().setLayStato(findViewById(R.id.layStato));
         VariabiliStaticheModificheCodice.getInstance().getLayStato().setVisibility(LinearLayout.GONE);
-        VariabiliStaticheModificheCodice.getInstance().setSwcSoloAperti(findViewById(R.id.switchSoloAperte));
-        VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setChecked(true);
+        // VariabiliStaticheModificheCodice.getInstance().setSwcSoloAperti(findViewById(R.id.switchSoloAperte));
+        // VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setChecked(true);
         ImageView imgSalvaTipologia = findViewById(R.id.imgSalvaTipologia);
         ImageView imgAnnullaTipologia = findViewById(R.id.imgAnnullaTipologia);
         ImageView imgAggiungeProgetto = findViewById(R.id.imgAggiungeProgetto);
@@ -212,30 +212,18 @@ public class MainModificheCodice extends Activity {
             }
         }); */
 
-        VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // VariabiliStaticheModificheCodice.getInstance().setViewInterna();
+        VariabiliStaticheModificheCodice.getInstance().setBottoniStato(findViewById(R.id.radioGroupBottoniStato));
+
+        /* VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                /* db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
-                db.RitornaModifiche(
-                        VariabiliStaticheModificheCodice.getInstance().getIdProgetto(),
-                        VariabiliStaticheModificheCodice.getInstance().getIdModulo(),
-                        VariabiliStaticheModificheCodice.getInstance().getIdSezione()
-                );
-
-                VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(
-                        VariabiliStaticheModificheCodice.getInstance().PrendeNumeroModifiche(context)
-                );
-                db.ChiudeDB(); */
-
-                /* AdapterListenerModificheCodice customAdapterT = new AdapterListenerModificheCodice(
-                        context,
-                        VariabiliStaticheModificheCodice.getInstance().getListaModifiche());
-                VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setAdapter(customAdapterT); */
+                VariabiliStaticheModificheCodice.getInstance().contaModifiche();
 
                 if (VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche() != null) {
                     VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche().notifyDataSetChanged();
                 }
             }
-        });
+        }); */
 
         /* if (!VariabiliStaticheModificheCodice.getInstance().getListaProgetti().isEmpty()) {
             VariabiliStaticheModificheCodice.getInstance().getImgModificaProgetto().setVisibility(LinearLayout.VISIBLE);

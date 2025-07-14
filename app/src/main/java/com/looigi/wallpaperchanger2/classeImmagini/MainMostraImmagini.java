@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
@@ -35,6 +37,8 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -450,6 +454,21 @@ public class MainMostraImmagini extends Activity {
 
                     // UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
                 // }
+            }
+        });
+
+        SwitchCompat swcImgAndOr = act.findViewById(R.id.switchAndOr);
+        swcImgAndOr.setChecked(VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro().equals("And"));
+        swcImgAndOr.setText(VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro());
+        swcImgAndOr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String Cosa = isChecked ? "And" : "Or";
+                swcImgAndOr.setText(Cosa);
+                VariabiliStaticheMostraImmagini.getInstance().setOperatoreFiltro(Cosa);
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 

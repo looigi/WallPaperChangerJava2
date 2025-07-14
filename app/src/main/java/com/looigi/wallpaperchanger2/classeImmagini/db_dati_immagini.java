@@ -74,7 +74,7 @@ public class db_dati_immagini {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Impostazioni"
                         + " (LimiteInBytes VARCHAR, Random VARCHAR, SettingsAperto VARCHAR, "
-                        + "FiltroCategoria VARCHAR, Filtro VARCHAR, RicercaPerVisura VARCHAR"
+                        + "FiltroCategoria VARCHAR, Filtro VARCHAR, RicercaPerVisura VARCHAR, OperatoreFiltro VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -167,7 +167,8 @@ public class db_dati_immagini {
                         + "'" + (VariabiliStaticheMostraImmagini.getInstance().isSettingsAperto() ? "S" : "N") + "', "
                         + "'" + VariabiliStaticheMostraImmagini.getInstance().getFiltroCategoria().replace("'", "''") + "',"
                         + "'" + VariabiliStaticheMostraImmagini.getInstance().getFiltro().replace("'", "''") + "',"
-                        + "'" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N") + "' "
+                        + "'" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N") + "',"
+                        + "'" + VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro() + "' "
                         + ") ";
                 myDB.execSQL(sql);
 
@@ -193,6 +194,7 @@ public class db_dati_immagini {
         VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoria("");
         VariabiliStaticheMostraImmagini.getInstance().setFiltro("");
         VariabiliStaticheMostraImmagini.getInstance().setRicercaPerVisua(true);
+        VariabiliStaticheMostraImmagini.getInstance().setOperatoreFiltro("And");
     }
 
     public int CaricaImpostazioni() {
@@ -210,6 +212,7 @@ public class db_dati_immagini {
                         VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoria(c.getString(3));
                         VariabiliStaticheMostraImmagini.getInstance().setFiltro(c.getString(4));
                         VariabiliStaticheMostraImmagini.getInstance().setRicercaPerVisua(c.getString(5).equals("S"));
+                        VariabiliStaticheMostraImmagini.getInstance().setOperatoreFiltro(c.getString(6));
 
                         return 0;
                     } catch (Exception e) {

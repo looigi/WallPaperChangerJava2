@@ -2,17 +2,24 @@ package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeDetector.Impostazioni;
 import com.looigi.wallpaperchanger2.classeModificheCodice.GestioneStati.adapters.AdapterListenerModificheStati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
@@ -75,7 +82,7 @@ public class VariabiliStaticheModificheCodice {
     private String statoSelezionato;
     private Spinner spnStati;
     private EditText edtStato;
-    private SwitchCompat swcSoloAperti;
+    // private SwitchCompat swcSoloAperti;
     private ImageView imgModificaProgetto;
     private ImageView imgEliminaProgetto;
     private ImageView imgModificaModulo;
@@ -317,13 +324,13 @@ public class VariabiliStaticheModificheCodice {
         this.imgModificaModulo = imgModificaModulo;
     }
 
-    public SwitchCompat getSwcSoloAperti() {
+    /* public SwitchCompat getSwcSoloAperti() {
         return swcSoloAperti;
     }
 
     public void setSwcSoloAperti(SwitchCompat swcSoloAperti) {
         this.swcSoloAperti = swcSoloAperti;
-    }
+    } */
 
     public EditText getEdtStato() {
         return edtStato;
@@ -860,5 +867,114 @@ public class VariabiliStaticheModificheCodice {
         );
 
         db.ChiudeDB();
+    }
+
+    private int totModifiche;
+
+    public int getTotModifiche() {
+        return totModifiche;
+    }
+
+    public void setTotModifiche(int totModifiche) {
+        this.totModifiche = totModifiche;
+    }
+
+    public void contaModifiche() {
+        if (txtQuante != null) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    int QuanteModifiche = contaModifiche2();
+                    String Ritorno = "Modifiche: " +
+                            QuanteModifiche +
+                            "/" + totModifiche;
+                    txtQuante.setText(Ritorno);
+                }
+            }, 100);
+        }
+    }
+
+    private int contaModifiche2() {
+        int quante = 0;
+        boolean ciSonoStati = false;
+        List<String> statiDaTrovare = new ArrayList<>();
+
+        int i = 0;
+        for (Stati ls: listaStati) {
+            String Stato = Character.toString(StatiAttivi.charAt(i));
+            if (Stato.equals("S")) {
+                if (!ciSonoStati) { ciSonoStati = true; }
+                statiDaTrovare.add(ls.getStato());
+            }
+            i++;
+        }
+
+        if (ciSonoStati) {
+            for (Modifiche m : listaModifiche) {
+                String Stato = RitornaStringaStato(
+                        m.getIdStato()
+                );
+                for (String statoDaCercare: statiDaTrovare) {
+                    if (statoDaCercare.toUpperCase().trim().equals(Stato.toUpperCase().trim())) {
+                        quante++;
+                    }
+                }
+            }
+        } else {
+            quante = listaModifiche.size();
+        }
+
+        return quante;
+    }
+
+    private RadioGroup bottoniStato;
+    private String StatiAttivi = "";
+
+    public String getStatiAttivi() {
+        return StatiAttivi;
+    }
+
+    public void setStatiAttivi(String statiAttivi) {
+        StatiAttivi = statiAttivi;
+    }
+
+    public RadioGroup getBottoniStato() {
+        return bottoniStato;
+    }
+
+    public void setBottoniStato(RadioGroup bottoniStato) {
+        this.bottoniStato = bottoniStato;
+    }
+
+    public void DisegnaStati(Context context) {
+        for (int i = 0; i < listaStati.size(); i++) {
+            CheckBox checkBoxStato = new CheckBox(context);
+            checkBoxStato.setText(listaStati.get(i).getStato());
+            checkBoxStato.setId(View.generateViewId());
+
+            checkBoxStato.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    int quale = checkBoxStato.getId();
+                    boolean checked = checkBoxStato.isChecked();
+
+                    StatiAttivi = StatiAttivi.substring(0, quale - 1) + (checked ? "S" : "N") +
+                            StatiAttivi.substring(quale, StatiAttivi.length());
+
+                    VariabiliStaticheModificheCodice.getInstance().contaModifiche();
+
+                    if (VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche() != null) {
+                        VariabiliStaticheModificheCodice.getInstance().getAdapterModifiche().notifyDataSetChanged();
+                    }
+
+                    db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+                    db.ScriveStatiAttivi();
+                }
+            });
+
+            String Stato = Character.toString(StatiAttivi.charAt(i));
+            checkBoxStato.setChecked(Stato.equals("S"));
+
+            bottoniStato.addView(checkBoxStato);
+        }
     }
 }

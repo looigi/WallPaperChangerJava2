@@ -67,9 +67,18 @@ public class VariabiliStaticheMostraImmagini {
     private boolean ricercaPerVisua = true;
     private boolean AggiornamentoCompleto = false;
     private StrutturaImmaginiLibrary immaginePerWP;
+    private String OperatoreFiltro = "Or";
 
     public StrutturaImmaginiLibrary getImmaginePerWP() {
         return immaginePerWP;
+    }
+
+    public String getOperatoreFiltro() {
+        return OperatoreFiltro;
+    }
+
+    public void setOperatoreFiltro(String operatoreFiltro) {
+        OperatoreFiltro = operatoreFiltro;
     }
 
     public void setImmaginePerWP(StrutturaImmaginiLibrary immaginePerWP) {

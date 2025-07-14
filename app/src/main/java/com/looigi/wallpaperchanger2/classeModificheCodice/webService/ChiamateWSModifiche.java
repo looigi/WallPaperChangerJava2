@@ -147,11 +147,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     private String SistemaTestoPerRitorno(String Cosa) {
         String Ritorno = Cosa;
 
-        Ritorno = Ritorno.replace("*V*", ",");
-        Ritorno = Ritorno.replace( "*S*", "/");
-        Ritorno = Ritorno.replace("*BS*", "\\");
-        Ritorno = Ritorno.replace("*A*", "&");
-        Ritorno = Ritorno.replace("*2P*", ":");
+        Ritorno = Ritorno.replace("*V*", ",").replace("*v*", ",");
+        Ritorno = Ritorno.replace( "*S*", "/").replace( "*s*", "/");
+        Ritorno = Ritorno.replace("*BS*", "\\").replace("*bs*", "\\");
+        Ritorno = Ritorno.replace("*A*", "&").replace("*a*", "&");
+        Ritorno = Ritorno.replace("*2P*", ":").replace("*2p*", ":");
 
         return Ritorno;
     }
@@ -245,7 +245,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
         String Urletto="InserisceModificaStato?" +
                 "idStato=" + idStato +
-                "&Stato=" + SistemaTestoPerInvio(Stato);
+                "&Stato=" + SistemaTestoPerInvio(UtilitiesGlobali.getInstance().MetteMaiuscoleDopoOgniPunto(Stato));
 
         TipoOperazione = "InserisceModificaStato";
 
@@ -740,7 +740,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         }
     }
 
-    private void fRitornaNumeroModificheTotali(String result) {
+    public void fRitornaNumeroModificheTotali(String result) {
         UtilityGPS.getInstance().ImpostaAttesa(false);
 
         boolean ritorno = ControllaRitorno("Ritorna numero modifiche", result);
@@ -749,17 +749,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        if (VariabiliStaticheModificheCodice.getInstance().getTxtQuante() != null) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String Ritorno = "Modifiche: " +
-                            VariabiliStaticheModificheCodice.getInstance().getListaModifiche().size() +
-                            "/" + result;
-                    VariabiliStaticheModificheCodice.getInstance().getTxtQuante().setText(Ritorno);
-                }
-            }, 100);
-        }
+        VariabiliStaticheModificheCodice.getInstance().setTotModifiche(Integer.parseInt(result));
+        VariabiliStaticheModificheCodice.getInstance().contaModifiche();
     }
 
     private void fRitornaConteggi(String result) {
@@ -881,6 +872,9 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 VariabiliStaticheModificheCodice.getInstance().getLstModificheStati().setAdapter(customAdapterT);
             } else {
                 VariabiliStaticheModificheCodice.getInstance().setListaStati(lista);
+                db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
+                db.RitornaStatiAttivi();
+                VariabiliStaticheModificheCodice.getInstance().DisegnaStati(context);
 
                 GestioneSpinner.getInstance().GestioneSpinnerStati(context);
             }
@@ -915,7 +909,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
-                    decoded = SistemaTestoPerRitorno(decoded);
+                    decoded = UtilitiesGlobali.getInstance().MetteMaiuscoleDopoOgniPunto(SistemaTestoPerRitorno(decoded));
                     p.setProgetto(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setProgetto("ERROR");
@@ -1027,7 +1021,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
-                    decoded = SistemaTestoPerRitorno(decoded);
+                    decoded = UtilitiesGlobali.getInstance().MetteMaiuscoleDopoOgniPunto(SistemaTestoPerRitorno(decoded));
                     p.setModulo(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setModulo("ERROR");
@@ -1155,7 +1149,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
-                    decoded = SistemaTestoPerRitorno(decoded);
+                    decoded = UtilitiesGlobali.getInstance().MetteMaiuscoleDopoOgniPunto(SistemaTestoPerRitorno(decoded));
                     p.setSezione(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setSezione("ERROR");
@@ -1240,10 +1234,10 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             return;
         }
 
-        String idStato = "";
-        if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
-            idStato = "0";
-        }
+        // String idStato = "";
+        // if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
+        //     idStato = "0";
+        // }
 
         List<Modifiche> lista = new ArrayList<>();
         String resultSenzaQuadre = result.substring(1, result.length() - 1);
@@ -1274,7 +1268,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 value = keyValue[1].replaceAll("\"", "").trim();
                 try {
                     String decoded = URLDecoder.decode(value, "UTF-8");
-                    decoded = SistemaTestoPerRitorno(decoded);
+                    decoded = UtilitiesGlobali.getInstance().MetteMaiuscoleDopoOgniPunto(SistemaTestoPerRitorno(decoded));
                     p.setModifica(decoded);
                 } catch (UnsupportedEncodingException e) {
                     p.setModifica("ERROR");

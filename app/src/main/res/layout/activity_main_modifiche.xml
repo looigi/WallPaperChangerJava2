@@ -210,12 +210,18 @@
 
         </TextView>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <RadioGroup
+            android:id="@+id/radioGroupBottoniStato"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content" />
+
+        <!-- <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchSoloAperte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Solo modifiche aperte"
-            android:textColor="#0000CC" />
+            android:textColor="#0000CC" /> -->
 
         <View
             android:layout_width="match_parent"

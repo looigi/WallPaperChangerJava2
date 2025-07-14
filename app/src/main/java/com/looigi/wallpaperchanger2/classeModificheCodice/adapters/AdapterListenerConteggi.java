@@ -75,6 +75,9 @@ public class AdapterListenerConteggi extends BaseAdapter {
 
                 int spinnerPositionS = VariabiliStaticheModificheCodice.getInstance().getAdapterSezioni().getPosition(Sezione);
                 VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setSelection(spinnerPositionS);
+
+                ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
+                ws.RitornaModifiche(Integer.toString(idProgetto), Integer.toString(idModulo), Integer.toString(idSezione));
             }
         });
 

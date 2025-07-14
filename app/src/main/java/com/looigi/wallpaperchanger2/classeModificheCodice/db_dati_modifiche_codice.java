@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Progetti;
@@ -100,6 +101,11 @@ public class db_dati_modifiche_codice {
                 sql = "CREATE TABLE IF NOT EXISTS "
                         + "UltimeSelezioni "
                         + "(Progetto VARCHAR, Modulo VARCHAR, Sezione VARCHAR);";
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "StatiAttivi "
+                        + "(Stati VARCHAR);";
                 myDB.execSQL(sql);
 
                 return true;
@@ -203,6 +209,45 @@ public class db_dati_modifiche_codice {
                 int i = 0;
             }
         } */
+    }
+
+    public void RitornaStatiAttivi() {
+        if (myDB != null) {
+            try {
+                VariabiliStaticheModificheCodice.getInstance().setStatiAttivi("");
+                Cursor c = myDB.rawQuery("SELECT * FROM StatiAttivi", null);
+                if (c.moveToFirst()) {
+                    do {
+                        VariabiliStaticheModificheCodice.getInstance().setStatiAttivi(c.getString(0));
+                    } while (c.moveToNext());
+                }
+                if (VariabiliStaticheModificheCodice.getInstance().getStatiAttivi().isEmpty()) {
+                    int quanti = VariabiliStaticheModificheCodice.getInstance().getListaStati().size();
+                    String s = "";
+                    for (int i = 0; i < quanti; i++) {
+                        s += "N";
+                    }
+                    VariabiliStaticheModificheCodice.getInstance().setStatiAttivi(s);
+                }
+                c.close();
+            } catch (SQLException e) {
+                int i = 0;
+            }
+        }
+    }
+
+    public void ScriveStatiAttivi() {
+        if (myDB != null) {
+            try {
+                String sql = "Delete From StatiAttivi";
+                myDB.execSQL(sql);
+
+                sql = "Insert Into StatiAttivi(Stati) Values ('" + VariabiliStaticheModificheCodice.getInstance().getStatiAttivi() + "')";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                int i = 0;
+            }
+        }
     }
 
     public void RitornaProgetti() {

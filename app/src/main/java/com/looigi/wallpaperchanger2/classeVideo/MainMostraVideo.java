@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.PlaybackParams;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -22,9 +26,12 @@ import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
+import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListenerVideo;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraVideo extends Activity {
@@ -222,6 +229,102 @@ public class MainMostraVideo extends Activity {
                 }
             }
         });
+
+        // SWIPE VIDEO
+        /*
+        // TextView txtAvanzamento = findViewById(R.id.txtAvanzamento);
+
+        final int SEEK_INTERVAL = 1000;
+        final int SEEK_AMOUNT = 5000;
+        // final float[] deltaAppoggio = new float[1];
+
+        final Handler handler = new Handler();
+
+        final int[] targetPosition = {0}; // posizione cumulativa simulata
+        final int[] lastSeekPosition = { -1 };
+
+        Runnable seekForwardRunnable = new Runnable() {
+            @Override
+            public void run() {
+                targetPosition[0] += SEEK_AMOUNT;
+                int duration = VariabiliStaticheVideo.getInstance().getVideoView().getDuration();
+                if (targetPosition[0] > duration) targetPosition[0] = duration;
+
+                // int currentPos = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
+                // txtAvanzamento.setText("1->" + Float.toString(deltaAppoggio[0]) + "-" + targetPosition[0] + " : " + currentPos);
+
+                if (Math.abs(targetPosition[0] - lastSeekPosition[0]) >= 500) {
+                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(targetPosition[0]);
+                    lastSeekPosition[0] = targetPosition[0];
+                }
+
+                handler.postDelayed(this, SEEK_INTERVAL);
+            }
+        };
+
+        Runnable seekBackwardRunnable = new Runnable() {
+            @Override
+            public void run() {
+                targetPosition[0] -= SEEK_AMOUNT;
+                if (targetPosition[0] < 0) targetPosition[0] = 0;
+
+                // int currentPos = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
+                // txtAvanzamento.setText("2->" + Float.toString(deltaAppoggio[0]) + "-" + targetPosition[0] + " : " + currentPos);
+
+                if (Math.abs(targetPosition[0] - lastSeekPosition[0]) >= 500) {
+                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(targetPosition[0]);
+                    lastSeekPosition[0] = targetPosition[0];
+                }
+
+                handler.postDelayed(this, SEEK_INTERVAL);
+            }
+        };
+
+        ImageView imgScorri = findViewById(R.id.imgScorri);
+        imgScorri.setOnTouchListener(new View.OnTouchListener() {
+            float downX;
+            boolean seekingForward = false;
+            boolean seekingBackward = false;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downX = event.getX();
+                        // txtAvanzamento.setText("Inizio->" + Float.toString(deltaAppoggio[0]) + "-" + Integer.toString(targetPosition[0]));
+                        targetPosition[0] = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition(); // imposta la posizione iniziale
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        float deltaX = event.getX() - downX;
+                        // deltaAppoggio[0] = deltaX;
+
+                        if (deltaX > 100 && !seekingForward) {
+                            seekingForward = true;
+                            seekingBackward = false;
+                            handler.removeCallbacks(seekBackwardRunnable);
+                            handler.post(seekForwardRunnable);
+                        } else if (deltaX < -100 && !seekingBackward) {
+                            seekingBackward = true;
+                            seekingForward = false;
+                            handler.removeCallbacks(seekForwardRunnable);
+                            handler.post(seekBackwardRunnable);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        handler.removeCallbacks(seekForwardRunnable);
+                        handler.removeCallbacks(seekBackwardRunnable);
+                        seekingForward = false;
+                        seekingBackward = false;
+                        break;
+                }
+                return true;
+            }
+        });
+         */
+        // SWIPE VIDEO
 
         ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliV);
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {

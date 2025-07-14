@@ -24,6 +24,7 @@ import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -39,7 +40,7 @@ public class ChiamateWSMI implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini";
     // private LetturaWSAsincrona bckAsyncTask;
 
-    private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS + "/";
+    private final String RadiceWS = VariabiliStaticheMostraImmagini.UrlWS;
     private String ws = "newLooVF.asmx/";
     private String NS="http://newLooVF.org/";
     private String SA="http://newLooVF.org/";
@@ -66,7 +67,8 @@ public class ChiamateWSMI implements TaskDelegate {
                 "&Filtro=" + Filtro +
                 "&idImmagine=0" +
                 "&Random=S" +
-                "&OrdinaPerVisualizzato=S";
+                "&OrdinaPerVisualizzato=S" +
+                "&Operatore=" + VariabiliStaticheWallpaper.getInstance().getOperatoreFiltro();
 
         TipoOperazione = "ProssimaImmagineWP";
         // ControllaTempoEsecuzione = false;
@@ -90,7 +92,8 @@ public class ChiamateWSMI implements TaskDelegate {
                 "&Filtro=" + VariabiliStaticheMostraImmagini.getInstance().getFiltro() +
                 "&idImmagine=" + idImmagine +
                 "&Random=" + Random +
-                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N");
+                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N") +
+                "&Operatore=" + VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro();
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;

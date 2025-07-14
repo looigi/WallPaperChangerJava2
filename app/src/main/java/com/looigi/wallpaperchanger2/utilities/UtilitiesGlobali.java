@@ -665,6 +665,43 @@ public class UtilitiesGlobali {
         return Nominativo;
     }
 
+    public String MetteMaiuscoleDopoOgniPunto(String Nome) {
+        String Nominativo = "";
+        if (!Nome.isEmpty()) {
+            String Carattere = Character.toString(Nome.charAt(0)).toUpperCase();
+            Nominativo += Carattere;
+            for (int i = 1; i < Nome.length(); i++) {
+                Carattere = Character.toString(Nome.charAt(i)).toLowerCase();
+                Nominativo += Carattere;
+                if (Carattere.equals(".") || Carattere.equals("?") || Carattere.equals(";") || Carattere.equals(":")) {
+                    i++;
+                    if (i < Nome.length()) {
+                        String Carattere2 = Character.toString(Nome.charAt(i)).toLowerCase();
+                        Nominativo += Carattere2;
+                        boolean ok = true;
+                        while (Carattere2.equals(" ")) {
+                            i++;
+                            if (i >= Nome.length()) {
+                                ok = false;
+                                break;
+                            }
+                            Carattere2 = Character.toString(Nome.charAt(i)).toLowerCase();
+                            if (Carattere2.equals(" ")) {
+                                Nominativo += Carattere2;
+                            }
+                        }
+                        if (ok) {
+                            Carattere2 = Carattere2.toUpperCase();
+                            Nominativo += Carattere2;
+                        }
+                    }
+                }
+            }
+        }
+
+        return Nominativo;
+    }
+
     public void InvioMail(Context context, String Mail, String Oggetto, String Corpo) {
         new Thread(() -> {
             try {

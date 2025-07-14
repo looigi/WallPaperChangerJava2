@@ -62,6 +62,15 @@ public class VariabiliStaticheStart {
     private boolean haFattoTraduzione;
     private boolean haPresoMeteo;
     private StrutturaMeteo meteo;
+    private Intent intentGPS;
+
+    public Intent getIntentGPS() {
+        return intentGPS;
+    }
+
+    public void setIntentGPS(Intent intentGPS) {
+        this.intentGPS = intentGPS;
+    }
 
     public boolean isPresoWiFi() {
         return presoWiFi;

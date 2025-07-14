@@ -60,22 +60,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="3"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Filtro"
+                    android:textColor="@color/Nero"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtFiltroImmagimi"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textColor="@color/Blue"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchAndOr"
+                        android:layout_width="match_parent"
+                        android:textColor="#0000CC"
+                        android:text="And"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="Filtro"
-                android:textColor="@color/Nero"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/edtFiltroImmagimi"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:textColor="@color/Blue"
+                android:layout_width="match_parent"
+                android:gravity="end"
+                android:text="Divisore ; Caratteri Jolly * / % (numeri) / $ (caratteri)"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -515,9 +544,7 @@
         android:id="@+id/imgScorri"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-    </ImageView>
+        android:layout_height="100dp" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoMI"

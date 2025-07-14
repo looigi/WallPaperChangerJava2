@@ -623,6 +623,23 @@ public class MainImpostazioni extends Activity {
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();
+
+                UtilitiesGlobali.getInstance().ApreToast(context, "Filtro salvato");
+            }
+        });
+
+        SwitchCompat swcImgAndOr = act.findViewById(R.id.switchAndOr);
+        swcImgAndOr.setChecked(VariabiliStaticheWallpaper.getInstance().getOperatoreFiltro().equals("And"));
+        swcImgAndOr.setText(VariabiliStaticheWallpaper.getInstance().getOperatoreFiltro());
+        swcImgAndOr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String Cosa = isChecked ? "And" : "Or";
+                swcImgAndOr.setText(Cosa);
+                VariabiliStaticheWallpaper.getInstance().setOperatoreFiltro(Cosa);
+
+                db_dati_wallpaper db = new db_dati_wallpaper(context);
+                db.ScriveImpostazioni();
+                db.ChiudeDB();
             }
         });
 

@@ -49,7 +49,6 @@ public class ServizioInterno extends Service {
     // private PowerManager.WakeLock wl;
     private Intent intentSegnale;
     private Intent intentCuffie;
-    private Intent intentGPS;
     private PresenzaCuffie mCuffieInseriteReceiver;
     private WifiConnectionReceiver wifiReceiver;
 
@@ -130,8 +129,8 @@ public class ServizioInterno extends Service {
                 VariabiliStaticheWallpaper.getInstance().isCiSonoPermessi()) {
             VariabiliStaticheGPS.getInstance().setGestioneGPS(new GestioneGPS());
 
-            intentGPS = new Intent(this, GestioneGPS.class);
-            startForegroundService(intentGPS);
+            VariabiliStaticheStart.getInstance().setIntentGPS(new Intent(this, GestioneGPS.class));
+            startForegroundService(VariabiliStaticheStart.getInstance().getIntentGPS());
 
             /* Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
@@ -273,29 +272,34 @@ public class ServizioInterno extends Service {
         GestioneNotificheTasti.getInstance().RimuoviNotifica();
         GestioneNotificheDetector.getInstance().RimuoviNotifica();
         GestioneNotificaGPS.getInstance().RimuoviNotifica();
+        GestioneNotificheWP.getInstance().RimuoviNotifica();
 
-        if (intentSegnale != null) {
-            context.stopService(intentSegnale);
-        }
+        try {
+            if (intentSegnale != null) {
+                context.stopService(intentSegnale);
+            }
 
-        if (mScreenReceiver != null) {
-            context.unregisterReceiver(mScreenReceiver);
-        }
+            if (mScreenReceiver != null) {
+                context.unregisterReceiver(mScreenReceiver);
+            }
 
-        if (wifiReceiver != null) {
-            context.unregisterReceiver(wifiReceiver);
-        }
+            if (wifiReceiver != null) {
+                context.unregisterReceiver(wifiReceiver);
+            }
 
-        if (intentCuffie != null) {
-            context.stopService(intentCuffie);
-        }
+            if (intentCuffie != null) {
+                context.stopService(intentCuffie);
+            }
 
-        if (mCuffieInseriteReceiver != null) {
-            context.unregisterReceiver(mCuffieInseriteReceiver);
-        }
+            if (mCuffieInseriteReceiver != null) {
+                context.unregisterReceiver(mCuffieInseriteReceiver);
+            }
 
-        if (intentGPS != null) {
-            stopService(intentGPS);
+            if (VariabiliStaticheStart.getInstance().getIntentGPS() != null) {
+                context.stopService(VariabiliStaticheStart.getInstance().getIntentGPS());
+            }
+        } catch (Exception ignored) {
+
         }
 
         VariabiliStaticheGPS.getInstance().setGestioneGPS(null);
@@ -307,12 +311,6 @@ public class ServizioInterno extends Service {
         /* if (wl != null) {
             wl.release();
         } */
-
-        GestioneNotificheWP.getInstance().RimuoviNotifica();
-
-        if (mScreenReceiver != null) {
-            unregisterReceiver(mScreenReceiver);
-        }
 
         stopForeground(true);
         stopSelf();

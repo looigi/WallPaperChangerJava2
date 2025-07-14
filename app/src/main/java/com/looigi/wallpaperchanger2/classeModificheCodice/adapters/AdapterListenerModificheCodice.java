@@ -15,8 +15,10 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Modifiche;
+import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Stati;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerModificheCodice extends BaseAdapter {
@@ -50,28 +52,45 @@ public class AdapterListenerModificheCodice extends BaseAdapter {
         view = inflater.inflate(R.layout.lista_modifiche, null);
 
         int idStato = -1;
-        if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
+        /* if (VariabiliStaticheModificheCodice.getInstance().getSwcSoloAperti().isChecked()) {
+            idStato = 0;
+        } */
+
+        int ii = 0;
+        boolean ciSonoStati = false;
+        List<String> statiDaTrovare = new ArrayList<>();
+
+        for (Stati ls: VariabiliStaticheModificheCodice.getInstance().getListaStati()) {
+            String Stato = Character.toString(VariabiliStaticheModificheCodice.getInstance().getStatiAttivi().charAt(ii));
+            if (Stato.equals("S")) {
+                if (!ciSonoStati) { ciSonoStati = true; }
+                statiDaTrovare.add(ls.getStato());
+            }
+            ii++;
+        }
+        if (ciSonoStati) {
             idStato = 0;
         }
 
-        if (idStato == -1 || idStato == listaModifiche.get(i).getIdStato()) {
+        String Stato = VariabiliStaticheModificheCodice.getInstance().RitornaStringaStato(
+                listaModifiche.get(i).getIdStato()
+        );
+
+        if (idStato == -1 || cercaStato(Stato, statiDaTrovare)) {
             if (i < listaModifiche.size()) {
                 String NomeModifica = listaModifiche.get(i).getModifica();
-                String Stato = VariabiliStaticheModificheCodice.getInstance().RitornaStringaStato(
-                        listaModifiche.get(i).getIdStato()
-                );
 
-                switch (Stato) {
-                    case "Aperta":
+                switch (Stato.toUpperCase()) {
+                    case "APERTA":
                         view.setBackgroundColor(Color.rgb(255, 150, 150));
                         break;
-                    case "Chiusa":
+                    case "CHIUSA":
                         view.setBackgroundColor(Color.rgb(150, 255, 150));
                         break;
-                    case "Da Controllare":
+                    case "DA CONTROLLARE":
                         view.setBackgroundColor(Color.rgb(150, 150, 255));
                         break;
-                    case "In Dubbio":
+                    case "IN DUBBIO":
                         view.setBackgroundColor(Color.rgb(200, 200, 200));
                         break;
                 }
@@ -140,5 +159,18 @@ public class AdapterListenerModificheCodice extends BaseAdapter {
         }
 
         return view;
+    }
+
+    private boolean cercaStato(String idStato, List<String> listaStatiDaCercare) {
+        boolean ok = false;
+
+        for (String stato: listaStatiDaCercare) {
+            if (stato.equals(idStato)) {
+                ok = true;
+                break;
+            }
+        }
+
+        return ok;
     }
 }

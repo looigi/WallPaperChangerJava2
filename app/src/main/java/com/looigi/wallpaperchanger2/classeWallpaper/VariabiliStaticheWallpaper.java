@@ -100,6 +100,7 @@ public class VariabiliStaticheWallpaper {
     private TextView txtAvanzamentoRefresh;
     private boolean ImpostataConSchermoSpento = false;
     private long ultimoCambio = -1L;
+    private String OperatoreFiltro = "Or";
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -108,6 +109,14 @@ public class VariabiliStaticheWallpaper {
                 mainActivity.finish();
             // }
         }
+    }
+
+    public String getOperatoreFiltro() {
+        return OperatoreFiltro;
+    }
+
+    public void setOperatoreFiltro(String operatoreFiltro) {
+        OperatoreFiltro = operatoreFiltro;
     }
 
     public int getGiorniDifferenza() {
