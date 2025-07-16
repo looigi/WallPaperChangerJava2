@@ -2,8 +2,10 @@ package com.looigi.wallpaperchanger2.classeVideo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -55,6 +57,87 @@ public class VariabiliStaticheVideo {
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
     private boolean AggiornamentoCompleto = false;
+    private SeekBar seekScorri;
+    private SeekBar seekScorri2;
+    private boolean staVedendo = false;
+    private TextView txtAvanzamentoSeek;
+    private TextView txtMaxSeek;
+    private TextView txtTitoloSeek;
+    private LinearLayout layBarraTasti;
+    private int secondiAlpha;
+    private boolean BarraOscurata = false;
+
+    public boolean isBarraOscurata() {
+        return BarraOscurata;
+    }
+
+    public void setBarraOscurata(boolean barraOscurata) {
+        BarraOscurata = barraOscurata;
+    }
+
+    public int getSecondiAlpha() {
+        return secondiAlpha;
+    }
+
+    public void setSecondiAlpha(int secondiAlpha) {
+        this.secondiAlpha = secondiAlpha;
+    }
+
+    public LinearLayout getLayBarraTasti() {
+        return layBarraTasti;
+    }
+
+    public void setLayBarraTasti(LinearLayout layBarraTasti) {
+        this.layBarraTasti = layBarraTasti;
+    }
+
+    public SeekBar getSeekScorri2() {
+        return seekScorri2;
+    }
+
+    public void setSeekScorri2(SeekBar seekScorri2) {
+        this.seekScorri2 = seekScorri2;
+    }
+
+    public TextView getTxtTitoloSeek() {
+        return txtTitoloSeek;
+    }
+
+    public void setTxtTitoloSeek(TextView txtTitoloSeek) {
+        this.txtTitoloSeek = txtTitoloSeek;
+    }
+
+    public TextView getTxtAvanzamentoSeek() {
+        return txtAvanzamentoSeek;
+    }
+
+    public void setTxtAvanzamentoSeek(TextView txtAvanzamentoSeek) {
+        this.txtAvanzamentoSeek = txtAvanzamentoSeek;
+    }
+
+    public TextView getTxtMaxSeek() {
+        return txtMaxSeek;
+    }
+
+    public void setTxtMaxSeek(TextView txtMaxSeek) {
+        this.txtMaxSeek = txtMaxSeek;
+    }
+
+    public boolean isStaVedendo() {
+        return staVedendo;
+    }
+
+    public void setStaVedendo(boolean staVedendo) {
+        this.staVedendo = staVedendo;
+    }
+
+    public SeekBar getSeekScorri() {
+        return seekScorri;
+    }
+
+    public void setSeekScorri(SeekBar seekScorri) {
+        this.seekScorri = seekScorri;
+    }
 
     public boolean isAggiornamentoCompleto() {
         return AggiornamentoCompleto;

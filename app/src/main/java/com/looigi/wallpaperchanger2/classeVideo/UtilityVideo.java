@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class UtilityVideo {
     private static UtilityVideo instance = null;
@@ -245,6 +247,8 @@ public class UtilityVideo {
                         {
                             if (!VariabiliStaticheVideo.getInstance().isEntratoNelCampoDiTesto()) {
                                 if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                                    BloccaTimerAvanzamento();
+
                                     VariabiliStaticheVideo.getInstance().getVideoView().stopPlayback();
                                     VariabiliStaticheVideo.getInstance().getVideoView().clearAnimation();
                                     VariabiliStaticheVideo.getInstance().getVideoView().suspend(); // clears media player
@@ -263,6 +267,8 @@ public class UtilityVideo {
                         @Override
                         public void onClick(View v) {
                             //Handle next click here
+                            BloccaTimerAvanzamento();
+
                             ChiamateWSV ws = new ChiamateWSV(finalContext);
                             ws.RitornaProssimoVideo();
                         }
@@ -273,16 +279,30 @@ public class UtilityVideo {
                         }
                     });
                     Uri video = Uri.parse(link);
+                    VariabiliStaticheVideo.getInstance().getTxtTitoloSeek().setText(prendeNomeVideo(link));
                     if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
                         VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(
                                 VariabiliStaticheVideo.getInstance().getMediaController());
                         VariabiliStaticheVideo.getInstance().getVideoView().setVideoURI(video);
-                        VariabiliStaticheVideo.getInstance().getVideoView().start();
+                        if (VariabiliStaticheVideo.getInstance().isStaVedendo()) {
+                            VariabiliStaticheVideo.getInstance().getVideoView().start();
+                        } else {
+                            VariabiliStaticheVideo.getInstance().getVideoView().pause();
+                        }
 
                         VariabiliStaticheVideo.getInstance().getVideoView().setOnErrorListener(new MediaPlayer.OnErrorListener() {
                             @Override
                             public boolean onError(MediaPlayer mp, int what, int extra) {
                                 Attesa(false);
+
+                                BloccaTimerAvanzamento();
+                                VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(0);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(0);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri2().setMax(0);
+
+                                VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(0));
+                                VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText("00:00");
 
                                 return false;
                             }
@@ -291,6 +311,22 @@ public class UtilityVideo {
                             @Override
                             public void onPrepared(MediaPlayer mp) {
                                 Attesa(false);
+
+                                VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(null);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(
+                                        VariabiliStaticheVideo.getInstance().getVideoView().getDuration()
+                                );
+                                VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(0);
+                                VariabiliStaticheVideo.getInstance().getSeekScorri2().setMax(
+                                        VariabiliStaticheVideo.getInstance().getVideoView().getDuration()
+                                );
+                                VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(0));
+                                VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText(
+                                        formatTime(VariabiliStaticheVideo.getInstance().getVideoView().getDuration())
+                                );
+
+                                AttivaTimerBarraAvanzamento();
                             }
                         });
                         VariabiliStaticheVideo.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -318,6 +354,71 @@ public class UtilityVideo {
             // TODO: handle exception
             // Toast.makeText(this, "Error connecting", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String prendeNomeVideo(String Video) {
+        String Ritorno = "";
+
+        int i = Video.indexOf("RobettaVaria");
+        Ritorno = Video.substring(i + 13, Video.length());
+
+        return Ritorno;
+    }
+
+    private Handler handlerAvanzamentoBarra;
+    private Runnable updateRunnableAB;
+
+    private void BloccaTimerAvanzamento() {
+        VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+        if (handlerAvanzamentoBarra != null) {
+            handlerAvanzamentoBarra.removeCallbacks(updateRunnableAB);
+            updateRunnableAB = null;
+        }
+    }
+
+    private void AttivaTimerBarraAvanzamento() {
+        BloccaTimerAvanzamento();
+
+        handlerAvanzamentoBarra = new Handler();
+        updateRunnableAB = new Runnable() {
+            @Override
+            public void run() {
+                if (VariabiliStaticheVideo.getInstance().getVideoView().isPlaying()) {
+                    int currentPosition = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
+                    VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(currentPosition);
+                    VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(currentPosition);
+                    VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(currentPosition));
+                    VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText(
+                            formatTime(VariabiliStaticheVideo.getInstance().getVideoView().getDuration())
+                    );
+
+                    GestioneBarra();
+                }
+
+                handlerAvanzamentoBarra.postDelayed(this, 500);
+            }
+        };
+        handlerAvanzamentoBarra.postDelayed(updateRunnableAB, 0);
+    }
+
+    private void GestioneBarra() {
+        if (!VariabiliStaticheVideo.getInstance().isBarraOscurata()) {
+            VariabiliStaticheVideo.getInstance().setSecondiAlpha(
+                    VariabiliStaticheVideo.getInstance().getSecondiAlpha() + 1
+            );
+            if (VariabiliStaticheVideo.getInstance().getSecondiAlpha() > 10) {
+                VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(0.2f);
+                VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+                VariabiliStaticheVideo.getInstance().setBarraOscurata(true);
+            }
+        }
+    }
+
+    private String formatTime(int millis) {
+        int seconds = millis / 1000;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
     }
 
     public void AggiornaCategorie(Context context) {

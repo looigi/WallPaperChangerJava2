@@ -1711,7 +1711,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheApiFootball.getInstance().setGiocatoriCasaPS(null);
             VariabiliStaticheApiFootball.getInstance().setGiocatoriFuoriPS(null);
             if (daControlloPartita) {
-                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita già esistnte");
+                VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Partita già esistente");
 
                 UtilitiesGlobali.getInstance().ApreToast(context, "Partita già esistente");
             } else {

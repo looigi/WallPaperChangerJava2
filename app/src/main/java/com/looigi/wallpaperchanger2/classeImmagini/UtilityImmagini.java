@@ -180,7 +180,8 @@ public class UtilityImmagini {
         ws.RitornaProssimaImmagine(
                 VariabiliStaticheMostraImmagini.getInstance().getIdCategoria(),
                 VariabiliStaticheMostraImmagini.getInstance().getIdImmagine(),
-                VariabiliStaticheMostraImmagini.getInstance().getRandom()
+                VariabiliStaticheMostraImmagini.getInstance().getRandom(),
+                "IMMAGINI"
         );
     }
 

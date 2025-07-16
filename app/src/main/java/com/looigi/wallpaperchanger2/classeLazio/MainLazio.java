@@ -22,6 +22,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaSquadre;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaStati;
 import com.looigi.wallpaperchanger2.classeLazio.adapters.AdapterListenerClassifica;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.MainApiFootball;
+import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.utilities.Files;
 
@@ -904,6 +905,7 @@ public class MainLazio extends Activity {
 
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(false);
                 this.finish();
 
                 return false;

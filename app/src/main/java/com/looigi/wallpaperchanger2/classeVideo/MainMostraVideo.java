@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.PlaybackParams;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -230,101 +233,130 @@ public class MainMostraVideo extends Activity {
             }
         });
 
-        // SWIPE VIDEO
-        /*
-        // TextView txtAvanzamento = findViewById(R.id.txtAvanzamento);
-
-        final int SEEK_INTERVAL = 1000;
-        final int SEEK_AMOUNT = 5000;
-        // final float[] deltaAppoggio = new float[1];
-
-        final Handler handler = new Handler();
-
-        final int[] targetPosition = {0}; // posizione cumulativa simulata
-        final int[] lastSeekPosition = { -1 };
-
-        Runnable seekForwardRunnable = new Runnable() {
-            @Override
-            public void run() {
-                targetPosition[0] += SEEK_AMOUNT;
-                int duration = VariabiliStaticheVideo.getInstance().getVideoView().getDuration();
-                if (targetPosition[0] > duration) targetPosition[0] = duration;
-
-                // int currentPos = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
-                // txtAvanzamento.setText("1->" + Float.toString(deltaAppoggio[0]) + "-" + targetPosition[0] + " : " + currentPos);
-
-                if (Math.abs(targetPosition[0] - lastSeekPosition[0]) >= 500) {
-                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(targetPosition[0]);
-                    lastSeekPosition[0] = targetPosition[0];
-                }
-
-                handler.postDelayed(this, SEEK_INTERVAL);
-            }
-        };
-
-        Runnable seekBackwardRunnable = new Runnable() {
-            @Override
-            public void run() {
-                targetPosition[0] -= SEEK_AMOUNT;
-                if (targetPosition[0] < 0) targetPosition[0] = 0;
-
-                // int currentPos = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
-                // txtAvanzamento.setText("2->" + Float.toString(deltaAppoggio[0]) + "-" + targetPosition[0] + " : " + currentPos);
-
-                if (Math.abs(targetPosition[0] - lastSeekPosition[0]) >= 500) {
-                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(targetPosition[0]);
-                    lastSeekPosition[0] = targetPosition[0];
-                }
-
-                handler.postDelayed(this, SEEK_INTERVAL);
-            }
-        };
-
-        ImageView imgScorri = findViewById(R.id.imgScorri);
-        imgScorri.setOnTouchListener(new View.OnTouchListener() {
-            float downX;
-            boolean seekingForward = false;
-            boolean seekingBackward = false;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        downX = event.getX();
-                        // txtAvanzamento.setText("Inizio->" + Float.toString(deltaAppoggio[0]) + "-" + Integer.toString(targetPosition[0]));
-                        targetPosition[0] = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition(); // imposta la posizione iniziale
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        float deltaX = event.getX() - downX;
-                        // deltaAppoggio[0] = deltaX;
-
-                        if (deltaX > 100 && !seekingForward) {
-                            seekingForward = true;
-                            seekingBackward = false;
-                            handler.removeCallbacks(seekBackwardRunnable);
-                            handler.post(seekForwardRunnable);
-                        } else if (deltaX < -100 && !seekingBackward) {
-                            seekingBackward = true;
-                            seekingForward = false;
-                            handler.removeCallbacks(seekForwardRunnable);
-                            handler.post(seekBackwardRunnable);
-                        }
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        handler.removeCallbacks(seekForwardRunnable);
-                        handler.removeCallbacks(seekBackwardRunnable);
-                        seekingForward = false;
-                        seekingBackward = false;
-                        break;
-                }
-                return true;
+        VariabiliStaticheVideo.getInstance().setTxtAvanzamento(findViewById(R.id.txtAvanzamento));
+        VariabiliStaticheVideo.getInstance().setTxtMaxSeek(findViewById(R.id.txtMax));
+        VariabiliStaticheVideo.getInstance().setTxtTitoloSeek(findViewById(R.id.txtTitolo));
+        VariabiliStaticheVideo.getInstance().getTxtTitoloSeek().setText("");
+        VariabiliStaticheVideo.getInstance().setLayBarraTasti(findViewById(R.id.layBarraTasti));
+        VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(1f);
+        VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+        VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
+        VariabiliStaticheVideo.getInstance().getLayBarraTasti().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(1f);
+                VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+                VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
             }
         });
-         */
-        // SWIPE VIDEO
+
+        ImageView imgAvanti = findViewById(R.id.imgAvanti);
+        imgAvanti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheVideo.getInstance().isBarraOscurata()) {
+                    VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(1f);
+                    VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+                    VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
+                }
+
+                String filtro = txtFiltro.getText().toString();
+                VariabiliStaticheVideo.getInstance().setFiltro(filtro);
+
+                ChiamateWSV ws = new ChiamateWSV(context);
+                ws.RitornaProssimoVideo();
+            }
+        });
+
+        VariabiliStaticheVideo.getInstance().setStaVedendo(true);
+        VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
+
+        ImageView imgPlayPause = findViewById(R.id.imgPlayPause);
+        if (VariabiliStaticheVideo.getInstance().isStaVedendo()) {
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
+            imgPlayPause.setImageBitmap(bitmap);
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_suona);
+            imgPlayPause.setImageBitmap(bitmap);
+        }
+        imgPlayPause.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                    VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(1f);
+                    VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+                    VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
+
+                    if (VariabiliStaticheVideo.getInstance().isStaVedendo()) {
+                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_suona);
+                        imgPlayPause.setImageBitmap(bitmap);
+
+                        VariabiliStaticheVideo.getInstance().setStaVedendo(false);
+                        VariabiliStaticheVideo.getInstance().getVideoView().pause();
+                    } else {
+                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
+                        imgPlayPause.setImageBitmap(bitmap);
+
+                        VariabiliStaticheVideo.getInstance().setStaVedendo(true);
+                        VariabiliStaticheVideo.getInstance().getVideoView().start();
+                    }
+                }
+            }
+        });
+
+        /* ImageView imgRicarica = findViewById(R.id.imgRicarica);
+        imgRicarica.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            }
+        }); */
+
+        VariabiliStaticheVideo.getInstance().setSeekScorri(findViewById(R.id.imgScorri));
+        VariabiliStaticheVideo.getInstance().getSeekScorri().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            boolean userTouch = false;
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTouch = true;
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (userTouch) {
+                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                userTouch = false;
+                VariabiliStaticheVideo.getInstance().getVideoView().seekTo(seekBar.getProgress());
+            }
+        });
+        VariabiliStaticheVideo.getInstance().setSeekScorri2(findViewById(R.id.imgScorri2));
+        VariabiliStaticheVideo.getInstance().getSeekScorri2().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            boolean userTouch = false;
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTouch = true;
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (userTouch) {
+                    if (VariabiliStaticheVideo.getInstance().isBarraOscurata()) {
+                        VariabiliStaticheVideo.getInstance().getLayBarraTasti().setAlpha(1f);
+                        VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
+                        VariabiliStaticheVideo.getInstance().setBarraOscurata(false);
+                    }
+
+                    VariabiliStaticheVideo.getInstance().getVideoView().seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                userTouch = false;
+                VariabiliStaticheVideo.getInstance().getVideoView().seekTo(seekBar.getProgress());
+            }
+        });
 
         ImageView imgScreenShotM = findViewById(R.id.imgScreenshotMultipliV);
         imgScreenShotM.setOnClickListener(new View.OnClickListener() {

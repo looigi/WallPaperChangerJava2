@@ -173,7 +173,8 @@ public class UtilityPennetta {
     public void RitornaProssimaImmagine(Context context) {
         ChiamateWSPEN ws = new ChiamateWSPEN(context);
         ws.RitornaProssimaImmagine(
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria()
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria(),
+                "PENNETTA"
         );
     }
 

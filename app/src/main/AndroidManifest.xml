@@ -97,6 +97,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".classePazzia.MainPazzia"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
         <!--  -->
         <activity
             android:name=".classeOnomastici.MainOnomastici"

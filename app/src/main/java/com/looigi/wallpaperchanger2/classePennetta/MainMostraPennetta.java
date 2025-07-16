@@ -313,26 +313,6 @@ public class MainMostraPennetta extends Activity {
                     //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
 
                     letto = true;
-                /* JSONObject jObject = null;
-                try {
-                    jObject = new JSONObject(u);
-                    StrutturaImmaginiLibrary si = UtilityPennetta.getInstance().prendeStruttura(jObject);
-
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(si.getCategoria());
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(si.getIdImmagine());
-
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(si);
-
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().ScriveInfoImmagine(si);
-
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().AggiungeCaricata();
-
-                    new DownloadImagePEN(context, si.getUrlImmagine(),
-                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(si.getUrlImmagine());
-
-                    letto = true;
-                } catch (JSONException ignored) {
-                } */
                 }
             }
         }

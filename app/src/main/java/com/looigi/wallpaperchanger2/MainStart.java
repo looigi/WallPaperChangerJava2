@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
+import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
@@ -645,6 +646,10 @@ public class MainStart extends Activity {
                 }, 100);
             }
         }); */
+
+        Intent i = new Intent(context, MainPazzia.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
 
         ImageView imgU = findViewById(R.id.imgStartUScita);
         imgU.setOnClickListener(new View.OnClickListener() {

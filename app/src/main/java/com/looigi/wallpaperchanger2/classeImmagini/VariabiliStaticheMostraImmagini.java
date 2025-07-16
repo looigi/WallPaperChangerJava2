@@ -339,9 +339,11 @@ public class VariabiliStaticheMostraImmagini {
                             NomeFile
                     );
                 } else {
-                    VariabiliStaticheMostraImmagini.getInstance().getTxtId().setText("");
-                    VariabiliStaticheMostraImmagini.getInstance().getTxtCate().setText("");
-                    VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText("");
+                    if (VariabiliStaticheMostraImmagini.getInstance().getTxtId() != null) {
+                        VariabiliStaticheMostraImmagini.getInstance().getTxtId().setText("");
+                        VariabiliStaticheMostraImmagini.getInstance().getTxtCate().setText("");
+                        VariabiliStaticheMostraImmagini.getInstance().getTxtInfo().setText("");
+                    }
                 }
             }
         };

@@ -5,23 +5,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA_PEN;
+import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
+import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +35,7 @@ public class ChiamateWSPEN implements TaskDelegate {
     private final Context context;
     private final boolean ApriDialog = false;
     private GifImageView imgAttesa;
+    private String daDove;
 
     public ChiamateWSPEN(Context context) {
         this.context = context;
@@ -49,9 +45,18 @@ public class ChiamateWSPEN implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
-    public void RitornaProssimaImmagine(String Categoria) {
+    public void RitornaProssimaImmagine(String Categoria, String daDove) {
+        this.daDove = daDove;
+
+        if (daDove.equals("PAZZIA")) {
+            UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
+                    true
+            );
+        }
+
         String Urletto="RitornaProssimoPennetta?" +
-                "Categoria=" + Categoria +
+                "Categoria=" + (Categoria == null ? "" : Categoria) +
                 "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
                 "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
                 "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() +
@@ -399,13 +404,25 @@ public class ChiamateWSPEN implements TaskDelegate {
 
             VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
 
-            DownloadImmaginePEN d = new DownloadImmaginePEN();
-            d.EsegueChiamata(
-                    context,
-                    path,
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
-                    path
-            );
+            switch (daDove) {
+                case "PENNETTA":
+                    DownloadImmaginePEN d = new DownloadImmaginePEN();
+                    d.EsegueChiamata(
+                            context,
+                            path,
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg(),
+                            path
+                    );
+                    break;
+                case "PAZZIA":
+                    DownloadImmaginePAZZIA_PEN d2 = new DownloadImmaginePAZZIA_PEN();
+                    d2.EsegueChiamata(
+                            context,
+                            path,
+                            VariabiliStatichePazzia.getInstance().getImgPennetta(),
+                            path
+                    );
+            }
             // new DownloadImagePEN(context, path,
             //         VariabiliStaticheMostraImmaginiPennetta.getInstance().getImg()).execute(path);
 
@@ -428,6 +445,13 @@ public class ChiamateWSPEN implements TaskDelegate {
         // } else {
         //     UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
+            if (daDove.equals("PAZZIA")) {
+                UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
+                        false
+                );
+            }
+
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }

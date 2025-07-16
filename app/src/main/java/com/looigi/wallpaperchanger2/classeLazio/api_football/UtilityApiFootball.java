@@ -246,6 +246,8 @@ public class UtilityApiFootball {
                     break;
             }
         } else {
+            VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(false);
+
             UtilitiesGlobali.getInstance().VisualizzaMessaggio(
                     context,
                     "Api Football",
