@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -951,6 +952,7 @@ public class VariabiliStaticheModificheCodice {
             CheckBox checkBoxStato = new CheckBox(context);
             checkBoxStato.setText(listaStati.get(i).getStato());
             checkBoxStato.setId(View.generateViewId());
+            checkBoxStato.setTextColor(Color.BLACK);
 
             checkBoxStato.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

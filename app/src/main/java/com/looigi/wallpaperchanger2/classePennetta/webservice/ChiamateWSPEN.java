@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA_PEN;
+import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA;
 import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
 import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
@@ -48,19 +48,31 @@ public class ChiamateWSPEN implements TaskDelegate {
     public void RitornaProssimaImmagine(String Categoria, String daDove) {
         this.daDove = daDove;
 
-        if (daDove.equals("PAZZIA")) {
-            UtilityPazzia.getInstance().ImpostaAttesaPazzia(
-                    VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
-                    true
-            );
-        }
+        String Urletto = "";
 
-        String Urletto="RitornaProssimoPennetta?" +
-                "Categoria=" + (Categoria == null ? "" : Categoria) +
-                "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
-                "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
-                "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() +
-                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua() ? "S" : "N");
+        switch (daDove) {
+            case "PENNETTA":
+                UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
+                        true
+                );
+
+                Urletto="RitornaProssimoPennetta?" +
+                        "Categoria=" + (Categoria == null ? "" : Categoria) +
+                        "&Filtro=" + VariabiliStatichePazzia.getInstance().getFiltroPEN() +
+                        "&Random=S" +
+                        "&UltimaImmagine=" + VariabiliStatichePazzia.getInstance().getUltimaPennetta() +
+                        "&OrdinaPerVisualizzato=S";
+                break;
+            case "PAZZIA":
+                Urletto="RitornaProssimoPennetta?" +
+                        "Categoria=" + (Categoria == null ? "" : Categoria) +
+                        "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
+                        "&Random=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getRandom() +
+                        "&UltimaImmagine=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getIdImmagine() +
+                        "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmaginiPennetta.getInstance().isRicercaPerVisua() ? "S" : "N");
+                break;
+        }
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -113,15 +125,24 @@ public class ChiamateWSPEN implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie(boolean forzaLettura) {
+    public void RitornaCategorie(boolean forzaLettura, String daDove) {
+        this.daDove = daDove;
+
         if (!forzaLettura) {
             db_dati_pennetta db = new db_dati_pennetta(context);
             List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
             db.ChiudeDB();
             if (!lista.isEmpty()) {
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(lista);
-                UtilityPennetta.getInstance().AggiornaCategorie(context);
-                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+                switch (daDove) {
+                    case "PENNETTA":
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategorie(lista);
+                        UtilityPennetta.getInstance().AggiornaCategorie(context);
+                        UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "PAZZIA":
+                        VariabiliStatichePazzia.getInstance().setListaCategoriePEN(lista);
+                        break;
+                }
 
                 return;
             }
@@ -359,10 +380,18 @@ public class ChiamateWSPEN implements TaskDelegate {
                 }
                 db.ChiudeDB();
 
-                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriAttuale(CategoriaAttuale);
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriaAttuale(CategoriaAttuale);
                 VariabiliStaticheMostraImmaginiPennetta.getInstance().setListaCategoriePen(l);
-                UtilityPennetta.getInstance().AggiornaCategorie(context);
-                UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+
+                switch(daDove) {
+                    case "PENNETTA":
+                        UtilityPennetta.getInstance().AggiornaCategorie(context);
+                        UtilityPennetta.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "PAZZIA":
+                        VariabiliStatichePazzia.getInstance().setListaCategoriePEN(listaCategorie);
+                        break;
+                }
             // } catch (JSONException e) {
             //     throw new RuntimeException(e);
             // }
@@ -406,6 +435,8 @@ public class ChiamateWSPEN implements TaskDelegate {
 
             switch (daDove) {
                 case "PENNETTA":
+                    VariabiliStatichePazzia.getInstance().setUltimaPennetta(id);
+
                     DownloadImmaginePEN d = new DownloadImmaginePEN();
                     d.EsegueChiamata(
                             context,
@@ -415,12 +446,12 @@ public class ChiamateWSPEN implements TaskDelegate {
                     );
                     break;
                 case "PAZZIA":
-                    DownloadImmaginePAZZIA_PEN d2 = new DownloadImmaginePAZZIA_PEN();
+                    DownloadImmaginePAZZIA d2 = new DownloadImmaginePAZZIA();
                     d2.EsegueChiamata(
                             context,
-                            path,
                             VariabiliStatichePazzia.getInstance().getImgPennetta(),
-                            path
+                            path,
+                            "PENNETTA"
                     );
             }
             // new DownloadImagePEN(context, path,

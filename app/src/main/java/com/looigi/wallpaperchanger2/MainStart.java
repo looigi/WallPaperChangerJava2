@@ -645,11 +645,11 @@ public class MainStart extends Activity {
                     }
                 }, 100);
             }
-        }); */
+        });
 
         Intent i = new Intent(context, MainPazzia.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        context.startActivity(i); */
 
         ImageView imgU = findViewById(R.id.imgStartUScita);
         imgU.setOnClickListener(new View.OnClickListener() {

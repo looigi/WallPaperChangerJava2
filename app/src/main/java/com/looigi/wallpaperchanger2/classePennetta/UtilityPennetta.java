@@ -272,8 +272,8 @@ public class UtilityPennetta {
         );
         VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setAdapter(adapter);
 
-        if (!VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriAttuale().isEmpty()) {
-            int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriAttuale());
+        if (!VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale().isEmpty()) {
+            int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale());
             VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setSelection(spinnerPosition);
         }
     }

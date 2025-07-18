@@ -98,7 +98,7 @@ public class MainMostraVideo extends Activity {
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSV c = new ChiamateWSV(context);
-                c.RitornaCategorie(true);
+                c.RitornaCategorie(true, "VIDEO");
             }
         });
 
@@ -172,7 +172,7 @@ public class MainMostraVideo extends Activity {
                 VariabiliStaticheVideo.getInstance().setFiltro(filtro);
 
                 ChiamateWSV ws = new ChiamateWSV(context);
-                ws.RitornaProssimoVideo();
+                ws.RitornaProssimoVideo("VIDEO");
             }
         });
 
@@ -262,7 +262,7 @@ public class MainMostraVideo extends Activity {
                 VariabiliStaticheVideo.getInstance().setFiltro(filtro);
 
                 ChiamateWSV ws = new ChiamateWSV(context);
-                ws.RitornaProssimoVideo();
+                ws.RitornaProssimoVideo("VIDEO");
             }
         });
 
@@ -425,13 +425,13 @@ public class MainMostraVideo extends Activity {
         ImpostaSpostamento(act);
 
         ChiamateWSV ws = new ChiamateWSV(context);
-        ws.RitornaCategorie(false);
+        ws.RitornaCategorie(false, "VIDEO");
 
         if (!url.isEmpty()) {
             UtilityVideo.getInstance().ImpostaVideo();
         } else {
             ChiamateWSV ws2 = new ChiamateWSV(context);
-            ws2.RitornaProssimoVideo();
+            ws2.RitornaProssimoVideo("VIDEO");
         }
     }
 
@@ -530,7 +530,7 @@ public class MainMostraVideo extends Activity {
             case KeyEvent.KEYCODE_BACK:
                 this.finish();
 
-                return false;
+                return true;
         }
 
         return false;

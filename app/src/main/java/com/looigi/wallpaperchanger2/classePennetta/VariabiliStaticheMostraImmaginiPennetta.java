@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
@@ -57,7 +56,7 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private boolean settingsAperto = true;
     private String[] listaCategoriePen;
     private String filtroCategoria = "";
-    private String categoriAttuale = "";
+    private String categoriaAttuale = "";
     private Spinner spnSpostaCategorie;
     private String filtroCategoriaSpostamento = "";
     private String idCategoriaSpostamento;
@@ -120,12 +119,12 @@ public class VariabiliStaticheMostraImmaginiPennetta {
         this.spnSpostaCategorie = spnSpostaCategorie;
     }
 
-    public String getCategoriAttuale() {
-        return categoriAttuale;
+    public String getCategoriaAttuale() {
+        return categoriaAttuale;
     }
 
-    public void setCategoriAttuale(String categoriAttuale) {
-        this.categoriAttuale = categoriAttuale;
+    public void setCategoriaAttuale(String categoriaAttuale) {
+        this.categoriaAttuale = categoriaAttuale;
     }
 
     public String getFiltroCategoria() {

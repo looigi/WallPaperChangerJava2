@@ -115,7 +115,7 @@ public class MainMostraImmagini extends Activity {
         ImpostaSpostamento(act);
 
         ChiamateWSMI ws = new ChiamateWSMI(context);
-        ws.RitornaCategorie(false);
+        ws.RitornaCategorie(false, "IMMAGINI");
 
         VariabiliStaticheMostraImmagini.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
         VariabiliStaticheMostraImmagini.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
@@ -283,7 +283,7 @@ public class MainMostraImmagini extends Activity {
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSMI c = new ChiamateWSMI(context);
-                c.RitornaCategorie(true);
+                c.RitornaCategorie(true, "IMMAGINI");
             }
         });
 

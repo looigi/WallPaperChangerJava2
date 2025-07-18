@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DownloadImmaginePAZZIA_PEN {
+public class DownloadImmaginePAZZIA {
     private boolean isCancelled;
     private static final String NomeMaschera = "Download_Image_PAZ_PEN";
     private boolean Errore;
@@ -24,14 +24,16 @@ public class DownloadImmaginePAZZIA_PEN {
     private ImageView immagine;
     private String Url;
     private InputStream in;
+    private String Modalita;
 
-    public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
-                               String UrlImmagine) {
+    public void EsegueChiamata(Context context, ImageView immagine,
+                               String UrlImmagine, String Modalita) {
         isCancelled = false;
 
         this.context = context;
         this.immagine = immagine;
         this.Url = UrlImmagine;
+        this.Modalita = Modalita;
 
         AttivaTimer();
 
@@ -63,7 +65,7 @@ public class DownloadImmaginePAZZIA_PEN {
     private void AttivaTimer() {
         secondiPassati = 0;
 
-        handlerThread = new HandlerThread("background-thread_PAZ_PEN_" +
+        handlerThread = new HandlerThread("background-thread_PAZ" +
                 VariabiliStaticheWallpaper.channelName);
         handlerThread.start();
 
@@ -104,19 +106,21 @@ public class DownloadImmaginePAZZIA_PEN {
         }
     }
 
+    Bitmap mIcon1 = null;
+
     private void Esecuzione() {
         Errore = false;
         String urldisplay = Url;
-        Bitmap mIcon11 = null;
         try {
             in = new java.net.URL(urldisplay).openStream();
             if (in != null && !isCancelled) {
-                Bitmap finalMIcon1 = BitmapFactory.decodeStream(in);
+                mIcon1 = BitmapFactory.decodeStream(in);
+                // immagine.setImageBitmap(mIcon1);
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        immagine.setImageBitmap(finalMIcon1);
+                        immagine.setImageBitmap(mIcon1);
                     }
                 }, 100);
             }
@@ -131,10 +135,25 @@ public class DownloadImmaginePAZZIA_PEN {
     }
 
     private void TermineEsecuzione() {
-        UtilityPazzia.getInstance().ImpostaAttesaPazzia(
-                VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
-                false
-        );
+        if (Modalita.equals("PENNETTA")) {
+            if (VariabiliStatichePazzia.getInstance().isSlideShowAttivoPEN()) {
+                UtilityPazzia.getInstance().AttivaTimerPEN(context);
+            }
+
+            UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
+                    false
+            );
+        } else {
+            if (VariabiliStatichePazzia.getInstance().isSlideShowAttivoIMM()) {
+                UtilityPazzia.getInstance().AttivaTimerIMM(context);
+            }
+
+            UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
+                    false
+            );
+        }
     }
 
     public void BloccaEsecuzione() {

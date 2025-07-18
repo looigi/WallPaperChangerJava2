@@ -270,7 +270,7 @@ public class UtilityVideo {
                             BloccaTimerAvanzamento();
 
                             ChiamateWSV ws = new ChiamateWSV(finalContext);
-                            ws.RitornaProssimoVideo();
+                            ws.RitornaProssimoVideo("VIDEO");
                         }
                     }, new View.OnClickListener() {
                         @Override

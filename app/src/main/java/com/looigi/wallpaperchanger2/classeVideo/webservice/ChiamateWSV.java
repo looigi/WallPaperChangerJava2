@@ -8,6 +8,9 @@ import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
+import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classeVideo.UtilityVideo;
@@ -16,6 +19,7 @@ import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -32,6 +36,7 @@ public class ChiamateWSV implements TaskDelegate {
     private final Context context;
     private final boolean ApriDialog = false;
     private GifImageView imgAttesa;
+    private String daDove;
 
     public ChiamateWSV(Context context) {
         this.context = context;
@@ -41,16 +46,39 @@ public class ChiamateWSV implements TaskDelegate {
         this.imgAttesa = imgAttesa;
     }
 
-    public void RitornaProssimoVideo() {
-        String Filtro = VariabiliStaticheVideo.getInstance().getFiltro();
-        String Categoria = VariabiliStaticheVideo.getInstance().getCategoria();
+    public void RitornaProssimoVideo(String daDove) {
+        this.daDove = daDove;
 
-        String Urletto="RitornaProssimoVideo?" +
-                "Categoria=" + Categoria.replace("\\", "§") +
-                "&Filtro=" + Filtro +
-                "&Random=" + VariabiliStaticheVideo.getInstance().getRandom() +
-                "&pUltimoVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo() +
-                "&OrdinaPerVisualizzato=" + (VariabiliStaticheVideo.getInstance().isRicercaPerVisua() ? "S" : "N");
+        String Urletto = "";
+        String Categoria = "";
+
+        switch (daDove) {
+            case "VIDEO":
+                String Filtro = VariabiliStaticheVideo.getInstance().getFiltro();
+                Categoria = VariabiliStaticheVideo.getInstance().getCategoria();
+
+                Urletto = "RitornaProssimoVideo?" +
+                        "Categoria=" + Categoria.replace("\\", "§") +
+                        "&Filtro=" + Filtro +
+                        "&Random=" + VariabiliStaticheVideo.getInstance().getRandom() +
+                        "&pUltimoVideo=" + VariabiliStaticheVideo.getInstance().getIdUltimoVideo() +
+                        "&OrdinaPerVisualizzato=" + (VariabiliStaticheVideo.getInstance().isRicercaPerVisua() ? "S" : "N");
+                break;
+            case "PAZZIA":
+                UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
+                        true
+                );
+
+                Categoria = VariabiliStatichePazzia.getInstance().getCategoriaVideo();
+                Urletto="RitornaProssimoVideo?" +
+                        "Categoria=" + Categoria.replace("\\", "§") +
+                        "&Filtro=" +
+                        "&Random=S" +
+                        "&pUltimoVideo=" + VariabiliStatichePazzia.getInstance().getUltimoVideo() +
+                        "&OrdinaPerVisualizzato=S";
+                break;
+        }
 
         TipoOperazione = "RitornaProssimoVideo";
         // ControllaTempoEsecuzione = false;
@@ -64,15 +92,24 @@ public class ChiamateWSV implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie(boolean forzaLettura) {
+    public void RitornaCategorie(boolean forzaLettura, String daDove) {
+        this.daDove = daDove;
+
         if (!forzaLettura) {
             db_dati_video db = new db_dati_video(context);
             List<String> lista = db.LeggeCategorie();
             db.ChiudeDB();
             if (!lista.isEmpty()) {
-                VariabiliStaticheVideo.getInstance().setListaCategorie(lista);
-                UtilityVideo.getInstance().AggiornaCategorie(context);
-                UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
+                switch (daDove) {
+                    case "VIDEO":
+                        VariabiliStaticheVideo.getInstance().setListaCategorie(lista);
+                        UtilityVideo.getInstance().AggiornaCategorie(context);
+                        UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "PAZZIA":
+                        VariabiliStatichePazzia.getInstance().setListaCategorieVID(lista);
+                        break;
+                }
 
                 return;
             }
@@ -219,7 +256,7 @@ public class ChiamateWSV implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, "Video eliminato");
 
             ChiamateWSV ws = new ChiamateWSV(context);
-            ws.RitornaProssimoVideo();
+            ws.RitornaProssimoVideo("VIDEO");
         }
     }
 
@@ -257,9 +294,7 @@ public class ChiamateWSV implements TaskDelegate {
             String[] lista = result.split("§");
             List<String> l = new ArrayList<>();
             l.add("Tutte");
-            for (String ll : lista) {
-                l.add(ll);
-            }
+            l.addAll(Arrays.asList(lista));
 
             db_dati_video db = new db_dati_video(context);
             db.EliminaCategorie();
@@ -269,15 +304,23 @@ public class ChiamateWSV implements TaskDelegate {
             db.ChiudeDB();
 
             VariabiliStaticheVideo.getInstance().setListaCategorie(l);
-            UtilityVideo.getInstance().AggiornaCategorie(context);
-            UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
+
+            switch(daDove) {
+                case "VIDEO":
+                    UtilityVideo.getInstance().AggiornaCategorie(context);
+                    UtilityVideo.getInstance().AggiornaCategorieSpostamento(context);
+                    break;
+                case "PAZZIA":
+                    VariabiliStatichePazzia.getInstance().setListaCategorieVID(l);
+                    break;
+            }
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
     private void fRitornaProssimoVideo(String result) {
-        boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
+        boolean ritorno = ControllaRitorno("Ritorna prossimo video", result);
         if (ritorno) {
             String url ="";
             int id = -1;
@@ -301,13 +344,22 @@ public class ChiamateWSV implements TaskDelegate {
             res = VariabiliStaticheVideo.getInstance().getIdUltimoVideo() + ": " + res;
             VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(res); */
 
-            VariabiliStaticheVideo.getInstance().ScriveImmagini(url);
+            switch (daDove) {
+                case "PAZZIA":
+                    VariabiliStatichePazzia.getInstance().setUltimoVideo(id);
 
-            db_dati_video db = new db_dati_video(context);
-            db.ScriveUltimoVideo();
-            db.ChiudeDB();
+                    UtilityPazzia.getInstance().ImpostaVideo(context);
+                    break;
+                case "VIDEO":
+                    VariabiliStaticheVideo.getInstance().ScriveImmagini(url);
 
-            UtilityVideo.getInstance().ImpostaVideo();
+                    db_dati_video db = new db_dati_video(context);
+                    db.ScriveUltimoVideo();
+                    db.ChiudeDB();
+
+                    UtilityVideo.getInstance().ImpostaVideo();
+                    break;
+            }
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }

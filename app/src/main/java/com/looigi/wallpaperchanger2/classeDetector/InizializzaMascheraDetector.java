@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
@@ -208,6 +209,8 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
                         Handler handlerTimer;
                         Runnable rTimer;
 
@@ -225,6 +228,8 @@ public class InizializzaMascheraDetector {
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
                     }
                 }
 
@@ -278,6 +283,8 @@ public class InizializzaMascheraDetector {
                         Handler handlerTimer;
                         Runnable rTimer;
 
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
                         handlerTimer = new Handler(Looper.getMainLooper());
                         rTimer = new Runnable() {
                             public void run() {
@@ -292,6 +299,8 @@ public class InizializzaMascheraDetector {
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
                     }
                 }
 
@@ -536,7 +545,11 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
                         lPr.setVisibility(LinearLayout.GONE);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
                     }
                 }
 
@@ -652,6 +665,8 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
                         lScatti.setVisibility(LinearLayout.VISIBLE);
                         lTasti.setVisibility(LinearLayout.VISIBLE);
                         lFrecce.setVisibility(LinearLayout.VISIBLE);
@@ -679,6 +694,8 @@ public class InizializzaMascheraDetector {
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
                     }
                 }
 
@@ -1250,6 +1267,8 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
                         Handler handlerTimer;
                         Runnable rTimer;
 
@@ -1267,6 +1286,8 @@ public class InizializzaMascheraDetector {
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
                     }
                 }
 
@@ -1274,6 +1295,54 @@ public class InizializzaMascheraDetector {
             }
         });
 
+        TextView txtTitolo = act.findViewById(R.id.txtDescTestoM);
+        txtTitolo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (datella1 == null) {
+                    Handler handlerTimer;
+                    Runnable rTimer;
+
+                    datella1 = System.currentTimeMillis();
+                    UtilityDetector.getInstance().Vibra(act, 100);
+
+                    handlerTimer = new Handler();
+                    rTimer = new Runnable() {
+                        public void run() {
+                            datella1 = null;
+                        }
+                    };
+                    handlerTimer.postDelayed(rTimer, 2000);
+                } else {
+                    long diff = System.currentTimeMillis() - datella1;
+
+                    datella1 = null;
+
+                    if (diff < 1950) {
+                        Handler handlerTimer;
+                        Runnable rTimer;
+
+                        UtilityDetector.getInstance().Vibra(act, 300);
+
+                        handlerTimer = new Handler(Looper.getMainLooper());
+                        rTimer = new Runnable() {
+                            public void run() {
+                                Intent myIntent = new Intent(
+                                        VariabiliStaticheDetector.getInstance().getContext(),
+                                        MainPazzia.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 2000);
+                    } else {
+                        UtilityDetector.getInstance().Vibra(act, 50);
+                    }
+                }
+
+                return false;
+            }
+        });
     }
 
     private void CaricaSpinnerOrientamento(Context context, Activity act) {

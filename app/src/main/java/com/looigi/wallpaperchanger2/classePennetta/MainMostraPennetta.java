@@ -147,7 +147,7 @@ public class MainMostraPennetta extends Activity {
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSPEN c = new ChiamateWSPEN(context);
-                c.RitornaCategorie(true);
+                c.RitornaCategorie(true, "PENNETTA");
             }
         });
 
@@ -379,7 +379,7 @@ public class MainMostraPennetta extends Activity {
         ImpostaSpostamento(act);
 
         ChiamateWSPEN ws = new ChiamateWSPEN(context);
-        ws.RitornaCategorie(false);
+        ws.RitornaCategorie(false, "PENNETTA");
     }
 
     @Override

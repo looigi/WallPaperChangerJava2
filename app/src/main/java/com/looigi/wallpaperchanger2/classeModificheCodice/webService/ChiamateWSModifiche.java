@@ -1308,6 +1308,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 }
             };
             handlerTimer.postDelayed(rTimer, 1000);
+        } else {
+            VariabiliStaticheModificheCodice.getInstance().getLstModifiche().setVisibility(LinearLayout.GONE);
         }
     }
 

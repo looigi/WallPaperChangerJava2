@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/Nero"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:weightSum="16"
+        android:orientation="vertical"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_margin="2dp"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
+            android:layout_weight="8"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
             android:weightSum="2"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layPennetta"
+                android:layout_width="0dp"
+                android:background="@color/Nero"
+                android:layout_marginEnd="2dp"
+                android:weightSum="8"
+                android:orientation="vertical"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_height="0dp">
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/layPennetta"
-                    android:layout_width="0dp"
-                    android:layout_marginEnd="2dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_weight="7"
+                    android:layout_height="0dp">
 
                     <ImageView
                         android:id="@+id/imgPennetta"
@@ -36,80 +41,282 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:weightSum="5"
+                    android:layout_marginTop="2dp"
                     android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_weight="4"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgPlayPausePEN"
+                            android:layout_width="40dp"
+                            android:src="@drawable/icona_suona"
+                            android:layout_height="40dp" />
+
+                        <ImageView
+                            android:id="@+id/imgNextPEN"
+                            android:layout_width="40dp"
+                            android:src="@drawable/avanti"
+                            android:layout_height="40dp" />
+
+                        <ImageView
+                            android:id="@+id/imgSettingsPEN"
+                            android:layout_width="40dp"
+                            android:src="@drawable/settings"
+                            android:layout_height="40dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent">
+
+                        <pl.droidsonroids.gif.GifImageView
+                            android:id="@+id/imgCaricamentoPEN"
+                            android:src="@drawable/loading"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:background="@color/Nero"
+                android:weightSum="8"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="7"
+                    android:layout_height="0dp">
 
                     <ImageView
                         android:id="@+id/imgImmagini"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
+                    android:layout_height="0dp"
+                    android:weightSum="5"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgPlayPauseIMM"
+                            android:layout_width="40dp"
+                            android:src="@drawable/icona_suona"
+                            android:layout_height="40dp" />
+
+                        <ImageView
+                            android:id="@+id/imgNextIMM"
+                            android:layout_width="40dp"
+                            android:src="@drawable/avanti"
+                            android:layout_height="40dp" />
+
+                        <ImageView
+                            android:id="@+id/imgSettingsIMM"
+                            android:layout_width="40dp"
+                            android:src="@drawable/settings"
+                            android:layout_height="40dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:layout_height="match_parent">
+
+                        <pl.droidsonroids.gif.GifImageView
+                            android:id="@+id/imgCaricamentoIMM"
+                            android:src="@drawable/loading"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="2dp"
+            android:layout_weight="8"
+            android:weightSum="8"
+            android:orientation="vertical"
+            android:layout_height="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                android:layout_weight="1"
+                android:layout_weight="7"
+                android:gravity="center"
                 android:layout_height="0dp">
 
                 <VideoView
                     android:id="@+id/videoView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgSettingsVID"
+                    android:layout_width="40dp"
+                    android:src="@drawable/settings"
+                    android:layout_height="40dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_height="match_parent">
+
+                    <pl.droidsonroids.gif.GifImageView
+                        android:id="@+id/imgCaricamentoVID"
+                        android:src="@drawable/loading"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/laySettings"
+        android:layout_centerInParent="true"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/laySettingsTitolo"
+            android:layout_width="match_parent"
+            android:weightSum="10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtSettings"
+                android:layout_width="0dp"
+                android:layout_weight="9"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Rosso"
+                android:textSize="16sp"
+                android:text="Settings PEN"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgChiudeSettings"
+                    android:src="@drawable/chiude"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/laySPinner"
+            android:layout_below="@+id/laySettingsTitolo"
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Nero"
+                android:textSize="16sp"
+                android:text="Categoria"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnCategorie"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:theme="@style/spinnerTheme"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layFiltro"
+            android:layout_below="@+id/laySPinner"
+            android:layout_width="match_parent"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:textColor="@color/Nero"
+                android:textSize="16sp"
+                android:text="Filtro"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtFiltro"
+                android:layout_width="0dp"
+                android:textColor="@color/Blue"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgImpostaFiltro"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
-
-            <pl.droidsonroids.gif.GifImageView
-                android:layout_marginBottom="40dp"
-                android:id="@+id/imgCaricamentoPEN"
-                android:src="@drawable/loading"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
-
-            <pl.droidsonroids.gif.GifImageView
-                android:layout_marginBottom="40dp"
-                android:id="@+id/imgCaricamentoIMM"
-                android:src="@drawable/loading"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/imgCaricamentoVID"
-            android:src="@drawable/loading"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-    </LinearLayout>
 </RelativeLayout>

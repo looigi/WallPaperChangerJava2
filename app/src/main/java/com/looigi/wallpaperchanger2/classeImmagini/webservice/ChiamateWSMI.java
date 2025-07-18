@@ -18,7 +18,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA_IMM;
+import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA;
 import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
 import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
@@ -99,20 +99,33 @@ public class ChiamateWSMI implements TaskDelegate {
 
         this.daDove = daDove;
 
-        if (daDove.equals("PAZZIA")) {
-            UtilityPazzia.getInstance().ImpostaAttesaPazzia(
-                    VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
-                    true
-            );
-        }
+        String Urletto = "";
 
-        String Urletto="ProssimaImmagine?" +
-                "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
-                "&Filtro=" + VariabiliStaticheMostraImmagini.getInstance().getFiltro() +
-                "&idImmagine=" + idImmagine +
-                "&Random=" + Random +
-                "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N") +
-                "&Operatore=" + VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro();
+        switch (daDove) {
+            case "PAZZIA":
+                Urletto="ProssimaImmagine?" +
+                        "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
+                        "&Filtro=" + VariabiliStatichePazzia.getInstance().getFiltroIMM() +
+                        "&idImmagine=" + idImmagine +
+                        "&Random=" + Random +
+                        "&OrdinaPerVisualizzato=S" +
+                        "&Operatore=Or";
+
+                UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
+                        true
+                );
+                break;
+            case "IMMAGINI":
+                Urletto = "ProssimaImmagine?" +
+                        "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
+                        "&Filtro=" + VariabiliStaticheMostraImmagini.getInstance().getFiltro() +
+                        "&idImmagine=" + idImmagine +
+                        "&Random=" + Random +
+                        "&OrdinaPerVisualizzato=" + (VariabiliStaticheMostraImmagini.getInstance().isRicercaPerVisua() ? "S" : "N") +
+                        "&Operatore=" + VariabiliStaticheMostraImmagini.getInstance().getOperatoreFiltro();
+                break;
+        }
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -244,15 +257,24 @@ public class ChiamateWSMI implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void RitornaCategorie(boolean forzaLettura) {
+    public void RitornaCategorie(boolean forzaLettura, String daDove) {
+        this.daDove = daDove;
+
         if (!forzaLettura) {
             db_dati_immagini db = new db_dati_immagini(context);
             List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
             db.ChiudeDB();
             if (!lista.isEmpty()) {
-                VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(lista);
-                UtilityImmagini.getInstance().AggiornaCategorie(context);
-                UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+                switch (daDove) {
+                    case "IMMAGINI":
+                        VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(lista);
+                        UtilityImmagini.getInstance().AggiornaCategorie(context);
+                        UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "PAZZIA":
+                        VariabiliStatichePazzia.getInstance().setListaCategorieIMM(lista);
+                        break;
+                }
 
                 return;
             }
@@ -409,7 +431,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 @Override
                 public void run() {
                     ChiamateWSMI c = new ChiamateWSMI(context);
-                    c.RitornaCategorie(true);
+                    c.RitornaCategorie(true, daDove);
                 }
             }, 500);
 
@@ -627,18 +649,16 @@ public class ChiamateWSMI implements TaskDelegate {
 
                 VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(CategoriaAttuale);
                 VariabiliStaticheMostraImmagini.getInstance().setListaCategorieImm(l);
-                UtilityImmagini.getInstance().AggiornaCategorie(context);
-                UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
 
-                /* ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (context, android.R.layout.simple_spinner_item, l);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setAdapter(adapter);
-
-                if (!CategoriaAttuale.isEmpty()) {
-                    int spinnerPosition = adapter.getPosition(CategoriaAttuale);
-                    VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setSelection(spinnerPosition);
-                } */
+                switch(daDove) {
+                    case "IMMAGINI":
+                        UtilityImmagini.getInstance().AggiornaCategorie(context);
+                        UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "PAZZIA":
+                        VariabiliStatichePazzia.getInstance().setListaCategorieIMM(listaCategorie);
+                        break;
+                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -672,11 +692,14 @@ public class ChiamateWSMI implements TaskDelegate {
                             );
                             break;
                         case "PAZZIA":
-                            DownloadImmaginePAZZIA_IMM d2 = new DownloadImmaginePAZZIA_IMM();
+                            VariabiliStatichePazzia.getInstance().setUltimaImmagine(si.getIdImmagine());
+
+                            DownloadImmaginePAZZIA d2 = new DownloadImmaginePAZZIA();
                             d2.EsegueChiamata(
-                                    context, si.getUrlImmagine(),
+                                    context,
                                     VariabiliStatichePazzia.getInstance().getImgImmagini(),
-                                    si.getUrlImmagine()
+                                    si.getUrlImmagine(),
+                                    "IMMAGINI"
                             );
                             break;
                     }
