@@ -16,35 +16,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:weightSum="8"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
-                android:text="Categoria"
+                android:layout_weight="1"
+                android:text="Cat."
                 android:textColor="@color/Nero"
                 android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/edtFiltroCategoriaPEN"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textColor="@color/Blue"
+                android:gravity="center_vertical"
                 android:layout_weight="2"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtFiltroCategoriaPEN"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/Blue"
+                    android:layout_height="40dp" />
+
+                <ImageView
+                    android:id="@+id/imgFiltraCombo"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
 
             <Spinner
                 android:id="@+id/spnCategorie"
                 android:layout_width="0dp"
                 android:theme="@style/spinnerTheme"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:gravity="end"
-                android:layout_height="wrap_content">
+                android:gravity="end|center_vertical"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imgRefreshCategoriePEN"
@@ -59,6 +73,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:weightSum="3"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
@@ -69,12 +84,26 @@
                 android:textColor="@color/Nero"
                 android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/edtFiltroImmagimi"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:textColor="@color/Blue"
+                android:gravity="center_vertical"
                 android:layout_weight="2"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtFiltroImmagimi"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textColor="@color/Blue"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/imgFiltraImmagini"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

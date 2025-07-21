@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaCalendario;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.classeLazio.Strutture.StrutturaMercato;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
@@ -158,26 +159,39 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().getSpnFuori().setPrompt("");
                 }
 
+                ArrayAdapter<String> adapterCasa = UtilitiesGlobali.getInstance().ImpostaSpinner(
+                        context,
+                        VariabiliStaticheLazio.getInstance().getSpnCasa(),
+                        righePerSpinner,
+                        ""
+                );
+                ArrayAdapter<String> adapterFuori = UtilitiesGlobali.getInstance().ImpostaSpinner(
+                        context,
+                        VariabiliStaticheLazio.getInstance().getSpnFuori(),
+                        righePerSpinner,
+                        ""
+                );
+
                 // ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 //         (context, android.R.layout.simple_spinner_item, righePerSpinner);
-                ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+                /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                         context,
                         righePerSpinner
                 );
                 // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 VariabiliStaticheLazio.getInstance().getSpnCasa().setAdapter(adapter);
-                VariabiliStaticheLazio.getInstance().getSpnFuori().setAdapter(adapter);
+                VariabiliStaticheLazio.getInstance().getSpnFuori().setAdapter(adapter); */
 
                 if (!Valore1.isEmpty()) {
                     int riga = Integer.parseInt(Valore1);
                     StrutturaCalendario s = VariabiliStaticheLazio.getInstance().getCalendario().get(riga);
 
                     VariabiliStaticheLazio.getInstance().setIdCasa(s.getIdSquadraCasa());
-                    int spinnerPosition = adapter.getPosition(s.getCasa());
+                    int spinnerPosition = adapterCasa.getPosition(s.getCasa());
                     VariabiliStaticheLazio.getInstance().getSpnCasa().setSelection(spinnerPosition);
 
                     VariabiliStaticheLazio.getInstance().setIdFuori(s.getIdSquadraFuori());
-                    spinnerPosition = adapter.getPosition(s.getFuori());
+                    spinnerPosition = adapterFuori.getPosition(s.getFuori());
                     VariabiliStaticheLazio.getInstance().getSpnFuori().setSelection(spinnerPosition);
                 } else {
                     VariabiliStaticheLazio.getInstance().setIdCasa(0);

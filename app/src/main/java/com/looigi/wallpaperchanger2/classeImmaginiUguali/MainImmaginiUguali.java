@@ -20,6 +20,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -88,12 +89,20 @@ public class MainImmaginiUguali extends Activity {
         String[] tipi = {"Hash", "Hash2", "Exif", "Nome", "Dimensioni", "PiccoleByte", "PiccoleSize"};
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, tipi);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spnTipo,
+                tipi,
+                ""
+        );
+
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 tipi
         );
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnTipo.setAdapter(adapter);
+        spnTipo.setAdapter(adapter); */
 
         VariabiliImmaginiUguali.getInstance().setLstTipi(findViewById(R.id.lstTipi));
         VariabiliImmaginiUguali.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));

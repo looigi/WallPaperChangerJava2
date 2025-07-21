@@ -37,6 +37,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.Files;
@@ -82,6 +83,9 @@ public class MainMostraImmagini extends Activity {
 
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
+        db_dati_immagini db = new db_dati_immagini(context);
+        VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(db.LeggeUltimaCategoria());
+        db.ChiudeDB();
 
         final boolean[] primoIngresso = {true};
         VariabiliStaticheMostraImmagini.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
@@ -95,6 +99,12 @@ public class MainMostraImmagini extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
+                VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(Categoria);
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveUltimaCategoria(Categoria);
+                db.ChiudeDB();
+
                 if (Categoria.equals("Tutte")) {
                     VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(-1);
                     UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
@@ -443,7 +453,7 @@ public class MainMostraImmagini extends Activity {
 
         EditText edtFiltro = findViewById(R.id.edtFiltroImmagimi);
         edtFiltro.setText(VariabiliStaticheMostraImmagini.getInstance().getFiltro());
-        edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -454,6 +464,18 @@ public class MainMostraImmagini extends Activity {
 
                     // UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraImmagini = findViewById(R.id.imgFiltraImmagini);
+        imgFiltraImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmagini.getInstance().setFiltro(edtFiltro.getText().toString());
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+
+                // UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
             }
         });
 
@@ -474,7 +496,7 @@ public class MainMostraImmagini extends Activity {
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaMI);
         txtFiltroCate.setText(VariabiliStaticheMostraImmagini.getInstance().getFiltroCategoria());
-        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -485,6 +507,18 @@ public class MainMostraImmagini extends Activity {
 
                     UtilityImmagini.getInstance().AggiornaCategorie(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
+        imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                db_dati_immagini db = new db_dati_immagini(context);
+                db.ScriveImpostazioni();
+
+                UtilityImmagini.getInstance().AggiornaCategorie(context);
             }
         });
 

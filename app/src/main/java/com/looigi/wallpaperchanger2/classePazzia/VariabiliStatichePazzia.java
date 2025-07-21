@@ -3,10 +3,12 @@ package com.looigi.wallpaperchanger2.classePazzia;
 import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.VideoView;
 
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.utilities.ProportionalVideoView;
 
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class VariabiliStatichePazzia {
     private boolean GiaPartito = false;
     private ImageView imgPennetta;
     private ImageView imgImmagini;
-    private VideoView videoView;
+    private ProportionalVideoView videoView;
     private GifImageView imgCaricamentoPEN;
     private GifImageView imgCaricamentoIMM;
     private GifImageView imgCaricamentoVID;
@@ -45,6 +47,8 @@ public class VariabiliStatichePazzia {
     private List<com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie> listaCategorieIMM;
     private List<String> listaCategorieVID;
     private String Modalita;
+    private SeekBar seekBar;
+    private boolean staVisualizzandoVideo = true;
 
     // Che si devono salvare
     private String CategoriaPennetta;
@@ -54,6 +58,22 @@ public class VariabiliStatichePazzia {
     private String FiltroPEN = "";
     private String FiltroVID = "";
     // Che si devono salvare
+
+    public boolean isStaVisualizzandoVideo() {
+        return staVisualizzandoVideo;
+    }
+
+    public void setStaVisualizzandoVideo(boolean staVisualizzandoVideo) {
+        this.staVisualizzandoVideo = staVisualizzandoVideo;
+    }
+
+    public SeekBar getSeekBar() {
+        return seekBar;
+    }
+
+    public void setSeekBar(SeekBar seekBar) {
+        this.seekBar = seekBar;
+    }
 
     public String getModalita() {
         return Modalita;
@@ -247,11 +267,11 @@ public class VariabiliStatichePazzia {
         this.imgImmagini = imgImmagini;
     }
 
-    public VideoView getVideoView() {
+    public ProportionalVideoView getVideoView() {
         return videoView;
     }
 
-    public void setVideoView(VideoView videoView) {
+    public void setVideoView(ProportionalVideoView videoView) {
         this.videoView = videoView;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.MediaController;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -312,6 +313,11 @@ public class UtilityVideo {
                             public void onPrepared(MediaPlayer mp) {
                                 Attesa(false);
 
+                                int videoWidth = mp.getVideoWidth();
+                                int videoHeight = mp.getVideoHeight();
+
+                                VariabiliStaticheVideo.getInstance().getVideoView().setVideoSize(videoWidth, videoHeight);
+
                                 VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(null);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(
@@ -432,14 +438,21 @@ public class UtilityVideo {
         }
         String[] ll = l.toArray(new String[0]);
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheVideo.getInstance().getSpnCategorie(),
+                ll,
+                VariabiliStaticheVideo.getInstance().getCategoria()
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 ll
         );
-        VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter);
+        VariabiliStaticheVideo.getInstance().getSpnCategorie().setAdapter(adapter); */
     }
 
     public void AggiornaCategorieSpostamento(Context context) {
@@ -453,13 +466,20 @@ public class UtilityVideo {
         }
         String[] ll = l.toArray(new String[0]);
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheVideo.getInstance().getSpnSpostaCategorie(),
+                ll,
+                ""
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 ll
         );
-        VariabiliStaticheVideo.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
+        VariabiliStaticheVideo.getInstance().getSpnSpostaCategorie().setAdapter(adapter); */
     }
 }

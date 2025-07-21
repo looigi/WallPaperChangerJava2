@@ -264,17 +264,25 @@ public class UtilityFetekkie {
 
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie(),
+                l,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale()
+        );
+
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setAdapter(adapter);
+        VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setAdapter(adapter); */
 
-        if (!VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale().isEmpty()) {
-            int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale());
-            VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setSelection(spinnerPosition);
-        }
+        // if (!VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale().isEmpty()) {
+            // int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getCategoriAttuale());
+            // VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setSelection(spinnerPosition);
+        // }
     }
 
     public void AggiornaCategorieSpostamento(Context context) {

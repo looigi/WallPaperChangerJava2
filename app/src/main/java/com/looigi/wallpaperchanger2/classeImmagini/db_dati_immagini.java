@@ -85,6 +85,12 @@ public class db_dati_immagini {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "CategoriaImpostata "
+                        + "(Categoria VARCHAR);";
+
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 return false;
@@ -145,6 +151,44 @@ public class db_dati_immagini {
                         + "'" + C.getAlias().replace("'", "''") + "',"
                         + "'" + C.getTag().replace("'", "''") + "'"
                         + ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per categoria: " + e.getMessage());
+            }
+        } else {
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+    }
+
+    public String LeggeUltimaCategoria() {
+        String Ritorno = "";
+
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM CategoriaImpostata", null);
+                c.moveToFirst();
+                do {
+                    Ritorno = c.getString(0);
+                } while(c.moveToNext());
+            } catch (Exception e) {
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db categoria: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return Ritorno;
+    }
+
+    public void ScriveUltimaCategoria(String Categoria) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO "
+                        + "CategoriaImpostata "
+                        + " VALUES ("
+                        + "'" + Categoria.replace("'", "''") + "'" +
+                        ") ";
                 myDB.execSQL(sql);
             } catch (SQLException e) {
                 UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per categoria: " + e.getMessage());

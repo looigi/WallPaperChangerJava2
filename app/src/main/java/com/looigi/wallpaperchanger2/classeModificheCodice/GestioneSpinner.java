@@ -1,10 +1,15 @@
 package com.looigi.wallpaperchanger2.classeModificheCodice;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeModificheCodice.Strutture.Moduli;
@@ -30,13 +35,14 @@ public class GestioneSpinner {
     }
 
     public void GestioneSpinnerStati(Context context) {
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
                 context,
+                VariabiliStaticheModificheCodice.getInstance().getSpnStati(),
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaStati(
                         VariabiliStaticheModificheCodice.getInstance().getListaStati()
-                )
+                ),
+                VariabiliStaticheModificheCodice.getInstance().getStatoSelezionato()
         );
-        VariabiliStaticheModificheCodice.getInstance().getSpnStati().setAdapter(adapter);
 
         VariabiliStaticheModificheCodice.getInstance().getSpnStati().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
@@ -71,7 +77,16 @@ public class GestioneSpinner {
     }
 
     public void GestioneSpinnerProgetti(Context context) {
-        VariabiliStaticheModificheCodice.getInstance().setAdapterProgetti(new ArrayAdapter<String>(
+        VariabiliStaticheModificheCodice.getInstance().setAdapterProgetti(UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheModificheCodice.getInstance().getSpnProgetto(),
+                VariabiliStaticheModificheCodice.getInstance().RitornaStringaProgetti(
+                        VariabiliStaticheModificheCodice.getInstance().getListaProgetti()
+                ),
+                VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
+        ));
+
+        /* VariabiliStaticheModificheCodice.getInstance().setAdapterProgetti(new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaProgetti(
@@ -85,7 +100,7 @@ public class GestioneSpinner {
             VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setPrompt(
                     VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato()
             );
-        }
+        } */
         VariabiliStaticheModificheCodice.getInstance().getSpnProgetto().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
                 try {
@@ -186,7 +201,16 @@ public class GestioneSpinner {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setVisibility(LinearLayout.GONE);
         }
 
-        VariabiliStaticheModificheCodice.getInstance().setAdapterModuli(new ArrayAdapter<String>(
+        VariabiliStaticheModificheCodice.getInstance().setAdapterModuli(UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheModificheCodice.getInstance().getSpnModulo(),
+                VariabiliStaticheModificheCodice.getInstance().RitornaStringaModuli(
+                        VariabiliStaticheModificheCodice.getInstance().getListaModuli()
+                ),
+                VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
+        ));
+
+        /* VariabiliStaticheModificheCodice.getInstance().setAdapterModuli(new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaModuli(
@@ -199,7 +223,7 @@ public class GestioneSpinner {
 
         VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setPrompt(
                 VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato()
-        );
+        ); */
 
         VariabiliStaticheModificheCodice.getInstance().getSpnModulo().setVisibility(LinearLayout.VISIBLE);
 
@@ -286,7 +310,16 @@ public class GestioneSpinner {
             VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setVisibility(LinearLayout.GONE);
         }
 
-        VariabiliStaticheModificheCodice.getInstance().setAdapterSezioni(new ArrayAdapter<String>(
+        VariabiliStaticheModificheCodice.getInstance().setAdapterSezioni(UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheModificheCodice.getInstance().getSpnSezione(),
+                VariabiliStaticheModificheCodice.getInstance().RitornaStringaSezioni(
+                        VariabiliStaticheModificheCodice.getInstance().getListaSezioni()
+                ),
+                VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
+        ));
+
+        /* VariabiliStaticheModificheCodice.getInstance().setAdapterSezioni(new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_text,
                 VariabiliStaticheModificheCodice.getInstance().RitornaStringaSezioni(
@@ -299,7 +332,7 @@ public class GestioneSpinner {
 
         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setPrompt(
                 VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata()
-        );
+        ); */
 
         VariabiliStaticheModificheCodice.getInstance().getSpnSezione().setVisibility(LinearLayout.VISIBLE);
         VariabiliStaticheModificheCodice.getInstance().setEseguitaLetturaIniziale(true);

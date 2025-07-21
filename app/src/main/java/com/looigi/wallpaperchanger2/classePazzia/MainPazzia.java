@@ -5,23 +5,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 
 public class MainPazzia extends Activity {
@@ -39,6 +38,29 @@ public class MainPazzia extends Activity {
         VariabiliStatichePazzia.getInstance().setImgPennetta(findViewById(R.id.imgPennetta));
         VariabiliStatichePazzia.getInstance().setImgImmagini(findViewById(R.id.imgImmagini));
         VariabiliStatichePazzia.getInstance().setVideoView(findViewById(R.id.videoView));
+
+        VariabiliStatichePazzia.getInstance().setSeekBar(findViewById(R.id.imgScorri2));
+        VariabiliStatichePazzia.getInstance().getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            boolean userTouch = false;
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTouch = true;
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (userTouch) {
+                    VariabiliStatichePazzia.getInstance().getVideoView().seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                userTouch = false;
+                VariabiliStatichePazzia.getInstance().getVideoView().seekTo(seekBar.getProgress());
+            }
+        });
 
         VariabiliStatichePazzia.getInstance().setImgCaricamentoPEN(findViewById(R.id.imgCaricamentoPEN));
         VariabiliStatichePazzia.getInstance().setImgCaricamentoIMM(findViewById(R.id.imgCaricamentoIMM));
@@ -94,6 +116,30 @@ public class MainPazzia extends Activity {
             }
         });
 
+        ImageView imgPlayPauseVID = findViewById(R.id.imgPlayPauseVID);
+        Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
+        imgPlayPauseVID.setImageBitmap(bitmap3);
+        VariabiliStatichePazzia.getInstance().setStaVisualizzandoVideo(true);
+        imgPlayPauseVID.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStatichePazzia.getInstance().getVideoView() != null) {
+                    if (VariabiliStatichePazzia.getInstance().isStaVisualizzandoVideo()) {
+                        VariabiliStatichePazzia.getInstance().setStaVisualizzandoVideo(false);
+                        VariabiliStatichePazzia.getInstance().getVideoView().pause();
+                        UtilityPazzia.getInstance().BloccaTimerVID();
+                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_suona);
+                        imgPlayPauseVID.setImageBitmap(bitmap);
+                    } else {
+                        VariabiliStatichePazzia.getInstance().setStaVisualizzandoVideo(true);
+                        VariabiliStatichePazzia.getInstance().getVideoView().start();
+                        UtilityPazzia.getInstance().AttivaTimerBarraVID();
+                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icona_pausa);
+                        imgPlayPauseVID.setImageBitmap(bitmap);
+                    }
+                }
+            }
+        });
+
         VariabiliStatichePazzia.getInstance().setSpnCategoria(findViewById(R.id.spnCategorie));
 
         TextView txtSettingsTitolo = findViewById(R.id.txtSettings);
@@ -117,6 +163,13 @@ public class MainPazzia extends Activity {
         imgNextIMM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityPazzia.getInstance().CambiaImmagineImmagine(context);
+            }
+        });
+
+        ImageView imgNextVID = findViewById(R.id.imgNextVID);
+        imgNextVID.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilityPazzia.getInstance().CambiaVideo(context);
             }
         });
 
@@ -245,10 +298,7 @@ public class MainPazzia extends Activity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
+    private void Chiude() {
         UtilityPazzia.getInstance().bloccaTimerIMM();
         UtilityPazzia.getInstance().bloccaTimerPEN();
 
@@ -259,7 +309,30 @@ public class MainPazzia extends Activity {
         }
 
         VariabiliStatichePazzia.getInstance().setGiaPartito(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Chiude();
 
         act.finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Chiude();
+
+                this.finish();
+
+                return true;
+        }
+
+        return false;
     }
 }

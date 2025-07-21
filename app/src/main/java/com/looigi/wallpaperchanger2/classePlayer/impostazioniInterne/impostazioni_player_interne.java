@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerBrani;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
@@ -1176,10 +1177,17 @@ public class impostazioni_player_interne {
         String[] lista = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
         String Stelle = Integer.toString(VariabiliStatichePlayer.getInstance().getStelleDaRicercare());
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spinner,
+                lista,
+                Stelle
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, lista);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 lista
         );
@@ -1188,7 +1196,7 @@ public class impostazioni_player_interne {
         if (!Stelle.isEmpty()) {
             int spinnerPosition = adapter.getPosition(Stelle);
             spinner.setSelection(spinnerPosition);
-        }
+        } */
     }
 
     private void CaricaSalvataggi(Spinner spinner) {
@@ -1213,28 +1221,35 @@ public class impostazioni_player_interne {
             }
         };
 
+        adapterSalvataggi = UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spinner,
+                ll,
+                salvataggioDefault
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, lista2);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 ll
         );
         adapterSalvataggi = adapter;
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter); */
 
         if (!salvataggioDefault.isEmpty()) {
             VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(salvataggioDefault);
 
-            int spinnerPosition = adapter.getPosition(salvataggioDefault);
-            spinner.setSelection(spinnerPosition);
+            // int spinnerPosition = adapter.getPosition(salvataggioDefault);
+            // spinner.setSelection(spinnerPosition);
 
             db.CaricaSalvataggio(id);
         } else {
             VariabiliStatichePlayer.getInstance().setSalvataggioSelezionato(StringaNessuno);
 
-            int spinnerPosition = adapter.getPosition(salvataggioDefault);
-            spinner.setSelection(spinnerPosition);
+            // int spinnerPosition = adapter.getPosition(salvataggioDefault);
+            // spinner.setSelection(spinnerPosition);
         }
 
         db.ChiudeDB();

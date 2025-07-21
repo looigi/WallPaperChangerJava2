@@ -24,137 +24,26 @@
                 android:layout_width="0dp"
                 android:background="@color/Nero"
                 android:layout_marginEnd="2dp"
-                android:weightSum="8"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imgPennetta"
                     android:layout_width="match_parent"
-                    android:layout_weight="7"
-                    android:layout_height="0dp">
-
-                    <ImageView
-                        android:id="@+id/imgPennetta"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:weightSum="5"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_weight="4"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/imgPlayPausePEN"
-                            android:layout_width="40dp"
-                            android:src="@drawable/icona_suona"
-                            android:layout_height="40dp" />
-
-                        <ImageView
-                            android:id="@+id/imgNextPEN"
-                            android:layout_width="40dp"
-                            android:src="@drawable/avanti"
-                            android:layout_height="40dp" />
-
-                        <ImageView
-                            android:id="@+id/imgSettingsPEN"
-                            android:layout_width="40dp"
-                            android:src="@drawable/settings"
-                            android:layout_height="40dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent">
-
-                        <pl.droidsonroids.gif.GifImageView
-                            android:id="@+id/imgCaricamentoPEN"
-                            android:src="@drawable/loading"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:background="@color/Nero"
-                android:weightSum="8"
-                android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imgImmagini"
                     android:layout_width="match_parent"
-                    android:layout_weight="7"
-                    android:layout_height="0dp">
-
-                    <ImageView
-                        android:id="@+id/imgImmagini"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                    android:layout_height="0dp"
-                    android:weightSum="5"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/imgPlayPauseIMM"
-                            android:layout_width="40dp"
-                            android:src="@drawable/icona_suona"
-                            android:layout_height="40dp" />
-
-                        <ImageView
-                            android:id="@+id/imgNextIMM"
-                            android:layout_width="40dp"
-                            android:src="@drawable/avanti"
-                            android:layout_height="40dp" />
-
-                        <ImageView
-                            android:id="@+id/imgSettingsIMM"
-                            android:layout_width="40dp"
-                            android:src="@drawable/settings"
-                            android:layout_height="40dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:layout_height="match_parent">
-
-                        <pl.droidsonroids.gif.GifImageView
-                            android:id="@+id/imgCaricamentoIMM"
-                            android:src="@drawable/loading"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
 
@@ -162,62 +51,20 @@
             android:layout_width="match_parent"
             android:layout_marginTop="2dp"
             android:layout_weight="8"
-            android:weightSum="8"
-            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal"
             android:layout_height="0dp">
 
-            <LinearLayout
+            <com.looigi.wallpaperchanger2.utilities.ProportionalVideoView
+                android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_weight="7"
-                android:gravity="center"
-                android:layout_height="0dp">
-
-                <VideoView
-                    android:id="@+id/videoView"
-                    android:layout_width="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
-                android:weightSum="5"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/imgSettingsVID"
-                    android:layout_width="40dp"
-                    android:src="@drawable/settings"
-                    android:layout_height="40dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:layout_height="match_parent">
-
-                    <pl.droidsonroids.gif.GifImageView
-                        android:id="@+id/imgCaricamentoVID"
-                        android:src="@drawable/loading"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/laySettings"
+        android:layout_margin="10dp"
         android:layout_centerInParent="true"
         android:padding="3dp"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
@@ -319,4 +166,163 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_weight="4"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgPlayPausePEN"
+                    android:layout_width="30dp"
+                    android:src="@drawable/icona_suona"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgNextPEN"
+                    android:layout_width="30dp"
+                    android:src="@drawable/avanti"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgSettingsPEN"
+                    android:layout_width="30dp"
+                    android:src="@drawable/settings"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/imgCaricamentoPEN"
+                    android:src="@drawable/loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgPlayPauseIMM"
+                    android:layout_width="30dp"
+                    android:src="@drawable/icona_suona"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgNextIMM"
+                    android:layout_width="30dp"
+                    android:src="@drawable/avanti"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgSettingsIMM"
+                    android:layout_width="30dp"
+                    android:src="@drawable/settings"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/imgCaricamentoIMM"
+                    android:src="@drawable/loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <SeekBar
+            android:id="@+id/imgScorri2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgPlayPauseVID"
+                    android:layout_width="30dp"
+                    android:src="@drawable/icona_suona"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgNextVID"
+                    android:layout_width="30dp"
+                    android:src="@drawable/avanti"
+                    android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgSettingsVID"
+                    android:layout_width="30dp"
+                    android:src="@drawable/settings"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/imgCaricamentoVID"
+                    android:src="@drawable/loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout></RelativeLayout>

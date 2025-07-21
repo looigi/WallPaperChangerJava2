@@ -264,6 +264,7 @@ public class ChiamateWSMI implements TaskDelegate {
             db_dati_immagini db = new db_dati_immagini(context);
             List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
             db.ChiudeDB();
+
             if (!lista.isEmpty()) {
                 switch (daDove) {
                     case "IMMAGINI":
@@ -649,6 +650,10 @@ public class ChiamateWSMI implements TaskDelegate {
 
                 VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(CategoriaAttuale);
                 VariabiliStaticheMostraImmagini.getInstance().setListaCategorieImm(l);
+
+                if (daDove == null) {
+                    daDove = "";
+                }
 
                 switch(daDove) {
                     case "IMMAGINI":

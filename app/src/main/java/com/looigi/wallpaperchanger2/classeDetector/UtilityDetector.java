@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
-import com.google.mlkit.nl.languageid.internal.LanguageIdentifierImpl;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
@@ -372,6 +371,22 @@ public class UtilityDetector {
         }
 
         VariabiliStaticheDetector.getInstance().setDimensioni(Dimens);
+    }
+
+    public List<String> RitornaTutteLeImmagini(Context context) {
+        List<String> lista = new ArrayList<>();
+        String Path = PrendePath(context);
+
+        File directory = new File(Path);
+        File[] files = directory.listFiles();
+        for (File f : files) {
+            String n = f.getName();
+            if (n.toUpperCase().contains(".JPG")) {
+                lista.add(Path + n);
+            }
+        }
+
+        return lista;
     }
 
     public void DeCriptaFiles(Context context) {
@@ -1051,18 +1066,42 @@ public class UtilityDetector {
                     } else {
                         UtilityDetector.getInstance().EliminaPV3Inutili(context);
 
-                        int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
-                        UtilityDetector.getInstance().CaricaMultimedia(context);
-                        appo--;
-                        if (appo < 0) appo = 0;
-                        VariabiliStaticheDetector.getInstance().setNumMultimedia(appo);
-                        UtilityDetector.getInstance().VisualizzaMultimedia(context);
-                        UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
+                        Handler handlerTimer = new Handler(Looper.getMainLooper());
+                        Runnable rTimer = new Runnable() {
+                            public void run() {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.setTitle("Si vogliono eliminare dal telefono le immagini spostate?");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        List<String> daEliminare = RitornaTutteLeImmagini(context);
 
-                        UtilityDetector.getInstance().ContaFiles(context);
+                                        for (String e: daEliminare) {
+                                            if (com.looigi.wallpaperchanger2.utilities.Files.getInstance().EsisteFile(e)) {
+                                                com.looigi.wallpaperchanger2.utilities.Files.getInstance().EliminaFileUnico(e);
+                                            }
+                                        }
 
-                        UtilitiesGlobali.getInstance().ApreToast(context, "Immagini spostate su drive: " +
-                                (VariabiliStaticheDetector.getInstance().getImmagini().size()));
+                                        if (VariabiliStaticheDetector.getInstance().getImg() != null) {
+                                            VariabiliStaticheDetector.getInstance().getImg().setImageBitmap(null);
+                                        }
+
+                                        prosegueSpostamento(context);
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        prosegueSpostamento(context);
+
+                                        dialog.cancel();
+                                    }
+                                });
+
+                                builder.show();
+                            }
+                        };
+                        handlerTimer.postDelayed(rTimer, 100);
                     }
                 } else {
                     if (handler != null) {
@@ -1079,6 +1118,21 @@ public class UtilityDetector {
         apre.setAction(Intent.ACTION_MAIN );
         apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
         context.startActivity(apre);
+    }
+
+    private void prosegueSpostamento(Context context) {
+        // int appo = VariabiliStaticheDetector.getInstance().getNumMultimedia();
+        UtilityDetector.getInstance().CaricaMultimedia(context);
+                                /* appo--;
+                                if (appo < 0) appo = 0;
+                                VariabiliStaticheDetector.getInstance().setNumMultimedia(appo); */
+        UtilityDetector.getInstance().VisualizzaMultimedia(context);
+        // UtilityDetector.getInstance().VisualizzaPOPUP(context, "File multimediale eliminato", false, 0);
+
+        UtilityDetector.getInstance().ContaFiles(context);
+
+        UtilitiesGlobali.getInstance().ApreToast(context, "Immagini spostate su drive: " +
+                (VariabiliStaticheDetector.getInstance().getImmagini().size()));
     }
 
     public void ContaFiles(Context context) {

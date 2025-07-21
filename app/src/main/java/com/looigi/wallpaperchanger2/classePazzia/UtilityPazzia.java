@@ -1,33 +1,30 @@
 package com.looigi.wallpaperchanger2.classePazzia;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import androidx.core.content.ContextCompat;
+
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
-import com.looigi.wallpaperchanger2.classeModificheCodice.db_dati_modifiche_codice;
-import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -178,6 +175,7 @@ public class UtilityPazzia {
                             true
                     );
 
+                    /*
                     // if (VariabiliStatichePazzia.getInstance().isBarraVisibile()) {
                         mediaController = new MediaController(finalContext) {
                             @Override
@@ -195,8 +193,10 @@ public class UtilityPazzia {
                     // }
                     mediaController.addOnUnhandledKeyEventListener((v, event) -> {
                         //Handle BACK button
-                        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) { }
-                        return true;
+                        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                            return false;
+                        }
+                        return false;
                     });
 
                     VariabiliStatichePazzia.getInstance().setMediaController(mediaController);
@@ -212,7 +212,7 @@ public class UtilityPazzia {
                                     false
                             );
 
-                            BloccaTimerAvanzamento();
+                            // BloccaTimerAvanzamento();
 
                             CambiaVideo(context);
                         }
@@ -222,6 +222,8 @@ public class UtilityPazzia {
                             //Handle previous click here
                         }
                     });
+                    */
+
                     Uri video = Uri.parse(link);
                     // VariabiliStatichePazzia.getInstance().getTxtTitoloSeek().setText(prendeNomeVideo(link));
                     if (VariabiliStatichePazzia.getInstance().getVideoView() != null) {
@@ -238,16 +240,12 @@ public class UtilityPazzia {
                                         false
                                 );
 
-                                BloccaTimerAvanzamento();
+                                BloccaTimerVID();
 
                                 CambiaVideo(context);
-                                /* VariabiliStatichePazzia.getInstance().getSeekScorri().setProgress(0);
-                                VariabiliStatichePazzia.getInstance().getSeekScorri().setMax(0);
-                                VariabiliStatichePazzia.getInstance().getSeekScorri2().setProgress(0);
-                                VariabiliStatichePazzia.getInstance().getSeekScorri2().setMax(0);
 
-                                VariabiliStatichePazzia.getInstance().getTxtAvanzamento().setText(formatTime(0));
-                                VariabiliStatichePazzia.getInstance().getTxtMaxSeek().setText("00:00"); */
+                                VariabiliStatichePazzia.getInstance().getSeekBar().setProgress(0);
+                                VariabiliStatichePazzia.getInstance().getSeekBar().setMax(0);
 
                                 return false;
                             }
@@ -260,22 +258,19 @@ public class UtilityPazzia {
                                         false
                                 );
 
-                                // VariabiliStatichePazzia.getInstance().getVideoView().setMediaController(null);
+                                int videoWidth = mp.getVideoWidth();
+                                int videoHeight = mp.getVideoHeight();
 
-                                /* VariabiliStatichePazzia.getInstance().getSeekScorri().setProgress(0);
-                                VariabiliStatichePazzia.getInstance().getSeekScorri().setMax(
+                                VariabiliStatichePazzia.getInstance().getVideoView().setVideoSize(videoWidth, videoHeight);
+                                mp.setVolume(0f, 0f);
+
+                                VariabiliStatichePazzia.getInstance().getVideoView().setMediaController(null);
+
+                                VariabiliStatichePazzia.getInstance().getSeekBar().setProgress(0);
+                                VariabiliStatichePazzia.getInstance().getSeekBar().setMax(
                                         VariabiliStatichePazzia.getInstance().getVideoView().getDuration()
                                 );
-                                VariabiliStatichePazzia.getInstance().getSeekScorri2().setProgress(0);
-                                VariabiliStatichePazzia.getInstance().getSeekScorri2().setMax(
-                                        VariabiliStatichePazzia.getInstance().getVideoView().getDuration()
-                                );
-                                VariabiliStatichePazzia.getInstance().getTxtAvanzamento().setText(formatTime(0));
-                                VariabiliStatichePazzia.getInstance().getTxtMaxSeek().setText(
-                                        formatTime(VariabiliStatichePazzia.getInstance().getVideoView().getDuration())
-                                ); */
-
-                                AttivaTimerBarraAvanzamento();
+                                AttivaTimerBarraVID();
                             }
                         });
                         VariabiliStatichePazzia.getInstance().getVideoView().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -284,17 +279,6 @@ public class UtilityPazzia {
                                 CambiaVideo(context);
                             }
                         });
-
-                        /* if (VariabiliStatichePazzia.getInstance().isBarraVisibile()) {
-                            // BARRA Visibile
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.postDelayed(
-                            new Runnable() {
-                                public void run() {
-                                    VariabiliStatichePazzia.getInstance().getMediaController().show(0);
-                                }
-                            }, 500);
-                        } */
                     }
                 }
             };
@@ -306,43 +290,27 @@ public class UtilityPazzia {
         }
     }
 
-    private String prendeNomeVideo(String Video) {
-        String Ritorno = "";
-
-        int i = Video.indexOf("RobettaVaria");
-        Ritorno = Video.substring(i + 13, Video.length());
-
-        return Ritorno;
-    }
-
     private Handler handlerAvanzamentoBarra;
     private Runnable updateRunnableAB;
 
-    private void BloccaTimerAvanzamento() {
-        // VariabiliStatichePazzia.getInstance().setSecondiAlpha(0);
+    public void BloccaTimerVID() {
+        VariabiliStaticheVideo.getInstance().setSecondiAlpha(0);
         if (handlerAvanzamentoBarra != null) {
             handlerAvanzamentoBarra.removeCallbacks(updateRunnableAB);
             updateRunnableAB = null;
         }
     }
 
-    private void AttivaTimerBarraAvanzamento() {
-        BloccaTimerAvanzamento();
+    public void AttivaTimerBarraVID() {
+        BloccaTimerVID();
 
         handlerAvanzamentoBarra = new Handler();
         updateRunnableAB = new Runnable() {
             @Override
             public void run() {
                 if (VariabiliStatichePazzia.getInstance().getVideoView().isPlaying()) {
-                    /* int currentPosition = VariabiliStatichePazzia.getInstance().getVideoView().getCurrentPosition();
-                    VariabiliStatichePazzia.getInstance().getSeekScorri().setProgress(currentPosition);
-                    VariabiliStatichePazzia.getInstance().getSeekScorri2().setProgress(currentPosition);
-                    VariabiliStatichePazzia.getInstance().getTxtAvanzamento().setText(formatTime(currentPosition));
-                    VariabiliStatichePazzia.getInstance().getTxtMaxSeek().setText(
-                            formatTime(VariabiliStatichePazzia.getInstance().getVideoView().getDuration())
-                    ); */
-
-                    GestioneBarra();
+                    int currentPosition = VariabiliStatichePazzia.getInstance().getVideoView().getCurrentPosition();
+                    VariabiliStatichePazzia.getInstance().getSeekBar().setProgress(currentPosition);
                 }
 
                 handlerAvanzamentoBarra.postDelayed(this, 500);
@@ -351,27 +319,8 @@ public class UtilityPazzia {
         handlerAvanzamentoBarra.postDelayed(updateRunnableAB, 0);
     }
 
-    private void GestioneBarra() {
-        /* if (!VariabiliStatichePazzia.getInstance().isBarraOscurata()) {
-            VariabiliStatichePazzia.getInstance().setSecondiAlpha(
-                    VariabiliStatichePazzia.getInstance().getSecondiAlpha() + 1
-            );
-            if (VariabiliStatichePazzia.getInstance().getSecondiAlpha() > 10) {
-                VariabiliStatichePazzia.getInstance().getLayBarraTasti().setAlpha(0.2f);
-                VariabiliStatichePazzia.getInstance().setSecondiAlpha(0);
-                VariabiliStatichePazzia.getInstance().setBarraOscurata(true);
-            }
-        } */
-    }
-
     public void AggiornaCategorie(Context context, Spinner spinner,
                                   String[] lista, String daDove) {
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
-                context,
-                lista
-        );
-        spinner.setAdapter(adapter);
-
         String RigaSelezionata = "";
 
         switch (daDove) {
@@ -386,7 +335,14 @@ public class UtilityPazzia {
                 break;
         }
 
-        int indiceSelezionato = 0;
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spinner,
+                lista,
+                RigaSelezionata
+        );
+
+        /* int indiceSelezionato = 0;
         int i = 0;
         for (String s: lista) {
             if (s.toUpperCase().trim().equals(RigaSelezionata.toUpperCase().trim())) {
@@ -397,7 +353,7 @@ public class UtilityPazzia {
         }
         if (indiceSelezionato >= 0) {
             spinner.setSelection(indiceSelezionato);
-        }
+        } */
 
         final boolean[] primoIngresso = {true};
 

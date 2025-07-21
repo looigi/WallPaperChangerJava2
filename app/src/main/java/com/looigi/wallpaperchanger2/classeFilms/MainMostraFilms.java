@@ -19,7 +19,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainMostraFilms extends Activity {
@@ -117,7 +122,7 @@ public class MainMostraFilms extends Activity {
 
         EditText txtFiltro = findViewById(R.id.edtFiltroFilms);
         txtFiltro.setText(VariabiliStaticheFilms.getInstance().getFiltro());
-        txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -130,11 +135,22 @@ public class MainMostraFilms extends Activity {
                     VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(true);
                 }
             }
+        }); */
+
+        ImageView imgFiltraImmagini = findViewById(R.id.imgFiltraFilms);
+        imgFiltraImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveImpostazioni();
+
+                VariabiliStaticheFilms.getInstance().setEntratoNelCampoDiTesto(false);
+                VariabiliStaticheFilms.getInstance().setFiltro(txtFiltro.getText().toString());
+            }
         });
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaFilms);
         txtFiltroCate.setText(VariabiliStaticheFilms.getInstance().getFiltroCategoria());
-        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (!hasFocus) {
@@ -145,6 +161,18 @@ public class MainMostraFilms extends Activity {
 
                     UtilityFilms.getInstance().AggiornaCategorie(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
+        imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheFilms.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveImpostazioni();
+
+                UtilityFilms.getInstance().AggiornaCategorie(context);
             }
         });
 
@@ -249,6 +277,10 @@ public class MainMostraFilms extends Activity {
             }
         });
 
+        db_dati_films db = new db_dati_films(context);
+        VariabiliStaticheFilms.getInstance().setCategoria(db.LeggeUltimaCategoria());
+        db.ChiudeDB();
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheFilms.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -260,6 +292,11 @@ public class MainMostraFilms extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
+
+                db_dati_films db = new db_dati_films(context);
+                db.ScriveUltimaCategoria(Categoria);
+                db.ChiudeDB();
+
                 if (Categoria.equals("Tutte")) {
                     VariabiliStaticheFilms.getInstance().setCategoria("");
                 } else {
@@ -273,9 +310,9 @@ public class MainMostraFilms extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
 
-        db_dati_films db = new db_dati_films(context);
-        String url = db.CaricaFilms();
-        db.ChiudeDB();
+        db_dati_films db2 = new db_dati_films(context);
+        String url = db2.CaricaFilms();
+        db2.ChiudeDB();
 
         if (!url.isEmpty()) {
             VariabiliStaticheFilms.getInstance().ScriveInfo(url);

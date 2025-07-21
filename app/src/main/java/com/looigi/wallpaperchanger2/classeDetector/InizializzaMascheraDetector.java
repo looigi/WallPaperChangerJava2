@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
@@ -1363,13 +1364,21 @@ public class InizializzaMascheraDetector {
                 R.layout.spinner_text,
                 Cartell
         ); */
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+
+        Spinner spinner=(Spinner) act.findViewById(R.id.spnOrient);
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spinner,
+                Cartell,
+                String.valueOf(VariabiliStaticheDetector.getInstance().getOrientamento())
+        );
+
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 Cartell
         );
-        Spinner spinner=(Spinner) act.findViewById(R.id.spnOrient);
         spinner.setAdapter(adapter);
-        spinner.setPrompt(Integer.toString(VariabiliStaticheDetector.getInstance().getOrientamento()));
+        spinner.setPrompt(Integer.toString(VariabiliStaticheDetector.getInstance().getOrientamento())); */
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view,int pos, long id) {
                 String selected ="";

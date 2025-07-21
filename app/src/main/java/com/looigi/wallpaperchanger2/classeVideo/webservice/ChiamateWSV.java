@@ -71,6 +71,10 @@ public class ChiamateWSV implements TaskDelegate {
                 );
 
                 Categoria = VariabiliStatichePazzia.getInstance().getCategoriaVideo();
+                if (Categoria.toUpperCase().trim().equals("TUTTE")) {
+                    Categoria = "";
+                }
+
                 Urletto="RitornaProssimoVideo?" +
                         "Categoria=" + Categoria.replace("\\", "§") +
                         "&Filtro=" +

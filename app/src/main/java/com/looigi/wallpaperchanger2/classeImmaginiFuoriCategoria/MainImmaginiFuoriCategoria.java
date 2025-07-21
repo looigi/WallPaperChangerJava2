@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.classeFetekkie.UtilityFetekkie;
 import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
 import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiCategorieFE;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
@@ -97,15 +98,23 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
         Spinner spnAndOr = findViewById(R.id.spnAndOr);
         String[] l = { "And", "Or" };
+
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                spnAndOr,
+                l,
+                VariabiliImmaginiFuoriCategoria.getInstance().getAndOr()
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnAndOr.setAdapter(adapter);
-        spnAndOr.setPrompt(VariabiliImmaginiFuoriCategoria.getInstance().getAndOr());
+        spnAndOr.setPrompt(VariabiliImmaginiFuoriCategoria.getInstance().getAndOr()); */
         final boolean[] primoIngresso = {true};
         spnAndOr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

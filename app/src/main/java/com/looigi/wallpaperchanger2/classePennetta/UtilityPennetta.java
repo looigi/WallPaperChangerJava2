@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.classeOrari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
@@ -263,10 +264,17 @@ public class UtilityPennetta {
             c++;
         }
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie(),
+                l,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale()
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
@@ -275,7 +283,7 @@ public class UtilityPennetta {
         if (!VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale().isEmpty()) {
             int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale());
             VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setSelection(spinnerPosition);
-        }
+        } */
     }
 
     public void AggiornaCategorieSpostamento(Context context) {
@@ -295,14 +303,21 @@ public class UtilityPennetta {
             c++;
         }
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnSpostaCategorie(),
+                l,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoriaAttuale()
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
-        VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnSpostaCategorie().setAdapter(adapter); */
     }
 
     public void SalvataggioImmagine(Context context, boolean Sovrascrive) {

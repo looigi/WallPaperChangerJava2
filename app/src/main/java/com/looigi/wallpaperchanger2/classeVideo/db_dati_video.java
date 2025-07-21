@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFilms.UtilityFilms;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,6 +101,12 @@ public class db_dati_video {
 
                 myDB.execSQL(sql);
 
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "CategoriaImpostata "
+                        + "(Categoria VARCHAR);";
+
+                myDB.execSQL(sql);
+
                 return true;
             } else {
                 return false;
@@ -107,6 +114,44 @@ public class db_dati_video {
         } catch (Exception ignored) {
             // Log.getInstance().ScriveLog("ERRORE Nella creazione delle tabelle: " + UtilityDetector.getInstance().PrendeErroreDaException(ignored));
             return false;
+        }
+    }
+
+    public String LeggeUltimaCategoria() {
+        String Ritorno = "";
+
+        if (myDB != null) {
+            try {
+                Cursor c = myDB.rawQuery("SELECT * FROM CategoriaImpostata", null);
+                c.moveToFirst();
+                do {
+                    Ritorno = c.getString(0);
+                } while(c.moveToNext());
+            } catch (Exception e) {
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore lettura db categoria: " +
+                        UtilityDetector.getInstance().PrendeErroreDaException(e));
+            }
+        } else {
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
+        }
+
+        return Ritorno;
+    }
+
+    public void ScriveUltimaCategoria(String Categoria) {
+        if (myDB != null) {
+            try {
+                String sql = "INSERT INTO "
+                        + "CategoriaImpostata "
+                        + " VALUES ("
+                        + "'" + Categoria.replace("'", "''") + "'" +
+                        ") ";
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore su scrittura db per categoria: " + e.getMessage());
+            }
+        } else {
+            UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Db non valido");
         }
     }
 

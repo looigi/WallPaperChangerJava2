@@ -31,7 +31,10 @@ import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
 import com.looigi.wallpaperchanger2.classeFilms.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.utilities.OnSwipeTouchListenerVideo;
@@ -135,7 +138,7 @@ public class MainMostraVideo extends Activity {
 
         EditText txtFiltro = findViewById(R.id.edtFiltroVideo);
         txtFiltro.setText(VariabiliStaticheVideo.getInstance().getFiltro());
-        txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -147,11 +150,21 @@ public class MainMostraVideo extends Activity {
                     VariabiliStaticheVideo.getInstance().setEntratoNelCampoDiTesto(true);
                 }
             }
+        }); */
+
+        ImageView imgFiltraVideo = findViewById(R.id.imgFiltraVideo);
+        imgFiltraVideo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+
+                VariabiliStaticheVideo.getInstance().setEntratoNelCampoDiTesto(false);
+            }
         });
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaVideo);
         txtFiltroCate.setText(VariabiliStaticheVideo.getInstance().getFiltroCategoria());
-        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (!hasFocus) {
@@ -162,6 +175,18 @@ public class MainMostraVideo extends Activity {
 
                     UtilityVideo.getInstance().AggiornaCategorie(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
+        imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheVideo.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveImpostazioni();
+
+                UtilityVideo.getInstance().AggiornaCategorie(context);
             }
         });
 
@@ -390,6 +415,10 @@ public class MainMostraVideo extends Activity {
             }
         });
 
+        db_dati_video db = new db_dati_video(context);
+        VariabiliStaticheVideo.getInstance().setCategoria(db.LeggeUltimaCategoria());
+        db.ChiudeDB();
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheVideo.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -401,6 +430,11 @@ public class MainMostraVideo extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
+
+                db_dati_video db = new db_dati_video(context);
+                db.ScriveUltimaCategoria(Categoria);
+                db.ChiudeDB();
+
                 if (Categoria.equals("Tutte")) {
                     VariabiliStaticheVideo.getInstance().setCategoria("");
                 } else {
@@ -414,9 +448,9 @@ public class MainMostraVideo extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
 
-        db_dati_video db = new db_dati_video(context);
-        String url = db.CaricaVideo();
-        db.ChiudeDB();
+        db_dati_video db2 = new db_dati_video(context);
+        String url = db2.CaricaVideo();
+        db2.ChiudeDB();
 
         if (!url.isEmpty()) {
             VariabiliStaticheVideo.getInstance().ScriveImmagini(url);

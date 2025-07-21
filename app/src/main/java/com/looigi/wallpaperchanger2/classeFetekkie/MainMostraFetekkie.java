@@ -27,7 +27,11 @@ import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiCa
 import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiLibraryFE;
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.ChiamateWSFET;
 import com.looigi.wallpaperchanger2.classeFetekkie.webservice.DownloadImmagineFET;
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
+import com.looigi.wallpaperchanger2.classeFilms.db_dati_films;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -265,7 +269,7 @@ public class MainMostraFetekkie extends Activity {
 
         EditText edtFiltro = findViewById(R.id.edtFiltroImmagimi);
         edtFiltro.setText(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getFiltro());
-        edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -277,11 +281,23 @@ public class MainMostraFetekkie extends Activity {
                     // UtilityFetekkie.getInstance().RitornaProssimaImmagine(context);
                 // }
             }
+        }); */
+
+        ImageView imgFiltraImmagini = findViewById(R.id.imgFiltraImmagini);
+        imgFiltraImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setFiltro(edtFiltro.getText().toString());
+
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
+                db.ScriveImpostazioni();
+
+                // UtilityFetekkie.getInstance().RitornaProssimaImmagine(context);
+            }
         });
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaFET);
         txtFiltroCate.setText(VariabiliStaticheMostraImmaginiFetekkie.getInstance().getFiltroCategoria());
-        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -292,6 +308,18 @@ public class MainMostraFetekkie extends Activity {
 
                     UtilityFetekkie.getInstance().AggiornaCategorie(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
+        imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
+                db.ScriveImpostazioni();
+
+                UtilityFetekkie.getInstance().AggiornaCategorie(context);
             }
         });
 
@@ -356,6 +384,10 @@ public class MainMostraFetekkie extends Activity {
             }
         }
 
+        db_dati_fetekkie db = new db_dati_fetekkie(context);
+        VariabiliStaticheMostraImmaginiFetekkie.getInstance().setCategoriAttuale(db.LeggeUltimaCategoria());
+        db.ChiudeDB();
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -368,6 +400,12 @@ public class MainMostraFetekkie extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().setCategoriAttuale(Categoria);
+
+                db_dati_fetekkie db = new db_dati_fetekkie(context);
+                db.ScriveUltimaCategoria(Categoria);
+                db.ChiudeDB();
+
                 if (Categoria.equals("Tutte")) {
                     VariabiliStaticheMostraImmaginiFetekkie.getInstance().setCategoria("");
                     UtilityFetekkie.getInstance().RitornaProssimaImmagine(context);

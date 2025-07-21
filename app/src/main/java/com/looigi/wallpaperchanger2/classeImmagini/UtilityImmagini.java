@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
@@ -271,9 +272,16 @@ public class UtilityImmagini {
             c++;
         }
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie(),
+                l,
+                VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale()
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
@@ -283,7 +291,7 @@ public class UtilityImmagini {
         if (!VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale().isEmpty()) {
             int spinnerPosition = adapter.getPosition(VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale());
             VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setSelection(spinnerPosition);
-        }
+        } */
     }
 
     public void AggiornaCategorieSpostamento(Context context) {
@@ -303,14 +311,21 @@ public class UtilityImmagini {
             c++;
         }
 
+        UtilitiesGlobali.getInstance().ImpostaSpinner(
+                context,
+                VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie(),
+                l,
+                ""
+        );
+
         // ArrayAdapter<String> adapter = new ArrayAdapter<String>
         //         (context, android.R.layout.simple_spinner_item, l);
-        ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
+        /* ArrayAdapter<String> adapter = UtilitiesGlobali.getInstance().CreaAdapterSpinner(
                 context,
                 l
         );
         // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie().setAdapter(adapter);
+        VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie().setAdapter(adapter); */
     }
 
     public void SalvataggioImmagine(Context context, boolean Sovrascrive) {

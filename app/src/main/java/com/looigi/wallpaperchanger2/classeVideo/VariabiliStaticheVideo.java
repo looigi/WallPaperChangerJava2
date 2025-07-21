@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.looigi.wallpaperchanger2.utilities.ProportionalVideoView;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class VariabiliStaticheVideo {
     public static final String PathUrl = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Materiale/RobettaVaria/"; // "http://looigi.no-ip.biz:1085/Materiale/RobettaVaria/";
     private String Random = "S";
     private String UltimoLink;
-    private VideoView videoView;
+    private ProportionalVideoView videoView;
     private ProgressBar pbLoading;
     private Context context;
     private Activity act;
@@ -331,11 +332,11 @@ public class VariabiliStaticheVideo {
         this.context = context;
     }
 
-    public VideoView getVideoView() {
+    public ProportionalVideoView getVideoView() {
         return videoView;
     }
 
-    public void setVideoView(VideoView videoView) {
+    public void setVideoView(ProportionalVideoView videoView) {
         this.videoView = videoView;
     }
 

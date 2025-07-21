@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -246,7 +247,7 @@ public class MainMostraPennetta extends Activity {
 
         EditText edtFiltro = findViewById(R.id.edtFiltroImmagimi);
         edtFiltro.setText(VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro());
-        edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* edtFiltro.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -258,11 +259,23 @@ public class MainMostraPennetta extends Activity {
                     // UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
                 // }
             }
+        }); */
+
+        ImageView imgFiltraImmagini = findViewById(R.id.imgFiltraImmagini);
+        imgFiltraImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltro(edtFiltro.getText().toString());
+
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveImpostazioni();
+
+                // UtilityPennetta.getInstance().RitornaProssimaImmagine(context);
+            }
         });
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaPEN);
         txtFiltroCate.setText(VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltroCategoria());
-        txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // if (hasFocus) {
@@ -273,6 +286,18 @@ public class MainMostraPennetta extends Activity {
 
                     UtilityPennetta.getInstance().AggiornaCategorie(context);
                 // }
+            }
+        }); */
+
+        ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
+        imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveImpostazioni();
+
+                UtilityPennetta.getInstance().AggiornaCategorie(context);
             }
         });
 
@@ -317,6 +342,10 @@ public class MainMostraPennetta extends Activity {
             }
         }
 
+        db_dati_pennetta db = new db_dati_pennetta(context);
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriaAttuale(db.LeggeUltimaCategoria());
+        db.ChiudeDB();
+
         final boolean[] primoIngresso = {true};
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
         VariabiliStaticheMostraImmaginiPennetta.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -329,6 +358,12 @@ public class MainMostraPennetta extends Activity {
                 }
 
                 String Categoria = adapterView.getItemAtPosition(position).toString();
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoriaAttuale(Categoria);
+
+                db_dati_pennetta db = new db_dati_pennetta(context);
+                db.ScriveUltimaCategoria(Categoria);
+                db.ChiudeDB();
+
                 if (Categoria.equals("Tutte")) {
                     VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria("");
                     UtilityPennetta.getInstance().RitornaProssimaImmagine(context);

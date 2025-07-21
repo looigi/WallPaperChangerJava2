@@ -22,12 +22,16 @@ import android.webkit.MimeTypeMap;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
@@ -35,6 +39,7 @@ import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -805,6 +810,36 @@ public class UtilitiesGlobali {
             }
         };
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        return adapter;
+    }
+
+    public ArrayAdapter<String> ImpostaSpinner(Context context, Spinner spinner, String[] lista, String stringaDefault) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context,
+                R.layout.spinner_item_selected,
+                lista
+        ) {
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                // Inflating custom layout for dropdown
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view.findViewById(R.id.spinnerTextView);
+                textView.setText(getItem(position));
+                textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                textView.setBackgroundColor(Color.WHITE);
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // Layout per il menu a discesa
+        spinner.setAdapter(adapter);
+
+        if (stringaDefault != null && !stringaDefault.isEmpty()) {
+            int spinnerPosition = adapter.getPosition(stringaDefault);
+            spinner.setSelection(spinnerPosition);
+        }
 
         return adapter;
     }
