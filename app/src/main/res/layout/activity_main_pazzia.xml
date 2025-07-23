@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
                     android:id="@+id/imgPennetta"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
                     android:id="@+id/imgImmagini"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -50,6 +50,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="2dp"
+            android:background="@color/Nero"
             android:layout_weight="8"
             android:gravity="center_vertical|center_horizontal"
             android:layout_height="0dp">
@@ -98,13 +99,13 @@
                 <ImageView
                     android:id="@+id/imgChiudeSettings"
                     android:src="@drawable/chiude"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/laySPinner"
+            android:id="@+id/laySPinnerUnito"
             android:layout_below="@+id/laySettingsTitolo"
             android:layout_width="match_parent"
             android:weightSum="5"
@@ -114,7 +115,32 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                android:gravity="center_horizontal"
+                android:gravity="start"
+                android:textColor="@color/Nero"
+                android:textSize="16sp"
+                android:text="Categorie Comuni"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnCategorieUnite"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:theme="@style/spinnerTheme"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/laySPinner"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/laySPinnerUnito"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="start"
                 android:textColor="@color/Nero"
                 android:textSize="16sp"
                 android:text="Categoria"
@@ -161,8 +187,8 @@
                 <ImageView
                     android:id="@+id/imgImpostaFiltro"
                     android:src="@drawable/icona_salva"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -189,21 +215,21 @@
 
                 <ImageView
                     android:id="@+id/imgPlayPausePEN"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/icona_suona"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
 
                 <ImageView
                     android:id="@+id/imgNextPEN"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/avanti"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
 
                 <ImageView
                     android:id="@+id/imgSettingsPEN"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/settings"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -215,8 +241,8 @@
                 <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/imgCaricamentoPEN"
                     android:src="@drawable/loading"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -235,21 +261,21 @@
 
                 <ImageView
                     android:id="@+id/imgPlayPauseIMM"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/icona_suona"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
 
                 <ImageView
                     android:id="@+id/imgNextIMM"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/avanti"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
 
                 <ImageView
                     android:id="@+id/imgSettingsIMM"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/settings"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -261,8 +287,8 @@
                 <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/imgCaricamentoIMM"
                     android:src="@drawable/loading"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -274,11 +300,17 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
+        <ImageView
+            android:id="@+id/imgNextVID"
+            android:layout_width="35dp"
+            android:src="@drawable/avanti"
+            android:layout_height="35dp" />
+
         <SeekBar
             android:id="@+id/imgScorri2"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="30dp" />
+            android:layout_height="35dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -295,21 +327,15 @@
 
                 <ImageView
                     android:id="@+id/imgPlayPauseVID"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/icona_suona"
-                    android:layout_height="30dp" />
-
-                <ImageView
-                    android:id="@+id/imgNextVID"
-                    android:layout_width="30dp"
-                    android:src="@drawable/avanti"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
 
                 <ImageView
                     android:id="@+id/imgSettingsVID"
-                    android:layout_width="30dp"
+                    android:layout_width="35dp"
                     android:src="@drawable/settings"
-                    android:layout_height="30dp" />
+                    android:layout_height="35dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -321,8 +347,8 @@
                 <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/imgCaricamentoVID"
                     android:src="@drawable/loading"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout></RelativeLayout>

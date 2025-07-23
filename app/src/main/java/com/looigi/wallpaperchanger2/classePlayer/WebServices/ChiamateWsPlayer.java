@@ -15,6 +15,7 @@ import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerRicerca
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaRicerca;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaTags;
 import com.looigi.wallpaperchanger2.classePlayer.preferiti_tags.AdapterListenerPreferiti;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaAlbum;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
@@ -877,21 +878,23 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             if (!result.isEmpty()) {
-                String[] urls = result.split("§");
-                List<String> urlDaScaricare = new ArrayList<>();
-                for (String url : urls) {
-                    String link = url.replace("*CS*", "§");
-                    urlDaScaricare.add(link);
-                }
-                VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
+                if (!VariabiliScaricaImmagini.getInstance().isMascheraAttiva()) {
+                    String[] urls = result.split("§");
+                    List<String> urlDaScaricare = new ArrayList<>();
+                    for (String url : urls) {
+                        String link = url.replace("*CS*", "§");
+                        urlDaScaricare.add(link);
+                    }
+                    VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
 
-                Intent si = new Intent(context, MainScaricaImmagini.class);
-                si.addCategory(Intent.CATEGORY_LAUNCHER);
-                si.setAction(Intent.ACTION_MAIN );
-                si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
-                si.putExtra("MODALITA", "PLAYER");
-                si.putExtra("FILTRO", Artista);
-                context.startActivity(si);
+                    Intent si = new Intent(context, MainScaricaImmagini.class);
+                    si.addCategory(Intent.CATEGORY_LAUNCHER);
+                    si.setAction(Intent.ACTION_MAIN);
+                    si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    si.putExtra("MODALITA", "PLAYER");
+                    si.putExtra("FILTRO", Artista);
+                    context.startActivity(si);
+                }
             }
         }
     }

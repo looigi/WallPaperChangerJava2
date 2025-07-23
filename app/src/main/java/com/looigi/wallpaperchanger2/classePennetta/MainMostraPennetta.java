@@ -71,9 +71,11 @@ public class MainMostraPennetta extends Activity {
         // db_dati_pennetta db = new db_dati_pennetta(context);
         // db.CaricaImpostazioni();
 
-        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
-        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
-        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
+        // VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
+        // VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
+        // VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().setTxtInfoSotto(findViewById(R.id.txtInfoSotto));
+        VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto().setText("");
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setImg(findViewById(R.id.imgLibrary));
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
@@ -194,6 +196,8 @@ public class MainMostraPennetta extends Activity {
                     src.setDimensione("");
                     src.setDataImmagine(s.getDataCreazione());
 
+                    UtilityPennetta.getInstance().ScriveInfoSotto(s);
+
                     ChangeWallpaper c = new ChangeWallpaper(context,"PENNETTA", src);
                     c.setWallpaperLocale(context, src);
 
@@ -307,11 +311,19 @@ public class MainMostraPennetta extends Activity {
         String NomeFile = "/UltimaPennetta.txt";
         if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
             String u = UtilityDetector.getInstance().LeggeFileDiTesto(path1 + NomeFile);
+            if (u.contains("anyType{}")) {
+                u = null;
+                Files.getInstance().EliminaFileUnico(path1 + NomeFile);
+            }
             if (u != null) {
                 String[] uu = u.split("§");
 
                 if (uu.length > 2) {
-                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(uu[2]);
+                    String Categoria = uu[0];
+                    String[] c = Categoria.split("/");
+                    Categoria = c[0] + "\\" + c[1];
+
+                    VariabiliStaticheMostraImmaginiPennetta.getInstance().setCategoria(Categoria);
                     VariabiliStaticheMostraImmaginiPennetta.getInstance().setIdImmagine(Integer.parseInt(uu[1]));
                     String path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + uu[0];
 
@@ -320,8 +332,11 @@ public class MainMostraPennetta extends Activity {
                     s.setCategoria(VariabiliStaticheMostraImmaginiPennetta.getInstance().getCategoria());
                     s.setNomeFile(uu[0]);
                     s.setDataCreazione("");
+                    s.setImmaginiFiltrate(Integer.parseInt(uu[1]));
+                    s.setImmaginiCategoria(Integer.parseInt(uu[2]));
 
                     VariabiliStaticheMostraImmaginiPennetta.getInstance().AggiungeCaricata();
+                    UtilityPennetta.getInstance().ScriveInfoSotto(s);
 
                     VariabiliStaticheMostraImmaginiPennetta.getInstance().ScriveInfoImmagine(s);
 

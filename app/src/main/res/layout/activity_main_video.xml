@@ -105,6 +105,7 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:weightSum="7"
@@ -144,6 +145,7 @@
 
             </TextView>
         </LinearLayout>
+        -->
 
         <HorizontalScrollView
             android:layout_marginTop="5dp"
@@ -439,6 +441,13 @@
             android:thumbTint="#00FFFFFF"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtInfoSotto"
+        android:layout_below="@+id/laySettaggiVideo"
+        android:textColor="@color/Giallo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/layBarraTasti"

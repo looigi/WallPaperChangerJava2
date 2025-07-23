@@ -39,6 +39,42 @@ public class VariabiliScaricaImmagini {
     private LinearLayout layPreview;
     private ImmagineZoomabile imgPreview;
     private ListView lstImmagini;
+    private List<String> listaOriginaleDaScaricare = new ArrayList<>();
+    private boolean scaricataBene;
+    private int qualeImmagineStoScaricando;
+    private boolean MascheraAttiva = false;
+
+    public boolean isMascheraAttiva() {
+        return MascheraAttiva;
+    }
+
+    public void setMascheraAttiva(boolean mascheraAttiva) {
+        MascheraAttiva = mascheraAttiva;
+    }
+
+    public int getQualeImmagineStoScaricando() {
+        return qualeImmagineStoScaricando;
+    }
+
+    public void setQualeImmagineStoScaricando(int qualeImmagineStoScaricando) {
+        this.qualeImmagineStoScaricando = qualeImmagineStoScaricando;
+    }
+
+    public boolean isScaricataBene() {
+        return scaricataBene;
+    }
+
+    public void setScaricataBene(boolean scaricataBene) {
+        this.scaricataBene = scaricataBene;
+    }
+
+    public List<String> getListaOriginaleDaScaricare() {
+        return listaOriginaleDaScaricare;
+    }
+
+    public void setListaOriginaleDaScaricare(List<String> listaOriginaleDaScaricare) {
+        this.listaOriginaleDaScaricare = listaOriginaleDaScaricare;
+    }
 
     public ListView getLstImmagini() {
         return lstImmagini;

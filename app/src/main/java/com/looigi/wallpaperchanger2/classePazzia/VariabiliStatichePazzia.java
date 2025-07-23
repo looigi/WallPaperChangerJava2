@@ -7,7 +7,9 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.VideoView;
 
+import com.looigi.wallpaperchanger2.classePazzia.GestioneCategorie.StrutturaCategorieFinali;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 import com.looigi.wallpaperchanger2.utilities.ProportionalVideoView;
 
 import java.util.List;
@@ -29,8 +31,8 @@ public class VariabiliStatichePazzia {
     }
 
     private boolean GiaPartito = false;
-    private ImageView imgPennetta;
-    private ImageView imgImmagini;
+    private ImmagineZoomabile imgPennetta;
+    private ImmagineZoomabile imgImmagini;
     private ProportionalVideoView videoView;
     private GifImageView imgCaricamentoPEN;
     private GifImageView imgCaricamentoIMM;
@@ -58,6 +60,16 @@ public class VariabiliStatichePazzia {
     private String FiltroPEN = "";
     private String FiltroVID = "";
     // Che si devono salvare
+
+    private List<StrutturaCategorieFinali> listaCategoriePresentiImmVid;
+
+    public List<StrutturaCategorieFinali> getListaCategoriePresentiImmVid() {
+        return listaCategoriePresentiImmVid;
+    }
+
+    public void setListaCategoriePresentiImmVid(List<StrutturaCategorieFinali> listaCategoriePresentiImmVid) {
+        this.listaCategoriePresentiImmVid = listaCategoriePresentiImmVid;
+    }
 
     public boolean isStaVisualizzandoVideo() {
         return staVisualizzandoVideo;
@@ -251,19 +263,19 @@ public class VariabiliStatichePazzia {
         this.imgCaricamentoVID = imgCaricamentoVID;
     }
 
-    public ImageView getImgPennetta() {
+    public ImmagineZoomabile getImgPennetta() {
         return imgPennetta;
     }
 
-    public void setImgPennetta(ImageView imgPennetta) {
+    public void setImgPennetta(ImmagineZoomabile imgPennetta) {
         this.imgPennetta = imgPennetta;
     }
 
-    public ImageView getImgImmagini() {
+    public ImmagineZoomabile getImgImmagini() {
         return imgImmagini;
     }
 
-    public void setImgImmagini(ImageView imgImmagini) {
+    public void setImgImmagini(ImmagineZoomabile imgImmagini) {
         this.imgImmagini = imgImmagini;
     }
 

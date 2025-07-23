@@ -15,12 +15,15 @@ import androidx.annotation.Nullable;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainScaricaImmagini extends Activity {
     private Context context;
+    private Activity act;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +31,9 @@ public class MainScaricaImmagini extends Activity {
         setContentView(R.layout.activity_scarica_immagini);
 
         context = this;
-        Activity act = this;
+        act = this;
+
+        VariabiliScaricaImmagini.getInstance().setMascheraAttiva(true);
 
         Intent intent = getIntent();
         String Modalita = intent.getStringExtra("MODALITA");
@@ -51,12 +56,23 @@ public class MainScaricaImmagini extends Activity {
                 } else {
                     VariabiliScaricaImmagini.getInstance().setScaricaMultiplo(true);
 
-                    StrutturaImmagineDaScaricare s = VariabiliScaricaImmagini.getInstance().getListaDaScaricare().get(0);
+                    List<String> listaFatte = new ArrayList<>();
+                    for (String s: VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare()) {
+                        listaFatte.add("");
+                    }
+                    VariabiliScaricaImmagini.getInstance().setListaOriginaleDaScaricare(
+                            listaFatte
+                    );
+
+                    VariabiliScaricaImmagini.getInstance().setQualeImmagineStoScaricando(0);
+                    StrutturaImmagineDaScaricare s = VariabiliScaricaImmagini.getInstance().getListaDaScaricare().get(
+                            VariabiliScaricaImmagini.getInstance().getQualeImmagineStoScaricando()
+                    );
                     VariabiliScaricaImmagini.getInstance().setImgScaricaDaDisabilitare(s.getImgImmagine());
                     VariabiliScaricaImmagini.getInstance().setChkSelezione(s.getChkSelezione());
 
+                    VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                     DownloadImmagineSI d = new DownloadImmagineSI();
-
                     d.EsegueDownload(context, s.getImgImmagine(), s.getUrlImmagine(), Modalita,
                             Filtro, true, "SCARICA", 0, null);
                 }
@@ -95,11 +111,20 @@ public class MainScaricaImmagini extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
+        act.finish();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
 
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
                 this.finish();
 
                 return false;

@@ -6,12 +6,10 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
@@ -245,13 +243,47 @@ public class UtilityImmagini {
                 si.setPathImmagine(j.getString("PathImmagine"));
                 si.setEsisteImmagine(j.getString("EsisteImmagine").equals("True"));
                 si.setImmaginiCategoria(j.getInt("ImmaginiCategoria"));
+                si.setImmaginiFiltrate(j.getInt("ImmaginiFiltrate"));
                 return si;
             } catch (JSONException e) {
-                return null;
+                if (si != null) {
+                    return si;
+                } else {
+                    return null;
+                }
             }
-
         } else {
             return null;
+        }
+    }
+
+    public void ScriveInfoSotto(StrutturaImmaginiLibrary si) {
+        if (si != null) {
+            if (VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto() != null) {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int immaginiCategoria = si.getImmaginiCategoria();
+                        int immaginiFiltrate = si.getImmaginiFiltrate();
+                        // int idImmagine = si.getIdImmagine();
+                        String Nome = si.getCategoria() + "\\" + si.getCartella() + "\\" + si.getNomeFile();
+
+                        if (immaginiCategoria == immaginiFiltrate) {
+                            VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto().setText(
+                                    "Immagini " + immaginiCategoria + ". " + Nome);
+                        } else {
+                            VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto().setText(
+                                    "Immagine Filtrate " +
+                                            immaginiFiltrate + "/" + immaginiCategoria + ". " + Nome
+                            );
+                        }
+                    }
+                }, 50);
+            }
+        } else {
+            if (VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto() != null) {
+                VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto().setText("");
+            }
         }
     }
 

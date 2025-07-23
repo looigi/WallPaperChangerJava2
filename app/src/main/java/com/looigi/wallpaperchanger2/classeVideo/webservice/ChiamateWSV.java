@@ -103,6 +103,7 @@ public class ChiamateWSV implements TaskDelegate {
             db_dati_video db = new db_dati_video(context);
             List<String> lista = db.LeggeCategorie();
             db.ChiudeDB();
+
             if (!lista.isEmpty()) {
                 switch (daDove) {
                     case "VIDEO":
@@ -327,11 +328,18 @@ public class ChiamateWSV implements TaskDelegate {
         boolean ritorno = ControllaRitorno("Ritorna prossimo video", result);
         if (ritorno) {
             String url ="";
+            int videoFiltrati = -1;
+            int videoCategoria = -1;
+            String Nome = "";
+
             int id = -1;
             if (result.contains("§")) {
                 String[] p = result.split("§");
                 url = VariabiliStaticheVideo.PathUrl + p[0];
                 id = Integer.parseInt(p[1]);
+                videoFiltrati = Integer.parseInt(p[2]);
+                videoCategoria = Integer.parseInt(p[3]);
+                // Nome = p[0];
             } else {
                 url = VariabiliStaticheVideo.PathUrl + result;
             }
@@ -355,6 +363,16 @@ public class ChiamateWSV implements TaskDelegate {
                     UtilityPazzia.getInstance().ImpostaVideo(context);
                     break;
                 case "VIDEO":
+                    if (videoFiltrati == videoCategoria) {
+                        VariabiliStaticheVideo.getInstance().getTxtInfoSotto().setText(
+                                "Video in Categoria " + videoFiltrati + ". " + Nome
+                        );
+                    } else {
+                        VariabiliStaticheVideo.getInstance().getTxtInfoSotto().setText(
+                                "Video Filtrati " + videoFiltrati + "/" + videoCategoria +  ". " + Nome
+                        );
+                    }
+
                     VariabiliStaticheVideo.getInstance().ScriveImmagini(url);
 
                     db_dati_video db = new db_dati_video(context);

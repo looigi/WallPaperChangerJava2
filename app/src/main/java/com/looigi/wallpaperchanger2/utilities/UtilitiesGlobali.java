@@ -600,7 +600,7 @@ public class UtilitiesGlobali {
             case CellSignalStrength.SIGNAL_STRENGTH_POOR:
                 return "POOR";
             default:
-                throw new RuntimeException("Unsupported level " + level);
+                return "Unsupported level " + level;
         }
     }
 

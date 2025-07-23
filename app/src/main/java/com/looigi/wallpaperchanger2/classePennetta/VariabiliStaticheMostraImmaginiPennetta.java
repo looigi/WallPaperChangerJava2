@@ -45,9 +45,9 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private String Random = "S";
     private List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
-    private TextView txtId;
-    private TextView txtCate;
-    private TextView txtInfo;
+    // private TextView txtId;
+    // private TextView txtCate;
+    // private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
@@ -62,15 +62,25 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
     private boolean AggiornamentoCompleto = false;
+    private TextView txtInfoSotto;
 
     public boolean isAggiornamentoCompleto() {
         return AggiornamentoCompleto;
+    }
+
+    public TextView getTxtInfoSotto() {
+        return txtInfoSotto;
+    }
+
+    public void setTxtInfoSotto(TextView txtInfoSotto) {
+        this.txtInfoSotto = txtInfoSotto;
     }
 
     public void setAggiornamentoCompleto(boolean aggiornamentoCompleto) {
         AggiornamentoCompleto = aggiornamentoCompleto;
     }
 
+    /*
     public TextView getTxtCate() {
         return txtCate;
     }
@@ -86,6 +96,7 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     public void setTxtId(TextView txtId) {
         this.txtId = txtId;
     }
+    */
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -203,6 +214,7 @@ public class VariabiliStaticheMostraImmaginiPennetta {
         return immaginiCaricate;
     }
 
+    /*
     public TextView getTxtInfo() {
         return txtInfo;
     }
@@ -210,6 +222,7 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     public void setTxtInfo(TextView txtInfo) {
         this.txtInfo = txtInfo;
     }
+    */
 
     public Spinner getSpnCategorie() {
         return spnCategorie;
@@ -284,7 +297,8 @@ public class VariabiliStaticheMostraImmaginiPennetta {
     }
 
     public void ScriveInfoImmagine(StrutturaImmaginiLibrary si) {
-        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        return;
+        /* Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
                 if (si != null && VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfo() != null) {
@@ -314,6 +328,6 @@ public class VariabiliStaticheMostraImmaginiPennetta {
                 }
             }
         };
-        handlerTimer.postDelayed(rTimer, 100);
+        handlerTimer.postDelayed(rTimer, 100); */
     }
 }

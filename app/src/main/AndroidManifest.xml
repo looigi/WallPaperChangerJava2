@@ -100,6 +100,7 @@
         <activity
             android:name=".classePazzia.MainPazzia"
             android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 

@@ -84,11 +84,18 @@ public class MainMostraImmagini extends Activity {
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();
         db_dati_immagini db = new db_dati_immagini(context);
-        VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(db.LeggeUltimaCategoria());
+        VariabiliStaticheMostraImmagini.getInstance().setCategoriaAttuale(
+                db.LeggeUltimaCategoria()
+        );
         db.ChiudeDB();
 
+        VariabiliStaticheMostraImmagini.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
         final boolean[] primoIngresso = {true};
         VariabiliStaticheMostraImmagini.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+
+        ChiamateWSMI ws = new ChiamateWSMI(context);
+        ws.RitornaCategorie(false, "IMMAGINI");
+
         VariabiliStaticheMostraImmagini.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
@@ -124,12 +131,9 @@ public class MainMostraImmagini extends Activity {
 
         ImpostaSpostamento(act);
 
-        ChiamateWSMI ws = new ChiamateWSMI(context);
-        ws.RitornaCategorie(false, "IMMAGINI");
-
-        VariabiliStaticheMostraImmagini.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
-        VariabiliStaticheMostraImmagini.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
-        VariabiliStaticheMostraImmagini.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
+        // VariabiliStaticheMostraImmagini.getInstance().setTxtId(findViewById(R.id.txtIdImmagine));
+        // VariabiliStaticheMostraImmagini.getInstance().setTxtCate(findViewById(R.id.txtCategoriaImmagine));
+        // VariabiliStaticheMostraImmagini.getInstance().setTxtInfo(findViewById(R.id.txtInfoImmagine));
 
         VariabiliStaticheMostraImmagini.getInstance().setImg(findViewById(R.id.imgLibrary));
         // ImageView imgIndietro = findViewById(R.id.imgIndietroLibrary);
@@ -379,9 +383,14 @@ public class MainMostraImmagini extends Activity {
         ImageView imgUguali = (ImageView) findViewById(R.id.imgImmaginiUgualiMI);
         imgUguali.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String Categoria = "";
+                String Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale();
 
-                if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
+                if (Categoria.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Categoria non valida");
+                    return;
+                }
+
+                /* if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
                     for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
                         if (s.getIdCategoria() == VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()) {
                             Categoria = s.getCategoria();
@@ -393,7 +402,7 @@ public class MainMostraImmagini extends Activity {
                     }
                 } else {
                     Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoria();
-                }
+                } */
 
                 Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiUguali.class);
                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -407,9 +416,14 @@ public class MainMostraImmagini extends Activity {
         ImageView imgFuoriCategoria = (ImageView) findViewById(R.id.imgImmaginiFCMI);
         imgFuoriCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String Categoria = "";
+                String Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale();
 
-                if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
+                if (Categoria.isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Categoria non valida");
+                    return;
+                }
+
+                /* if (VariabiliStaticheMostraImmagini.getInstance().getCategoria() == null) {
                     for (StrutturaImmaginiCategorie s : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
                         if (s.getIdCategoria() == VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()) {
                             Categoria = s.getCategoria();
@@ -421,7 +435,7 @@ public class MainMostraImmagini extends Activity {
                     }
                 } else {
                     Categoria = VariabiliStaticheMostraImmagini.getInstance().getCategoria();
-                }
+                } */
 
                 Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiFuoriCategoria.class);
                 iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -522,6 +536,9 @@ public class MainMostraImmagini extends Activity {
             }
         });
 
+        VariabiliStaticheMostraImmagini.getInstance().setTxtInfoSotto(findViewById(R.id.txtInfoSotto));
+        VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto().setText("");
+
         boolean letto = false;
         String path1 = context.getFilesDir() + "/Immagini";
         UtilityWallpaper.getInstance().CreaCartelle(path1);
@@ -534,8 +551,10 @@ public class MainMostraImmagini extends Activity {
                     jObject = new JSONObject(u);
                     StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
 
-                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
+                    // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
                     VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
+
+                    UtilityImmagini.getInstance().ScriveInfoSotto(si);
 
                     VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
 
@@ -667,7 +686,6 @@ public class MainMostraImmagini extends Activity {
         });
 
         VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento("");
-        VariabiliStaticheMostraImmagini.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
         final boolean[] primoIngresso = {true};
         VariabiliStaticheMostraImmagini.getInstance().getSpnSpostaCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

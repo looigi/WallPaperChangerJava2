@@ -16,6 +16,15 @@ public class StrutturaImmaginiLibrary {
     private String PathImmagine;
     private boolean EsisteImmagine;
     private int ImmaginiCategoria;
+    private int ImmaginiFiltrate;
+
+    public int getImmaginiFiltrate() {
+        return ImmaginiFiltrate;
+    }
+
+    public void setImmaginiFiltrate(int immaginiFiltrate) {
+        ImmaginiFiltrate = immaginiFiltrate;
+    }
 
     public int getIdImmagine() {
         return idImmagine;

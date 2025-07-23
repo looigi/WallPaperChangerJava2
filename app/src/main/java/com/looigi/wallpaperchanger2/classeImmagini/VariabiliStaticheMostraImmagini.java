@@ -49,9 +49,9 @@ public class VariabiliStaticheMostraImmagini {
     private List<StrutturaImmaginiCategorie> listaCategorie = new ArrayList<>();
     private Spinner spnCategorie;
     private Spinner spnSpostaCategorie;
-    private TextView txtId;
-    private TextView txtCate;
-    private TextView txtInfo;
+    // private TextView txtId;
+    // private TextView txtCate;
+    // private TextView txtInfo;
     private List<StrutturaImmaginiLibrary> immaginiCaricate = new ArrayList<>();
     private GifImageView imgCaricamento;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
@@ -68,9 +68,18 @@ public class VariabiliStaticheMostraImmagini {
     private boolean AggiornamentoCompleto = false;
     private StrutturaImmaginiLibrary immaginePerWP;
     private String OperatoreFiltro = "Or";
+    private TextView txtInfoSotto;
 
     public StrutturaImmaginiLibrary getImmaginePerWP() {
         return immaginePerWP;
+    }
+
+    public TextView getTxtInfoSotto() {
+        return txtInfoSotto;
+    }
+
+    public void setTxtInfoSotto(TextView txtInfoSotto) {
+        this.txtInfoSotto = txtInfoSotto;
     }
 
     public String getOperatoreFiltro() {
@@ -101,6 +110,7 @@ public class VariabiliStaticheMostraImmagini {
         Categoria = categoria;
     }
 
+    /*
     public TextView getTxtCate() {
         return txtCate;
     }
@@ -116,6 +126,7 @@ public class VariabiliStaticheMostraImmagini {
     public void setTxtId(TextView txtId) {
         this.txtId = txtId;
     }
+    */
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -241,6 +252,7 @@ public class VariabiliStaticheMostraImmagini {
         return immaginiCaricate;
     }
 
+    /*
     public TextView getTxtInfo() {
         return txtInfo;
     }
@@ -248,6 +260,7 @@ public class VariabiliStaticheMostraImmagini {
     public void setTxtInfo(TextView txtInfo) {
         this.txtInfo = txtInfo;
     }
+    */
 
     public Spinner getSpnCategorie() {
         return spnCategorie;
@@ -322,7 +335,9 @@ public class VariabiliStaticheMostraImmagini {
     }
 
     public void ScriveInfoImmagine(StrutturaImmaginiLibrary si) {
-        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        return;
+
+        /* Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
                 if (si != null && VariabiliStaticheMostraImmagini.getInstance().getTxtInfo() != null) {
@@ -347,6 +362,6 @@ public class VariabiliStaticheMostraImmagini {
                 }
             }
         };
-        handlerTimer.postDelayed(rTimer, 100);
+        handlerTimer.postDelayed(rTimer, 100); */
     }
 }

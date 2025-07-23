@@ -40,9 +40,9 @@ public class VariabiliStaticheVideo {
     private String Filtro = "";
     private String Categoria = "";
     private Spinner spnCategorie;
-    private TextView txtId;
-    private TextView txtCate;
-    private TextView txtTitolo;
+    // private TextView txtId;
+    // private TextView txtCate;
+    // private TextView txtTitolo;
     private int idUltimoVideo = -1;
     private boolean SettingsAperto = true;
     private boolean barraVisibile = false;
@@ -67,6 +67,15 @@ public class VariabiliStaticheVideo {
     private LinearLayout layBarraTasti;
     private int secondiAlpha;
     private boolean BarraOscurata = false;
+    private TextView txtInfoSotto;
+
+    public TextView getTxtInfoSotto() {
+        return txtInfoSotto;
+    }
+
+    public void setTxtInfoSotto(TextView txtInfoSotto) {
+        this.txtInfoSotto = txtInfoSotto;
+    }
 
     public boolean isBarraOscurata() {
         return BarraOscurata;
@@ -148,6 +157,7 @@ public class VariabiliStaticheVideo {
         AggiornamentoCompleto = aggiornamentoCompleto;
     }
 
+    /*
     public TextView getTxtCate() {
         return txtCate;
     }
@@ -163,6 +173,7 @@ public class VariabiliStaticheVideo {
     public void setTxtId(TextView txtId) {
         this.txtId = txtId;
     }
+    */
 
     public boolean isRicercaPerVisua() {
         return ricercaPerVisua;
@@ -284,6 +295,7 @@ public class VariabiliStaticheVideo {
         Random = random;
     }
 
+    /*
     public TextView getTxtTitolo() {
         return txtTitolo;
     }
@@ -291,6 +303,7 @@ public class VariabiliStaticheVideo {
     public void setTxtTitolo(TextView txtTitolo) {
         this.txtTitolo = txtTitolo;
     }
+    */
 
     public String getCategoria() {
         return Categoria;
@@ -357,7 +370,9 @@ public class VariabiliStaticheVideo {
     }
 
     public void ScriveImmagini(String url) {
-        String[] c = url.split("/");
+        return;
+
+        /* String[] c = url.split("/");
         String NomeFile = c[c.length - 1];
         String Categoria = url.replace("/" + NomeFile, "");
 
@@ -369,6 +384,6 @@ public class VariabiliStaticheVideo {
         );
         VariabiliStaticheVideo.getInstance().getTxtTitolo().setText(
                 NomeFile
-        );
+        ); */
     }
 }

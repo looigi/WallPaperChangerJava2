@@ -5,23 +5,33 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classePazzia.GestioneCategorie.GestioneCategorie;
+import com.looigi.wallpaperchanger2.classePazzia.GestioneCategorie.StrutturaCategorieFinali;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classePennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.db_dati_video;
 import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 public class MainPazzia extends Activity {
     private Context context;
@@ -30,10 +40,103 @@ public class MainPazzia extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Rimuove la barra di stato e la barra di navigazione
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
+
+        // Per Android 11+ (API 30)
+        getWindow().getDecorView().getWindowInsetsController().hide(
+                WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars()
+        );
+
+        // Nasconde la barra di navigazione in modo persistente
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+        );
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_main_pazzia);
 
         context = this;
         act = this;
+
+        GestioneCategorie g = new GestioneCategorie();
+        g.ScannaCategorie(context);
+
+        Spinner spnCategorieUnite = findViewById(R.id.spnCategorieUnite);
+        String[] ll = new String[VariabiliStatichePazzia.getInstance().getListaCategoriePresentiImmVid().size() + 1];
+        int i = 1;
+        for (StrutturaCategorieFinali l: VariabiliStatichePazzia.getInstance().getListaCategoriePresentiImmVid()) {
+            ll[i] = l.getCategoriaImm();
+            i++;
+        }
+        UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                spnCategorieUnite,
+                ll,
+                ""
+        );
+        final boolean[] primoIngresso = {true};
+        spnCategorieUnite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                if (primoIngresso[0]) {
+                    primoIngresso[0] = false;
+                    return;
+                }
+
+                boolean Impostata = false;
+                String Categoria = adapterView.getItemAtPosition(position).toString();
+                String[] c = Categoria.split(";", -1);
+
+                for (com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie c1:
+                        VariabiliStatichePazzia.getInstance().getListaCategorieIMM()) {
+                    String Cate = c1.getCategoria();
+                    boolean ok = true;
+                    for (String cc: c) {
+                        if (!Cate.toUpperCase().contains(cc.toUpperCase())) {
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if (ok) {
+                        Impostata = true;
+                        VariabiliStatichePazzia.getInstance().setCategoriaImmagini(Cate);
+                        UtilityPazzia.getInstance().CambiaImmagineImmagine(context);
+                        break;
+                    }
+                }
+                for (String c2: VariabiliStatichePazzia.getInstance().getListaCategorieVID()) {
+                    boolean ok = true;
+                    for (String cc: c) {
+                        if (!c2.toUpperCase().contains(cc.toUpperCase())) {
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if (ok) {
+                        Impostata = true;
+                        VariabiliStatichePazzia.getInstance().setCategoriaVideo(c2);
+                        UtilityPazzia.getInstance().CambiaVideo(context);
+                        break;
+                    }
+                }
+
+                if (Impostata) {
+                    db_dati_pazzia db = new db_dati_pazzia(context);
+                    db.SalvaImpostazioni();
+                    db.ChiudeDB();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
 
         VariabiliStatichePazzia.getInstance().setImgPennetta(findViewById(R.id.imgPennetta));
         VariabiliStatichePazzia.getInstance().setImgImmagini(findViewById(R.id.imgImmagini));

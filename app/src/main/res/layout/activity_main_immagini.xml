@@ -134,6 +134,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:weightSum="7"
@@ -173,6 +174,7 @@
 
             </TextView>
         </LinearLayout>
+        -->
 
         <HorizontalScrollView
             android:layout_marginTop="5dp"
@@ -565,6 +567,13 @@
         </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtInfoSotto"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/Giallo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/imgScorri"
         android:layout_alignParentBottom="true"
@@ -576,9 +585,7 @@
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
-        android:layout_height="100dp">
-
-    </pl.droidsonroids.gif.GifImageView>
+        android:layout_height="100dp" />
 
     <ImageView
         android:id="@+id/imgLinguettaMI"
@@ -586,8 +593,12 @@
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/laySettaggiMI"
-        android:src="@drawable/linguetta1">
+        android:src="@drawable/linguetta1" />
 
-    </ImageView>
-
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/Giallo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

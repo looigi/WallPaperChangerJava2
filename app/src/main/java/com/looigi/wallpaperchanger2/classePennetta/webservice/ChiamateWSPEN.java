@@ -16,6 +16,8 @@ import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.classePennetta.db_dati_pennetta;
 import com.looigi.wallpaperchanger2.classePennetta.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class ChiamateWSPEN implements TaskDelegate {
         String Urletto = "";
 
         switch (daDove) {
-            case "PENNETTA":
+            case "PAZZIA":
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
                         true
@@ -64,7 +66,7 @@ public class ChiamateWSPEN implements TaskDelegate {
                         "&UltimaImmagine=" + VariabiliStatichePazzia.getInstance().getUltimaPennetta() +
                         "&OrdinaPerVisualizzato=S";
                 break;
-            case "PAZZIA":
+            case "PENNETTA":
                 Urletto="RitornaProssimoPennetta?" +
                         "Categoria=" + (Categoria == null ? "" : Categoria) +
                         "&Filtro=" + VariabiliStaticheMostraImmaginiPennetta.getInstance().getFiltro() +
@@ -132,6 +134,7 @@ public class ChiamateWSPEN implements TaskDelegate {
             db_dati_pennetta db = new db_dati_pennetta(context);
             List<StrutturaImmaginiCategorie> lista = db.LeggeCategorie();
             db.ChiudeDB();
+
             if (!lista.isEmpty()) {
                 switch (daDove) {
                     case "PENNETTA":
@@ -269,7 +272,11 @@ public class ChiamateWSPEN implements TaskDelegate {
 
             return false;
         } else {
-            return true;
+            if (result.contains("anyType{}")) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -406,11 +413,16 @@ public class ChiamateWSPEN implements TaskDelegate {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
         if (ritorno) {
             String path = "";
+            int immaginiFiltrate = -1;
+            int immaginiCategoria = -1;
+
             int id = -1;
             if (result.contains("§")) {
                 String[] p = result.split("§");
                 path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + p[0];
                 id = Integer.parseInt(p[1]);
+                immaginiCategoria = Integer.parseInt(p[2]);
+                immaginiFiltrate = Integer.parseInt(p[3]);
             } else {
                 path = VariabiliStaticheMostraImmaginiPennetta.PathUrl + result;
             }
@@ -428,15 +440,25 @@ public class ChiamateWSPEN implements TaskDelegate {
                 s.setNomeFile(result);
             }
             s.setDataCreazione("");
+            s.setImmaginiFiltrate(immaginiFiltrate);
+            s.setImmaginiCategoria(immaginiCategoria);
 
             UtilityPennetta.getInstance().AggiungeImmagine(context, result, s);
 
+            UtilityPennetta.getInstance().ScriveInfoSotto(s);
+
             VariabiliStaticheMostraImmaginiPennetta.getInstance().setUltimaImmagineCaricata(s);
+
+            String path1 = context.getFilesDir() + "/Immagini";
+            UtilityWallpaper.getInstance().CreaCartelle(path1);
+            String NomeFile = "/UltimaPennetta.txt";
+            if (UtilityWallpaper.getInstance().EsisteFile(path1 + NomeFile)) {
+                Files.getInstance().EliminaFileUnico(path1 + NomeFile);
+            }
+            Files.getInstance().ScriveFile(path1, NomeFile, result);
 
             switch (daDove) {
                 case "PENNETTA":
-                    VariabiliStatichePazzia.getInstance().setUltimaPennetta(id);
-
                     DownloadImmaginePEN d = new DownloadImmaginePEN();
                     d.EsegueChiamata(
                             context,
@@ -446,6 +468,8 @@ public class ChiamateWSPEN implements TaskDelegate {
                     );
                     break;
                 case "PAZZIA":
+                    VariabiliStatichePazzia.getInstance().setUltimaPennetta(id);
+
                     DownloadImmaginePAZZIA d2 = new DownloadImmaginePAZZIA();
                     d2.EsegueChiamata(
                             context,

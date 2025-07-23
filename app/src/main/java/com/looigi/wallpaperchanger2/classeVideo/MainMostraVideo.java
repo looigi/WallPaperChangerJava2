@@ -130,9 +130,13 @@ public class MainMostraVideo extends Activity {
 
         VariabiliStaticheVideo.getInstance().setVideoView(findViewById(R.id.videoView));
         VariabiliStaticheVideo.getInstance().setPbLoading(findViewById(R.id.pbVideoLoading));
-        VariabiliStaticheVideo.getInstance().setTxtId(findViewById(R.id.txtIdVideo));
-        VariabiliStaticheVideo.getInstance().setTxtCate(findViewById(R.id.txtCategoriaVideo));
-        VariabiliStaticheVideo.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloVideo));
+        // VariabiliStaticheVideo.getInstance().setTxtId(findViewById(R.id.txtIdVideo));
+        // VariabiliStaticheVideo.getInstance().setTxtCate(findViewById(R.id.txtCategoriaVideo));
+        // VariabiliStaticheVideo.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloVideo));
+
+        VariabiliStaticheVideo.getInstance().setTxtInfoSotto(findViewById(R.id.txtInfoSotto));
+        VariabiliStaticheVideo.getInstance().getTxtInfoSotto().setText("");
+
         VariabiliStaticheVideo.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheVideo.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
 
@@ -483,7 +487,6 @@ public class MainMostraVideo extends Activity {
 
         act.finish();
     }
-
 
     private void ImpostaSpostamento(Activity act) {
         LinearLayout laySposta = act.findViewById(R.id.laySposta);

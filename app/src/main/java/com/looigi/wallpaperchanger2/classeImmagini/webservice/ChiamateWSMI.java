@@ -67,7 +67,8 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     public void RitornaProssimaImmaginePerWP(String Filtro) {
-        if (VariabiliStaticheApiFootball.getInstance().isStaSalvandoTutteLePartite()) {
+        if (VariabiliStaticheApiFootball.getInstance().isStaSalvandoTutteLePartite() ||
+            VariabiliScaricaImmagini.getInstance().isMascheraAttiva()) {
             // Controllo che evita il cambio wp se sta salvando le partite apiFootball
             return;
         }
@@ -271,6 +272,13 @@ public class ChiamateWSMI implements TaskDelegate {
                         VariabiliStaticheMostraImmagini.getInstance().setListaCategorie(lista);
                         UtilityImmagini.getInstance().AggiornaCategorie(context);
                         UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+
+                        for (StrutturaImmaginiCategorie c : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                            if (c.getCategoria().equals(VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale())) {
+                                VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(c.getIdCategoria());
+                                break;
+                            }
+                        }
                         break;
                     case "PAZZIA":
                         VariabiliStatichePazzia.getInstance().setListaCategorieIMM(lista);
@@ -447,21 +455,23 @@ public class ChiamateWSMI implements TaskDelegate {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             if (!result.isEmpty()) {
-                String[] urls = result.split("§");
-                List<String> urlDaScaricare = new ArrayList<>();
-                for (String url : urls) {
-                    String link = url.replace("*CS*", "§");
-                    urlDaScaricare.add(link);
-                }
-                VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
+                if (!VariabiliScaricaImmagini.getInstance().isMascheraAttiva()) {
+                    String[] urls = result.split("§");
+                    List<String> urlDaScaricare = new ArrayList<>();
+                    for (String url : urls) {
+                        String link = url.replace("*CS*", "§");
+                        urlDaScaricare.add(link);
+                    }
+                    VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
 
-                Intent si = new Intent(context, MainScaricaImmagini.class);
-                si.addCategory(Intent.CATEGORY_LAUNCHER);
-                si.setAction(Intent.ACTION_MAIN );
-                si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
-                si.putExtra("MODALITA", "IMMAGINI");
-                si.putExtra("FILTRO", Categoria);
-                context.startActivity(si);
+                    Intent si = new Intent(context, MainScaricaImmagini.class);
+                    si.addCategory(Intent.CATEGORY_LAUNCHER);
+                    si.setAction(Intent.ACTION_MAIN);
+                    si.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    si.putExtra("MODALITA", "IMMAGINI");
+                    si.putExtra("FILTRO", Categoria);
+                    context.startActivity(si);
+                }
             }
         }
     }
@@ -480,15 +490,15 @@ public class ChiamateWSMI implements TaskDelegate {
 
             VariabiliScaricaImmagini.getInstance().getImgScaricaDaDisabilitare().setVisibility(LinearLayout.GONE);
             VariabiliScaricaImmagini.getInstance().setImgScaricaDaDisabilitare(null);
-            VariabiliScaricaImmagini.getInstance().getChkSelezione().setChecked(false);
+            // VariabiliScaricaImmagini.getInstance().getChkSelezione().setChecked(false);
 
-            List<String> l = new ArrayList<>();
+            /* List<String> l = new ArrayList<>();
             for (String s : VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare()) {
                 if (!s.equals(UrlImmagine)) {
                     l.add(s);
                 }
             }
-            VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(l);
+            VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(l); */
 
             if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
                 AggiornaImmagini(Modalita, Filtro);
@@ -498,6 +508,8 @@ public class ChiamateWSMI implements TaskDelegate {
                 ScaricaSuccessiva(Modalita, Filtro);
             }
         } else {
+            VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
+
             if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
                 UtilitiesGlobali.getInstance().ApreToast(context, result);
                 VariabiliScaricaImmagini.getInstance().PulisceCartellaAppoggio(context);
@@ -509,25 +521,53 @@ public class ChiamateWSMI implements TaskDelegate {
         UtilityPlayer.getInstance().AttesaSI(false);
     }
 
-    private void ScaricaSuccessiva(String Modalita, String Filtro) {
-        if (!VariabiliScaricaImmagini.getInstance().getListaDaScaricare().isEmpty()) {
+    public void ScaricaSuccessiva(String Modalita, String Filtro) {
+        /* if (!VariabiliScaricaImmagini.getInstance().getListaDaScaricare().isEmpty()) {
             VariabiliScaricaImmagini.getInstance().getListaDaScaricare().remove(0);
+        } */
+
+        int quale = VariabiliScaricaImmagini.getInstance().getQualeImmagineStoScaricando();
+
+        int riga = -1;
+        int i = 0;
+        for (String s: VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare()) {
+            if (s.equals(VariabiliScaricaImmagini.getInstance().getListaDaScaricare().get(quale).getUrlImmagine())) {
+                riga = i;
+                break;
+            }
+            i++;
         }
 
-        VariabiliScaricaImmagini.getInstance().getTxtSelezionate().setText("Selezionate: " +
+        if (riga < VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().size()) {
+            if (VariabiliScaricaImmagini.getInstance().isScaricataBene()) {
+                VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().set(riga, "OK");
+            } else {
+                VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().set(riga, "ERRORE");
+            }
+        }
+
+        VariabiliScaricaImmagini.getInstance().setQualeImmagineStoScaricando(
+                quale + 1
+        );
+
+        VariabiliScaricaImmagini.getInstance().getTxtSelezionate().setText("Scarico: " +
+                (VariabiliScaricaImmagini.getInstance().getQualeImmagineStoScaricando() + 1) + "/" +
                 (VariabiliScaricaImmagini.getInstance().getListaDaScaricare().size()));
 
-        if (!VariabiliScaricaImmagini.getInstance().getListaDaScaricare().isEmpty()) {
+        if (VariabiliScaricaImmagini.getInstance().getQualeImmagineStoScaricando() <
+            VariabiliScaricaImmagini.getInstance().getListaDaScaricare().size()) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    StrutturaImmagineDaScaricare s = VariabiliScaricaImmagini.getInstance().getListaDaScaricare().get(0);
+                    StrutturaImmagineDaScaricare s = VariabiliScaricaImmagini.getInstance().getListaDaScaricare().get(
+                            VariabiliScaricaImmagini.getInstance().getQualeImmagineStoScaricando()
+                    );
 
                     VariabiliScaricaImmagini.getInstance().setImgScaricaDaDisabilitare(s.getImgImmagine());
                     VariabiliScaricaImmagini.getInstance().setChkSelezione(s.getChkSelezione());
 
+                    VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                     DownloadImmagineSI d = new DownloadImmagineSI();
-
                     d.EsegueDownload(context, s.getImgImmagine(), s.getUrlImmagine(), Modalita,
                             Filtro, true, "SCARICA", 0, null);
                 }
@@ -543,7 +583,7 @@ public class ChiamateWSMI implements TaskDelegate {
         }
     }
 
-    private void AggiornaImmagini(String Modalita, String Filtro) {
+    public void AggiornaImmagini(String Modalita, String Filtro) {
         List<String> listaImmagini = VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare();
 
         AdapterListenerImmaginiDaScaricare customAdapterT = new AdapterListenerImmaginiDaScaricare(
@@ -657,6 +697,13 @@ public class ChiamateWSMI implements TaskDelegate {
 
                 switch(daDove) {
                     case "IMMAGINI":
+                        for (StrutturaImmaginiCategorie ca : VariabiliStaticheMostraImmagini.getInstance().getListaCategorie()) {
+                            if (ca.getCategoria().equals(VariabiliStaticheMostraImmagini.getInstance().getCategoriaAttuale())) {
+                                VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(ca.getIdCategoria());
+                                break;
+                            }
+                        }
+
                         UtilityImmagini.getInstance().AggiornaCategorie(context);
                         UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
                         break;
@@ -680,12 +727,14 @@ public class ChiamateWSMI implements TaskDelegate {
                 JSONObject jObject = new JSONObject(result);
                 StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
                 if (si != null) {
-                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
+                    // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
                     VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
 
                     switch (daDove) {
                         case "IMMAGINI":
                             UtilityImmagini.getInstance().AggiungeImmagine(context, result, si);
+
+                            UtilityImmagini.getInstance().ScriveInfoSotto(si);
 
                             DownloadImmagineMI d = new DownloadImmagineMI();
                             d.EsegueChiamata(

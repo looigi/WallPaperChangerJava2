@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
@@ -69,6 +70,22 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         // if (view == null) {
             view = inflater.inflate(R.layout.lista_immagini_da_scaricare, null);
+
+            String Operazione = "";
+            if (VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare() != null
+                && !VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().isEmpty()) {
+                if (i < VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().size()) {
+                    Operazione = VariabiliScaricaImmagini.getInstance().getListaOriginaleDaScaricare().get(i);
+                }
+            }
+            switch(Operazione) {
+                case "OK":
+                    view.setBackgroundColor(Color.rgb(150, 255, 150));
+                    break;
+                case "ERRORE":
+                    view.setBackgroundColor(Color.rgb(255, 150, 150));
+                    break;
+            }
 
             String NomeFileAppoggio = context.getFilesDir() + "/AppoggioLW/Scarico_" + i + ".jpg";
 

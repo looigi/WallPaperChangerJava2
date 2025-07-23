@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class UtilityPennetta {
     private static final String NomeMaschera = "Utility_Immagini_PEN";
@@ -328,5 +329,39 @@ public class UtilityPennetta {
 
         ChiamateWSPEN c = new ChiamateWSPEN(context);
         c.ModificaImmagine(s, encodedImage, Sovrascrive);
+    }
+
+    public void ScriveInfoSotto(StrutturaImmaginiLibrary si) {
+        if (VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto() != null) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    if (si != null && VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto() != null) {
+                        int filtrate = si.getImmaginiFiltrate();
+                        int categoria = si.getImmaginiCategoria();
+                        String Cartella = si.getCartella();
+                        if (Cartella == null) {
+                            Cartella = "";
+                        }
+                        String NomeFile = si.getNomeFile();
+                        if (NomeFile == null) {
+                            NomeFile = "";
+                        }
+                        String Nome = Cartella.replace("/", "\\") + "\\" + NomeFile.replace("/", "\\");
+
+                        if (filtrate == categoria) {
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto().setText("Immagini " +
+                                    filtrate + ". " + Nome);
+                        } else {
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto().setText("Immagini Filtrate " +
+                                    filtrate + "/" + categoria + ". " + Nome);
+                        }
+                    } else {
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getTxtInfoSotto().setText("");
+                    }
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 100);
+        }
     }
 }

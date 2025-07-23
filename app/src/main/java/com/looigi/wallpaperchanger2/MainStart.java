@@ -32,7 +32,6 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
-import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
@@ -684,6 +683,10 @@ public class MainStart extends Activity {
                         "Fatte/Atalanta_2023.txt"
         );
 
+        Intent i = new Intent(context, MainMMCategorieUguali.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+
         VariabiliStaticheGoogleDrive.getInstance().setOperazioneDaEffettuare("LeggeFileApiFootball");
         Intent apre = new Intent(context, GoogleDrive.class);
         apre.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -830,5 +833,4 @@ public class MainStart extends Activity {
             UtilityWallpaper.getInstance().ScriveLog(this, NomeMaschera, "onRestoreInstanceState");
         }
     }
-
 }

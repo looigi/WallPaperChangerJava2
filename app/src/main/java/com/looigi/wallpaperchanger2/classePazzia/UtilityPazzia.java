@@ -356,7 +356,6 @@ public class UtilityPazzia {
         } */
 
         final boolean[] primoIngresso = {true};
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
                 try {
@@ -387,6 +386,7 @@ public class UtilityPazzia {
 
                     db_dati_pazzia db = new db_dati_pazzia(context);
                     db.SalvaImpostazioni();
+                    db.ChiudeDB();
                 } catch (Exception ignored) {
                 }
             }

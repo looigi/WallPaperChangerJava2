@@ -94,8 +94,10 @@ public class DownloadImmagineSI {
                                             outStream.close();
 
                                             result = UtilitiesGlobali.getInstance().convertBmpToBase64(NomeFileAppoggio);
-                                        } catch (IOException ignored) {
 
+                                            VariabiliScaricaImmagini.getInstance().setScaricataBene(true);
+                                        } catch (IOException ignored) {
+                                            VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                                         }
 
                                         if (!result.isEmpty()) {
@@ -103,10 +105,23 @@ public class DownloadImmagineSI {
                                                 case "IMMAGINI":
                                                     switch (TipoOperazione) {
                                                         case "SCARICA":
-                                                            VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
+                                                            if (VariabiliScaricaImmagini.getInstance().isScaricataBene()) {
+                                                                VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
 
-                                                            ChiamateWSMI wsmi = new ChiamateWSMI(context);
-                                                            wsmi.UploadImmagine(NomeFile, result, bmImage, UrlImmagine);
+                                                                ChiamateWSMI wsmi = new ChiamateWSMI(context);
+                                                                wsmi.UploadImmagine(NomeFile, result, bmImage, UrlImmagine);
+                                                            } else {
+                                                                VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
+
+                                                                ChiamateWSMI c = new ChiamateWSMI(context);
+                                                                if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
+                                                                    c.AggiornaImmagini(Modalita, Filtro);
+
+                                                                    UtilitiesGlobali.getInstance().ApreToast(context, "Upload immagine completato");
+                                                                } else {
+                                                                    c.ScaricaSuccessiva(Modalita, Filtro);
+                                                                }
+                                                            }
                                                             break;
                                                         case "COPIA":
                                                             VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.VISIBLE);
@@ -190,11 +205,14 @@ public class DownloadImmagineSI {
                             }, 100);
                         } else {
                             ImpostaLogo(numeroScarico, txtInfoImmagine);
+                            VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                         }
                     } else {
                         ImpostaLogo(numeroScarico, txtInfoImmagine);
+                        VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                     }
                 } catch (Exception e) {
+                    VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
                     ImpostaLogo(numeroScarico, txtInfoImmagine);
 
                     Errore = true;
