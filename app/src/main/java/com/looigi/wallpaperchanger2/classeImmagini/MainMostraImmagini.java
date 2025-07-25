@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeImmagini;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.MainImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
@@ -40,6 +42,7 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
@@ -251,7 +254,7 @@ public class MainMostraImmagini extends Activity {
                                     "Immettere un nome categoria");
                         } else {
                             ChiamateWSMI ws = new ChiamateWSMI(context);
-                            ws.CreaNuovaCategoria(Salvataggio.replace(" ", "_"));
+                            ws.CreaNuovaCategoria(Salvataggio.replace(" ", "_"), "IMMAGINI");
                         }
                     }
                 });
@@ -579,6 +582,15 @@ public class MainMostraImmagini extends Activity {
             }
         }
 
+        ImageView imgImmaginiRaggruppate = findViewById(R.id.imgImmaginiRaggruppate);
+        imgImmaginiRaggruppate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MainImmaginiRaggruppate.class);
+                intent.putExtra("idCategoria", Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()));
+                startActivity(intent);
+            }
+        });
+
         ImageView imgSlideShow = findViewById(R.id.imgSlideShow);
         imgSlideShow.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -607,13 +619,6 @@ public class MainMostraImmagini extends Activity {
                 RitornaProssimaImmagine(ws);
             }
         }); */
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        act.finish();
     }
 
     /* @Override
@@ -652,7 +657,7 @@ public class MainMostraImmagini extends Activity {
                 StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
 
                 ChiamateWSMI c = new ChiamateWSMI(context);
-                c.SpostaImmagine(s);
+                c.SpostaImmagine(s, "IMMAGINI");
 
                 laySposta.setVisibility(LinearLayout.GONE);
             }
@@ -716,6 +721,13 @@ public class MainMostraImmagini extends Activity {
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        act.finish();
     }
 
     @Override

@@ -169,7 +169,6 @@ public class ChiamateWSIFC implements TaskDelegate {
                         context,
                         lista);
                 VariabiliImmaginiFuoriCategoria.getInstance().getLstImmagini().setAdapter(customAdapterT);
-
             } catch (JSONException e) {
                 int i = 0;
             }

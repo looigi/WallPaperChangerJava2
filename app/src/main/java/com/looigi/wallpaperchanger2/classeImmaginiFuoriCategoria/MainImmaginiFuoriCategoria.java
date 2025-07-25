@@ -51,6 +51,10 @@ public class MainImmaginiFuoriCategoria extends Activity {
         VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoria(intent.getStringExtra("IDCATEGORIA"));
         VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(intent.getStringExtra("CATEGORIA"));
 
+        VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria()
+        );
+
         if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
             String[] Aliases = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Aliases[0]);

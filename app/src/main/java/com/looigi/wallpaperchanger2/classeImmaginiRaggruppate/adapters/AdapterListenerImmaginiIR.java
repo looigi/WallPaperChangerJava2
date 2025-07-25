@@ -1,5 +1,6 @@
-package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria;
+package com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -10,25 +11,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.List;
 
-public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
+public class AdapterListenerImmaginiIR extends BaseAdapter {
     private Context context;
-    private List<StrutturaImmagineFuoriCategoria> Immagini;
+    private List<StrutturaImmagineRaggruppata> Immagini;
     private LayoutInflater inflater;
 
-    public AdapterListenerImmaginiFuoricategoria(Context applicationContext, List<StrutturaImmagineFuoriCategoria> Imms) {
+    public AdapterListenerImmaginiIR(Context applicationContext, List<StrutturaImmagineRaggruppata> Imms) {
         this.context = applicationContext;
         this.Immagini = Imms;
 
@@ -54,7 +55,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         // if (view != null) return view;
 
-        view = inflater.inflate(R.layout.lista_immagini_fuori_categoria, null);
+        view = inflater.inflate(R.layout.lista_immagini_ir, null);
 
         if (i < Immagini.size()) {
             ImageView imgImmagine = view.findViewById(R.id.imgImmagine);
@@ -76,18 +77,25 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
 
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
-                    d.EsegueDownload(context, VariabiliImmaginiFuoriCategoria.getInstance().getImgPreview(), Immagini.get(i).getUrlImmagine());
+                    VariabiliStaticheImmaginiRaggruppate.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
+                    d.EsegueDownload(
+                            context,
+                            VariabiliStaticheImmaginiRaggruppate.getInstance().getImgPreview(),
+                            Immagini.get(i).getUrlImmagine()
+                    );
                 }
             });
 
             imgSposta.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    String NuovaCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria();
-
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                    if (VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() == null ||
+                            VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata().isEmpty()) {
+                        UtilitiesGlobali.getInstance().ApreToast(context, "Selezionare una categoria di destinazione");
+                        return;
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Si vuole spostare l\'immagine selezionata alla categoria " +
-                            NuovaCategoria + " ?");
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() + " ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -107,7 +115,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
                             Imm.setUrlImmagine(Immagini.get(i).getUrlImmagine());
 
                             ChiamateWSMI ws = new ChiamateWSMI(context);
-                            ws.SpostaImmagine(Imm, "FC");
+                            ws.SpostaImmagine(Imm, "IR");
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

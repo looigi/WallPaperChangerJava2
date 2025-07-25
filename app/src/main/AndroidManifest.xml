@@ -194,6 +194,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classeImmaginiRaggruppate.MainImmaginiRaggruppate"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeOrari.MainOrari"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"

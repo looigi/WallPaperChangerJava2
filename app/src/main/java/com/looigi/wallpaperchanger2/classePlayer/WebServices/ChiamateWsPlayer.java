@@ -887,6 +887,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     }
                     VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(urlDaScaricare);
 
+                    VariabiliScaricaImmagini.getInstance().setListaOriginaleDaScaricare(new ArrayList<>());
+
                     Intent si = new Intent(context, MainScaricaImmagini.class);
                     si.addCategory(Intent.CATEGORY_LAUNCHER);
                     si.setAction(Intent.ACTION_MAIN);
