@@ -153,16 +153,18 @@ public class VariabiliStaticheImmaginiRaggruppate {
     }
 
     public void Attesa(boolean bAttesa) {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (bAttesa) {
-                    imgCaricamento.setVisibility(View.VISIBLE);
-                } else {
-                    imgCaricamento.setVisibility(View.GONE);
+        if (imgCaricamento != null) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (bAttesa) {
+                        imgCaricamento.setVisibility(View.VISIBLE);
+                    } else {
+                        imgCaricamento.setVisibility(View.GONE);
+                    }
                 }
-            }
-        }, 10);
+            }, 10);
+        }
     }
 
     private int idImmagineDaSpostare;

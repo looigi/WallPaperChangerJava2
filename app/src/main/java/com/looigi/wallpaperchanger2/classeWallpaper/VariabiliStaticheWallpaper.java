@@ -2,7 +2,6 @@ package com.looigi.wallpaperchanger2.classeWallpaper;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.widget.ImageView;
@@ -10,6 +9,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeWallpaper.adapters.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import java.util.ArrayList;

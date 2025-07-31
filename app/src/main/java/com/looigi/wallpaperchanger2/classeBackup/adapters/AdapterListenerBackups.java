@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeBackup;
+package com.looigi.wallpaperchanger2.classeBackup.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +16,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeBackup.StrutturaBackups;
+import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -115,7 +117,7 @@ public class AdapterListenerBackups extends BaseAdapter {
                     String Path = NomeBackup.getPath();
 
                     ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                    ws.Esporta("BACKUP", Path);
+                    ws.Esporta("BACKUP", Path, false, "");
                 }
             });
 

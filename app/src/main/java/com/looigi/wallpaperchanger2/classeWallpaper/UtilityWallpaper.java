@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
+import com.looigi.wallpaperchanger2.classeWallpaper.adapters.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;

@@ -39,6 +39,7 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
@@ -582,10 +583,36 @@ public class MainMostraImmagini extends Activity {
             }
         }
 
+        LinearLayout layTastiImmagini = findViewById(R.id.layTastiImmagini);
+        layTastiImmagini.setVisibility(LinearLayout.GONE);
+
+        ImageView imgTastiImmagini = findViewById(R.id.imgTastiImmagini);
+        imgTastiImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layTastiImmagini.setVisibility(LinearLayout.VISIBLE);
+            }
+        });
+
+        ImageView imgChiudeTastiImmagini = findViewById(R.id.imgChiudeImmagini);
+        imgChiudeTastiImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layTastiImmagini.setVisibility(LinearLayout.GONE);
+            }
+        });
+
         ImageView imgImmaginiRaggruppate = findViewById(R.id.imgImmaginiRaggruppate);
         imgImmaginiRaggruppate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, MainImmaginiRaggruppate.class);
+                intent.putExtra("idCategoria", Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()));
+                startActivity(intent);
+            }
+        });
+
+        ImageView imgControlloImmagini = findViewById(R.id.imgControlloImmagini);
+        imgControlloImmagini.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MainUtilityImmagini.class);
                 intent.putExtra("idCategoria", Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getIdCategoria()));
                 startActivity(intent);
             }

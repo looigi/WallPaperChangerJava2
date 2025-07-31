@@ -1,11 +1,11 @@
-package com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.webService;
+package com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
-import com.looigi.wallpaperchanger2.classeModificheCodice.webService.TaskDelegateModifiche;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.webService.TaskDelegateIR;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -19,9 +19,9 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class InterrogazioneWSIR {
+public class InterrogazioneWSUI {
     private boolean isCancelled;
-    private static final String NomeMaschera = "Lettura_WS_IR";
+    private static final String NomeMaschera = "Lettura_WS_UI";
     private String NAMESPACE;
     private String METHOD_NAME = "";
     private String[] Parametri;
@@ -35,7 +35,7 @@ public class InterrogazioneWSIR {
     private String messErrore="";
     private String tOperazione;
     private String TimeStampAttuale;
-    private TaskDelegateIR delegate;
+    private TaskDelegateUI delegate;
     private boolean ApriDialog;
     private Context context;
 
@@ -43,7 +43,7 @@ public class InterrogazioneWSIR {
                                String SOAP_ACTION, String tOperazione,
                                boolean ApriDialog, String Urletto,
                                String TimeStampAttuale,
-                               TaskDelegateIR delegate) {
+                               TaskDelegateUI delegate) {
         isCancelled = false;
         this.context = context;
         this.NAMESPACE = NAMESPACE;

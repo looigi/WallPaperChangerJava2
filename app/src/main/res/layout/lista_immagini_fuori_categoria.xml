@@ -8,6 +8,18 @@
 
     <LinearLayout
         android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:id="@+id/chkScelta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_weight="4"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_height="wrap_content">
@@ -15,13 +27,12 @@
         <ImageView
             android:id="@+id/imgImmagine"
             android:layout_width="120dp"
-            android:layout_height="120dp">
-        </ImageView>
+            android:layout_height="120dp" />
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="6"
+        android:layout_weight="5"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -29,25 +40,19 @@
             android:id="@+id/txtIdImmagine"
             android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/txtCartella"
             android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
-        </TextView>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/txtNomeFile"
             android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+            android:layout_height="wrap_content" />
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,9 +66,7 @@
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:lines="1"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/txtDimensioneImmagine"
@@ -71,9 +74,7 @@
                 android:lines="1"
                 android:textColor="@color/black"
                 android:layout_weight="1"
-                android:layout_height="wrap_content">
-
-            </TextView>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,9 +87,7 @@
                 android:id="@+id/imgSpostaACategoria"
                 android:src="@drawable/sposta"
                 android:layout_width="35dp"
-                android:layout_height="35dp">
-
-            </ImageView>
+                android:layout_height="35dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

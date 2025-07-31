@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeWallpaper;
+package com.looigi.wallpaperchanger2.classeWallpaper.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
 import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.DownloadImmagineWP;
 

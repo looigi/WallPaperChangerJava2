@@ -208,7 +208,6 @@
                         android:layout_height="30dp"/>
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:background="@drawable/bordato_non_trasparente"
                     android:padding="2dp"
@@ -286,101 +285,35 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Imm. Uguali"
+                        android:text="Controlli"
                         android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
-                        android:id="@+id/imgImmaginiUgualiMI"
+                        android:id="@+id/imgControlloImmagini"
+                        android:src="@drawable/controllo_immagini"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Gest. Imm."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgTastiImmagini"
                         android:src="@drawable/icona_cerca"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Imm. Raggrupp."
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgImmaginiRaggruppate"
-                        android:src="@drawable/immagini_raggruppate"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Imm. Fuori Cat."
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgImmaginiFCMI"
-                        android:src="@drawable/export"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Share"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgShareWallpaper"
-                        android:src="@drawable/share"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Imposta WP"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgImpostaWallpaper"
-                        android:src="@drawable/eye"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>
@@ -403,50 +336,6 @@
                     <ImageView
                         android:id="@+id/imgSlideShow"
                         android:src="@drawable/slideshow_off"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Sposta Cat."
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgSpostaACategoria"
-                        android:src="@drawable/sposta"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Copia su Sfondi"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgCopiaSuSfondi"
-                        android:src="@drawable/copia_sfondo"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>
@@ -601,6 +490,205 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
+
+    <LinearLayout
+        android:id="@+id/layTastiImmagini"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:padding="4dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                        android:background="@drawable/bordato_non_trasparente"
+                        android:padding="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Imm. Uguali"
+                            android:textColor="@color/Nero"
+                            android:layout_height="wrap_content"/>
+
+                        <ImageView
+                            android:id="@+id/imgImmaginiUgualiMI"
+                            android:src="@drawable/uguale"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"/>
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Imm. Raggrupp."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImmaginiRaggruppate"
+                        android:src="@drawable/immagini_raggruppate"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Imm. Fuori Cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImmaginiFCMI"
+                        android:src="@drawable/export"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Share"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgShareWallpaper"
+                        android:src="@drawable/share"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Imposta WP"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImpostaWallpaper"
+                        android:src="@drawable/eye"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Copia su Sfondi"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgCopiaSuSfondi"
+                        android:src="@drawable/copia_sfondo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSpostaACategoria"
+                        android:src="@drawable/sposta"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Chiude"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgChiudeImmagini"
+                        android:src="@drawable/chiude"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoMI"

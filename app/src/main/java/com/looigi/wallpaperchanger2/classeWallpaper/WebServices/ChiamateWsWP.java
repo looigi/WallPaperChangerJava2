@@ -6,8 +6,7 @@ import android.os.Looper;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
-import com.looigi.wallpaperchanger2.classeWallpaper.AdapterListenerImmagini;
+import com.looigi.wallpaperchanger2.classeWallpaper.adapters.AdapterListenerImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;

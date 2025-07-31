@@ -11,6 +11,7 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,12 +47,15 @@ public class MandaDatiADBRemoto {
 
                 List<String> FilesZip = new ArrayList<>();
                 boolean trovataRoba = false;
+                String listaDateDaEliminare = "";
+                String DataDaSalvare = "";
 
                 for (String data: listaDate) {
                     String Dati = db.EstraiPosizioni(data, false);
                     if (!Dati.isEmpty()) {
                         String[] s = data.split("/");
                         String sDataAttuale = s[2] + "-" + s[1] + "-" + s[0];
+                        DataDaSalvare = sDataAttuale;
                         String SoloNome = "DatiGPS_" + sDataAttuale;
                         Files.getInstance().EliminaFileUnico(Cartella + "/" + SoloNome + ".csv");
                         Files.getInstance().ScriveFile(
@@ -63,20 +67,34 @@ public class MandaDatiADBRemoto {
                             FilesZip.add(Cartella + "/" + SoloNome + ".csv");
                             trovataRoba = true;
 
-                            if (EseguePulizia) {
-                                db.EliminaPosizioni(data);
-                            }
+                            // if (EseguePulizia) {
+                            //     db.EliminaPosizioni(data);
+                            // }
+                            listaDateDaEliminare += data + ";";
                         } else {
                             // File CSV non creato
                         }
                     }
                 }
 
-                if (trovataRoba) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    String sDataAttuale = sdf.format(new Date());
+                Calendar calendar = Calendar.getInstance();
+                int seconds = calendar.get(Calendar.SECOND);
+                if (!SoloGiornoAttuale) {
+                    int day = calendar.get(Calendar.DAY_OF_WEEK);
+                    int month = calendar.get(Calendar.MONTH);
+                    int year = calendar.get(Calendar.YEAR);
+                    int hour = calendar.get(Calendar.HOUR);
+                    int minute = calendar.get(Calendar.MINUTE);
+                    DataDaSalvare = "TuttoIlDB_" + year + "_" + month + "_" + day + "_" + hour + "_" + minute + "_" + seconds;
+                } else {
+                    DataDaSalvare += " (" + seconds + ")";
+                }
 
-                    Files.getInstance().EliminaFileUnico(Cartella + "/DatiGPS_" + sDataAttuale + ".zip");
+                if (trovataRoba) {
+                    // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    // String sDataAttuale = sdf.format(new Date());
+
+                    Files.getInstance().EliminaFileUnico(Cartella + "/DatiGPS_" + DataDaSalvare + ".zip");
 
                     List<String> lfz = new ArrayList<>();
                     for (String filetto : FilesZip) {
@@ -84,7 +102,7 @@ public class MandaDatiADBRemoto {
                     }
 
                     ClasseZip z = new ClasseZip();
-                    z.ZippaFile(context, Cartella + "/", lfz, "DatiGPS_" + sDataAttuale);
+                    z.ZippaFile(context, Cartella + "/", lfz, "DatiGPS_" + DataDaSalvare);
 
                     for (String filetto : FilesZip) {
                         Files.getInstance().EliminaFileUnico(filetto);
@@ -93,7 +111,7 @@ public class MandaDatiADBRemoto {
                     UtilityGPS.getInstance().ImpostaAttesa(false);
 
                     ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
-                    ws.Esporta("GPS", Cartella + "/DatiGPS_" + sDataAttuale + ".zip");
+                    ws.Esporta("GPS", Cartella + "/DatiGPS_" + DataDaSalvare + ".zip", EseguePulizia, listaDateDaEliminare);
                 } else {
                     UtilityGPS.getInstance().ImpostaAttesa(false);
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna posizione rilevata");

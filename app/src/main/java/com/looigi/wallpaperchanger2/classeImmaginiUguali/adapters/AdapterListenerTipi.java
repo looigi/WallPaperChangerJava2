@@ -1,22 +1,17 @@
-package com.looigi.wallpaperchanger2.classeImmaginiUguali;
+package com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterListenerTipi extends BaseAdapter {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/laySpinner"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:weightSum="10"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:textColor="@color/Nero"
+            android:text="Tipologia Controllo"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnTipologie"
+            android:layout_width="0dp"
+            android:theme="@style/spinnerTheme"
+            android:layout_weight="6"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstLista"
+        android:layout_below="@+id/laySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/layPreview"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgChiudePreview"
+                android:layout_width="35dp"
+                android:src="@drawable/elimina_quadrato"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoCI"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+</RelativeLayout>

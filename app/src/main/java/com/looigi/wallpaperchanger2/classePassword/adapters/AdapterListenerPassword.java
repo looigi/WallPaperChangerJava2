@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePassword;
+package com.looigi.wallpaperchanger2.classePassword.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classePassword.UtilityPassword;
+import com.looigi.wallpaperchanger2.classePassword.VariabiliStatichePWD;
+import com.looigi.wallpaperchanger2.classePassword.db_dati_password;
 import com.looigi.wallpaperchanger2.classePassword.strutture.StrutturaPassword;
 
 import java.util.List;

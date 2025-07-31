@@ -1,16 +1,11 @@
 package com.looigi.wallpaperchanger2.classeImmaginiUguali;
 
 import android.content.Context;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.AdapterListenerImmaginiDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters.AdapterListenerImmaginiUguali;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters.AdapterListenerTipi;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

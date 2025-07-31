@@ -7,17 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.MainStart;
-import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.UtilityBackup;
-import com.looigi.wallpaperchanger2.classeGps.AdapterListenerFilesRemoti;
+import com.looigi.wallpaperchanger2.classeGps.adapters.AdapterListenerFilesRemoti;
 import com.looigi.wallpaperchanger2.classeGps.CalcoloVelocita;
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeGps.VariabiliStaticheGPS;
@@ -36,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModif
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerConteggi;
 import com.looigi.wallpaperchanger2.classeModificheCodice.adapters.AdapterListenerModificheCodice;
 import com.looigi.wallpaperchanger2.classeModificheCodice.db_dati_modifiche_codice;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -49,7 +46,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -541,8 +537,13 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 ApriDialog);
     }
 
-    public void Esporta(String QualeFile, String NomeFile) {
+    private boolean EseguePulizia = false;
+    private String listaDate;
+
+    public void Esporta(String QualeFile, String NomeFile, boolean eseguePulizia, String listaDate) {
         this.TipoFile = QualeFile;
+        this.EseguePulizia = eseguePulizia;
+        this.listaDate = listaDate;
         String PathModifiche = "";
         String b64 = "";
         String sNomeFile = "";
@@ -561,7 +562,7 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
             case "GPS":
                 UtilityGPS.getInstance().ImpostaAttesa(false);
                 PathModifiche = NomeFile;
-                String[] n = NomeFile.split("\\\\", -1);
+                String[] n = NomeFile.split("/", -1);
                 sNomeFile = n[n.length - 1];
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
@@ -1586,14 +1587,16 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         List<StrutturaNomeFileRemoti> files = new ArrayList<>();
         String[] filesGPS = result.split(";", -1);
         for (String f : filesGPS) {
-            String[] ff = f.split("\\\\", -1);
-            String Nome = ff[ff.length - 1];
+            if (!f.isEmpty()) {
+                String[] ff = f.split("\\\\", -1);
+                String Nome = ff[ff.length - 1];
 
-            StrutturaNomeFileRemoti s = new StrutturaNomeFileRemoti();
-            s.setPath(f);
-            s.setNomeFile(Nome);
+                StrutturaNomeFileRemoti s = new StrutturaNomeFileRemoti();
+                s.setPath(f);
+                s.setNomeFile(Nome);
 
-            files.add(s);
+                files.add(s);
+            }
         }
 
         files.sort((t1, t2) -> t2.getNomeFile().compareTo(t1.getNomeFile()));
@@ -1804,5 +1807,30 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                 UtilityGPS.getInstance().ImpostaAttesa(false);
                 break;
         }
+
+        String Messaggio = "Dati Esportati";
+
+        if (EseguePulizia) {
+            String ultimaData = "";
+
+            db_dati_gps db = new db_dati_gps(context);
+            String[] date = listaDate.split(";", -1);
+            for (String d: date) {
+                if (!d.isEmpty()) {
+                    db.EliminaPosizioni(d);
+                    ultimaData = d;
+                }
+            }
+            db.ChiudeDB();
+
+            Messaggio += " ed eliminati";
+
+            VariabiliStaticheGPS.getInstance().getMappa().PuliscePunti();
+            CalcoloVelocita cv = new CalcoloVelocita();
+            UtilityGPS.getInstance().DisegnaPath(context, cv, ultimaData);
+            GestioneNotificheTasti.getInstance().AggiornaNotifica();
+        }
+
+        UtilitiesGlobali.getInstance().ApreToast(context, Messaggio);
     }
 }

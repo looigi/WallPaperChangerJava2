@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria;
+package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,19 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
 
 import java.util.List;
@@ -37,7 +34,11 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Immagini.size();
+        if (Immagini != null) {
+            return Immagini.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -65,14 +66,32 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
             TextView txtDimeFile = view.findViewById(R.id.txtDimensioneFile);
             TextView txtDimeImm = view.findViewById(R.id.txtDimensioneImmagine);
 
-            DownloadImmagineUguali d = new DownloadImmagineUguali();
-            d.EsegueDownload(context, imgImmagine, Immagini.get(i).getUrlImmagine());
-
             txtIdImmagine.setText("Id Immagine: " + Immagini.get(i).getIdImmagine());
             txtCartella.setText("Cartella: " + Immagini.get(i).getCartella());
             txtNomeFile.setText(Immagini.get(i).getNomeFile());
             txtDimeFile.setText("File: " + Immagini.get(i).getDimensioneFile());
             txtDimeImm.setText("Dim.: " + Immagini.get(i).getDimensioniImmagine());
+
+            DownloadImmagineUguali d = new DownloadImmagineUguali();
+            d.EsegueDownload(context, imgImmagine, Immagini.get(i).getUrlImmagine());
+
+            CheckBox chkSeleziona = view.findViewById(R.id.chkScelta);
+            chkSeleziona.setChecked(false);
+            chkSeleziona.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    int i2 = 0;
+                    for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
+                        if (s.getIdImmagine() == Immagini.get(i).getIdImmagine()) {
+                            StrutturaImmagineFuoriCategoria s2 = s;
+                            s2.setSelezionata(chkSeleziona.isChecked());
+                            VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini().set(i2, s2);
+                            Immagini.get(i).setSelezionata(chkSeleziona.isChecked());
+                            break;
+                        }
+                        i2++;
+                    }
+                }
+            });
 
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -86,7 +105,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
                     String NuovaCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria();
 
                     android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole spostare l\'immagine selezionata alla categoria " +
+                    builder.setTitle("Si vuole spostare l'immagine selezionata alla categoria " +
                             NuovaCategoria + " ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

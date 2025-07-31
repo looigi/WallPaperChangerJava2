@@ -1,8 +1,6 @@
-package com.looigi.wallpaperchanger2.classeGps;
+package com.looigi.wallpaperchanger2.classeGps.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGps.strutture.StrutturaNomeFileRemoti;
 import com.looigi.wallpaperchanger2.classeModificheCodice.webService.ChiamateWSModifiche;
-import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
-import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
-import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.ChiamateWsWP;
-import com.looigi.wallpaperchanger2.classeWallpaper.WebServices.DownloadImmagineWP;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

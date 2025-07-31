@@ -24,6 +24,8 @@ import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmagi
 import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
 import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiCategorieFE;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
@@ -31,6 +33,9 @@ import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagi
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainImmaginiFuoriCategoria extends Activity {
     private Context context;
@@ -102,6 +107,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
         Spinner spnAndOr = findViewById(R.id.spnAndOr);
         String[] l = { "And", "Or" };
+        VariabiliImmaginiFuoriCategoria.getInstance().setAndOr("And");
 
         UtilitiesGlobali.getInstance().ImpostaSpinner(
                 context,
@@ -156,7 +162,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
         imgCerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSIFC ws = new ChiamateWSIFC(context);
-                ws.RitornaImmaginiFuoriCategoria();
+                ws.RitornaImmaginiFuoriCategoria("N");
             }
         });
 
@@ -175,8 +181,30 @@ public class MainImmaginiFuoriCategoria extends Activity {
             }
         });
 
+        ImageView imgSpostaTutte = findViewById(R.id.imgSpostaTutte);
+        imgSpostaTutte.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                List<StrutturaImmagineFuoriCategoria> lista = new ArrayList<>();
+                for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
+                    if (s.isSelezionata()) {
+                        lista.add(s);
+                    }
+                }
+
+                if (!lista.isEmpty()) {
+                    VariabiliImmaginiFuoriCategoria.getInstance().setListaDaSpostare(lista);
+                    VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(0);
+                    int quale = VariabiliImmaginiFuoriCategoria.getInstance().getQualeImmagineStaSpostando();
+                    VariabiliImmaginiFuoriCategoria.getInstance().setStaSpostandoTutte(true);
+                    VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(quale);
+
+                    VariabiliImmaginiFuoriCategoria.getInstance().ScaricaProssimaImmagine(context, 0);
+                }
+            }
+        });
+
         ChiamateWSIFC ws = new ChiamateWSIFC(context);
-        ws.RitornaImmaginiFuoriCategoria();
+        ws.RitornaImmaginiFuoriCategoria("N");
     }
 
     @Override

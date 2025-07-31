@@ -154,6 +154,12 @@
                 android:src="@drawable/icona_cerca"
                 android:layout_width="35dp"
                 android:layout_height="35dp" />
+
+            <ImageView
+                android:id="@+id/imgSpostaTutte"
+                android:src="@drawable/sposta"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
         </LinearLayout>
     </LinearLayout>
 

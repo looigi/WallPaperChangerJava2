@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeImmaginiUguali;
+package com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
 

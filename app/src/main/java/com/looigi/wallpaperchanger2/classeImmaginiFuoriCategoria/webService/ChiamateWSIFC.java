@@ -7,18 +7,11 @@ import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.TaskDelegate;
-import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.AdapterListenerImmaginiFuoricategoria;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.AdapterListenerImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.AdapterListenerImmaginiDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -45,7 +38,7 @@ public class ChiamateWSIFC implements TaskDelegate {
         this.context = context;
     }
 
-    public void RitornaImmaginiFuoriCategoria() {
+    public void RitornaImmaginiFuoriCategoria(String ForzaRefrsh) {
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
                 "idCategoria=" + VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria() +
                 "&Aliases1=" + VariabiliImmaginiFuoriCategoria.getInstance().getAlias1() +
@@ -54,7 +47,8 @@ public class ChiamateWSIFC implements TaskDelegate {
                 "&AndOr=" + VariabiliImmaginiFuoriCategoria.getInstance().getAndOr() +
                 "&SoloSuAltro=" + (VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro() ? "S" : "N") +
                 "&CercaExif=" + (VariabiliImmaginiFuoriCategoria.getInstance().isCercaExif() ? "S" : "N") +
-                "&Tag=" + VariabiliImmaginiFuoriCategoria.getInstance().getTag();
+                "&Tag=" + VariabiliImmaginiFuoriCategoria.getInstance().getTag() +
+                "&ForzaRefresh=" + ForzaRefrsh;
 
         TipoOperazione = "TrovaNomiSuDbFuoriDallaCategoria";
 
@@ -130,6 +124,11 @@ public class ChiamateWSIFC implements TaskDelegate {
     private void fTrovaNomiSuDbFuoriDallaCategoria(String result) {
         boolean ritorno = ControllaRitorno("TrovaNomiSuDbFuoriDallaCategoria", result);
         if (!ritorno) {
+            AdapterListenerImmaginiFuoricategoria customAdapterT = new AdapterListenerImmaginiFuoricategoria(
+                    context,
+                    null);
+            VariabiliImmaginiFuoriCategoria.getInstance().getLstImmagini().setAdapter(customAdapterT);
+
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             List<StrutturaImmagineFuoriCategoria> lista = new ArrayList<>();
@@ -161,9 +160,11 @@ public class ChiamateWSIFC implements TaskDelegate {
                     sic.setUrlImmagine(obj2.getString("UrlImmagine"));
                     sic.setPathImmagine(obj2.getString("PathImmagine"));
                     sic.setEsisteImmagine(obj2.getBoolean("EsisteImmagine"));
+                    sic.setSelezionata(false);
 
                     lista.add(sic);
                 }
+                VariabiliImmaginiFuoriCategoria.getInstance().setListaImmagini(lista);
 
                 AdapterListenerImmaginiFuoricategoria customAdapterT = new AdapterListenerImmaginiFuoricategoria(
                         context,

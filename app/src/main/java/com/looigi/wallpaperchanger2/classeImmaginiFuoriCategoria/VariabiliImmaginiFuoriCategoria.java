@@ -5,14 +5,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.AdapterListenerImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.AdapterListenerTipi;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
-import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -45,6 +42,42 @@ public class VariabiliImmaginiFuoriCategoria {
     private LinearLayout laypreview;
     private ImmagineZoomabile imgPreview;
     private TextView txtQuanteImmaginiRilevate;
+    private List<StrutturaImmagineFuoriCategoria> listaImmagini;
+    private int qualeImmagineStaSpostando = -1;
+    private boolean staSpostandoTutte = false;
+    private List<StrutturaImmagineFuoriCategoria> listaDaSpostare;
+
+    public List<StrutturaImmagineFuoriCategoria> getListaDaSpostare() {
+        return listaDaSpostare;
+    }
+
+    public void setListaDaSpostare(List<StrutturaImmagineFuoriCategoria> listaDaSpostare) {
+        this.listaDaSpostare = listaDaSpostare;
+    }
+
+    public boolean isStaSpostandoTutte() {
+        return staSpostandoTutte;
+    }
+
+    public void setStaSpostandoTutte(boolean staSpostandoTutte) {
+        this.staSpostandoTutte = staSpostandoTutte;
+    }
+
+    public int getQualeImmagineStaSpostando() {
+        return qualeImmagineStaSpostando;
+    }
+
+    public void setQualeImmagineStaSpostando(int qualeImmagineStaSpostando) {
+        this.qualeImmagineStaSpostando = qualeImmagineStaSpostando;
+    }
+
+    public List<StrutturaImmagineFuoriCategoria> getListaImmagini() {
+        return listaImmagini;
+    }
+
+    public void setListaImmagini(List<StrutturaImmagineFuoriCategoria> listaImmagini) {
+        this.listaImmagini = listaImmagini;
+    }
 
     public TextView getTxtQuanteImmaginiRilevate() {
         return txtQuanteImmaginiRilevate;
@@ -156,5 +189,26 @@ public class VariabiliImmaginiFuoriCategoria {
 
     public void setTag(String tag) {
         Tag = tag;
+    }
+
+    public void ScaricaProssimaImmagine(Context context, int quale) {
+        StrutturaImmagineFuoriCategoria s = VariabiliImmaginiFuoriCategoria.getInstance().getListaDaSpostare().get(quale);
+        StrutturaImmaginiLibrary Imm =  new StrutturaImmaginiLibrary();
+        Imm.setAlias(s.getAlias());
+        Imm.setCategoria(s.getCategoria());
+        Imm.setCartella(s.getCartella());
+        Imm.setIdCategoria(s.getIdCategoria());
+        Imm.setTag(s.getTag());
+        Imm.setDataCreazione(s.getDataCreazione());
+        Imm.setDataModifica(s.getDataModifica());
+        Imm.setDimensioneFile((int) s.getDimensioneFile());
+        Imm.setIdImmagine(s.getIdImmagine());
+        Imm.setDimensioniImmagine(s.getDimensioniImmagine());
+        Imm.setNomeFile(s.getNomeFile());
+        Imm.setPathImmagine(s.getPathImmagine());
+        Imm.setUrlImmagine(s.getUrlImmagine());
+
+        ChiamateWSMI ws = new ChiamateWSMI(context);
+        ws.SpostaImmagine(Imm, "FC");
     }
 }

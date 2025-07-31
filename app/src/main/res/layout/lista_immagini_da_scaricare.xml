@@ -36,7 +36,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="6"
+                android:layout_weight="7"
                 android:orientation="vertical"
                 android:gravity="center_horizontal|center_vertical"
                 android:layout_height="wrap_content">
@@ -66,37 +66,81 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_height="match_parent">
+    </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgScarica"
-                    android:src="@drawable/icona_salva"
-                    android:scaleType="centerCrop"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp">
-                </ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imgCondividi"
-                    android:src="@drawable/share"
-                    android:scaleType="centerCrop"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp">
-                </ImageView>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imgCopiaSuSfondi"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/copia_sfondo" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:text="Scarica" />
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgScarica"
+                android:src="@drawable/icona_salva"
+                android:scaleType="centerCrop"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_margin="3dp"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:text="Condividi" />
+
+            <ImageView
+                android:id="@+id/imgCondividi"
+                android:src="@drawable/share"
+                android:scaleType="centerCrop"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:layout_margin="3dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:text="Copia su Sfondi" />
+
+            <ImageView
+                android:id="@+id/imgCopiaSuSfondi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/copia_sfondo" />
         </LinearLayout>
 
     </LinearLayout>

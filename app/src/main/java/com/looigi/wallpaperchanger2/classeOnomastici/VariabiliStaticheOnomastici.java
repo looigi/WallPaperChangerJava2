@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOnomastici.adapters.AdapterListenerCompleanni;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.DatiColori;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;

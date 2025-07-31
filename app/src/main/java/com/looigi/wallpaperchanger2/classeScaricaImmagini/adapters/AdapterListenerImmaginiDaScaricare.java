@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeScaricaImmagini;
+package com.looigi.wallpaperchanger2.classeScaricaImmagini.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,9 @@ import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
@@ -53,7 +56,11 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Immagini.size();
+        if (Immagini != null) {
+            return Immagini.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override

@@ -1,47 +1,22 @@
 package com.looigi.wallpaperchanger2.classeImmaginiUguali.webService;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.TaskDelegate;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.AdapterListenerImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeImmaginiUguali.AdapterListenerTipi;
+import com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters.AdapterListenerImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
-import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
-import com.looigi.wallpaperchanger2.classePennetta.UtilityPennetta;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.AdapterListenerImmaginiDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
-import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class ChiamateWSMIU implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_Uguali";
@@ -62,7 +37,8 @@ public class ChiamateWSMIU implements TaskDelegate {
 
     public void RitornaImmaginiUguali(String Categoria) {
         String Urletto="ImmaginiUgualiMobile?" +
-                "Categoria=" + Categoria;
+                "Categoria=" + Categoria +
+                "&ForzaRefresh=N";
 
         TipoOperazione = "ImmaginiUgualiMobile";
 

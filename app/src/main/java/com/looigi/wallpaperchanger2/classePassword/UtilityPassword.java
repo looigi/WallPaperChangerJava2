@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
+import com.looigi.wallpaperchanger2.classePassword.adapters.AdapterListenerPassword;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 

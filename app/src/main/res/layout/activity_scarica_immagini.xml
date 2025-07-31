@@ -16,6 +16,7 @@
 
     <LinearLayout
         android:id="@+id/layTasti"
+        android:background="@drawable/bordato_colorato_con_bordo"
         android:gravity="end|center_vertical"
         android:layout_below="@+id/txtTitolo"
         android:layout_width="match_parent"

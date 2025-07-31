@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeOnomastici;
+package com.looigi.wallpaperchanger2.classeOnomastici.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeOnomastici.VariabiliStaticheOnomastici;
 import com.looigi.wallpaperchanger2.classeOnomastici.db.db_dati_compleanni;
 import com.looigi.wallpaperchanger2.classeOnomastici.strutture.StrutturaCompleanno;
-import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 
 import java.util.Calendar;
 import java.util.List;

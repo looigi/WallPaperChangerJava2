@@ -6,9 +6,6 @@ import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeGps.UtilityGPS;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.AdapterListenerImmaginiFuoricategoria;
-import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
-import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.adapters.AdapterListenerImmaginiIR;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaGruppi;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
@@ -22,9 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ChiamateWSIR implements TaskDelegateIR {
     private static final String NomeMaschera = "Chiamate_WS_IR";
