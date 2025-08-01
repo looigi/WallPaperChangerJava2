@@ -51,6 +51,7 @@ public class MainUtilityImmagini extends Activity {
 
         Intent intent = getIntent();
         String idCategoria = intent.getStringExtra("idCategoria");
+        if (idCategoria == null) { idCategoria = "1"; }
         VariabiliStaticheUtilityImmagini.getInstance().setIdCategoria(Integer.parseInt(idCategoria));
 
         VariabiliStaticheUtilityImmagini.getInstance().setTxtQuale(findViewById(R.id.txtQualeStaFacendo));
@@ -68,6 +69,41 @@ public class MainUtilityImmagini extends Activity {
 
         ChiamateWSMI c = new ChiamateWSMI(context);
         c.RitornaCategorie(false, "UI");
+
+        /* CheckBox chkControlli = findViewById(R.id.chkControlli);
+        chkControlli.setChecked(true);
+        chkControlli.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkControllo(chkControlli.isChecked());
+            }
+        });
+        CheckBox chkUguali = findViewById(R.id.chkUguali);
+        chkUguali.setChecked(true);
+        chkUguali.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkUguali(chkUguali.isChecked());
+            }
+        }); */
+
+        CheckBox chkFC = findViewById(R.id.chkFC);
+        chkFC.setChecked(false);
+        chkFC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(chkFC.isChecked());
+
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        CheckBox chkPoche = findViewById(R.id.chkPoche);
+        chkPoche.setChecked(false);
+        chkPoche.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(chkPoche.isChecked());
+
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
 
         EditText edtFiltro = findViewById(R.id.edtFiltro);
         edtFiltro.setText("");
@@ -212,6 +248,12 @@ public class MainUtilityImmagini extends Activity {
                 } else {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna categoria rilevata");
                 }
+            }
+        });
+
+        ImageView imgRicerca = findViewById(R.id.imgRicerca);
+        imgRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
             }
         });
     }

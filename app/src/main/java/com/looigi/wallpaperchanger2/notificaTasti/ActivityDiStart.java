@@ -31,6 +31,7 @@ import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -63,6 +64,11 @@ public class ActivityDiStart extends Activity {
                 Intent iI = new Intent(context, MainImpostazioni.class);
                 iI.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(iI);
+                break;
+            case "controllo_immagini":
+                Intent ci = new Intent(context, MainUtilityImmagini.class);
+                ci.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(ci);
                 break;
             case "lazio":
                 Intent iL = new Intent(context, MainLazio.class);

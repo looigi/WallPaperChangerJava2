@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
@@ -423,9 +424,13 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     Alias2 = Categoria.substring((lungh / 2), lungh);
                 }
 
-                int idCategoria2 = VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM().get(
-                        VariabiliStaticheUtilityImmagini.getInstance().getQualeStaControllando()
-                ).getIdCategoria();
+                int idCategoria2 = -1;
+                for (StrutturaImmaginiCategorie s : VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM()) {
+                    if (s.getCategoria().equals(Categoria)) {
+                        idCategoria2 = s.getIdCategoria();
+                        break;
+                    }
+                }
 
                 ChiamateWSUI ws = new ChiamateWSUI(context);
                 ws.RitornaImmaginiFuoriCategoria(

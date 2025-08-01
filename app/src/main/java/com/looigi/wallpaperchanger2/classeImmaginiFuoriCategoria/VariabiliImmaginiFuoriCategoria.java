@@ -46,6 +46,15 @@ public class VariabiliImmaginiFuoriCategoria {
     private int qualeImmagineStaSpostando = -1;
     private boolean staSpostandoTutte = false;
     private List<StrutturaImmagineFuoriCategoria> listaDaSpostare;
+    private AdapterListenerImmaginiFuoricategoria adapter;
+
+    public AdapterListenerImmaginiFuoricategoria getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(AdapterListenerImmaginiFuoricategoria adapter) {
+        this.adapter = adapter;
+    }
 
     public List<StrutturaImmagineFuoriCategoria> getListaDaSpostare() {
         return listaDaSpostare;

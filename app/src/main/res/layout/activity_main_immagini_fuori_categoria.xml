@@ -139,27 +139,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="end|center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txtQuanti"
-                android:layout_marginEnd="5dp"
-                android:textColor="@color/Rosso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgCerca"
-                android:src="@drawable/icona_cerca"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chkTutti" />
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgSpostaTutte"
-                android:src="@drawable/sposta"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="end|center_vertical"
+                android:layout_weight="6"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtQuanti"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/Rosso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/imgCerca"
+                    android:src="@drawable/icona_cerca"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+
+                <ImageView
+                    android:id="@+id/imgSpostaTutte"
+                    android:src="@drawable/sposta"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

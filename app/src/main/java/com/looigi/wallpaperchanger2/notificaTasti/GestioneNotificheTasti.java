@@ -127,6 +127,7 @@ public class GestioneNotificheTasti {
                 // contentView.setViewVisibility(R.id.imgSwitchGPSTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgDetectorTasti, LinearLayout.GONE);
                 contentView.setViewVisibility(R.id.imgMappaTasti, LinearLayout.GONE);
+                contentView.setViewVisibility(R.id.imgControlloImmagini, LinearLayout.GONE);
                 // contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
@@ -299,6 +300,17 @@ public class GestioneNotificheTasti {
                     detector,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgDetectorTasti, pDetector);
+
+            Intent ci = new Intent(ctx, ActivityDiStart.class);
+            ci.addCategory(Intent.CATEGORY_LAUNCHER);
+            ci.setAction(Intent.ACTION_MAIN );
+            ci.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            ci.putExtra("DO", "controllo_immagini");
+            PendingIntent pCi = PendingIntent.getActivity(ctx,
+                    212,
+                    ci,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgControlloImmagini, pCi);
 
             Intent wp = new Intent(ctx, ActivityDiStart.class);
             wp.addCategory(Intent.CATEGORY_LAUNCHER);

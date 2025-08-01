@@ -76,7 +76,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
             d.EsegueDownload(context, imgImmagine, Immagini.get(i).getUrlImmagine());
 
             CheckBox chkSeleziona = view.findViewById(R.id.chkScelta);
-            chkSeleziona.setChecked(false);
+            chkSeleziona.setChecked(Immagini.get(i).isSelezionata());
             chkSeleziona.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     int i2 = 0;

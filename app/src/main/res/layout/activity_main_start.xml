@@ -36,9 +36,7 @@
                             android:id="@+id/imgStartWallpaper"
                             android:layout_width="50dp"
                             android:src="@drawable/eye"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -68,9 +66,7 @@
                             android:id="@+id/imgStartPlayer"
                             android:layout_width="50dp"
                             android:src="@drawable/player"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -100,9 +96,7 @@
                             android:id="@+id/imgStartOnomastici"
                             android:layout_width="50dp"
                             android:src="@drawable/onomastici"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -132,9 +126,7 @@
                             android:id="@+id/imgStartPassword"
                             android:layout_width="50dp"
                             android:src="@drawable/password"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -164,9 +156,7 @@
                             android:id="@+id/imgStartDrive"
                             android:layout_width="50dp"
                             android:src="@drawable/drive"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -196,9 +186,7 @@
                             android:id="@+id/imgStartFilms"
                             android:layout_width="50dp"
                             android:src="@drawable/video2"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -212,7 +200,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/layBarraDetector"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
@@ -230,9 +217,7 @@
                             android:id="@+id/imgStartDetector"
                             android:layout_width="50dp"
                             android:src="@drawable/detector"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -243,9 +228,39 @@
                         android:textColor="@color/Verde_Scuro"
                         android:textSize="16dp"
                         android:text="Detector"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layBarraCI"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="8">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
                         android:layout_height="wrap_content">
 
-                    </TextView>
+                        <ImageView
+                            android:id="@+id/imgStartContrImmagini"
+                            android:layout_width="50dp"
+                            android:src="@drawable/controllo_immagini"
+                            android:layout_height="50dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtStartContrImmagini"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/Verde_Scuro"
+                        android:textSize="16dp"
+                        android:text="Controllo Immagini"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <!-- <LinearLayout
@@ -267,9 +282,7 @@
                             android:id="@+id/imgStartImmagini"
                             android:layout_width="50dp"
                             android:src="@drawable/loovf"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -303,9 +316,7 @@
                             android:id="@+id/imgStartPennetta"
                             android:layout_width="50dp"
                             android:src="@drawable/pennetta"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -339,9 +350,7 @@
                             android:id="@+id/imgStartVideo"
                             android:layout_width="50dp"
                             android:src="@drawable/video2"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -375,9 +384,7 @@
                             android:id="@+id/imgStartMappa"
                             android:layout_width="50dp"
                             android:src="@drawable/map"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -410,9 +417,7 @@
                             android:id="@+id/imgStartFetekkie"
                             android:layout_width="50dp"
                             android:src="@drawable/fetekkie"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -442,9 +447,7 @@
                             android:id="@+id/imgStartModifiche"
                             android:layout_width="50dp"
                             android:src="@drawable/modifiche"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -474,9 +477,7 @@
                             android:id="@+id/imgStartOrari"
                             android:layout_width="50dp"
                             android:src="@drawable/orari"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -506,9 +507,7 @@
                             android:id="@+id/imgStartLazio"
                             android:layout_width="50dp"
                             android:src="@drawable/lazio"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -538,9 +537,7 @@
                             android:id="@+id/imgStartSettings"
                             android:layout_width="50dp"
                             android:src="@drawable/settings"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -570,9 +567,7 @@
                             android:id="@+id/imgBackupSettings"
                             android:layout_width="50dp"
                             android:src="@drawable/backup"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView
@@ -602,9 +597,7 @@
                             android:id="@+id/imgStartUScita"
                             android:layout_width="50dp"
                             android:src="@drawable/shutdown"
-                            android:layout_height="50dp">
-
-                        </ImageView>
+                            android:layout_height="50dp" />
                     </LinearLayout>
 
                     <TextView

@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -34,6 +35,7 @@ import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.utilities.Files;
@@ -177,6 +179,37 @@ public class MainStart extends Activity {
                                         VariabiliStaticheDetector.getInstance().getMainActivity());
                             }
                         }, 100);
+                    }
+                }, 500);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // act.finish();
+                        VariabiliStaticheStart.getInstance().ChiudeActivity(true);
+                        act.finish();
+                    }
+                }, 100);
+            }
+        });
+
+        ImageView imgCI = findViewById(R.id.imgStartContrImmagini);
+        LinearLayout layCI = findViewById(R.id.layBarraCI);
+        if (VariabiliStaticheStart.getInstance().isDetector()) {
+            layCI.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layCI.setVisibility(LinearLayout.GONE);
+        }
+        imgCI.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                layStart.setVisibility(LinearLayout.GONE);
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(context, MainUtilityImmagini.class);
+                        intent.putExtra("idCategoria", "1");
+                        startActivity(intent);
                     }
                 }, 500);
 

@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.Chia
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -60,14 +62,28 @@ public class MainImmaginiFuoriCategoria extends Activity {
                 VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria()
         );
 
-        if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
+        /* if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
             String[] Aliases = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Aliases[0]);
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(Aliases[1]);
         } else {
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(VariabiliImmaginiFuoriCategoria.getInstance().getCategoria());
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias2("");
+        } */
+
+        String Alias1 = "";
+        String Alias2 = "";
+        if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
+            String[] c = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
+            Alias1 = c[0];
+            Alias2 = c[c.length - 1];
+        } else {
+            int lungh = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().length();
+            Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring(0, lungh / 2);
+            Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring((lungh / 2), lungh);
         }
+        VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Alias1);
+        VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(Alias2);
 
         EditText edtAlias1 = findViewById(R.id.edtAlias1);
         edtAlias1.setText(VariabiliImmaginiFuoriCategoria.getInstance().getAlias1());
@@ -155,6 +171,20 @@ public class MainImmaginiFuoriCategoria extends Activity {
         swcCercaExif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliImmaginiFuoriCategoria.getInstance().setCercaExif(isChecked);
+            }
+        });
+
+        CheckBox chkTutti = findViewById(R.id.chkTutti);
+        chkTutti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int i2 = 0;
+                for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
+                    StrutturaImmagineFuoriCategoria s2 = s;
+                    s2.setSelezionata(chkTutti.isChecked());
+                    VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini().set(i2, s2);
+                    i2++;
+                }
+                VariabiliImmaginiFuoriCategoria.getInstance().getAdapter().notifyDataSetChanged();
             }
         });
 

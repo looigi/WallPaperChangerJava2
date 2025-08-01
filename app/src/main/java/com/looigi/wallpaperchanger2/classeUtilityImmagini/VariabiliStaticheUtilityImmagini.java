@@ -53,6 +53,42 @@ public class VariabiliStaticheUtilityImmagini {
     private boolean BloccaElaborazione = false;
     private boolean PrimoGiroRefreshAltre = true;
     private String FiltroCategorie = "";
+    private boolean chkControllo = false;
+    private boolean chkUguali = false;
+    private boolean chkFC = false;
+    private boolean chkPoche = false;
+
+    public boolean isChkPoche() {
+        return chkPoche;
+    }
+
+    public void setChkPoche(boolean chkPoche) {
+        this.chkPoche = chkPoche;
+    }
+
+    public boolean isChkControllo() {
+        return chkControllo;
+    }
+
+    public void setChkControllo(boolean chkControllo) {
+        this.chkControllo = chkControllo;
+    }
+
+    public boolean isChkUguali() {
+        return chkUguali;
+    }
+
+    public void setChkUguali(boolean chkUguali) {
+        this.chkUguali = chkUguali;
+    }
+
+    public boolean isChkFC() {
+        return chkFC;
+    }
+
+    public void setChkFC(boolean chkFC) {
+        this.chkFC = chkFC;
+    }
 
     public String getFiltroCategorie() {
         return FiltroCategorie;

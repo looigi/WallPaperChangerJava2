@@ -23,6 +23,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagi
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.MainImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
@@ -76,12 +77,69 @@ public class AdapterListenerUI extends BaseAdapter {
         Filtro = Filtro.toUpperCase().trim();
         List<StrutturaImmaginiCategorie> listaFiltrata = new ArrayList<>();
 
-        for (StrutturaImmaginiCategorie cat : listaCategorie) {
-            if (Filtro.isEmpty() || cat.getCategoria().toUpperCase().contains(Filtro)) {
-                listaFiltrata.add(cat);
+        boolean controllaControlli = VariabiliStaticheUtilityImmagini.getInstance().isChkControllo();
+        boolean controllaUguali = VariabiliStaticheUtilityImmagini.getInstance().isChkUguali();
+        boolean controllaFC = VariabiliStaticheUtilityImmagini.getInstance().isChkFC();
+        boolean controllaPoche = VariabiliStaticheUtilityImmagini.getInstance().isChkPoche();
+
+        if (listaCategorie != null && !listaCategorie.isEmpty()) {
+            for (StrutturaImmaginiCategorie cat : listaCategorie) {
+
+                boolean Controlli = false;
+                boolean FC = false;
+                boolean Uguali = false;
+                boolean Poche = false;
+
+                for (StrutturaControlloImmagini s : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
+                    if (s.getIdCategoria() == cat.getIdCategoria()) {
+                        int quanteImmagini = s.getGiuste();
+                        if (quanteImmagini <= 20) {
+                            Poche = true;
+                        }
+
+                        /* if (!Controlli) {
+                            if (s.getErrate() > 0) {
+                                Controlli = true;
+                            }
+                            if (s.getPiccole() > 0) {
+                                Controlli = true;
+                            }
+                            if (s.getInesistenti() > 0) {
+                                Controlli = true;
+                            }
+                            if (s.getGrandi() > 0) {
+                                Controlli = true;
+                            }
+                        }
+
+                        if (!Uguali) {
+                            List<StrutturaImmaginiUguali> ss = s.getListaUguali();
+                            if (!ss.isEmpty()) {
+                                Uguali = true;
+                            }
+                        }
+
+                        if (!FC) { */
+                            int Quante = s.getListaFC().size();
+                            if (Quante > 0) {
+                                FC = true;
+                                break;
+                            }
+                        /* }
+
+                        if (Controlli && FC && Uguali) {
+                            break;
+                        } */
+                    }
+                };
+
+                if (Filtro.isEmpty() || cat.getCategoria().toUpperCase().contains(Filtro)) {
+                    if (controllaFC == FC && controllaPoche == Poche) {
+                        listaFiltrata.add(cat);
+                    }
+                }
             }
         }
-
         this.listaCategorieFiltrate = listaFiltrata;
 
         notifyDataSetChanged();
@@ -263,7 +321,7 @@ public class AdapterListenerUI extends BaseAdapter {
 
                 imgApreFC.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiFuoriCategoria.class);
+                        Intent iP = new Intent(context, MainImmaginiFuoriCategoria.class);
                         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Bundle b = new Bundle();
                         b.putString("IDCATEGORIA", String.valueOf(idCategoria));
