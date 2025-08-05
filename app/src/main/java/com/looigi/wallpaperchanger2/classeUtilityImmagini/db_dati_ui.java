@@ -688,31 +688,34 @@ public class db_dati_ui {
             }
 
             Progressivo = 0;
-            for (StrutturaImmaginiUguali s4: s.getListaUguali()) {
-                sql = "Insert Into Uguali Values (" +
-                        " " + idRiga + ", " +
-                        " " + Progressivo + ", " +
-                        "'" + s4.getTipo().replace("'", "''") + "', " +
-                        " " + s4.getQuanti() + ", " +
-                        "'" + s4.getFiltro().replace("'", "''") + "' " +
-                        ")";
-                try {
-                    myDB.execSQL(sql);
-                } catch (SQLException e) {
-                    if (!RiscritturaU) {
-                        RiscritturaU = true;
-                        DropTabelle();
-                        CreazioneTabelle();
-                        ScriveDati(s);
-                    } else {
-                        UtilitiesGlobali.getInstance().ApreToast(
-                                context,
-                                "Problemi nella scrittua della tabella Uguali: " + e.getMessage()
-                        );
+            if (s.getListaUguali() != null) {
+                for (StrutturaImmaginiUguali s4 : s.getListaUguali()) {
+                    sql = "Insert Into Uguali Values (" +
+                            " " + idRiga + ", " +
+                            " " + Progressivo + ", " +
+                            "'" + s4.getTipo().replace("'", "''") + "', " +
+                            " " + s4.getQuanti() + ", " +
+                            "'" + s4.getFiltro().replace("'", "''") + "' " +
+                            ")";
+                    try {
+                        myDB.execSQL(sql);
+                    } catch (SQLException e) {
+                        if (!RiscritturaU) {
+                            RiscritturaU = true;
+                            DropTabelle();
+                            CreazioneTabelle();
+                            ScriveDati(s);
+                        } else {
+                            UtilitiesGlobali.getInstance().ApreToast(
+                                    context,
+                                    "Problemi nella scrittua della tabella Uguali: " + e.getMessage()
+                            );
+                        }
                     }
-                }
 
-                Progressivo++;
+
+                    Progressivo++;
+                }
             }
 
             Progressivo = 0;

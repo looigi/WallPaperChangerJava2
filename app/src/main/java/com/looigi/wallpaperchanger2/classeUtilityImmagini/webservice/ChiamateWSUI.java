@@ -43,6 +43,23 @@ public class ChiamateWSUI implements TaskDelegateUI {
         this.context = context;
     }
 
+    public void SistemaImmaginiSenzaHash() {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        this.ForzaRefresh = ForzaRefresh;
+
+        String Urletto="SistemaImmaginiSenzaHash";
+
+        TipoOperazione = "SistemaImmaginiSenzaHash";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                6000000,
+                ApriDialog);
+    }
+
     public void RitornaImmaginiFuoriCategoria(String idCategoria, String Alias1, String Alias2, String ForzaRefresh) {
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
         this.ForzaRefresh = ForzaRefresh;
@@ -72,6 +89,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
     public void ControlloImmagini(String id, String ForzaRefresh) {
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
         this.ForzaRefresh = ForzaRefresh;
+        if (ForzaRefresh == null) { ForzaRefresh = "S"; }
 
         String Urletto="ControlloImmaginiCategoria?idCategoria=" + id + "&ForzaRefresh=" + ForzaRefresh;
 
@@ -131,7 +149,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
 
         String Urletto="RefreshImmagini?" +
-                "idCategoria=" + (VariabiliStaticheUtilityImmagini.getInstance().isPrimoGiroRefreshAltre() ? "41" : "207") +
+                "idCategoria=41" +
                 "&Completo=N";
 
         TipoOperazione = "RefreshImmaginiAltre";
@@ -212,6 +230,9 @@ public class ChiamateWSUI implements TaskDelegateUI {
                         break;
                     case "RefreshImmaginiAltre":
                         fRefreshImmaginiAltre(result);
+                        break;
+                    case "SistemaImmaginiSenzaHash":
+                        fSistemaImmaginiSenzaHash(result);
                         break;
                 }
             }
@@ -321,6 +342,16 @@ public class ChiamateWSUI implements TaskDelegateUI {
         }
     }
 
+    private void fSistemaImmaginiSenzaHash(String result) {
+        boolean ritorno = ControllaRitorno("Sistema immagini senza hash", result);
+        if (!ritorno) {
+            // Utility.getInstance().VisualizzaMessaggio(result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        }
+    }
+
     private void fPulisceCacheControllo(String result) {
         boolean ritorno = ControllaRitorno("Pulizia cache", result);
         if (!ritorno) {
@@ -336,20 +367,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
         if (!ritorno) {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
-            if (VariabiliStaticheUtilityImmagini.getInstance().isPrimoGiroRefreshAltre()) {
-                VariabiliStaticheUtilityImmagini.getInstance().setPrimoGiroRefreshAltre(false);
-
-                Handler handlerTimer = new Handler(Looper.getMainLooper());
-                Runnable rTimer = new Runnable() {
-                    public void run() {
-                        ChiamateWSUI ws = new ChiamateWSUI(context);
-                        ws.RefreshImmaginiAltre();
-                    }
-                };
-                handlerTimer.postDelayed(rTimer, 500);
-            } else {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Refresh altre effettuato");
-            }
+            UtilitiesGlobali.getInstance().ApreToast(context, "Refresh altre effettuato");
         }
     }
 

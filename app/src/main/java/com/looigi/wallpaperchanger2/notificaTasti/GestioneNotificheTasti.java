@@ -307,7 +307,7 @@ public class GestioneNotificheTasti {
             ci.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
             ci.putExtra("DO", "controllo_immagini");
             PendingIntent pCi = PendingIntent.getActivity(ctx,
-                    212,
+                    222,
                     ci,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgControlloImmagini, pCi);

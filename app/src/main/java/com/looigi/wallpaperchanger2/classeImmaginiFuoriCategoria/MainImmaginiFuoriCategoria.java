@@ -1,9 +1,12 @@
 package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,9 +28,11 @@ import com.looigi.wallpaperchanger2.classeFetekkie.VariabiliStaticheMostraImmagi
 import com.looigi.wallpaperchanger2.classeFetekkie.db_dati_fetekkie;
 import com.looigi.wallpaperchanger2.classeFetekkie.strutture.StrutturaImmaginiCategorieFE;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.ChiamateWSIFC;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
@@ -58,9 +63,107 @@ public class MainImmaginiFuoriCategoria extends Activity {
         VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoria(intent.getStringExtra("IDCATEGORIA"));
         VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(intent.getStringExtra("CATEGORIA"));
 
-        VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
-                VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria()
-        );
+        TextView txtNuovaCategoria = findViewById(R.id.txtNuovaCategoria);
+        txtNuovaCategoria.setText("");
+
+        VariabiliImmaginiFuoriCategoria.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIFC));
+        VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+
+        LinearLayout layCategorie = findViewById(R.id.layCategorie);
+
+        if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
+            VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                    VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria()
+            );
+            VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(VariabiliImmaginiFuoriCategoria.getInstance().getCategoria());
+            layCategorie.setVisibility(LinearLayout.GONE);
+        } else {
+            layCategorie.setVisibility(LinearLayout.VISIBLE);
+
+            ImageView imgNuovaCategoria = findViewById(R.id.imgNuova);
+            imgNuovaCategoria.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String Filtro = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString() + " " +
+                            VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
+                    String NuovaCategoria = Filtro.replace(";", " ");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Nome nuova categoria");
+
+                    // Crea l'EditText
+                    final EditText input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.setText(NuovaCategoria);
+                    builder.setView(input);
+
+                    // Bottone OK
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String valoreInserito = input.getText().toString().trim();
+                            valoreInserito = valoreInserito.replace(" ", "_");
+
+                            boolean ok = false;
+                            String NuovaCategoria2 = valoreInserito.toUpperCase().trim();
+                            for (StrutturaImmaginiCategorie s: VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                                if (s.getCategoria().toUpperCase().trim().equals(NuovaCategoria2)) {
+                                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(s.getCategoria());
+                                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                                            Integer.toString(s.getIdCategoria())
+                                    );
+                                    ok = true;
+                                    break;
+                                }
+                            }
+                            VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(valoreInserito);
+                            VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(valoreInserito);
+
+                            if (!ok) {
+                                ChiamateWSMI c = new ChiamateWSMI(context);
+                                c.CreaNuovaCategoria(valoreInserito, "FC");
+                            } else {
+                                String[] ll2 = new String[VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM().size() + 1];
+                                int i2 = 0;
+                                for (StrutturaImmaginiCategorie l2: VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                                    if (l2.getCategoria() != null) {
+                                        ll2[i2] = l2.getCategoria();
+                                    }
+                                    i2++;
+                                }
+                                int i = 0;
+                                for (String lll: ll2) {
+                                    if (lll == null || lll.isEmpty()) {
+                                        ll2[i] = "**NULL**";
+                                    }
+                                    i++;
+                                }
+                                UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                        VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
+                                        ll2,
+                                        VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
+                                );
+                            }
+                        }
+                    });
+
+                    // Bottone Annulla
+                    builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel(); // Chiude il dialog
+                        }
+                    });
+
+                    // Mostra il dialog
+                    builder.show();
+                }
+            });
+
+            VariabiliImmaginiFuoriCategoria.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+
+            ChiamateWSMI c = new ChiamateWSMI(context);
+            c.RitornaCategorie(false, "FC");
+        }
 
         /* if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
             String[] Aliases = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
@@ -71,37 +174,45 @@ public class MainImmaginiFuoriCategoria extends Activity {
             VariabiliImmaginiFuoriCategoria.getInstance().setAlias2("");
         } */
 
+        VariabiliImmaginiFuoriCategoria.getInstance().setEdtAlias1(findViewById(R.id.edtAlias1));
+        // edtAlias1.setText(VariabiliImmaginiFuoriCategoria.getInstance().getAlias1());
+        VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
+                String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
+                txtNuovaCategoria.setText(Alias1 + " " + Alias2);
+            }
+        });
+
+        VariabiliImmaginiFuoriCategoria.getInstance().setEdtAlias2(findViewById(R.id.edtAlias2));
+        // edtAlias2.setText(VariabiliImmaginiFuoriCategoria.getInstance().getAlias2());
+        VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
+                String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
+                txtNuovaCategoria.setText(Alias1 + " " + Alias2);
+            }
+        });
+
         String Alias1 = "";
         String Alias2 = "";
-        if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
-            String[] c = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
-            Alias1 = c[0];
-            Alias2 = c[c.length - 1];
-        } else {
-            int lungh = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().length();
-            Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring(0, lungh / 2);
-            Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring((lungh / 2), lungh);
+        if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
+            if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
+                String[] c = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
+                Alias1 = c[0];
+                Alias2 = c[c.length - 1];
+            } else {
+                int lungh = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().length();
+                Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring(0, lungh / 2);
+                Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring((lungh / 2), lungh);
+            }
+            VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().setText(Alias1);
+            VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().setText(Alias2);
         }
-        VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Alias1);
-        VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(Alias2);
-
-        EditText edtAlias1 = findViewById(R.id.edtAlias1);
-        edtAlias1.setText(VariabiliImmaginiFuoriCategoria.getInstance().getAlias1());
-        edtAlias1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(edtAlias1.getText().toString());
-            }
-        });
-
-        EditText edtAlias2 = findViewById(R.id.edtAlias2);
-        edtAlias2.setText(VariabiliImmaginiFuoriCategoria.getInstance().getAlias2());
-        edtAlias2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(edtAlias2.getText().toString());
-            }
-        });
+        // VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Alias1);
+        // VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(Alias2);
 
         EditText edtCaratteri = findViewById(R.id.edtCaratteri);
         edtCaratteri.setText(Integer.toString(VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri()));
@@ -112,14 +223,14 @@ public class MainImmaginiFuoriCategoria extends Activity {
             }
         });
 
-        EditText edtTag = findViewById(R.id.edtTag);
-        edtTag.setText(VariabiliImmaginiFuoriCategoria.getInstance().getTag());
+        VariabiliImmaginiFuoriCategoria.getInstance().setEdtTag(findViewById(R.id.edtTag));
+        /* edtTag.setText(VariabiliImmaginiFuoriCategoria.getInstance().getTag());
         edtTag.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 VariabiliImmaginiFuoriCategoria.getInstance().setTag(edtTag.getText().toString());
             }
-        });
+        }); */
 
         Spinner spnAndOr = findViewById(R.id.spnAndOr);
         String[] l = { "And", "Or" };
@@ -196,7 +307,6 @@ public class MainImmaginiFuoriCategoria extends Activity {
             }
         });
 
-        VariabiliImmaginiFuoriCategoria.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIFC));
         VariabiliImmaginiFuoriCategoria.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));
         VariabiliImmaginiFuoriCategoria.getInstance().setLaypreview(findViewById(R.id.layPreview));
         VariabiliImmaginiFuoriCategoria.getInstance().setImgPreview(findViewById(R.id.imgPreview));
@@ -214,27 +324,70 @@ public class MainImmaginiFuoriCategoria extends Activity {
         ImageView imgSpostaTutte = findViewById(R.id.imgSpostaTutte);
         imgSpostaTutte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                List<StrutturaImmagineFuoriCategoria> lista = new ArrayList<>();
-                for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
-                    if (s.isSelezionata()) {
-                        lista.add(s);
+                String NuovaCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().toUpperCase().trim();
+
+                if (VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM() == null) {
+                    ChiamateWSMI c = new ChiamateWSMI(context);
+                    c.RitornaCategorie(false, "FC");
+                }
+
+                VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento("");
+                // if (VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento() == null) {
+                    for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                        if (s.getCategoria().toUpperCase().trim().equals(NuovaCategoria)) {
+                            VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(s.getCategoria());
+                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                                    Integer.toString(s.getIdCategoria())
+                            );
+                            NuovaCategoria = s.getCategoria();
+                            break;
+                        }
                     }
+                // }
+                if (VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento().isEmpty()) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Id Categoria di spostamento non valida");
+                    return;
                 }
 
-                if (!lista.isEmpty()) {
-                    VariabiliImmaginiFuoriCategoria.getInstance().setListaDaSpostare(lista);
-                    VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(0);
-                    int quale = VariabiliImmaginiFuoriCategoria.getInstance().getQualeImmagineStaSpostando();
-                    VariabiliImmaginiFuoriCategoria.getInstance().setStaSpostandoTutte(true);
-                    VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(quale);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                builder.setTitle("Si vogliono spostare le immagini selezionate alla categoria " +
+                        NuovaCategoria + " ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<StrutturaImmagineFuoriCategoria> lista = new ArrayList<>();
+                        for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
+                            if (s.isSelezionata()) {
+                                lista.add(s);
+                            }
+                        }
 
-                    VariabiliImmaginiFuoriCategoria.getInstance().ScaricaProssimaImmagine(context, 0);
-                }
+                        if (!lista.isEmpty()) {
+                            VariabiliImmaginiFuoriCategoria.getInstance().setListaDaSpostare(lista);
+                            VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(0);
+                            int quale = VariabiliImmaginiFuoriCategoria.getInstance().getQualeImmagineStaSpostando();
+                            VariabiliImmaginiFuoriCategoria.getInstance().setStaSpostandoTutte(true);
+                            VariabiliImmaginiFuoriCategoria.getInstance().setQualeImmagineStaSpostando(quale);
+
+                            VariabiliImmaginiFuoriCategoria.getInstance().ScaricaProssimaImmagine(context, 0);
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
-        ChiamateWSIFC ws = new ChiamateWSIFC(context);
-        ws.RitornaImmaginiFuoriCategoria("N");
+        if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
+            ChiamateWSIFC ws = new ChiamateWSIFC(context);
+            ws.RitornaImmaginiFuoriCategoria("N");
+        }
     }
 
     @Override

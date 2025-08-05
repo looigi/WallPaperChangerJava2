@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ChiamateWSIFC implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_Fuori_Categoria";
@@ -39,16 +40,20 @@ public class ChiamateWSIFC implements TaskDelegate {
     }
 
     public void RitornaImmaginiFuoriCategoria(String ForzaRefrsh) {
+        String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
+        String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
+        String Tag = VariabiliImmaginiFuoriCategoria.getInstance().getEdtTag().getText().toString();
+
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
                 "idCategoria=" + VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria() +
-                "&Aliases1=" + VariabiliImmaginiFuoriCategoria.getInstance().getAlias1() +
-                "&Aliases2=" + VariabiliImmaginiFuoriCategoria.getInstance().getAlias2() +
+                "&Aliases1=" + Alias1 +
+                "&Aliases2=" + Alias2 +
                 "&QuantiCaratteri=" + VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri() +
                 "&AndOr=" + VariabiliImmaginiFuoriCategoria.getInstance().getAndOr() +
                 "&SoloSuAltro=" + (VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro() ? "S" : "N") +
                 "&CercaExif=" + (VariabiliImmaginiFuoriCategoria.getInstance().isCercaExif() ? "S" : "N") +
-                "&Tag=" + VariabiliImmaginiFuoriCategoria.getInstance().getTag() +
-                "&ForzaRefresh=" + ForzaRefrsh;
+                "&Tag=" + Tag +
+                "&ForzaRefresh=" + (!Objects.equals(VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria(), "-1") ? ForzaRefrsh : "S");
 
         TipoOperazione = "TrovaNomiSuDbFuoriDallaCategoria";
 

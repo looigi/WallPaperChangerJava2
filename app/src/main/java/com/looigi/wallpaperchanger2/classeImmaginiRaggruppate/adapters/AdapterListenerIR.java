@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaGruppi;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.webService.ChiamateWSIR;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.List;
 
@@ -120,10 +124,50 @@ public class AdapterListenerIR extends BaseAdapter {
                         String valoreInserito = input.getText().toString().trim();
                         valoreInserito = valoreInserito.replace(" ", "_");
 
+                        if (VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM() == null) {
+                            ChiamateWSMI c = new ChiamateWSMI(context);
+                            c.RitornaCategorie(false, "FC");
+                        }
+
+                        boolean ok = false;
+                        String NuovaCategoria2 = valoreInserito.toUpperCase().trim();
+                        for (StrutturaImmaginiCategorie s: VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                            if (s.getCategoria().toUpperCase().trim().equals(NuovaCategoria2)) {
+                                VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(s.getCategoria());
+                                VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                                        Integer.toString(s.getIdCategoria())
+                                );
+                                ok = true;
+                                break;
+                            }
+                        }
                         VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata(valoreInserito);
 
-                        ChiamateWSMI c = new ChiamateWSMI(context);
-                        c.CreaNuovaCategoria(valoreInserito, "IR");
+                        if (!ok) {
+                            ChiamateWSMI c = new ChiamateWSMI(context);
+                            c.CreaNuovaCategoria(valoreInserito, "IR");
+                        } else {
+                            String[] ll = new String[VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM().size() + 1];
+                            int i = 0;
+                            for (StrutturaImmaginiCategorie l2: VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM()) {
+                                if (l2.getCategoria() != null) {
+                                    ll[i] = l2.getCategoria();
+                                }
+                                i++;
+                            }
+                            i = 0;
+                            for (String lll: ll) {
+                                if (lll == null || lll.isEmpty()) {
+                                    ll[i] = "**NULL**";
+                                }
+                                i++;
+                            }
+                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),
+                                    ll,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata()
+                            );
+                        }
                     }
                 });
 

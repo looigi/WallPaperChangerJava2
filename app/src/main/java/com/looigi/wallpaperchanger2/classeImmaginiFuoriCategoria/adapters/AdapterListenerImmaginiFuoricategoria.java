@@ -12,11 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.List;
 
@@ -62,11 +65,13 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
             ImageView imgSposta = view.findViewById(R.id.imgSpostaACategoria);
             TextView txtIdImmagine = view.findViewById(R.id.txtIdImmagine);
             TextView txtCartella = view.findViewById(R.id.txtCartella);
+            TextView txtCategoria = view.findViewById(R.id.txtCategoria);
             TextView txtNomeFile = view.findViewById(R.id.txtNomeFile);
             TextView txtDimeFile = view.findViewById(R.id.txtDimensioneFile);
             TextView txtDimeImm = view.findViewById(R.id.txtDimensioneImmagine);
 
             txtIdImmagine.setText("Id Immagine: " + Immagini.get(i).getIdImmagine());
+            txtCategoria.setText("Categoria: " + Immagini.get(i).getCategoria());
             txtCartella.setText("Cartella: " + Immagini.get(i).getCartella());
             txtNomeFile.setText(Immagini.get(i).getNomeFile());
             txtDimeFile.setText("File: " + Immagini.get(i).getDimensioneFile());
@@ -110,6 +115,26 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM() == null) {
+                                ChiamateWSMI c = new ChiamateWSMI(context);
+                                c.RitornaCategorie(false, "FC");
+                            }
+                            String Nuova = VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita().replace(" ", "_").trim().toUpperCase();
+                            VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento("");
+                            for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                                if (s.getCategoria().toUpperCase().trim().equals(Nuova)) {
+                                    VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                                            Integer.toString(s.getIdCategoria())
+                                    );
+                                    break;
+                                }
+                            }
+                            if (VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento().isEmpty()) {
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Categoria non rilevata: " +
+                                        VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita());
+                                return;
+                            }
+
                             StrutturaImmaginiLibrary Imm =  new StrutturaImmaginiLibrary();
                             Imm.setAlias(Immagini.get(i).getAlias());
                             Imm.setCategoria(Immagini.get(i).getCategoria());

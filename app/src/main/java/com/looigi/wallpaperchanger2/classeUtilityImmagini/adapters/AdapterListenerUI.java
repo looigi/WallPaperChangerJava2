@@ -84,59 +84,39 @@ public class AdapterListenerUI extends BaseAdapter {
 
         if (listaCategorie != null && !listaCategorie.isEmpty()) {
             for (StrutturaImmaginiCategorie cat : listaCategorie) {
-
-                boolean Controlli = false;
-                boolean FC = false;
-                boolean Uguali = false;
-                boolean Poche = false;
+                boolean ok1 = true;
+                boolean ok2 = true;
 
                 for (StrutturaControlloImmagini s : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
-                    if (s.getIdCategoria() == cat.getIdCategoria()) {
-                        int quanteImmagini = s.getGiuste();
-                        if (quanteImmagini <= 20) {
-                            Poche = true;
-                        }
-
-                        /* if (!Controlli) {
-                            if (s.getErrate() > 0) {
-                                Controlli = true;
-                            }
-                            if (s.getPiccole() > 0) {
-                                Controlli = true;
-                            }
-                            if (s.getInesistenti() > 0) {
-                                Controlli = true;
-                            }
-                            if (s.getGrandi() > 0) {
-                                Controlli = true;
+                    if (controllaPoche || controllaFC) {
+                        if (s.getIdCategoria() == cat.getIdCategoria()) {
+                            if (controllaPoche) {
+                                int quanteImmagini = s.getGiuste();
+                                ok1 = quanteImmagini < 20;
+                                ok2 = false;
+                            } else {
+                                if (controllaFC) {
+                                    int Quante = s.getListaFC().size();
+                                    // FC = true;
+                                    ok2 = Quante > 0;
+                                    ok1 = false;
+                                }
                             }
                         }
-
-                        if (!Uguali) {
-                            List<StrutturaImmaginiUguali> ss = s.getListaUguali();
-                            if (!ss.isEmpty()) {
-                                Uguali = true;
-                            }
-                        }
-
-                        if (!FC) { */
-                            int Quante = s.getListaFC().size();
-                            if (Quante > 0) {
-                                FC = true;
-                                break;
-                            }
-                        /* }
-
-                        if (Controlli && FC && Uguali) {
-                            break;
-                        } */
                     }
                 };
 
-                if (Filtro.isEmpty() || cat.getCategoria().toUpperCase().contains(Filtro)) {
-                    if (controllaFC == FC && controllaPoche == Poche) {
-                        listaFiltrata.add(cat);
-                    }
+                boolean Ok = false;
+                if (Filtro.isEmpty()) {
+                    Ok = true;
+                } else {
+                     if (cat.getCategoria().toUpperCase().contains(Filtro)) {
+                         Ok = true;
+                     }
+                }
+
+                if (Ok && (ok1 || ok2)) {
+                    listaFiltrata.add(cat);
                 }
             }
         }
@@ -285,7 +265,7 @@ public class AdapterListenerUI extends BaseAdapter {
 
                 imgApreUguali.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        Intent iP = new Intent(VariabiliStaticheMostraImmagini.getInstance().getCtx(), MainImmaginiUguali.class);
+                        Intent iP = new Intent(context, MainImmaginiUguali.class);
                         iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Bundle b = new Bundle();
                         b.putString("CATEGORIA", Categoria);

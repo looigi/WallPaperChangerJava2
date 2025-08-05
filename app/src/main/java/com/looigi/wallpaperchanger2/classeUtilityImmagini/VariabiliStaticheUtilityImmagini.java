@@ -51,7 +51,6 @@ public class VariabiliStaticheUtilityImmagini {
     private String CategoriaAttuale;
     private boolean EsegueAncheRefresh = true;
     private boolean BloccaElaborazione = false;
-    private boolean PrimoGiroRefreshAltre = true;
     private String FiltroCategorie = "";
     private boolean chkControllo = false;
     private boolean chkUguali = false;
@@ -96,14 +95,6 @@ public class VariabiliStaticheUtilityImmagini {
 
     public void setFiltroCategorie(String filtroCategorie) {
         FiltroCategorie = filtroCategorie;
-    }
-
-    public boolean isPrimoGiroRefreshAltre() {
-        return PrimoGiroRefreshAltre;
-    }
-
-    public void setPrimoGiroRefreshAltre(boolean primoGiroRefreshAltre) {
-        PrimoGiroRefreshAltre = primoGiroRefreshAltre;
     }
 
     public boolean isBloccaElaborazione() {

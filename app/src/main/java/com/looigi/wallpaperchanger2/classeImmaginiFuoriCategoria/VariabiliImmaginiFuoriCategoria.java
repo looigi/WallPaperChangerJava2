@@ -1,10 +1,13 @@
 package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria;
 
 import android.content.Context;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
@@ -30,9 +33,9 @@ public class VariabiliImmaginiFuoriCategoria {
 
     private String idCategoria = "";
     private String Categoria = "";
-    private String Alias1 = "";
+    /* private String Alias1 = "";
     private String Alias2 = "";
-    private String Tag = "";
+    private String Tag = ""; */
     private int QuantiCaratteri = 4;
     private String AndOr = "Or";
     private boolean SoloSuAltro = true;
@@ -47,6 +50,60 @@ public class VariabiliImmaginiFuoriCategoria {
     private boolean staSpostandoTutte = false;
     private List<StrutturaImmagineFuoriCategoria> listaDaSpostare;
     private AdapterListenerImmaginiFuoricategoria adapter;
+    private Spinner spnCategorie;
+    private List<StrutturaImmaginiCategorie> listaCategorieIMM;
+    private EditText edtAlias1;
+    private EditText edtAlias2;
+    private EditText edtTag;
+    private String CategoriaInserita = "";
+
+    public String getCategoriaInserita() {
+        return CategoriaInserita;
+    }
+
+    public void setCategoriaInserita(String categoriaInserita) {
+        CategoriaInserita = categoriaInserita;
+    }
+
+    public EditText getEdtAlias1() {
+        return edtAlias1;
+    }
+
+    public void setEdtAlias1(EditText edtAlias1) {
+        this.edtAlias1 = edtAlias1;
+    }
+
+    public EditText getEdtAlias2() {
+        return edtAlias2;
+    }
+
+    public void setEdtAlias2(EditText edtAlias2) {
+        this.edtAlias2 = edtAlias2;
+    }
+
+    public EditText getEdtTag() {
+        return edtTag;
+    }
+
+    public void setEdtTag(EditText edtTag) {
+        this.edtTag = edtTag;
+    }
+
+    public List<StrutturaImmaginiCategorie> getListaCategorieIMM() {
+        return listaCategorieIMM;
+    }
+
+    public void setListaCategorieIMM(List<StrutturaImmaginiCategorie> listaCategorieIMM) {
+        this.listaCategorieIMM = listaCategorieIMM;
+    }
+
+    public Spinner getSpnCategorie() {
+        return spnCategorie;
+    }
+
+    public void setSpnCategorie(Spinner spnCategorie) {
+        this.spnCategorie = spnCategorie;
+    }
 
     public AdapterListenerImmaginiFuoricategoria getAdapter() {
         return adapter;
@@ -144,6 +201,7 @@ public class VariabiliImmaginiFuoriCategoria {
         this.idCategoria = idCategoria;
     }
 
+    /*
     public String getAlias1() {
         return Alias1;
     }
@@ -159,6 +217,7 @@ public class VariabiliImmaginiFuoriCategoria {
     public void setAlias2(String alias2) {
         Alias2 = alias2;
     }
+    */
 
     public String getAndOr() {
         return AndOr;
@@ -192,6 +251,7 @@ public class VariabiliImmaginiFuoriCategoria {
         SoloSuAltro = soloSuAltro;
     }
 
+    /*
     public String getTag() {
         return Tag;
     }
@@ -199,6 +259,7 @@ public class VariabiliImmaginiFuoriCategoria {
     public void setTag(String tag) {
         Tag = tag;
     }
+    */
 
     public void ScaricaProssimaImmagine(Context context, int quale) {
         StrutturaImmagineFuoriCategoria s = VariabiliImmaginiFuoriCategoria.getInstance().getListaDaSpostare().get(quale);

@@ -834,11 +834,13 @@ public class UtilitiesGlobali {
         };
 
         adapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // Layout per il menu a discesa
-        spinner.setAdapter(adapter);
+        if (spinner != null) {
+            spinner.setAdapter(adapter);
 
-        if (stringaDefault != null && !stringaDefault.isEmpty()) {
-            int spinnerPosition = adapter.getPosition(stringaDefault);
-            spinner.setSelection(spinnerPosition);
+            if (stringaDefault != null && !stringaDefault.isEmpty()) {
+                int spinnerPosition = adapter.getPosition(stringaDefault);
+                spinner.setSelection(spinnerPosition);
+            }
         }
 
         return adapter;

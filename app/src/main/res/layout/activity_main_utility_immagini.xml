@@ -57,17 +57,28 @@
                     android:layout_height="30dp"
                     android:text="Categorie con uguali" /> -->
 
-                <CheckBox
-                    android:id="@+id/chkPoche"
+                <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Poche Immagini" />
+                    android:layout_height="wrap_content">
 
-                <CheckBox
-                    android:id="@+id/chkFC"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Categorie con FC" />
+                    <RadioButton
+                        android:id="@+id/chkTutte"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Tutte" />
+
+                    <RadioButton
+                        android:id="@+id/chkPoche"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Solo Poche Immagini" />
+
+                    <RadioButton
+                        android:id="@+id/chkFC"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Solo Categorie con FC" />
+                </RadioGroup>
             </LinearLayout>
 
             <LinearLayout
@@ -164,7 +175,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:textColor="@color/Nero"
-                        android:text="Ricerca"
+                        android:text="Ricerche"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
@@ -236,6 +247,28 @@
                     <ImageView
                         android:id="@+id/imgEliminaCache"
                         android:src="@drawable/elimina"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
+                        android:text="Aggiorna HASHs"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgAggiornaHash"
+                        android:src="@drawable/aggiorna"
                         android:layout_width="40dp"
                         android:layout_height="40dp" />
                 </LinearLayout>

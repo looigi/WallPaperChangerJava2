@@ -15,13 +15,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
@@ -85,23 +88,45 @@ public class MainUtilityImmagini extends Activity {
             }
         }); */
 
-        CheckBox chkFC = findViewById(R.id.chkFC);
+        RadioButton chkTutte = findViewById(R.id.chkTutte);
+        chkTutte.setChecked(true);
+        RadioButton chkFC = findViewById(R.id.chkFC);
         chkFC.setChecked(false);
-        chkFC.setOnClickListener(new View.OnClickListener() {
+        RadioButton chkPoche = findViewById(R.id.chkPoche);
+        chkPoche.setChecked(false);
+
+        chkTutte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(chkFC.isChecked());
+                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(false);
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
         });
 
-        CheckBox chkPoche = findViewById(R.id.chkPoche);
-        chkPoche.setChecked(false);
-        chkPoche.setOnClickListener(new View.OnClickListener() {
+        chkFC.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(chkPoche.isChecked());
+                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(true);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(false);
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        chkPoche.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(true);
+
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        ImageView imgAggiornaHash = findViewById(R.id.imgAggiornaHash);
+        imgAggiornaHash.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSUI ws = new ChiamateWSUI(context);
+                ws.SistemaImmaginiSenzaHash();
             }
         });
 
@@ -162,8 +187,6 @@ public class MainUtilityImmagini extends Activity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        VariabiliStaticheUtilityImmagini.getInstance().setPrimoGiroRefreshAltre(true);
-
                         ChiamateWSUI ws = new ChiamateWSUI(context);
                         ws.RefreshImmaginiAltre();
                     }
@@ -254,6 +277,13 @@ public class MainUtilityImmagini extends Activity {
         ImageView imgRicerca = findViewById(R.id.imgRicerca);
         imgRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Intent iP = new Intent(context, MainImmaginiFuoriCategoria.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle b = new Bundle();
+                b.putString("IDCATEGORIA", "-1");
+                b.putString("CATEGORIA", "NESSUNA");
+                iP.putExtras(b);
+                context.startActivity(iP);
             }
         });
     }
