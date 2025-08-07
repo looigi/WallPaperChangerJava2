@@ -332,8 +332,7 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "IR":
                         List<StrutturaImmaginiCategorie> lista2 = db.LeggeCategorie();
                         for (StrutturaImmaginiCategorie l: lista) {
-                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE") &&
-                                    !l.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE")) {
                                 lista2.add(l);
                             }
                         }
@@ -363,8 +362,7 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "UI":
                         List<StrutturaImmaginiCategorie> lista22 = db.LeggeCategorie();
                         for (StrutturaImmaginiCategorie l: lista) {
-                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE") &&
-                                    !l.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE")) {
                                 lista22.add(l);
                             }
                         }
@@ -374,12 +372,13 @@ public class ChiamateWSMI implements TaskDelegate {
                         VariabiliStaticheUtilityImmagini.getInstance().getLstImmagini().setAdapter(VariabiliStaticheUtilityImmagini.getInstance().getAdapter());
                         break;
                     case "FC":
-                        VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                        if (VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento() != null) {
+                            VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                        }
 
                         List<StrutturaImmaginiCategorie> lista222 = db.LeggeCategorie();
                         for (StrutturaImmaginiCategorie l: lista) {
-                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE") &&
-                                    !l.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                            if (!l.getCategoria().toUpperCase().trim().equals("TUTTE")) {
                                 lista222.add(l);
                             }
                         }
@@ -782,7 +781,7 @@ public class ChiamateWSMI implements TaskDelegate {
 
     private void fSpostaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Sposta Immagine", result);
-        if (daDove.equals("FC")) {
+        if (daDove.equals("FC") || daDove.equals("IR")) {
             ContinuaSpostamento();
         } else {
             if (!ritorno) {
@@ -968,8 +967,7 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "IR":
                         List<StrutturaImmaginiCategorie> lista22 = db.LeggeCategorie();
                         for (StrutturaImmaginiCategorie l2: listaCategorie) {
-                            if (!l2.getCategoria().toUpperCase().trim().equals("TUTTE") &&
-                                    !l2.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                            if (!l2.getCategoria().toUpperCase().trim().equals("TUTTE")) {
                                 lista22.add(l2);
                             }
                         }
@@ -1002,8 +1000,7 @@ public class ChiamateWSMI implements TaskDelegate {
 
                         List<StrutturaImmaginiCategorie> lista222 = db.LeggeCategorie();
                         for (StrutturaImmaginiCategorie l2: listaCategorie) {
-                            if (!l2.getCategoria().toUpperCase().trim().equals("TUTTE") &&
-                                    !l2.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                            if (!l2.getCategoria().toUpperCase().trim().equals("TUTTE")) {
                                 lista222.add(l2);
                             }
                         }

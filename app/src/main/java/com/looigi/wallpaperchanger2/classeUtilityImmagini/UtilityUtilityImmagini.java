@@ -116,11 +116,15 @@ public class UtilityUtilityImmagini {
         while (ancora && quale2 < VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM().size()) {
             StrutturaImmaginiCategorie c = VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM().get(quale2);
             boolean ok = true;
-            for (StrutturaControlloImmagini i : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
-                if (c.getIdCategoria() == i.getIdCategoria()) {
-                    ok = false;
-                    break;
+            if (!c.getCategoria().toUpperCase().trim().equals("ALTRE")) {
+                for (StrutturaControlloImmagini i : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
+                    if (c.getIdCategoria() == i.getIdCategoria()) {
+                        ok = false;
+                        break;
+                    }
                 }
+            } else {
+                ok = false;
             }
             if (ok) {
                 ancora = false;

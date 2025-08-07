@@ -39,8 +39,13 @@ public class ChiamateWSIR implements TaskDelegateIR {
     public void RitornaRaggruppamenti(String idCategoria) {
         VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
 
-        String Urletto="RaggruppaPerNome?idCategoria=" + idCategoria + "&Precisione=" +
-                VariabiliStaticheImmaginiRaggruppate.getInstance().getPrecisione();
+        String Urletto="";
+        if (VariabiliStaticheImmaginiRaggruppate.getInstance().getModalita().equals("1")) {
+            Urletto = "RaggruppaPerNome?idCategoria=" + idCategoria + "&Precisione=" +
+                    VariabiliStaticheImmaginiRaggruppate.getInstance().getPrecisione();
+        } else {
+            Urletto = "RaggruppaPerNomeStile2?idCategoria=" + idCategoria;
+        }
 
         TipoOperazione = "RitornaRaggruppamenti";
 
@@ -131,6 +136,7 @@ public class ChiamateWSIR implements TaskDelegateIR {
 
         boolean ritorno = ControllaRitorno("Ritorna raggruppamenti", result);
         if (!ritorno) {
+            VariabiliStaticheImmaginiRaggruppate.getInstance().getTxtQuante().setText("");
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
@@ -149,6 +155,8 @@ public class ChiamateWSIR implements TaskDelegateIR {
                 lista.add(s);
             }
         }
+
+        VariabiliStaticheImmaginiRaggruppate.getInstance().getTxtQuante().setText("Immagini rilevate: " + lista.size());
 
         AdapterListenerIR cstmAdptFonti = new AdapterListenerIR(context, lista);
         VariabiliStaticheImmaginiRaggruppate.getInstance().getLstIR().setAdapter(cstmAdptFonti);

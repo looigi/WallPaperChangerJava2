@@ -53,6 +53,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
     }
 
     private String idCategoria;
+    private String Modalita;
     private GifImageView imgCaricamento;
     private ListView lstIR;
     private ListView lstImmagini;
@@ -63,6 +64,23 @@ public class VariabiliStaticheImmaginiRaggruppate {
     private Spinner spnCategorie;
     private String Filtro;
     private int Precisione = 4;
+    private TextView txtQuante;
+
+    public TextView getTxtQuante() {
+        return txtQuante;
+    }
+
+    public void setTxtQuante(TextView txtQuante) {
+        this.txtQuante = txtQuante;
+    }
+
+    public String getModalita() {
+        return Modalita;
+    }
+
+    public void setModalita(String modalita) {
+        Modalita = modalita;
+    }
 
     public int getPrecisione() {
         return Precisione;

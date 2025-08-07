@@ -45,9 +45,12 @@ public class MainImmaginiRaggruppate extends Activity {
 
         Intent intent = getIntent();
         String idCategoria = intent.getStringExtra("idCategoria");
+        String Modalita = intent.getStringExtra("Modalita");
         VariabiliStaticheImmaginiRaggruppate.getInstance().setIdCategoria(idCategoria);
+        VariabiliStaticheImmaginiRaggruppate.getInstance().setModalita(Modalita);
 
         VariabiliStaticheImmaginiRaggruppate.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+        VariabiliStaticheImmaginiRaggruppate.getInstance().setTxtQuante(findViewById(R.id.txtQuante));
 
         ChiamateWSMI c = new ChiamateWSMI(context);
         c.RitornaCategorie(false, "IR");

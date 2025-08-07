@@ -141,6 +141,17 @@ public class AdapterListenerUI extends BaseAdapter {
                 public void onClick(View v) {
                     Intent intent = new Intent(context, MainImmaginiRaggruppate.class);
                     intent.putExtra("idCategoria", Integer.toString(idCategoria));
+                    intent.putExtra("Modalita", "1");
+                    context.startActivity(intent);
+                }
+            });
+
+            ImageView imgRaggruppate2 = view.findViewById(R.id.imgRaggruppate2);
+            imgRaggruppate2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MainImmaginiRaggruppate.class);
+                    intent.putExtra("idCategoria", Integer.toString(idCategoria));
+                    intent.putExtra("Modalita", "2");
                     context.startActivity(intent);
                 }
             });

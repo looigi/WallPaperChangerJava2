@@ -68,6 +68,11 @@
                     android:src="@drawable/sposta"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
+
+                <TextView
+                    android:id="@+id/txtQuante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
 
