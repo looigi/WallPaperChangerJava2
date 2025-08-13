@@ -31,6 +31,7 @@ import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.MainVolti;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -118,6 +119,35 @@ public class MainUtilityImmagini extends Activity {
                 VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
                 VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(true);
 
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(3);
+        RadioButton chkTutteLeCat = findViewById(R.id.chkTutteLeCat);
+        chkTutteLeCat.setChecked(false);
+        RadioButton chkSoloDiRicerca = findViewById(R.id.chkSoloDiRicerca);
+        chkSoloDiRicerca.setChecked(false);
+        RadioButton chkSoloNormali = findViewById(R.id.chkSoloNormali);
+        chkSoloNormali.setChecked(true);
+
+        chkTutteLeCat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(1);
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        chkSoloDiRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(2);
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        chkSoloNormali.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(3);
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
         });
@@ -246,7 +276,7 @@ public class MainUtilityImmagini extends Activity {
 
                 VariabiliStaticheUtilityImmagini.getInstance().setControllaTutto(true);
                 int quale = UtilityUtilityImmagini.getInstance().ControllaProssimoNumero(0);
-                if (quale > -1) {
+                if (quale > -1 && quale < VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM().size()) {
                     VariabiliStaticheUtilityImmagini.getInstance().setQualeStaControllando(quale);
 
                     int idCategoria = VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM().get(quale).getIdCategoria();
@@ -269,6 +299,8 @@ public class MainUtilityImmagini extends Activity {
                     };
                     handlerTimer.postDelayed(rTimer, 500);
                 } else {
+                    layBlocca.setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheUtilityImmagini.getInstance().setControllaTutto(false);
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna categoria rilevata");
                 }
             }
@@ -283,6 +315,14 @@ public class MainUtilityImmagini extends Activity {
                 b.putString("IDCATEGORIA", "-1");
                 b.putString("CATEGORIA", "NESSUNA");
                 iP.putExtras(b);
+                context.startActivity(iP);
+            }
+        });
+
+        ImageView imgVolti = findViewById(R.id.imgVolti);
+        imgVolti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iP = new Intent(context, MainVolti.class);
                 context.startActivity(iP);
             }
         });

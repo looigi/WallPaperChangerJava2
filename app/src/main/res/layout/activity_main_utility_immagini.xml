@@ -21,13 +21,14 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:weightSum="5"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -43,6 +44,19 @@
                         android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imgFiltro"
+                            android:src="@drawable/icona_cerca"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- <CheckBox
@@ -59,45 +73,88 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
                     android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/Nero"
+                        android:text="Filtro Cat."
+                        android:layout_height="wrap_content" />
 
                     <RadioButton
                         android:id="@+id/chkTutte"
-                        android:layout_width="match_parent"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="30dp"
                         android:text="Tutte" />
 
                     <RadioButton
                         android:id="@+id/chkPoche"
-                        android:layout_width="match_parent"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="30dp"
-                        android:text="Solo Poche Immagini" />
+                        android:text="Poche" />
 
                     <RadioButton
                         android:id="@+id/chkFC"
-                        android:layout_width="match_parent"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="30dp"
-                        android:text="Solo Categorie con FC" />
+                        android:text="FC" />
                 </RadioGroup>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_height="match_parent">
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:textColor="@color/Nero">
 
-                <ImageView
-                    android:id="@+id/imgFiltro"
-                    android:src="@drawable/icona_cerca"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/Nero"
+                        android:text="Categorie"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/chkTutteLeCat"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:text="Tutte" />
+
+                    <RadioButton
+                        android:id="@+id/chkSoloDiRicerca"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:text="Di Ricerca" />
+
+                    <RadioButton
+                        android:id="@+id/chkSoloNormali"
+                        android:textColor="@color/Nero"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:text="Normali" />
+                </RadioGroup>
+
             </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/txtQualeStaFacendo"
             android:textSize="14sp"
+            android:textColor="@color/Nero"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -106,6 +163,7 @@
             android:id="@+id/chkRefresh"
             android:gravity="end|center_vertical"
             android:layout_width="match_parent"
+            android:textColor="@color/Nero"
             android:layout_height="30dp"
             android:text="Refresh Categorie" />
 
@@ -181,6 +239,28 @@
                     <ImageView
                         android:id="@+id/imgRicerca"
                         android:src="@drawable/icona_cerca"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/Nero"
+                        android:text="Volti"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgVolti"
+                        android:src="@drawable/volto"
                         android:layout_width="40dp"
                         android:layout_height="40dp" />
                 </LinearLayout>

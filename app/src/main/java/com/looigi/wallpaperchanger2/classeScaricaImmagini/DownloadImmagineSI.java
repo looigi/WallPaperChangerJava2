@@ -37,14 +37,18 @@ public class DownloadImmagineSI {
     private Context context;
     private boolean isCancelled;
     private InputStream in;
+    private int numScarico;
+    private TextView txtInfoImm;
 
     public void EsegueDownload(Context context, ImageView bmImage, String UrlImmagine,
                                String Modalita, String Filtro, boolean Salva, String TipoOperazione, int numeroScarico,
                                TextView txtInfoImmagine) {
         this.context = context;
         this.bmImage = bmImage;
+        numScarico = numeroScarico;
+        txtInfoImm = txtInfoImmagine;
 
-        // AttivaTimer();
+        AttivaTimer();
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -61,6 +65,8 @@ public class DownloadImmagineSI {
                     in = new java.net.URL(urldisplay).openStream();
                     if (in != null && !isCancelled) {
                         mIcon11 = BitmapFactory.decodeStream(in);
+
+                        BloccaTimer();
 
                         if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
                             Bitmap finalMIcon1 = mIcon11;
@@ -244,7 +250,7 @@ public class DownloadImmagineSI {
     private HandlerThread handlerThread;
     private int secondiPassati = 0;
 
-    /* private void AttivaTimer() {
+    private void AttivaTimer() {
         secondiPassati = 0;
 
         handlerThread = new HandlerThread("background-thread_" +
@@ -260,12 +266,14 @@ public class DownloadImmagineSI {
                         try {
                             in.close();
                         } catch (IOException ignored) {
-
+                            int a = 0;
+                        } catch (Exception ignored) {
+                            int a = 1;
                         }
                         in = null;
                     }
 
-                    ImpostaLogo();
+                    ImpostaLogo(numScarico, txtInfoImm);
 
                     BloccaTimer();
                     BloccaEsecuzione();
@@ -289,7 +297,7 @@ public class DownloadImmagineSI {
             handler = null;
             r = null;
         }
-    } */
+    }
 
     public void BloccaEsecuzione() {
         VariabiliStatichePlayer.getInstance().setDownImmagine(null);

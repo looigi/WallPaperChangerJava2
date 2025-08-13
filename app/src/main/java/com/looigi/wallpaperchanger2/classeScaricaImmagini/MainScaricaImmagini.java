@@ -111,24 +111,34 @@ public class MainScaricaImmagini extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
+            super.onBackPressed();
 
-        VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
-        act.finish();
+            VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
+            act.finish();
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Download in corso");
+        }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        super.onKeyDown(keyCode, event);
+        if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
+            super.onKeyDown(keyCode, event);
 
-        switch(keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
-                this.finish();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    VariabiliScaricaImmagini.getInstance().setMascheraAttiva(false);
+                    this.finish();
 
-                return false;
+                    return false;
+            }
+
+            return false;
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Download in corso");
+
+            return false;
         }
-
-        return false;
     }
 }

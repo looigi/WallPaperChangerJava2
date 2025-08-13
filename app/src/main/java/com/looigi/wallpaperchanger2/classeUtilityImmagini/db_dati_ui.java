@@ -33,6 +33,7 @@ public class db_dati_ui {
     private boolean RiscritturaP = false;
     private boolean RiscritturaG = false;
     private boolean RiscritturaFC = false;
+    private boolean RiscritturaIN = false;
 
     public boolean DbAperto() {
         if (myDB != null) {
@@ -78,6 +79,7 @@ public class db_dati_ui {
             RiscritturaP = false;
             RiscritturaG = false;
             RiscritturaFC = false;
+            RiscritturaIN = false;
         } catch (Exception e) {
             // Log.getInstance().ScriveLog("ERRORE Nell'apertura del db: " + UtilityDetector.getInstance().PrendeErroreDaException(e));
             int a = 0;
@@ -91,7 +93,7 @@ public class db_dati_ui {
                 String sql = "CREATE TABLE IF NOT EXISTS "
                         + "Controllo"
                         + " (idRiga int, Categoria VARCHAR, idCategoria int, Giuste int, "
-                        + "Errate int, Piccole int, Inesistenti int, Grandi int"
+                        + "Errate int, Piccole int, Inesistenti int, Grandi int, Invalide int"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -132,6 +134,14 @@ public class db_dati_ui {
                         + "Grandi"
                         + " (idRiga int, Progressivo int, "
                         + "Grande VARCHAR"
+                        + ");";
+
+                myDB.execSQL(sql);
+
+                sql = "CREATE TABLE IF NOT EXISTS "
+                        + "Invalide"
+                        + " (idRiga int, Progressivo int, "
+                        + "Invalida VARCHAR"
                         + ");";
 
                 myDB.execSQL(sql);
@@ -194,6 +204,11 @@ public class db_dati_ui {
                     + "Grandi";
 
             myDB.execSQL(sql);
+
+            sql = "Drop Table "
+                    + "Invalide";
+
+            myDB.execSQL(sql);
         }
     }
 
@@ -233,6 +248,11 @@ public class db_dati_ui {
                     + "Grandi";
 
             myDB.execSQL(sql);
+
+            sql = "Delete From "
+                    + "Invalide";
+
+            myDB.execSQL(sql);
         }
     }
 
@@ -259,6 +279,7 @@ public class db_dati_ui {
                             } while (cE.moveToNext());
                         }
                         cE.close();
+                        s.setErrate(errate.size());
                         s.setListaErrate(errate);
 
                         List<String> piccole = new ArrayList<>();
@@ -269,6 +290,7 @@ public class db_dati_ui {
                             } while (cP.moveToNext());
                         }
                         cP.close();
+                        s.setPiccole(piccole.size());
                         s.setListaPiccole(piccole);
 
                         List<String> inesistenti = new ArrayList<>();
@@ -279,6 +301,7 @@ public class db_dati_ui {
                             } while (cI.moveToNext());
                         }
                         cI.close();
+                        s.setInesistenti(inesistenti.size());
                         s.setListaInesistenti(inesistenti);
 
                         List<StrutturaImmaginiUguali> uguali = new ArrayList<>();
@@ -293,6 +316,8 @@ public class db_dati_ui {
                                 uguali.add(sU);
                             } while (cU.moveToNext());
                         }
+                        cU.close();
+                        s.setListaUguali(uguali);
 
                         List<String> grandi = new ArrayList<>();
                         Cursor cG = myDB.rawQuery("SELECT * FROM Grandi Where idRiga=" + idRiga + " Order By Progressivo", null);
@@ -302,10 +327,19 @@ public class db_dati_ui {
                             } while (cG.moveToNext());
                         }
                         cG.close();
+                        s.setGrandi(grandi.size());
                         s.setListaGrandi(grandi);
 
-                        cU.close();
-                        s.setListaUguali(uguali);
+                        List<String> invalide = new ArrayList<>();
+                        Cursor cIn = myDB.rawQuery("SELECT * FROM invalide Where idRiga=" + idRiga + " Order By Progressivo", null);
+                        if (cIn.moveToFirst()) {
+                            do {
+                                invalide.add(cIn.getString(2));
+                            } while (cIn.moveToNext());
+                        }
+                        cIn.close();
+                        s.setInvalide(invalide.size());
+                        s.setListaInvalide(invalide);
 
                         List<StrutturaImmagineFuoriCategoria> fc = new ArrayList<>();
                         Cursor cFC = myDB.rawQuery("SELECT * FROM FuoriCategoria Where idRiga=" + idRiga + " Order By Progressivo", null);
@@ -362,6 +396,7 @@ public class db_dati_ui {
                         s.setPiccole(c.getInt(4));
                         s.setInesistenti(c.getInt(5));
                         s.setGrandi(c.getInt(6));
+                        s.setInvalide(c.getInt(7));
 
                         Cosa = "2-" + idRiga;
                         List<String> errate = new ArrayList<>();
@@ -372,6 +407,7 @@ public class db_dati_ui {
                             } while (cE.moveToNext());
                         }
                         cE.close();
+                        s.setErrate(errate.size());
                         s.setListaErrate(errate);
 
                         Cosa = "3-" + idRiga;
@@ -383,6 +419,7 @@ public class db_dati_ui {
                             } while (cP.moveToNext());
                         }
                         cP.close();
+                        s.setPiccole(piccole.size());
                         s.setListaPiccole(piccole);
 
                         Cosa = "4-" + idRiga;
@@ -394,6 +431,7 @@ public class db_dati_ui {
                             } while (cI.moveToNext());
                         }
                         cI.close();
+                        s.setInesistenti(inesistenti.size());
                         s.setListaInesistenti(inesistenti);
 
                         Cosa = "5-" + idRiga;
@@ -405,7 +443,20 @@ public class db_dati_ui {
                             } while (cG.moveToNext());
                         }
                         cG.close();
+                        s.setGrandi(grandi.size());
                         s.setListaGrandi(grandi);
+
+                        Cosa = "5-5-" + idRiga;
+                        List<String> invalide = new ArrayList<>();
+                        Cursor cIn = myDB.rawQuery("SELECT * FROM Invalide Where idRiga=" + idRiga + " Order By Progressivo", null);
+                        if (cIn.moveToFirst()) {
+                            do {
+                                invalide.add(cIn.getString(2));
+                            } while (cIn.moveToNext());
+                        }
+                        cIn.close();
+                        s.setInvalide(invalide.size());
+                        s.setListaInvalide(invalide);
 
                         Cosa = "6-" + idRiga;
                         List<StrutturaImmaginiUguali> uguali = new ArrayList<>();
@@ -514,7 +565,8 @@ public class db_dati_ui {
                         " " + s.getErrate() + ", " +
                         " " + s.getPiccole() + ", " +
                         " " + s.getInesistenti() + ", " +
-                        " " + s.getGrandi() + " " +
+                        " " + s.getGrandi() + ", " +
+                        " " + s.getInvalide() + " " +
                     ")";
             } else {
                 sql = "update Controllo Set " +
@@ -522,6 +574,7 @@ public class db_dati_ui {
                         "Errate=" + s.getErrate() + ", " +
                         "Piccole=" + s.getPiccole() + ", " +
                         "Grandi=" + s.getGrandi() + ", " +
+                        "Invalide=" + s.getInvalide() + ", " +
                         "Inesistenti=" + s.getInesistenti() + " " +
                         "Where idRiga=" + idRiga;
             }
@@ -570,6 +623,13 @@ public class db_dati_ui {
             }
 
             sql = "Delete From Grandi Where idRiga=" + idRiga;
+            try {
+                myDB.execSQL(sql);
+            } catch (SQLException e) {
+                int a = 0;
+            }
+
+            sql = "Delete From Invalide Where idRiga=" + idRiga;
             try {
                 myDB.execSQL(sql);
             } catch (SQLException e) {
@@ -680,6 +740,32 @@ public class db_dati_ui {
                         UtilitiesGlobali.getInstance().ApreToast(
                                 context,
                                 "Problemi nella scrittua della tabella Grandi: " + e.getMessage()
+                        );
+                    }
+                }
+
+                Progressivo++;
+            }
+
+            Progressivo = 0;
+            for (String s55: s.getListaInvalide()) {
+                sql = "Insert Into Invalide Values (" +
+                        " " + idRiga + ", " +
+                        " " + Progressivo + ", " +
+                        "'" + s55.replace("'", "''") + "' " +
+                        ")";
+                try {
+                    myDB.execSQL(sql);
+                } catch (SQLException e) {
+                    if (!RiscritturaIN) {
+                        RiscritturaIN = true;
+                        DropTabelle();
+                        CreazioneTabelle();
+                        ScriveDati(s);
+                    } else {
+                        UtilitiesGlobali.getInstance().ApreToast(
+                                context,
+                                "Problemi nella scrittua della tabella invalide: " + e.getMessage()
                         );
                     }
                 }

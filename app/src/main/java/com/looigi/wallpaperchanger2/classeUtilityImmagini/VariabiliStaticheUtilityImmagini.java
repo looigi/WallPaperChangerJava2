@@ -56,6 +56,24 @@ public class VariabiliStaticheUtilityImmagini {
     private boolean chkUguali = false;
     private boolean chkFC = false;
     private boolean chkPoche = false;
+    private List<Integer> listaCategorieDiRicerca = new ArrayList<>();
+    private int tipoCategoria = 3;
+
+    public int getTipoCategoria() {
+        return tipoCategoria;
+    }
+
+    public void setTipoCategoria(int tipoCategoria) {
+        this.tipoCategoria = tipoCategoria;
+    }
+
+    public List<Integer> getListaCategorieDiRicerca() {
+        return listaCategorieDiRicerca;
+    }
+
+    public void setListaCategorieDiRicerca(List<Integer> listaCategorieDiRicerca) {
+        this.listaCategorieDiRicerca = listaCategorieDiRicerca;
+    }
 
     public boolean isChkPoche() {
         return chkPoche;

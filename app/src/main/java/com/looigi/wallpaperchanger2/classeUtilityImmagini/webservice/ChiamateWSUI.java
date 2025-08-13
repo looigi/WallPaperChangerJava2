@@ -16,6 +16,7 @@ import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.UtilityUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -41,6 +42,23 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     public ChiamateWSUI(Context context) {
         this.context = context;
+    }
+
+    public void RitornaCategorieDiRicerca() {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        this.ForzaRefresh = ForzaRefresh;
+
+        String Urletto="RitornaCategorieDiRicerca";
+
+        TipoOperazione = "RitornaCategorieDiRicerca";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                6000000,
+                ApriDialog);
     }
 
     public void SistemaImmaginiSenzaHash() {
@@ -90,6 +108,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
         this.ForzaRefresh = ForzaRefresh;
         if (ForzaRefresh == null) { ForzaRefresh = "S"; }
+        ForzaRefresh = "S"; // Mi sono accorto che non serve a nulla prendere la cache
 
         String Urletto="ControlloImmaginiCategoria?idCategoria=" + id + "&ForzaRefresh=" + ForzaRefresh;
 
@@ -170,7 +189,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
         String Urletto="ImmaginiUgualiMobile?" +
                 "Categoria=" + Categoria +
-                "&ForzaRefresh=N";
+                "&ForzaRefresh=S"; // Messo a S per dare sempre risultati aggiornati
 
         TipoOperazione = "ImmaginiUgualiMobile";
 
@@ -234,6 +253,9 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     case "SistemaImmaginiSenzaHash":
                         fSistemaImmaginiSenzaHash(result);
                         break;
+                    case "RitornaCategorieDiRicerca":
+                        fRitornaCategorieDiRicerca(result);
+                        break;
                 }
             }
         };
@@ -255,6 +277,30 @@ public class ChiamateWSUI implements TaskDelegateUI {
         }
     }
 
+    private void fRitornaCategorieDiRicerca(String result) {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+
+        boolean ritorno = ControllaRitorno("RitornaCategorieDiRicerca", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            String[] id = result.split(";");
+            List<Integer> lista = new ArrayList<>();
+            for (String i: id) {
+                lista.add(Integer.valueOf(i));
+            }
+            VariabiliStaticheUtilityImmagini.getInstance().setListaCategorieDiRicerca(lista);
+
+            VariabiliStaticheUtilityImmagini.getInstance().setAdapter(new AdapterListenerUI(
+                    context,
+                    VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieIMM())
+            );
+            VariabiliStaticheUtilityImmagini.getInstance().getLstImmagini().setAdapter(
+                    VariabiliStaticheUtilityImmagini.getInstance().getAdapter()
+            );
+        }
+    }
+
     private void fControlloImmagini(String result) {
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
 
@@ -272,6 +318,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 int Giuste = root.getInt("Giuste");
                 int Errate = root.getInt("Errate");
                 int Inesistenti = root.getInt("Inesistenti");
+                int Invalide = root.getInt("Invalide");
                 JSONArray listaErrate = root.getJSONArray("listaErrate");
                 List<String> listaErrateS = new ArrayList<>();
                 for(int i = 0; i < listaErrate.length(); i++) {
@@ -302,6 +349,13 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     String Immagine = obj.getString("ImmagineInesistente");
                     listaInesistentiS.add(Immagine);
                 }
+                JSONArray listaInvalide = root.getJSONArray("listaInvalide");
+                List<String> listaInvalideS = new ArrayList<>();
+                for(int i = 0; i < listaInvalide.length(); i++) {
+                    JSONObject obj = listaInvalide.getJSONObject(i);
+                    String Immagine = obj.getString("ImmagineInvalida");
+                    listaInvalideS.add(Immagine);
+                }
 
                 StrutturaControlloImmagini s = new StrutturaControlloImmagini();
                 s.setCategoria(Categoria);
@@ -315,6 +369,8 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 s.setListaPiccole(listaPiccoleS);
                 s.setListaGrandi(listaGrandiS);
                 s.setListaInesistenti(listaInesistentiS);
+                s.setInvalide(Invalide);
+                s.setListaInvalide(listaInvalideS);
                 VariabiliStaticheUtilityImmagini.getInstance().setStrutturaAttuale(s);
 
                 Handler handlerTimer = new Handler(Looper.getMainLooper());

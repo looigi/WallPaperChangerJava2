@@ -72,7 +72,7 @@ public class MainControlloImmagini extends Activity {
         db.ChiudeDB();
 
         Spinner spnTipo = findViewById(R.id.spnTipologie);
-        String[] Tipi = { "Errate", "Piccole", "Inesistenti", "Grandi" };
+        String[] Tipi = { "Errate", "Piccole", "Inesistenti", "Grandi", "Invalide" };
         UtilitiesGlobali.getInstance().ImpostaSpinner(
                 context,
                 spnTipo,
@@ -128,6 +128,9 @@ public class MainControlloImmagini extends Activity {
                 break;
             case "Grandi":
                 lista = VariabiliStaticheControlloImmagini.getInstance().getStrutturaDati().getListaGrandi();
+                break;
+            case "Invalide":
+                lista = VariabiliStaticheControlloImmagini.getInstance().getStrutturaDati().getListaInvalide();
                 break;
         }
 

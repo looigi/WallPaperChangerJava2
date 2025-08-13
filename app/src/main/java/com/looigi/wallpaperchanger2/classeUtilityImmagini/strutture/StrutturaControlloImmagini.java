@@ -15,12 +15,30 @@ public class StrutturaControlloImmagini {
     private int Piccole;
     private int Grandi;
     private int Inesistenti;
+    private int Invalide;
     private List<String> listaErrate;
     private List<String> listaPiccole;
     private List<String> listaInesistenti;
     private List<String> listaGrandi;
+    private List<String> listaInvalide;
     private List<StrutturaImmaginiUguali> listaUguali;
     private List<StrutturaImmagineFuoriCategoria> listaFC;
+
+    public int getInvalide() {
+        return Invalide;
+    }
+
+    public void setInvalide(int invalide) {
+        Invalide = invalide;
+    }
+
+    public List<String> getListaInvalide() {
+        return listaInvalide;
+    }
+
+    public void setListaInvalide(List<String> listaInvalide) {
+        this.listaInvalide = listaInvalide;
+    }
 
     public int getGrandi() {
         return Grandi;

@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,15 @@ public class AdapterListenerTipi extends BaseAdapter {
             TextView txtFiltro = view.findViewById(R.id.txtFiltro);
             txtFiltro.setText(Immagini.get(i).getFiltro());
 
+            View finalView = view;
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     String Filtro = Immagini.get(i).getFiltro();
+                    if (VariabiliImmaginiUguali.getInstance().getLastView() != null) {
+                        VariabiliImmaginiUguali.getInstance().getLastView().setBackgroundColor(Color.TRANSPARENT);
+                    }
+                    VariabiliImmaginiUguali.getInstance().setLastView(finalView);
+                    finalView.setBackgroundColor(Color.argb(255, 150, 255, 150));
 
                     ChiamateWSMIU c = new ChiamateWSMIU(context);
                     c.RitornaImmaginiUgualiFiltro(

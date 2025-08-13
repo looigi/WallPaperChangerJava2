@@ -51,7 +51,7 @@ public class VariabiliStatichePlayer {
     public static int channelIdIntentOverlay = 152;
     // public static int SecondiCambioImmagine = 30;
     public static int SecondiBranoPregresso= 15;
-    public static final int TimeoutImmagine = 5;
+    public static final int TimeoutImmagine = 7;
     public static final int TimeoutBrano = 45;
     private boolean staSuonando = false;
     public static String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":"+ VariabiliStaticheStart.PortaPlayer; // "http://looigi.no-ip.biz:1081";

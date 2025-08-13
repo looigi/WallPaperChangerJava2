@@ -116,7 +116,38 @@ public class AdapterListenerUI extends BaseAdapter {
                 }
 
                 if (Ok && (ok1 || ok2)) {
-                    listaFiltrata.add(cat);
+                    boolean diRicerca = VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieDiRicerca().contains(
+                            cat.getIdCategoria()
+                    );
+                    int modalitaVisualizzazione = VariabiliStaticheUtilityImmagini.getInstance().getTipoCategoria();
+                    boolean okCat = true;
+
+                    switch (modalitaVisualizzazione) {
+                        case 1:
+                            // Tutte
+                            okCat = true;
+                            break;
+                        case 2:
+                            // Di ricerca
+                            if (diRicerca) {
+                                okCat = true;
+                            } else {
+                                okCat = false;
+                            }
+                            break;
+                        case 3:
+                            // Solo Normali
+                            if (!diRicerca) {
+                                okCat = true;
+                            } else {
+                                okCat = false;
+                            }
+                            break;
+                    }
+
+                    if (okCat) {
+                        listaFiltrata.add(cat);
+                    }
                 }
             }
         }
@@ -134,7 +165,7 @@ public class AdapterListenerUI extends BaseAdapter {
             int idCategoria = listaCategorieFiltrate.get(i).getIdCategoria();
 
             TextView txtCategoria = view.findViewById(R.id.txtCategoria);
-            txtCategoria.setText(Categoria);
+            txtCategoria.setText(idCategoria + "-" + Categoria);
 
             ImageView imgRaggruppate = view.findViewById(R.id.imgRaggruppate);
             imgRaggruppate.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +226,10 @@ public class AdapterListenerUI extends BaseAdapter {
                     }
                     if (s.getGrandi() > 0) {
                         Scritta += " - Grandi: " + s.getGrandi();
+                        Ok2 = false;
+                    }
+                    if (s.getInvalide() > 0) {
+                        Scritta += " - Invalide: " + s.getInvalide();
                         Ok2 = false;
                     }
                     txtControllo.setText(Scritta);
@@ -331,6 +366,44 @@ public class AdapterListenerUI extends BaseAdapter {
                 public void onClick(View v) {
                     ChiamateWSUI ws = new ChiamateWSUI(context);
                     ws.RefreshImmagini(String.valueOf(idCategoria), true);
+                }
+            });
+
+            ImageView imgRinomina = view.findViewById(R.id.imgRinominaCategoria);
+            imgRinomina.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Nome categoria");
+
+                    final EditText input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.setText(Categoria.replace("_", " "));
+                    builder.setView(input);
+
+                    String finalCategoria = Categoria;
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String Salvataggio = input.getText().toString();
+                            if (Salvataggio.isEmpty()) {
+                                UtilitiesGlobali.getInstance().ApreToast(context,
+                                        "Immettere un nome categoria");
+                            } else {
+                                Salvataggio = Salvataggio.trim().replace(" ", "_");
+
+                                ChiamateWSMI ws = new ChiamateWSMI(context);
+                                ws.RinominaCategoria(finalCategoria, Salvataggio, "UI");
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
                 }
             });
 

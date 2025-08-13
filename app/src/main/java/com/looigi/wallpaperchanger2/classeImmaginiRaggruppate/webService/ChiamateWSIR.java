@@ -198,6 +198,7 @@ public class ChiamateWSIR implements TaskDelegateIR {
                 sic.setUrlImmagine(obj2.getString("UrlImmagine"));
                 sic.setPathImmagine(obj2.getString("PathImmagine"));
                 sic.setEsisteImmagine(obj2.getBoolean("EsisteImmagine"));
+                sic.setUrlImmagine(obj2.getString("UrlImmagine"));
 
                 lista.add(sic);
             }

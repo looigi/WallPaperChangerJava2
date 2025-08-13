@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classeImmaginiUguali;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -38,6 +39,15 @@ public class VariabiliImmaginiUguali {
     private List<StrutturaImmaginiUgualiRitornate> lista2 = new ArrayList<>();
     private LinearLayout layPreview;
     private ImmagineZoomabile imgPreview;
+    private View lastView;
+
+    public View getLastView() {
+        return lastView;
+    }
+
+    public void setLastView(View lastView) {
+        this.lastView = lastView;
+    }
 
     public ImmagineZoomabile getImgPreview() {
         return imgPreview;
