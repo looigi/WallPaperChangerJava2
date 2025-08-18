@@ -202,6 +202,41 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 ApriDialog);
     }
 
+    public void RinominaImmagine(String idImmagine, String NuovoNome) {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+
+        String Urletto="RinominaImmagine?" +
+                "idImmagine=" + idImmagine +
+                "&NuovoNome=" + NuovoNome;
+
+        TipoOperazione = "RinominaImmagine";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                ApriDialog);
+    }
+
+    public void ConverteImmagine(String idImmagine) {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+
+        String Urletto="ConverteImmagine?" +
+                "idImmagine=" + idImmagine;
+
+        TipoOperazione = "ConverteImmagine";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
@@ -255,6 +290,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
                         break;
                     case "RitornaCategorieDiRicerca":
                         fRitornaCategorieDiRicerca(result);
+                        break;
+                    case "RinominaImmagine":
+                        fRinominaImmagine(result);
+                        break;
+                    case "ConverteImmagine":
+                        fConverteImmagine(result);
                         break;
                 }
             }
@@ -395,6 +436,42 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 VariabiliStaticheUtilityImmagini.getInstance().setControllaTutto(false);
                 UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel parse json del controllo immagini");
             }
+        }
+    }
+
+    private void fConverteImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Converte Immagine", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    // ChiamateWSUI ws = new ChiamateWSUI(context);
+                    // ws.RitornaImmaginiUguali(Categoria, ForzaRefresh);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine convertita");
+        }
+    }
+
+    private void fRinominaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Rinomina Immagine", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    // ChiamateWSUI ws = new ChiamateWSUI(context);
+                    // ws.RitornaImmaginiUguali(Categoria, ForzaRefresh);
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 500);
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine rinominata");
         }
     }
 

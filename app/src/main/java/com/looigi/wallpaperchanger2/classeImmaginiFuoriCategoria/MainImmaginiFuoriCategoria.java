@@ -160,6 +160,23 @@ public class MainImmaginiFuoriCategoria extends Activity {
             });
 
             VariabiliImmaginiFuoriCategoria.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+            final boolean[] primoIngresso = {true};
+            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view,
+                                           int position, long id) {
+                    if (primoIngresso[0]) {
+                        primoIngresso[0] = false;
+                        return;
+                    }
+
+                    String Categoria = adapterView.getItemAtPosition(position).toString();
+                    // VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaImpostata(Categoria);
+                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(Categoria);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapter) {  }
+            });
 
             ChiamateWSMI c = new ChiamateWSMI(context);
             c.RitornaCategorie(false, "FC");

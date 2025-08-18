@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -326,6 +329,116 @@ public class MainUtilityImmagini extends Activity {
                 context.startActivity(iP);
             }
         });
+
+
+        // WEBVIEW
+        VariabiliStaticheUtilityImmagini.getInstance().setLayWV(findViewById(R.id.layWebView));
+        VariabiliStaticheUtilityImmagini.getInstance().getLayWV().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheUtilityImmagini.getInstance().setVwInCorso(false);
+
+        VariabiliStaticheUtilityImmagini.getInstance().setWvRicerca(findViewById(R.id.webView));
+        VariabiliStaticheUtilityImmagini.getInstance().getWvRicerca().setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(VariabiliStaticheUtilityImmagini.getInstance().getWvRicerca().getContext(),
+                    new GestureDetector.SimpleOnGestureListener() {
+                        @Override
+                        public void onLongPress(MotionEvent e) {
+                            if (VariabiliStaticheUtilityImmagini.getInstance().getDownloadId() == -1) {
+                                WebView.HitTestResult result = VariabiliStaticheUtilityImmagini.getInstance().getWvRicerca().getHitTestResult();
+                                if (result != null &&
+                                        (result.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+                                                result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)) {
+
+                                    String imageUrl = result.getExtra();
+                                    UtilityUtilityImmagini.getInstance().showDownloadDialog(context, imageUrl);
+                                }
+                            } else {
+                                UtilitiesGlobali.getInstance().ApreToast(context, "Download in corso");
+                            }
+                        }
+                    });
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return false; // restituisci false per non bloccare altri eventi
+            }
+        });
+
+        VariabiliStaticheUtilityImmagini.getInstance().setEdtVW(findViewById(R.id.edtRicerca));
+        /*
+        assert Filtro != null;
+        edtRicercaWV.setText(Filtro.replace("_", " "));
+
+        ImageView imgApreWV = findViewById(R.id.imgApreWV);
+        imgApreWV.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().getLayWV().setVisibility(LinearLayout.VISIBLE);
+
+                String Filtro2 = edtRicercaWV.getText().toString();
+                UtilityUtilityImmagini.getInstance().esegueRicercaWV(context, Filtro2);
+            }
+        }); */
+
+        ImageView imgCercaWV = findViewById(R.id.imgCercaWV);
+        imgCercaWV.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Filtro2 = VariabiliStaticheUtilityImmagini.getInstance().getEdtVW().getText().toString();
+                UtilityUtilityImmagini.getInstance().esegueRicercaWV(context, Filtro2);
+            }
+        });
+
+        ImageView imgChiudeWV = findViewById(R.id.imgChiudeWV);
+        imgChiudeWV.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setVwInCorso(false);
+                VariabiliStaticheUtilityImmagini.getInstance().getLayWV().setVisibility(LinearLayout.GONE);
+            }
+        });
+        // WEBVIEW
+
+        ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
+        imgNuovaCategoria.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Nuova categoria");
+
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText("");
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String Salvataggio = input.getText().toString();
+
+                        if (Salvataggio.isEmpty()) {
+                            UtilitiesGlobali.getInstance().ApreToast(context,
+                                    "Immettere un nome categoria");
+                        } else {
+                            ChiamateWSMI ws = new ChiamateWSMI(context);
+                            ws.CreaNuovaCategoria(Salvataggio.replace(" ", "_"), "UI");
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        ImageView imgRefreshCategorie = findViewById(R.id.imgRefresh);
+        imgRefreshCategorie.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ChiamateWSMI ws = new ChiamateWSMI(context);
+                ws.RitornaCategorie(true, "UI");
+            }
+        });
     }
 
     @Override
@@ -338,16 +451,22 @@ public class MainUtilityImmagini extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        super.onKeyDown(keyCode, event);
+        if (!VariabiliStaticheUtilityImmagini.getInstance().isVwInCorso()) {
+            super.onKeyDown(keyCode, event);
 
-        switch(keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                VariabiliStaticheUtilityImmagini.getInstance().setBloccaElaborazione(true);
-                this.finish();
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    VariabiliStaticheUtilityImmagini.getInstance().setBloccaElaborazione(true);
+                    this.finish();
 
-                return true;
+                    return true;
+            }
+
+            return false;
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "vebView in corso");
+
+            return false;
         }
-
-        return false;
     }
 }

@@ -1,20 +1,29 @@
 package com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -27,6 +36,7 @@ import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmagi
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.MainImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
+import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
@@ -37,6 +47,7 @@ import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaUgu
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,8 +175,11 @@ public class AdapterListenerUI extends BaseAdapter {
             String Categoria = listaCategorieFiltrate.get(i).getCategoria();
             int idCategoria = listaCategorieFiltrate.get(i).getIdCategoria();
 
+            TextView txtIdCategoria = view.findViewById(R.id.txtIdCategoria);
+            txtIdCategoria.setText(Integer.toString(idCategoria));
+
             TextView txtCategoria = view.findViewById(R.id.txtCategoria);
-            txtCategoria.setText(idCategoria + "-" + Categoria);
+            txtCategoria.setText(Categoria);
 
             ImageView imgRaggruppate = view.findViewById(R.id.imgRaggruppate);
             imgRaggruppate.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +188,16 @@ public class AdapterListenerUI extends BaseAdapter {
                     intent.putExtra("idCategoria", Integer.toString(idCategoria));
                     intent.putExtra("Modalita", "1");
                     context.startActivity(intent);
+                }
+            });
+
+            ImageView imgVW = view.findViewById(R.id.imgUploadWV);
+            imgVW.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    VariabiliStaticheUtilityImmagini.getInstance().getEdtVW().setText(Categoria.replace("_", " "));
+                    VariabiliStaticheMostraImmagini.getInstance().setCategoria(Categoria);
+                    VariabiliStaticheUtilityImmagini.getInstance().setVwInCorso(true);
+                    VariabiliStaticheUtilityImmagini.getInstance().getLayWV().setVisibility(LinearLayout.VISIBLE);
                 }
             });
 
@@ -241,6 +265,7 @@ public class AdapterListenerUI extends BaseAdapter {
                     Ok = true;
                 }
             }
+
             ImageView imgApreControllo = view.findViewById(R.id.imgApreControllo);
             if (Ok) {
                 layControllo.setVisibility(LinearLayout.VISIBLE);
@@ -302,8 +327,8 @@ public class AdapterListenerUI extends BaseAdapter {
                         }
                     }
                 }
-            }
-            ;
+            };
+
             ImageView imgApreUguali = view.findViewById(R.id.imgApreUguale);
             if (OkU) {
                 layUguali.setVisibility(LinearLayout.VISIBLE);
@@ -413,7 +438,7 @@ public class AdapterListenerUI extends BaseAdapter {
                     VariabiliStaticheMostraImmagini.getInstance().setCategoria(Categoria);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Nome salvataggio");
+                    builder.setTitle("Filtro immagini");
 
                     final EditText input = new EditText(context);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -431,8 +456,26 @@ public class AdapterListenerUI extends BaseAdapter {
                             } else {
                                 VariabiliScaricaImmagini.getInstance().setListaDaScaricare(new ArrayList<>());
 
-                                ChiamateWSMI ws = new ChiamateWSMI(context);
-                                ws.ScaricaImmagini(finalCategoria, Salvataggio);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.setTitle("Filtro valori per nome categoria ?");
+
+                                String finalCategoria = Categoria;
+                                builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ChiamateWSMI ws = new ChiamateWSMI(context);
+                                        ws.ScaricaImmagini(finalCategoria, Salvataggio, "S", "UI");
+                                    }
+                                });
+                                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ChiamateWSMI ws = new ChiamateWSMI(context);
+                                        ws.ScaricaImmagini(finalCategoria, Salvataggio, "N", "UI");
+                                    }
+                                });
+
+                                builder.show();
                             }
                         }
                     });

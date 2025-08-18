@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -58,6 +60,61 @@ public class VariabiliStaticheUtilityImmagini {
     private boolean chkPoche = false;
     private List<Integer> listaCategorieDiRicerca = new ArrayList<>();
     private int tipoCategoria = 3;
+
+    private long downloadId = -1;
+    private String fileDaEliminare = "";
+    private WebView wvRicerca;
+    private LinearLayout layWV;
+    private EditText edtVW;
+    private boolean vwInCorso = false;
+
+    public boolean isVwInCorso() {
+        return vwInCorso;
+    }
+
+    public void setVwInCorso(boolean vwInCorso) {
+        this.vwInCorso = vwInCorso;
+    }
+
+    public EditText getEdtVW() {
+        return edtVW;
+    }
+
+    public void setEdtVW(EditText edtVW) {
+        this.edtVW = edtVW;
+    }
+
+    public LinearLayout getLayWV() {
+        return layWV;
+    }
+
+    public void setLayWV(LinearLayout layWV) {
+        this.layWV = layWV;
+    }
+
+    public WebView getWvRicerca() {
+        return wvRicerca;
+    }
+
+    public void setWvRicerca(WebView wvRicerca) {
+        this.wvRicerca = wvRicerca;
+    }
+
+    public String getFileDaEliminare() {
+        return fileDaEliminare;
+    }
+
+    public void setFileDaEliminare(String fileDaEliminare) {
+        this.fileDaEliminare = fileDaEliminare;
+    }
+
+    public long getDownloadId() {
+        return downloadId;
+    }
+
+    public void setDownloadId(long downloadId) {
+        this.downloadId = downloadId;
+    }
 
     public int getTipoCategoria() {
         return tipoCategoria;

@@ -218,8 +218,25 @@ public class MainMostraImmagini extends Activity {
                         } else {
                             VariabiliScaricaImmagini.getInstance().setListaDaScaricare(new ArrayList<>());
 
-                            ChiamateWSMI ws = new ChiamateWSMI(context);
-                            ws.ScaricaImmagini(finalCategoria, Salvataggio);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Filtro valori per nome categoria ?");
+
+                            builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ChiamateWSMI ws = new ChiamateWSMI(context);
+                                    ws.ScaricaImmagini(finalCategoria, Salvataggio, "S", "IMMAGINI");
+                                }
+                            });
+                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ChiamateWSMI ws = new ChiamateWSMI(context);
+                                    ws.ScaricaImmagini(finalCategoria, Salvataggio, "N", "IMMAGINI");
+                                }
+                            });
+
+                            builder.show();
                         }
                     }
                 });
@@ -234,7 +251,7 @@ public class MainMostraImmagini extends Activity {
             }
         });
 
-        ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
+        /* ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
         imgNuovaCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -268,7 +285,7 @@ public class MainMostraImmagini extends Activity {
 
                 builder.show();
             }
-        });
+        }); */
 
         ImageView imgModifica = findViewById(R.id.imgModificaMI);
         imgModifica.setOnClickListener(new View.OnClickListener() {

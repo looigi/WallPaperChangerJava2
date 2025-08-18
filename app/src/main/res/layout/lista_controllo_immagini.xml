@@ -36,7 +36,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
+                android:orientation="vertical"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_height="wrap_content">
 
@@ -45,11 +46,23 @@
                     android:src="@drawable/elimina_quadrato"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
+
+                <ImageView
+                    android:id="@+id/imgRinomina"
+                    android:src="@drawable/rename"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <ImageView
+                    android:id="@+id/imgConverte"
+                    android:src="@drawable/converte"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:layout_gravity="start|center_vertical"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">

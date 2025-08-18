@@ -98,6 +98,7 @@ public class AdapterListenerListaVolti extends BaseAdapter {
         ImageView imgImmagineOrigine = view.findViewById(R.id.imgImmagineOrigine);
 
         d.EsegueDownload(context, imgImmagine, urlImmagine);
+        d.EsegueDownload(context, imgImmagineOrigine, urlImmagineNuova);
 
         imgImmagine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

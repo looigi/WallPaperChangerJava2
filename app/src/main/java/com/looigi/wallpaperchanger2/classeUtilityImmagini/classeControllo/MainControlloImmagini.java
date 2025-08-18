@@ -113,7 +113,7 @@ public class MainControlloImmagini extends Activity {
         });
     }
 
-    private void CaricaDati() {
+    public void CaricaDati() {
         List<String> lista = new ArrayList<>();
 
         switch (VariabiliStaticheControlloImmagini.getInstance().getTipologia()) {

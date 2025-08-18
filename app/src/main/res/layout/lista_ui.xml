@@ -28,20 +28,39 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/txtCategoria"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:gravity="start"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtIdCategoria"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/txtCategoria"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:gravity="start"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="5"
+                    android:layout_weight="6"
                     android:gravity="end|center_vertical"
                     android:layout_height="wrap_content">
 
@@ -58,6 +77,12 @@
                         android:layout_height="30dp" />
 
                     <ImageView
+                        android:id="@+id/imgRinominaCategoria"
+                        android:src="@drawable/rename"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                    <ImageView
                         android:id="@+id/imgRaggruppate"
                         android:src="@drawable/immagini_raggruppate"
                         android:layout_width="30dp"
@@ -70,14 +95,14 @@
                         android:layout_height="30dp" />
 
                     <ImageView
-                        android:id="@+id/imgUploadImmagini"
-                        android:src="@drawable/upload"
+                        android:id="@+id/imgUploadWV"
+                        android:src="@drawable/chrome"
                         android:layout_width="30dp"
                         android:layout_height="30dp" />
 
                     <ImageView
-                        android:id="@+id/imgRinominaCategoria"
-                        android:src="@drawable/rename"
+                        android:id="@+id/imgUploadImmagini"
+                        android:src="@drawable/upload"
                         android:layout_width="30dp"
                         android:layout_height="30dp" />
                 </LinearLayout>

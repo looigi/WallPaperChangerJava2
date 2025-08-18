@@ -27,7 +27,7 @@ public class MainScaricaImmagini extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scarica_immagini);
+        setContentView(R.layout.activity_main_scarica_immagini);
 
         context = this;
         act = this;

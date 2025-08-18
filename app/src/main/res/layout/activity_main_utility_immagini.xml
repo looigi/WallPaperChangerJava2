@@ -272,6 +272,50 @@
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Nuova cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgNuovaCategoriaMI"
+                        android:src="@drawable/icona_aggiunge"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Aggiorna cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgRefresh"
+                        android:src="@drawable/icona_refresh"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -361,6 +405,64 @@
         android:id="@+id/lstUtilityImmagini"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/layWebView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:weightSum="10"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:weightSum="5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/Nero"
+                android:text="Ricerca"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtRicerca"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgCercaWV"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icona_cerca" />
+
+                <ImageView
+                    android:id="@+id/imgChiudeWV"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/elimina_quadrato" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_weight="9"
+            android:layout_height="0dp"/>
+    </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoUI"

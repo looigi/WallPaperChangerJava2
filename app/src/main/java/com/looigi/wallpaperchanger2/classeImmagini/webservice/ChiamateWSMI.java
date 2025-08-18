@@ -39,6 +39,7 @@ import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.webService
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -190,6 +191,9 @@ public class ChiamateWSMI implements TaskDelegate {
         this.daDove = daDove;
 
         switch(daDove) {
+            case "UI":
+                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                break;
             case "IR":
                 VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
                 break;
@@ -210,14 +214,22 @@ public class ChiamateWSMI implements TaskDelegate {
                 ApriDialog);
     }
 
-    public void ScaricaImmagini(String Categoria, String Ricerca) {
+    public void ScaricaImmagini(String Categoria, String Ricerca, String Filtra, String daDove) {
+        this.daDove = daDove;
+
+        switch (daDove) {
+            case "UI":
+                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        }
+
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                 "Scarica Immagini " + Categoria);
 
         this.Categoria = Categoria;
 
         String Urletto="ScaricaListaImmagini?" +
-                "Categoria=" + Ricerca;
+                "Categoria=" + Ricerca +
+                "&Filtra=" + Filtra;
 
         TipoOperazione = "ScaricaListaImmagini";
         // ControllaTempoEsecuzione = false;
@@ -644,6 +656,11 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     private void fScaricaListaImmagini(String result) {
+        switch (daDove) {
+            case "UI":
+                VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        }
+
         boolean ritorno = ControllaRitorno("Scarica lista immagini categoria " + Categoria, result);
         if (!ritorno) {
             // Utility.getInstance().VisualizzaMessaggio(result);
@@ -681,9 +698,11 @@ public class ChiamateWSMI implements TaskDelegate {
 
         boolean ritorno = ControllaRitorno("Upload Immagine", result);
         if (ritorno) {
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.download);
-            imgQuale.setImageBitmap(bitmap);
-            imgQuale.setVisibility(LinearLayout.GONE);
+            if (imgQuale != null) {
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.download);
+                imgQuale.setImageBitmap(bitmap);
+                imgQuale.setVisibility(LinearLayout.GONE);
+            }
 
             if (VariabiliScaricaImmagini.getInstance().getImgScaricaDaDisabilitare() != null) {
                 VariabiliScaricaImmagini.getInstance().getImgScaricaDaDisabilitare().setVisibility(LinearLayout.GONE);
@@ -698,6 +717,11 @@ public class ChiamateWSMI implements TaskDelegate {
                 }
             }
             VariabiliStatichePlayer.getInstance().setUrlImmaginiDaScaricare(l); */
+
+            if (!VariabiliStaticheUtilityImmagini.getInstance().getFileDaEliminare().isEmpty()) {
+                Files.getInstance().EliminaFileUnico(VariabiliStaticheUtilityImmagini.getInstance().getFileDaEliminare());
+                VariabiliStaticheUtilityImmagini.getInstance().setFileDaEliminare("");
+            }
 
             if (!VariabiliScaricaImmagini.getInstance().isScaricaMultiplo()) {
                 AggiornaImmagini(Modalita, Filtro);
@@ -807,14 +831,16 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     public void AggiornaImmagini(String Modalita, String Filtro) {
-        List<String> listaImmagini = VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare();
+        if (VariabiliScaricaImmagini.getInstance().getLstImmagini() != null) {
+            List<String> listaImmagini = VariabiliStatichePlayer.getInstance().getUrlImmaginiDaScaricare();
 
-        AdapterListenerImmaginiDaScaricare customAdapterT = new AdapterListenerImmaginiDaScaricare(
-                context,
-                Modalita,
-                Filtro,
-                listaImmagini);
-        VariabiliScaricaImmagini.getInstance().getLstImmagini().setAdapter(customAdapterT);
+            AdapterListenerImmaginiDaScaricare customAdapterT = new AdapterListenerImmaginiDaScaricare(
+                    context,
+                    Modalita,
+                    Filtro,
+                    listaImmagini);
+            VariabiliScaricaImmagini.getInstance().getLstImmagini().setAdapter(customAdapterT);
+        }
     }
 
     private void fModificaImmagine(String result) {

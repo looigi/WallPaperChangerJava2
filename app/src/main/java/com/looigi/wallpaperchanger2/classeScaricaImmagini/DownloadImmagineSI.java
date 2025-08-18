@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,9 +63,32 @@ public class DownloadImmagineSI {
                 urldisplay = urldisplay.replace("\\", "/");
                 Bitmap mIcon11 = null;
                 try {
-                    in = new java.net.URL(urldisplay).openStream();
+                    URL url = new URL(urldisplay);
+                    in = url.openStream();
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(in, null, options);
+
+                    int imageHeight = options.outHeight;
+                    int imageWidth = options.outWidth;
+
+                    // Chiudere e riaprire lo stream perché decodeStream consuma il primo
+                    in.close();
+                    in = url.openStream();
+
+                    // Step 2: calcolare inSampleSize
+                    if (imageHeight > 2048 || imageWidth > 2048) {
+                        options.inSampleSize = calculateInSampleSize(options, 2048, 2048); // max dimensioni desiderate
+                        options.inJustDecodeBounds = false;
+                    } else {
+                        options.inSampleSize = calculateInSampleSize(options, imageHeight, imageWidth); // max dimensioni desiderate
+                        options.inJustDecodeBounds = false;
+                    }
+
                     if (in != null && !isCancelled) {
-                        mIcon11 = BitmapFactory.decodeStream(in);
+                        // Step 3: decodificare bitmap ridotta
+                        mIcon11 = BitmapFactory.decodeStream(in, null, options);
 
                         BloccaTimer();
 
@@ -224,7 +248,7 @@ public class DownloadImmagineSI {
                     Errore = true;
                 }
 
-                // BloccaTimer();
+                BloccaTimer();
 
                 /* switch (Modalita) {
                     case "IMMAGINI":
@@ -243,6 +267,23 @@ public class DownloadImmagineSI {
                 });
             }
         });
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
     private Handler handler;
