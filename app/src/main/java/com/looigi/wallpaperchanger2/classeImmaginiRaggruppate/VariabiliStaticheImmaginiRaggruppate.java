@@ -18,6 +18,7 @@ import com.looigi.wallpaperchanger2.classeFilms.VariabiliStaticheFilms;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.adapters.AdapterListenerImmaginiIR;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 import com.looigi.wallpaperchanger2.classePlayer.Adapters.AdapterListenerArtisti;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaArtisti;
@@ -65,6 +66,24 @@ public class VariabiliStaticheImmaginiRaggruppate {
     private String Filtro;
     private int Precisione = 4;
     private TextView txtQuante;
+    private String Metodo = "2";
+    private AdapterListenerImmaginiIR customAdapterT;
+
+    public AdapterListenerImmaginiIR getCustomAdapterT() {
+        return customAdapterT;
+    }
+
+    public void setCustomAdapterT(AdapterListenerImmaginiIR customAdapterT) {
+        this.customAdapterT = customAdapterT;
+    }
+
+    public String getMetodo() {
+        return Metodo;
+    }
+
+    public void setMetodo(String metodo) {
+        Metodo = metodo;
+    }
 
     public TextView getTxtQuante() {
         return txtQuante;
@@ -214,9 +233,8 @@ public class VariabiliStaticheImmaginiRaggruppate {
     }
 
     public void SpostaTutteLeImmagini(Context context) {
-        StrutturaImmagineRaggruppata Immagine = listaImmagini.get(
-                VariabiliStaticheImmaginiRaggruppate.getInstance().getIdImmagineDaSpostare()
-        );
+        int quale = VariabiliStaticheImmaginiRaggruppate.getInstance().getIdImmagineDaSpostare();
+        StrutturaImmagineRaggruppata Immagine = listaImmagini.get(quale);
         StrutturaImmaginiLibrary Imm =  new StrutturaImmaginiLibrary();
         Imm.setAlias(Immagine.getAlias());
         Imm.setCategoria(Immagine.getCategoria());
@@ -234,5 +252,17 @@ public class VariabiliStaticheImmaginiRaggruppate {
 
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.SpostaImmagine(Imm, "IR");
+    }
+
+    public int CercaProssimoNumeroDaSpostare(int daDove) {
+        int quale = -1;
+        for (int i = daDove + 1; i < VariabiliStaticheImmaginiRaggruppate.getInstance().getListaImmagini().size(); i++) {
+            StrutturaImmagineRaggruppata s = VariabiliStaticheImmaginiRaggruppate.getInstance().getListaImmagini().get(i);
+            if (s.isSelezionata()) {
+                VariabiliStaticheImmaginiRaggruppate.getInstance().setIdImmagineDaSpostare(i);
+                return i;
+            }
+        }
+        return quale;
     }
 }

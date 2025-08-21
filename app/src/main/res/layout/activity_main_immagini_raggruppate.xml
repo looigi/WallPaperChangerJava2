@@ -11,6 +11,33 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/optMetodo1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Metodo 1" />
+
+                <RadioButton
+                    android:id="@+id/optMetodo2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Metodo 2" />
+            </RadioGroup>
+        </LinearLayout>
+
         <ListView
             android:id="@+id/lstIR"
             android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
@@ -62,6 +89,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/imgSelezionaTutte"
+                    android:src="@drawable/sposta"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
 
                 <ImageView
                     android:id="@+id/imgSpostaTutte"

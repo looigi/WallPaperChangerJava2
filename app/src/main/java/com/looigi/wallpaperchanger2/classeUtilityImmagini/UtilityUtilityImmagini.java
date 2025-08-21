@@ -148,12 +148,14 @@ public class UtilityUtilityImmagini {
 
 
     public void showDownloadDialog(Context context, String imageUrl) {
-        new android.app.AlertDialog.Builder(context)
+        downloadImage(context, imageUrl);
+
+        /* new android.app.AlertDialog.Builder(context)
                 .setTitle("Scarica immagine")
                 .setMessage("Vuoi scaricare questa immagine?")
                 .setPositiveButton("Sì", (dialog, which) -> downloadImage(context, imageUrl))
                 .setNegativeButton("No", null)
-                .show();
+                .show(); */
     }
 
     public void esegueRicercaWV(Context context, String Filtro) {

@@ -19,6 +19,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagi
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
+import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.webService.ChiamateWSIR;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
@@ -394,6 +395,15 @@ public class ChiamateWSMI implements TaskDelegate {
                             }
                             i++;
                         }
+                        if (VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria() != null &&
+                                !VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria().isEmpty()) {
+                            for (StrutturaImmaginiCategorie l: VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM()) {
+                                if (l.getIdCategoria() == Integer.parseInt(VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria())) {
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata(l.getCategoria());
+                                    break;
+                                }
+                            }
+                        }
                         UtilitiesGlobali.getInstance().ImpostaSpinner(context,
                                 VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),
                                 ll,
@@ -440,11 +450,20 @@ public class ChiamateWSMI implements TaskDelegate {
                             }
                             i++;
                         }
-                        UtilitiesGlobali.getInstance().ImpostaSpinner(context,
-                                VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
-                                ll2,
-                                VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
-                        );
+
+                        if (daDove.equals("FC")) {
+                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),
+                                    ll2,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata()
+                            );
+                        } else {
+                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                    VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
+                                    ll2,
+                                    VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
+                            );
+                        }
                         break;
                 }
 
@@ -885,14 +904,20 @@ public class ChiamateWSMI implements TaskDelegate {
         switch (daDove) {
             case "IR":
                 VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
-                int Quale = VariabiliStaticheImmaginiRaggruppate.getInstance().getIdImmagineDaSpostare();
-                Quale++;
-                VariabiliStaticheImmaginiRaggruppate.getInstance().setIdImmagineDaSpostare(Quale);
-                if (Quale < VariabiliStaticheImmaginiRaggruppate.getInstance().getListaImmagini().size()) {
+                int Quale = VariabiliStaticheImmaginiRaggruppate.getInstance().CercaProssimoNumeroDaSpostare(
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getIdImmagineDaSpostare()
+                );
+                if (Quale > -1) {
+                    VariabiliStaticheImmaginiRaggruppate.getInstance().setIdImmagineDaSpostare(Quale);
                     VariabiliStaticheImmaginiRaggruppate.getInstance().SpostaTutteLeImmagini(context);
                 } else {
-                    UtilitiesGlobali.getInstance().ApreToast(context, "Immagini spostate: " +
-                            (VariabiliStaticheImmaginiRaggruppate.getInstance().getListaImmagini().size() - 1));
+                    int quante = 0;
+                    for (StrutturaImmagineRaggruppata s: VariabiliStaticheImmaginiRaggruppate.getInstance().getListaImmagini()) {
+                        if (s.isSelezionata()) {
+                            quante++;
+                        }
+                    }
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Immagini spostate: " + quante);
 
                     VariabiliStaticheImmaginiRaggruppate.getInstance().setStaSpostandoImmagini(false);
 
@@ -1077,6 +1102,15 @@ public class ChiamateWSMI implements TaskDelegate {
                                 ll[i] = "**NULL**";
                             }
                             i++;
+                        }
+                        if (VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria() != null &&
+                                !VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria().isEmpty()) {
+                            for (StrutturaImmaginiCategorie l3: VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM()) {
+                                if (l3.getIdCategoria() == Integer.parseInt(VariabiliStaticheImmaginiRaggruppate.getInstance().getIdCategoria())) {
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata(l3.getCategoria());
+                                    break;
+                                }
+                            }
                         }
                         UtilitiesGlobali.getInstance().ImpostaSpinner(context,
                                 VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),

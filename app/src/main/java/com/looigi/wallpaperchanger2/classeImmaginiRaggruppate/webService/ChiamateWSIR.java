@@ -40,11 +40,22 @@ public class ChiamateWSIR implements TaskDelegateIR {
         VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
 
         String Urletto="";
+        String NomeUrl = "";
         if (VariabiliStaticheImmaginiRaggruppate.getInstance().getModalita().equals("1")) {
-            Urletto = "RaggruppaPerNome?idCategoria=" + idCategoria + "&Precisione=" +
+            if (VariabiliStaticheImmaginiRaggruppate.getInstance().getMetodo().equals("1")) {
+                NomeUrl = "RaggruppaPerNome";
+            } else {
+                NomeUrl = "RaggruppaPerNomeChatGPT";
+            }
+        } else {
+            NomeUrl = "RaggruppaPerNomeStile2";
+        }
+
+        if (VariabiliStaticheImmaginiRaggruppate.getInstance().getModalita().equals("1")) {
+            Urletto = NomeUrl + "?idCategoria=" + idCategoria + "&Precisione=" +
                     VariabiliStaticheImmaginiRaggruppate.getInstance().getPrecisione();
         } else {
-            Urletto = "RaggruppaPerNomeStile2?idCategoria=" + idCategoria;
+            Urletto = NomeUrl + "?idCategoria=" + idCategoria;
         }
 
         TipoOperazione = "RitornaRaggruppamenti";
@@ -156,8 +167,6 @@ public class ChiamateWSIR implements TaskDelegateIR {
             }
         }
 
-        VariabiliStaticheImmaginiRaggruppate.getInstance().getTxtQuante().setText("Immagini rilevate: " + lista.size());
-
         AdapterListenerIR cstmAdptFonti = new AdapterListenerIR(context, lista);
         VariabiliStaticheImmaginiRaggruppate.getInstance().getLstIR().setAdapter(cstmAdptFonti);
     }
@@ -199,14 +208,18 @@ public class ChiamateWSIR implements TaskDelegateIR {
                 sic.setPathImmagine(obj2.getString("PathImmagine"));
                 sic.setEsisteImmagine(obj2.getBoolean("EsisteImmagine"));
                 sic.setUrlImmagine(obj2.getString("UrlImmagine"));
+                sic.setSelezionata(false);
 
                 lista.add(sic);
             }
             VariabiliStaticheImmaginiRaggruppate.getInstance().setListaImmagini(lista);
 
+            VariabiliStaticheImmaginiRaggruppate.getInstance().getTxtQuante().setText("Immagini rilevate: " + lista.size());
+
             AdapterListenerImmaginiIR customAdapterT = new AdapterListenerImmaginiIR(
                     context,
                     lista);
+            VariabiliStaticheImmaginiRaggruppate.getInstance().setCustomAdapterT(customAdapterT);
             VariabiliStaticheImmaginiRaggruppate.getInstance().getLstImmagini().setAdapter(customAdapterT);
         } catch (JSONException e) {
             int i = 0;

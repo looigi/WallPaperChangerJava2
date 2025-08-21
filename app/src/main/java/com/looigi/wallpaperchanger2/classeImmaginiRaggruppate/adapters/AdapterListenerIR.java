@@ -141,6 +141,7 @@ public class AdapterListenerIR extends BaseAdapter {
                                 break;
                             }
                         }
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().setIdCategoria("");
                         VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata(valoreInserito);
 
                         if (!ok) {

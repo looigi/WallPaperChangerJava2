@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
@@ -66,6 +68,18 @@ public class AdapterListenerImmaginiIR extends BaseAdapter {
             TextView txtDimeFile = view.findViewById(R.id.txtDimensioneFile);
             TextView txtDimeImm = view.findViewById(R.id.txtDimensioneImmagine);
 
+            CheckBox chkScelta = view.findViewById(R.id.chkScelta);
+            if (Immagini.get(i).isSelezionata()) {
+                chkScelta.setChecked(true);
+            } else {
+                chkScelta.setChecked(false);
+            }
+            chkScelta.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Immagini.get(i).setSelezionata(chkScelta.isChecked());
+                }
+            });
+
             DownloadImmagineUguali d = new DownloadImmagineUguali();
             d.EsegueDownload(context, imgImmagine, Immagini.get(i).getUrlImmagine());
 
@@ -88,11 +102,29 @@ public class AdapterListenerImmaginiIR extends BaseAdapter {
 
             imgSposta.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    String NuovaCategoria = VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata().toUpperCase().trim();
+
+                    if (VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() == null) {
+                        ChiamateWSMI c = new ChiamateWSMI(context);
+                        c.RitornaCategorie(false, "FC");
+                    }
+
+                    VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata("");
+                    // if (VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento() == null) {
+                    for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                        if (s.getCategoria().toUpperCase().trim().equals(NuovaCategoria)) {
+                            VariabiliStaticheImmaginiRaggruppate.getInstance().setCategoriaImpostata(s.getCategoria());
+                            break;
+                        }
+                    }
+                    // }
+
                     if (VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() == null ||
                             VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata().isEmpty()) {
                         UtilitiesGlobali.getInstance().ApreToast(context, "Selezionare una categoria di destinazione");
                         return;
                     }
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Si vuole spostare l\'immagine selezionata alla categoria " +
                                     VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() + " ?");

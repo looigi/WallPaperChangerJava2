@@ -8,6 +8,18 @@
 
     <LinearLayout
         android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:id="@+id/chkScelta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_weight="4"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_height="wrap_content">
@@ -21,7 +33,7 @@
     
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="6"
+        android:layout_weight="5"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 

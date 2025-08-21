@@ -15,6 +15,15 @@ public class StrutturaImmagineRaggruppata {
     private String UrlImmagine;
     private String PathImmagine;
     private boolean EsisteImmagine;
+    private boolean Selezionata;
+
+    public boolean isSelezionata() {
+        return Selezionata;
+    }
+
+    public void setSelezionata(boolean selezionata) {
+        Selezionata = selezionata;
+    }
 
     public String getAlias() {
         return Alias;

@@ -137,21 +137,27 @@ public class MainUtilityImmagini extends Activity {
         chkTutteLeCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(1);
-                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
+                    VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                }
             }
         });
 
         chkSoloDiRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(2);
-                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
+                    VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                }
             }
         });
 
         chkSoloNormali.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(3);
-                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
+                    VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+                }
             }
         });
 
