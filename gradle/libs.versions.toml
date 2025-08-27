@@ -9,6 +9,7 @@ androidMapsUtilsVersion = "3.11.1"
 comGoogleAndroidGmsPlayServicesAuth = "20.7.0"
 core = "1.13.1"
 faceDetection = "16.1.7"
+faceDetectionVersion = "17.1.0"
 googleApiClientAndroid = "1.22.0"
 googleApiClientAndroidVersion = "1.34.1"
 googleApiServicesDrive = "v3-rev75-1.22.0"
@@ -20,6 +21,7 @@ googlePlayServicesAuthVersion = "16.0.1"
 googleServices = "4.4.2"
 gson = "2.10.1"
 guava = "27.0.1-android"
+javacvPlatform = "1.5.9"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -33,6 +35,7 @@ constraintlayout = "2.1.4"
 acra = "4.11.1"
 androidMail = "1.6.7"
 media = "1.7.0"
+opencv = "4.7.0-1.5.9"
 photoview = "2.0.0"
 picasso = "2.8"
 playServicesAuth = "21.2.0"
@@ -56,6 +59,7 @@ android-image-cropper = { module = "com.vanniktech:android-image-cropper", versi
 android-mail-v162 = { module = "com.sun.mail:android-mail", version.ref = "androidMailVersion" }
 core = { module = "androidx.core:core", version.ref = "core" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
+face-detection-v1710 = { module = "com.google.mlkit:face-detection", version.ref = "faceDetectionVersion" }
 google-android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtilsVersion" }
 google-api-client-android = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroid" }
 google-api-client-android-v1341 = { module = "com.google.api-client:google-api-client-android", version.ref = "googleApiClientAndroidVersion" }
@@ -67,6 +71,8 @@ google-http-client-gson = { module = "com.google.http-client:google-http-client-
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+javacv-android = { module = "org.bytedeco:javacv-android", version.ref = "javacvPlatform" }
+javacv-platform = { module = "org.bytedeco:javacv-platform", version.ref = "javacvPlatform" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -80,6 +86,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 acra = { group = "ch.acra", name = "acra", version = "4.11.1" }
 android-mail = { group = "com.sun.mail", name = "android-mail", version.ref = "androidMail" }
 media = { module = "androidx.media:media", version.ref = "media" }
+opencv = { module = "org.bytedeco:opencv", version.ref = "opencv" }
+opencv-platform = { module = "org.bytedeco:opencv-platform", version.ref = "opencv" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }

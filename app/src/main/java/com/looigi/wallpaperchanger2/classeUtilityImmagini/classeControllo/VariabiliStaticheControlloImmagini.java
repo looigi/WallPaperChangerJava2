@@ -38,10 +38,10 @@ public class VariabiliStaticheControlloImmagini {
     private ListView lstLista;
     private String Tipologia;
     private String Categoria;
-    private LinearLayout layPreview;
-    private ImmagineZoomabile imgPreview;
+    // private LinearLayout layPreview;
+    // private ImmagineZoomabile imgPreview;
 
-    public ImmagineZoomabile getImgPreview() {
+    /* public ImmagineZoomabile getImgPreview() {
         return imgPreview;
     }
 
@@ -56,6 +56,7 @@ public class VariabiliStaticheControlloImmagini {
     public void setLayPreview(LinearLayout layPreview) {
         this.layPreview = layPreview;
     }
+    */
 
     public String getCategoria() {
         return Categoria;

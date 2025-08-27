@@ -65,7 +65,7 @@ public class MainBackup extends Activity {
                 if (UtilityBackup.getInstance().getNomeFileZipSelezionato() != null) {
                     StrutturaBackups NomeBackup = UtilityBackup.getInstance().getNomeFileZipSelezionato();
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole effettuare il\nrestore del file selezionato?");
+                    builder.setMessage("Si vuole effettuare il\nrestore del file selezionato?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -91,7 +91,8 @@ public class MainBackup extends Activity {
         btnImporta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono importare i dati dal db remoto?\nTutti i dati attuali verranno sovrascritti");
+                builder.setTitle("Backup");
+                builder.setMessage("Si vogliono importare i dati dal db remoto?\nTutti i dati attuali verranno sovrascritti");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

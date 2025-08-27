@@ -222,6 +222,7 @@ public class Main_Preferiti_Tags extends Activity {
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("LooWebPlayer");
                 builder.setTitle("Si vuole eliminare il tag '" + Cosa + "' ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

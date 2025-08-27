@@ -96,7 +96,8 @@ public class AdapterListenerCompleanni extends BaseAdapter {
             imgElimina.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole eliminare il compleanno ?");
+                    builder.setTitle("Onomastici");
+                    builder.setMessage("Si vuole eliminare il compleanno ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

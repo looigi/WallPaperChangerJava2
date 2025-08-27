@@ -89,7 +89,7 @@ public class MainScaricaImmagini extends Activity {
                 listaImmagini);
         VariabiliScaricaImmagini.getInstance().getLstImmagini().setAdapter(customAdapterT);
 
-        VariabiliScaricaImmagini.getInstance().setLayPreview(findViewById(R.id.layPreview));
+        /* VariabiliScaricaImmagini.getInstance().setLayPreview(findViewById(R.id.layPreview));
         VariabiliScaricaImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
 
         VariabiliScaricaImmagini.getInstance().setImgPreview(findViewById(R.id.imgPreview));
@@ -99,7 +99,7 @@ public class MainScaricaImmagini extends Activity {
                 VariabiliScaricaImmagini.getInstance().getImgPreview().setImageBitmap(null);
                 VariabiliScaricaImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
 
         UtilityPlayer.getInstance().AttesaSI(false);
     }

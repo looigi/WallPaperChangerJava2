@@ -194,12 +194,16 @@ public class ChiamateWSMIU implements TaskDelegate {
             String[] r = result.split("§");
             for (String rr : r) {
                 if (!rr.isEmpty()) {
-                    String[] rrr = rr.split(";");
-                    StrutturaImmaginiUguali s = new StrutturaImmaginiUguali();
-                    s.setTipo(rrr[0]);
-                    s.setQuanti(Integer.parseInt(rrr[1]));
-                    s.setFiltro(rrr[2]);
-                    lista.add(s);
+                    try {
+                        String[] rrr = rr.split(";");
+                        StrutturaImmaginiUguali s = new StrutturaImmaginiUguali();
+                        s.setTipo(rrr[0]);
+                        s.setQuanti(Integer.parseInt(rrr[1]));
+                        s.setFiltro(rrr[2]);
+                        lista.add(s);
+                    } catch (Exception ignored) {
+
+                    }
                 }
             }
             VariabiliImmaginiUguali.getInstance().setLista(lista);

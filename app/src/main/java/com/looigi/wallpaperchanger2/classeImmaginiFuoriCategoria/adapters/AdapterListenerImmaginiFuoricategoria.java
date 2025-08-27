@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.List;
@@ -100,8 +103,19 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
 
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
-                    d.EsegueDownload(context, VariabiliImmaginiFuoriCategoria.getInstance().getImgPreview(), Immagini.get(i).getUrlImmagine());
+                    // VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
+                    // d.EsegueDownload(context, VariabiliImmaginiFuoriCategoria.getInstance().getImgPreview(), Immagini.get(i).getUrlImmagine());
+
+                    StrutturaImmaginiLibrary si = new StrutturaImmaginiLibrary();
+                    si.setUrlImmagine(Immagini.get(i).getUrlImmagine());
+                    si.setNomeFile(Immagini.get(i).getNomeFile());
+                    si.setIdImmagine(Immagini.get(i).getIdImmagine());
+                    VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+
+                    Intent i = new Intent(context, MainPreview.class);
+                    i.putExtra("Modalita", "ImmaginiFuoriCategoria");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }
             });
 
@@ -110,7 +124,8 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
                     String NuovaCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria();
 
                     android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole spostare l'immagine selezionata alla categoria " +
+                    builder.setTitle("Immagini fuori categoria");
+                    builder.setMessage("Si vuole spostare l'immagine selezionata alla categoria " +
                             NuovaCategoria + " ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

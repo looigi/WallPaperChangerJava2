@@ -205,8 +205,14 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
+        <!-- <activity
             android:name=".classeUtilityImmagini.classeVolti.MainVolti"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" /> -->
+
+        <activity
+            android:name=".classePreview.MainPreview"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />

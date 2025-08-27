@@ -19,7 +19,7 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_height="wrap_content">
 
                 <RadioButton
@@ -35,6 +35,13 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Metodo 2" />
+
+                <RadioButton
+                    android:id="@+id/optMetodo3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Metodo 3" />
             </RadioGroup>
         </LinearLayout>
 
@@ -126,6 +133,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp" />
 
+    <!--
     <LinearLayout
         android:id="@+id/layPreview"
         android:visibility="gone"
@@ -153,6 +161,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+    -->
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoIR"

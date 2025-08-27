@@ -248,12 +248,13 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 MandaDatiADBRemoto m = new MandaDatiADBRemoto();
 
                 final AlertDialog.Builder[] builder = {new AlertDialog.Builder(context)};
-                builder[0].setTitle("Data Attuale o tutto il db ?");
+                builder[0].setMessage("Data Attuale o tutto il db ?");
                 builder[0].setPositiveButton("Data Attuale", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio (" + dataOdierna + ") ?");
+                        builder.setTitle("Mappa");
+                        builder.setMessage("Si vogliono eliminare anche i dati presenti in archivio (" + dataOdierna + ") ?");
                         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -280,7 +281,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Si vogliono eliminare anche i dati presenti in archivio ?");
+                        builder.setTitle("Mappa");
+                        builder.setMessage("Si vogliono eliminare anche i dati presenti in archivio ?");
                         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -328,7 +330,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgE.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono eliminare i dati della data visualizzata ?");
+                builder.setTitle("Mappa");
+                builder.setMessage("Si vogliono eliminare i dati della data visualizzata ?");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -417,7 +420,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgET.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono eliminare tutti i dati presenti in archivio ?");
+                builder.setTitle("Mappa");
+                builder.setMessage("Si vogliono eliminare tutti i dati presenti in archivio ?");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -583,7 +587,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 public void onMapClick(LatLng arg0)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Nome punto di spegnimento");
+                    builder.setTitle("Mappa");
+                    builder.setMessage("Nome punto di spegnimento");
 
                     final EditText input = new EditText(context);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -628,7 +633,8 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                     } else {
                         if (!nome.equals("Posizione Attuale")) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("Si vuole rimuovere il punto di spegnimento?");
+                            builder.setTitle("Mappa");
+                            builder.setMessage("Si vuole rimuovere il punto di spegnimento?");
 
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override

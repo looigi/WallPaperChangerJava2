@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -58,6 +59,7 @@ public class VariabiliStaticheUtilityImmagini {
     private boolean chkUguali = false;
     private boolean chkFC = false;
     private boolean chkPoche = false;
+    private boolean chkInvalide = false;
     private List<Integer> listaCategorieDiRicerca = new ArrayList<>();
     private int tipoCategoria = 3;
 
@@ -67,6 +69,51 @@ public class VariabiliStaticheUtilityImmagini {
     private LinearLayout layWV;
     private EditText edtVW;
     private boolean vwInCorso = false;
+    /* private int idCategoriaImpostataAdapter;
+    private LinearLayout layPreview;
+    private ImmagineZoomabile imgPreview;
+    private int idImmagineInPreview;
+
+    public int getIdImmagineInPreview() {
+        return idImmagineInPreview;
+    }
+
+    public void setIdImmagineInPreview(int idImmagineInPreview) {
+        this.idImmagineInPreview = idImmagineInPreview;
+    } */
+
+    public boolean isChkInvalide() {
+        return chkInvalide;
+    }
+
+    public void setChkInvalide(boolean chkInvalide) {
+        this.chkInvalide = chkInvalide;
+    }
+
+    /*
+    public int getIdCategoriaImpostataAdapter() {
+        return idCategoriaImpostataAdapter;
+    }
+
+    public void setIdCategoriaImpostataAdapter(int idCategoriaImpostataAdapter) {
+        this.idCategoriaImpostataAdapter = idCategoriaImpostataAdapter;
+    }
+
+    public LinearLayout getLayPreview() {
+        return layPreview;
+    }
+
+    public void setLayPreview(LinearLayout layPreview) {
+        this.layPreview = layPreview;
+    }
+
+    public ImmagineZoomabile getImgPreview() {
+        return imgPreview;
+    }
+
+    public void setImgPreview(ImmagineZoomabile imgPreview) {
+        this.imgPreview = imgPreview;
+    } */
 
     public boolean isVwInCorso() {
         return vwInCorso;

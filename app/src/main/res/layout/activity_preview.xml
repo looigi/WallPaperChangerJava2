@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layPreview"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <HorizontalScrollView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Rileva Volto"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgGestioneVolti"
+                        android:src="@drawable/volto"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSpostaACategoria"
+                        android:src="@drawable/sposta"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layProssima"
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Prossima"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgProssima"
+                        android:src="@drawable/avanti"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Prossima"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgChiudePreview"
+                        android:layout_width="35dp"
+                        android:src="@drawable/elimina_quadrato"
+                        android:layout_height="35dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/laySposta"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_centerInParent="true"
+        android:padding="3dp"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:text="Sposta a categoria"
+            android:textColor="@color/Rosso"
+            android:textSize="16sp"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Filtro"
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edtSpostaFiltroCategoria"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="@color/Blue"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="Categoria"
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnSpostaCategorie"
+                android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgSpostaImmagine"
+                    android:src="@drawable/icona_salva"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgAnnullaSposta"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layVoltiRilevati"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:layout_centerInParent="true"
+        android:padding="5dp"
+        android:weightSum="5"
+        android:layout_height="300dp">
+
+        <ListView
+            android:id="@+id/lstListaVolti"
+            android:layout_below="@+id/laySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:layout_height="0dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgChiudeListaVolti"
+                    android:layout_width="35dp"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_height="35dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoPreview"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+</RelativeLayout>

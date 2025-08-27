@@ -23,4 +23,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "WallpaperChanger2"
 include(":app")
- 

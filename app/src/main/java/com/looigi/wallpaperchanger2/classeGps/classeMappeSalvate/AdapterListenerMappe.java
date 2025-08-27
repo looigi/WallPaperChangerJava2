@@ -104,7 +104,8 @@ public class AdapterListenerMappe extends BaseAdapter {
             imgElimina.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Elimina mappa salvata: " + NomeMappa);
+                    builder.setTitle("Mappe");
+                    builder.setMessage("Elimina mappa salvata: " + NomeMappa);
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

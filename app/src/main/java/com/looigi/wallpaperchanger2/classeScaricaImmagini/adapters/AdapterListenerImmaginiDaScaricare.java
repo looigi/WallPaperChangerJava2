@@ -20,7 +20,10 @@ import android.widget.TextView;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
@@ -105,15 +108,26 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
                 ImageView imgImmagine = (ImageView) view.findViewById(R.id.imgImmagine);
                 imgImmagine.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        VariabiliScaricaImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
+                        // VariabiliScaricaImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
 
-                        if (Files.getInstance().EsisteFile(NomeFileAppoggio)) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(NomeFileAppoggio);
-                            VariabiliScaricaImmagini.getInstance().getImgPreview().setImageBitmap(bitmap);
-                        } else {
-                            d.EsegueDownload(context, VariabiliScaricaImmagini.getInstance().getImgPreview(), UrlImmagine, Modalita,
-                                    Filtro, false, "", i, txtInfoImmagine);
-                        }
+                        // if (Files.getInstance().EsisteFile(NomeFileAppoggio)) {
+                        //     Bitmap bitmap = BitmapFactory.decodeFile(NomeFileAppoggio);
+                        //     VariabiliScaricaImmagini.getInstance().getImgPreview().setImageBitmap(bitmap);
+                        // } else {
+                            // d.EsegueDownload(context, VariabiliScaricaImmagini.getInstance().getImgPreview(), UrlImmagine, Modalita,
+                            //         Filtro, false, "", i, txtInfoImmagine);
+
+                            StrutturaImmaginiLibrary si = new StrutturaImmaginiLibrary();
+                            si.setUrlImmagine(UrlImmagine);
+                            si.setNomeFile(UrlImmagine);
+                            si.setIdImmagine(-1);
+                            VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+
+                            Intent i = new Intent(context, MainPreview.class);
+                            i.putExtra("Modalita", "ImmaginiDaScaricare");
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(i);
+                        // }
                     }
                 });
 

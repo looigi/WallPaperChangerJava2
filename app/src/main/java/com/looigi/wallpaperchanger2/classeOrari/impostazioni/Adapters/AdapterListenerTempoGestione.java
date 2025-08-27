@@ -92,7 +92,8 @@ public class AdapterListenerTempoGestione extends BaseAdapter {
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare il tempo selezionato?");
+                builder.setTitle("Gestione Tempo");
+                builder.setMessage("Si vuole eliminare il tempo selezionato?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -146,8 +146,9 @@ public class UtilityUtilityImmagini {
         return quale2;
     }
 
-
     public void showDownloadDialog(Context context, String imageUrl) {
+        UtilitiesGlobali.getInstance().ApreToast(context, "Download iniziato");
+
         downloadImage(context, imageUrl);
 
         /* new android.app.AlertDialog.Builder(context)

@@ -386,7 +386,8 @@ public class impostazioni_player_interne {
                     }
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Vuoi eliminare il salvataggio selezionato ?");
+                    builder.setTitle("LooWebPlayer");
+                    builder.setMessage("Vuoi eliminare il salvataggio selezionato ?");
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -1009,7 +1010,8 @@ public class impostazioni_player_interne {
                 String Artista = VariabiliStatichePlayer.getInstance().getUltimoBrano().getArtista();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Nome Artista");
+                builder.setTitle("LooWebPlayer");
+                builder.setMessage("Nome Artista");
 
                 final EditText input = new EditText(context);
                 input.setText(Artista);

@@ -59,8 +59,8 @@ public class VariabiliStaticheImmaginiRaggruppate {
     private ListView lstIR;
     private ListView lstImmagini;
     private List<StrutturaImmaginiCategorie> listaCategorieIMM;
-    private LinearLayout laypreview;
-    private ImmagineZoomabile imgPreview;
+    // private LinearLayout laypreview;
+    // private ImmagineZoomabile imgPreview;
     private String CategoriaImpostata;
     private Spinner spnCategorie;
     private String Filtro;
@@ -133,6 +133,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
         CategoriaImpostata = categoriaImpostata;
     }
 
+    /*
     public ImmagineZoomabile getImgPreview() {
         return imgPreview;
     }
@@ -148,6 +149,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
     public void setLaypreview(LinearLayout laypreview) {
         this.laypreview = laypreview;
     }
+    */
 
     public List<StrutturaImmaginiCategorie> getListaCategorieIMM() {
         return listaCategorieIMM;

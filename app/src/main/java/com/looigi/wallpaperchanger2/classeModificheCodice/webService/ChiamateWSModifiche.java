@@ -1692,7 +1692,8 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     break;
                 case "GPS":
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vogliono eliminare i dati presenti in archivio per le date caricate ?");
+                    builder.setTitle("Modifiche");
+                    builder.setMessage("Si vogliono eliminare i dati presenti in archivio per le date caricate ?");
                     builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

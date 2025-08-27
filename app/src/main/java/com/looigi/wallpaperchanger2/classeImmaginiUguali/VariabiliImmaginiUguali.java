@@ -37,8 +37,8 @@ public class VariabiliImmaginiUguali {
     private GifImageView imgCaricamentoInCorso;
     private String Categoria;
     private List<StrutturaImmaginiUgualiRitornate> lista2 = new ArrayList<>();
-    private LinearLayout layPreview;
-    private ImmagineZoomabile imgPreview;
+    // private LinearLayout layPreview;
+    // private ImmagineZoomabile imgPreview;
     private View lastView;
 
     public View getLastView() {
@@ -49,6 +49,7 @@ public class VariabiliImmaginiUguali {
         this.lastView = lastView;
     }
 
+    /*
     public ImmagineZoomabile getImgPreview() {
         return imgPreview;
     }
@@ -64,6 +65,7 @@ public class VariabiliImmaginiUguali {
     public void setLayPreview(LinearLayout layPreview) {
         this.layPreview = layPreview;
     }
+    */
 
     public List<StrutturaImmaginiUgualiRitornate> getLista2() {
         return lista2;

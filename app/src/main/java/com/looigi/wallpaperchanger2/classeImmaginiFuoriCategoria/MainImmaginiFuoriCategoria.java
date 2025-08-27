@@ -88,7 +88,8 @@ public class MainImmaginiFuoriCategoria extends Activity {
                     String NuovaCategoria = Filtro.replace(";", " ");
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Nome nuova categoria");
+                    builder.setTitle("Immagini fuori categoria");
+                    builder.setMessage("Nome nuova categoria");
 
                     // Crea l'EditText
                     final EditText input = new EditText(context);
@@ -325,18 +326,18 @@ public class MainImmaginiFuoriCategoria extends Activity {
         });
 
         VariabiliImmaginiFuoriCategoria.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));
-        VariabiliImmaginiFuoriCategoria.getInstance().setLaypreview(findViewById(R.id.layPreview));
-        VariabiliImmaginiFuoriCategoria.getInstance().setImgPreview(findViewById(R.id.imgPreview));
-        VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
+        // VariabiliImmaginiFuoriCategoria.getInstance().setLaypreview(findViewById(R.id.layPreview));
+        // VariabiliImmaginiFuoriCategoria.getInstance().setImgPreview(findViewById(R.id.imgPreview));
+        // VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
         VariabiliImmaginiFuoriCategoria.getInstance().setTxtQuanteImmaginiRilevate(findViewById(R.id.txtQuanti));
         VariabiliImmaginiFuoriCategoria.getInstance().getTxtQuanteImmaginiRilevate().setText("");
 
-        ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
+        /* ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
         imgChiudePreview.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
 
         ImageView imgSpostaTutte = findViewById(R.id.imgSpostaTutte);
         imgSpostaTutte.setOnClickListener(new View.OnClickListener() {
@@ -367,7 +368,8 @@ public class MainImmaginiFuoriCategoria extends Activity {
                 }
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono spostare le immagini selezionate alla categoria " +
+                builder.setTitle("Immagini fuori categoria");
+                builder.setMessage("Si vogliono spostare le immagini selezionate alla categoria " +
                         NuovaCategoria + " ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

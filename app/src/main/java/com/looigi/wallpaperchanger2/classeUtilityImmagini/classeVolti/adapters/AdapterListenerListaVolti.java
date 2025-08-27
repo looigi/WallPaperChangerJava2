@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.adapters;
+/* package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -170,3 +170,4 @@ public class AdapterListenerListaVolti extends BaseAdapter {
         return view;
     }
 }
+*/

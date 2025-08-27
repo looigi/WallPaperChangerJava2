@@ -101,7 +101,7 @@ public class MainControlloImmagini extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
 
-        VariabiliStaticheControlloImmagini.getInstance().setLayPreview(findViewById(R.id.layPreview));
+        /* VariabiliStaticheControlloImmagini.getInstance().setLayPreview(findViewById(R.id.layPreview));
         VariabiliStaticheControlloImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
         VariabiliStaticheControlloImmagini.getInstance().setImgPreview(findViewById(R.id.imgPreview));
 
@@ -110,7 +110,7 @@ public class MainControlloImmagini extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheControlloImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
     }
 
     public void CaricaDati() {

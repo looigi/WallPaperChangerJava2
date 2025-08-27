@@ -42,10 +42,16 @@ public class ChiamateWSIR implements TaskDelegateIR {
         String Urletto="";
         String NomeUrl = "";
         if (VariabiliStaticheImmaginiRaggruppate.getInstance().getModalita().equals("1")) {
-            if (VariabiliStaticheImmaginiRaggruppate.getInstance().getMetodo().equals("1")) {
-                NomeUrl = "RaggruppaPerNome";
-            } else {
-                NomeUrl = "RaggruppaPerNomeChatGPT";
+            switch (VariabiliStaticheImmaginiRaggruppate.getInstance().getMetodo()) {
+                case "1":
+                    NomeUrl = "RaggruppaPerNome";
+                    break;
+                case "2":
+                    NomeUrl = "RaggruppaPerNomeChatGPT";
+                    break;
+                case "3":
+                    NomeUrl = "RaggruppaPerNomeChatGPTBiGrammi";
+                    break;
             }
         } else {
             NomeUrl = "RaggruppaPerNomeStile2";

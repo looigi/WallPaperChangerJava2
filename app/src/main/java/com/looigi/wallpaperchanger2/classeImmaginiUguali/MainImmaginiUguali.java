@@ -45,19 +45,19 @@ public class MainImmaginiUguali extends Activity {
         VariabiliImmaginiUguali.getInstance().setTipoImpostato("Hash");
         VariabiliImmaginiUguali.getInstance().setCategoria(Categoria);
 
-        VariabiliImmaginiUguali.getInstance().setLayPreview(findViewById(R.id.layPreview));
+        /* VariabiliImmaginiUguali.getInstance().setLayPreview(findViewById(R.id.layPreview));
         VariabiliImmaginiUguali.getInstance().setImgPreview(findViewById(R.id.imgPreview));
-        VariabiliImmaginiUguali.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
+        VariabiliImmaginiUguali.getInstance().getLayPreview().setVisibility(LinearLayout.GONE); */
 
         ChiamateWSMIU c = new ChiamateWSMIU(context);
 
-        ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
+        /* ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
         imgChiudePreview.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliImmaginiUguali.getInstance().getImgPreview().setImageBitmap(null);
                 VariabiliImmaginiUguali.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
 
         ImageView imgRefresh = findViewById(R.id.imgRefresh);
         imgRefresh.setOnClickListener(new View.OnClickListener() {

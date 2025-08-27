@@ -34,7 +34,7 @@ import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.MainVolti;
+// import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.MainVolti;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -98,11 +98,14 @@ public class MainUtilityImmagini extends Activity {
         chkFC.setChecked(false);
         RadioButton chkPoche = findViewById(R.id.chkPoche);
         chkPoche.setChecked(false);
+        RadioButton chkInvalide = findViewById(R.id.chkInv);
+        chkInvalide.setChecked(false);
 
         chkTutte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
                 VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkInvalide(false);
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
@@ -112,6 +115,7 @@ public class MainUtilityImmagini extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setChkFC(true);
                 VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkInvalide(false);
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
@@ -121,31 +125,56 @@ public class MainUtilityImmagini extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
                 VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(true);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkInvalide(false);
+
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+        });
+
+        chkInvalide.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().setChkFC(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkPoche(false);
+                VariabiliStaticheUtilityImmagini.getInstance().setChkInvalide(true);
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
         });
 
         VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(3);
-        RadioButton chkTutteLeCat = findViewById(R.id.chkTutteLeCat);
-        chkTutteLeCat.setChecked(false);
+        /* RadioButton chkTutteLeCat = findViewById(R.id.chkTutteLeCat);
+        chkTutteLeCat.setChecked(false); */
         RadioButton chkSoloDiRicerca = findViewById(R.id.chkSoloDiRicerca);
         chkSoloDiRicerca.setChecked(false);
         RadioButton chkSoloNormali = findViewById(R.id.chkSoloNormali);
         chkSoloNormali.setChecked(true);
 
-        chkTutteLeCat.setOnClickListener(new View.OnClickListener() {
+        /* chkTutteLeCat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(1);
                 if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
                     VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
                 }
             }
-        });
+        }); */
+
+        CheckBox chkRefresh = findViewById(R.id.chkRefresh);
+        LinearLayout layControllaTutto = findViewById(R.id.layControllaTutto);
+        LinearLayout layNuovaCategoria = findViewById(R.id.layNuovaCategoria);
+        ImageView imgTutto = findViewById(R.id.imgControllaTutto);
+        ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
+
+        layControllaTutto.setVisibility(LinearLayout.VISIBLE);
+        layNuovaCategoria.setVisibility(LinearLayout.VISIBLE);
+        chkRefresh.setVisibility(LinearLayout.VISIBLE);
 
         chkSoloDiRicerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(2);
+                layControllaTutto.setVisibility(LinearLayout.GONE);
+                layNuovaCategoria.setVisibility(LinearLayout.GONE);
+                chkRefresh.setVisibility(LinearLayout.GONE);
+
                 if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
                     VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
                 }
@@ -155,6 +184,10 @@ public class MainUtilityImmagini extends Activity {
         chkSoloNormali.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStaticheUtilityImmagini.getInstance().setTipoCategoria(3);
+                layControllaTutto.setVisibility(LinearLayout.VISIBLE);
+                layNuovaCategoria.setVisibility(LinearLayout.VISIBLE);
+                chkRefresh.setVisibility(LinearLayout.VISIBLE);
+
                 if (VariabiliStaticheUtilityImmagini.getInstance().getAdapter() != null) {
                     VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
                 }
@@ -183,7 +216,6 @@ public class MainUtilityImmagini extends Activity {
             }
         });
 
-        CheckBox chkRefresh = findViewById(R.id.chkRefresh);
         VariabiliStaticheUtilityImmagini.getInstance().setEsegueAncheRefresh(false);
         chkRefresh.setChecked(false);
         chkRefresh.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +225,7 @@ public class MainUtilityImmagini extends Activity {
             }
         });
 
-        ImageView imgEliminaCache = findViewById(R.id.imgEliminaCache);
+        /* ImageView imgEliminaCache = findViewById(R.id.imgEliminaCache);
         imgEliminaCache.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -239,7 +271,7 @@ public class MainUtilityImmagini extends Activity {
 
                 builder.show();
             }
-        });
+        }); */
 
         LinearLayout layBlocca = findViewById(R.id.layBlocca);
         Button btnBlocca = findViewById(R.id.btnBlocca);
@@ -255,7 +287,8 @@ public class MainUtilityImmagini extends Activity {
         imgEliminaTutto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono eliminare tutti i dati ?");
+                builder.setTitle("Immagini");
+                builder.setMessage("Si vogliono eliminare tutti i dati ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -278,7 +311,6 @@ public class MainUtilityImmagini extends Activity {
             }
         });
 
-        ImageView imgTutto = findViewById(R.id.imgControllaTutto);
         imgTutto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 layBlocca.setVisibility(LinearLayout.VISIBLE);
@@ -328,14 +360,13 @@ public class MainUtilityImmagini extends Activity {
             }
         });
 
-        ImageView imgVolti = findViewById(R.id.imgVolti);
+        /* ImageView imgVolti = findViewById(R.id.imgVolti);
         imgVolti.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent iP = new Intent(context, MainVolti.class);
                 context.startActivity(iP);
             }
-        });
-
+        }); */
 
         // WEBVIEW
         VariabiliStaticheUtilityImmagini.getInstance().setLayWV(findViewById(R.id.layWebView));
@@ -402,7 +433,6 @@ public class MainUtilityImmagini extends Activity {
         });
         // WEBVIEW
 
-        ImageView imgNuovaCategoria = findViewById(R.id.imgNuovaCategoriaMI);
         imgNuovaCategoria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -445,6 +475,26 @@ public class MainUtilityImmagini extends Activity {
                 ws.RitornaCategorie(true, "UI");
             }
         });
+
+        /* VariabiliStaticheUtilityImmagini.getInstance().setImgPreview(findViewById(R.id.imgPreview));
+        VariabiliStaticheUtilityImmagini.getInstance().setLayPreview(findViewById(R.id.layPreview));
+        VariabiliStaticheUtilityImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
+        ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
+        imgChiudePreview.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().getImgPreview().setImageBitmap(null);
+                VariabiliStaticheUtilityImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.GONE);
+            }
+        });
+        VariabiliStaticheUtilityImmagini.getInstance().getImgPreview().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                ChiamateWSUI ws = new ChiamateWSUI(context);
+                ws.RitornaProssimaImmagine(
+                        VariabiliStaticheUtilityImmagini.getInstance().getIdCategoriaImpostataAdapter()
+                );
+            }
+        }); */
     }
 
     @Override

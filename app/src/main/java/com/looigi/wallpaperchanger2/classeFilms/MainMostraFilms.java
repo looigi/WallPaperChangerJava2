@@ -193,7 +193,8 @@ public class MainMostraFilms extends Activity {
                 String id = String.valueOf(VariabiliStaticheFilms.getInstance().getIdUltimoFilms());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare il Film ?");
+                builder.setTitle("Films");
+                builder.setMessage("Si vuole eliminare il Film ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -223,7 +224,8 @@ public class MainMostraFilms extends Activity {
 
                 if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Immagine già scansionata per questo film.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Films");
+                    builder.setMessage("Immagine già scansionata per questo film.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -255,7 +257,8 @@ public class MainMostraFilms extends Activity {
 
                 if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Films");
+                    builder.setMessage("Films già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -58,9 +58,10 @@ public class MainImmaginiRaggruppate extends Activity {
 
         RadioButton optMetodo1 = findViewById(R.id.optMetodo1);
         RadioButton optMetodo2 = findViewById(R.id.optMetodo2);
+        RadioButton optMetodo3 = findViewById(R.id.optMetodo3);
 
         SharedPreferences prefs = getSharedPreferences("ImmaginiRaggruppdate", MODE_PRIVATE);
-        String nome = prefs.getString("Metodo", "2");
+        String nome = prefs.getString("Metodo", "3");
         VariabiliStaticheImmaginiRaggruppate.getInstance().setMetodo(nome);
         switch (nome) {
             case "1":
@@ -68,6 +69,9 @@ public class MainImmaginiRaggruppate extends Activity {
                 break;
             case "2":
                 optMetodo2.setChecked(true);
+                break;
+            case "3":
+                optMetodo3.setChecked(true);
                 break;
         }
 
@@ -97,6 +101,19 @@ public class MainImmaginiRaggruppate extends Activity {
                 ws.RitornaRaggruppamenti(idCategoria);
             }
         });
+        optMetodo3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheImmaginiRaggruppate.getInstance().setMetodo("3");
+
+                SharedPreferences prefs = getSharedPreferences("ImmaginiRaggruppdate", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("Metodo", "3"); // Chiave e valore
+                editor.apply(); // o editor.commit();
+
+                ChiamateWSIR ws = new ChiamateWSIR(context);
+                ws.RitornaRaggruppamenti(idCategoria);
+            }
+        });
 
         ChiamateWSMI c = new ChiamateWSMI(context);
         c.RitornaCategorie(false, "IR");
@@ -106,7 +123,7 @@ public class MainImmaginiRaggruppate extends Activity {
         VariabiliStaticheImmaginiRaggruppate.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIR));
         VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
 
-        VariabiliStaticheImmaginiRaggruppate.getInstance().setLaypreview(findViewById(R.id.layPreview));
+        /* VariabiliStaticheImmaginiRaggruppate.getInstance().setLaypreview(findViewById(R.id.layPreview));
         VariabiliStaticheImmaginiRaggruppate.getInstance().setImgPreview(findViewById(R.id.imgPreview));
         VariabiliStaticheImmaginiRaggruppate.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
 
@@ -115,7 +132,7 @@ public class MainImmaginiRaggruppate extends Activity {
             public void onClick(View v) {
                 VariabiliStaticheImmaginiRaggruppate.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
             }
-        });
+        }); */
 
         ImageView imgRefreshIR= findViewById(R.id.imgRefreshIR);
         imgRefreshIR.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +186,8 @@ public class MainImmaginiRaggruppate extends Activity {
                     return;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vogliono spostare tutte le immagini selezionate alla categoria " +
+                builder.setTitle("Immagini raggruppate");
+                builder.setMessage("Si vogliono spostare tutte le immagini selezionate alla categoria " +
                             VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() +
                                 "?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

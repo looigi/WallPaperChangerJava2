@@ -486,7 +486,8 @@ public class MainOrari extends Activity {
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare la giornata attuale?");
+                builder.setTitle("Orari");
+                builder.setMessage("Si vuole eliminare la giornata attuale?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

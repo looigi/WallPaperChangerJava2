@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmagi
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.List;
@@ -91,12 +94,24 @@ public class AdapterListenerImmaginiIR extends BaseAdapter {
 
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliStaticheImmaginiRaggruppate.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
+                    /* VariabiliStaticheImmaginiRaggruppate.getInstance().getLaypreview().setVisibility(LinearLayout.VISIBLE);
                     d.EsegueDownload(
                             context,
                             VariabiliStaticheImmaginiRaggruppate.getInstance().getImgPreview(),
                             Immagini.get(i).getUrlImmagine()
-                    );
+                    ); */
+
+                    StrutturaImmaginiLibrary si = new StrutturaImmaginiLibrary();
+                    si.setUrlImmagine(Immagini.get(i).getUrlImmagine());
+                    si.setNomeFile(Immagini.get(i).getNomeFile());
+                    si.setIdImmagine(Immagini.get(i).getIdImmagine());
+                    VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+
+                    Intent i = new Intent(context, MainPreview.class);
+                    i.putExtra("Modalita", "ImmaginiRaggruppate");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+
                 }
             });
 
@@ -126,7 +141,8 @@ public class AdapterListenerImmaginiIR extends BaseAdapter {
                     }
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole spostare l\'immagine selezionata alla categoria " +
+                    builder.setTitle("Immagini raggruppate");
+                    builder.setMessage("Si vuole spostare l\'immagine selezionata alla categoria " +
                                     VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata() + " ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override

@@ -200,7 +200,8 @@ public class MainMostraImmagini extends Activity {
                 VariabiliStaticheMostraImmagini.getInstance().setCategoria(Categoria);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Nome salvataggio");
+                builder.setTitle("Immagini");
+                builder.setMessage("Nome salvataggio");
 
                 final EditText input = new EditText(context);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -219,7 +220,8 @@ public class MainMostraImmagini extends Activity {
                             VariabiliScaricaImmagini.getInstance().setListaDaScaricare(new ArrayList<>());
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("Filtro valori per nome categoria ?");
+                            builder.setTitle("Mappa");
+                            builder.setMessage("Filtro valori per nome categoria ?");
 
                             builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                                 @Override

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
+/* package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
 
 import android.app.Activity;
 import android.content.Context;
@@ -81,3 +81,4 @@ public class MainVolti extends Activity {
         return false;
     }
 }
+*/

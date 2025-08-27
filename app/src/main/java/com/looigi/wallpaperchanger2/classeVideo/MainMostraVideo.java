@@ -211,7 +211,8 @@ public class MainMostraVideo extends Activity {
                 String id = String.valueOf(VariabiliStaticheVideo.getInstance().getIdUltimoVideo());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare il Video ?");
+                builder.setTitle("Video");
+                builder.setMessage("Si vuole eliminare il Video ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -241,7 +242,8 @@ public class MainMostraVideo extends Activity {
 
                 if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Immagine già acquisita per questo video.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Video");
+                    builder.setMessage("Immagine già acquisita per questo video.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -398,7 +400,8 @@ public class MainMostraVideo extends Activity {
 
                 if (fatto) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
+                    builder.setTitle("Video");
+                    builder.setMessage("Video già scansionato.\nSi vuole procedere di nuovo alla cattura ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

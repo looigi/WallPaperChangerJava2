@@ -28,6 +28,7 @@ import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
 import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.adapters.AdapterListenerImmaginiDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
@@ -35,8 +36,8 @@ import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaSca
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.VariabiliStaticheVolti;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.webService.ChiamateWSV;
+// import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.VariabiliStaticheVolti;
+// import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.webService.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -294,9 +295,18 @@ public class ChiamateWSMI implements TaskDelegate {
                             "&idCategoriaNuova=" + idCategoria;
                 }
                 break;
+            case "PREVIEW":
+                VariabiliStatichePreview.getInstance().Attesa(true);
+
+                Urletto = "SpostaImmagineACategoria?" +
+                        "idImmagine=" + s.getIdImmagine() +
+                        "&idCategoriaNuova=" + VariabiliStatichePreview.getInstance().getIdCategoriaDiSpostamento();
+                break;
             case "IMMAGINI":
             case "FC":
-                VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                if (VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento() != null) {
+                    VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                }
 
                 Urletto = "SpostaImmagineACategoria?" +
                         "idImmagine=" + s.getIdImmagine() +
@@ -465,6 +475,22 @@ public class ChiamateWSMI implements TaskDelegate {
                             );
                         }
                         break;
+                    case "PREVIEW":
+                        VariabiliStatichePreview.getInstance().setListaCategorie(lista);
+                        String[] ll22 = new String[lista.size() + 1];
+                        i = 0;
+                        for (StrutturaImmaginiCategorie lll: lista) {
+                            if (lll.getCategoria() != null && !lll.getCategoria().isEmpty()) {
+                                ll22[i] = lll.getCategoria();
+                            }
+                            i++;
+                        }
+                        UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                VariabiliStatichePreview.getInstance().getSpnSpostaCategorie(),
+                                ll22,
+                                ""
+                        );
+                        break;
                 }
 
                 return;
@@ -481,8 +507,11 @@ public class ChiamateWSMI implements TaskDelegate {
             case "FC":
                 VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                 break;
-            case "VO":
-                VariabiliStaticheVolti.getInstance().Attesa(true);
+            case "PREVIEW":
+                VariabiliStatichePreview.getInstance().Attesa(true);
+                break;
+            // case "VO":
+            //     VariabiliStaticheVolti.getInstance().Attesa(true);
         }
 
         String Urletto="RitornaCategorie";
@@ -660,9 +689,9 @@ public class ChiamateWSMI implements TaskDelegate {
                         case "FC":
                             VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
                             break;
-                        case "VO":
+                        /* case "VO":
                             VariabiliStaticheVolti.getInstance().Attesa(false);
-                            break;
+                            break; */
                     }
 
                     ChiamateWSMI c = new ChiamateWSMI(context);
@@ -887,7 +916,7 @@ public class ChiamateWSMI implements TaskDelegate {
             } else {
                 UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
 
-                if (daDove.equals("VO")) {
+                /* if (daDove.equals("VO")) {
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -895,7 +924,7 @@ public class ChiamateWSMI implements TaskDelegate {
                             ws.AggiornaVoltoSpostato(idImmagine);
                         }
                     }, 500);
-                }
+                } */
             }
         }
     }
@@ -1122,8 +1151,8 @@ public class ChiamateWSMI implements TaskDelegate {
                     case "VO":
                         if (daDove.equals("FC")) {
                             VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
-                        } else {
-                            VariabiliStaticheVolti.getInstance().Attesa(false);
+                        // } else {
+                        //     VariabiliStaticheVolti.getInstance().Attesa(false);
                         }
 
                         List<StrutturaImmaginiCategorie> lista222 = db.LeggeCategorie();
@@ -1163,7 +1192,22 @@ public class ChiamateWSMI implements TaskDelegate {
                                 break;
                             }
                         }
-
+                        break;
+                    case "PREVIEW":
+                        VariabiliStatichePreview.getInstance().setListaCategorie(listaCategorie);
+                        String[] ll22 = new String[listaCategorie.size() + 1];
+                        i = 0;
+                        for (StrutturaImmaginiCategorie lll: listaCategorie) {
+                            if (lll.getCategoria() != null && !lll.getCategoria().isEmpty()) {
+                                ll22[i] = lll.getCategoria();
+                            }
+                            i++;
+                        }
+                        UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                VariabiliStatichePreview.getInstance().getSpnSpostaCategorie(),
+                                ll22,
+                                ""
+                        );
                         break;
                 }
             } catch (JSONException e) {

@@ -314,7 +314,8 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaProgetto().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare il progetto '" +
+                builder.setTitle("Modifiche");
+                builder.setMessage("Si vuole eliminare il progetto '" +
                         VariabiliStaticheModificheCodice.getInstance().getProgettoSelezionato() + "' ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -364,7 +365,8 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaModulo().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare il modulo " +
+                builder.setTitle("Modifiche");
+                builder.setMessage("Si vuole eliminare il modulo " +
                         VariabiliStaticheModificheCodice.getInstance().getModuloSelezionato() + " ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -414,7 +416,8 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().getImgEliminaSezioni().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare la sezione '" +
+                builder.setTitle("Modifiche");
+                builder.setMessage("Si vuole eliminare la sezione '" +
                         VariabiliStaticheModificheCodice.getInstance().getSezioneSelezionata() + "' ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

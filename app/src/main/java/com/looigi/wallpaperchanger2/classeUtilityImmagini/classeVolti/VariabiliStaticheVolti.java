@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
+/* package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -88,3 +88,4 @@ public class VariabiliStaticheVolti {
         }, 10);
     }
 }
+*/

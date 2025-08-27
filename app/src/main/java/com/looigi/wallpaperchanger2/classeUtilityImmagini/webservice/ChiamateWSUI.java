@@ -1,24 +1,41 @@
 package com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
+import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
+import com.looigi.wallpaperchanger2.classePazzia.DownloadImmaginePAZZIA;
+import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
+import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classePreview.adapters.AdapterListenerVoltiRilevati;
+import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRilevati;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
+import com.looigi.wallpaperchanger2.classeScaricaImmagini.adapters.AdapterListenerImmaginiDaScaricare;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.UtilityUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +59,27 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     public ChiamateWSUI(Context context) {
         this.context = context;
+    }
+
+    public void RitornaProssimaImmagine(int idCategoria) {
+        String Urletto = "ProssimaImmagine?" +
+                        "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
+                        "&Filtro=" +
+                        "&idImmagine=0" +
+                        "&Random=S" +
+                        "&OrdinaPerVisualizzato=S" +
+                        "&Operatore=Or";
+
+        TipoOperazione = "ProssimaImmagine";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                60000,
+                ApriDialog);
     }
 
     public void RitornaCategorieDiRicerca() {
@@ -68,6 +106,39 @@ public class ChiamateWSUI implements TaskDelegateUI {
         String Urletto="SistemaImmaginiSenzaHash";
 
         TipoOperazione = "SistemaImmaginiSenzaHash";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                6000000,
+                ApriDialog);
+    }
+
+    public void ControllaVolto(String idImmagine) {
+        VariabiliStatichePreview.getInstance().Attesa(true);
+        this.ForzaRefresh = ForzaRefresh;
+
+        String Urletto="ControllaVolto?idImmagine=" + idImmagine;
+
+        TipoOperazione = "ControllaVolto";
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                6000000,
+                ApriDialog);
+    }
+
+    public void EliminaCategoria(String idCategoria) {
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+
+        String Urletto="EliminaCategoria?idCategoria=" + idCategoria;
+
+        TipoOperazione = "EliminaCategoria";
 
         Esegue(
                 RadiceWS + ws + Urletto,
@@ -150,7 +221,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
         String Urletto="RefreshImmagini?" +
                 "idCategoria=" + idCategoria +
-                "&Completo=N";
+                "&Completo=S";
 
         TipoOperazione = "RefreshImmagini";
         // ControllaTempoEsecuzione = false;
@@ -160,7 +231,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 TipoOperazione,
                 NS,
                 SA,
-                250000,
+                500000,
                 ApriDialog);
     }
 
@@ -276,6 +347,9 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     case "ControlloImmagini":
                         fControlloImmagini(result);
                         break;
+                    case "ProssimaImmagine":
+                        fProssimaImmagine(result);
+                        break;
                     case "RefreshImmagini":
                         fRefreshImmagini(result);
                         break;
@@ -297,6 +371,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     case "ConverteImmagine":
                         fConverteImmagine(result);
                         break;
+                    case "EliminaCategoria":
+                        fEliminaCategoria(result);
+                        break;
+                    case "ControllaVolto":
+                        fControllaVolto(result);
+                        break;
                 }
             }
         };
@@ -315,6 +395,78 @@ public class ChiamateWSUI implements TaskDelegateUI {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void fControllaVolto(String result) {
+        boolean ritorno = ControllaRitorno("Controlla Volto", result);
+        VariabiliStatichePreview.getInstance().Attesa(false);
+        if (ritorno) {
+            // {"Rilevate":[{"idCategoria": 566,"Categoria": "Gina_Pistol","Confidenza": 0.0210}]}
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jObject = jsonObject.getJSONArray("Rilevate");
+
+                List<StrutturaVoltiRilevati> lista = new ArrayList<>();
+                for(int i = 0; i < jObject.length(); i++) {
+                    JSONObject obj = jObject.getJSONObject(i);
+
+                    StrutturaVoltiRilevati s = new StrutturaVoltiRilevati();
+                    s.setIdCategoria(obj.getInt("idCategoria"));
+                    s.setCategoria(obj.getString("Categoria"));
+                    s.setConfidenza(obj.getString("Confidenza"));
+                    s.setIdCategoriaOrigine(obj.getInt("idCategoriaOrigine"));
+                    s.setCategoriaOrigine(obj.getString("CategoriaOrigine"));
+                    String url = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic +
+                            "/Materiale/newPLibrary/";
+                    s.setUrlOrigine(url + obj.getString("UrlOrigine"));
+                    s.setUrlDestinazione(url + obj.getString("UrlDestiinazione"));
+
+                    lista.add(s);
+                }
+                VariabiliStatichePreview.getInstance().setListaVoltiRilevati(lista);
+
+                AdapterListenerVoltiRilevati customAdapterT = new AdapterListenerVoltiRilevati(
+                        context,
+                        lista);
+                VariabiliStatichePreview.getInstance().getLstVolti().setAdapter(customAdapterT);
+
+                VariabiliStatichePreview.getInstance().getLayVolti().setVisibility(LinearLayout.VISIBLE);
+
+            } catch (JSONException e) {
+                UtilitiesGlobali.getInstance().ApreToast(context, result);
+            }
+        } else {
+
+        }
+    }
+
+    private void fProssimaImmagine(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
+        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        if (ritorno) {
+            // VariabiliStaticheUtilityImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
+
+            try {
+                JSONObject jObject = new JSONObject(result);
+                StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
+                // VariabiliStaticheUtilityImmagini.getInstance().setIdImmagineInPreview(si.getIdImmagine());
+                if (si != null) {
+                    /* DownloadImmagineMI d = new DownloadImmagineMI();
+                    d.EsegueChiamata(
+                            context, si.getUrlImmagine(),
+                            VariabiliStaticheUtilityImmagini.getInstance().getImgPreview(),
+                            si.getUrlImmagine(),
+                            false,
+                            false
+                    ); */
+                    VariabiliStatichePreview.getInstance().RitornoProssimaImmagine(context, si);
+                }
+            } catch (JSONException e) {
+                UtilitiesGlobali.getInstance().ApreToast(context, result);
+            }
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 
@@ -457,6 +609,15 @@ public class ChiamateWSUI implements TaskDelegateUI {
         }
     }
 
+    private void fEliminaCategoria(String result) {
+        boolean ritorno = ControllaRitorno("Elimina Categoria", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Categoria eliminata");
+        }
+    }
+
     private void fRinominaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Rinomina Immagine", result);
         if (!ritorno) {
@@ -510,7 +671,23 @@ public class ChiamateWSUI implements TaskDelegateUI {
         }
 
         if (DaTasto) {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            String r = result.replace("{", "").replace("}", "");
+            String[] rr = r.split(",");
+            StringBuilder Messaggio = new StringBuilder();
+            for (String rrr : rr) {
+                Messaggio.append(rrr.replace("\"", "").trim()).append("\n");
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Utility Immagini");
+            builder.setMessage(Messaggio);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.show();
+
+            // UtilitiesGlobali.getInstance().ApreToast(context, result);
             return;
         }
 

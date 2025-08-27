@@ -42,8 +42,8 @@ public class VariabiliImmaginiFuoriCategoria {
     private boolean CercaExif = false;
     private GifImageView imgCaricamento;
     private ListView lstImmagini;
-    private LinearLayout laypreview;
-    private ImmagineZoomabile imgPreview;
+    // private LinearLayout laypreview;
+    // private ImmagineZoomabile imgPreview;
     private TextView txtQuanteImmaginiRilevate;
     private List<StrutturaImmagineFuoriCategoria> listaImmagini;
     private int qualeImmagineStaSpostando = -1;
@@ -153,6 +153,7 @@ public class VariabiliImmaginiFuoriCategoria {
         this.txtQuanteImmaginiRilevate = txtQuanteImmaginiRilevate;
     }
 
+    /*
     public ImmagineZoomabile getImgPreview() {
         return imgPreview;
     }
@@ -168,6 +169,7 @@ public class VariabiliImmaginiFuoriCategoria {
     public void setLaypreview(LinearLayout laypreview) {
         this.laypreview = laypreview;
     }
+    */
 
     public ListView getLstImmagini() {
         return lstImmagini;

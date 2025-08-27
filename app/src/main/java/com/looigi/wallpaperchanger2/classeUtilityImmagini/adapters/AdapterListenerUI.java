@@ -30,6 +30,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
@@ -37,9 +38,12 @@ import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.MainImmaginiRaggru
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUguali;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.UtilityUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeControllo.MainControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
@@ -92,71 +96,77 @@ public class AdapterListenerUI extends BaseAdapter {
         boolean controllaUguali = VariabiliStaticheUtilityImmagini.getInstance().isChkUguali();
         boolean controllaFC = VariabiliStaticheUtilityImmagini.getInstance().isChkFC();
         boolean controllaPoche = VariabiliStaticheUtilityImmagini.getInstance().isChkPoche();
+        boolean controllaInvalide = VariabiliStaticheUtilityImmagini.getInstance().isChkInvalide();
 
         if (listaCategorie != null && !listaCategorie.isEmpty()) {
             for (StrutturaImmaginiCategorie cat : listaCategorie) {
-                boolean ok1 = true;
-                boolean ok2 = true;
+                boolean Ok = false;
 
-                for (StrutturaControlloImmagini s : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
-                    if (controllaPoche || controllaFC) {
+                if (controllaPoche || controllaFC || controllaInvalide) {
+                    for (StrutturaControlloImmagini s : VariabiliStaticheUtilityImmagini.getInstance().getControlloImmagini()) {
                         if (s.getIdCategoria() == cat.getIdCategoria()) {
                             if (controllaPoche) {
                                 int quanteImmagini = s.getGiuste();
-                                ok1 = quanteImmagini < 20;
-                                ok2 = false;
+                                Ok = quanteImmagini < 20;
+                                if (Ok) {
+                                    break;
+                                }
                             } else {
                                 if (controllaFC) {
                                     int Quante = s.getListaFC().size();
-                                    // FC = true;
-                                    ok2 = Quante > 0;
-                                    ok1 = false;
+                                    Ok = Quante > 0;
+                                    if (Ok) {
+                                        break;
+                                    }
+                                } else {
+                                    if (controllaInvalide) {
+                                        int Quante = s.getListaInvalide().size();
+                                        Ok = Quante > 0;
+                                        if (Ok) {
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                };
-
-                boolean Ok = false;
-                if (Filtro.isEmpty()) {
-                    Ok = true;
                 } else {
-                     if (cat.getCategoria().toUpperCase().contains(Filtro)) {
-                         Ok = true;
-                     }
+                    Ok = true;
                 }
 
-                if (Ok && (ok1 || ok2)) {
+                if (Ok) {
+                    if (!Filtro.isEmpty()) {
+                        if (!cat.getCategoria().toUpperCase().contains(Filtro)) {
+                            Ok = false;
+                        }
+                    }
+                }
+
+                if (Ok) {
                     boolean diRicerca = VariabiliStaticheUtilityImmagini.getInstance().getListaCategorieDiRicerca().contains(
                             cat.getIdCategoria()
                     );
                     int modalitaVisualizzazione = VariabiliStaticheUtilityImmagini.getInstance().getTipoCategoria();
-                    boolean okCat = true;
 
                     switch (modalitaVisualizzazione) {
                         case 1:
                             // Tutte
-                            okCat = true;
                             break;
                         case 2:
                             // Di ricerca
-                            if (diRicerca) {
-                                okCat = true;
-                            } else {
-                                okCat = false;
+                            if (!diRicerca) {
+                                Ok = false;
                             }
                             break;
                         case 3:
                             // Solo Normali
-                            if (!diRicerca) {
-                                okCat = true;
-                            } else {
-                                okCat = false;
+                            if (diRicerca) {
+                                Ok = false;
                             }
                             break;
                     }
 
-                    if (okCat) {
+                    if (Ok) {
                         listaFiltrata.add(cat);
                     }
                 }
@@ -179,7 +189,26 @@ public class AdapterListenerUI extends BaseAdapter {
             txtIdCategoria.setText(Integer.toString(idCategoria));
 
             TextView txtCategoria = view.findViewById(R.id.txtCategoria);
-            txtCategoria.setText(Categoria);
+            txtCategoria.setText(Categoria.replace("_", " "));
+
+            ImageView imgVisualizzaImmagini = view.findViewById(R.id.imgVisualizzaImmagini);
+            imgVisualizzaImmagini.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    /* VariabiliStaticheUtilityImmagini.getInstance().setIdCategoriaImpostataAdapter(idCategoria);
+                    VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                    ChiamateWSUI ws = new ChiamateWSUI(context);
+                    ws.RitornaProssimaImmagine(
+                            idCategoria
+                    ); */
+                    VariabiliStatichePreview.getInstance().setIdCategoria(idCategoria);
+                    VariabiliStatichePreview.getInstance().setStrutturaImmagine(null);
+
+                    Intent i = new Intent(context, MainPreview.class);
+                    i.putExtra("Modalita", "Utility");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+            });
 
             ImageView imgRaggruppate = view.findViewById(R.id.imgRaggruppate);
             imgRaggruppate.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +217,29 @@ public class AdapterListenerUI extends BaseAdapter {
                     intent.putExtra("idCategoria", Integer.toString(idCategoria));
                     intent.putExtra("Modalita", "1");
                     context.startActivity(intent);
+                }
+            });
+
+            ImageView imgEliminaCategoria = view.findViewById(R.id.imgEliminaCategoria);
+            imgEliminaCategoria.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Utility Immagini");
+                    builder.setMessage("Si è sicuri di voler eliminare la categoria '" + Categoria + "' ?\n" +
+                            "I files contenuti andranno nella categoria Altre");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
                 }
             });
 
@@ -211,23 +263,29 @@ public class AdapterListenerUI extends BaseAdapter {
                 }
             });
 
+            int modalitaVisualizzazione = VariabiliStaticheUtilityImmagini.getInstance().getTipoCategoria();
             ImageView imgControllo = view.findViewById(R.id.imgControlloImmagini);
-            imgControllo.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    VariabiliStaticheUtilityImmagini.getInstance().getTxtQuale().setText("Elaborazione " + Categoria);
-                    VariabiliStaticheUtilityImmagini.getInstance().setCategoriaAttuale(Categoria);
-                    VariabiliStaticheUtilityImmagini.getInstance().setControllaTutto(false);
-                    VariabiliStaticheUtilityImmagini.getInstance().setQualeStaControllando(i);
+            if (modalitaVisualizzazione != 2) {
+                imgControllo.setVisibility(LinearLayout.VISIBLE);
+                imgControllo.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        VariabiliStaticheUtilityImmagini.getInstance().getTxtQuale().setText("Elaborazione " + Categoria);
+                        VariabiliStaticheUtilityImmagini.getInstance().setCategoriaAttuale(Categoria);
+                        VariabiliStaticheUtilityImmagini.getInstance().setControllaTutto(false);
+                        VariabiliStaticheUtilityImmagini.getInstance().setQualeStaControllando(i);
 
-                    if (VariabiliStaticheUtilityImmagini.getInstance().isEsegueAncheRefresh()) {
-                        ChiamateWSUI ws = new ChiamateWSUI(context);
-                        ws.RefreshImmagini(String.valueOf(idCategoria), false);
-                    } else {
-                        ChiamateWSUI ws = new ChiamateWSUI(context);
-                        ws.ControlloImmagini(String.valueOf(idCategoria), "S");
+                        if (VariabiliStaticheUtilityImmagini.getInstance().isEsegueAncheRefresh()) {
+                            ChiamateWSUI ws = new ChiamateWSUI(context);
+                            ws.RefreshImmagini(String.valueOf(idCategoria), false);
+                        } else {
+                            ChiamateWSUI ws = new ChiamateWSUI(context);
+                            ws.ControlloImmagini(String.valueOf(idCategoria), "S");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                imgControllo.setVisibility(LinearLayout.GONE);
+            }
 
             LinearLayout layControllo = view.findViewById(R.id.layControllo);
             TextView txtControllo = view.findViewById(R.id.txtControllo);

@@ -68,7 +68,8 @@ public class AdapterListenerIR extends BaseAdapter {
                 VariabiliStaticheImmaginiRaggruppate.getInstance().setFiltro(Filtro);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Filtro ricerca");
+                builder.setTitle("Immagini raggruppate");
+                builder.setMessage("Filtro ricerca");
 
                 // Crea l'EditText
                 final EditText input = new EditText(context);

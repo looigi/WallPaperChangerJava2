@@ -48,8 +48,8 @@ public class VariabiliScaricaImmagini {
     private String Modalita;
     private String Filtro;
     private CheckBox chkSelezione;
-    private LinearLayout layPreview;
-    private ImmagineZoomabile imgPreview;
+    // private LinearLayout layPreview;
+    // private ImmagineZoomabile imgPreview;
     private ListView lstImmagini;
     private List<String> listaOriginaleDaScaricare = new ArrayList<>();
     private boolean scaricataBene;
@@ -96,6 +96,7 @@ public class VariabiliScaricaImmagini {
         this.lstImmagini = lstImmagini;
     }
 
+    /*
     public ImmagineZoomabile getImgPreview() {
         return imgPreview;
     }
@@ -111,6 +112,7 @@ public class VariabiliScaricaImmagini {
     public void setLayPreview(LinearLayout layPreview) {
         this.layPreview = layPreview;
     }
+    */
 
     public CheckBox getChkSelezione() {
         return chkSelezione;

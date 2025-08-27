@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
+/* package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti;
 
 public class StrutturaVoltiRilevati {
     private int idImmagine;
@@ -92,3 +92,4 @@ public class StrutturaVoltiRilevati {
         Confidenza = confidenza;
     }
 }
+*/

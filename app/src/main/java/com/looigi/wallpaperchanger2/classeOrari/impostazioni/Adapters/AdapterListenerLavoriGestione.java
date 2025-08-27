@@ -111,7 +111,8 @@ public class AdapterListenerLavoriGestione extends BaseAdapter {
             imgElimina.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole eliminare il lavoro selezionato?");
+                    builder.setTitle("Orari");
+                    builder.setMessage("Si vuole eliminare il lavoro selezionato?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

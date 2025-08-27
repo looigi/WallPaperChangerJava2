@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classeImmaginiUguali.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.StrutturaImmaginiUgualiRitornate;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.ChiamateWSMIU;
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 
 import java.util.List;
 
@@ -91,15 +95,27 @@ public class AdapterListenerImmaginiUguali extends BaseAdapter {
 
             imgImmagine.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    VariabiliImmaginiUguali.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
-                    d.EsegueDownload(context, VariabiliImmaginiUguali.getInstance().getImgPreview(), UrlImmagine);
+                    // VariabiliImmaginiUguali.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
+                    // d.EsegueDownload(context, VariabiliImmaginiUguali.getInstance().getImgPreview(), UrlImmagine);
+
+                    StrutturaImmaginiLibrary si = new StrutturaImmaginiLibrary();
+                    si.setUrlImmagine(UrlImmagine);
+                    si.setNomeFile(Immagini.get(i).getNomeFile());
+                    si.setIdImmagine(Immagini.get(i).getIdImmagine());
+                    VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+
+                    Intent i = new Intent(context, MainPreview.class);
+                    i.putExtra("Modalita", "ImmaginiUguali");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }
             });
 
             imgElimina.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Si vuole eliminare l\'immagine selezionata ?");
+                    builder.setTitle("Immagini uguali");
+                    builder.setMessage("Si vuole eliminare l\'immagine selezionata ?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

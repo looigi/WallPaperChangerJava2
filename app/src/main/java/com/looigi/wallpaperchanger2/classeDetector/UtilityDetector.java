@@ -1070,7 +1070,8 @@ public class UtilityDetector {
                         Runnable rTimer = new Runnable() {
                             public void run() {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setTitle("Si vogliono eliminare dal telefono le immagini spostate?");
+                                builder.setTitle("Detector");
+                                builder.setMessage("Si vogliono eliminare dal telefono le immagini spostate?");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

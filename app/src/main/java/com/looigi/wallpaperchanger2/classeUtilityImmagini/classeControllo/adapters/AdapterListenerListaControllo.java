@@ -25,6 +25,8 @@ import com.looigi.wallpaperchanger2.classeImmaginiUguali.VariabiliImmaginiUguali
 import com.looigi.wallpaperchanger2.classeImmaginiUguali.webService.DownloadImmagineUguali;
 import com.looigi.wallpaperchanger2.classeLazio.UtilityLazio;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeControllo.MainControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeControllo.VariabiliStaticheControlloImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
@@ -82,10 +84,21 @@ public class AdapterListenerListaControllo extends BaseAdapter {
         ImageView imgImmagine = view.findViewById(R.id.imgImmagine);
         imgImmagine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                VariabiliStaticheControlloImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
+                // VariabiliStaticheControlloImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
 
-                DownloadImmagineUguali d = new DownloadImmagineUguali();
-                d.EsegueDownload(context, VariabiliStaticheControlloImmagini.getInstance().getImgPreview(), Path);
+                // DownloadImmagineUguali d = new DownloadImmagineUguali();
+                // d.EsegueDownload(context, VariabiliStaticheControlloImmagini.getInstance().getImgPreview(), Path);
+
+                StrutturaImmaginiLibrary si = new StrutturaImmaginiLibrary();
+                si.setUrlImmagine(Path);
+                si.setNomeFile(NomeImmagine);
+                si.setIdImmagine(idImm);
+                VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+
+                Intent i = new Intent(context, MainPreview.class);
+                i.putExtra("Modalita", "ControlloImmagini");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         });
 
@@ -93,7 +106,8 @@ public class AdapterListenerListaControllo extends BaseAdapter {
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                builder.setTitle("Si vuole eliminare l'immagine selezionata ?");
+                builder.setTitle("Immagini Controllo");
+                builder.setMessage("Si vuole eliminare l'immagine selezionata ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -116,7 +130,8 @@ public class AdapterListenerListaControllo extends BaseAdapter {
         imgConverte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                builder.setTitle("Si vuole convertire l'immagine selezionata ?");
+                builder.setTitle("Immagini Controllo");
+                builder.setMessage("Si vuole convertire l'immagine selezionata ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -139,7 +154,8 @@ public class AdapterListenerListaControllo extends BaseAdapter {
         imgRinomina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Nuovo nome file");
+                builder.setTitle("Immagini Controllo");
+                builder.setMessage("Nuovo nome file");
 
                 final EditText input = new EditText(context);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);

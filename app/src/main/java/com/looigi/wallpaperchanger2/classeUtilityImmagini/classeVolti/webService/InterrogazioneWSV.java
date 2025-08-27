@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.webService;
+/* package com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.webService;
 
 import android.content.Context;
 import android.os.Handler;
@@ -226,7 +226,7 @@ public class InterrogazioneWSV {
                                 VariabiliGlobali.getInstance().getNomeApplicazione(),
                                 false,
                                 "");
-                    } */
+                    } * /
 
                     delegate.TaskCompletionResult(result);
                 // }
@@ -292,3 +292,4 @@ public class InterrogazioneWSV {
         isCancelled = true;
     }
 }
+*/
