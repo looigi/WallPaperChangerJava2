@@ -33,6 +33,7 @@ public class VariabiliImmaginiFuoriCategoria {
 
     private String idCategoria = "";
     private String Categoria = "";
+    private String Ricerca = "";
     /* private String Alias1 = "";
     private String Alias2 = "";
     private String Tag = ""; */
@@ -56,6 +57,14 @@ public class VariabiliImmaginiFuoriCategoria {
     private EditText edtAlias2;
     private EditText edtTag;
     private String CategoriaInserita = "";
+
+    public String getRicerca() {
+        return Ricerca;
+    }
+
+    public void setRicerca(String ricerca) {
+        Ricerca = ricerca;
+    }
 
     public String getCategoriaInserita() {
         return CategoriaInserita;

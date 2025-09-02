@@ -409,7 +409,7 @@ public class UtilitiesGlobali {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
         i.putExtra(Intent.EXTRA_SUBJECT,"logs.zip");
-        i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+        // i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
         i.putExtra(Intent.EXTRA_STREAM,uri);
         i.setType(GetMimeType(context, uri));
         context.startActivity(Intent.createChooser(i,"Share file di log e db"));

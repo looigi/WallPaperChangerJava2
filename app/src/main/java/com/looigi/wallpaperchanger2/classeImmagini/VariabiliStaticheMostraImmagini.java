@@ -69,6 +69,15 @@ public class VariabiliStaticheMostraImmagini {
     private StrutturaImmaginiLibrary immaginePerWP;
     private String OperatoreFiltro = "Or";
     private TextView txtInfoSotto;
+    private StrutturaImmaginiLibrary StrutturaImmagineAttuale;
+
+    public StrutturaImmaginiLibrary getStrutturaImmagineAttuale() {
+        return StrutturaImmagineAttuale;
+    }
+
+    public void setStrutturaImmagineAttuale(StrutturaImmaginiLibrary strutturaImmagineAttuale) {
+        StrutturaImmagineAttuale = strutturaImmagineAttuale;
+    }
 
     public StrutturaImmaginiLibrary getImmaginePerWP() {
         return immaginePerWP;

@@ -4,42 +4,41 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.StrictMode;
 import android.text.InputType;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classeImmagini.db_dati_immagini;
-import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
+import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.UtilityUtilityImmagini;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.VariabiliStaticheUtilityImmagini;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
-import com.looigi.wallpaperchanger2.classeUtilityImmagini.db_dati_ui;
+import com.looigi.wallpaperchanger2.classeSpostamento.MainSpostamento;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
+import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
+import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
+import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainPreview extends Activity {
     private Context context;
@@ -51,7 +50,7 @@ public class MainPreview extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_preview);
+        setContentView(R.layout.activity_main_preview);
 
         context = this;
         act = this;
@@ -60,24 +59,35 @@ public class MainPreview extends Activity {
         String Modalita = intent.getStringExtra("Modalita");
         VariabiliStatichePreview.getInstance().setModalita(Modalita);
 
+        VariabiliStatichePreview.getInstance().setTxtDescrizione(findViewById(R.id.txtDescrizione));
         VariabiliStatichePreview.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPreview));
         VariabiliStatichePreview.getInstance().Attesa(false);
 
         VariabiliStatichePreview.getInstance().setImgPreview(findViewById(R.id.imgPreview));
 
-        LinearLayout layProssima = findViewById(R.id.layProssima);
+        VariabiliStatichePreview.getInstance().setImgProssima(findViewById(R.id.imgProssima));
+        VariabiliStatichePreview.getInstance().setImgPrecedente(findViewById(R.id.imgPrecedente));
+
+        SharedPreferences prefs = getSharedPreferences("PREVIEW", MODE_PRIVATE);
+        int idUltimaImmagine = prefs.getInt(
+                "idImmagineCategoria_" + VariabiliStatichePreview.getInstance().getIdCategoria()
+                , -1);
+        VariabiliStatichePreview.getInstance().setUltimaImmagineVisualizzata(idUltimaImmagine);
 
         switch (Modalita) {
             case "Utility":
-                layProssima.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
 
                 ChiamateWSUI ws = new ChiamateWSUI(context);
                 ws.RitornaProssimaImmagine(
-                        VariabiliStatichePreview.getInstance().getIdCategoria()
+                        VariabiliStatichePreview.getInstance().getIdCategoria(),
+                        "PREVIEW"
                 );
                 break;
             default:
-                layProssima.setVisibility(LinearLayout.GONE);
+                VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+                VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
 
                 if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() == null) {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna struttura immagine impostata");
@@ -95,13 +105,67 @@ public class MainPreview extends Activity {
                 break;
         }
 
-        ImageView imgProssima = findViewById(R.id.imgProssima);
-        imgProssima.setOnClickListener(new View.OnClickListener() {
+        VariabiliStatichePreview.getInstance().getImgProssima().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ChiamateWSUI ws = new ChiamateWSUI(context);
-                ws.RitornaProssimaImmagine(
-                        VariabiliStatichePreview.getInstance().getIdCategoria()
-                );
+                if (VariabiliStatichePreview.getInstance().getQualeImmagine() <
+                    VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().size() - 1) {
+                    VariabiliStatichePreview.getInstance().Attesa(true);
+                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
+
+                    int quale = VariabiliStatichePreview.getInstance().getQualeImmagine();
+                    quale++;
+                    VariabiliStatichePreview.getInstance().setQualeImmagine(quale);
+                    StrutturaImmaginiLibrary si = VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().get(quale);
+                    if (si != null) {
+                        VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+                        if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
+                            String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
+                                    " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
+                                    " - Bytes: " + si.getDimensioneFile();
+                            VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                        }
+
+                        VariabiliStatichePreview.getInstance().RitornoProssimaImmagine(context, si);
+                    }
+
+                    VariabiliStatichePreview.getInstance().Attesa(false);
+                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
+                } else {
+                    ChiamateWSUI ws = new ChiamateWSUI(context);
+                    ws.RitornaProssimaImmagine(
+                            VariabiliStatichePreview.getInstance().getIdCategoria(),
+                            "PREVIEW"
+                    );
+                }
+            }
+        });
+
+        VariabiliStatichePreview.getInstance().getImgPrecedente().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (VariabiliStatichePreview.getInstance().getQualeImmagine() > 0) {
+                    VariabiliStatichePreview.getInstance().Attesa(true);
+                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
+
+                    StrutturaImmaginiLibrary si = VariabiliStatichePreview.getInstance().RitornaImmaginePrecedente();
+                    if (si != null) {
+                        VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+                        if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
+                            String Descrizione = "Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
+                                    " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
+                                    " - Bytes: " + si.getDimensioneFile();
+                            VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                        }
+
+                        VariabiliStatichePreview.getInstance().RitornoProssimaImmagine(context, si);
+                    }
+
+                    VariabiliStatichePreview.getInstance().Attesa(false);
+                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
+                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
+                }
             }
         });
 
@@ -115,13 +179,231 @@ public class MainPreview extends Activity {
             }
         });
 
-        ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
+        ImageView imgRicerca = findViewById(R.id.imgRicerca);
+        imgRicerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iP = new Intent(context, MainImmaginiFuoriCategoria.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Bundle b = new Bundle();
+                b.putString("IDCATEGORIA", "-1");
+                b.putString("CATEGORIA", "NESSUNA");
+                iP.putExtras(b);
+                context.startActivity(iP);
+            }
+        });
+
+        ImageView imgShare = findViewById(R.id.imgShareWallpaper);
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePreview.getInstance().Attesa(true);
+
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
+                VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(VariabiliStatichePreview.getInstance().getImgPreview().getDrawingCache());
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(false);
+
+                String Path = context.getFilesDir() + "/Immagini/";
+
+                // 2. Salva il bitmap su file (ad esempio in Pictures)
+                try {
+                    File path = new File(Path);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+
+                    File file = new File(path, "AppoggioMI.jpg");
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+
+                    File f = new File(Path);
+                    Uri uri = FileProvider.getUriForFile(context,
+                            context.getApplicationContext().getPackageName() + ".provider",
+                            f);
+
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, VariabiliStatichePreview.getInstance().getStrutturaImmagine().getNomeFile());
+                    // i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                    i.putExtra(Intent.EXTRA_STREAM,uri);
+                    i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
+                    context.startActivity(Intent.createChooser(i,"Share immagine"));
+                } catch (IOException ignored) {
+                }
+            }
+        });
+
+        ImageView imgRinomina = findViewById(R.id.imgRinomina);
+        imgRinomina.setOnClickListener(new View.OnClickListener() {
+              public void onClick(View v) {
+                  StrutturaImmaginiLibrary s = VariabiliStatichePreview.getInstance().getStrutturaImmagine();
+                  int idImmagine = s.getIdImmagine();
+
+                  AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                  builder.setTitle("Preview");
+                  builder.setMessage("Nuovo nome file");
+
+                  final EditText input = new EditText(context);
+                  input.setInputType(InputType.TYPE_CLASS_TEXT);
+                  input.setText(s.getNomeFile());
+                  builder.setView(input);
+
+                  String finalCategoria = s.getCategoria();
+                  builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          String Salvataggio = input.getText().toString();
+                          if (Salvataggio.isEmpty()) {
+                              UtilitiesGlobali.getInstance().ApreToast(context,
+                                      "Immettere un nome file");
+                          } else {
+                              ChiamateWSUI ws = new ChiamateWSUI(context);
+                              ws.RinominaImmagine(String.valueOf(idImmagine), Salvataggio);
+                          }
+                      }
+                  });
+                  builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          dialog.cancel();
+                      }
+                  });
+
+                  builder.show();
+              }
+        });
+
+        ImageView imgElimina = findViewById(R.id.imgElimina);
+        imgElimina.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String id = String.valueOf(VariabiliStatichePreview.getInstance().getStrutturaImmagine().getIdImmagine());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Preview");
+                builder.setMessage("Si vuole eliminare l'immagine ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSMI c = new ChiamateWSMI(context);
+                        c.EliminaImmagine(id);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
+        imgImposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePreview.getInstance().Attesa(true);
+
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
+                VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(VariabiliStatichePreview.getInstance().getImgPreview().getDrawingCache());
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(false);
+
+                String Path = context.getFilesDir() + "/Immagini/";
+
+                // 2. Salva il bitmap su file (ad esempio in Pictures)
+                try {
+                    File path = new File(Path);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+
+                    File file = new File(path, "AppoggioMI.jpg");
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("PREVIEW");
+                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                            Path + "/AppoggioMI.jpg"
+                    );
+
+                    long Dimensione = Files.getInstance().DimensioniFile(Path + "/AppoggioMI.jpg");
+
+                    StrutturaImmaginiLibrary s = VariabiliStatichePreview.getInstance().getStrutturaImmagine();
+
+                    StrutturaImmagine src = new StrutturaImmagine();
+                    src.setPathImmagine(Path + "/AppoggioMI.jpg");
+                    src.setImmagine(s.getNomeFile());
+                    src.setDimensione(String.valueOf(Dimensione));
+                    src.setDataImmagine(s.getDataCreazione());
+
+                    ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI", src);
+                    c.setWallpaperLocale(context, src);
+
+                    VariabiliStatichePreview.getInstance().Attesa(false);
+                } catch (IOException ignored) {
+                }
+            }
+        });
+
+        ImageView imgCopiaSuSfondi = act.findViewById(R.id.imgCopiaSuSfondi);
+        imgCopiaSuSfondi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePreview.getInstance().Attesa(true);
+                StrutturaImmaginiLibrary s = VariabiliStatichePreview.getInstance().getStrutturaImmagine();
+
+                String Path = context.getFilesDir() + "/Immagini/";
+
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
+                VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(VariabiliStatichePreview.getInstance().getImgPreview().getDrawingCache());
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(false);
+
+                // 2. Salva il bitmap su file (ad esempio in Pictures)
+                try {
+                    File path = new File(Path);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+
+                    File file = new File(path, "AppoggioMI.jpg");
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("PREVIEW");
+                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                            Path + "/AppoggioMI.jpg"
+                    );
+
+                    VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(
+                            VariabiliStatichePreview.getInstance().getStrutturaImmagine()
+                    );
+
+                    String result = UtilitiesGlobali.getInstance().convertBmpToBase64(Path + "/AppoggioMI.jpg");
+
+                    ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
+                    ws.ScriveImmagineSuSfondiLocale("DaImmagini/" + s.getNomeFile(), result);
+                } catch (Exception e) {
+                    VariabiliStatichePreview.getInstance().Attesa(false);
+                }
+            }
+        });
+
+        /* ImageView imgChiudePreview = findViewById(R.id.imgChiudePreview);
         imgChiudePreview.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                 act.finish();
             }
-        });
+        }); */
 
         VariabiliStatichePreview.getInstance().setLayVolti(findViewById(R.id.layVoltiRilevati));
         VariabiliStatichePreview.getInstance().getLayVolti().setVisibility(LinearLayout.GONE);
@@ -134,20 +416,65 @@ public class MainPreview extends Activity {
             }
         });
 
+        ImageView imgModifica = findViewById(R.id.imgModifica);
+        imgModifica.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Path = context.getFilesDir() + "/Immagini/";
+
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
+                VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(VariabiliStatichePreview.getInstance().getImgPreview().getDrawingCache());
+                VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(false);
+
+                // 2. Salva il bitmap su file (ad esempio in Pictures)
+                try {
+                    File path = new File(Path);
+                    if (!path.exists()) {
+                        path.mkdirs();
+                    }
+
+                    File file = new File(path, "AppoggioMI.jpg");
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                    VariabiliStaticheModificaImmagine.getInstance().setMascheraApertura("PREVIEW");
+                    VariabiliStaticheModificaImmagine.getInstance().setNomeImmagine(
+                            Path + "/AppoggioMI.jpg"
+                    );
+
+                    VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(
+                            VariabiliStatichePreview.getInstance().getStrutturaImmagine()
+                    );
+
+                    Intent i = new Intent(context, MainModificaImmagine.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } catch (Exception e) {
+                }
+            }
+        });
+
         // SPOSTAMENTO
         VariabiliStatichePreview.getInstance().setIdCategoriaDiSpostamento("");
 
-        LinearLayout laySposta = findViewById(R.id.laySposta);
-        laySposta.setVisibility(LinearLayout.GONE);
+        // LinearLayout laySposta = findViewById(R.id.laySposta);
+        // laySposta.setVisibility(LinearLayout.GONE);
 
         ImageView imgSposta = findViewById(R.id.imgSpostaACategoria);
         imgSposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                laySposta.setVisibility(LinearLayout.VISIBLE);
+                // laySposta.setVisibility(LinearLayout.VISIBLE);
+                Intent i = new Intent(context, MainSpostamento.class);
+                i.putExtra("Modalita", "Preview");
+                i.putExtra("idImmagine", Integer.toString(VariabiliStatichePreview.getInstance().getStrutturaImmagine().getIdImmagine()));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         });
 
-        ImageView imgSpostaImmagine = findViewById(R.id.imgSpostaImmagine);
+        /* ImageView imgSpostaImmagine = findViewById(R.id.imgSpostaImmagine);
         imgSpostaImmagine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStatichePreview.getInstance().getIdCategoriaDiSpostamento().isEmpty()) {
@@ -181,11 +508,11 @@ public class MainPreview extends Activity {
         });
 
         VariabiliStatichePreview.getInstance().setSpnSpostaCategorie(findViewById(R.id.spnSpostaCategorie));
-        final boolean[] primoIngresso = {true};
 
         ChiamateWSMI ws = new ChiamateWSMI(context);
         ws.RitornaCategorie(false, "PREVIEW");
 
+        final boolean[] primoIngresso = {true};
         VariabiliStatichePreview.getInstance().getSpnSpostaCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
@@ -207,7 +534,7 @@ public class MainPreview extends Activity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
-        });
+        }); */
         // SPOSTAMENTO
     }
 

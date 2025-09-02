@@ -28,29 +28,6 @@
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Rileva Volto"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgGestioneVolti"
-                        android:src="@drawable/volto"
-                        android:layout_marginEnd="5dp"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -67,7 +44,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layProssima"
                     android:background="@drawable/bordato_non_trasparente"
                     android:padding="2dp"
                     android:layout_marginEnd="5dp"
@@ -78,14 +54,13 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Prossima"
+                        android:text="Rileva Volto"
                         android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
-                        android:id="@+id/imgProssima"
-                        android:src="@drawable/avanti"
-                        android:layout_marginEnd="5dp"
+                        android:id="@+id/imgGestioneVolti"
+                        android:src="@drawable/volto"
                         android:layout_width="35dp"
                         android:layout_height="35dp" />
                 </LinearLayout>
@@ -97,11 +72,165 @@
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Ricerca"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgRicerca"
+                        android:layout_width="25dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icona_cerca" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Share"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgShareWallpaper"
+                        android:layout_width="25dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/share" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Modifica"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgModifica"
+                        android:src="@drawable/edit_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Imposta WP"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgImpostaWallpaper"
+                        android:src="@drawable/eye"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Copia su Sfondi"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgCopiaSuSfondi"
+                        android:src="@drawable/copia_sfondo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Rinomina"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgRinomina"
+                        android:src="@drawable/rename"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Elimina"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgElimina"
+                        android:src="@drawable/elimina"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <!-- <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="Prossima"
+                        android:text="Chiude"
                         android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
@@ -110,9 +239,21 @@
                         android:layout_width="35dp"
                         android:src="@drawable/elimina_quadrato"
                         android:layout_height="35dp" />
-                </LinearLayout>
+                </LinearLayout> -->
             </LinearLayout>
         </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/bordato_non_trasparente"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/txtDescrizione"
+                android:textColor="@color/Verde_Scuro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
             android:id="@+id/imgPreview"
@@ -120,6 +261,7 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
+    <!--
     <LinearLayout
         android:id="@+id/laySposta"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
@@ -213,24 +355,25 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    -->
 
     <LinearLayout
         android:id="@+id/layVoltiRilevati"
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         android:orientation="vertical"
-        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:background="@drawable/bordato_non_trasparente"
         android:layout_centerInParent="true"
         android:padding="5dp"
-        android:weightSum="5"
-        android:layout_height="300dp">
+        android:weightSum="8"
+        android:layout_height="350dp">
 
         <ListView
             android:id="@+id/lstListaVolti"
             android:layout_below="@+id/laySpinner"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"/>
+            android:layout_weight="7"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -262,11 +405,28 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/imgPrecedente"
+        android:src="@drawable/indietro"
+        android:layout_margin="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/imgProssima"
+        android:src="@drawable/avanti"
+        android:layout_margin="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoPreview"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
         android:layout_height="100dp" />
-
 </RelativeLayout>

@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -426,19 +427,21 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
     private void fScriveImmagineSuLocale(String result) {
         VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        VariabiliStatichePreview.getInstance().Attesa(false);
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityPlayer.getInstance().AttesaSI(false);
 
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {
-            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagine copiata");
+            /* Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
                     ws.ScriveImmagineSuSfondiIoNos(NomeImmaginePerCopia, Base64PerCopia);
                 }
             };
-            handlerTimer.postDelayed(rTimer, 100);
+            handlerTimer.postDelayed(rTimer, 100); */
         }
     }
 

@@ -62,6 +62,9 @@ public class MainImmaginiFuoriCategoria extends Activity {
         Intent intent = getIntent();
         VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoria(intent.getStringExtra("IDCATEGORIA"));
         VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(intent.getStringExtra("CATEGORIA"));
+        String Ricerca = intent.getStringExtra("RICERCA");
+        if (Ricerca == null) { Ricerca = ""; }
+        VariabiliImmaginiFuoriCategoria.getInstance().setRicerca(Ricerca);
 
         TextView txtNuovaCategoria = findViewById(R.id.txtNuovaCategoria);
         txtNuovaCategoria.setText("");
@@ -71,7 +74,8 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
         LinearLayout layCategorie = findViewById(R.id.layCategorie);
 
-        if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
+        if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")
+            || !VariabiliImmaginiFuoriCategoria.getInstance().getRicerca().isEmpty()) {
             VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
                     VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria()
             );
@@ -237,7 +241,9 @@ public class MainImmaginiFuoriCategoria extends Activity {
         edtCaratteri.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                VariabiliImmaginiFuoriCategoria.getInstance().setQuantiCaratteri(Integer.parseInt(edtCaratteri.getText().toString()));
+                VariabiliImmaginiFuoriCategoria.getInstance().setQuantiCaratteri(
+                        Integer.parseInt(edtCaratteri.getText().toString())
+                );
             }
         });
 

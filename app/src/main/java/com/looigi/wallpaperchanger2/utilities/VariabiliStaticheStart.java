@@ -23,7 +23,7 @@ public class VariabiliStaticheStart {
         return instance;
     }
 
-    public static final String UrlWSGlobale = "http://looigi.ddnsfree.com"; // http://looigi.no-ip.biz:1071/";
+    public static final String UrlWSGlobale = "http://looigi.no-ip.biz"; // http://looigi.ddnsfree.com";
     public static final String PortaLooVF = "1071";
     public static final String PortaLazio = "1072";
     public static final String PortaPassword = "1073";

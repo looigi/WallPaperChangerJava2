@@ -27,9 +27,11 @@ import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.classePreview.MainPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRilevati;
+import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
+import com.looigi.wallpaperchanger2.classeSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -85,6 +87,35 @@ public class AdapterListenerVoltiRilevati extends BaseAdapter {
         StrutturaVoltiRilevati si = Immagini.get(i);
         txtCatOrigine.setText(si.getIdCategoriaOrigine() + "-" + si.getCategoriaOrigine());
         txtCatDest.setText(si.getIdCategoria() + "-" + si.getCategoria());
+
+        DownloadImmaginePreview dO = new DownloadImmaginePreview();
+        dO.EsegueChiamata(
+                context,
+                "",
+                imgOrigine,
+                si.getUrlOrigine()
+        );
+        DownloadImmaginePreview dD = new DownloadImmaginePreview();
+        dD.EsegueChiamata(
+                context,
+                "",
+                imgDestinazione,
+                si.getUrlDestinazione()
+        );
+
+        ImageView imgSposta = view.findViewById(R.id.imgSposta);
+        imgSposta.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int idImmagine = si.getIdImmagine();
+
+                StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
+                s.setIdImmagine(idImmagine);
+                VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(si.getIdCategoria());
+
+                ChiamateWSMI c = new ChiamateWSMI(context);
+                c.SpostaImmagine(s, "SPOSTAMENTO");
+            }
+        });
 
         return view;
     }

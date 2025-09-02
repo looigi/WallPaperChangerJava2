@@ -220,6 +220,20 @@ public class AdapterListenerUI extends BaseAdapter {
                 }
             });
 
+            ImageView imgRicerca = view.findViewById(R.id.imgRicerca);
+            imgRicerca.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent iP = new Intent(context, MainImmaginiFuoriCategoria.class);
+                    iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle b = new Bundle();
+                    b.putString("IDCATEGORIA", String.valueOf(idCategoria));
+                    b.putString("CATEGORIA", Categoria);
+                    b.putString("RICERCA", "SI");
+                    iP.putExtras(b);
+                    context.startActivity(iP);
+                }
+            });
+
             ImageView imgEliminaCategoria = view.findViewById(R.id.imgEliminaCategoria);
             imgEliminaCategoria.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -265,8 +279,9 @@ public class AdapterListenerUI extends BaseAdapter {
 
             int modalitaVisualizzazione = VariabiliStaticheUtilityImmagini.getInstance().getTipoCategoria();
             ImageView imgControllo = view.findViewById(R.id.imgControlloImmagini);
+            LinearLayout layControlloImmagini = view.findViewById(R.id.layControlloImmagini);
             if (modalitaVisualizzazione != 2) {
-                imgControllo.setVisibility(LinearLayout.VISIBLE);
+                layControlloImmagini.setVisibility(LinearLayout.VISIBLE);
                 imgControllo.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         VariabiliStaticheUtilityImmagini.getInstance().getTxtQuale().setText("Elaborazione " + Categoria);
@@ -284,7 +299,7 @@ public class AdapterListenerUI extends BaseAdapter {
                     }
                 });
             } else {
-                imgControllo.setVisibility(LinearLayout.GONE);
+                layControlloImmagini.setVisibility(LinearLayout.GONE);
             }
 
             LinearLayout layControllo = view.findViewById(R.id.layControllo);

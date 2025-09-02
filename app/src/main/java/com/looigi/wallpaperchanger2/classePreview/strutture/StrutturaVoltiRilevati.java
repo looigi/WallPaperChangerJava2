@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classePreview.strutture;
 
 public class StrutturaVoltiRilevati {
+    private int idImmagine;
     private int idCategoria;
     private String Categoria;
     private String Confidenza;
@@ -8,6 +9,32 @@ public class StrutturaVoltiRilevati {
     private String CategoriaOrigine;
     private String urlOrigine;
     private String urlDestinazione;
+    private String NomeOrigine;
+    private String NomeDestinazione;
+
+    public int getIdImmagine() {
+        return idImmagine;
+    }
+
+    public void setIdImmagine(int idImmagine) {
+        this.idImmagine = idImmagine;
+    }
+
+    public String getNomeOrigine() {
+        return NomeOrigine;
+    }
+
+    public void setNomeOrigine(String nomeOrigine) {
+        NomeOrigine = nomeOrigine;
+    }
+
+    public String getNomeDestinazione() {
+        return NomeDestinazione;
+    }
+
+    public void setNomeDestinazione(String nomeDestinazione) {
+        NomeDestinazione = nomeDestinazione;
+    }
 
     public String getUrlOrigine() {
         return urlOrigine;

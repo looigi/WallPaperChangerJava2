@@ -107,7 +107,12 @@
         <!--  -->
         <activity
             android:name=".classeOnomastici.MainOnomastici"
-            android:theme="@style/Theme.AppCompat.Translucent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".classeSpostamento.MainSpostamento"
+            android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 

@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePreview.webService;
+package com.looigi.wallpaperchanger2.classeSpostamento.webService;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,21 +9,17 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classeSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DownloadImmaginePreview {
+public class DownloadImmagineSpostamento {
     private boolean isCancelled;
     private static final String NomeMaschera = "Download_Image_MI";
     private boolean Errore;
@@ -42,7 +38,7 @@ public class DownloadImmaginePreview {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        VariabiliStatichePreview.getInstance().Attesa(true);
+        VariabiliStaticheSpostamento.getInstance().Attesa(true);
 
         AttivaTimer();
 
@@ -94,7 +90,7 @@ public class DownloadImmaginePreview {
                         }
                         in = null;
                     }
-                    VariabiliStatichePreview.getInstance().Attesa(false);
+                    VariabiliStaticheSpostamento.getInstance().Attesa(false);
                     BloccaTimer();
                     BloccaEsecuzione();
 
@@ -159,7 +155,7 @@ public class DownloadImmaginePreview {
         }
 
         // if (immagine == null) {
-        VariabiliStatichePreview.getInstance().Attesa(false);
+        VariabiliStaticheSpostamento.getInstance().Attesa(false);
         // }
     }
 

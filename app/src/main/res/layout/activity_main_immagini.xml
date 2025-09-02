@@ -130,6 +130,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:gravity="end"
+                android:textColor="@color/Verde_Scuro"
                 android:text="Divisore ; Caratteri Jolly * / % (numeri) / $ (caratteri)"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -248,6 +249,50 @@
                     <ImageView
                         android:id="@+id/imgModificaMI"
                         android:src="@drawable/edit_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Strumenti"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgPreview"
+                        android:src="@drawable/strumenti"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Sposta Cat."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgSpostaACategoria"
+                        android:src="@drawable/sposta"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>
@@ -384,6 +429,7 @@
 
     </ImageView> -->
 
+    <!--
     <LinearLayout
         android:id="@+id/laySposta"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
@@ -477,6 +523,7 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    -->
 
     <TextView
         android:id="@+id/txtInfoSotto"
@@ -573,94 +620,6 @@
                     <ImageView
                         android:id="@+id/imgImmaginiFCMI"
                         android:src="@drawable/export"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Share"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgShareWallpaper"
-                        android:src="@drawable/share"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Imposta WP"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgImpostaWallpaper"
-                        android:src="@drawable/eye"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Copia su Sfondi"
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgCopiaSuSfondi"
-                        android:src="@drawable/copia_sfondo"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@drawable/bordato_non_trasparente"
-                    android:padding="2dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:text="Sposta Cat."
-                        android:textColor="@color/Nero"
-                        android:layout_height="wrap_content"/>
-
-                    <ImageView
-                        android:id="@+id/imgSpostaACategoria"
-                        android:src="@drawable/sposta"
                         android:layout_width="30dp"
                         android:layout_height="30dp"/>
                 </LinearLayout>

@@ -107,4 +107,6 @@ dependencies {
     implementation(libs.google.api.services.drive)
 
     implementation(libs.work.runtime)
+
+    implementation(libs.flexbox)
 }

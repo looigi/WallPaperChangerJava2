@@ -82,7 +82,7 @@ public class MainModificaImmagine extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modifica_immagine);
+        setContentView(R.layout.activity_main_modifica_immagine);
 
         context = this;
         act = this;
@@ -174,6 +174,10 @@ public class MainModificaImmagine extends Activity {
                     break;
                 case "IMMAGINI":
                     // Salvataggio immagine da maschera immagini
+                    UtilityImmagini.getInstance().SalvataggioImmagine(context, Sovrascrive);
+                    break;
+                case "PREVIEW":
+                    // Salvataggio immagine da maschera preview
                     UtilityImmagini.getInstance().SalvataggioImmagine(context, Sovrascrive);
                     break;
                 case "PENNETTA":

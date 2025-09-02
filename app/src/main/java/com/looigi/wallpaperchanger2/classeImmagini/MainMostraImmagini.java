@@ -39,8 +39,13 @@ import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.DownloadImmagineMI;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classeSpostamento.MainSpostamento;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
+import com.looigi.wallpaperchanger2.classeVideo.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.db_dati_wallpaper;
 import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
@@ -311,8 +316,39 @@ public class MainMostraImmagini extends Activity {
         imgElimina.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String id = String.valueOf(VariabiliStaticheMostraImmagini.getInstance().getIdImmagine());
-                ChiamateWSMI c = new ChiamateWSMI(context);
-                c.EliminaImmagine(id);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Immagini");
+                builder.setMessage("Si vuole eliminare l'immagine ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ChiamateWSMI c = new ChiamateWSMI(context);
+                        c.EliminaImmagine(id);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        ImageView imgRilevaVolto = findViewById(R.id.imgPreview);
+        imgRilevaVolto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStatichePreview.getInstance().setStrutturaImmagine(
+                        VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale()
+                );
+
+                Intent i = new Intent(context, MainPreview.class);
+                i.putExtra("Modalita", "Immagini");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         });
 
@@ -321,62 +357,6 @@ public class MainMostraImmagini extends Activity {
             public void onClick(View v) {
                 ChiamateWSMI c = new ChiamateWSMI(context);
                 c.RitornaCategorie(true, "IMMAGINI");
-            }
-        });
-
-        ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
-        imgImposta.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
-                    UtilityImmagini.getInstance().Attesa(true);
-
-                    StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
-
-                    String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
-                    String PathImp = context.getFilesDir() + "/Immagini/AppoggioMI_Impostata.jpg";
-                    try {
-                        Files.getInstance().CopiaFile(Path, PathImp);
-
-                        long Dimensione = Files.getInstance().DimensioniFile(PathImp);
-
-                        StrutturaImmagine src = new StrutturaImmagine();
-                        src.setPathImmagine(PathImp);
-                        src.setImmagine(s.getNomeFile());
-                        src.setDimensione(String.valueOf(Dimensione));
-                        src.setDataImmagine(s.getDataCreazione());
-
-                        ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI", src);
-                        c.setWallpaperLocale(context, src);
-
-                        UtilityImmagini.getInstance().Attesa(false);
-                    } catch (IOException ignored) {
-                    }
-                }
-            }
-        });
-
-        ImageView imgShare = findViewById(R.id.imgShareWallpaper);
-        imgShare.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata() != null) {
-                    String Path = context.getFilesDir() + "/Immagini/AppoggioMI.jpg";
-
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
-
-                    File f = new File(Path);
-                    Uri uri = FileProvider.getUriForFile(context,
-                            context.getApplicationContext().getPackageName() + ".provider",
-                            f);
-
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata().getNomeFile());
-                    i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
-                    i.putExtra(Intent.EXTRA_STREAM,uri);
-                    i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
-                    context.startActivity(Intent.createChooser(i,"Share immagine"));
-                }
             }
         });
 
@@ -573,6 +553,7 @@ public class MainMostraImmagini extends Activity {
                 try {
                     jObject = new JSONObject(u);
                     StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
+                    VariabiliStaticheMostraImmagini.getInstance().setStrutturaImmagineAttuale(si);
 
                     // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
                     VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
@@ -687,17 +668,21 @@ public class MainMostraImmagini extends Activity {
     } */
 
     private void ImpostaSpostamento(Activity act) {
-        LinearLayout laySposta = act.findViewById(R.id.laySposta);
-        laySposta.setVisibility(LinearLayout.GONE);
+        // LinearLayout laySposta = act.findViewById(R.id.laySposta);
+        // laySposta.setVisibility(LinearLayout.GONE);
 
         ImageView imgApre = act.findViewById(R.id.imgSpostaACategoria);
         imgApre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                laySposta.setVisibility(LinearLayout.VISIBLE);
+                Intent i = new Intent(context, MainSpostamento.class);
+                i.putExtra("Modalita", "Immagine");
+                i.putExtra("idImmagine", Integer.toString(VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().getIdImmagine()));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         });
 
-        ImageView imgSpostaImmagine = act.findViewById(R.id.imgSpostaImmagine);
+        /* ImageView imgSpostaImmagine = act.findViewById(R.id.imgSpostaImmagine);
         imgSpostaImmagine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
@@ -706,17 +691,6 @@ public class MainMostraImmagini extends Activity {
                 c.SpostaImmagine(s, "IMMAGINI");
 
                 laySposta.setVisibility(LinearLayout.GONE);
-            }
-        });
-
-        ImageView imgCopiaSuSfondi = act.findViewById(R.id.imgCopiaSuSfondi);
-        imgCopiaSuSfondi.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmagini.getInstance().getUltimaImmagineCaricata();
-                String UrlImmagine = s.getUrlImmagine();
-
-                DownloadImmagineMI d = new DownloadImmagineMI();
-                d.EsegueChiamata(context, s.getNomeFile(), null, UrlImmagine, true, false);
             }
         });
 
@@ -766,7 +740,7 @@ public class MainMostraImmagini extends Activity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapter) {  }
-        });
+        }); */
     }
 
     @Override

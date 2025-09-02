@@ -776,7 +776,7 @@ public class InizializzaMascheraDetector {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
                         i.putExtra(Intent.EXTRA_SUBJECT, NomeImmagineSolo);
-                        i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
+                        // i.putExtra(Intent.EXTRA_TEXT, "Dettagli nel file allegato");
                         i.putExtra(Intent.EXTRA_STREAM, uri);
                         i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                         context.startActivity(Intent.createChooser(i, "Share immagine"));

@@ -654,36 +654,44 @@ public class MainImpostazioni extends Activity {
             }
         }); */
 
+        LinearLayout layImpo3 = act.findViewById(R.id.layImpo3);
+        LinearLayout layOffline = act.findViewById(R.id.layOffline);
         RadioButton swcImmagini = act.findViewById(R.id.optImmagini);
         RadioButton swcOffline = act.findViewById(R.id.optOffline);
         RadioButton swcOnline = act.findViewById(R.id.optOnline);
 
         if (!VariabiliStaticheStart.getInstance().isDetector()) {
             swcImmagini.setVisibility(LinearLayout.GONE);
+            layImpo3.setVisibility(LinearLayout.GONE);
         }
 
         switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
             case 0:
                 // Locale
+                layImpo3.setVisibility(LinearLayout.GONE);
+                layOffline.setVisibility(LinearLayout.VISIBLE);
                 swcOffline.setChecked(true);
                 break;
             case 1:
                 // Web
+                layImpo3.setVisibility(LinearLayout.GONE);
+                layOffline.setVisibility(LinearLayout.GONE);
                 swcOnline.setChecked(true);
                 break;
             case 2:
                 // Immagini
+                layImpo3.setVisibility(LinearLayout.VISIBLE);
+                layOffline.setVisibility(LinearLayout.GONE);
                 swcImmagini.setChecked(true);
                 break;
         }
 
-        LinearLayout layOffline = (LinearLayout) act.findViewById(R.id.layOffline);
-        if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0 ||
+        /* if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0 ||
                 VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 2) {
             layOffline.setVisibility(LinearLayout.GONE);
         } else {
             layOffline.setVisibility(LinearLayout.VISIBLE);
-        }
+        } */
 
         if (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine() == 0) {
             switchPerData.setVisibility(LinearLayout.VISIBLE);
@@ -708,6 +716,8 @@ public class MainImpostazioni extends Activity {
                 VariabiliStaticheWallpaper.getInstance().setModoRicercaImmagine(1);
                 layOffline.setVisibility(LinearLayout.GONE);
                 switchPerData.setVisibility(LinearLayout.VISIBLE);
+                layImpo3.setVisibility(LinearLayout.GONE);
+
                 if (VariabiliStaticheWallpaper.getInstance().isPerData()) {
                     VariabiliStaticheWallpaper.getInstance().setPerData(false);
                     switchPerData.setChecked(false);
@@ -728,6 +738,7 @@ public class MainImpostazioni extends Activity {
                 switchPerData.setVisibility(LinearLayout.GONE);
                 layGiorniDifferenza.setVisibility(LinearLayout.GONE);
                 layOffline.setVisibility(LinearLayout.VISIBLE);
+                layImpo3.setVisibility(LinearLayout.GONE);
 
                 if (VariabiliStaticheWallpaper.getInstance().getListaImmagini() != null &&
                         !VariabiliStaticheWallpaper.getInstance().getListaImmagini().isEmpty()) {
@@ -748,6 +759,7 @@ public class MainImpostazioni extends Activity {
                 layOffline.setVisibility(LinearLayout.GONE);
                 switchPerData.setVisibility(LinearLayout.GONE);
                 layGiorniDifferenza.setVisibility(LinearLayout.GONE);
+                layImpo3.setVisibility(LinearLayout.VISIBLE);
 
                 db_dati_wallpaper db = new db_dati_wallpaper(context);
                 db.ScriveImpostazioni();

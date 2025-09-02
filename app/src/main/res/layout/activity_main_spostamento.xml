@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:weightSum="15"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:orientation="vertical"
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:layout_height="0dp">
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:text="Sposta a categoria"
+                android:textColor="@color/Rosso"
+                android:textSize="18sp"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text="Filtro"
+                    android:textSize="16sp"
+                    android:textColor="@color/Nero"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edtSpostaFiltroCategoria"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textSize="16sp"
+                    android:textColor="@color/Blue"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imgRefreshCat"
+                        android:src="@drawable/icona_refresh"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Categoria"
+                    android:textSize="16sp"
+                    android:textColor="@color/Nero"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spnSpostaCategorie"
+                    android:layout_width="0dp"
+                    android:theme="@style/spinnerTheme"
+                    android:textSize="16sp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imgAggiungeCategoriaVeloce"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/icona_aggiunge" />
+
+                    <ImageView
+                        android:id="@+id/imgEsegueSpostamento"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/sposta" />
+
+                    <ImageView
+                        android:id="@+id/imgRefresh"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/icona_refresh" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/bordato"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ScrollView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/layPreferiti"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:clipToPadding="false"
+                        android:layout_margin="3dp"
+                        app:flexWrap="wrap"
+                        app:justifyContent="flex_start"
+                        app:alignItems="flex_start" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="3dp"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:layout_height="0dp"
+            android:layout_weight="9">
+
+            <ImageView
+                android:id="@+id/imgSpostamento"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="3dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/txtSpostamento"
+                android:layout_width="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/Verde_Scuro"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoPreview"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+</RelativeLayout>

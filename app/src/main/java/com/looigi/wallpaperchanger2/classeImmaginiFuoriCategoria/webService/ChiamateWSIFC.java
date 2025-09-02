@@ -43,9 +43,13 @@ public class ChiamateWSIFC implements TaskDelegate {
         String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
         String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
         String Tag = VariabiliImmaginiFuoriCategoria.getInstance().getEdtTag().getText().toString();
+        String idCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria();
+        if (!VariabiliImmaginiFuoriCategoria.getInstance().getRicerca().isEmpty()) {
+            idCategoria = "1";
+        }
 
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
-                "idCategoria=" + VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria() +
+                "idCategoria=" + idCategoria +
                 "&Aliases1=" + Alias1 +
                 "&Aliases2=" + Alias2 +
                 "&QuantiCaratteri=" + VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri() +
@@ -53,10 +57,12 @@ public class ChiamateWSIFC implements TaskDelegate {
                 "&SoloSuAltro=" + (VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro() ? "S" : "N") +
                 "&CercaExif=" + (VariabiliImmaginiFuoriCategoria.getInstance().isCercaExif() ? "S" : "N") +
                 "&Tag=" + Tag +
-                "&ForzaRefresh=" + (!Objects.equals(VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria(), "-1") ? ForzaRefrsh : "S");
+                "&ForzaRefresh=S"; // + (!Objects.equals(VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria(), "-1") ? ForzaRefrsh : "S");
 
         TipoOperazione = "TrovaNomiSuDbFuoriDallaCategoria";
 
+        // Da categoria: TrovaNomiSuDbFuoriDallaCategoria?idCategoria=13&Aliases1=Adriana&Aliases2=karem&QuantiCaratteri=4&AndOr=And&SoloSuAltro=S&CercaExif=N&Tag=&ForzaRefresh=N
+        // Da ricerca:   TrovaNomiSuDbFuoriDallaCategoria?idCategoria=-1&Aliases1=karem,&Aliases2=&QuantiCaratteri=4&AndOr=And&SoloSuAltro=S&CercaExif=N&Tag=&ForzaRefresh=S
         Esegue(
                 RadiceWS + ws + Urletto,
                 TipoOperazione,

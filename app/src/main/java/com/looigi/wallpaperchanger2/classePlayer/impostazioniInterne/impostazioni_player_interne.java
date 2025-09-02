@@ -823,7 +823,7 @@ public class impostazioni_player_interne {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
                 i.putExtra(Intent.EXTRA_SUBJECT, Path);
-                i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                // i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                 i.putExtra(Intent.EXTRA_STREAM,uri);
                 i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                 context.startActivity(Intent.createChooser(i,"Share immagine"));
@@ -1082,7 +1082,7 @@ public class impostazioni_player_interne {
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"looigi@gmail.com"});
                     i.putExtra(Intent.EXTRA_SUBJECT, s.getNomeImmagine());
-                    i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
+                    // i.putExtra(Intent.EXTRA_TEXT,"Dettagli nel file allegato");
                     i.putExtra(Intent.EXTRA_STREAM,uri);
                     i.setType(UtilitiesGlobali.getInstance().GetMimeType(context, uri));
                     context.startActivity(Intent.createChooser(i,"Share immagine looWebPlayer"));

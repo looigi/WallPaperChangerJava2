@@ -1,8 +1,11 @@
 package com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
@@ -61,14 +64,32 @@ public class ChiamateWSUI implements TaskDelegateUI {
         this.context = context;
     }
 
-    public void RitornaProssimaImmagine(int idCategoria) {
-        String Urletto = "ProssimaImmagine?" +
-                        "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
-                        "&Filtro=" +
-                        "&idImmagine=0" +
-                        "&Random=S" +
-                        "&OrdinaPerVisualizzato=S" +
-                        "&Operatore=Or";
+    public void RitornaProssimaImmagine(int idCategoria, String daDove) {
+        VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+        VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
+        VariabiliStatichePreview.getInstance().Attesa(true);
+
+        String Urletto = "";
+
+        if (daDove.equals("PREVIEW")) {
+            Urletto = "ProssimaImmagine?" +
+                    "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
+                    "&Filtro=" +
+                    "&idImmagine=" + VariabiliStatichePreview.getInstance().getUltimaImmagineVisualizzata() +
+                    "&Random=N" +
+                    "&OrdinaPerVisualizzato=S" +
+                    "&Operatore=Or" +
+                    "&Preview=S";
+        } else {
+            Urletto = "ProssimaImmagine?" +
+                    "idCategoria=" + (idCategoria > 0 ? idCategoria : "") +
+                    "&Filtro=" +
+                    "&idImmagine=0" +
+                    "&Random=S" +
+                    "&OrdinaPerVisualizzato=S" +
+                    "&Operatore=Or" +
+                    "&Preview=N";
+        }
 
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
@@ -118,7 +139,6 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     public void ControllaVolto(String idImmagine) {
         VariabiliStatichePreview.getInstance().Attesa(true);
-        this.ForzaRefresh = ForzaRefresh;
 
         String Urletto="ControllaVolto?idImmagine=" + idImmagine;
 
@@ -412,6 +432,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     JSONObject obj = jObject.getJSONObject(i);
 
                     StrutturaVoltiRilevati s = new StrutturaVoltiRilevati();
+                    s.setIdImmagine(obj.getInt("idImmagine"));
                     s.setIdCategoria(obj.getInt("idCategoria"));
                     s.setCategoria(obj.getString("Categoria"));
                     s.setConfidenza(obj.getString("Confidenza"));
@@ -420,7 +441,9 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     String url = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic +
                             "/Materiale/newPLibrary/";
                     s.setUrlOrigine(url + obj.getString("UrlOrigine"));
-                    s.setUrlDestinazione(url + obj.getString("UrlDestiinazione"));
+                    s.setUrlDestinazione(url + obj.getString("UrlDestinazione"));
+                    s.setNomeOrigine(obj.getString("NomeOrigine"));
+                    s.setNomeDestinazione(obj.getString("NomeDestinazione"));
 
                     lista.add(s);
                 }
@@ -432,7 +455,6 @@ public class ChiamateWSUI implements TaskDelegateUI {
                 VariabiliStatichePreview.getInstance().getLstVolti().setAdapter(customAdapterT);
 
                 VariabiliStatichePreview.getInstance().getLayVolti().setVisibility(LinearLayout.VISIBLE);
-
             } catch (JSONException e) {
                 UtilitiesGlobali.getInstance().ApreToast(context, result);
             }
@@ -443,15 +465,39 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     private void fProssimaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
+
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        VariabiliStatichePreview.getInstance().Attesa(false);
+        VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
+        VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
+
         if (ritorno) {
             // VariabiliStaticheUtilityImmagini.getInstance().getLayPreview().setVisibility(LinearLayout.VISIBLE);
 
             try {
                 JSONObject jObject = new JSONObject(result);
                 StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
+
                 // VariabiliStaticheUtilityImmagini.getInstance().setIdImmagineInPreview(si.getIdImmagine());
                 if (si != null) {
+                    VariabiliStatichePreview.getInstance().AggiungeImmagineAVisualizzate(si);
+
+                    VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+                    if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
+                        String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
+                                " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
+                                " - Bytes: " + si.getDimensioneFile();
+                        VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                    }
+
+                    SharedPreferences prefs = context.getSharedPreferences("PREVIEW", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt(
+                            "idImmagineCategoria_" + VariabiliStatichePreview.getInstance().getIdCategoria(),
+                            si.getIdImmagine());
+                    editor.apply();
+                    VariabiliStatichePreview.getInstance().setUltimaImmagineVisualizzata(si.getIdImmagine());
+
                     /* DownloadImmagineMI d = new DownloadImmagineMI();
                     d.EsegueChiamata(
                             context, si.getUrlImmagine(),

@@ -52,6 +52,72 @@ public class VariabiliStatichePreview {
     private List<StrutturaVoltiRilevati> listaVoltiRilevati = new ArrayList<>();
     private LinearLayout layVolti;
     private ListView lstVolti;
+    private TextView txtDescrizione;
+    private List<StrutturaImmaginiLibrary> listaImmaginiVisualizzate = new ArrayList<>();
+    private int qualeImmagine = -1;
+    private int ultimaImmagineVisualizzata = 0;
+    private ImageView imgPrecedente;
+    private ImageView imgProssima;
+
+    public void setQualeImmagine(int qualeImmagine) {
+        this.qualeImmagine = qualeImmagine;
+    }
+
+    public List<StrutturaImmaginiLibrary> getListaImmaginiVisualizzate() {
+        return listaImmaginiVisualizzate;
+    }
+
+    public ImageView getImgPrecedente() {
+        return imgPrecedente;
+    }
+
+    public void setImgPrecedente(ImageView imgPrecedente) {
+        this.imgPrecedente = imgPrecedente;
+    }
+
+    public ImageView getImgProssima() {
+        return imgProssima;
+    }
+
+    public void setImgProssima(ImageView imgProssima) {
+        this.imgProssima = imgProssima;
+    }
+
+    public int getUltimaImmagineVisualizzata() {
+        return ultimaImmagineVisualizzata;
+    }
+
+    public void setUltimaImmagineVisualizzata(int ultimaImmagineVisualizzata) {
+        this.ultimaImmagineVisualizzata = ultimaImmagineVisualizzata;
+    }
+
+    public int getQualeImmagine() {
+        return qualeImmagine;
+    }
+
+    public void AggiungeImmagineAVisualizzate(StrutturaImmaginiLibrary s) {
+        if (qualeImmagine < listaImmaginiVisualizzate.size() - 1) {
+            listaImmaginiVisualizzate.set(qualeImmagine, s);
+        } else {
+            listaImmaginiVisualizzate.add(s);
+        }
+
+        qualeImmagine++;
+    }
+
+    public StrutturaImmaginiLibrary RitornaImmaginePrecedente() {
+        qualeImmagine--;
+
+        return listaImmaginiVisualizzate.get(qualeImmagine);
+    }
+
+    public TextView getTxtDescrizione() {
+        return txtDescrizione;
+    }
+
+    public void setTxtDescrizione(TextView txtDescrizione) {
+        this.txtDescrizione = txtDescrizione;
+    }
 
     public ListView getLstVolti() {
         return lstVolti;
