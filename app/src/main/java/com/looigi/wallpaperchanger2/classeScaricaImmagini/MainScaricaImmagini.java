@@ -48,6 +48,11 @@ public class MainScaricaImmagini extends Activity {
 
         VariabiliScaricaImmagini.getInstance().setTxtSelezionate(findViewById(R.id.txtSelezionate));
         VariabiliScaricaImmagini.getInstance().setImgScaricaTutte(findViewById(R.id.imgSalvaTutte));
+        if (VariabiliScaricaImmagini.getInstance().getModalita().equals("PLAYER")) {
+            VariabiliScaricaImmagini.getInstance().getImgScaricaTutte().setVisibility(LinearLayout.GONE);
+        } else {
+            VariabiliScaricaImmagini.getInstance().getImgScaricaTutte().setVisibility(LinearLayout.VISIBLE);
+        }
         VariabiliScaricaImmagini.getInstance().getImgScaricaTutte().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliScaricaImmagini.getInstance().getListaDaScaricare().isEmpty()) {
@@ -71,6 +76,7 @@ public class MainScaricaImmagini extends Activity {
                     VariabiliScaricaImmagini.getInstance().setChkSelezione(s.getChkSelezione());
 
                     VariabiliScaricaImmagini.getInstance().setScaricataBene(false);
+
                     DownloadImmagineSI d = new DownloadImmagineSI();
                     d.EsegueDownload(context, s.getImgImmagine(), s.getUrlImmagine(), Modalita,
                             Filtro, true, "SCARICA", 0, null);

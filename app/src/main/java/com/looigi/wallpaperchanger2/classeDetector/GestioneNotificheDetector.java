@@ -180,7 +180,7 @@ public class GestioneNotificheDetector {
         // // Log.getInstance().ScriveLog("Rimuovi notifica");
         if (manager != null) {
             try {
-                manager.cancel(VariabiliStaticheDetector.getInstance().getIdNotifica());
+                manager.cancel(VariabiliStaticheDetector.NOTIFICATION_CHANNEL_ID);
                 // manager.cancelAll();
                 manager = null;
                 contentView = null;

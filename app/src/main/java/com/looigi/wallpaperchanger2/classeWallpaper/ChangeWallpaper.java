@@ -443,7 +443,9 @@ public class ChangeWallpaper {
 				String path1 = context.getFilesDir() + "/Download/AppoggioImpostato.jpg";
 				if (UtilityWallpaper.getInstance().EsisteFile(path1)) {
 					Bitmap ultimaFinale = BitmapFactory.decodeFile(path1);
-					VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
+					if (VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale() != null) {
+						VariabiliStaticheWallpaper.getInstance().getImgImpostataFinale().setImageBitmap(ultimaFinale);
+					}
 				}
 
 				VariabiliStaticheWallpaper.getInstance().setSecondiPassati(0);

@@ -1,9 +1,12 @@
 package com.looigi.wallpaperchanger2;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
+import com.looigi.wallpaperchanger2.classeAntifurto.MainAntifurto;
+import com.looigi.wallpaperchanger2.classeAntifurto.UtilityAntifurto;
+import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
@@ -23,7 +29,6 @@ import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
-import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
@@ -35,6 +40,7 @@ import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
@@ -311,6 +317,15 @@ public class MainStart extends Activity {
                         act.finish();
                     }
                 }, 100);
+            }
+        });
+
+        ImageView imgA = findViewById(R.id.imgStartAntifurto);
+        imgA.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iA = new Intent(context, MainAntifurto.class);
+                iA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iA);
             }
         });
 
@@ -727,6 +742,39 @@ public class MainStart extends Activity {
         apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
         context.startActivity(apre);*/
 
+        // ANTIFURTO
+        SharedPreferences prefs = getSharedPreferences("START", MODE_PRIVATE);
+        String AntifurtoAttivo = prefs.getString(
+                "AntifurtoAttivo"
+                , "N");
+
+        // prefs.edit().remove("gForcePerAllarme").commit();
+        String gForce = prefs.getString(
+                "gForcePerAllarme"
+                , "1.5");
+        VariabiliStaticheAntifurto.getInstance().setgForcePerAllarme(Float.parseFloat(gForce));
+
+        String btMonitorato = prefs.getString(
+                "BTMonitorato"
+                , "");
+        VariabiliStaticheAntifurto.getInstance().setBtMonitorato(btMonitorato);
+
+        if (AntifurtoAttivo.equals("S")) {
+            UtilityAntifurto.getInstance().AttivaAntifurto(context, true);
+        } else {
+            VariabiliStaticheAntifurto.getInstance().setAllarmeAttivo(false);
+            VariabiliStaticheAntifurto.getInstance().setAllarmeInCorso(false);
+        }
+
+        // PERMESSI PER ACCELEROMETRO
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.BODY_SENSORS}, 1);
+            }
+        }
+        // PERMESSI PER ACCELEROMETRO
+        // ANTIFURTO
+
         PrendeModelloTelefono p = new PrendeModelloTelefono();
         String modello = p.getDeviceName();
         if (!modello.contains("sdk_gphone64")) {
@@ -751,7 +799,9 @@ public class MainStart extends Activity {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                laySplash.setVisibility(LinearLayout.GONE);
+                if (laySplash != null) {
+                    laySplash.setVisibility(LinearLayout.GONE);
+                }
 
                 StartActivities();
             }
@@ -833,11 +883,6 @@ public class MainStart extends Activity {
 
         VariabiliStaticheStart.getInstance().setMainActivity(this);
         VariabiliStaticheStart.getInstance().setContext(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

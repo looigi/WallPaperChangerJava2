@@ -50,6 +50,8 @@ public class Permessi {
                 Manifest.permission.SET_WALLPAPER,
                 // Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.VIBRATE,
+                // Manifest.permission.BODY_SENSORS,
+                // Manifest.permission.HIGH_SAMPLING_RATE_SENSORS,
                 // Manifest.permission.REQUEST_INSTALL_PACKAGES,
                 // Manifest.permission.SYSTEM_ALERT_WINDOW,
                 Manifest.permission.POST_NOTIFICATIONS,

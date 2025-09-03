@@ -258,7 +258,7 @@ public class GestioneNotificheWP {
         // // Utility.getInstance().ScriveLog("Rimuovi notifica");
         if (manager != null) {
             try {
-                manager.cancel(VariabiliStaticheWallpaper.getInstance().getIdNotifica());
+                manager.cancel(VariabiliStaticheWallpaper.NOTIFICATION_CHANNEL_ID);
                 // manager.cancelAll();
                 manager = null;
                 contentView = null;

@@ -666,7 +666,7 @@ public class UtilityPlayer {
                                                     VariabiliStatichePlayer.getInstance().getImgSfondoSettings().setImageBitmap(bitmap);
                                                 }
                                                 if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
-                                                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size() - 1));
+                                                    VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + immagine[0] + "/" + (finalLista.size()));
                                                 }
                                                 if (VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine() != null) {
                                                     VariabiliStatichePlayer.getInstance().getEdtNumeroImmagine().setText(Integer.toString(immagine[0]));
@@ -1352,7 +1352,7 @@ public class UtilityPlayer {
             if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null && VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini() != null) {
                 VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " +
                         VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() +
-                        "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                        "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()));
             }
         }
 
@@ -1439,7 +1439,7 @@ public class UtilityPlayer {
 
                     if (VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine() != null) {
                         VariabiliStatichePlayer.getInstance().getTxtNumeroImmagine().setText("Immagine " + n +
-                                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size() - 1));
+                                "/" + (VariabiliStatichePlayer.getInstance().getUltimoBrano().getImmagini().size()));
                     }
                 } else {
                     VariabiliStatichePlayer.getInstance().setImmagineVisualizzataPerModifica(null);

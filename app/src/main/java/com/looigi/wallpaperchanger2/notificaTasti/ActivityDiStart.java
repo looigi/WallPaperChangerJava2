@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeAntifurto.MainAntifurto;
+import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -31,11 +34,13 @@ import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+import com.looigi.wallpaperchanger2.classeAntifurto.UtilityAntifurto;
 
 public class ActivityDiStart extends Activity {
     @Override
@@ -51,6 +56,25 @@ public class ActivityDiStart extends Activity {
         t.setText("Apertura " + id);
 
         switch (id) {
+            case "allarme":
+                SharedPreferences prefs = getSharedPreferences("START", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                if (!VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
+                    UtilityAntifurto.getInstance().AttivaAntifurto(context, true);
+                    editor.putString(
+                            "AntifurtoAttivo",
+                            "S");
+                } else {
+                    UtilityAntifurto.getInstance().AttivaAntifurto(context, false);
+                    editor.putString(
+                            "AntifurtoAttivo",
+                            "N");
+                }
+                editor.apply();
+
+                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+                break;
             case "update":
                 UtilitiesGlobali.getInstance().ControllaNuovaVersione(context);
                 break;

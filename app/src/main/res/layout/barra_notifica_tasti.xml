@@ -8,120 +8,176 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
+        android:weightSum="6"
         android:layout_height="wrap_content">
 
-        <!--
-        <ImageView
-            android:id="@+id/imgSwitchGPSTasti"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/satellite" />
-        -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgLazioTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/lazio" />
+            <ImageView
+                android:id="@+id/imgLazioTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/lazio" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgDetectorTasti"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/detector" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgDriveTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/drive" />
+            <ImageView
+                android:id="@+id/imgDetectorTasti"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/detector" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgWallpaperTasti"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/eye" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgModificheTasti"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/modifiche" />
+            <ImageView
+                android:id="@+id/imgDriveTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/drive" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgOrariTasti"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/orari" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/imgWallpaperTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/eye" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgModificheTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/modifiche" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgOrariTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/orari" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:weightSum="6"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <ImageView
-            android:id="@+id/imgOnomasticiTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/onomastici" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgFilmsTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/video2" />
+            <ImageView
+                android:id="@+id/imgOnomasticiTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/onomastici" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgFetekkieTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/fetekkie" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgBackupTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/backup" />
+            <ImageView
+                android:id="@+id/imgFilmsTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/video2" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgPlayerTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/player" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgMappaTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/map" />
+            <ImageView
+                android:id="@+id/imgFetekkieTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/fetekkie" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgBackupTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/backup" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgPlayerTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/player" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgMappaTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/map" />
+        </LinearLayout>
         <!-- <ImageView
             android:id="@+id/imgImmaginiTasti"
             android:layout_marginStart="5dp"
@@ -149,40 +205,88 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:weightSum="6"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <ImageView
-            android:id="@+id/imgControlloImmagini"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/controllo_immagini" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgPasswordTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/password" />
+            <ImageView
+                android:id="@+id/imgAntifurto"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/allarme_non_attivo" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgUpdateTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/update" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgSettingsTasti"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/settings" />
+            <ImageView
+                android:id="@+id/imgControlloImmagini"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/controllo_immagini" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgPasswordTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/password" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgUpdateTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/update" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgSettingsTasti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/settings" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgSettingsUscita"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/shutdown" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

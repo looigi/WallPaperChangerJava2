@@ -528,7 +528,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                50000,
+                5000000,
                 ApriDialog);
     }
 

@@ -161,6 +161,11 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
                 "Salva Immagine Artista " + Artista + ": " + Immagine);
 
+        if (Immagine.contains("/")) {
+            String[] i = Immagine.split("/");
+            Immagine = i[i.length -1];
+        }
+
         String Urletto="SalvaImmagineArtista?" +
                 "Artista=" + Artista +
                 "&Immagine=" + Immagine +
@@ -198,7 +203,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 TipoOperazione,
                 NS,
                 SA,
-                60000,
+                160000,
                 true,
                 true,
                 false,
@@ -478,7 +483,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
         }
 
         if (esegueQuery) {
-            String Urletto = "Ritorna Artisti";
+            String Urletto = "RitornaArtisti";
 
             TipoOperazione = "Ritorna Artisti";
             // ControllaTempoEsecuzione = true;
@@ -488,7 +493,7 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     TipoOperazione,
                     NS,
                     SA,
-                    50000,
+                    150000,
                     true,
                     true,
                     false,
@@ -1013,7 +1018,8 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
 
                 VariabiliStatichePlayer.getInstance().getUltimoBrano().setImmagini(ListaImmagini);
 
-                if (VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() == -1) {
+                if (VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() == -1 ||
+                        VariabiliStatichePlayer.getInstance().getIdImmagineImpostata() == 0) {
                     UtilityPlayer.getInstance().ImpostaImmagine(context, -1);
                 }
 

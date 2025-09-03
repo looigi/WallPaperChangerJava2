@@ -151,10 +151,16 @@ public class AdapterListenerImmaginiDaScaricare extends BaseAdapter {
 
                 CheckBox chkSelezionata = (CheckBox) view.findViewById(R.id.chkSelezionata);
 
-                if (controlloCheckBox.contains((i))) {
-                    chkSelezionata.setChecked(true);
+                if (VariabiliScaricaImmagini.getInstance().getModalita().equals("PLAYER")) {
+                    chkSelezionata.setVisibility(LinearLayout.GONE);
                 } else {
-                    chkSelezionata.setChecked(false);
+                    chkSelezionata.setVisibility(LinearLayout.VISIBLE);
+
+                    if (controlloCheckBox.contains((i))) {
+                        chkSelezionata.setChecked(true);
+                    } else {
+                        chkSelezionata.setChecked(false);
+                    }
                 }
 
                 chkSelezionata.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.R;
+import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
@@ -130,6 +131,14 @@ public class GestioneNotificheTasti {
                 contentView.setViewVisibility(R.id.imgControlloImmagini, LinearLayout.GONE);
                 // contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
+
+            Bitmap bmAntifurto;
+            if (!VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
+                bmAntifurto = BitmapFactory.decodeResource(context.getResources(), R.drawable.allarme_non_attivo);
+            } else {
+                bmAntifurto = BitmapFactory.decodeResource(context.getResources(), R.drawable.allarme_attivo);
+            }
+            contentView.setImageViewBitmap(R.id.imgAntifurto, bmAntifurto);
 
             /* if (VariabiliStaticheStart.getInstance().isDetector() &&
                     VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
@@ -437,6 +446,28 @@ public class GestioneNotificheTasti {
             PendingIntent pOrari = PendingIntent.getActivity(ctx, 213, orari,
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgOrariTasti, pOrari);
+
+            Intent allarme = new Intent(ctx, ActivityDiStart.class);
+            allarme.addCategory(Intent.CATEGORY_LAUNCHER);
+            allarme.setAction(Intent.ACTION_MAIN );
+            allarme.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            allarme.putExtra("DO", "allarme");
+            PendingIntent pAllarme = PendingIntent.getActivity(ctx,
+                    218,
+                    allarme,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgAntifurto, pAllarme);
+
+            Intent uscita = new Intent(ctx, ActivityDiStart.class);
+            uscita.addCategory(Intent.CATEGORY_LAUNCHER);
+            uscita.setAction(Intent.ACTION_MAIN );
+            uscita.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+            uscita.putExtra("DO", "uscita");
+            PendingIntent pUscita = PendingIntent.getActivity(ctx,
+                    219,
+                    uscita,
+                    PendingIntent.FLAG_IMMUTABLE);
+            view.setOnClickPendingIntent(R.id.imgSettingsUscita, pUscita);
         }
     }
 
@@ -479,7 +510,7 @@ public class GestioneNotificheTasti {
         // // Utility.getInstance().ScriveLog("Rimuovi notifica");
         if (manager != null) {
             try {
-                manager.cancel(VariabiliStaticheTasti.getInstance().getIdNotifica());
+                manager.cancel(VariabiliStaticheTasti.NOTIFICATION_CHANNEL_ID);
                 // manager.cancelAll();
                 manager = null;
                 contentView = null;
