@@ -67,7 +67,7 @@ public class MainAntifurto extends Activity {
         });
 
         EditText edtBT = findViewById(R.id.edtBT);
-        edtGForce.setText(Float.toString(VariabiliStaticheAntifurto.getInstance().getgForcePerAllarme()));
+        edtBT.setText(VariabiliStaticheAntifurto.getInstance().getBtMonitorato());
         ImageView imgImpostaBT = findViewById(R.id.imgImpostaBT);
         imgImpostaBT.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

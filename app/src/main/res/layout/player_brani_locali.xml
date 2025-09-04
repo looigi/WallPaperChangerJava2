@@ -29,7 +29,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_marginStart="3dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/Nero"
                     android:gravity="center_vertical"
                     android:text="Ricerca"
                     android:layout_height="match_parent" />
@@ -73,9 +73,7 @@
                     android:gravity="center_vertical|left"
                     android:text=""
                     android:textColor="#aa0000"
-                    android:textSize="12dp">
-
-                </TextView>
+                    android:textSize="12dp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -87,9 +85,7 @@
                         android:id="@+id/imgRefreshBraniDB"
                         android:src="@drawable/icona_refresh"
                         android:layout_width="40dp"
-                        android:layout_height="40dp">
-
-                    </ImageView>
+                        android:layout_height="40dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -99,7 +95,6 @@
             android:layout_width="match_parent"
             android:layout_weight="8"
             android:dividerHeight="1dp"
-            android:layout_height="0dp" >
-        </ListView>
+            android:layout_height="0dp" />
     </LinearLayout>
 </LinearLayout>

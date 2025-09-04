@@ -163,9 +163,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Imposta come Sfondo"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -199,9 +198,8 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:text="Secondi al Cambio"
-                            android:layout_height="wrap_content">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="wrap_content" />
 
                         <EditText
                             android:id="@+id/edtTempoCambio"
@@ -250,9 +248,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Nuove immagini"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -278,9 +275,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Condividi"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -306,9 +302,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Modifica"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -334,9 +329,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Copia su sfondi"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -362,9 +356,8 @@
                             android:layout_weight="7"
                             android:gravity="center_vertical"
                             android:text="Refresh Immagini"
-                            android:layout_height="match_parent">
-
-                        </TextView>
+                            android:textColor="@color/Nero"
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="0dp"

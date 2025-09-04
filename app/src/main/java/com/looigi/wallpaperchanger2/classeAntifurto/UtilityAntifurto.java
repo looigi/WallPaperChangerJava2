@@ -94,6 +94,8 @@ public class UtilityAntifurto {
             if (VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
                 FermaTimer();
 
+                VariabiliStaticheAntifurto.getInstance().getTxtAllarme().setText("");
+
                 // VariabiliStaticheAntifurto.getInstance().getShakeDetector().stop();
                 context.stopService(new Intent(context, ShakeService.class));
 

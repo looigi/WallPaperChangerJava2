@@ -28,6 +28,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
+                    android:textColor="@color/Nero"
                     android:text="Salvataggi"
                     android:layout_height="wrap_content" />
 
@@ -96,6 +97,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="4"
+                        android:textColor="@color/Nero"
                         android:text="Stelle"
                         android:layout_height="wrap_content" />
 
@@ -147,6 +149,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/Nero"
                         android:text="Testo"
                         android:layout_height="wrap_content" />
 
@@ -168,6 +171,7 @@
 
                     <TextView
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:text="Testo da Escludere"
                         android:layout_height="wrap_content" />
@@ -207,12 +211,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="3"
+                        android:textColor="@color/Nero"
                         android:text="Da Includere"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/txtPreferiti"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="5"
                         android:lines="1"
                         android:layout_height="wrap_content" />
@@ -220,6 +226,7 @@
                     <Button
                         android:id="@+id/btnPreferiti"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="..." />
@@ -233,6 +240,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="3"
+                        android:textColor="@color/Nero"
                         android:text="Da Escludere"
                         android:layout_height="wrap_content" />
 
@@ -240,12 +248,14 @@
                         android:id="@+id/txtNonPreferiti"
                         android:layout_width="0dp"
                         android:layout_weight="5"
+                        android:textColor="@color/Nero"
                         android:lines="1"
                         android:layout_height="wrap_content" />
 
                     <Button
                         android:id="@+id/btnPreferitiElimina"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="..." />
@@ -260,12 +270,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:text="Ricerca Preferiti"
                         android:layout_height="wrap_content" />
 
                     <RadioButton
                         android:id="@+id/optAndPreferiti"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="And" />
@@ -273,6 +285,7 @@
                     <RadioButton
                         android:id="@+id/optOrPreferiti"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Or" />
@@ -301,6 +314,7 @@
 
                     <TextView
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="3"
                         android:text="Da Includere"
                         android:layout_height="wrap_content" />
@@ -308,6 +322,7 @@
                     <TextView
                         android:id="@+id/txtTags"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="5"
                         android:lines="1"
                         android:layout_height="wrap_content" />
@@ -315,6 +330,7 @@
                     <Button
                         android:id="@+id/btnTags"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="..." />
@@ -328,12 +344,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="3"
+                        android:textColor="@color/Nero"
                         android:text="Da Escludere"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/txtNonTags"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="5"
                         android:lines="1"
                         android:layout_height="wrap_content" />
@@ -341,6 +359,7 @@
                     <Button
                         android:id="@+id/btnTagsElimina"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:text="..." />
@@ -355,12 +374,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:text="Ricerca Tags"
                         android:layout_height="wrap_content" />
 
                     <RadioButton
                         android:id="@+id/optAndTags"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="And" />
@@ -369,6 +390,7 @@
                         android:id="@+id/optOrTags"
                         android:layout_width="0dp"
                         android:layout_weight="1"
+                        android:textColor="@color/Nero"
                         android:layout_height="wrap_content"
                         android:text="Or" />
                 </RadioGroup>
@@ -396,17 +418,20 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/Nero"
                         android:text="Data Superiore"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/txtDataSuperiore"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content" />
 
                     <Button
                         android:id="@+id/btnDataSuperiore"
+                        android:textColor="@color/Nero"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -421,18 +446,21 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="2"
+                        android:textColor="@color/Nero"
                         android:text="Data Inferiore"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/txtDataInferiore"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="2"
                         android:layout_height="wrap_content" />
 
                     <Button
                         android:id="@+id/btnDataInferiore"
                         android:layout_width="0dp"
+                        android:textColor="@color/Nero"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="..." />

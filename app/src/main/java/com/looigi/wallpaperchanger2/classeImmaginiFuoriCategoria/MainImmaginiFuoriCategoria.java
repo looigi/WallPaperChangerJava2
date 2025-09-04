@@ -182,10 +182,10 @@ public class MainImmaginiFuoriCategoria extends Activity {
                 @Override
                 public void onNothingSelected(AdapterView<?> adapter) {  }
             });
-
-            ChiamateWSMI c = new ChiamateWSMI(context);
-            c.RitornaCategorie(false, "FC");
         }
+
+        ChiamateWSMI c = new ChiamateWSMI(context);
+        c.RitornaCategorie(false, "FC");
 
         /* if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
             String[] Aliases = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
@@ -222,9 +222,9 @@ public class MainImmaginiFuoriCategoria extends Activity {
         String Alias2 = "";
         if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
             if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().contains("_")) {
-                String[] c = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
-                Alias1 = c[0];
-                Alias2 = c[c.length - 1];
+                String[] c2 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().split("_");
+                Alias1 = c2[0];
+                Alias2 = c2[c2.length - 1];
             } else {
                 int lungh = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().length();
                 Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getCategoria().substring(0, lungh / 2);

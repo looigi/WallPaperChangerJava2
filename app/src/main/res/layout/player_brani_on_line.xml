@@ -32,7 +32,7 @@
 
                 <EditText
                     android:id="@+id/edtFiltroArtisti"
-                    android:textColor="@color/black"
+                    android:textColor="@color/Blue"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content" />
@@ -47,17 +47,13 @@
                         android:id="@+id/imgFiltroArtisti"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/icona_cerca">
-
-                    </ImageView>
+                        android:src="@drawable/icona_cerca" />
 
                     <ImageView
                         android:id="@+id/imgRefreshArtisti"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/icona_refresh">
-
-                    </ImageView>
+                        android:src="@drawable/icona_refresh" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -77,8 +73,7 @@
             android:layout_height="0dp"
             android:dividerHeight="1dp"
             android:listSelector="#9999EE"
-            android:layout_weight="2">
-        </ListView>
+            android:layout_weight="2" />
 
         <ListView
             android:id="@+id/lstListaAlbum"
@@ -88,8 +83,7 @@
             android:layout_height="0dp"
             android:dividerHeight="1dp"
             android:listSelector="#9999EE"
-            android:layout_weight="2">
-        </ListView>
+            android:layout_weight="2" />
 
         <ListView
             android:id="@+id/lstListaBrani"
@@ -99,7 +93,6 @@
             android:layout_height="0dp"
             android:dividerHeight="1dp"
             android:listSelector="#9999EE"
-            android:layout_weight="2">
-        </ListView>
+            android:layout_weight="2" />
     </LinearLayout>
 </LinearLayout>
