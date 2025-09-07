@@ -109,4 +109,5 @@ dependencies {
     implementation(libs.work.runtime)
 
     implementation(libs.flexbox)
+    implementation(libs.text.recognition)
 }

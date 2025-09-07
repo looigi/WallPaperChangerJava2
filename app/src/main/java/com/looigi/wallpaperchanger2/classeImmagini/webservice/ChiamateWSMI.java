@@ -28,6 +28,7 @@ import com.looigi.wallpaperchanger2.classePazzia.UtilityPazzia;
 import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.adapters.AdapterListenerImmaginiDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
@@ -306,6 +307,13 @@ public class ChiamateWSMI implements TaskDelegate {
                         "idImmagine=" + s.getIdImmagine() +
                         "&idCategoriaNuova=" + VariabiliStaticheSpostamento.getInstance().getIdCategoriaSpostamento();
                 break;
+            case "PREVIEW":
+                UtilitiesPreview.getInstance().Attesa(true);
+
+                Urletto = "SpostaImmagineACategoria?" +
+                        "idImmagine=" + s.getIdImmagine() +
+                        "&idCategoriaNuova=" + VariabiliStatichePreview.getInstance().getIdCategoriaSpostamento();
+                break;
             case "IMMAGINI":
             case "FC":
                 if (VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento() != null) {
@@ -467,15 +475,15 @@ public class ChiamateWSMI implements TaskDelegate {
 
                         if (daDove.equals("FC")) {
                             UtilitiesGlobali.getInstance().ImpostaSpinner(context,
-                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),
-                                    ll2,
-                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata()
-                            );
-                        } else {
-                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
                                     VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
                                     ll2,
                                     VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
+                            );
+                        } else {
+                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getSpnCategorie(),
+                                    ll2,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata()
                             );
                         }
                         break;
@@ -512,7 +520,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                 break;
             case "PREVIEW":
-                VariabiliStatichePreview.getInstance().Attesa(true);
+                UtilitiesPreview.getInstance().Attesa(true);
                 break;
             // case "VO":
             //     VariabiliStaticheVolti.getInstance().Attesa(true);
@@ -926,10 +934,17 @@ public class ChiamateWSMI implements TaskDelegate {
                 UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
 
                 if (daDove.equals("SPOSTAMENTO")) {
+                    VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                     VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                     VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
                     VariabiliStaticheSpostamento.getInstance().Attesa(false);
                     VariabiliStaticheSpostamento.getInstance().getAct().finish();
+                } else {
+                    if (daDove.equals("PREVIEW")) {
+                        VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
+                        VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
+                        VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
+                    }
                 }
 
                 /* if (daDove.equals("VO")) {

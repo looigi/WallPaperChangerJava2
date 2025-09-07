@@ -21,24 +21,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
-import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
-import com.looigi.wallpaperchanger2.classeFilms.MainMostraFilms;
-import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
-import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
-import com.looigi.wallpaperchanger2.classeLazio.MainLazio;
-import com.looigi.wallpaperchanger2.classePassword.MainPassword;
-import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
-import com.looigi.wallpaperchanger2.classeDetector.InizializzaMascheraDetector;
-import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
-import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
-import com.looigi.wallpaperchanger2.classeGps.MainMappa;
-import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
-import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
-import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
-import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
-import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
-import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.notifiche.NotificationDismissedReceiver;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
@@ -132,7 +114,7 @@ public class GestioneNotificheTasti {
                 // contentView.setViewVisibility(R.id.txtPunti, LinearLayout.GONE);
             }
 
-            Bitmap bmAntifurto;
+            /* Bitmap bmAntifurto;
             if (!VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
                 bmAntifurto = BitmapFactory.decodeResource(context.getResources(), R.drawable.allarme_non_attivo);
             } else {
@@ -140,7 +122,7 @@ public class GestioneNotificheTasti {
             }
             contentView.setImageViewBitmap(R.id.imgAntifurto, bmAntifurto);
 
-            /* if (VariabiliStaticheStart.getInstance().isDetector() &&
+            if (VariabiliStaticheStart.getInstance().isDetector() &&
                     VariabiliStaticheStart.getInstance().isVisibileImmagini()) {
                 contentView.setViewVisibility(R.id.imgImmaginiTasti, LinearLayout.VISIBLE);
             } else {
@@ -447,7 +429,7 @@ public class GestioneNotificheTasti {
                     PendingIntent.FLAG_IMMUTABLE);
             view.setOnClickPendingIntent(R.id.imgOrariTasti, pOrari);
 
-            Intent allarme = new Intent(ctx, ActivityDiStart.class);
+            /* Intent allarme = new Intent(ctx, ActivityDiStart.class);
             allarme.addCategory(Intent.CATEGORY_LAUNCHER);
             allarme.setAction(Intent.ACTION_MAIN );
             allarme.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
@@ -456,7 +438,7 @@ public class GestioneNotificheTasti {
                     218,
                     allarme,
                     PendingIntent.FLAG_IMMUTABLE);
-            view.setOnClickPendingIntent(R.id.imgAntifurto, pAllarme);
+            view.setOnClickPendingIntent(R.id.imgAntifurto, pAllarme); */
 
             Intent uscita = new Intent(ctx, ActivityDiStart.class);
             uscita.addCategory(Intent.CATEGORY_LAUNCHER);

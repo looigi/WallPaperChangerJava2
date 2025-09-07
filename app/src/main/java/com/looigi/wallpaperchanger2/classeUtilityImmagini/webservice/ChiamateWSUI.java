@@ -27,6 +27,7 @@ import com.looigi.wallpaperchanger2.classePazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePreview.MainPreview;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classePreview.adapters.AdapterListenerVoltiRilevati;
 import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRilevati;
@@ -67,7 +68,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
     public void RitornaProssimaImmagine(int idCategoria, String daDove) {
         VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
         VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
-        VariabiliStatichePreview.getInstance().Attesa(true);
+        UtilitiesPreview.getInstance().Attesa(true);
 
         String Urletto = "";
 
@@ -138,7 +139,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void ControllaVolto(String idImmagine) {
-        VariabiliStatichePreview.getInstance().Attesa(true);
+        UtilitiesPreview.getInstance().Attesa(true);
 
         String Urletto="ControllaVolto?idImmagine=" + idImmagine;
 
@@ -420,7 +421,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     private void fControllaVolto(String result) {
         boolean ritorno = ControllaRitorno("Controlla Volto", result);
-        VariabiliStatichePreview.getInstance().Attesa(false);
+        UtilitiesPreview.getInstance().Attesa(false);
         if (ritorno) {
             // {"Rilevate":[{"idCategoria": 566,"Categoria": "Gina_Pistol","Confidenza": 0.0210}]}
             try {
@@ -467,7 +468,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
 
         VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
-        VariabiliStatichePreview.getInstance().Attesa(false);
+        UtilitiesPreview.getInstance().Attesa(false);
         VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
         VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
 
@@ -506,7 +507,7 @@ public class ChiamateWSUI implements TaskDelegateUI {
                             false,
                             false
                     ); */
-                    VariabiliStatichePreview.getInstance().RitornoProssimaImmagine(context, si);
+                    UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);
                 }
             } catch (JSONException e) {
                 UtilitiesGlobali.getInstance().ApreToast(context, result);

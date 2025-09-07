@@ -46,6 +46,7 @@ playServicesLocationVersion = "21.0.1"
 playServicesMaps = "19.0.0"
 playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
+textRecognition = "16.0.1"
 workRuntime = "2.10.2"
 
 [libraries]
@@ -104,6 +105,7 @@ play-services-maps = { module = "com.google.android.gms:play-services-maps", ver
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 play-services-mlkit-language-id = { module = "com.google.android.gms:play-services-mlkit-language-id", version.ref = "playServicesMapsVersion" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 
 [plugins]

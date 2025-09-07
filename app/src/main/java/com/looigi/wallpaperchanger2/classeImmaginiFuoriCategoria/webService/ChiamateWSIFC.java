@@ -52,7 +52,7 @@ public class ChiamateWSIFC implements TaskDelegate {
                 "idCategoria=" + idCategoria +
                 "&Aliases1=" + Alias1 +
                 "&Aliases2=" + Alias2 +
-                "&QuantiCaratteri=" + VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri() +
+                "&QuantiCaratteri=" + VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri().getText().toString() +
                 "&AndOr=" + VariabiliImmaginiFuoriCategoria.getInstance().getAndOr() +
                 "&SoloSuAltro=" + (VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro() ? "S" : "N") +
                 "&CercaExif=" + (VariabiliImmaginiFuoriCategoria.getInstance().isCercaExif() ? "S" : "N") +
@@ -68,7 +68,7 @@ public class ChiamateWSIFC implements TaskDelegate {
                 TipoOperazione,
                 NS,
                 SA,
-                60000,
+                600000,
                 ApriDialog);
     }
 

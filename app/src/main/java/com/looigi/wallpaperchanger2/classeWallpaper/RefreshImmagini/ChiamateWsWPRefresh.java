@@ -9,6 +9,7 @@ import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModi
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
@@ -427,7 +428,7 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
     private void fScriveImmagineSuLocale(String result) {
         VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
-        VariabiliStatichePreview.getInstance().Attesa(false);
+        UtilitiesPreview.getInstance().Attesa(false);
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityPlayer.getInstance().AttesaSI(false);
 

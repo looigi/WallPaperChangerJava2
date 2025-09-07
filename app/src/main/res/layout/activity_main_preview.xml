@@ -423,6 +423,37 @@
         android:layout_width="50dp"
         android:layout_height="50dp" />
 
+    <LinearLayout
+        android:id="@+id/layTasti"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/bordato_colorato_con_bordo"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="55dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layScritteRilevate"
+            android:layout_alignParentBottom="true"
+            android:padding="3dp">
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_marginTop="5dp"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layCategorieRilevate"
+            android:padding="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imgCaricamentoPreview"
         android:src="@drawable/loading"

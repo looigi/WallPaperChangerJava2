@@ -37,7 +37,7 @@ public class VariabiliImmaginiFuoriCategoria {
     /* private String Alias1 = "";
     private String Alias2 = "";
     private String Tag = ""; */
-    private int QuantiCaratteri = 4;
+    private EditText QuantiCaratteri;
     private String AndOr = "Or";
     private boolean SoloSuAltro = true;
     private boolean CercaExif = false;
@@ -246,11 +246,11 @@ public class VariabiliImmaginiFuoriCategoria {
         CercaExif = cercaExif;
     }
 
-    public int getQuantiCaratteri() {
+    public EditText getQuantiCaratteri() {
         return QuantiCaratteri;
     }
 
-    public void setQuantiCaratteri(int quantiCaratteri) {
+    public void setQuantiCaratteri(EditText quantiCaratteri) {
         QuantiCaratteri = quantiCaratteri;
     }
 

@@ -32,9 +32,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeAntifurto.ShakeService;
-import com.looigi.wallpaperchanger2.classeAntifurto.UtilityAntifurto;
-import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.classeGps.GestioneNotificaGPS;
@@ -212,8 +209,9 @@ public class UtilitiesGlobali {
                                                             public void run() {
                                                                 UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione servizio antifurto");
 
-                                                                if (VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
+                                                                /* if (VariabiliStaticheAntifurto.getInstance().isAllarmeAttivo()) {
                                                                     UtilityAntifurto.getInstance().FermaTimer();
+                                                                    GestioneNotificheAntifurto.getInstance().RimuoviNotifica();
 
                                                                     // VariabiliStaticheStart.getInstance().getShakeDetector().stop();
                                                                     context.stopService(new Intent(context, ShakeService.class));
@@ -228,7 +226,7 @@ public class UtilitiesGlobali {
 
                                                                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                                                     @Override
-                                                                    public void run() {
+                                                                    public void run() { */
                                                                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
                                                                         if (VariabiliStaticheStart.getInstance().getServizioForeground() != null) {
@@ -242,8 +240,8 @@ public class UtilitiesGlobali {
 
                                                                         System.exit(0);
                                                                     }
-                                                                }, 500);
-                                                            }
+                                                                // }, 500);
+                                                            // }
                                                         }, 500);
                                                     }
                                                 }, 500);

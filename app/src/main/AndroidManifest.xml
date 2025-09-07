@@ -174,11 +174,6 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".classeAntifurto.MainAntifurto"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
             android:name=".classeLazio.MainLazio"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
@@ -328,6 +323,7 @@
 
         <service
             android:name=".classeAntifurto.ShakeService"
+            android:foregroundServiceType="specialUse"
             android:enabled="true"
             android:exported="false" />
 

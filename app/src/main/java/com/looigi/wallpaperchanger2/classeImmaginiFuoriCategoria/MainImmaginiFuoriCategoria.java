@@ -33,6 +33,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLi
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.StrutturaImmagineDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
@@ -236,8 +237,9 @@ public class MainImmaginiFuoriCategoria extends Activity {
         // VariabiliImmaginiFuoriCategoria.getInstance().setAlias1(Alias1);
         // VariabiliImmaginiFuoriCategoria.getInstance().setAlias2(Alias2);
 
-        EditText edtCaratteri = findViewById(R.id.edtCaratteri);
-        edtCaratteri.setText(Integer.toString(VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri()));
+        VariabiliImmaginiFuoriCategoria.getInstance().setQuantiCaratteri(findViewById(R.id.edtCaratteri));
+        VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri().setText("4");
+        /* edtCaratteri.setText(Integer.toString(VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri()));
         edtCaratteri.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -245,7 +247,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
                         Integer.parseInt(edtCaratteri.getText().toString())
                 );
             }
-        });
+        }); */
 
         VariabiliImmaginiFuoriCategoria.getInstance().setEdtTag(findViewById(R.id.edtTag));
         /* edtTag.setText(VariabiliImmaginiFuoriCategoria.getInstance().getTag());

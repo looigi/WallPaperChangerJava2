@@ -1,10 +1,13 @@
 package com.looigi.wallpaperchanger2.classePreview;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,11 +15,23 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.flexbox.FlexboxLayout;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRilevati;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
+import com.looigi.wallpaperchanger2.classeSpostamento.VariabiliStaticheSpostamento;
+import com.looigi.wallpaperchanger2.classeSpostamento.db_dati_spostamento;
+import com.looigi.wallpaperchanger2.classeSpostamento.strutture.StrutturaCategorieSpostamento;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -58,6 +73,42 @@ public class VariabiliStatichePreview {
     private int ultimaImmagineVisualizzata = 0;
     private ImageView imgPrecedente;
     private ImageView imgProssima;
+    private FlexboxLayout layCategorieRilevate;
+    private int idCategoriaSpostamento;
+    private FlexboxLayout layScritteRilevate;
+    private LinearLayout layTasti;
+
+    public LinearLayout getLayTasti() {
+        return layTasti;
+    }
+
+    public void setLayTasti(LinearLayout layTasti) {
+        this.layTasti = layTasti;
+    }
+
+    public FlexboxLayout getLayScritteRilevate() {
+        return layScritteRilevate;
+    }
+
+    public void setLayScritteRilevate(FlexboxLayout layScritteRilevate) {
+        this.layScritteRilevate = layScritteRilevate;
+    }
+
+    public int getIdCategoriaSpostamento() {
+        return idCategoriaSpostamento;
+    }
+
+    public void setIdCategoriaSpostamento(int idCategoriaSpostamento) {
+        this.idCategoriaSpostamento = idCategoriaSpostamento;
+    }
+
+    public FlexboxLayout getLayCategorieRilevate() {
+        return layCategorieRilevate;
+    }
+
+    public void setLayCategorieRilevate(FlexboxLayout layCategorieRilevate) {
+        this.layCategorieRilevate = layCategorieRilevate;
+    }
 
     public void setQualeImmagine(int qualeImmagine) {
         this.qualeImmagine = qualeImmagine;
@@ -213,59 +264,5 @@ public class VariabiliStatichePreview {
 
     public void setImgCaricamento(GifImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
-    }
-
-    public void Attesa(boolean Acceso) {
-        if (imgCaricamento == null) {
-            return;
-        }
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (Acceso) {
-                    imgCaricamento.setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    imgCaricamento.setVisibility(LinearLayout.GONE);
-                }
-            }
-        }, 50);
-    }
-
-    public void RitornoProssimaImmagine(Context context, StrutturaImmaginiLibrary si) {
-        strutturaImmagine = si;
-
-        DownloadImmaginePreview d = new DownloadImmaginePreview();
-        d.EsegueChiamata(
-                context,
-                si.getNomeFile(),
-                imgPreview,
-                si.getUrlImmagine()
-        );
-    }
-
-    public void AggiornaCategorieSpostamento(Context context) {
-        List<StrutturaImmaginiCategorie> l1 = new ArrayList<>();
-
-        for (StrutturaImmaginiCategorie s : listaCategorie) {
-            if (s.getCategoria().toUpperCase().trim().contains(
-                    filtroCategoriaSpostamento.toUpperCase().trim())) {
-                l1.add(s);
-            }
-        }
-
-        String[] l = new String[l1.size()];
-        int c = 0;
-        for (StrutturaImmaginiCategorie s : l1) {
-            l[c] = s.getCategoria();
-            c++;
-        }
-
-        UtilitiesGlobali.getInstance().ImpostaSpinner(
-                context,
-                spnSpostaCategorie,
-                l,
-                ""
-        );
     }
 }

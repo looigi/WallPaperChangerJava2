@@ -19,9 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
-import com.looigi.wallpaperchanger2.classeAntifurto.MainAntifurto;
-import com.looigi.wallpaperchanger2.classeAntifurto.UtilityAntifurto;
-import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
 import com.looigi.wallpaperchanger2.classeFetekkie.MainMostraFetekkie;
@@ -320,14 +317,14 @@ public class MainStart extends Activity {
             }
         });
 
-        ImageView imgA = findViewById(R.id.imgStartAntifurto);
+        /* ImageView imgA = findViewById(R.id.imgStartAntifurto);
         imgA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent iA = new Intent(context, MainAntifurto.class);
                 iA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(iA);
             }
-        });
+        }); */
 
         ImageView imgP = findViewById(R.id.imgStartPlayer);
         imgP.setOnClickListener(new View.OnClickListener() {
@@ -741,39 +738,6 @@ public class MainStart extends Activity {
         apre.setAction(Intent.ACTION_MAIN);
         apre.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
         context.startActivity(apre);*/
-
-        // ANTIFURTO
-        SharedPreferences prefs = getSharedPreferences("START", MODE_PRIVATE);
-        String AntifurtoAttivo = prefs.getString(
-                "AntifurtoAttivo"
-                , "N");
-
-        // prefs.edit().remove("gForcePerAllarme").commit();
-        String gForce = prefs.getString(
-                "gForcePerAllarme"
-                , "1.5");
-        VariabiliStaticheAntifurto.getInstance().setgForcePerAllarme(Float.parseFloat(gForce));
-
-        String btMonitorato = prefs.getString(
-                "BTMonitorato"
-                , "");
-        VariabiliStaticheAntifurto.getInstance().setBtMonitorato(btMonitorato);
-
-        if (AntifurtoAttivo.equals("S")) {
-            UtilityAntifurto.getInstance().AttivaAntifurto(context, true);
-        } else {
-            VariabiliStaticheAntifurto.getInstance().setAllarmeAttivo(false);
-            VariabiliStaticheAntifurto.getInstance().setAllarmeInCorso(false);
-        }
-
-        // PERMESSI PER ACCELEROMETRO
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.BODY_SENSORS}, 1);
-            }
-        }
-        // PERMESSI PER ACCELEROMETRO
-        // ANTIFURTO
 
         PrendeModelloTelefono p = new PrendeModelloTelefono();
         String modello = p.getDeviceName();

@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <LinearLayout
+                <!-- <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
@@ -107,7 +107,7 @@
                         android:textColor="@color/Verde_Scuro"
                         android:text="Antifurto"
                         android:layout_height="wrap_content" />
-                </LinearLayout>
+                </LinearLayout> -->
 
                 <LinearLayout
                     android:layout_width="match_parent"

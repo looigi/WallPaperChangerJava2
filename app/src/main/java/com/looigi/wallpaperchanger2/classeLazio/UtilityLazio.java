@@ -263,8 +263,10 @@ public class UtilityLazio {
                     VariabiliStaticheLazio.getInstance().getEdtNominativo().setText("");
 
                     VariabiliStaticheLazio.getInstance().setIdStato(1);
-                    int spinnerPosition = VariabiliStaticheLazio.getInstance().getAdapterStati().getPosition("Voce");
-                    VariabiliStaticheLazio.getInstance().getSpnStati().setSelection(spinnerPosition);
+                    if (VariabiliStaticheLazio.getInstance().getAdapterStati() != null) {
+                        int spinnerPosition = VariabiliStaticheLazio.getInstance().getAdapterStati().getPosition("Voce");
+                        VariabiliStaticheLazio.getInstance().getSpnStati().setSelection(spinnerPosition);
+                    }
                     // VariabiliStaticheLazio.getInstance().getSpnStati().setPrompt("Voce");
 
                     VariabiliStaticheLazio.getInstance().setIdFonte(0);

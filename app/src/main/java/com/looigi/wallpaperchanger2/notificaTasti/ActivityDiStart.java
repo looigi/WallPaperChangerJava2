@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeAntifurto.MainAntifurto;
-import com.looigi.wallpaperchanger2.classeAntifurto.VariabiliStaticheAntifurto;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.MainActivityDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -40,7 +38,6 @@ import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
-import com.looigi.wallpaperchanger2.classeAntifurto.UtilityAntifurto;
 
 public class ActivityDiStart extends Activity {
     @Override
@@ -56,7 +53,7 @@ public class ActivityDiStart extends Activity {
         t.setText("Apertura " + id);
 
         switch (id) {
-            case "allarme":
+            /* case "allarme":
                 SharedPreferences prefs = getSharedPreferences("START", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
@@ -74,7 +71,7 @@ public class ActivityDiStart extends Activity {
                 editor.apply();
 
                 GestioneNotificheTasti.getInstance().AggiornaNotifica();
-                break;
+                break; */
             case "update":
                 UtilitiesGlobali.getInstance().ControllaNuovaVersione(context);
                 break;

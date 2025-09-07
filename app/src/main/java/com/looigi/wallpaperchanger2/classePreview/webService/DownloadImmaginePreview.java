@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
@@ -42,7 +43,7 @@ public class DownloadImmaginePreview {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        VariabiliStatichePreview.getInstance().Attesa(true);
+        UtilitiesPreview.getInstance().Attesa(true);
 
         AttivaTimer();
 
@@ -94,7 +95,7 @@ public class DownloadImmaginePreview {
                         }
                         in = null;
                     }
-                    VariabiliStatichePreview.getInstance().Attesa(false);
+                    UtilitiesPreview.getInstance().Attesa(false);
                     BloccaTimer();
                     BloccaEsecuzione();
 
@@ -134,10 +135,16 @@ public class DownloadImmaginePreview {
                 if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
                     Bitmap finalMIcon1 = mIcon11;
 
+                    String finalUrldisplay = urldisplay;
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             immagine.setImageBitmap(finalMIcon1);
+
+                            UtilitiesPreview.getInstance().Attesa(true);
+                            UtilitiesPreview.getInstance().CercaCategoriaDaNome(context, finalUrldisplay);
+                            UtilitiesPreview.getInstance().LeggeTestoSuImmagine(context, finalMIcon1);
+                            UtilitiesPreview.getInstance().Attesa(false);
                         }
                     }, 100);
                 } else {
@@ -159,7 +166,7 @@ public class DownloadImmaginePreview {
         }
 
         // if (immagine == null) {
-        VariabiliStatichePreview.getInstance().Attesa(false);
+        UtilitiesPreview.getInstance().Attesa(false);
         // }
     }
 
