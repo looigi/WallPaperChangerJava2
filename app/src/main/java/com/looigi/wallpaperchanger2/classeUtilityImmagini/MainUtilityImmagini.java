@@ -32,6 +32,7 @@ import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.VariabiliImmagi
 import com.looigi.wallpaperchanger2.classeImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.classeLazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.classeLazio.webService.ChiamateWSLazio;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.MainOCR;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.adapters.AdapterListenerUI;
 // import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.MainVolti;
@@ -473,6 +474,15 @@ public class MainUtilityImmagini extends Activity {
             public void onClick(View v) {
                 ChiamateWSMI ws = new ChiamateWSMI(context);
                 ws.RitornaCategorie(true, "UI");
+            }
+        });
+
+        ImageView imgOCR = findViewById(R.id.imgOCR);
+        imgOCR.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent iP = new Intent(context, MainOCR.class);
+                iP.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iP);
             }
         });
 

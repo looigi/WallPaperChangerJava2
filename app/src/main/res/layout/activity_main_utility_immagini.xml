@@ -275,6 +275,28 @@
                 </LinearLayout> -->
 
                 <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="OCR su Imm."
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgOCR"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ocr" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/layNuovaCategoria"
                     android:background="@drawable/bordato_non_trasparente"
                     android:padding="2dp"

@@ -30,6 +30,9 @@ import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.UtilitiesOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.VariabiliStaticheOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.webService.ChiamateWSOCR;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.adapters.AdapterListenerImmaginiDaScaricare;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.DownloadImmagineSI;
 import com.looigi.wallpaperchanger2.classeScaricaImmagini.MainScaricaImmagini;
@@ -331,6 +334,13 @@ public class ChiamateWSMI implements TaskDelegate {
                         "idImmagine=" + s.getIdImmagine() +
                         "&idCategoriaNuova=" + VariabiliStaticheMostraImmagini.getInstance().getIdCategoriaSpostamento();
                 break;
+            case "OCR":
+                this.idImmagine = String.valueOf(s.getIdImmagine());
+
+                Urletto = "SpostaImmagineACategoria?" +
+                        "idImmagine=" + s.getIdImmagine() +
+                        "&idCategoriaNuova=" + VariabiliStaticheSpostamento.getInstance().getIdCategoriaSpostamento();
+                break;
         }
 
         TipoOperazione = "SpostaImmagine";
@@ -503,6 +513,9 @@ public class ChiamateWSMI implements TaskDelegate {
                                 ""
                         );
                         break;
+                    case "OCR":
+                        VariabiliStaticheOCR.getInstance().setListaCategorie(lista);
+                        break;
                 }
 
                 return;
@@ -521,6 +534,9 @@ public class ChiamateWSMI implements TaskDelegate {
                 break;
             case "PREVIEW":
                 UtilitiesPreview.getInstance().Attesa(true);
+                break;
+            case "OCR":
+                UtilitiesOCR.getInstance().Attesa(true);
                 break;
             // case "VO":
             //     VariabiliStaticheVolti.getInstance().Attesa(true);
@@ -643,6 +659,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
                     VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
                 }
+                UtilitiesOCR.getInstance().Attesa(false);
 
                 if (imgAttesa != null) {
                     imgAttesa.setVisibility(LinearLayout.GONE);
@@ -944,6 +961,11 @@ public class ChiamateWSMI implements TaskDelegate {
                         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                         VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                         VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
+                    } else {
+                        if (daDove.equals("OCR")) {
+                            ChiamateWSOCR ws = new ChiamateWSOCR(context);
+                            ws.ImpostaImmagineSpostata();
+                        }
                     }
                 }
 
@@ -1127,6 +1149,9 @@ public class ChiamateWSMI implements TaskDelegate {
 
                         UtilityImmagini.getInstance().AggiornaCategorie(context);
                         UtilityImmagini.getInstance().AggiornaCategorieSpostamento(context);
+                        break;
+                    case "OCR":
+                        VariabiliStaticheOCR.getInstance().setListaCategorie(listaCategorie);
                         break;
                     case "PAZZIA":
                         VariabiliStatichePazzia.getInstance().setListaCategorieIMM(listaCategorie);

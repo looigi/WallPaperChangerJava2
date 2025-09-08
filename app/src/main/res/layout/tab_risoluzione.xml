@@ -43,8 +43,7 @@
             <ListView
                 android:id="@+id/lstRisoluzioni"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </ListView>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

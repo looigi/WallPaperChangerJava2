@@ -119,6 +119,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".classePreview.classeOCR.MainOCR"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".classeLazio.api_football.MainApiFootball"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:configChanges="keyboardHidden|orientation|screenSize"

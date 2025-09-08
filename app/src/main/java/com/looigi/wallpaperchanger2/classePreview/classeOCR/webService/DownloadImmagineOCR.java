@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.classePreview.webService;
+package com.looigi.wallpaperchanger2.classePreview.classeOCR.webService;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,22 +9,17 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
-import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DownloadImmaginePreview {
+public class DownloadImmagineOCR {
     private boolean isCancelled;
     private static final String NomeMaschera = "Download_Image_MI";
     private boolean Errore;
@@ -135,23 +130,10 @@ public class DownloadImmaginePreview {
                 if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
                     Bitmap finalMIcon1 = mIcon11;
 
-                    String finalUrldisplay = urldisplay;
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             immagine.setImageBitmap(finalMIcon1);
-
-                            if (!VariabiliStatichePreview.getInstance().getModalita().equals("OCR")) {
-                                UtilitiesPreview.getInstance().Attesa(true);
-                                VariabiliStatichePreview.getInstance().getLayScritteRilevate().removeAllViews();
-                                VariabiliStatichePreview.getInstance().getLayCategorieRilevate().removeAllViews();
-
-                                UtilitiesPreview.getInstance().CercaCategoriaDaNome(context, finalUrldisplay);
-                                UtilitiesPreview.getInstance().LeggeTestoSuImmagine(context, finalMIcon1);
-                                UtilitiesPreview.getInstance().Attesa(false);
-                            } else {
-
-                            }
                         }
                     }, 100);
                 } else {

@@ -41,8 +41,7 @@
         android:layout_below="@+id/layTasti"
         android:id="@+id/lstImmagini"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/layCaricamentoInCorsoSI"

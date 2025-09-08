@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.classePreview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -100,9 +101,11 @@ public class UtilitiesPreview {
     }
 
     private static int NumeroCaratteri = 5;
+    private List<String> CategorieMesse = new ArrayList<>();
 
     public void CercaCategoriaDaNome(Context context, String Nome) {
         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
+        CategorieMesse = new ArrayList<>();
 
         String Nome2 = "";
         if (Nome.contains("/") && Nome.toUpperCase().contains("HTTP")) {
@@ -112,7 +115,6 @@ public class UtilitiesPreview {
             Nome2 = Nome.toUpperCase().trim();
         }
 
-        VariabiliStatichePreview.getInstance().getLayCategorieRilevate().removeAllViews();
         boolean ok = false;
         for (StrutturaImmaginiCategorie s : VariabiliStatichePreview.getInstance().getListaCategorie()) {
             String Categoria = s.getCategoria();
@@ -123,22 +125,27 @@ public class UtilitiesPreview {
                 String[] c = Categoria.split("_");
                 Primo = c[0].toUpperCase().trim();
                 if (Primo.length() > NumeroCaratteri) {
-                    Primo = Primo.substring(0, NumeroCaratteri);
+                    Primo = Primo.substring(0, NumeroCaratteri + 1);
                 }
                 Secondo = c[1].toUpperCase().trim();
                 if (Secondo.length() > NumeroCaratteri) {
-                    Secondo = Secondo.substring(0, NumeroCaratteri);
+                    Secondo = Secondo.substring(0, NumeroCaratteri + 1);
                 }
             } else {
                 Primo = Categoria.toUpperCase().trim();
                 if (Primo.length() > NumeroCaratteri) {
-                    Primo = Primo.substring(0, NumeroCaratteri);
+                    Primo = Primo.substring(0, NumeroCaratteri + 1);
                 }
             }
 
             if (Nome2.contains(Primo) && Nome2.contains(Secondo)) {
-                addDynamicButton(context, Categoria);
-                ok = true;
+                if (!Categoria.trim().replace("\n", "").isEmpty()) {
+                    if (!CategorieMesse.contains(Categoria)) {
+                        addDynamicButton(context, Categoria);
+                        CategorieMesse.add(Categoria);
+                        ok = true;
+                    }
+                }
             }
         }
 
@@ -151,7 +158,6 @@ public class UtilitiesPreview {
     }
 
     public void LeggeTestoSuImmagine(Context context, Bitmap Immagine) {
-        VariabiliStatichePreview.getInstance().getLayScritteRilevate().removeAllViews();
         VariabiliStatichePreview.getInstance().getLayScritteRilevate().setVisibility(LinearLayout.GONE);
 
         InputImage image = InputImage.fromBitmap(Immagine, 0);
@@ -170,9 +176,15 @@ public class UtilitiesPreview {
                         for (Text.Line line : block.getLines()) {
                             // Log.d("OCR", "Linea: " + line.getText());
                             String Nome2 = line.getText().toUpperCase().trim();
-                            addDynamicText(context, Nome2);
-                            VariabiliStatichePreview.getInstance().getLayScritteRilevate().setVisibility(LinearLayout.VISIBLE);
-                            VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.VISIBLE);
+                            if (!Nome2.trim().replace("\n", "").isEmpty()) {
+                                if (!CategorieMesse.contains(Nome2)) {
+                                    addDynamicText(context, Nome2);
+                                    VariabiliStatichePreview.getInstance().getLayScritteRilevate().setVisibility(LinearLayout.VISIBLE);
+                                    VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.VISIBLE);
+                                    CategorieMesse.add(Nome2);
+                                }
+                            }
+
 
                             for (StrutturaImmaginiCategorie s : VariabiliStatichePreview.getInstance().getListaCategorie()) {
                                 String Categoria = s.getCategoria();
@@ -183,23 +195,28 @@ public class UtilitiesPreview {
                                     String[] c = Categoria.split("_");
                                     Primo = c[0].toUpperCase().trim();
                                     if (Primo.length() > NumeroCaratteri) {
-                                        Primo = Primo.substring(0, NumeroCaratteri);
+                                        Primo = Primo.substring(0, NumeroCaratteri + 1);
                                     }
                                     Secondo = c[1].toUpperCase().trim();
                                     if (Secondo.length() > NumeroCaratteri) {
-                                        Secondo = Secondo.substring(0, NumeroCaratteri);
+                                        Secondo = Secondo.substring(0, NumeroCaratteri + 1);
                                     }
                                 } else {
                                     Primo = Categoria.toUpperCase().trim();
                                     if (Primo.length() > NumeroCaratteri) {
-                                        Primo = Primo.substring(0, NumeroCaratteri);
+                                        Primo = Primo.substring(0, NumeroCaratteri + 1);
                                     }
                                 }
 
                                 if (Nome2.contains(Primo) && Nome2.contains(Secondo)) {
-                                    addDynamicButton(context, Categoria);
-                                    VariabiliStatichePreview.getInstance().getLayCategorieRilevate().setVisibility(LinearLayout.VISIBLE);
-                                    VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.VISIBLE);
+                                    if (!Categoria.trim().replace("\n", "").isEmpty()) {
+                                        if (!CategorieMesse.contains(Categoria)) {
+                                            addDynamicButton(context, Categoria);
+                                            VariabiliStatichePreview.getInstance().getLayCategorieRilevate().setVisibility(LinearLayout.VISIBLE);
+                                            VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.VISIBLE);
+                                            CategorieMesse.add(Categoria);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -213,8 +230,9 @@ public class UtilitiesPreview {
     private void addDynamicText(Context context, String text) {
         TextView textView = new TextView(context);
         textView.setText(text);
+        textView.setTextColor(Color.BLACK);
         textView.setTextSize(14);
-        textView.setPadding(16, 8, 16, 8);
+        textView.setPadding(3, 3, 3, 3);
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -233,6 +251,7 @@ public class UtilitiesPreview {
         button.setText(text);
         button.setIncludeFontPadding(false);
         button.setTextSize(9);
+        button.setTextColor(Color.BLACK);
         button.setMinHeight(0);
         button.setMinimumHeight(0);
 

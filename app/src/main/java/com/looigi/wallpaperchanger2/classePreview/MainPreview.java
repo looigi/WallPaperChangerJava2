@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -27,6 +28,7 @@ import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.MainOCR;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeSpostamento.MainSpostamento;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
@@ -78,7 +80,29 @@ public class MainPreview extends Activity {
                 , -1);
         VariabiliStatichePreview.getInstance().setUltimaImmagineVisualizzata(idUltimaImmagine);
 
+        HorizontalScrollView hrzTasti = findViewById(R.id.hrzTasti);
+        hrzTasti.setVisibility(LinearLayout.VISIBLE);
+
         switch (Modalita) {
+            case "OCR":
+                VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+                VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
+                hrzTasti.setVisibility(LinearLayout.GONE);
+
+                if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() == null) {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna struttura immagine impostata");
+                    this.finish();
+                    return;
+                }
+
+                DownloadImmaginePreview d = new DownloadImmaginePreview();
+                d.EsegueChiamata(
+                        context,
+                        VariabiliStatichePreview.getInstance().getStrutturaImmagine().getNomeFile(),
+                        VariabiliStatichePreview.getInstance().getImgPreview(),
+                        VariabiliStatichePreview.getInstance().getStrutturaImmagine().getUrlImmagine()
+                );
+                break;
             case "Utility":
                 VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
                 VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
@@ -99,8 +123,8 @@ public class MainPreview extends Activity {
                     return;
                 }
 
-                DownloadImmaginePreview d = new DownloadImmaginePreview();
-                d.EsegueChiamata(
+                DownloadImmaginePreview d1 = new DownloadImmaginePreview();
+                d1.EsegueChiamata(
                         context,
                         VariabiliStatichePreview.getInstance().getStrutturaImmagine().getNomeFile(),
                         VariabiliStatichePreview.getInstance().getImgPreview(),

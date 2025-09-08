@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/layPreview"
@@ -12,6 +13,7 @@
         android:layout_height="match_parent">
 
         <HorizontalScrollView
+            android:id="@+id/hrzTasti"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -85,6 +87,28 @@
                         android:layout_width="25dp"
                         android:layout_height="30dp"
                         android:src="@drawable/icona_cerca" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/bordato_non_trasparente"
+                    android:padding="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="OCR"
+                        android:textColor="@color/Nero"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/imgOCR"
+                        android:layout_width="25dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ocr" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -429,29 +453,31 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/bordato_colorato_con_bordo"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="55dp"
         android:layout_height="wrap_content">
 
         <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/layScritteRilevate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layScritteRilevate"
-            android:layout_alignParentBottom="true"
-            android:padding="3dp">
-
-        </com.google.android.flexbox.FlexboxLayout>
+            android:padding="4dp"
+            app:flexWrap="wrap"
+            app:flexDirection="row"
+            app:justifyContent="flex_start"
+            app:alignItems="flex_start"/>
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_marginTop="5dp"
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/layCategorieRilevate"
-            android:padding="3dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.google.android.flexbox.FlexboxLayout>
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            app:flexWrap="wrap"
+            app:flexDirection="row"
+            app:justifyContent="flex_start"
+            app:alignItems="flex_start"/>
     </LinearLayout>
 
     <pl.droidsonroids.gif.GifImageView

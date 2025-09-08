@@ -57,6 +57,5 @@
         android:layout_margin="3dp"
         android:layout_height="match_parent"
         android:dividerHeight="1dp"
-        android:listSelector="#9999EE">
-    </ListView>
+        android:listSelector="#9999EE" />
 </LinearLayout>

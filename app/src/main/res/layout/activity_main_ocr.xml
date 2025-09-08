@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="20"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:weightSum="6"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:layout_margin="2dp"
+            android:gravity="center_vertical"
+            android:layout_weight="2">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swtAncheVuote"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Nero"
+                android:text="Destinazioni sconosciute" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical|end"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgRefreshDest"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icona_refresh" />
+
+                <ImageView
+                    android:id="@+id/imgRefreshImm"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icona_refresh" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstDestinazioni"
+            android:divider="#CCCCCC"
+            android:layout_margin="2dp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_weight="5"
+            android:layout_height="0dp"/>
+
+        <ListView
+            android:id="@+id/lstImmagini"
+            android:divider="#CCCCCC"
+            android:layout_margin="2dp"
+            android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_non_trasp"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_weight="13"
+            android:layout_height="0dp"/>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoOCR"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+</RelativeLayout>
