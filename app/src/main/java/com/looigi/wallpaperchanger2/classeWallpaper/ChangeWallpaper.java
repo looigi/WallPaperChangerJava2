@@ -39,21 +39,25 @@ public class ChangeWallpaper {
 	private static final String NomeMaschera = "Change_Wallpaper";
 	private final int BordoX = 10;
 	private final int BordoY = 10;
-	private int SchermoX;
-	private int SchermoY;
+	private int SchermoX = -1;
+	private int SchermoY = -1;
 
 	public ChangeWallpaper(Context context, String daDove, StrutturaImmagine UltimaImmagine) {
 		UtilityWallpaper.getInstance().Attesa(true);
 		VariabiliStaticheWallpaper.getInstance().setImmagineImpostataDaChi(daDove);
 
-		Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
+		if (SchermoX == -1 || SchermoY == -1) {
+			PrendeDimensioniSchermo(context);
+		}
+
+		/* Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		if (act != null) {
 			PrendeDimensioniSchermo(context);
 		} else {
 			SchermoX = -1;
 			SchermoY = -1;
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
-					"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione");
+					"ERRORE su Cambio immagine: Act nulla. Riavvio applicazione"); */
 
 			/* if (context != null) {
 				Intent mStartActivity = new Intent(context, MainWallpaper.class);
@@ -67,7 +71,7 @@ public class ChangeWallpaper {
 			} else {
 				Utility.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su riavvio: Context nullo");
 			} */
-		}
+		// }
 
 		UtilityWallpaper.getInstance().Attesa(false);
 	}
@@ -91,11 +95,11 @@ public class ChangeWallpaper {
 	public void setWallpaper(Context context, StrutturaImmagine src) {
 		UtilityWallpaper.getInstance().Attesa(true);
 
-		if (SchermoX == -1) {
+		if (SchermoX == -1 || SchermoY == -1) {
 			PrendeDimensioniSchermo(context);
 		}
 
-		if (SchermoX == -1) {
+		if (SchermoX == -1 || SchermoY == -1) {
 			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,"ERRORE su set wallpaper: dimensioni schermo non impostate");
 			// return false;
 		} else {

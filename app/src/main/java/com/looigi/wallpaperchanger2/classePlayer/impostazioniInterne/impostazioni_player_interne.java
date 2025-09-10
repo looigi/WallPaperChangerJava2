@@ -473,11 +473,27 @@ public class impostazioni_player_interne {
             public void onClick(View v) {
                 VariabiliStatichePlayer.getInstance().setRicercaMaiAscoltata(swcMaiAscoltate.isChecked());
 
+                if (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata()) {
+                    swcStelleSuperiori.setEnabled(false);
+                    spnStelle.setEnabled(false);
+                } else {
+                    swcStelleSuperiori.setEnabled(true);
+                    spnStelle.setEnabled(true);
+                }
+
                 db_dati_player db = new db_dati_player(context);
                 db.ScriveRicerca();
                 db.ChiudeDB();
             }
         });
+
+        if (VariabiliStatichePlayer.getInstance().isRicercaMaiAscoltata()) {
+            swcStelleSuperiori.setEnabled(false);
+            spnStelle.setEnabled(false);
+        } else {
+            swcStelleSuperiori.setEnabled(true);
+            spnStelle.setEnabled(true);
+        }
 
         LinearLayout layRicercaTesto = act.findViewById(R.id.layRicercaTesto);
         EditText edtRicercaTesto = act.findViewById(R.id.edtRicercaTesto);

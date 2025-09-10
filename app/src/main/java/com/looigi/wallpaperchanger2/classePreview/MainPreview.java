@@ -135,38 +135,7 @@ public class MainPreview extends Activity {
 
         VariabiliStatichePreview.getInstance().getImgProssima().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (VariabiliStatichePreview.getInstance().getQualeImmagine() <
-                    VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().size() - 1) {
-                    UtilitiesPreview.getInstance().Attesa(true);
-                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
-                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
-
-                    int quale = VariabiliStatichePreview.getInstance().getQualeImmagine();
-                    quale++;
-                    VariabiliStatichePreview.getInstance().setQualeImmagine(quale);
-                    StrutturaImmaginiLibrary si = VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().get(quale);
-                    if (si != null) {
-                        VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
-                        if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
-                            String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
-                                    " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
-                                    " - Bytes: " + si.getDimensioneFile();
-                            VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
-                        }
-
-                        UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);
-                    }
-
-                    UtilitiesPreview.getInstance().Attesa(false);
-                    VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
-                    VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    ChiamateWSUI ws = new ChiamateWSUI(context);
-                    ws.RitornaProssimaImmagine(
-                            VariabiliStatichePreview.getInstance().getIdCategoria(),
-                            "PREVIEW"
-                    );
-                }
+                UtilitiesPreview.getInstance().ProssimaImmagine(context);
             }
         });
 

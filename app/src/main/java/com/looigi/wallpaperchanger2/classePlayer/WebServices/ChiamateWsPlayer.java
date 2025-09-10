@@ -340,6 +340,29 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                 -1);
     }
 
+    private int Stelle;
+
+    public void SettaStelle(int idCanzone, int Stelle) {
+        this.Stelle = Stelle;
+
+        String Urletto="SettaStelle?";
+        Urletto += "idUtente=" + VariabiliStatichePlayer.getInstance().getUtente().getId();
+        Urletto += "&idCanzone=" + idCanzone;
+        Urletto += "&Stelle=" + Stelle;
+
+        TipoOperazione = "SettaStelle";
+        Esegue(
+                RadiceWS + ws2 + Urletto,
+                TipoOperazione,
+                NS2,
+                SA2,
+                10000,
+                true,
+                true,
+                false,
+                Stelle);
+    }
+
     public void RitornaStelleBrano() {
         if (VariabiliStatichePlayer.getInstance().getUltimoBrano() == null) {
             VariabiliStatichePlayer.getInstance().setClasseChiamata(null);
@@ -687,6 +710,9 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
                     case "Scarica Testo":
                         fAggiornaTesto(result);
                         break;
+                    case "SettaStelle":
+                        ImpostateStelle(result);
+                        break;
                     case "Ritorna Brani":
                         fRitornaBrani(result);
                         break;
@@ -735,6 +761,18 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, "Brani aggiornati");
+        }
+    }
+
+    private void ImpostateStelle(String result) {
+        boolean ritorno = ControllaRitorno("Impostate stelle", result);
+        if (!ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
+        } else {
+            VariabiliStatichePlayer.getInstance().getUltimoBrano().setBellezza(Stelle);
+            UtilityPlayer.getInstance().ImpostaBellezza();
+
+            UtilitiesGlobali.getInstance().ApreToast(context, "Stelle brano impostate");
         }
     }
 

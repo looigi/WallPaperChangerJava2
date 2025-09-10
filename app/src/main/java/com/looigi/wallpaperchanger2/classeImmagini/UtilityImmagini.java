@@ -244,6 +244,8 @@ public class UtilityImmagini {
                 si.setEsisteImmagine(j.getString("EsisteImmagine").equals("True"));
                 si.setImmaginiCategoria(j.getInt("ImmaginiCategoria"));
                 si.setImmaginiFiltrate(j.getInt("ImmaginiFiltrate"));
+                si.setExif(j.getString("Exif"));
+
                 return si;
             } catch (JSONException e) {
                 if (si != null) {

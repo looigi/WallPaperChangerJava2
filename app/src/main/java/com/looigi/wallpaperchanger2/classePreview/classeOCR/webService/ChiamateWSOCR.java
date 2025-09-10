@@ -54,6 +54,21 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                 ApriDialog);
     }
 
+    public void AggiornaCategorieOCR() {
+        String Urletto="AggiornaCategorieOCR";
+
+        TipoOperazione = "AggiornaCategorieOCR";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                6000000,
+                ApriDialog);
+    }
+
     public void RitornaDestinazioni() {
         String Urletto="RitornaDestinazioni?" +
                 "AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
@@ -127,6 +142,9 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                     case "ImpostaImmagineSpostata":
                         fImpostaImmagineSpostata(result);
                         break;
+                    case "AggiornaCategorieOCR":
+                        fAggiornaCategorieOCR(result);
+                        break;
                 }
             }
         };
@@ -149,6 +167,15 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
             } else {
                 return true;
             }
+        }
+    }
+
+    private void fAggiornaCategorieOCR(String result) {
+        boolean ritorno = ControllaRitorno("Ritorna Aggiorna Categorie OCR", result);
+        if (ritorno) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Immagini su db aggiornate");
+        } else {
+            UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
     }
 

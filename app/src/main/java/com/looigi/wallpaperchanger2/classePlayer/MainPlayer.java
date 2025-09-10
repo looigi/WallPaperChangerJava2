@@ -24,6 +24,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
+import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
 import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
 import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.impostazioni_player_interne;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
@@ -85,8 +86,21 @@ public class MainPlayer extends Activity {
                 R.id.imgBellezza4, R.id.imgBellezza5, R.id.imgBellezza6, R.id.imgBellezza7,
                 R.id.imgBellezza8, R.id.imgBellezza9, R.id.imgBellezza10 };
         List<ImageView> l = new ArrayList<>();
+        int numero = 0;
         for (int b : bell) {
             l.add(findViewById(b));
+            int finalNumero = numero;
+            l.get(numero).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // UtilitiesGlobali.getInstance().ApreToast(context, "Click " + finalNumero);
+                    StrutturaBrano s = VariabiliStatichePlayer.getInstance().getUltimoBrano();
+                    int idCanzone = s.getIdBrano();
+
+                    ChiamateWsPlayer ws = new ChiamateWsPlayer(context, false);
+                    ws.SettaStelle(idCanzone, finalNumero);
+                }
+            });
+            numero++;
         }
         VariabiliStatichePlayer.getInstance().setImgBellezza(l);
 

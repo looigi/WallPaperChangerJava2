@@ -97,7 +97,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 "&Filtro=" + Filtro +
                 "&idImmagine=0" +
                 "&Random=S" +
-                "&OrdinaPerVisualizzato=S" +
+                "&OrdinaPerVisualizzato=N" +
                 "&Operatore=" + VariabiliStaticheWallpaper.getInstance().getOperatoreFiltro() +
                 "&Preview=N";
 
@@ -209,6 +209,9 @@ public class ChiamateWSMI implements TaskDelegate {
                 break;
             case "FC":
                 VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+                break;
+            case "OCR":
+                UtilitiesOCR.getInstance().Attesa(true);
                 break;
         }
 
@@ -718,6 +721,9 @@ public class ChiamateWSMI implements TaskDelegate {
                         case "FC":
                             VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
                             break;
+                        case "OCR":
+                            UtilitiesOCR.getInstance().Attesa(false);
+                            break;
                         /* case "VO":
                             VariabiliStaticheVolti.getInstance().Attesa(false);
                             break; */
@@ -956,11 +962,16 @@ public class ChiamateWSMI implements TaskDelegate {
                     VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
                     VariabiliStaticheSpostamento.getInstance().Attesa(false);
                     VariabiliStaticheSpostamento.getInstance().getAct().finish();
+
+                    UtilitiesPreview.getInstance().ProssimaImmagine(context);
                 } else {
                     if (daDove.equals("PREVIEW")) {
                         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                         VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                         VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
+                        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+
+                        UtilitiesPreview.getInstance().ProssimaImmagine(context);
                     } else {
                         if (daDove.equals("OCR")) {
                             ChiamateWSOCR ws = new ChiamateWSOCR(context);

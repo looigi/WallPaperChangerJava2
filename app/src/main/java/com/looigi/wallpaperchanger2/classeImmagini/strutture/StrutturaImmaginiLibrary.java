@@ -17,6 +17,15 @@ public class StrutturaImmaginiLibrary {
     private boolean EsisteImmagine;
     private int ImmaginiCategoria;
     private int ImmaginiFiltrate;
+    private String Exif;
+
+    public String getExif() {
+        return Exif;
+    }
+
+    public void setExif(String exif) {
+        Exif = exif;
+    }
 
     public int getImmaginiFiltrate() {
         return ImmaginiFiltrate;

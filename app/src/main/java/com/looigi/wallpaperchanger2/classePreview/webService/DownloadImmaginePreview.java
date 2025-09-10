@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 
 public class DownloadImmaginePreview {
     private boolean isCancelled;
-    private static final String NomeMaschera = "Download_Image_MI";
+    private static final String NomeMaschera = "Download_Image_PREVIEW";
     private boolean Errore;
     private String NomeImmagine;
     private String PercorsoDIR = "";
@@ -143,11 +143,14 @@ public class DownloadImmaginePreview {
 
                             if (!VariabiliStatichePreview.getInstance().getModalita().equals("OCR")) {
                                 UtilitiesPreview.getInstance().Attesa(true);
+
                                 VariabiliStatichePreview.getInstance().getLayScritteRilevate().removeAllViews();
                                 VariabiliStatichePreview.getInstance().getLayCategorieRilevate().removeAllViews();
 
                                 UtilitiesPreview.getInstance().CercaCategoriaDaNome(context, finalUrldisplay);
                                 UtilitiesPreview.getInstance().LeggeTestoSuImmagine(context, finalMIcon1);
+                                UtilitiesPreview.getInstance().CercaCategoriaSuExif(context);
+
                                 UtilitiesPreview.getInstance().Attesa(false);
                             } else {
 

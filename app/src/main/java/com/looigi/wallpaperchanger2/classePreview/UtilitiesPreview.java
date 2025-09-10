@@ -26,6 +26,7 @@ import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRileva
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.classeSpostamento.strutture.StrutturaCategorieSpostamento;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -157,6 +158,48 @@ public class UtilitiesPreview {
         }
     }
 
+    public void CercaCategoriaSuExif(Context context) {
+        StrutturaImmaginiLibrary s = VariabiliStatichePreview.getInstance().getStrutturaImmagine();
+        if (s != null) {
+            if (s.getExif() != null & !s.getExif().isEmpty()) {
+                for (StrutturaImmaginiCategorie s2 : VariabiliStatichePreview.getInstance().getListaCategorie()) {
+                    String Categoria = s2.getCategoria();
+                    String Primo = "";
+                    String Secondo = "";
+
+                    if (Categoria.contains("_")) {
+                        String[] c = Categoria.split("_");
+                        Primo = c[0].toUpperCase().trim();
+                        if (Primo.length() > NumeroCaratteri) {
+                            Primo = Primo.substring(0, NumeroCaratteri + 1);
+                        }
+                        Secondo = c[1].toUpperCase().trim();
+                        if (Secondo.length() > NumeroCaratteri) {
+                            Secondo = Secondo.substring(0, NumeroCaratteri + 1);
+                        }
+                    } else {
+                        Primo = Categoria.toUpperCase().trim();
+                        if (Primo.length() > NumeroCaratteri) {
+                            Primo = Primo.substring(0, NumeroCaratteri + 1);
+                        }
+                    }
+
+                    String Exif = s.getExif().toUpperCase();
+                    if (Exif.contains(Primo) && Exif.contains(Secondo)) {
+                        if (!Categoria.trim().replace("\n", "").isEmpty()) {
+                            if (!CategorieMesse.contains(Categoria)) {
+                                addDynamicButton(context, Categoria);
+                                VariabiliStatichePreview.getInstance().getLayCategorieRilevate().setVisibility(LinearLayout.VISIBLE);
+                                VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.VISIBLE);
+                                CategorieMesse.add(Categoria);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void LeggeTestoSuImmagine(Context context, Bitmap Immagine) {
         VariabiliStatichePreview.getInstance().getLayScritteRilevate().setVisibility(LinearLayout.GONE);
 
@@ -184,7 +227,6 @@ public class UtilitiesPreview {
                                     CategorieMesse.add(Nome2);
                                 }
                             }
-
 
                             for (StrutturaImmaginiCategorie s : VariabiliStatichePreview.getInstance().getListaCategorie()) {
                                 String Categoria = s.getCategoria();
@@ -289,6 +331,41 @@ public class UtilitiesPreview {
                 VariabiliStatichePreview.getInstance().setIdCategoriaSpostamento(c.getIdCategoria());
                 break;
             }
+        }
+    }
+
+    public void ProssimaImmagine(Context context) {
+        if (VariabiliStatichePreview.getInstance().getQualeImmagine() <
+                VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().size() - 1) {
+            UtilitiesPreview.getInstance().Attesa(true);
+            VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
+            VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
+
+            int quale = VariabiliStatichePreview.getInstance().getQualeImmagine();
+            quale++;
+            VariabiliStatichePreview.getInstance().setQualeImmagine(quale);
+            StrutturaImmaginiLibrary si = VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().get(quale);
+            if (si != null) {
+                VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+                if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
+                    String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
+                            " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
+                            " - Bytes: " + si.getDimensioneFile();
+                    VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                }
+
+                UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);
+            }
+
+            UtilitiesPreview.getInstance().Attesa(false);
+            VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
+            VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
+        } else {
+            ChiamateWSUI ws = new ChiamateWSUI(context);
+            ws.RitornaProssimaImmagine(
+                    VariabiliStatichePreview.getInstance().getIdCategoria(),
+                    "PREVIEW"
+            );
         }
     }
 }

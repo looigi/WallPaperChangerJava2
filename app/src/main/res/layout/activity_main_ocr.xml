@@ -21,29 +21,116 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/swtAncheVuote"
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Nero"
                 android:text="Destinazioni sconosciute" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:gravity="center_vertical|end"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imgRefreshDest"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/icona_refresh" />
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imgRefreshImm"
-                    android:layout_marginStart="5dp"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/icona_refresh" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:background="@drawable/bordato_non_trasparente"
+                            android:padding="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/Nero"
+                                android:text="Refr. Dest."
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:id="@+id/imgRefreshDest"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/icona_refresh" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:background="@drawable/bordato_non_trasparente"
+                            android:padding="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/Nero"
+                                android:text="Refr. Imm."
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:id="@+id/imgRefreshImm"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/icona_refresh" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:background="@drawable/bordato_non_trasparente"
+                            android:padding="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/Nero"
+                                android:text="Refresh DB"
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:id="@+id/imgRefreshTutto"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/refresh2" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:background="@drawable/bordato_non_trasparente"
+                            android:padding="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/Nero"
+                                android:text="Nuova Categ"
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:id="@+id/imgNuovaCategoria"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/icona_aggiunge" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
             </LinearLayout>
         </LinearLayout>
 
