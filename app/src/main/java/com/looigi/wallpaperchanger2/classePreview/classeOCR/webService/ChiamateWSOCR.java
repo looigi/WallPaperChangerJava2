@@ -102,6 +102,22 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                 ApriDialog);
     }
 
+    public void RitornaImmaginiFiltro(String Filtro) {
+        String Urletto="RitornaImmaginiOCRDaFiltro?" +
+                "Filtro=" + Filtro;
+
+        TipoOperazione = "RitornaImmaginiOCR";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                250000,
+                ApriDialog);
+    }
+
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {

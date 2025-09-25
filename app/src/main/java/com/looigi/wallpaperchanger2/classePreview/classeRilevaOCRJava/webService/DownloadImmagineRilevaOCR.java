@@ -1,8 +1,9 @@
-package com.looigi.wallpaperchanger2.classePreview.classeOCR.webService;
+package com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.webService;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.OCRPreprocessor;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.UtilitiesRilevaOCRJava;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
@@ -19,9 +22,9 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DownloadImmagineOCR {
+public class DownloadImmagineRilevaOCR {
     private boolean isCancelled;
-    private static final String NomeMaschera = "Download_Image_OCR";
+    private static final String NomeMaschera = "Download_Image_Rileva_OCR";
     private boolean Errore;
     private String NomeImmagine;
     private String PercorsoDIR = "";
@@ -29,6 +32,7 @@ public class DownloadImmagineOCR {
     private ImageView immagine;
     private String Url;
     private InputStream in;
+    private Bitmap mIcon11;
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
                                String UrlImmagine) {
@@ -38,7 +42,7 @@ public class DownloadImmagineOCR {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        UtilitiesPreview.getInstance().Attesa(true);
+        UtilitiesRilevaOCRJava.getInstance().Attesa(true);
 
         AttivaTimer();
 
@@ -121,19 +125,17 @@ public class DownloadImmagineOCR {
         Errore = false;
         String urldisplay = Url;
         urldisplay = urldisplay.replace("\\", "/");
-        Bitmap mIcon11 = null;
+        mIcon11 = null;
         try {
             in = new java.net.URL(urldisplay).openStream();
             if (in != null && !isCancelled) {
                 mIcon11 = BitmapFactory.decodeStream(in);
 
                 if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
-                    Bitmap finalMIcon1 = mIcon11;
-
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            immagine.setImageBitmap(finalMIcon1);
+                            immagine.setImageBitmap(mIcon11);
                         }
                     }, 100);
                 } else {
@@ -149,13 +151,31 @@ public class DownloadImmagineOCR {
         }
     }
 
+
     private void TermineEsecuzione() {
         if (!Errore && !isCancelled) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // OCRPreprocessor ocrpp = new OCRPreprocessor();
+                    // Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
+
+                    UtilitiesRilevaOCRJava.getInstance().setBitmap(mIcon11);
+                    UtilitiesRilevaOCRJava.getInstance().LeggeTestoSuImmagine(context);
+                }
+            }, 10);
         } else {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                    ws.AggiornaTestoOcrDaJava("ERROR;", ";");
+                }
+            }, 10);
         }
 
         // if (immagine == null) {
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesRilevaOCRJava.getInstance().Attesa(false);
         // }
     }
 

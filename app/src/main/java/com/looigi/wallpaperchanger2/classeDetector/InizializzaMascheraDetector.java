@@ -23,15 +23,21 @@ import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.FileProvider;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
+import com.looigi.wallpaperchanger2.classePassword.MainPassword;
 import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
+import com.looigi.wallpaperchanger2.utilities.BiometricManagerSingleton;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeDetector.widgets.Video;
@@ -218,14 +224,7 @@ public class InizializzaMascheraDetector {
                         handlerTimer = new Handler(Looper.getMainLooper());
                         rTimer = new Runnable() {
                             public void run() {
-                                VariabiliStaticheStart.getInstance().setVisibileImmagini(true);
-                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
-
-                                Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
-                                        MainMostraImmagini.class);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                                UtilityDetector.getInstance().ControlloFingerPrint("immagini");
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
@@ -289,14 +288,7 @@ public class InizializzaMascheraDetector {
                         handlerTimer = new Handler(Looper.getMainLooper());
                         rTimer = new Runnable() {
                             public void run() {
-                                VariabiliStaticheStart.getInstance().setVisibileVideo(true);
-                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
-
-                                Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
-                                        MainMostraVideo.class);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                                UtilityDetector.getInstance().ControlloFingerPrint("video");
                             }
                         };
                         handlerTimer.postDelayed(rTimer, 2000);
@@ -563,14 +555,16 @@ public class InizializzaMascheraDetector {
         // VariabiliStaticheDetector.getInstance().setTxtKM(txtKM);
         VariabiliStaticheDetector.getInstance().setTxtImm((TextView) act.findViewById(R.id.txtImmagini));
         VariabiliStaticheDetector.getInstance().setTxtNomeImm((TextView) act.findViewById(R.id.txtNomeImm));
-        final LinearLayout lScatti = (LinearLayout) act.findViewById(R.id.layScatti);
-        final HorizontalScrollView lTasti = (HorizontalScrollView) act.findViewById(R.id.layTasti);
-        final LinearLayout lFrecce = (LinearLayout) act.findViewById(R.id.layFrecce);
-        final LinearLayout lNomeImm = (LinearLayout) act.findViewById(R.id.layNomeImmagine);
-        lScatti.setVisibility(LinearLayout.GONE);
-        lTasti.setVisibility(LinearLayout.GONE);
-        lFrecce.setVisibility(LinearLayout.GONE);
-        lNomeImm.setVisibility(LinearLayout.GONE);
+
+        VariabiliStaticheDetector.getInstance().setlScatti((LinearLayout) act.findViewById(R.id.layScatti));
+        VariabiliStaticheDetector.getInstance().setlTasti((HorizontalScrollView) act.findViewById(R.id.layTasti));
+        VariabiliStaticheDetector.getInstance().setlFrecce((LinearLayout) act.findViewById(R.id.layFrecce));
+        VariabiliStaticheDetector.getInstance().setlNomeImm((LinearLayout) act.findViewById(R.id.layNomeImmagine));
+
+        VariabiliStaticheDetector.getInstance().getlScatti().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheDetector.getInstance().getlTasti().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheDetector.getInstance().getlFrecce().setVisibility(LinearLayout.GONE);
+        VariabiliStaticheDetector.getInstance().getlNomeImm().setVisibility(LinearLayout.GONE);
 
         VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.GONE);
         VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.GONE);
@@ -632,8 +626,8 @@ public class InizializzaMascheraDetector {
             }
         });
 
-        ImageView bSposta = act.findViewById(R.id.imgSposta);
-        bSposta.setOnClickListener(new View.OnClickListener() {
+        VariabiliStaticheDetector.getInstance().setbSposta(act.findViewById(R.id.imgSposta));
+        VariabiliStaticheDetector.getInstance().getbSposta().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilityDetector.getInstance().SpostaFile(
                         VariabiliStaticheDetector.getInstance().getContext()
@@ -666,35 +660,7 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
-                        UtilityDetector.getInstance().Vibra(act, 300);
-
-                        lScatti.setVisibility(LinearLayout.VISIBLE);
-                        lTasti.setVisibility(LinearLayout.VISIBLE);
-                        lFrecce.setVisibility(LinearLayout.VISIBLE);
-                        lNomeImm.setVisibility(LinearLayout.VISIBLE);
-                        // bCripta.setVisibility(LinearLayout.VISIBLE);
-                        // bDecripta.setVisibility(LinearLayout.VISIBLE);
-                        bSposta.setVisibility(LinearLayout.VISIBLE);
-
-                        VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.VISIBLE);
-                        VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.VISIBLE);
-
-                        // VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setVisibility(LinearLayout.VISIBLE);
-
-                        UtilityDetector.getInstance().CaricaMultimedia(context);
-                        VariabiliStaticheDetector.getInstance().setNumMultimedia(0);
-                        UtilityDetector.getInstance().VisualizzaMultimedia(context);
-
-                        Handler handlerTimer;
-                        Runnable rTimer;
-
-                        handlerTimer = new Handler(Looper.getMainLooper());
-                        rTimer = new Runnable() {
-                            public void run() {
-                                VariabiliStaticheDetector.getInstance().MascheraImmaginiMostrata = true;
-                            }
-                        };
-                        handlerTimer.postDelayed(rTimer, 2000);
+                        UtilityDetector.getInstance().ControlloFingerPrint("detector");
                     } else {
                         UtilityDetector.getInstance().Vibra(act, 50);
                     }
@@ -707,10 +673,10 @@ public class InizializzaMascheraDetector {
         tTitEstensione.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheDetector.getInstance().MascheraImmaginiMostrata) {
-                    lScatti.setVisibility(LinearLayout.GONE);
-                    lTasti.setVisibility(LinearLayout.GONE);
-                    lFrecce.setVisibility(LinearLayout.GONE);
-                    lNomeImm.setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheDetector.getInstance().getlScatti().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheDetector.getInstance().getlTasti().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheDetector.getInstance().getlFrecce().setVisibility(LinearLayout.GONE);
+                    VariabiliStaticheDetector.getInstance().getlNomeImm().setVisibility(LinearLayout.GONE);
 
                     VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.GONE);
 
@@ -1268,25 +1234,7 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
-                        UtilityDetector.getInstance().Vibra(act, 300);
-
-                        Handler handlerTimer;
-                        Runnable rTimer;
-
-                        handlerTimer = new Handler(Looper.getMainLooper());
-                        rTimer = new Runnable() {
-                            public void run() {
-                                VariabiliStaticheStart.getInstance().setVisibilePennetta(true);
-                                GestioneNotificheTasti.getInstance().AggiornaNotifica();
-
-                                Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
-                                        MainMostraPennetta.class);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
-                            }
-                        };
-                        handlerTimer.postDelayed(rTimer, 2000);
+                        UtilityDetector.getInstance().ControlloFingerPrint("pennetta");
                     } else {
                         UtilityDetector.getInstance().Vibra(act, 50);
                     }
@@ -1320,22 +1268,7 @@ public class InizializzaMascheraDetector {
                     datella1 = null;
 
                     if (diff < 1950) {
-                        Handler handlerTimer;
-                        Runnable rTimer;
-
-                        UtilityDetector.getInstance().Vibra(act, 300);
-
-                        handlerTimer = new Handler(Looper.getMainLooper());
-                        rTimer = new Runnable() {
-                            public void run() {
-                                Intent myIntent = new Intent(
-                                        VariabiliStaticheDetector.getInstance().getContext(),
-                                        MainPazzia.class);
-                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
-                            }
-                        };
-                        handlerTimer.postDelayed(rTimer, 2000);
+                        UtilityDetector.getInstance().ControlloFingerPrint("pazzia");
                     } else {
                         UtilityDetector.getInstance().Vibra(act, 50);
                     }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/imgImmagine"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
+
+            <TextView
+                android:id="@+id/txtAvanzamento"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:textColor="@color/Nero"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnFerma"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/Nero"
+                android:text="Ferma"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgCaricamentoOCR"
+        android:src="@drawable/loading"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+</RelativeLayout>

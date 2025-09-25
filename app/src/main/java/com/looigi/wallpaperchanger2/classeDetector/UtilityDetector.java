@@ -23,11 +23,23 @@ import android.util.Size;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.classeGoogleDrive.VariabiliStaticheGoogleDrive;
+import com.looigi.wallpaperchanger2.classeImmagini.MainMostraImmagini;
 import com.looigi.wallpaperchanger2.classeLazio.api_football.VariabiliStaticheApiFootball;
+import com.looigi.wallpaperchanger2.classePassword.MainPassword;
+import com.looigi.wallpaperchanger2.classePazzia.MainPazzia;
+import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
+import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
+import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
+import com.looigi.wallpaperchanger2.notificaTasti.GestioneNotificheTasti;
+import com.looigi.wallpaperchanger2.utilities.BiometricManagerSingleton;
+import com.looigi.wallpaperchanger2.utilities.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.utilities.log.LogInterno;
 import com.looigi.wallpaperchanger2.utilities.RichiestaPath;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
@@ -1190,5 +1202,165 @@ public class UtilityDetector {
         String Path = c.getFilesDir() + "/DB/";
 
         return Path;
+    }
+
+
+    private BiometricManagerSingleton bioManager;
+    private String Cosa;
+
+    public void ControlloFingerPrint(String Cosa) {
+        this.Cosa = Cosa;
+
+        PrendeModelloTelefono p = new PrendeModelloTelefono();
+        String modello = p.getDeviceName();
+        if (!modello.contains("sdk_gphone64")) {
+            bioManager = BiometricManagerSingleton.getInstance(VariabiliStaticheDetector.getInstance().getContext());
+
+            int can = bioManager.canAuthenticate();
+            if (can == androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS) {
+                bioManager.authenticate(
+                        VariabiliStaticheDetector.getInstance().getMainActivity(),
+                        "Accedi", "Autenticazione con impronta o volto", authCallback);
+            } else {
+                String msg;
+                switch (can) {
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                        msg = "Dispositivo senza hardware biometrico";
+                        break;
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                        msg = "Hardware biometrico non disponibile";
+                        break;
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                        msg = "Nessuna impronta/biometria registrata. Registra una nella impostazioni.";
+                        break;
+                    default:
+                        msg = "Impossibile usare biometria";
+                }
+                Toast.makeText(VariabiliStaticheDetector.getInstance().getContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            AutenticazioneOK();
+        }
+    }
+
+    private final BiometricPrompt.AuthenticationCallback authCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            VariabiliStaticheDetector.getInstance().getMainActivity().runOnUiThread(() -> {
+                Toast.makeText(VariabiliStaticheDetector.getInstance().getContext(),
+                        "Autenticazione OK", Toast.LENGTH_SHORT).show();
+
+                AutenticazioneOK();
+            });
+            // Procedi con operazione protetta
+        }
+
+        @Override
+        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            VariabiliStaticheDetector.getInstance().getMainActivity().runOnUiThread(() -> Toast.makeText(VariabiliStaticheDetector.getInstance().getContext(), "Errore: " + errString, Toast.LENGTH_SHORT).show());
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+            VariabiliStaticheDetector.getInstance().getMainActivity().runOnUiThread(() -> Toast.makeText(VariabiliStaticheDetector.getInstance().getContext(), "Autenticazione fallita", Toast.LENGTH_SHORT).show());
+        }
+    };
+
+    private void AutenticazioneOK() {
+        switch(Cosa) {
+            case "immagini":
+                VariabiliStaticheStart.getInstance().setVisibileImmagini(true);
+                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                Intent myIntent1 = new Intent(
+                        VariabiliStaticheDetector.getInstance().getContext(),
+                        MainMostraImmagini.class);
+                myIntent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent1);
+                break;
+            case "video":
+                VariabiliStaticheStart.getInstance().setVisibileVideo(true);
+                GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                Intent myIntent2 = new Intent(
+                        VariabiliStaticheDetector.getInstance().getContext(),
+                        MainMostraVideo.class);
+                myIntent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent2);
+                break;
+            case "detector":
+                UtilityDetector.getInstance().Vibra(VariabiliStaticheDetector.getInstance().getMainActivity(), 300);
+
+                VariabiliStaticheDetector.getInstance().getlScatti().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheDetector.getInstance().getlTasti().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheDetector.getInstance().getlFrecce().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheDetector.getInstance().getlNomeImm().setVisibility(LinearLayout.VISIBLE);
+                // bCripta.setVisibility(LinearLayout.VISIBLE);
+                // bDecripta.setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheDetector.getInstance().getbSposta().setVisibility(LinearLayout.VISIBLE);
+
+                VariabiliStaticheDetector.getInstance().getTxtImm().setVisibility(LinearLayout.VISIBLE);
+                VariabiliStaticheDetector.getInstance().getTxtNomeImm().setVisibility(LinearLayout.VISIBLE);
+
+                // VariabiliStaticheDetector.getInstance().getBtnLayModificaImmagine().setVisibility(LinearLayout.VISIBLE);
+
+                UtilityDetector.getInstance().CaricaMultimedia(VariabiliStaticheDetector.getInstance().getContext());
+                VariabiliStaticheDetector.getInstance().setNumMultimedia(0);
+                UtilityDetector.getInstance().VisualizzaMultimedia(VariabiliStaticheDetector.getInstance().getContext());
+
+                Handler handlerTimer;
+                Runnable rTimer;
+
+                handlerTimer = new Handler(Looper.getMainLooper());
+                rTimer = new Runnable() {
+                    public void run() {
+                        VariabiliStaticheDetector.getInstance().MascheraImmaginiMostrata = true;
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 2000);
+                break;
+            case "pennetta":
+                UtilityDetector.getInstance().Vibra(VariabiliStaticheDetector.getInstance().getContext(), 300);
+
+                Handler handlerTimer2;
+                Runnable rTimer2;
+
+                handlerTimer2 = new Handler(Looper.getMainLooper());
+                rTimer2 = new Runnable() {
+                    public void run() {
+                        VariabiliStaticheStart.getInstance().setVisibilePennetta(true);
+                        GestioneNotificheTasti.getInstance().AggiornaNotifica();
+
+                        Intent myIntent = new Intent(
+                                VariabiliStaticheDetector.getInstance().getContext(),
+                                MainMostraPennetta.class);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                    }
+                };
+                handlerTimer2.postDelayed(rTimer2, 2000);
+                break;
+            case "pazzia":
+                Handler handlerTimer3;
+                Runnable rTimer3;
+
+                UtilityDetector.getInstance().Vibra(VariabiliStaticheDetector.getInstance().getContext(), 300);
+
+                handlerTimer3 = new Handler(Looper.getMainLooper());
+                rTimer3 = new Runnable() {
+                    public void run() {
+                        Intent myIntent = new Intent(
+                                VariabiliStaticheDetector.getInstance().getContext(),
+                                MainPazzia.class);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        VariabiliStaticheDetector.getInstance().getContext().startActivity(myIntent);
+                    }
+                };
+                handlerTimer3.postDelayed(rTimer3, 2000);
+                break;
+        }
     }
 }

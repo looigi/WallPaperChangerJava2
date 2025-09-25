@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.InterrogazioneWSMI;
@@ -70,6 +72,33 @@ public class VariabiliStaticheMostraImmagini {
     private String OperatoreFiltro = "Or";
     private TextView txtInfoSotto;
     private StrutturaImmaginiLibrary StrutturaImmagineAttuale;
+    private FlexboxLayout layCategorieRilevate;
+    private FlexboxLayout layScritteRilevate;
+    private LinearLayout layTasti;
+
+    public FlexboxLayout getLayCategorieRilevate() {
+        return layCategorieRilevate;
+    }
+
+    public void setLayCategorieRilevate(FlexboxLayout layCategorieRilevate) {
+        this.layCategorieRilevate = layCategorieRilevate;
+    }
+
+    public FlexboxLayout getLayScritteRilevate() {
+        return layScritteRilevate;
+    }
+
+    public void setLayScritteRilevate(FlexboxLayout layScritteRilevate) {
+        this.layScritteRilevate = layScritteRilevate;
+    }
+
+    public LinearLayout getLayTasti() {
+        return layTasti;
+    }
+
+    public void setLayTasti(LinearLayout layTasti) {
+        this.layTasti = layTasti;
+    }
 
     public StrutturaImmaginiLibrary getStrutturaImmagineAttuale() {
         return StrutturaImmagineAttuale;

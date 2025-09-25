@@ -9,8 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
+import androidx.fragment.app.FragmentActivity;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
@@ -28,6 +32,8 @@ import com.looigi.wallpaperchanger2.classeModificheCodice.MainModificheCodice;
 import com.looigi.wallpaperchanger2.classeOnomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.classeOrari.MainOrari;
 import com.looigi.wallpaperchanger2.classePassword.MainPassword;
+import com.looigi.wallpaperchanger2.classePassword.VariabiliStatichePWD;
+import com.looigi.wallpaperchanger2.classePassword.ws.ChiamateWSPwd;
 import com.looigi.wallpaperchanger2.classePennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
@@ -36,21 +42,31 @@ import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.utilities.BiometricManagerSingleton;
+import com.looigi.wallpaperchanger2.utilities.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
 
-public class ActivityDiStart extends Activity {
+public class ActivityDiStart extends FragmentActivity {
+    private FragmentActivity act;
+    private Context context;
+    private String Cosa;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_di_start);
 
-        Context context = this;
+        context = this;
+        act = this;
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("DO");
 
         TextView t = findViewById(R.id.txtOperazione);
         t.setText("Apertura " + id);
+
+        boolean fingerPrint = false;
 
         switch (id) {
             /* case "allarme":
@@ -87,9 +103,9 @@ public class ActivityDiStart extends Activity {
                 context.startActivity(iI);
                 break;
             case "controllo_immagini":
-                Intent ci = new Intent(context, MainUtilityImmagini.class);
-                ci.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(ci);
+                fingerPrint = true;
+                Cosa = id;
+                ControlloFingerPrint();
                 break;
             case "lazio":
                 Intent iL = new Intent(context, MainLazio.class);
@@ -154,9 +170,9 @@ public class ActivityDiStart extends Activity {
                 context.startActivity(iMa);
                 break;
             case "password":
-                Intent iPa = new Intent(context, MainPassword.class);
-                iPa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(iPa);
+                fingerPrint = true;
+                Cosa = id;
+                ControlloFingerPrint();
                 break;
             case "player":
                 if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {
@@ -199,19 +215,19 @@ public class ActivityDiStart extends Activity {
                 }
                 break;
             case "immagini":
-                Intent iIm = new Intent(context, MainMostraImmagini.class);
-                iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(iIm);
+                fingerPrint = true;
+                Cosa = id;
+                ControlloFingerPrint();
                 break;
             case "pennetta":
-                Intent iPe = new Intent(context, MainMostraPennetta.class);
-                iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(iPe);
+                fingerPrint = true;
+                Cosa = id;
+                ControlloFingerPrint();
                 break;
             case "video":
-                Intent iVi = new Intent(context, MainMostraVideo.class);
-                iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(iVi);
+                fingerPrint = true;
+                Cosa = id;
+                ControlloFingerPrint();
                 break;
             case "films":
                 Intent iF = new Intent(context, MainMostraFilms.class);
@@ -223,7 +239,103 @@ public class ActivityDiStart extends Activity {
                 break;
         }
 
-        Activity act = this;
+        if (!fingerPrint) {
+            Handler handlerTimer = new Handler(Looper.getMainLooper());
+            Runnable rTimer = new Runnable() {
+                public void run() {
+                    act.finish();
+                }
+            };
+            handlerTimer.postDelayed(rTimer, 1000);
+        }
+    }
+
+    private BiometricManagerSingleton bioManager;
+
+    private void ControlloFingerPrint() {
+        PrendeModelloTelefono p = new PrendeModelloTelefono();
+        String modello = p.getDeviceName();
+        if (!modello.contains("sdk_gphone64")) {
+            bioManager = BiometricManagerSingleton.getInstance(context);
+
+            int can = bioManager.canAuthenticate();
+            if (can == androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS) {
+                bioManager.authenticate(act, "Accedi", "Autenticazione con impronta o volto", authCallback);
+            } else {
+                String msg;
+                switch (can) {
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                        msg = "Dispositivo senza hardware biometrico";
+                        break;
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                        msg = "Hardware biometrico non disponibile";
+                        break;
+                    case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                        msg = "Nessuna impronta/biometria registrata. Registra una nella impostazioni.";
+                        break;
+                    default:
+                        msg = "Impossibile usare biometria";
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            AutenticazioneOK();
+        }
+    }
+
+    private final BiometricPrompt.AuthenticationCallback authCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            runOnUiThread(() -> {
+                Toast.makeText(context, "Autenticazione OK", Toast.LENGTH_SHORT).show();
+
+                AutenticazioneOK();
+            });
+            // Procedi con operazione protetta
+        }
+
+        @Override
+        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            runOnUiThread(() -> Toast.makeText(context, "Errore: " + errString, Toast.LENGTH_SHORT).show());
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+            runOnUiThread(() -> Toast.makeText(context, "Autenticazione fallita", Toast.LENGTH_SHORT).show());
+        }
+    };
+
+    private void AutenticazioneOK() {
+        switch(Cosa) {
+            case "controllo_immagini":
+                Intent ci = new Intent(context, MainUtilityImmagini.class);
+                ci.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(ci);
+                break;
+            case "pennetta":
+                Intent iPe = new Intent(context, MainMostraPennetta.class);
+                iPe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iPe);
+                break;
+            case "video":
+                Intent iVi = new Intent(context, MainMostraVideo.class);
+                iVi.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iVi);
+                break;
+            case "immagini":
+                Intent iIm = new Intent(context, MainMostraImmagini.class);
+                iIm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iIm);
+                break;
+            case "password":
+                Intent iPa = new Intent(context, MainPassword.class);
+                iPa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(iPa);
+                break;
+        }
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
@@ -232,6 +344,5 @@ public class ActivityDiStart extends Activity {
             }
         };
         handlerTimer.postDelayed(rTimer, 1000);
-
     }
 }

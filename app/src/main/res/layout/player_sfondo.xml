@@ -3,6 +3,7 @@
     android:id="@+id/laySfondoPlayer"
     android:padding="3dp"
     android:layout_width="match_parent"
+    android:weightSum="10"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -19,13 +20,16 @@
                 android:layout_width="match_parent"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_weight="6"
+                android:weightSum="10"
+                android:layout_height="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                     android:weightSum="7"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="2"
+                    android:layout_height="0dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -126,7 +130,8 @@
                 <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
                     android:id="@+id/imgSfondoSettings"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp" />
+                    android:layout_weight="8"
+                    android:layout_height="0dp" />
 
                 <!-- <ImageView
                     android:id="@+id/imgSfondoSettings"
@@ -137,48 +142,43 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/black" />
-
             <ScrollView
+                android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_weight="4"
+                android:layout_height="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:weightSum="8"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="7"
-                            android:gravity="center_vertical"
-                            android:text="Imposta come Sfondo"
-                            android:textColor="@color/Nero"
-                            android:layout_height="match_parent" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:gravity="end"
-                            android:layout_weight="1"
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:weightSum="8"
                             android:layout_height="wrap_content">
 
-                            <ImageView
-                                android:id="@+id/imgImpostaWP"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:src="@drawable/eye" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="7"
+                                android:gravity="center_vertical"
+                                android:text="Imposta come Sfondo"
+                                android:textColor="@color/Nero"
+                                android:layout_height="match_parent" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:gravity="end"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imgImpostaWP"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:src="@drawable/eye" />
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/sCambiaImmagine"

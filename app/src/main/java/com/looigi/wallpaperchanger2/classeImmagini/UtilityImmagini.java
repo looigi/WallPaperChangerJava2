@@ -239,12 +239,27 @@ public class UtilityImmagini {
                 si.setDataCreazione(j.getString("DataCreazione"));
                 si.setDataModifica(j.getString("DataModifica"));
                 si.setDimensioniImmagine(j.getString("DimensioniImmagine"));
-                si.setUrlImmagine(j.getString("UrlImmagine"));
+
+                String urlImmagine = j.getString("UrlImmagine");
+                urlImmagine = urlImmagine.replace("*V1*", "\"");
+                urlImmagine = urlImmagine.replace("*V2*", "'");
+                urlImmagine = urlImmagine.replace("*S*", "\\");
+                urlImmagine = urlImmagine.replace("*LE*", "<");
+                urlImmagine = urlImmagine.replace("*GR*", ">" );
+                urlImmagine = urlImmagine.replace("*GA*", "{" );
+                urlImmagine = urlImmagine.replace("*GC*", "}" );
+                urlImmagine = urlImmagine.replace("*QA*", "[" );
+                urlImmagine = urlImmagine.replace("*QC*", "]" );
+                urlImmagine = urlImmagine.replace("*AN*", "&" );
+                si.setUrlImmagine(urlImmagine);
+
                 si.setPathImmagine(j.getString("PathImmagine"));
                 si.setEsisteImmagine(j.getString("EsisteImmagine").equals("True"));
                 si.setImmaginiCategoria(j.getInt("ImmaginiCategoria"));
                 si.setImmaginiFiltrate(j.getInt("ImmaginiFiltrate"));
                 si.setExif(j.getString("Exif"));
+                si.setTestoJava(j.getString("Testo"));
+                si.setTags(j.getString("Tags"));
 
                 return si;
             } catch (JSONException e) {

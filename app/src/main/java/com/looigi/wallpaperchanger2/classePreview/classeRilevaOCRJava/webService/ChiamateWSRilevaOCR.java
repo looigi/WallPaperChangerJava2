@@ -1,0 +1,239 @@
+package com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.webService;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.looigi.wallpaperchanger2.classePennetta.VariabiliStaticheMostraImmaginiPennetta;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.UtilitiesOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.VariabiliStaticheOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.adapters.AdapterListenerDestinazioni;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.adapters.AdapterListenerImmaginiOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.strutture.StrutturaDestinazioni;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.strutture.StrutturaImmaginiOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.webService.InterrogazioneWSOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeOCR.webService.TaskDelegateOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.UtilitiesRilevaOCRJava;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.VariabiliStaticheRilevaOCRJava;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.strutture.StrutturaRilevaOCR;
+import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.VariabiliStaticheStart;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
+    private static final String NomeMaschera = "Chiamate_WS_RILEVA_OCR";
+    // private LetturaWSAsincrona bckAsyncTask;
+
+    private final String RadiceWS = VariabiliStaticheMostraImmaginiPennetta.UrlWS;
+    private final String ws = "newLooVF.asmx/";
+    private final String NS="http://newLooVF.org/";
+    private final String SA="http://newLooVF.org/";
+    private String TipoOperazione = "";
+    private final Context context;
+    private final boolean ApriDialog = false;
+    private String daDove;
+
+    public ChiamateWSRilevaOCR(Context context) {
+        this.context = context;
+    }
+
+    public void RitornaProssimaImmagineDaLeggereInJava() {
+        String Urletto="RitornaProssimaImmagineDaLeggereInJava";
+
+        TipoOperazione = "RitornaProssimaImmagineDaLeggereInJava";
+        // ControllaTempoEsecuzione = false;
+
+        Esegue(
+                RadiceWS + ws + Urletto,
+                TipoOperazione,
+                NS,
+                SA,
+                100000,
+                ApriDialog);
+    }
+
+    public void AggiornaTestoOcrDaJava(String CategorieMesse, String Tags) {
+        if (CategorieMesse == null || CategorieMesse.isEmpty()) {
+            CategorieMesse = ";";
+        }
+        if (Tags == null || Tags.isEmpty()) {
+            Tags = ";";
+        }
+
+        String encoded = null;
+        String encodedTags = null;
+
+        try {
+            if (CategorieMesse.equals(";") || CategorieMesse.length() < 3) {
+                encoded = ";";
+            } else {
+                encoded = URLEncoder.encode(CategorieMesse, StandardCharsets.UTF_8.toString());
+            }
+            if (Tags.equals(";") || Tags.length() < 3) {
+                encodedTags = ";";
+            } else {
+                encodedTags = URLEncoder.encode(Tags, StandardCharsets.UTF_8.toString());
+            }
+
+            String Urletto="AggiornaTestoOcrDaJava?" +
+                    "idImmagine=" + VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale().getIdImmagine() +
+                    "&Testo=" + encoded +
+                    "&Tags=" + encodedTags;
+
+            TipoOperazione = "AggiornaTestoOcrDaJava";
+            // ControllaTempoEsecuzione = false;
+
+            Esegue(
+                    RadiceWS + ws + Urletto,
+                    TipoOperazione,
+                    NS,
+                    SA,
+                    100000,
+                    ApriDialog);
+        } catch (UnsupportedEncodingException e) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                    ws.AggiornaTestoOcrDaJava("ERRORE NELL'ENCODING;", ";");
+                }
+            }, 10);
+        }
+    }
+
+    public void Esegue(String Urletto, String tOperazione,
+                       String NS, String SOAP_ACTION, int Timeout,
+                       boolean ApriDialog) {
+
+        UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+
+        Long tsLong = System.currentTimeMillis()/1000;
+        String TimeStampAttuale = tsLong.toString();
+
+        InterrogazioneWSRilevaOCR i = new InterrogazioneWSRilevaOCR();
+        i.EsegueChiamata(
+                context,
+                NS,
+                Timeout,
+                SOAP_ACTION,
+                tOperazione,
+                ApriDialog,
+                Urletto,
+                TimeStampAttuale,
+                this
+        );
+    }
+
+    @Override
+    public void TaskCompletionResult(String result) {
+        Handler handlerTimer = new Handler(Looper.getMainLooper());
+        Runnable rTimer = new Runnable() {
+            public void run() {
+                UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+
+                switch (TipoOperazione) {
+                    case "RitornaProssimaImmagineDaLeggereInJava":
+                        fRitornaProssimaImmagineDaLeggereInJava(result);
+                        break;
+                    case "AggiornaTestoOcrDaJava":
+                        fAggiornaTestoOcrDaJava(result);
+                        break;
+                }
+            }
+        };
+        handlerTimer.postDelayed(rTimer, 100);
+    }
+
+    public void StoppaEsecuzione() {
+        // bckAsyncTask.cancel(true);
+    }
+
+    private boolean ControllaRitorno(String Operazione, String result) {
+        if (result.contains("ERROR:")) {
+            if (result.contains("JAVA.NET.UNKNOWNHOSTEXCEPTION") || result.contains("SOCKETTIMEOUTEXCEPTION")) {
+            }
+
+            return false;
+        } else {
+            if (result.contains("anyType{}")) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    private void fAggiornaTestoOcrDaJava(String result) {
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Elaborazione bloccata");
+        } else {
+            boolean ritorno = ControllaRitorno("Ritorna AggiornaTestoOcrDaJava", result);
+            if (ritorno) {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                        ws.RitornaProssimaImmagineDaLeggereInJava();
+                    }
+                }, 10);
+            } else {
+                UtilitiesGlobali.getInstance().ApreToast(context, result);
+            }
+        }
+    }
+
+    private void fRitornaProssimaImmagineDaLeggereInJava(String result) {
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
+            UtilitiesGlobali.getInstance().ApreToast(context, "Elaborazione bloccata");
+        } else {
+            boolean ritorno = ControllaRitorno("Ritorna Ritorna Prossima Immagine Da Leggere In Java", result);
+            if (ritorno) {
+                String[] c = result.split(";", -1);
+                StrutturaRilevaOCR s = new StrutturaRilevaOCR();
+                s.setIdImmagine(c[0]);
+
+                if (VariabiliStaticheRilevaOCRJava.getInstance().getIdUltimaImmagine().trim().equals(c[0].trim())) {
+                    VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
+
+                    UtilityWallpaper.getInstance().ApriDialog(
+                            true,
+                            "Stesso id della immagine precedente: " + c[0]
+                    );
+
+                    return;
+                }
+                VariabiliStaticheRilevaOCRJava.getInstance().setIdUltimaImmagine(c[0]);
+
+                s.setTesto(c[1].replace("*PV*", ";"));
+                s.setQuante(c[2]);
+                s.setCategoria(c[3]);
+                s.setCartella(c[4]);
+                s.setNomeFile(c[5]);
+                String url = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Materiale/newPLibrary/" +
+                        c[3] + "/" + c[4] + "/" + c[5];
+                s.setUrl(url);
+                s.setTestoJava(c[6].replace("*PV*", ";"));
+                s.setTags(c[7].replace("*PV*", ";"));
+
+                VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
+                        "Rimanenti: " + c[2] + " - " + c[5] + " (" + c[3] + ")"
+                );
+                VariabiliStaticheRilevaOCRJava.getInstance().setImmagineAttuale(s);
+                UtilitiesRilevaOCRJava.getInstance().DisegnaImmagine(context);
+            } else {
+                UtilitiesGlobali.getInstance().ApreToast(context, result);
+            }
+        }
+    }
+}

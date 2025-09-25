@@ -9,18 +9,15 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesLetturaInfoImmagine;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -144,12 +141,25 @@ public class DownloadImmaginePreview {
                             if (!VariabiliStatichePreview.getInstance().getModalita().equals("OCR")) {
                                 UtilitiesPreview.getInstance().Attesa(true);
 
-                                VariabiliStatichePreview.getInstance().getLayScritteRilevate().removeAllViews();
-                                VariabiliStatichePreview.getInstance().getLayCategorieRilevate().removeAllViews();
-
-                                UtilitiesPreview.getInstance().CercaCategoriaDaNome(context, finalUrldisplay);
-                                UtilitiesPreview.getInstance().LeggeTestoSuImmagine(context, finalMIcon1);
-                                UtilitiesPreview.getInstance().CercaCategoriaSuExif(context);
+                                UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine();
+                                u.ImpostaCategorieGiaMesse(
+                                        VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTestoJava().toUpperCase().trim()
+                                );
+                                u.ImpostaListaCategorie(VariabiliStatichePreview.getInstance().getListaCategorie());
+                                u.ImpostaLayCategorie(VariabiliStatichePreview.getInstance().getLayCategorieRilevate());
+                                u.ImpostaLayScritte(VariabiliStatichePreview.getInstance().getLayScritteRilevate());
+                                u.ImpostaLayTasti(VariabiliStatichePreview.getInstance().getLayTasti());
+                                u.Pulisce();
+                                u.CercaCategoriaDaTags(context, VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTags());
+                                if (finalUrldisplay != null && !finalUrldisplay.isEmpty()) {
+                                    u.CercaCategoriaDaNome(context, finalUrldisplay);
+                                }
+                                if (finalMIcon1 != null) {
+                                    u.LeggeTestoSuImmagine(context, finalMIcon1);
+                                }
+                                if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() != null) {
+                                    u.CercaCategoriaSuExif(context, VariabiliStatichePreview.getInstance().getStrutturaImmagine());
+                                }
 
                                 UtilitiesPreview.getInstance().Attesa(false);
                             } else {

@@ -10,16 +10,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+import androidx.fragment.app.FragmentActivity;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classePassword.strutture.StrutturaPassword;
 import com.looigi.wallpaperchanger2.classePassword.strutture.StrutturaUtente;
 import com.looigi.wallpaperchanger2.classePassword.ws.ChiamateWSPwd;
+import com.looigi.wallpaperchanger2.utilities.BiometricManagerSingleton;
 
-public class MainPassword extends Activity {
+public class MainPassword extends FragmentActivity {
     private static final String NomeMaschera = "MainPassword";
     private Context context;
-    private Activity act;
+    private FragmentActivity act;
     private Runnable rAgg;
     private Handler handlerAgg;
     private Runnable rAgg2;
@@ -44,6 +50,9 @@ public class MainPassword extends Activity {
         act.finish();
     }
 
+    private BiometricManagerSingleton bioManager;
+    private EditText edtUtente;
+
     private void Inizio() {
         // VariabiliStatichePWD.getInstance().setRetePresente(true);
 
@@ -66,7 +75,7 @@ public class MainPassword extends Activity {
         ImageView layRicerca = (ImageView) findViewById(R.id.imgRicerca);
         layRicerca.setVisibility(LinearLayout.GONE);
 
-        EditText edtUtente = (EditText) findViewById(R.id.edtUtenteLogin);
+        edtUtente = (EditText) findViewById(R.id.edtUtenteLogin);
         EditText edtPassword = (EditText) findViewById(R.id.edtPasswordLogin);
 
         boolean utenza = db.LeggeUtente();
@@ -169,10 +178,68 @@ public class MainPassword extends Activity {
         rAgg = new Runnable() {
             public void run() {
                 imgSplash.setVisibility(LinearLayout.GONE);
+
+                if (!edtUtente.getText().toString().isEmpty()) {
+                    // Impronta digitale
+                    bioManager = BiometricManagerSingleton.getInstance(context);
+
+                    int can = bioManager.canAuthenticate();
+                    if (can == androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS) {
+                        bioManager.authenticate(act, "Accedi", "Autenticazione con impronta o volto", authCallback);
+                    } else {
+                        String msg;
+                        switch (can) {
+                            case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                                msg = "Dispositivo senza hardware biometrico";
+                                break;
+                            case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                                msg = "Hardware biometrico non disponibile";
+                                break;
+                            case androidx.biometric.BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                                msg = "Nessuna impronta/biometria registrata. Registra una nella impostazioni.";
+                                break;
+                            default:
+                                msg = "Impossibile usare biometria";
+                        }
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                    }
+                    // Impronta digitale
+                } else {
+                    Toast.makeText(context, "Inserire l'utenza a mano, la prima volta", Toast.LENGTH_LONG).show();
+                }
             }
         };
         handlerAgg.postDelayed(rAgg, 3000);
     }
+
+    private final BiometricPrompt.AuthenticationCallback authCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            runOnUiThread(() -> {
+                Toast.makeText(context, "Autenticazione OK", Toast.LENGTH_SHORT).show();
+
+                String NomeUtente = edtUtente.getText().toString();
+                VariabiliStatichePWD.getInstance().setNomeUtenteAppoggio(NomeUtente);
+
+                ChiamateWSPwd ws = new ChiamateWSPwd(context);
+                ws.RitornaIdUtente(VariabiliStatichePWD.getInstance().getNomeUtenteAppoggio());
+            });
+            // Procedi con operazione protetta
+        }
+
+        @Override
+        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            runOnUiThread(() -> Toast.makeText(context, "Errore: " + errString, Toast.LENGTH_SHORT).show());
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+            runOnUiThread(() -> Toast.makeText(context, "Autenticazione fallita", Toast.LENGTH_SHORT).show());
+        }
+    };
 
     private void ContinuaEsecuzione() {
         db_dati_password db = new db_dati_password(context);
@@ -269,11 +336,11 @@ public class MainPassword extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
 
-        switch(keyCode) {
+        switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 this.finish();
 
-                return false;
+                return true;
         }
 
         return false;

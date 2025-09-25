@@ -73,10 +73,19 @@ public class VariabiliStatichePreview {
     private int ultimaImmagineVisualizzata = 0;
     private ImageView imgPrecedente;
     private ImageView imgProssima;
-    private FlexboxLayout layCategorieRilevate;
     private int idCategoriaSpostamento;
+    private FlexboxLayout layCategorieRilevate;
     private FlexboxLayout layScritteRilevate;
     private LinearLayout layTasti;
+    private LinearLayout layTastiDestra;
+
+    public LinearLayout getLayTastiDestra() {
+        return layTastiDestra;
+    }
+
+    public void setLayTastiDestra(LinearLayout layTastiDestra) {
+        this.layTastiDestra = layTastiDestra;
+    }
 
     public LinearLayout getLayTasti() {
         return layTasti;

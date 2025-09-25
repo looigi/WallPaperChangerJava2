@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.image.labeling.common)
+    implementation(libs.image.labeling.default.common)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -110,4 +112,9 @@ dependencies {
 
     implementation(libs.flexbox)
     implementation(libs.text.recognition)
+
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
+    implementation("org.apache.commons:commons-text:1.12.0")
+
+    implementation("com.google.mlkit:image-labeling:17.0.7")
 }

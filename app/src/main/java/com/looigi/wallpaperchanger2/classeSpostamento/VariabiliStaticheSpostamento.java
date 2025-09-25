@@ -17,6 +17,7 @@ import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classePreview.strutture.StrutturaVoltiRilevati;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeSpostamento.strutture.StrutturaCategorieSpostamento;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -51,6 +52,51 @@ public class VariabiliStaticheSpostamento {
     private Activity act;
     private FlexboxLayout layPreferiti;
     private List<String> Preferiti = new ArrayList<>();
+    private List<String> CategoriaSpostata;
+
+    public void setCategoriaSpostata(List<String> categoriaSpostata) {
+        CategoriaSpostata = categoriaSpostata;
+    }
+
+    public void AggiungeSpostata(Context context, String Categoria) {
+        if (CategoriaSpostata == null) {
+            CategoriaSpostata = new ArrayList<>();
+        }
+        List<String> imposta = new ArrayList<>();
+        if (!CategoriaSpostata.contains(Categoria)) {
+            imposta.add(Categoria);
+            int q = 0;
+            for (String c : CategoriaSpostata) {
+                imposta.add(c);
+                q++;
+                if (q > 4) {
+                    break;
+                }
+            }
+        } else {
+            imposta = CategoriaSpostata;
+        }
+        String Cate = "";
+        for (String s: imposta) {
+            if (!(Cate).contains(s + "\n")) {
+                Cate += s + "\n";
+            }
+        }
+        String Path = context.getFilesDir() + "/Immagini";
+        if (Files.getInstance().EsisteFile(Path + "/CategoriePiuUsate.txt")) {
+            Files.getInstance().EliminaFile(Path, "CategoriePiuUsate.txt");
+        }
+        Files.getInstance().ScriveFile(Path, "CategoriePiuUsate.txt", Cate);
+        CategoriaSpostata = imposta;
+    }
+
+    public List<String> RitornaCategorieSpostate() {
+        if (CategoriaSpostata == null) {
+            CategoriaSpostata = new ArrayList<>();
+        }
+
+        return CategoriaSpostata;
+    }
 
     public String getCategoriaSpostamento() {
         return CategoriaSpostamento;

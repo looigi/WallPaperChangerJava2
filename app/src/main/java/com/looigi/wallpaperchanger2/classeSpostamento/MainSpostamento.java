@@ -21,6 +21,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.classeImmagini.webservice.ChiamateWSMI;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeSpostamento.webService.ChiamateWSSP;
@@ -108,6 +109,11 @@ public class MainSpostamento extends Activity {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Selezionare una categoria");
                     return;
                 }
+
+                VariabiliStaticheSpostamento.getInstance().AggiungeSpostata(
+                        context,
+                        VariabiliStaticheSpostamento.getInstance().getCategoriaSpostamento()
+                );
 
                 StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
                 s.setIdImmagine(Integer.parseInt(idImmagine));
@@ -198,6 +204,11 @@ public class MainSpostamento extends Activity {
                 VariabiliStaticheSpostamento.getInstance().ImpostaIdCategoria(text);
 
                 String idImmagine = VariabiliStaticheSpostamento.getInstance().getIdImmagine();
+
+                VariabiliStaticheSpostamento.getInstance().AggiungeSpostata(
+                        context,
+                        text
+                );
 
                 StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
                 s.setIdImmagine(Integer.parseInt(idImmagine));

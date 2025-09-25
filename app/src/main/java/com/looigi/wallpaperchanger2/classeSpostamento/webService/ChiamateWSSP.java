@@ -60,6 +60,7 @@ public class ChiamateWSSP implements TaskDelegateSP {
         if (!Refresh) {
             db_dati_spostamento db = new db_dati_spostamento(context);
             db.LeggeCategorie();
+
             if (!VariabiliStaticheSpostamento.getInstance().getListaCategorie().isEmpty()) {
                 VariabiliStaticheSpostamento.getInstance().AggiornaCategorieSpostamento(context);
 
@@ -153,8 +154,10 @@ public class ChiamateWSSP implements TaskDelegateSP {
     private void fTornaInfoImmaginiDaId(String result) {
         boolean ritorno = ControllaRitorno("Ritorna TornaInfoImmaginiDaId", result);
 
-        VariabiliStaticheSpostamento.getInstance().getTxtSpostamento().setText("");
-        VariabiliStaticheSpostamento.getInstance().getImgSpostamento().setImageBitmap(null);
+        if (VariabiliStaticheSpostamento.getInstance().getTxtSpostamento() != null) {
+            VariabiliStaticheSpostamento.getInstance().getTxtSpostamento().setText("");
+            VariabiliStaticheSpostamento.getInstance().getImgSpostamento().setImageBitmap(null);
+        }
 
         if (ritorno) {
             // Rec("Categoria").Value & ";" & Rec("Cartella").Value & ";" & Rec("NomeFile").Value & ";" &
@@ -170,7 +173,9 @@ public class ChiamateWSSP implements TaskDelegateSP {
             String Testo = "idImmagine: " + VariabiliStaticheSpostamento.getInstance().getIdImmagine() +
                     " - Immagine: " + campi[2] + " - Categoria: " + campi[0] + " - Cartella " + campi[1] +
                     " - Dimensioni " + campi[7] + " - Bytes: " + campi[4];
-            VariabiliStaticheSpostamento.getInstance().getTxtSpostamento().setText(Testo);
+            if (VariabiliStaticheSpostamento.getInstance().getTxtSpostamento() != null) {
+                VariabiliStaticheSpostamento.getInstance().getTxtSpostamento().setText(Testo);
+            }
 
             DownloadImmagineSpostamento d = new DownloadImmagineSpostamento();
             d.EsegueChiamata(

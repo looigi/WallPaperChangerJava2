@@ -124,8 +124,10 @@ public class DownloadImmagine {
                                     Files.getInstance().CreaCartelle(CartellaImmagine); // .getCartellaImmagine());
                                     PathImmagine = PathImmagine.replace("\\", "/");
                                     if (!PerCopia) {
-                                        VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(PathImmagine);
+                                        UtilityPlayer.getInstance().AggiornaUltimaImmagine(context, PathImmagine);
                                     }
+
+                                    VariabiliStatichePlayer.getInstance().setStaScaricandoImmagine(false);
 
                                     FileOutputStream outStream;
                                     try {
@@ -202,24 +204,24 @@ public class DownloadImmagine {
                         if (!PerCopia) {
                             UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
-                            if (!Interna) {
+                            /* if (!Interna) {
                                 VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
                                 UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
                             } else {
                                 UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
-                            }
+                            } */
                         }
                     }
                 } catch (Exception e) {
                     if (!PerCopia) {
                         UtilityPlayer.getInstance().ImpostaTastiSfondo(true);
 
-                        if (!Interna) {
+                        /* if (!Interna) {
                             VariabiliStatichePlayer.getInstance().setPathUltimaImmagine("");
                             UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
                         } else {
                             UtilityPlayer.getInstance().ImpostaLogoApplicazioneInterna(context);
-                        }
+                        } */
                     }
 
                     // e.printStackTrace();

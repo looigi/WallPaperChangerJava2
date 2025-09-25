@@ -6,6 +6,8 @@ androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
 androidMailVersion = "1.6.2"
 androidMapsUtilsVersion = "3.11.1"
+biometric = "1.2.0"
+biometricVersion = "1.1.0"
 comGoogleAndroidGmsPlayServicesAuth = "20.7.0"
 core = "1.13.1"
 faceDetection = "16.1.7"
@@ -48,6 +50,8 @@ playServicesMapsVersion = "17.0.0"
 secretsGradlePlugin = "2.0.1"
 textRecognition = "16.0.1"
 workRuntime = "2.10.2"
+imageLabelingCommon = "18.1.0"
+imageLabelingDefaultCommon = "17.0.0"
 
 [libraries]
 acra-core = { module = "ch.acra:acra-core", version.ref = "acraVersion" }
@@ -59,6 +63,8 @@ android-activation = { module = "com.sun.mail:android-activation", version.ref =
 android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 android-mail-v162 = { module = "com.sun.mail:android-mail", version.ref = "androidMailVersion" }
+biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+biometric-v110 = { module = "androidx.biometric:biometric", version.ref = "biometricVersion" }
 core = { module = "androidx.core:core", version.ref = "core" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
 face-detection-v1710 = { module = "com.google.mlkit:face-detection", version.ref = "faceDetectionVersion" }
@@ -107,6 +113,8 @@ play-services-mlkit-language-id = { module = "com.google.android.gms:play-servic
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
+image-labeling-common = { group = "com.google.mlkit", name = "image-labeling-common", version.ref = "imageLabelingCommon" }
+image-labeling-default-common = { group = "com.google.mlkit", name = "image-labeling-default-common", version.ref = "imageLabelingDefaultCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -25,6 +25,7 @@ import com.looigi.wallpaperchanger2.classeImpostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaBrano;
 import com.looigi.wallpaperchanger2.classePlayer.Strutture.StrutturaUtenti;
 import com.looigi.wallpaperchanger2.classePlayer.WebServices.ChiamateWsPlayer;
+import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.cuffie.PresenzaCuffie;
 import com.looigi.wallpaperchanger2.classePlayer.impostazioniInterne.impostazioni_player_interne;
 import com.looigi.wallpaperchanger2.classePlayer.scan.ScanBraniNonPresentiSuDB;
@@ -282,12 +283,24 @@ public class MainPlayer extends Activity {
                     VariabiliStatichePlayer.getInstance().getSecondiPassati()
             );
 
-            Bitmap bitmap = BitmapFactory.decodeFile(VariabiliStatichePlayer.getInstance().getPathUltimaImmagine());
-            VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
-
             UtilityPlayer.getInstance().ScrivePerc();
 
             UtilityPlayer.getInstance().ImpostaBellezza();
+        }
+
+        String ultimaImmagine = context.getFilesDir() + "/Player/UltimaImmagine.txt";
+        if (Files.getInstance().EsisteFile(ultimaImmagine)) {
+            String imm = Files.getInstance().LeggeFileUnico(ultimaImmagine);
+            imm = imm.replace("\n", "");
+            VariabiliStatichePlayer.getInstance().setPathUltimaImmagine(imm);
+            if (imm.isEmpty()) {
+                UtilityPlayer.getInstance().ImpostaLogoApplicazione(context);
+            } else {
+                if (VariabiliStatichePlayer.getInstance().getPathUltimaImmagine() != null) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(VariabiliStatichePlayer.getInstance().getPathUltimaImmagine());
+                    VariabiliStatichePlayer.getInstance().getImgBrano().setImageBitmap(bitmap);
+                }
+            }
         }
 
         Bitmap bmpStart;

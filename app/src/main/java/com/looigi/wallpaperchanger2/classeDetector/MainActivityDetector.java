@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.looigi.wallpaperchanger2.R;
 
 import java.util.Objects;
 
-public class MainActivityDetector extends Activity {
+public class MainActivityDetector extends FragmentActivity {
     private static String NomeMaschera = "Main_Activity";
 
     @Override

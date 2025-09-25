@@ -132,6 +132,7 @@ public class VariabiliStatichePlayer {
     private List<String> urlImmaginiDaScaricare;
     private LinearLayout layCaricamentoSI;
     private ListView lstRicerca;
+    private boolean staScaricandoImmagine = false;
 
     // RICERCHE
     private List<StrutturaSalvataggi> listaSalvataggi = new ArrayList<>();
@@ -173,6 +174,14 @@ public class VariabiliStatichePlayer {
             act.finish();
             // }
         }
+    }
+
+    public boolean isStaScaricandoImmagine() {
+        return staScaricandoImmagine;
+    }
+
+    public void setStaScaricandoImmagine(boolean staScaricandoImmagine) {
+        this.staScaricandoImmagine = staScaricandoImmagine;
     }
 
     public ListView getLstRicerca() {
@@ -484,6 +493,9 @@ public class VariabiliStatichePlayer {
     }
 
     public void setTempoCambioImmagine(int tempoCambioImmagine) {
+        if (tempoCambioImmagine >= 1000) {
+            tempoCambioImmagine /= 1000;
+        }
         TempoCambioImmagine = tempoCambioImmagine;
     }
 

@@ -94,8 +94,10 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
                 for (String dd: d) {
                     if (!dd.isEmpty()) {
                         String[] ddd = dd.split(";");
-                        Destinazione2 += ddd[1] + "\n";
-                        quanteDestinazioni++;
+                        if (ddd.length > 0) {
+                            Destinazione2 += ddd[1] + "\n";
+                            quanteDestinazioni++;
+                        }
                     }
                 }
             }

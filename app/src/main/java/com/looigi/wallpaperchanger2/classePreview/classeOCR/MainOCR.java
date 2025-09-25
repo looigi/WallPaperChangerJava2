@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class MainOCR extends Activity {
         setContentView(R.layout.activity_main_ocr);
 
         context = this;
+        act = this;
 
         VariabiliStaticheOCR.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOCR));
         UtilitiesOCR.getInstance().Attesa(false);
@@ -54,6 +56,17 @@ public class MainOCR extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliStaticheOCR.getInstance().setAncheDestinazioniVuote(swcAncheVuote.isChecked());
                 ws.RitornaDestinazioni();
+            }
+        });
+
+        EditText edtFiltro = findViewById(R.id.edtFiltro);
+
+        ImageView imgCerca = findViewById(R.id.imgCerca);
+        imgCerca.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String Filtro = edtFiltro.getText().toString();
+
+                ws.RitornaImmaginiFiltro(Filtro);
             }
         });
 
@@ -118,5 +131,26 @@ public class MainOCR extends Activity {
                 builder.show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        act.finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                this.finish();
+
+                return true;
+        }
+
+        return false;
     }
 }

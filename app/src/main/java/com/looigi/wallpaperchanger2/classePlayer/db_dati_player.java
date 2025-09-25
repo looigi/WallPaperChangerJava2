@@ -1004,7 +1004,7 @@ public class db_dati_player {
     public void ImpostaValoriDiDefault() {
         VariabiliStatichePlayer.getInstance().setLimiteInGb(1.5F);
         VariabiliStatichePlayer.getInstance().setCambiaImmagine(true);
-        VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(5000);
+        VariabiliStatichePlayer.getInstance().setTempoCambioImmagine(7);
         VariabiliStatichePlayer.getInstance().setChiacchiera(false);
     }
 

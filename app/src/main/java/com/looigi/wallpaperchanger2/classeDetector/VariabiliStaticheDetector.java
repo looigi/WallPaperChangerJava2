@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import androidx.fragment.app.FragmentActivity;
+
+import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 
 import java.util.List;
@@ -27,7 +32,7 @@ public class VariabiliStaticheDetector {
     }
 
     private Context context;
-    private Activity mainActivity;
+    private FragmentActivity mainActivity;
     private boolean ciSonoPermessi = false;
     // private LogInterno l;
     private int errori = 0;
@@ -87,6 +92,11 @@ public class VariabiliStaticheDetector {
     // private Button btnLayModificaImmagine;
     private boolean riaperturaSenzaReimpostazione = false;
     private boolean modalitaGps = true;
+    private LinearLayout lScatti;
+    private HorizontalScrollView lTasti;
+    private LinearLayout lFrecce;
+    private LinearLayout lNomeImm;
+    private ImageView bSposta;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -99,6 +109,46 @@ public class VariabiliStaticheDetector {
 
     public boolean getModalitaGps() {
         return modalitaGps;
+    }
+
+    public ImageView getbSposta() {
+        return bSposta;
+    }
+
+    public void setbSposta(ImageView bSposta) {
+        this.bSposta = bSposta;
+    }
+
+    public LinearLayout getlNomeImm() {
+        return lNomeImm;
+    }
+
+    public void setlNomeImm(LinearLayout lNomeImm) {
+        this.lNomeImm = lNomeImm;
+    }
+
+    public LinearLayout getlFrecce() {
+        return lFrecce;
+    }
+
+    public void setlFrecce(LinearLayout lFrecce) {
+        this.lFrecce = lFrecce;
+    }
+
+    public HorizontalScrollView getlTasti() {
+        return lTasti;
+    }
+
+    public void setlTasti(HorizontalScrollView lTasti) {
+        this.lTasti = lTasti;
+    }
+
+    public LinearLayout getlScatti() {
+        return lScatti;
+    }
+
+    public void setlScatti(LinearLayout lScatti) {
+        this.lScatti = lScatti;
     }
 
     public void setModalitaGps(boolean modalitaGps) {
@@ -512,11 +562,11 @@ public class VariabiliStaticheDetector {
         this.servizioForeground = servizioForeground;
     }
 
-    public Activity getMainActivity() {
+    public FragmentActivity getMainActivity() {
         return mainActivity;
     }
 
-    public void setMainActivity(Activity mainActivity) {
+    public void setMainActivity(FragmentActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 

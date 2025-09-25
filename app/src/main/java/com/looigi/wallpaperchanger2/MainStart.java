@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.looigi.wallpaperchanger2.AutoStart.RunServiceOnBoot;
 import com.looigi.wallpaperchanger2.classeBackup.MainBackup;
 import com.looigi.wallpaperchanger2.classeDetector.UtilityDetector;
@@ -41,6 +43,7 @@ import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeWallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
+import com.looigi.wallpaperchanger2.notificaTasti.ActivityDiStart;
 import com.looigi.wallpaperchanger2.utilities.Files;
 import com.looigi.wallpaperchanger2.utilities.Permessi;
 import com.looigi.wallpaperchanger2.classeAvvio.ServizioInterno;
@@ -207,14 +210,21 @@ public class MainStart extends Activity {
             public void onClick(View v) {
                 layStart.setVisibility(LinearLayout.GONE);
 
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                Intent ci = new Intent(context, ActivityDiStart.class);
+                ci.addCategory(Intent.CATEGORY_LAUNCHER);
+                ci.setAction(Intent.ACTION_MAIN );
+                ci.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                ci.putExtra("DO", "controllo_immagini");
+                startActivity(ci);
+
+                /* new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent = new Intent(context, MainUtilityImmagini.class);
                         intent.putExtra("idCategoria", "1");
                         startActivity(intent);
                     }
-                }, 500);
+                }, 500); */
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
@@ -524,14 +534,21 @@ public class MainStart extends Activity {
             public void onClick(View v) {
                 layStart.setVisibility(LinearLayout.GONE);
 
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                Intent ci = new Intent(context, ActivityDiStart.class);
+                ci.addCategory(Intent.CATEGORY_LAUNCHER);
+                ci.setAction(Intent.ACTION_MAIN );
+                ci.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP ) ;
+                ci.putExtra("DO", "password");
+                startActivity(ci);
+
+                /* new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Intent i = new Intent(context, MainPassword.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
                     }
-                }, 500);
+                }, 500); */
 
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override

@@ -18,6 +18,24 @@ public class StrutturaImmaginiLibrary {
     private int ImmaginiCategoria;
     private int ImmaginiFiltrate;
     private String Exif;
+    private String TestoJava;
+    private String Tags;
+
+    public String getTags() {
+        return Tags;
+    }
+
+    public void setTags(String tags) {
+        Tags = tags;
+    }
+
+    public String getTestoJava() {
+        return TestoJava;
+    }
+
+    public void setTestoJava(String testoJava) {
+        TestoJava = testoJava;
+    }
 
     public String getExif() {
         return Exif;

@@ -583,6 +583,10 @@ public class MainMostraImmagini extends Activity {
             }
         }
 
+        VariabiliStaticheMostraImmagini.getInstance().setLayCategorieRilevate(findViewById(R.id.layCategorieRilevate));
+        VariabiliStaticheMostraImmagini.getInstance().setLayScritteRilevate(findViewById(R.id.layScritteRilevate));
+        VariabiliStaticheMostraImmagini.getInstance().setLayTasti(findViewById(R.id.layTasti));
+
         LinearLayout layTastiImmagini = findViewById(R.id.layTastiImmagini);
         layTastiImmagini.setVisibility(LinearLayout.GONE);
 

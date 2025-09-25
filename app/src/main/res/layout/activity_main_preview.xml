@@ -101,12 +101,12 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="OCR"
+                        android:text="Genera OCR"
                         android:textColor="@color/Nero"
                         android:layout_height="wrap_content"/>
 
                     <ImageView
-                        android:id="@+id/imgOCR"
+                        android:id="@+id/imgCreaOCR"
                         android:layout_width="25dp"
                         android:layout_height="30dp"
                         android:src="@drawable/ocr" />
@@ -447,6 +447,19 @@
         android:layout_margin="5dp"
         android:layout_width="50dp"
         android:layout_height="50dp" />
+
+    <LinearLayout
+        android:id="@+id/layTastiDestra"
+        android:padding="3dp"
+        android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
+        android:orientation="vertical"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="132dp"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layTasti"

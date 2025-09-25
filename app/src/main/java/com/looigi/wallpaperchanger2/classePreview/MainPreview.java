@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -29,8 +30,10 @@ import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuo
 import com.looigi.wallpaperchanger2.classeModificaImmagine.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.classeModificaImmagine.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.classePreview.classeOCR.MainOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.MainRilevaOCR;
 import com.looigi.wallpaperchanger2.classePreview.webService.DownloadImmaginePreview;
 import com.looigi.wallpaperchanger2.classeSpostamento.MainSpostamento;
+import com.looigi.wallpaperchanger2.classeSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
@@ -41,6 +44,8 @@ import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPreview extends Activity {
     private Context context;
@@ -136,6 +141,8 @@ public class MainPreview extends Activity {
         VariabiliStatichePreview.getInstance().getImgProssima().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UtilitiesPreview.getInstance().ProssimaImmagine(context);
+
+                UtilitiesPreview.getInstance().DisegnaUltimiSpostamenti(context);
             }
         });
 
@@ -162,6 +169,8 @@ public class MainPreview extends Activity {
                     UtilitiesPreview.getInstance().Attesa(false);
                     VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
                     VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
+
+                    UtilitiesPreview.getInstance().DisegnaUltimiSpostamenti(context);
                 }
             }
         });
@@ -186,6 +195,15 @@ public class MainPreview extends Activity {
                 b.putString("CATEGORIA", "NESSUNA");
                 iP.putExtras(b);
                 context.startActivity(iP);
+            }
+        });
+
+        ImageView imgCreaOCR = findViewById(R.id.imgCreaOCR);
+        imgCreaOCR.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(context, MainRilevaOCR.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         });
 
@@ -536,6 +554,62 @@ public class MainPreview extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         }); */
         // SPOSTAMENTO
+
+        String Path = context.getFilesDir() + "/Immagini";
+        if (Files.getInstance().EsisteFile(Path + "/CategoriePiuUsate.txt")) {
+            String Cate = Files.getInstance().LeggeFile(Path, "CategoriePiuUsate.txt");
+            if (!Cate.isEmpty()) {
+                String[] c = Cate.split("\n");
+                List<String> lista = new ArrayList<>();
+                for (String c2 : c) {
+                    if (!c2.isEmpty()) {
+                        if (!lista.contains(c2)) {
+                            lista.add(c2);
+                        }
+                    }
+                }
+                VariabiliStaticheSpostamento.getInstance().setCategoriaSpostata(lista);
+            }
+        } else {
+            VariabiliStaticheSpostamento.getInstance().setCategoriaSpostata(new ArrayList<>());
+        }
+
+        VariabiliStatichePreview.getInstance().setLayTastiDestra(findViewById(R.id.layTastiDestra));
+        VariabiliStatichePreview.getInstance().getLayTastiDestra().setOnTouchListener(new View.OnTouchListener() {
+            private float dX, dY;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        // Salva la distanza tra posizione tocco e posizione layout
+                        dX = view.getX() - event.getRawX();
+                        dY = view.getY() - event.getRawY();
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // Aggiorna posizione in base al movimento del dito
+                        view.animate()
+                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        UtilitiesPreview.getInstance().DisegnaUltimiSpostamenti(context);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        UtilitiesPreview.getInstance().DisegnaUltimiSpostamenti(context);
     }
 
     @Override

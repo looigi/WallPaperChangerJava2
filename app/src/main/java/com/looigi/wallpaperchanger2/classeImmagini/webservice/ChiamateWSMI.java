@@ -957,13 +957,17 @@ public class ChiamateWSMI implements TaskDelegate {
                 UtilitiesGlobali.getInstance().ApreToast(context, "Immagine spostata");
 
                 if (daDove.equals("SPOSTAMENTO")) {
-                    VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
-                    VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
-                    VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
-                    VariabiliStaticheSpostamento.getInstance().Attesa(false);
-                    VariabiliStaticheSpostamento.getInstance().getAct().finish();
+                    if (VariabiliStatichePreview.getInstance().getLayTasti() != null) {
+                        VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
+                        VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
+                        VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
+                        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+                        if (VariabiliStaticheSpostamento.getInstance().getAct() != null) {
+                            VariabiliStaticheSpostamento.getInstance().getAct().finish();
+                        }
 
-                    UtilitiesPreview.getInstance().ProssimaImmagine(context);
+                        UtilitiesPreview.getInstance().ProssimaImmagine(context);
+                    }
                 } else {
                     if (daDove.equals("PREVIEW")) {
                         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);

@@ -11,12 +11,15 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.classeImmagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeImmagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.classePreview.UtilitiesPreview;
+import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.classeWallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.RefreshImmagini.ChiamateWsWPRefresh;
 import com.looigi.wallpaperchanger2.classeWallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.classeWallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.utilities.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.utilities.UtilitiesLetturaInfoImmagine;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,6 +41,8 @@ public class DownloadImmagineMI {
     private InputStream in;
     private boolean PerCopia;
     private boolean PerWP;
+    private Bitmap mIcon11;
+    private String urldisplay;
 
     public void EsegueChiamata(Context context, String NomeImmagine, ImageView immagine,
                                String UrlImmagine, boolean PerCopia, boolean perWP) {
@@ -138,8 +143,8 @@ public class DownloadImmagineMI {
 
     private void Esecuzione() {
         Errore = false;
-        String urldisplay = Url;
-        Bitmap mIcon11 = null;
+        urldisplay = Url;
+        mIcon11 = null;
         try {
             in = new java.net.URL(urldisplay).openStream();
             if (in != null && !isCancelled) {
@@ -190,13 +195,11 @@ public class DownloadImmagineMI {
             if (!isCancelled) {
                 if (!PerCopia) {
                     if (!PerWP) {
-                        Bitmap finalMIcon1 = mIcon11;
-
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 if (immagine != null) {
-                                    immagine.setImageBitmap(finalMIcon1);
+                                    immagine.setImageBitmap(mIcon11);
 
                                     if (VariabiliStaticheMostraImmagini.getInstance().isSlideShowAttivo()) {
                                         UtilityImmagini.getInstance().RiattivaTimer();
@@ -272,6 +275,32 @@ public class DownloadImmagineMI {
                     ChangeWallpaper c = new ChangeWallpaper(context, "WALLPAPER",
                             src);
                     c.setWallpaperLocale(context, src);
+                } else {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            UtilityImmagini.getInstance().Attesa(true);
+
+                            UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine();
+                            u.ImpostaListaCategorie(VariabiliStaticheMostraImmagini.getInstance().getListaCategorie());
+                            u.ImpostaLayCategorie(VariabiliStaticheMostraImmagini.getInstance().getLayCategorieRilevate());
+                            u.ImpostaLayScritte(VariabiliStaticheMostraImmagini.getInstance().getLayScritteRilevate());
+                            u.ImpostaLayTasti(VariabiliStaticheMostraImmagini.getInstance().getLayTasti());
+                            u.Pulisce();
+                            if (urldisplay != null && !urldisplay.isEmpty()) {
+                                u.CercaCategoriaDaNome(context, urldisplay);
+                            }
+                            if (mIcon11 != null) {
+                                u.LeggeTestoSuImmagine(context, mIcon11);
+                            }
+                            if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() != null) {
+                                u.CercaCategoriaSuExif(context,
+                                        VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale());
+                            }
+
+                            UtilityImmagini.getInstance().Attesa(false);
+                        }
+                    }, 100);
                 }
             }
         } else {
