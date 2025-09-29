@@ -63,7 +63,11 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 ApriDialog);
     }
 
-    public void AggiornaTestoOcrDaJava(String CategorieMesse, String Tags) {
+    private String DaDove;
+
+    public void AggiornaTestoOcrDaJava(String CategorieMesse, String Tags, String daDove) {
+        DaDove = daDove;
+
         if (CategorieMesse == null || CategorieMesse.isEmpty()) {
             CategorieMesse = ";";
         }
@@ -106,7 +110,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 @Override
                 public void run() {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava("ERRORE NELL'ENCODING;", ";");
+                    ws.AggiornaTestoOcrDaJava("ERRORE NELL'ENCODING;", ";", DaDove);
                 }
             }, 10);
         }
@@ -175,6 +179,10 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
     }
 
     private void fAggiornaTestoOcrDaJava(String result) {
+        if (!DaDove.equals("OCR")) {
+            return;
+        }
+
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Elaborazione bloccata");
         } else {

@@ -183,7 +183,7 @@ public class ChiamateWSIFC implements TaskDelegate {
                 VariabiliImmaginiFuoriCategoria.getInstance().setAdapter(customAdapterT);
                 VariabiliImmaginiFuoriCategoria.getInstance().getLstImmagini().setAdapter(customAdapterT);
             } catch (JSONException e) {
-                int i = 0;
+                UtilitiesGlobali.getInstance().ApreToast(context, e.getMessage());
             }
         }
     }

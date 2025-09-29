@@ -78,6 +78,8 @@ public class MainPreview extends Activity {
         VariabiliStatichePreview.getInstance().setLayCategorieRilevate(findViewById(R.id.layCategorieRilevate));
         VariabiliStatichePreview.getInstance().setLayScritteRilevate(findViewById(R.id.layScritteRilevate));
         VariabiliStatichePreview.getInstance().setLayTasti(findViewById(R.id.layTasti));
+        VariabiliStatichePreview.getInstance().setLayTastiDestra(findViewById(R.id.layTastiDestra));
+        VariabiliStatichePreview.getInstance().getLayTastiDestra().setVisibility(LinearLayout.GONE);
 
         SharedPreferences prefs = getSharedPreferences("PREVIEW", MODE_PRIVATE);
         int idUltimaImmagine = prefs.getInt(
@@ -574,7 +576,6 @@ public class MainPreview extends Activity {
             VariabiliStaticheSpostamento.getInstance().setCategoriaSpostata(new ArrayList<>());
         }
 
-        VariabiliStatichePreview.getInstance().setLayTastiDestra(findViewById(R.id.layTastiDestra));
         VariabiliStatichePreview.getInstance().getLayTastiDestra().setOnTouchListener(new View.OnTouchListener() {
             private float dX, dY;
 

@@ -593,13 +593,6 @@ public class UtilitiesGlobali {
     public void ApreToast(Context context, String messaggio) {
         if (VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             if (context != null) {
-                /* act.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(context,
-                                messaggio,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }); */
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -608,7 +601,6 @@ public class UtilitiesGlobali {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }, 10);
-
             }
         }
     }

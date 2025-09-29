@@ -155,6 +155,12 @@ public class VariabiliStatichePreview {
         return qualeImmagine;
     }
 
+    public void AggiornaImmagineVisualizzata(StrutturaImmaginiLibrary s) {
+        if (qualeImmagine > -1 && listaImmaginiVisualizzate != null && listaImmaginiVisualizzate.size() > qualeImmagine) {
+            listaImmaginiVisualizzate.set(qualeImmagine, s);
+        }
+    }
+
     public void AggiungeImmagineAVisualizzate(StrutturaImmaginiLibrary s) {
         if (qualeImmagine < listaImmaginiVisualizzate.size() - 1) {
             listaImmaginiVisualizzate.set(qualeImmagine, s);

@@ -157,7 +157,10 @@ public class UtilitiesPreview {
                 }
             }
             if (q > 0) {
-                VariabiliStatichePreview.getInstance().getLayTastiDestra().setVisibility(LinearLayout.VISIBLE);
+                if (VariabiliStatichePreview.getInstance().getModalita().equals("PREVIEW") ||
+                        VariabiliStatichePreview.getInstance().getModalita().equals("Utility")) {
+                    VariabiliStatichePreview.getInstance().getLayTastiDestra().setVisibility(LinearLayout.VISIBLE);
+                }
             }
         }
     }
@@ -166,7 +169,7 @@ public class UtilitiesPreview {
         Button button = new Button(context);
         button.setText(text);
         button.setIncludeFontPadding(false);
-        button.setTextSize(9);
+        button.setTextSize(11);
         button.setTextColor(Color.BLACK);
         button.setMinHeight(0);
         button.setMinimumHeight(0);

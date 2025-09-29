@@ -187,7 +187,7 @@ public class MainSpostamento extends Activity {
         Button button = new Button(this);
         button.setText(text);
         button.setIncludeFontPadding(false);
-        button.setTextSize(9);
+        button.setTextSize(11);
         button.setMinHeight(0);
         button.setMinimumHeight(0);
 

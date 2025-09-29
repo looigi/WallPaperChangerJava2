@@ -169,7 +169,7 @@ public class DownloadImmagineRilevaOCR {
                 @Override
                 public void run() {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava("ERROR;", ";");
+                    ws.AggiornaTestoOcrDaJava("ERROR;", ";", "OCR");
                 }
             }, 10);
         }

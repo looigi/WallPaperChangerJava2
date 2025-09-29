@@ -281,22 +281,29 @@ public class DownloadImmagineMI {
                         public void run() {
                             UtilityImmagini.getInstance().Attesa(true);
 
-                            UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine();
-                            u.ImpostaListaCategorie(VariabiliStaticheMostraImmagini.getInstance().getListaCategorie());
-                            u.ImpostaLayCategorie(VariabiliStaticheMostraImmagini.getInstance().getLayCategorieRilevate());
-                            u.ImpostaLayScritte(VariabiliStaticheMostraImmagini.getInstance().getLayScritteRilevate());
-                            u.ImpostaLayTasti(VariabiliStaticheMostraImmagini.getInstance().getLayTasti());
-                            u.Pulisce();
-                            if (urldisplay != null && !urldisplay.isEmpty()) {
-                                u.CercaCategoriaDaNome(context, urldisplay);
-                            }
-                            if (mIcon11 != null) {
-                                u.LeggeTestoSuImmagine(context, mIcon11);
-                            }
+                            // Lettura e aggiornamento testojava e tags per singola immagine
                             if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() != null) {
-                                u.CercaCategoriaSuExif(context,
-                                        VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale());
+                                UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
+                                String TestoJava = VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTestoJava();
+                                if (TestoJava == null) {
+                                    TestoJava = "";
+                                    VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTestoJava("");
+                                }
+                                if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().getTags() == null) {
+                                    VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTags("");
+                                }
+                                u.setImmagine(VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale());
+                                u.ImpostaCategorieGiaMesse(TestoJava.toUpperCase().trim());
+                                u.ImpostaListaCategorie(VariabiliStaticheMostraImmagini.getInstance().getListaCategorie());
+                                u.ImpostaLayCategorie(VariabiliStaticheMostraImmagini.getInstance().getLayCategorieRilevate());
+                                u.ImpostaLayScritte(VariabiliStaticheMostraImmagini.getInstance().getLayScritteRilevate());
+                                u.ImpostaLayTasti(VariabiliStaticheMostraImmagini.getInstance().getLayTasti());
+                                u.setUrl(urldisplay);
+                                u.setBitmap(mIcon11);
+
+                                u.AvviaControllo();
                             }
+                            // Lettura e aggiornamento testojava e tags per singola immagine
 
                             UtilityImmagini.getInstance().Attesa(false);
                         }

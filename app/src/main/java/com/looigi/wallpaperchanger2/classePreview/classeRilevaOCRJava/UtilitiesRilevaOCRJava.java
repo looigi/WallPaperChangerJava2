@@ -89,6 +89,10 @@ public class UtilitiesRilevaOCRJava {
     }
 
     public void LeggeTestoSuImmagine(Context context) {
+        LeggeTagsSuImmagine(context);
+    }
+
+    private void LeggeTagsSuImmagine(Context context) {
         TagsRilevati = "";
 
         InputImage image = InputImage.fromBitmap(bitmap, 0);
@@ -169,12 +173,12 @@ public class UtilitiesRilevaOCRJava {
                                 @Override
                                 public void run() {
                                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati);
+                                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
                                 }
                             }, 10);
                         } else {
                             ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                            ws.AggiornaTestoOcrDaJava(";", TagsRilevati);
+                            ws.AggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -182,7 +186,7 @@ public class UtilitiesRilevaOCRJava {
                             @Override
                             public void run() {
                                 ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                ws.AggiornaTestoOcrDaJava(";", TagsRilevati);
+                                ws.AggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                             }
                         }, 10);
                     });
@@ -198,7 +202,7 @@ public class UtilitiesRilevaOCRJava {
                 @Override
                 public void run() {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati);
+                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
                 }
             }, 50);
         }

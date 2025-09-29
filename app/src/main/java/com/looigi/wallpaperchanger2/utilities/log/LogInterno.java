@@ -138,9 +138,11 @@ public class LogInterno {
 			final Runnable r = new Runnable() {
 				public void run() {
 					if (!lista.isEmpty()) {
-						ScriveLogInterno(lista.get(0));
+						if (lista.get(0) != null) {
+							ScriveLogInterno(lista.get(0));
+						}
 
-						lista.remove(0);
+                        lista.remove(0);
 						if (!lista.isEmpty()) {
 							handler.postDelayed(this, 100);
 						} else {
@@ -174,6 +176,7 @@ public class LogInterno {
 
 	private String tornaPath(StrutturaLog M) {
 		String path = "";
+
 		String NomeFileLog = M.getNomeMaschera();
 
 		if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog() == null) {
