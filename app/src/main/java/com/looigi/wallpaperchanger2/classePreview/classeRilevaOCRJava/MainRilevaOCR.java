@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,6 +21,9 @@ import androidx.core.app.NotificationCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.webService.ChiamateWSRilevaOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.webService.DownloadImmagineRilevaOCR;
+import com.looigi.wallpaperchanger2.classeWallpaper.GestioneNotificheWP;
+import com.looigi.wallpaperchanger2.classeWallpaper.VariabiliStaticheWallpaper;
 
 public class MainRilevaOCR extends Activity {
     private Context context;
@@ -36,6 +40,9 @@ public class MainRilevaOCR extends Activity {
         act = this;
 
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            VariabiliStaticheRilevaOCRJava.getInstance().setContext(this);
+            VariabiliStaticheRilevaOCRJava.getInstance().setContatore(0);
+
             stoChiudendo = false;
 
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -47,9 +54,18 @@ public class MainRilevaOCR extends Activity {
         VariabiliStaticheRilevaOCRJava.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOCR));
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
             UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+        } else {
+            if (VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
+                UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+            } else {
+                UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+            }
         }
 
         VariabiliStaticheRilevaOCRJava.getInstance().setImgImmagine(findViewById(R.id.imgImmagine));
+        if (VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            UtilitiesRilevaOCRJava.getInstance().DisegnaImmagine(context);
+        }
 
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
             VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(true);
@@ -101,15 +117,24 @@ public class MainRilevaOCR extends Activity {
         super.onResume();
 
         if (!stoChiudendo) {
-            // Rimuove la notifica quando torni nell'app
-            NotificationManager notificationManager =
+            GestioneNotificheOCR.getInstance().RimuoviNotifica();
+
+            /* NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(NOTIFICATION_ID);
+            notificationManager.cancel(NOTIFICATION_ID); */
         }
     }
 
+    Notification notifica;
+
     private void showNotification() {
-        NotificationManager notificationManager =
+        notifica = GestioneNotificheOCR.getInstance().StartNotifica(this);
+        // VariabiliStatiche.getInstance().setNotifica(GestioneNotifiche.getInstance().StartNotifica(this));
+        if (notifica != null) {
+            GestioneNotificheOCR.getInstance().AggiornaNotifica();
+        }
+
+        /* NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         String channelName = "OCR Channel";
@@ -132,11 +157,12 @@ public class MainRilevaOCR extends Activity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.audio) // tua icona in drawable
                 .setContentTitle("OCR in background")
+                .setSilent(true)
                 .setContentText("Hai premuto Home, l’ocr è ancora attivo.")
                 .setAutoCancel(true) // la notifica sparisce se l’utente la tocca
                 .setContentIntent(pendingIntent);
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        notificationManager.notify(NOTIFICATION_ID, builder.build()); */
     }
 
     @Override
@@ -151,6 +177,7 @@ public class MainRilevaOCR extends Activity {
         act.finish(); */
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
             stoChiudendo = true;
+            GestioneNotificheOCR.getInstance().RimuoviNotifica();
             VariabiliStaticheRilevaOCRJava.getInstance().setGiaEntrato(false);
             act.finish();
         // } else {

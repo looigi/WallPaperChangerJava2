@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava;
 
+import android.content.Context;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,13 +23,43 @@ public class VariabiliStaticheRilevaOCRJava {
         return instance;
     }
 
+    private Context context;
     private GifImageView imgCaricamento;
     private StrutturaRilevaOCR immagineAttuale;
     private ImageView imgImmagine;
     private boolean StaElaborando = false;
     private TextView txtAvanzamento;
-    private String idUltimaImmagine = "";
+    // private String idUltimaImmagine = "";
     private boolean GiaEntrato = false;
+    public static String channelName = "Rileva OCR";
+    public static String NOTIFICATION_CHANNEL_STRING = "com.looigi.wallpaperchanger2";
+    public static int NOTIFICATION_CHANNEL_ID = 17;
+    private String MessaggioNotifica = "";
+    private int Contatore;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public int getContatore() {
+        return Contatore;
+    }
+
+    public void setContatore(int contatore) {
+        Contatore = contatore;
+    }
+
+    public String getMessaggioNotifica() {
+        return MessaggioNotifica;
+    }
+
+    public void setMessaggioNotifica(String messaggioNotifica) {
+        MessaggioNotifica = messaggioNotifica;
+    }
 
     public boolean isGiaEntrato() {
         return GiaEntrato;
@@ -38,13 +69,13 @@ public class VariabiliStaticheRilevaOCRJava {
         GiaEntrato = giaEntrato;
     }
 
-    public String getIdUltimaImmagine() {
+    /* public String getIdUltimaImmagine() {
         return idUltimaImmagine;
     }
 
     public void setIdUltimaImmagine(String idUltimaImmagine) {
         this.idUltimaImmagine = idUltimaImmagine;
-    }
+    } */
 
     public TextView getTxtAvanzamento() {
         return txtAvanzamento;

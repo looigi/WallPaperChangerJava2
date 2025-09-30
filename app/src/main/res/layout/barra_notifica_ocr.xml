@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:padding="1dp"
+    android:orientation="vertical"
+    android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/Blue"
+        android:text="OCR in corso"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/txtMessaggio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center_horizontal"
+        android:textSize="14dp" />
+</LinearLayout>

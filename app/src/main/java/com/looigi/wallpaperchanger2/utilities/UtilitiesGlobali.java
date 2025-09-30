@@ -40,6 +40,8 @@ import com.looigi.wallpaperchanger2.classeLog.MainLog;
 import com.looigi.wallpaperchanger2.classeLog.VariabiliStaticheLog;
 import com.looigi.wallpaperchanger2.classeImmagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.classeModificheCodice.VariabiliStaticheModificheCodice;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.GestioneNotificheOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.classeVideo.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.classeDetector.GestioneNotificheDetector;
 import com.looigi.wallpaperchanger2.classeDetector.VariabiliStaticheDetector;
@@ -227,6 +229,13 @@ public class UtilitiesGlobali {
                                                                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                                                     @Override
                                                                     public void run() { */
+
+                                                                        if (VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
+                                                                            UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Rimozione notifica OCR");
+                                                                            VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
+                                                                            GestioneNotificheOCR.getInstance().RimuoviNotifica();
+                                                                        }
+
                                                                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Stop Servizio");
 
                                                                         if (VariabiliStaticheStart.getInstance().getServizioForeground() != null) {

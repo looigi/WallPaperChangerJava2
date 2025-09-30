@@ -39,6 +39,7 @@ import com.looigi.wallpaperchanger2.classePlayer.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.classePlayer.MainPlayer;
 import com.looigi.wallpaperchanger2.classePlayer.UtilityPlayer;
 import com.looigi.wallpaperchanger2.classePreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.MainRilevaOCR;
 import com.looigi.wallpaperchanger2.classeUtilityImmagini.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.classeVideo.MainMostraVideo;
 import com.looigi.wallpaperchanger2.classeWallpaper.MainWallpaper;
@@ -233,6 +234,11 @@ public class ActivityDiStart extends FragmentActivity {
                 Intent iF = new Intent(context, MainMostraFilms.class);
                 iF.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(iF);
+                break;
+            case "ocr":
+                Intent ocr = new Intent(context, MainRilevaOCR.class);
+                ocr.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(ocr);
                 break;
             case "uscita":
                 UtilitiesGlobali.getInstance().ChiudeApplicazione(context);

@@ -114,6 +114,8 @@
 
         <activity
             android:name=".classePreview.classeRilevaOCRJava.MainRilevaOCR"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />
 

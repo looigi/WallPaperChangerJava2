@@ -14,6 +14,7 @@ import com.looigi.wallpaperchanger2.classePreview.classeOCR.strutture.StrutturaD
 import com.looigi.wallpaperchanger2.classePreview.classeOCR.strutture.StrutturaImmaginiOCR;
 import com.looigi.wallpaperchanger2.classePreview.classeOCR.webService.InterrogazioneWSOCR;
 import com.looigi.wallpaperchanger2.classePreview.classeOCR.webService.TaskDelegateOCR;
+import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.GestioneNotificheOCR;
 import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.UtilitiesRilevaOCRJava;
 import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava.strutture.StrutturaRilevaOCR;
@@ -211,7 +212,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 StrutturaRilevaOCR s = new StrutturaRilevaOCR();
                 s.setIdImmagine(c[0]);
 
-                if (VariabiliStaticheRilevaOCRJava.getInstance().getIdUltimaImmagine().trim().equals(c[0].trim())) {
+                /* if (VariabiliStaticheRilevaOCRJava.getInstance().getIdUltimaImmagine().trim().equals(c[0].trim())) {
                     VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
 
                     UtilityWallpaper.getInstance().ApriDialog(
@@ -221,7 +222,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
 
                     return;
                 }
-                VariabiliStaticheRilevaOCRJava.getInstance().setIdUltimaImmagine(c[0]);
+                VariabiliStaticheRilevaOCRJava.getInstance().setIdUltimaImmagine(c[0]); */
 
                 s.setTesto(c[1].replace("*PV*", ";"));
                 s.setQuante(c[2]);
@@ -237,6 +238,18 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
                         "Rimanenti: " + c[2] + " - " + c[5] + " (" + c[3] + ")"
                 );
+
+                VariabiliStaticheRilevaOCRJava.getInstance().setMessaggioNotifica(
+                        "Rimanenti: " + c[2]
+                );
+                int conta = VariabiliStaticheRilevaOCRJava.getInstance().getContatore();
+                conta++;
+                if (conta > 9) {
+                    GestioneNotificheOCR.getInstance().AggiornaNotifica();
+                    conta = 0;
+                }
+                VariabiliStaticheRilevaOCRJava.getInstance().setContatore(conta);
+
                 VariabiliStaticheRilevaOCRJava.getInstance().setImmagineAttuale(s);
                 UtilitiesRilevaOCRJava.getInstance().DisegnaImmagine(context);
             } else {
