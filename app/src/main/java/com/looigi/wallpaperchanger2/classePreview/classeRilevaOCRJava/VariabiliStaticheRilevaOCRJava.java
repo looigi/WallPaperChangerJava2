@@ -28,6 +28,15 @@ public class VariabiliStaticheRilevaOCRJava {
     private boolean StaElaborando = false;
     private TextView txtAvanzamento;
     private String idUltimaImmagine = "";
+    private boolean GiaEntrato = false;
+
+    public boolean isGiaEntrato() {
+        return GiaEntrato;
+    }
+
+    public void setGiaEntrato(boolean giaEntrato) {
+        GiaEntrato = giaEntrato;
+    }
 
     public String getIdUltimaImmagine() {
         return idUltimaImmagine;

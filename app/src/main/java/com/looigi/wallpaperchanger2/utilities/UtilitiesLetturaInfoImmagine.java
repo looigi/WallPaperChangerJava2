@@ -54,6 +54,11 @@ public class UtilitiesLetturaInfoImmagine {
     private String sCategorieMesse = "";
     private boolean StaLeggendoTags = false;
     private String TagsRilevati = "";
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable runnable;
+
+    private Handler handler2 = new Handler(Looper.getMainLooper());
+    private Runnable runnable2;
 
     private Task<List<String>> PrendeTags(InputImage image) {
         ImageLabeler labeler = ImageLabeling.getClient(
@@ -83,12 +88,6 @@ public class UtilitiesLetturaInfoImmagine {
                     return labelsText;
                 });
     }
-
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable runnable;
-
-    private Handler handler2 = new Handler(Looper.getMainLooper());
-    private Runnable runnable2;
 
     public UtilitiesLetturaInfoImmagine(Context context) {
         this.context = context;

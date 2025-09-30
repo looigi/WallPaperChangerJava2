@@ -1,8 +1,12 @@
 package com.looigi.wallpaperchanger2.classePreview.classeRilevaOCRJava;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.KeyEvent;
@@ -11,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.classeImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
@@ -30,21 +35,31 @@ public class MainRilevaOCR extends Activity {
         context = this;
         act = this;
 
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::CpuLock");
-        wakeLock.acquire();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            stoChiudendo = false;
+
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::CpuLock");
+            wakeLock.acquire();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
         VariabiliStaticheRilevaOCRJava.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOCR));
-        UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+        }
 
         VariabiliStaticheRilevaOCRJava.getInstance().setImgImmagine(findViewById(R.id.imgImmagine));
 
-        VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(true);
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(true);
+        }
 
         ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
         Button btnFerma = (findViewById(R.id.btnFerma));
-        btnFerma.setText("Ferma");
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            btnFerma.setText("Ferma");
+        }
         btnFerma.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
@@ -60,22 +75,90 @@ public class MainRilevaOCR extends Activity {
         });
         VariabiliStaticheRilevaOCRJava.getInstance().setTxtAvanzamento(findViewById(R.id.txtAvanzamento));
 
-        ws.RitornaProssimaImmagineDaLeggereInJava();
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
+            VariabiliStaticheRilevaOCRJava.getInstance().setGiaEntrato(true);
+
+            ws.RitornaProssimaImmagineDaLeggereInJava();
+        }
+    }
+
+    private static final int NOTIFICATION_ID = 14789;
+    private static final String CHANNEL_ID = "MainRilevaOCR";
+    private boolean stoChiudendo = false;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (!stoChiudendo) {
+            // Mostra la notifica quando l’activity va in background
+            showNotification();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!stoChiudendo) {
+            // Rimuove la notifica quando torni nell'app
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
+    }
+
+    private void showNotification() {
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelName = "OCR Channel";
+
+        // Per Android 8.0+ serve il NotificationChannel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Intent per riaprire l'activity cliccando la notifica
+        Intent intent = new Intent(this, MainRilevaOCR.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.audio) // tua icona in drawable
+                .setContentTitle("OCR in background")
+                .setContentText("Hai premuto Home, l’ocr è ancora attivo.")
+                .setAutoCancel(true) // la notifica sparisce se l’utente la tocca
+                .setContentIntent(pendingIntent);
+
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
+        /* VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
-        act.finish();
+        act.finish(); */
+        if (!VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
+            stoChiudendo = true;
+            VariabiliStaticheRilevaOCRJava.getInstance().setGiaEntrato(false);
+            act.finish();
+        // } else {
+        //     showNotification();
+        }
     }
 
-    @Override
+    /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
 
@@ -92,5 +175,5 @@ public class MainRilevaOCR extends Activity {
         }
 
         return false;
-    }
+    } */
 }

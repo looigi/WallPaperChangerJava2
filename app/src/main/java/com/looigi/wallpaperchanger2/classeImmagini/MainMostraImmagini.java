@@ -553,31 +553,35 @@ public class MainMostraImmagini extends Activity {
                 try {
                     jObject = new JSONObject(u);
                     StrutturaImmaginiLibrary si = UtilityImmagini.getInstance().prendeStruttura(jObject);
-                    VariabiliStaticheMostraImmagini.getInstance().setStrutturaImmagineAttuale(si);
+                    if (si == null) {
+                        Files.getInstance().EliminaFile(path1, NomeFile);
+                    } else {
+                        VariabiliStaticheMostraImmagini.getInstance().setStrutturaImmagineAttuale(si);
 
-                    // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
-                    VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
+                        // VariabiliStaticheMostraImmagini.getInstance().setIdCategoria(si.getIdCategoria());
+                        VariabiliStaticheMostraImmagini.getInstance().setIdImmagine(si.getIdImmagine());
 
-                    UtilityImmagini.getInstance().ScriveInfoSotto(si);
+                        UtilityImmagini.getInstance().ScriveInfoSotto(si);
 
-                    VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
+                        VariabiliStaticheMostraImmagini.getInstance().setUltimaImmagineCaricata(si);
 
-                    VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
+                        VariabiliStaticheMostraImmagini.getInstance().ScriveInfoImmagine(si);
 
-                    VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
+                        VariabiliStaticheMostraImmagini.getInstance().AggiungeCaricata();
 
-                    DownloadImmagineMI d = new DownloadImmagineMI();
-                    d.EsegueChiamata(
-                            context, si.getUrlImmagine(),
-                            VariabiliStaticheMostraImmagini.getInstance().getImg(),
-                            si.getUrlImmagine(),
-                            false,
-                            false
-                    );
-                    /* new DownloadImageMI(context, si.getUrlImmagine(),
+                        DownloadImmagineMI d = new DownloadImmagineMI();
+                        d.EsegueChiamata(
+                                context, si.getUrlImmagine(),
+                                VariabiliStaticheMostraImmagini.getInstance().getImg(),
+                                si.getUrlImmagine(),
+                                false,
+                                false
+                        );
+                        /* new DownloadImageMI(context, si.getUrlImmagine(),
                             VariabiliStaticheMostraImmagini.getInstance().getImg()).execute(si.getUrlImmagine()); */
 
-                    letto = true;
+                        letto = true;
+                    }
                 } catch (JSONException ignored) {
                 }
             }

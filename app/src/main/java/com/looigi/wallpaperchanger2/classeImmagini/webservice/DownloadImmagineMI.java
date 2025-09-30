@@ -284,7 +284,11 @@ public class DownloadImmagineMI {
                             // Lettura e aggiornamento testojava e tags per singola immagine
                             if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() != null) {
                                 UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
-                                String TestoJava = VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTestoJava();
+                                if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() == null) {
+                                    VariabiliStaticheMostraImmagini.getInstance().setStrutturaImmagineAttuale(new StrutturaImmaginiLibrary());
+                                    VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTestoJava("");
+                                }
+                                String TestoJava = VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().getTestoJava();
                                 if (TestoJava == null) {
                                     TestoJava = "";
                                     VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTestoJava("");
