@@ -649,7 +649,8 @@ public class UtilityPlayer {
     }
 
     public void ImpostaImmagine(Context context, int idImmagine) {
-        if (!VariabiliStatichePlayer.getInstance().isMascheraNascosta() &&
+        if (VariabiliStatichePlayer.getInstance().getUltimoBrano() != null &&
+                !VariabiliStatichePlayer.getInstance().isMascheraNascosta() &&
                 VariabiliStaticheWallpaper.getInstance().isScreenOn()) {
             boolean ok = true;
 
