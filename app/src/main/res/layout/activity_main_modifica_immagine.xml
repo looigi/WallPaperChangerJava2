@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+    <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
         android:id="@+id/imgViewModifica"
         android:layout_below="@+id/txtImmagineDati"
         android:layout_marginStart="50dp"

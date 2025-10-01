@@ -330,7 +330,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
 
-                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+                <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
                     android:id="@+id/imgScatto"
                     android:layout_width="0dp"
                     android:layout_weight="1"

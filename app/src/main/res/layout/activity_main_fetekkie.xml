@@ -338,14 +338,14 @@
 
     </LinearLayout>
 
-    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+    <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
         android:layout_below="@+id/laySettaggiFET"
         android:layout_alignParentStart="true"
         android:id="@+id/imgLibrary"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile>
+    </com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile>
     <!--
     <ImageView
         android:id="@+id/imgAvantiLibrary"

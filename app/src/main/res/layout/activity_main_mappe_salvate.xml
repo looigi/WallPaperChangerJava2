@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".classeWallpaper.MainWallpaper">
+    tools:context=".Wallpaper.MainWallpaper">
 
     <LinearLayout
         android:layout_alignParentTop="true"
@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
 
-        <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+        <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
             android:id="@+id/imgMappaSalvata"
             android:layout_width="match_parent"
             android:layout_weight="2"

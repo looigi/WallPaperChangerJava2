@@ -299,7 +299,7 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <com.looigi.wallpaperchanger2.utilities.ProportionalVideoView
+        <com.looigi.wallpaperchanger2.UtilitiesVarie.ProportionalVideoView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

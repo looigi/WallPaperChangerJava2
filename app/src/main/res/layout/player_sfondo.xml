@@ -127,7 +127,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+                <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
                     android:id="@+id/imgSfondoSettings"
                     android:layout_width="match_parent"
                     android:layout_weight="8"

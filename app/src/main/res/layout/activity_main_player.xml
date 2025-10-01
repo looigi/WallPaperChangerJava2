@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".classeWallpaper.MainWallpaper">
+    tools:context=".Wallpaper.MainWallpaper">
 
     <LinearLayout
         android:id="@+id/layIntestazionePlayer"
@@ -24,14 +24,14 @@
             android:text="" />
     </LinearLayout>
 
-    <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+    <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
         android:id="@+id/imgBrano"
         android:layout_below="@+id/layIntestazionePlayer"
         android:layout_above="@+id/layTastiPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile>
+    </com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile>
 
     <LinearLayout
         android:id="@+id/layTastiPlayer"

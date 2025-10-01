@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+                <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
                     android:id="@+id/imgPennetta"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
 
-                <com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile
+                <com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile
                     android:id="@+id/imgImmagini"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -55,7 +55,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:layout_height="0dp">
 
-            <com.looigi.wallpaperchanger2.utilities.ProportionalVideoView
+            <com.looigi.wallpaperchanger2.UtilitiesVarie.ProportionalVideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
                 android:layout_centerVertical="true"
