@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo.adapters;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +21,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.VariabiliImmag
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.webService.DownloadImmagineUguali;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.MainPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo.VariabiliStaticheControlloImmagini;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.VariabiliStaticheControlloImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.webservice.ChiamateWSUI;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 

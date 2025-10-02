@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
@@ -57,7 +58,11 @@ public class MainImmaginiFuoriCategoria extends Activity {
         txtNuovaCategoria.setText("");
 
         VariabiliImmaginiFuoriCategoria.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIFC));
-        VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento(),
+                false
+        );
 
         LinearLayout layCategorie = findViewById(R.id.layCategorie);
 

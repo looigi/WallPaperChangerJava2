@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.Lazio.DettaglioPartita;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.Strutture.Dettaglio;
@@ -9,8 +10,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheLazioDettaglio {
     private static VariabiliStaticheLazioDettaglio instance = null;
@@ -28,7 +27,7 @@ public class VariabiliStaticheLazioDettaglio {
 
     public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLazio + "/"; // "http://www.wslazio.looigi.it/";
     public static final String UrlMedia = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaTotoMioImmagini + "/StemmiSquadre/"; // "http://www.totomiomedia.looigi.it/StemmiSquadre/";
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private String PathLazio;
     private int idPartita;
     private int idSquadraCasa;
@@ -255,11 +254,11 @@ public class VariabiliStaticheLazioDettaglio {
         PathLazio = pathLazio;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

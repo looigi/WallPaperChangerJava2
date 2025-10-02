@@ -26,7 +26,11 @@ public class MandaDatiADBRemoto {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                UtilityGPS.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                        true
+                );
 
                 db_dati_gps db = new db_dati_gps(context);
                 List<String> listaDate = new ArrayList<>();
@@ -105,12 +109,20 @@ public class MandaDatiADBRemoto {
                         Files.getInstance().EliminaFileUnico(filetto);
                     }
 
-                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            false
+                    );
 
                     ChiamateWSModifiche ws = new ChiamateWSModifiche(context);
                     ws.Esporta("GPS", Cartella + "/DatiGPS_" + DataDaSalvare + ".zip", EseguePulizia, listaDateDaEliminare);
                 } else {
-                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            false
+                    );
                     UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna posizione rilevata");
                 }
 

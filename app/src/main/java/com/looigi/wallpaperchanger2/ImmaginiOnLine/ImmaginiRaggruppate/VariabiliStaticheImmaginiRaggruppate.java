@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,8 +16,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.adapters.
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheImmaginiRaggruppate {
     private static VariabiliStaticheImmaginiRaggruppate instance = null;
@@ -34,7 +33,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
 
     private String idCategoria;
     private String Modalita;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private ListView lstIR;
     private ListView lstImmagini;
     private List<StrutturaImmaginiCategorie> listaCategorieIMM;
@@ -138,11 +137,11 @@ public class VariabiliStaticheImmaginiRaggruppate {
         this.listaCategorieIMM = listaCategorieIMM;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
@@ -170,7 +169,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
         this.lstIR = lstIR;
     }
 
-    public void Attesa(boolean bAttesa) {
+    /* public void Attesa(boolean bAttesa) {
         if (imgCaricamento != null) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
@@ -183,7 +182,7 @@ public class VariabiliStaticheImmaginiRaggruppate {
                 }
             }, 10);
         }
-    }
+    } */
 
     private int idImmagineDaSpostare;
     private boolean StaSpostandoImmagini = false;

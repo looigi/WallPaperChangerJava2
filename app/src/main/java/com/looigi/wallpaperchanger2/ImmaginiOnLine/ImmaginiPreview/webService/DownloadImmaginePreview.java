@@ -40,7 +40,11 @@ public class DownloadImmaginePreview {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        UtilitiesPreview.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                true
+        );
 
         AttivaTimer();
 
@@ -92,7 +96,11 @@ public class DownloadImmaginePreview {
                         }
                         in = null;
                     }
-                    UtilitiesPreview.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
 
@@ -139,7 +147,11 @@ public class DownloadImmaginePreview {
                             immagine.setImageBitmap(finalMIcon1);
 
                             if (!VariabiliStatichePreview.getInstance().getModalita().equals("OCR")) {
-                                UtilitiesPreview.getInstance().Attesa(true);
+                                UtilitiesGlobali.getInstance().AttesaGif(
+                                        context,
+                                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                                        true
+                                );
 
                                 // Lettura e aggiornamento testojava e tags per singola immagine
                                 if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() != null) {
@@ -167,7 +179,11 @@ public class DownloadImmaginePreview {
                                 }
                                 // Lettura e aggiornamento testojava e tags per singola immagine
 
-                                UtilitiesPreview.getInstance().Attesa(false);
+                                UtilitiesGlobali.getInstance().AttesaGif(
+                                        context,
+                                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                                        false
+                                );
                             }
                         }
                     }, 100);
@@ -190,7 +206,11 @@ public class DownloadImmaginePreview {
         }
 
         // if (immagine == null) {
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                false
+        );
         // }
     }
 

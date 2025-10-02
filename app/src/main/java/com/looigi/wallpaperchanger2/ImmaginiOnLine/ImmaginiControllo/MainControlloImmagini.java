@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.VariabiliStaticheUtilityImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo.adapters.AdapterListenerListaControllo;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.adapters.AdapterListenerListaControllo;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.db_dati_ui;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
@@ -48,7 +48,11 @@ public class MainControlloImmagini extends Activity {
         VariabiliStaticheControlloImmagini.getInstance().setCategoria(Categoria);
 
         VariabiliStaticheControlloImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoCI));
-        VariabiliStaticheControlloImmagini.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheControlloImmagini.getInstance().getImgCaricamento(),
+                false
+        );
 
         VariabiliStaticheControlloImmagini.getInstance().setLstLista(findViewById(R.id.lstLista));
 

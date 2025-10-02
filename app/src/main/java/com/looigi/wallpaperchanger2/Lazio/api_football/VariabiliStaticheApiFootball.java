@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.Lazio.api_football;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,8 +16,6 @@ import com.looigi.wallpaperchanger2.Lazio.api_football.strutture.Partite.Partite
 import com.looigi.wallpaperchanger2.Lazio.api_football.strutture.Squadre.StrutturaSquadreLega;
 
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheApiFootball {
     private static VariabiliStaticheApiFootball instance = null;
@@ -34,7 +33,7 @@ public class VariabiliStaticheApiFootball {
 
     public static final int idLegaSerieA = 135;
 
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private String PathApiFootball;
     private boolean staLeggendoWS;
     private String AnnoScelto;
@@ -339,11 +338,11 @@ public class VariabiliStaticheApiFootball {
         this.staLeggendoWS = staLeggendoWS;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
@@ -367,7 +366,7 @@ public class VariabiliStaticheApiFootball {
         }
     }
 
-    public void ImpostaAttesa(boolean Come) {
+    /* public void ImpostaAttesa(boolean Come) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -380,5 +379,5 @@ public class VariabiliStaticheApiFootball {
                 }
             }
         }, 100);
-    }
+    } */
 }

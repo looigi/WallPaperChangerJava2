@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.VariabiliStaticheControlloImmagini;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Detector.UtilityDetector;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.db_dati_immagini;
@@ -54,8 +55,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class ChiamateWSMI implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini";
     // private LetturaWSAsincrona bckAsyncTask;
@@ -67,7 +66,7 @@ public class ChiamateWSMI implements TaskDelegate {
     private String TipoOperazione = "";
     private Context context;
     private boolean ApriDialog = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     private boolean Sovrascrive = false;
     private String Categoria;
     private ImageView imgQuale;
@@ -79,7 +78,7 @@ public class ChiamateWSMI implements TaskDelegate {
         this.context = context;
     }
 
-    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+    public void ImpostaImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 
@@ -132,6 +131,7 @@ public class ChiamateWSMI implements TaskDelegate {
                         "&Preview=N";
 
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
                         true
                 );
@@ -200,16 +200,25 @@ public class ChiamateWSMI implements TaskDelegate {
 
         switch(daDove) {
             case "UI":
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        true
+                );
+
                 break;
             case "IR":
-                VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                        true
+                );
                 break;
             case "FC":
                 VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                 break;
             case "OCR":
-                UtilitiesOCR.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(context, VariabiliStaticheOCR.getInstance().getImgCaricamento(), true);
                 break;
         }
 
@@ -230,7 +239,11 @@ public class ChiamateWSMI implements TaskDelegate {
 
         switch (daDove) {
             case "UI":
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        true
+                );
         }
 
         UtilityPlayer.getInstance().ScriveLog(context, NomeMaschera,
@@ -287,7 +300,11 @@ public class ChiamateWSMI implements TaskDelegate {
 
         switch(daDove) {
             case "IR":
-                VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                        true
+                );
                 String idCategoria = "";
                 for (StrutturaImmaginiCategorie s1: VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM()) {
                     if (s1.getCategoria().equals(VariabiliStaticheImmaginiRaggruppate.getInstance().getCategoriaImpostata())) {
@@ -305,14 +322,22 @@ public class ChiamateWSMI implements TaskDelegate {
                 }
                 break;
             case "SPOSTAMENTO":
-                VariabiliStaticheSpostamento.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 Urletto = "SpostaImmagineACategoria?" +
                         "idImmagine=" + s.getIdImmagine() +
                         "&idCategoriaNuova=" + VariabiliStaticheSpostamento.getInstance().getIdCategoriaSpostamento();
                 break;
             case "PREVIEW":
-                UtilitiesPreview.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 Urletto = "SpostaImmagineACategoria?" +
                         "idImmagine=" + s.getIdImmagine() +
@@ -357,7 +382,11 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     public void ModificaImmagine(StrutturaImmaginiLibrary s, String stringaBase64, boolean Sovrascrive) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
 
         this.Sovrascrive = Sovrascrive;
 
@@ -525,19 +554,32 @@ public class ChiamateWSMI implements TaskDelegate {
 
         switch (daDove) {
             case "IR":
-                VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                        true
+                );
                 break;
             case "UI":
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        true
+                );
+
                 break;
             case "FC":
                 VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
                 break;
             case "PREVIEW":
-                UtilitiesPreview.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                        true
+                );
                 break;
             case "OCR":
-                UtilitiesOCR.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(context, VariabiliStaticheOCR.getInstance().getImgCaricamento(), true);
                 break;
             // case "VO":
             //     VariabiliStaticheVolti.getInstance().Attesa(true);
@@ -581,7 +623,12 @@ public class ChiamateWSMI implements TaskDelegate {
                        boolean ApriDialog) {
 
         UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
-        UtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -618,7 +665,11 @@ public class ChiamateWSMI implements TaskDelegate {
             public void run() {
                 UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-                UtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "RefreshImmagini":
@@ -660,7 +711,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 if (VariabiliStatichePlayer.getInstance().getLayCaricamentoSI() != null) {
                     VariabiliStatichePlayer.getInstance().getLayCaricamentoSI().setVisibility(LinearLayout.GONE);
                 }
-                UtilitiesOCR.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(context, VariabiliStaticheOCR.getInstance().getImgCaricamento(), false);
 
                 if (imgAttesa != null) {
                     imgAttesa.setVisibility(LinearLayout.GONE);
@@ -711,16 +762,25 @@ public class ChiamateWSMI implements TaskDelegate {
                 public void run() {
                     switch(daDove) {
                         case "IR":
-                            VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                                    context,
+                                    VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                                    false
+                            );
                             break;
                         case "UI":
-                            VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                                    context,
+                                    VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                                    false
+                            );
+
                             break;
                         case "FC":
                             VariabiliImmaginiFuoriCategoria.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
                             break;
                         case "OCR":
-                            UtilitiesOCR.getInstance().Attesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(context, VariabiliStaticheOCR.getInstance().getImgCaricamento(), false);
                             break;
                         /* case "VO":
                             VariabiliStaticheVolti.getInstance().Attesa(false);
@@ -739,7 +799,11 @@ public class ChiamateWSMI implements TaskDelegate {
     private void fScaricaListaImmagini(String result) {
         switch (daDove) {
             case "UI":
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
         }
 
         boolean ritorno = ControllaRitorno("Scarica lista immagini categoria " + Categoria, result);
@@ -772,7 +836,11 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     private void fUploadImmagine(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         String Modalita = VariabiliScaricaImmagini.getInstance().getModalita();
         String Filtro = VariabiliScaricaImmagini.getInstance().getFiltro();
@@ -925,7 +993,11 @@ public class ChiamateWSMI implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Modifica Immagine", result);
         if (ritorno) {
@@ -959,7 +1031,11 @@ public class ChiamateWSMI implements TaskDelegate {
                         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                         VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                         VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
-                        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+                        UtilitiesGlobali.getInstance().AttesaGif(
+                                context,
+                                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                                false
+                        );
                         if (VariabiliStaticheSpostamento.getInstance().getAct() != null) {
                             VariabiliStaticheSpostamento.getInstance().getAct().finish();
                         }
@@ -971,7 +1047,11 @@ public class ChiamateWSMI implements TaskDelegate {
                         VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                         VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                         VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
-                        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+                        UtilitiesGlobali.getInstance().AttesaGif(
+                                context,
+                                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                                false
+                        );
 
                         UtilitiesPreview.getInstance().ProssimaImmagine(context);
                     } else {
@@ -998,7 +1078,11 @@ public class ChiamateWSMI implements TaskDelegate {
     private void ContinuaSpostamento() {
         switch (daDove) {
             case "IR":
-                VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                        false
+                );
                 int Quale = VariabiliStaticheImmaginiRaggruppate.getInstance().CercaProssimoNumeroDaSpostare(
                         VariabiliStaticheImmaginiRaggruppate.getInstance().getIdImmagineDaSpostare()
                 );
@@ -1176,7 +1260,12 @@ public class ChiamateWSMI implements TaskDelegate {
                                 lista2.add(l2);
                             }
                         }
-                        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+                        UtilitiesGlobali.getInstance().AttesaGif(
+                                context,
+                                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                                false
+                        );
+
                         VariabiliStaticheUtilityImmagini.getInstance().setListaCategorieIMM(lista2);
 
                         ChiamateWSUI ws = new ChiamateWSUI(context);
@@ -1189,7 +1278,11 @@ public class ChiamateWSMI implements TaskDelegate {
                                 lista22.add(l2);
                             }
                         }
-                        VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
+                        UtilitiesGlobali.getInstance().AttesaGif(
+                                context,
+                                VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                                false
+                        );
                         VariabiliStaticheImmaginiRaggruppate.getInstance().setListaCategorieIMM(lista22);
 
                         String[] ll = new String[VariabiliStaticheImmaginiRaggruppate.getInstance().getListaCategorieIMM().size() + 1];
@@ -1292,7 +1385,11 @@ public class ChiamateWSMI implements TaskDelegate {
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
             if (daDove.equals("UI")) {
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
             }
         }
     }
@@ -1341,6 +1438,7 @@ public class ChiamateWSMI implements TaskDelegate {
                 }
             } catch (JSONException e) {
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
                         false
                 );
@@ -1351,6 +1449,7 @@ public class ChiamateWSMI implements TaskDelegate {
         } else {
             if (daDove.equals("PAZZIA")) {
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
                         false
                 );

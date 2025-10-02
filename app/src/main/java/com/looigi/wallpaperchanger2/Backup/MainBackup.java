@@ -12,6 +12,7 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Backup.adapters.AdapterListenerBackups;
 import com.looigi.wallpaperchanger2.ModificheCodice.webService.ChiamateWSModifiche;
@@ -43,7 +44,12 @@ public class MainBackup extends Activity {
         UtilityBackup.getInstance().setTxtSelezionato(findViewById(R.id.txtBackupSelezionato));
 
         UtilityBackup.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoBackup));
-        UtilityBackup.getInstance().Attende(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                UtilityBackup.getInstance().getImgCaricamento(),
+                false
+        );
+
 
         Button btnBackup = findViewById(R.id.btnBackup);
         btnBackup.setOnClickListener(new View.OnClickListener() {

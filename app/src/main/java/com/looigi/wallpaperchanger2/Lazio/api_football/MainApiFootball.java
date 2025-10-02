@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.looigi.wallpaperchanger2.Lazio.VariabiliStaticheLazio;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Lazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Files;
@@ -47,7 +48,12 @@ public class MainApiFootball extends Activity {
             VariabiliStaticheApiFootball.getInstance().setPathApiFootball(context.getFilesDir() + "/ApiFootball");
             Files.getInstance().CreaCartelle(VariabiliStaticheApiFootball.getInstance().getPathApiFootball());
             VariabiliStaticheApiFootball.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoAF));
-            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+            );
+
             VariabiliStaticheApiFootball.getInstance().setLstSquadre(findViewById(R.id.lstSquadre));
             VariabiliStaticheApiFootball.getInstance().setLstPartite(findViewById(R.id.lstPartite));
             VariabiliStaticheApiFootball.getInstance().setLstGiocatoriCasa(findViewById(R.id.lstGiocatoriCasa));

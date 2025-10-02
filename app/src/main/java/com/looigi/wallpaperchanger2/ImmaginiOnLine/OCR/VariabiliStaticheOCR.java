@@ -1,13 +1,12 @@
 package com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheOCR {
     private static VariabiliStaticheOCR instance = null;
@@ -23,7 +22,7 @@ public class VariabiliStaticheOCR {
         return instance;
     }
 
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private boolean ancheDestinazioniVuote = false;
     private ListView lstDestinazioni;
     private ListView lstImmagini;
@@ -88,11 +87,11 @@ public class VariabiliStaticheOCR {
         this.ancheDestinazioniVuote = ancheDestinazioniVuote;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

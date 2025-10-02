@@ -18,6 +18,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.webService.ChiamateWSOCR;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 public class MainOCR extends Activity {
     private Context context;
@@ -33,7 +34,8 @@ public class MainOCR extends Activity {
         act = this;
 
         VariabiliStaticheOCR.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOCR));
-        UtilitiesOCR.getInstance().Attesa(false);
+        // UtilitiesOCR.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(context, VariabiliStaticheOCR.getInstance().getImgCaricamento(), false);
 
         VariabiliStaticheOCR.getInstance().setLstDestinazioni(findViewById(R.id.lstDestinazioni));
         VariabiliStaticheOCR.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));

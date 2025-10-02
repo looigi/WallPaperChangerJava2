@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.Notifiche.notificaTasti.ActivityDiStart;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.ActivityDiStart;
 import com.looigi.wallpaperchanger2.Notifiche.NotificationDismissedReceiver;
 
 public class GestioneNotificheOCR {

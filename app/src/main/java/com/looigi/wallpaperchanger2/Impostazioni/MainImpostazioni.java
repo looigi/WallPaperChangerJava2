@@ -75,8 +75,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class MainImpostazioni extends Activity {
     private static String NomeMaschera = "Main_Impostazioni";
     private Context context;
@@ -86,7 +84,7 @@ public class MainImpostazioni extends Activity {
     private Long controlloLongPress = null;
     private LinearLayout layAprePlayer;
     private LinearLayout layChiudePlayer;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     // private LinearLayout laySettingsImpo;
     // private Intent intentGPS;
 

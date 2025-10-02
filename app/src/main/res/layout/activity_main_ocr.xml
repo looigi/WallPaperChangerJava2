@@ -193,7 +193,7 @@
             android:layout_height="0dp"/>
     </LinearLayout>
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoOCR"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"

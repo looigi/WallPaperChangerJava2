@@ -35,7 +35,7 @@ import com.looigi.wallpaperchanger2.Player.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.Player.MainPlayer;
 import com.looigi.wallpaperchanger2.Wallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.Wallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.Notifiche.notificaTasti.ActivityDiStart;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.ActivityDiStart;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Files;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Permessi;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Avvio.ServizioInterno;

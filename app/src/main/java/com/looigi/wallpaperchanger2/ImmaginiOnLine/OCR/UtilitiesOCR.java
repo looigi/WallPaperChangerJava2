@@ -23,7 +23,7 @@ public class UtilitiesOCR {
         return instance;
     }
 
-    public void Attesa(boolean Acceso) {
+    /* public void Attesa(boolean Acceso) {
         if (VariabiliStaticheOCR.getInstance().getImgCaricamento() == null) {
             return;
         }
@@ -38,5 +38,5 @@ public class UtilitiesOCR {
                 }
             }
         }, 50);
-    }
+    } */
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.GoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.GestioneNotificheOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.UtilitiesRilevaOCRJava;
@@ -105,7 +106,11 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
-        UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -129,7 +134,11 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "RitornaProssimaImmagineDaLeggereInJava":

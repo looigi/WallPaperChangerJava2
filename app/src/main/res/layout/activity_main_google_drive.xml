@@ -32,7 +32,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoGoogleDrive"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"

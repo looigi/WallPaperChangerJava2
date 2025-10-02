@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
@@ -23,8 +24,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class ChiamateWSPEN implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_PEN";
     // private LetturaWSAsincrona bckAsyncTask;
@@ -36,14 +35,14 @@ public class ChiamateWSPEN implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     private String daDove;
 
     public ChiamateWSPEN(Context context) {
         this.context = context;
     }
 
-    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+    public void ImpostaImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 
@@ -55,6 +54,7 @@ public class ChiamateWSPEN implements TaskDelegate {
         switch (daDove) {
             case "PAZZIA":
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
                         true
                 );
@@ -107,7 +107,11 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     public void ModificaImmagine(StrutturaImmaginiLibrary s, String stringaBase64, boolean Sovrascrive) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
 
         String Urletto="ModificaImmaginePennetta?" +
                 "Categoria=" + s.getCategoria() +
@@ -204,7 +208,11 @@ public class ChiamateWSPEN implements TaskDelegate {
                        boolean ApriDialog) {
 
         UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
-        UtilityPennetta.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -230,7 +238,11 @@ public class ChiamateWSPEN implements TaskDelegate {
             public void run() {
                 UtilityPennetta.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-                UtilityPennetta.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "ProssimaImmagine":
@@ -291,7 +303,11 @@ public class ChiamateWSPEN implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Modifica Immagine", result);
         if (ritorno) {
@@ -502,6 +518,7 @@ public class ChiamateWSPEN implements TaskDelegate {
         } else {
             if (daDove.equals("PAZZIA")) {
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
                         false
                 );

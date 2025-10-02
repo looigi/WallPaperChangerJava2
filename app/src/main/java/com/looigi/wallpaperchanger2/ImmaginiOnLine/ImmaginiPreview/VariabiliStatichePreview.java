@@ -18,8 +18,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.strutture.Str
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStatichePreview {
     private static VariabiliStatichePreview instance = null;
 
@@ -35,7 +33,7 @@ public class VariabiliStatichePreview {
     }
 
     private StrutturaImmaginiLibrary strutturaImmagine;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private String Modalita;
     private int idCategoria = -1;
     private ImageView imgPreview;
@@ -252,11 +250,11 @@ public class VariabiliStatichePreview {
         this.strutturaImmagine = strutturaImmagine;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

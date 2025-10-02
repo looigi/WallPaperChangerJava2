@@ -82,7 +82,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
                 "Apertura mappa");
 
         VariabiliStaticheGPS.getInstance().setImgAttesa(findViewById(R.id.imgCaricamentoGPS));
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         LinearLayout layFilesRemoti = findViewById(R.id.layFilesRemoti);
         layFilesRemoti.setVisibility(LinearLayout.GONE);
@@ -186,7 +190,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgI.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheGPS.getInstance().getMappetta() != null) {
-                    UtilityGPS.getInstance().ImpostaAttesa(true);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            true
+                    );
 
                     VariabiliStaticheGPS.getInstance().setPrimoPassaggio(true);
                     VariabiliStaticheGPS.getInstance().setVecchiDati(-1);
@@ -207,7 +215,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            false
+                    );
                 }
             }
         });
@@ -216,7 +228,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
         imgA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStaticheGPS.getInstance().getMappetta() != null) {
-                    UtilityGPS.getInstance().ImpostaAttesa(true);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            true
+                    );
 
                     VariabiliStaticheGPS.getInstance().setPrimoPassaggio(true);
                     VariabiliStaticheGPS.getInstance().setVecchiDati(-1);
@@ -237,7 +253,11 @@ public class MainMappa extends AppCompatActivity implements OnMapReadyCallback {
 
                     GestioneNotificheTasti.getInstance().AggiornaNotifica();
 
-                    UtilityGPS.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                            false
+                    );
                 }
             }
         });

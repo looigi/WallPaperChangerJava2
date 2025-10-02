@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -16,8 +17,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture.Str
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheUtilityImmagini {
     private static VariabiliStaticheUtilityImmagini instance = null;
@@ -36,7 +35,7 @@ public class VariabiliStaticheUtilityImmagini {
     private int idCategoria;
     private List<StrutturaImmaginiCategorie> listaCategorieIMM;
     private Spinner spnCategorie;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private ListView lstImmagini;
     private List<StrutturaControlloImmagini> ControlloImmagini = new ArrayList<>();
     private AdapterListenerUI adapter;
@@ -292,11 +291,11 @@ public class VariabiliStaticheUtilityImmagini {
         this.lstImmagini = lstImmagini;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
@@ -324,7 +323,7 @@ public class VariabiliStaticheUtilityImmagini {
         this.idCategoria = idCategoria;
     }
 
-    public void Attesa(boolean bAttesa) {
+    /* public void Attesa(boolean bAttesa) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -335,5 +334,5 @@ public class VariabiliStaticheUtilityImmagini {
                 }
             }
         }, 10);
-    }
+    } */
 }

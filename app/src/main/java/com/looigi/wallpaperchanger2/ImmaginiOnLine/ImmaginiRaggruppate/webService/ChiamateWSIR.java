@@ -11,6 +11,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.strutture
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.adapters.AdapterListenerIR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
+import com.looigi.wallpaperchanger2.Mappe.MappeEGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -37,7 +38,11 @@ public class ChiamateWSIR implements TaskDelegateIR {
     }
 
     public void RitornaRaggruppamenti(String idCategoria) {
-        VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="";
         String NomeUrl = "";
@@ -76,7 +81,11 @@ public class ChiamateWSIR implements TaskDelegateIR {
     }
 
     public void RitornaRaggruppatePerFiltro(String idCategoria, String Filtro) {
-        VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="RitornaRaggruppatePerFiltro?idCategoria=" + idCategoria + "&Filtro=" + Filtro;
 
@@ -118,7 +127,11 @@ public class ChiamateWSIR implements TaskDelegateIR {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "RitornaRaggruppamenti":
@@ -149,7 +162,11 @@ public class ChiamateWSIR implements TaskDelegateIR {
     }
 
     private void fRitornaRaggruppamenti(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna raggruppamenti", result);
         if (!ritorno) {
@@ -178,7 +195,11 @@ public class ChiamateWSIR implements TaskDelegateIR {
     }
 
     private void fRitornaRaggruppatePerFiltro(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna raggruppamenti per filtro", result);
         if (!ritorno) {

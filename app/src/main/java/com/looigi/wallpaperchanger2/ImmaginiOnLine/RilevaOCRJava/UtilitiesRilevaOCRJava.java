@@ -16,9 +16,11 @@ import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.strutture.StrutturaRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.webService.ChiamateWSRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.webService.DownloadImmagineRilevaOCR;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -39,7 +41,12 @@ public class UtilitiesRilevaOCRJava {
     }
 
     public void DisegnaImmagine(Context context) {
-        UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                true
+        );
+
         StrutturaRilevaOCR s = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale();
 
         DownloadImmagineRilevaOCR dO = new DownloadImmagineRilevaOCR();
@@ -208,7 +215,7 @@ public class UtilitiesRilevaOCRJava {
         }
     }
 
-    public void Attesa(boolean Acceso) {
+    /* public void Attesa(boolean Acceso) {
         if (VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento() == null) {
             return;
         }
@@ -223,5 +230,5 @@ public class UtilitiesRilevaOCRJava {
                 }
             }
         }, 50);
-    }
+    } */
 }

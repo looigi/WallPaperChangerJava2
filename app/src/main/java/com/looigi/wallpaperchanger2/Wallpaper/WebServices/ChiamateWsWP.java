@@ -57,7 +57,12 @@ public class ChiamateWsWP implements TaskDelegate {
         TipoOperazione = "ModificaImmagine";
         // ControllaTempoEsecuzione = false;
 
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
+
         Esegue(
                 RadiceWS + ws + Urletto,
                 TipoOperazione,
@@ -251,7 +256,11 @@ public class ChiamateWsWP implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
         } else {

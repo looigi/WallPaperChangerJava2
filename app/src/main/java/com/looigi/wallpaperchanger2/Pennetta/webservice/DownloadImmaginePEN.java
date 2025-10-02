@@ -39,7 +39,11 @@ public class DownloadImmaginePEN {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        UtilityPennetta.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                true
+        );
 
         PercorsoDIR = context.getFilesDir() + "/Immagini";
 
@@ -94,7 +98,11 @@ public class DownloadImmaginePEN {
                         }
                         in = null;
                     }
-                    UtilityPennetta.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {
@@ -185,7 +193,11 @@ public class DownloadImmaginePEN {
     }
 
     private void TermineEsecuzione() {
-        UtilityPennetta.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                false
+        );
     }
 
     public void BloccaEsecuzione() {

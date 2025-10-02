@@ -46,7 +46,7 @@ public class UtilityImmagini {
         return instance;
     }
 
-    public void Attesa(boolean Acceso) {
+    /* public void Attesa(boolean Acceso) {
         if (VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento() == null) {
             return;
         }
@@ -68,7 +68,7 @@ public class UtilityImmagini {
                 }
             }
         }, 50);
-    }
+    } */
 
     public void VisualizzaErrore(Context context, String Errore) {
         // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);

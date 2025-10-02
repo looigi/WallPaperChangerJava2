@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria;
 
 import android.content.Context;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -12,8 +13,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateW
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
 
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliImmaginiFuoriCategoria {
     private static VariabiliImmaginiFuoriCategoria instance = null;
@@ -39,7 +38,7 @@ public class VariabiliImmaginiFuoriCategoria {
     private String AndOr = "Or";
     private boolean SoloSuAltro = true;
     private boolean CercaExif = false;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private ListView lstImmagini;
     // private LinearLayout laypreview;
     // private ImmagineZoomabile imgPreview;
@@ -186,11 +185,11 @@ public class VariabiliImmaginiFuoriCategoria {
         this.lstImmagini = lstImmagini;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 

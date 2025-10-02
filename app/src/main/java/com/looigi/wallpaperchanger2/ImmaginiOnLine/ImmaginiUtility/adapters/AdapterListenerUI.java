@@ -29,7 +29,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.MainPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiScarica.VariabiliScaricaImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.VariabiliStaticheUtilityImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo.MainControlloImmagini;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.MainControlloImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture.StrutturaUgualiInterna;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.webservice.ChiamateWSUI;

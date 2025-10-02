@@ -1,12 +1,11 @@
 package com.looigi.wallpaperchanger2.GoogleDrive;
 
 import android.app.Activity;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.api.services.drive.Drive;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheGoogleDrive {
     private static VariabiliStaticheGoogleDrive instance = null;
@@ -31,7 +30,7 @@ public class VariabiliStaticheGoogleDrive {
 
     private Activity act;
     private GoogleDriveHelper driveHelper;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     private TextView txtDettaglio;
     private boolean Connesso = false;
     private String ErroreConnessione = "";
@@ -192,11 +191,11 @@ public class VariabiliStaticheGoogleDrive {
         Connesso = connesso;
     }
 
-    public GifImageView getImgAttesa() {
+    public ImageView getImgAttesa() {
         return imgAttesa;
     }
 
-    public void setImgAttesa(GifImageView imgAttesa) {
+    public void setImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 }

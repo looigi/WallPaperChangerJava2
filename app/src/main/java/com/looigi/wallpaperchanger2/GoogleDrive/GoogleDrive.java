@@ -38,7 +38,7 @@ public class GoogleDrive extends Activity {
         VariabiliStaticheGoogleDrive.getInstance().setImgAttesa(findViewById(R.id.imgCaricamentoGoogleDrive));
         VariabiliStaticheGoogleDrive.getInstance().setTxtDettaglio(findViewById(R.id.txtDettaglio));
 
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(context, true, false);
         VariabiliStaticheGoogleDrive.getInstance().setLstFolders(findViewById(R.id.lstFolders));
         VariabiliStaticheGoogleDrive.getInstance().setLstFiles(findViewById(R.id.lstFiles));
 
@@ -86,7 +86,7 @@ public class GoogleDrive extends Activity {
     private HandlerThread handlerThread;
 
     public void AttendeConnessione() {
-        UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
+        UtilityGoogleDrive.getInstance().ImpostaAttesa(context, true, false);
         Conta = 0;
 
         handlerTimerAF = new Handler(Looper.getMainLooper());
@@ -96,7 +96,7 @@ public class GoogleDrive extends Activity {
                     @Override
                     public void run() {
                         if (VariabiliStaticheGoogleDrive.getInstance().isConnesso()) {
-                            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+                            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
                             handlerTimerAF.removeCallbacksAndMessages(rTimerAF);
 
                             GestioneGoogleDrive g = new GestioneGoogleDrive();
@@ -123,7 +123,7 @@ public class GoogleDrive extends Activity {
                                                 VariabiliStaticheGoogleDrive.nomeFileAPK);
                                     }
 
-                                    UtilityGoogleDrive.getInstance().ImpostaAttesa(true, true);
+                                    UtilityGoogleDrive.getInstance().ImpostaAttesa(context, true, true);
                                     VariabiliStaticheGoogleDrive.getInstance().setStaScaricandoFile(true);
 
                                     UtilityGoogleDrive.getInstance().dowload(
@@ -152,7 +152,7 @@ public class GoogleDrive extends Activity {
                                             }
 
                                             if (!VariabiliStaticheGoogleDrive.getInstance().isStaScaricandoFile()) {
-                                                UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+                                                UtilityGoogleDrive.getInstance().ImpostaAttesa(context,false, false);
 
                                                 if (Files.getInstance().EsisteFile(pathDestinazione1 + "/" +
                                                         VariabiliStaticheGoogleDrive.nomeFileAPK)) {
@@ -244,7 +244,7 @@ public class GoogleDrive extends Activity {
                             }
                         } else {
                             if (Conta > 20) {
-                                UtilityGoogleDrive.getInstance().ImpostaAttesa(true, false);
+                                UtilityGoogleDrive.getInstance().ImpostaAttesa(context, true, false);
                                 handlerTimerAF.removeCallbacksAndMessages(rTimerAF);
 
                                 UtilitiesGlobali.getInstance().ApreToast(context,

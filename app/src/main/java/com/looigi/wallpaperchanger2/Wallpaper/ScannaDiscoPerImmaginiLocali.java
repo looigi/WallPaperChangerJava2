@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.Wallpaper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.io.File;
@@ -9,16 +10,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
 
 public class ScannaDiscoPerImmaginiLocali extends AsyncTask<String, Integer, String> {
     private static final String NomeMaschera = "ScanDisk_IL";
     private List<StrutturaImmagine> imms = new ArrayList<>();
     private db_dati_wallpaper db;
     private Context context;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
 
-    public ScannaDiscoPerImmaginiLocali(Context context, GifImageView imgAttesa) {
+    public ScannaDiscoPerImmaginiLocali(Context context, ImageView imgAttesa) {
         this.context = context;
         this.imgAttesa = imgAttesa;
 

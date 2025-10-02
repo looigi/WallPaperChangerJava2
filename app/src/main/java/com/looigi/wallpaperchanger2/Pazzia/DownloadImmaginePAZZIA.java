@@ -141,6 +141,7 @@ public class DownloadImmaginePAZZIA {
             }
 
             UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    context,
                     VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
                     false
             );
@@ -150,6 +151,7 @@ public class DownloadImmaginePAZZIA {
             }
 
             UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    context,
                     VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
                     false
             );

@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.MainImmaginiRaggruppate;
@@ -75,6 +76,11 @@ public class MainMostraImmagini extends Activity {
         VariabiliStaticheMostraImmagini.getInstance().setRandom("S");
 
         VariabiliStaticheMostraImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoMI));
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento(),
+                false
+        );
 
         // db_dati_immagini db = new db_dati_immagini(context);
         // db.CaricaImpostazioni();

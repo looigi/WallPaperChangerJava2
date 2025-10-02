@@ -113,7 +113,11 @@ public class MainImmaginiRaggruppate extends Activity {
         VariabiliStaticheImmaginiRaggruppate.getInstance().setLstIR(findViewById(R.id.lstIR));
         VariabiliStaticheImmaginiRaggruppate.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));
         VariabiliStaticheImmaginiRaggruppate.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIR));
-        VariabiliStaticheImmaginiRaggruppate.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheImmaginiRaggruppate.getInstance().getImgCaricamento(),
+                false
+        );
 
         /* VariabiliStaticheImmaginiRaggruppate.getInstance().setLaypreview(findViewById(R.id.layPreview));
         VariabiliStaticheImmaginiRaggruppate.getInstance().setImgPreview(findViewById(R.id.imgPreview));

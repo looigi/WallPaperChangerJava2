@@ -443,7 +443,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoPEN"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"

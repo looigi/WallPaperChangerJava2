@@ -99,7 +99,11 @@ public class ChiamateWSIFC implements TaskDelegate {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "TrovaNomiSuDbFuoriDallaCategoria":

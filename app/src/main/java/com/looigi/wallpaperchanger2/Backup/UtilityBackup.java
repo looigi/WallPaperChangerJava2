@@ -3,13 +3,12 @@ package com.looigi.wallpaperchanger2.Backup;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.UtilitiesVarie.log.LogInterno;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class UtilityBackup {
     private static final String NomeMaschera = "Utility_Backup";
@@ -28,9 +27,9 @@ public class UtilityBackup {
 
     private TextView txtSelezionato;
     private StrutturaBackups nomeFileZipSelezionato;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
 
-    public void Attende(boolean Attesa) {
+    /* public void Attende(boolean Attesa) {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
@@ -44,13 +43,13 @@ public class UtilityBackup {
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
-    }
+    } */
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 

@@ -29,8 +29,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheModificheCodice {
     private static VariabiliStaticheModificheCodice instance = null;
 
@@ -84,7 +82,7 @@ public class VariabiliStaticheModificheCodice {
     private ImageView imgModificaSezioni;
     private ImageView imgEliminaSezioni;
     private TextView txtQuante;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private List<StrutturaConteggi> ListaConteggi = new ArrayList<>();
     private ListView lstConteggi;
     private List<String> listaAppoggioDaSalvare;
@@ -100,7 +98,7 @@ public class VariabiliStaticheModificheCodice {
     private EditText edtGestioneStato;
     private int idGestioneStato;
 
-    public void Attende(boolean Attesa) {
+    /* public void Attende(boolean Attesa) {
         if (imgCaricamento != null) {
             if (!Attesa) {
                 imgCaricamento.setVisibility(LinearLayout.GONE);
@@ -108,7 +106,7 @@ public class VariabiliStaticheModificheCodice {
                 imgCaricamento.setVisibility(LinearLayout.VISIBLE);
             }
         }
-    }
+    } */
 
     public void ScriveConteggi(Context context) {
         db_dati_modifiche_codice db = new db_dati_modifiche_codice(context);
@@ -246,11 +244,11 @@ public class VariabiliStaticheModificheCodice {
         ListaConteggi = listaConteggi;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 

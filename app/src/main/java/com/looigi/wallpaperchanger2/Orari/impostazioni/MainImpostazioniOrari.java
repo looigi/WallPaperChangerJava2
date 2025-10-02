@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.VariabiliStaticheLazioDettaglio;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Orari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.Orari.adapters.AdapterListenerMezzi;
@@ -48,7 +49,11 @@ public class MainImpostazioniOrari extends Activity {
         act = this;
 
         VariabiliStaticheImpostazioniOrari.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoImpOrari));
-        UtilityImpostazioniOrari.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheImpostazioniOrari.getInstance().getImgCaricamento(),
+                false
+        );
 
         VariabiliStaticheImpostazioniOrari.getInstance().setLayGestione(findViewById(R.id.layGestione));
         VariabiliStaticheImpostazioniOrari.getInstance().getLayGestione().setVisibility(LinearLayout.GONE);

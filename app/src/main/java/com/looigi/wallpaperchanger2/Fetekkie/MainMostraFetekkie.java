@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.Mappe.MappeEGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Detector.UtilityDetector;
 import com.looigi.wallpaperchanger2.Fetekkie.strutture.StrutturaImmaginiCategorieFE;
@@ -71,6 +72,11 @@ public class MainMostraFetekkie extends Activity {
         // VariabiliStaticheMostraImmaginiFetekkie.getInstance().setRandom("S");
 
         VariabiliStaticheMostraImmaginiFetekkie.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoFET));
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                false
+        );
 
         // db_dati_fetekkie db = new db_dati_fetekkie(context);
         // db.CaricaImpostazioni();
@@ -196,7 +202,11 @@ public class MainMostraFetekkie extends Activity {
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityFetekkie.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 StrutturaImmaginiLibraryFE s = VariabiliStaticheMostraImmaginiFetekkie.getInstance().getUltimaImmagineCaricata();
 
@@ -215,7 +225,11 @@ public class MainMostraFetekkie extends Activity {
                     ChangeWallpaper c = new ChangeWallpaper(context, "FETEKKIE", src);
                     c.setWallpaperLocale(context, src);
 
-                    UtilityFetekkie.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                            false
+                    );
                 } catch (IOException ignored) {
 
                 }

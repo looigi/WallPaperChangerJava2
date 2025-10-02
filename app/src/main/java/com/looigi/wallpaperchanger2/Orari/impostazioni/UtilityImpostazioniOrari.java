@@ -24,13 +24,13 @@ public class UtilityImpostazioniOrari {
         return instance;
     }
 
-    public void ImpostaAttesa(boolean Come) {
+    /* public void ImpostaAttesa(boolean Come) {
         if (Come) {
             VariabiliStaticheImpostazioniOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
         } else {
             VariabiliStaticheImpostazioniOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
         }
-    }
+    } */
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
         Geocoder coder = new Geocoder(context);

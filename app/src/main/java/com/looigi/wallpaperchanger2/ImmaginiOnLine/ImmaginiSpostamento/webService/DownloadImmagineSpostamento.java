@@ -38,7 +38,11 @@ public class DownloadImmagineSpostamento {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        VariabiliStaticheSpostamento.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                true
+        );
 
         AttivaTimer();
 
@@ -90,7 +94,11 @@ public class DownloadImmagineSpostamento {
                         }
                         in = null;
                     }
-                    VariabiliStaticheSpostamento.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
 
@@ -155,7 +163,11 @@ public class DownloadImmagineSpostamento {
         }
 
         // if (immagine == null) {
-        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                false
+        );
         // }
     }
 

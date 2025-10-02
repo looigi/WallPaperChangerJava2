@@ -17,6 +17,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.Variabili
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.strutture.StrutturaCategorieSpostamento;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.webService.ChiamateWSSP;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.webservice.ChiamateWSUI;
+import com.looigi.wallpaperchanger2.ModificheCodice.VariabiliStaticheModificheCodice;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class UtilitiesPreview {
 
         return instance;
     }
-    public void Attesa(boolean Acceso) {
+
+    /* public void Attesa(boolean Acceso) {
         if (VariabiliStatichePreview.getInstance().getImgCaricamento() == null) {
             return;
         }
@@ -50,7 +52,7 @@ public class UtilitiesPreview {
                 }
             }
         }, 50);
-    }
+    } */
 
     public void RitornoProssimaImmagine(Context context, StrutturaImmaginiLibrary si) {
         VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
@@ -92,7 +94,12 @@ public class UtilitiesPreview {
     public void ProssimaImmagine(Context context) {
         if (VariabiliStatichePreview.getInstance().getQualeImmagine() <
                 VariabiliStatichePreview.getInstance().getListaImmaginiVisualizzate().size() - 1) {
-            UtilitiesPreview.getInstance().Attesa(true);
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                    true
+            );
+
             VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
             VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
 
@@ -112,7 +119,11 @@ public class UtilitiesPreview {
                 UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);
             }
 
-            UtilitiesPreview.getInstance().Attesa(false);
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                    false
+            );
             VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
             VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
         } else {

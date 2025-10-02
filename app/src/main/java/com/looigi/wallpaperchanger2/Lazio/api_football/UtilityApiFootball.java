@@ -64,7 +64,11 @@ public class UtilityApiFootball {
     private HandlerThread handlerThread;
 
     public void EffettuaChiamata(Context context, String urlString, String NomeFile, boolean Refresh, String Operazione) {
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                true
+        );
 
         VariabiliStaticheGoogleDrive.getInstance().setPathOperazione(
                 "ApiFootball/" +
@@ -260,7 +264,11 @@ public class UtilityApiFootball {
                         Operazione + "/" +
                         NomeFile.replace(" ", "_"));
 
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                false
+        );
     }
 
     public void AggiornaFileFatti(String NomeSquadra, int Quale, boolean chkFatto) {
@@ -387,7 +395,11 @@ public class UtilityApiFootball {
                         "ALLENATORI"
                 ); */
 
-                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 // UtilitiesGlobali.getInstance().ApreToast(context, "Partite scaricate");
             }
@@ -421,8 +433,11 @@ public class UtilityApiFootball {
                     ws1.AggiungeTuttiGliAllenatori();
                 }
 
-                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
-
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                        false
+                );
         /* if (VariabiliStaticheApiFootball.getInstance().isStaSalvandoTutteLeSquadre()) {
             ChiamateWSLazio ws = new ChiamateWSLazio(context);
             ws.AggiungeSquadra(
@@ -525,13 +540,21 @@ public class UtilityApiFootball {
     }
 
     public void SalvaTutteLePartite(Context context) {
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                true
+        );
         // VariabiliStaticheApiFootball.getInstance().ScriveAvanzamento("Inizio salvataggio partite");
 
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 int idPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                         VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()

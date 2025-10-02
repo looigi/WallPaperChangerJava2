@@ -2,6 +2,7 @@ package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.adapters.AdapterListenerImmaginiUguali;
@@ -10,8 +11,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliImmaginiUguali {
     private static VariabiliImmaginiUguali instance = null;
@@ -32,7 +31,7 @@ public class VariabiliImmaginiUguali {
     private String TipoImpostato = "";
     private ListView lstTipi;
     private ListView lstImmagini;
-    private GifImageView imgCaricamentoInCorso;
+    private ImageView imgCaricamentoInCorso;
     private String Categoria;
     private List<StrutturaImmaginiUgualiRitornate> lista2 = new ArrayList<>();
     // private LinearLayout layPreview;
@@ -81,11 +80,11 @@ public class VariabiliImmaginiUguali {
         Categoria = categoria;
     }
 
-    public GifImageView getImgCaricamentoInCorso() {
+    public ImageView getImgCaricamentoInCorso() {
         return imgCaricamentoInCorso;
     }
 
-    public void setImgCaricamentoInCorso(GifImageView imgCaricamentoInCorso) {
+    public void setImgCaricamentoInCorso(ImageView imgCaricamentoInCorso) {
         this.imgCaricamentoInCorso = imgCaricamentoInCorso;
     }
 

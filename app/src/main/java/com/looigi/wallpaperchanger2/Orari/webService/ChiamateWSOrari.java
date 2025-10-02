@@ -307,7 +307,11 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
-        VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheOrari.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -353,7 +357,11 @@ public class ChiamateWSOrari implements TaskDelegateOrari {
                         break;
                 }
 
-                VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheOrari.getInstance().getImgCaricamento(),
+                        false
+                );
             }
         };
         handlerTimer.postDelayed(rTimer, 100);

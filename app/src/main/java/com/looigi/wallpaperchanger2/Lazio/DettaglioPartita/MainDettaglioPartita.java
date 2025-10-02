@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.looigi.wallpaperchanger2.Orari.VariabiliStaticheOrari;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.Strutture.Ammoniti;
 import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.Strutture.Espulsi;
@@ -21,6 +22,7 @@ import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.Strutture.Marcatori;
 import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.webService.ChiamateWSLazioDettaglio;
 import com.looigi.wallpaperchanger2.Lazio.webService.DownloadImmagineLazio;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Files;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.List;
 
@@ -38,8 +40,11 @@ public class MainDettaglioPartita extends Activity {
 
         VariabiliStaticheLazioDettaglio.getInstance().setPathLazio(context.getFilesDir() + "/Lazio");
         VariabiliStaticheLazioDettaglio.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoLazio));
-
-        UtilityLazioDettaglio.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazioDettaglio.getInstance().getImgCaricamento(),
+                false
+        );
 
         String Casa = VariabiliStaticheLazioDettaglio.getInstance().getCasa();
         String Fuori = VariabiliStaticheLazioDettaglio.getInstance().getFuori();

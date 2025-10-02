@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.Notifiche.notificaTasti;
+package com.looigi.wallpaperchanger2.UtilitiesVarie;
 
 import android.app.Notification;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.biometric.BiometricPrompt;
 import androidx.fragment.app.FragmentActivity;
 
+import com.looigi.wallpaperchanger2.Notifiche.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Backup.MainBackup;
 import com.looigi.wallpaperchanger2.Detector.MainActivityDetector;
@@ -38,10 +40,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.MainRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.MainUtilityImmagini;
 import com.looigi.wallpaperchanger2.Video.MainMostraVideo;
 import com.looigi.wallpaperchanger2.Wallpaper.MainWallpaper;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.BiometricManagerSingleton;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.PrendeModelloTelefono;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 public class ActivityDiStart extends FragmentActivity {
     private FragmentActivity act;
@@ -55,6 +53,9 @@ public class ActivityDiStart extends FragmentActivity {
 
         context = this;
         act = this;
+
+        ImageView imgAttesa = findViewById(R.id.imgLoading);
+        UtilitiesGlobali.getInstance().AttesaGif(context, imgAttesa, true);
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("DO");
@@ -244,6 +245,8 @@ public class ActivityDiStart extends FragmentActivity {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
+                    UtilitiesGlobali.getInstance().AttesaGif(context, imgAttesa, false);
+
                     act.finish();
                 }
             };

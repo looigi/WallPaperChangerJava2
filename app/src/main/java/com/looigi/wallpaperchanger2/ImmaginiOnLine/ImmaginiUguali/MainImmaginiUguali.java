@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 
+import com.looigi.wallpaperchanger2.Lazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.webService.ChiamateWSMIU;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
@@ -101,7 +102,11 @@ public class MainImmaginiUguali extends Activity {
         VariabiliImmaginiUguali.getInstance().setLstImmagini(findViewById(R.id.lstImmagini));
 
         VariabiliImmaginiUguali.getInstance().setImgCaricamentoInCorso(findViewById(R.id.imgCaricamentoMIU));
-        VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso().setVisibility(LinearLayout.GONE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso(),
+                false
+        );
 
         c.RitornaImmaginiUguali(Categoria);
     }

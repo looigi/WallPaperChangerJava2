@@ -30,7 +30,7 @@ public class UtilityLazio {
         return instance;
     }
 
-    public void ImpostaAttesa(boolean Come) {
+    /* public void ImpostaAttesa(boolean Come) {
         if (VariabiliStaticheLazio.getInstance().getImgCaricamento() != null) {
             if (Come) {
                 VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
@@ -38,7 +38,7 @@ public class UtilityLazio {
                 VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
             }
         }
-    }
+    } */
 
     public void VisualizzaMaschera() {
         VariabiliStaticheLazio.getInstance().getLayCalendario().setVisibility(LinearLayout.GONE);

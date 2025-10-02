@@ -1,9 +1,8 @@
 package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica;
 
 import android.app.Activity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheModificaImmagine {
     private static VariabiliStaticheModificaImmagine instance = null;
@@ -22,7 +21,7 @@ public class VariabiliStaticheModificaImmagine {
     private Activity mainActivity;
     private String NomeImmagine;
     private String mascheraApertura;
-    private GifImageView imgAttendere;
+    private ImageView imgAttendere;
 
     public void ChiudeActivity(boolean Finish) {
         if (mainActivity != null) {
@@ -33,7 +32,7 @@ public class VariabiliStaticheModificaImmagine {
         }
     }
 
-    public void ImpostaAttesa(boolean Attesa) {
+    /* public void ImpostaAttesa(boolean Attesa) {
         if (imgAttendere != null) {
             if (!Attesa) {
                 imgAttendere.setVisibility(LinearLayout.GONE);
@@ -41,13 +40,13 @@ public class VariabiliStaticheModificaImmagine {
                 imgAttendere.setVisibility(LinearLayout.VISIBLE);
             }
         }
-    }
+    } */
 
-    public GifImageView getImgAttendere() {
+    public ImageView getImgAttendere() {
         return imgAttendere;
     }
 
-    public void setImgAttendere(GifImageView imgAttendere) {
+    public void setImgAttendere(ImageView imgAttendere) {
         this.imgAttendere = imgAttendere;
     }
 

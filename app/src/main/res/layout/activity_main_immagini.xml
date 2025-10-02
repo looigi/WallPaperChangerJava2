@@ -700,7 +700,7 @@
             app:alignItems="flex_start"/>
     </LinearLayout>
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoMI"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"

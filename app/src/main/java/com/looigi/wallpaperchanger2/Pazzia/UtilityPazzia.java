@@ -7,18 +7,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
 
+import com.looigi.wallpaperchanger2.Fetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.Pennetta.webservice.ChiamateWSPEN;
 import com.looigi.wallpaperchanger2.Video.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.Video.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class UtilityPazzia {
     private static UtilityPazzia instance = null;
@@ -77,8 +77,14 @@ public class UtilityPazzia {
     private int SecondiPEN = 7500;
     private int SecondiIMM = 10000;
 
-    public void ImpostaAttesaPazzia(GifImageView chi, boolean come) {
-        if (chi != null) {
+    public void ImpostaAttesaPazzia(Context context, ImageView chi, boolean come) {
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                chi,
+                come
+        );
+
+        /* if (chi != null) {
             Handler handlerTimer = new Handler(Looper.getMainLooper());
             Runnable rTimer = new Runnable() {
                 public void run() {
@@ -90,7 +96,7 @@ public class UtilityPazzia {
                 }
             };
             handlerTimer.postDelayed(rTimer, 100);
-        }
+        } */
     }
 
     public void bloccaTimerPEN() {
@@ -163,6 +169,7 @@ public class UtilityPazzia {
             Runnable rTimer = new Runnable() {
                 public void run() {
                     UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                            context,
                             VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
                             true
                     );
@@ -228,6 +235,7 @@ public class UtilityPazzia {
                             @Override
                             public boolean onError(MediaPlayer mp, int what, int extra) {
                                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                                        context,
                                         VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
                                         false
                                 );
@@ -246,6 +254,7 @@ public class UtilityPazzia {
                             @Override
                             public void onPrepared(MediaPlayer mp) {
                                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                                        context,
                                         VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
                                         false
                                 );

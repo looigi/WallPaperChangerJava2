@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
@@ -51,7 +52,11 @@ public class MainSpostamento extends Activity {
         VariabiliStaticheSpostamento.getInstance().setSpnCategorie(findViewById(R.id.spnSpostaCategorie));
 
         VariabiliStaticheSpostamento.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPreview));
-        VariabiliStaticheSpostamento.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                false
+        );
 
         EditText edtFiltroSpostamento = findViewById(R.id.edtSpostaFiltroCategoria);
         /* edtFiltroSpostamento.setOnFocusChangeListener(new View.OnFocusChangeListener() {

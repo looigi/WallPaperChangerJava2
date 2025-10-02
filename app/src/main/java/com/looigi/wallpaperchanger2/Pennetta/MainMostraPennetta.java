@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.VariabiliImmaginiUguali;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.Impostazioni.MainImpostazioni;
@@ -66,6 +67,11 @@ public class MainMostraPennetta extends Activity {
         // VariabiliStaticheMostraImmaginiPennetta.getInstance().setRandom("S");
 
         VariabiliStaticheMostraImmaginiPennetta.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPEN));
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                false
+        );
 
         // db_dati_pennetta db = new db_dati_pennetta(context);
         // db.CaricaImpostazioni();
@@ -179,7 +185,11 @@ public class MainMostraPennetta extends Activity {
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilityPennetta.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 StrutturaImmaginiLibrary s = VariabiliStaticheMostraImmaginiPennetta.getInstance().getUltimaImmagineCaricata();
 
@@ -200,7 +210,11 @@ public class MainMostraPennetta extends Activity {
                     ChangeWallpaper c = new ChangeWallpaper(context,"PENNETTA", src);
                     c.setWallpaperLocale(context, src);
 
-                    UtilityPennetta.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                            false
+                    );
                 } catch (IOException ignored) {
 
                 }

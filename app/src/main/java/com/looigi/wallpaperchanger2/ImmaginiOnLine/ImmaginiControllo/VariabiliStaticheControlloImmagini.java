@@ -1,13 +1,9 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.classeControllo;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture.StrutturaControlloImmagini;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheControlloImmagini {
     private static VariabiliStaticheControlloImmagini instance = null;
@@ -23,7 +19,7 @@ public class VariabiliStaticheControlloImmagini {
         return instance;
     }
 
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private int idCategoria;
     private StrutturaControlloImmagini StrutturaDati;
     private ListView lstLista;
@@ -89,15 +85,15 @@ public class VariabiliStaticheControlloImmagini {
         this.idCategoria = idCategoria;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
-    public void Attesa(boolean bAttesa) {
+    /* public void Attesa(boolean bAttesa) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -108,5 +104,5 @@ public class VariabiliStaticheControlloImmagini {
                 }
             }
         }, 10);
-    }
+    } */
 }

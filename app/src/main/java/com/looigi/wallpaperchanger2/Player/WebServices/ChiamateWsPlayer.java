@@ -258,7 +258,11 @@ public class ChiamateWsPlayer implements TaskDelegatePlayer {
     }
 
     public void ModificaImmagine(StrutturaImmagini s, String stringaBase64, boolean Sovrascrive) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
 
         String Urletto="ModificaImmagine?" +
                 "Artista=" + s.getArtista() +

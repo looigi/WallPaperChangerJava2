@@ -55,7 +55,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     public void RitornaProssimaImmagine(int idCategoria, String daDove) {
         VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
         VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
-        UtilitiesPreview.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto = "";
 
@@ -92,7 +96,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void RitornaCategorieDiRicerca() {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
         this.ForzaRefresh = ForzaRefresh;
 
         String Urletto="RitornaCategorieDiRicerca";
@@ -109,7 +118,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void SistemaImmaginiSenzaHash() {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
         this.ForzaRefresh = ForzaRefresh;
 
         String Urletto="SistemaImmaginiSenzaHash";
@@ -126,7 +140,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void ControllaVolto(String idImmagine) {
-        UtilitiesPreview.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="ControllaVolto?idImmagine=" + idImmagine;
 
@@ -142,7 +160,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void EliminaCategoria(String idCategoria) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="EliminaCategoria?idCategoria=" + idCategoria;
 
@@ -158,7 +180,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void RitornaImmaginiFuoriCategoria(String idCategoria, String Alias1, String Alias2, String ForzaRefresh) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
         this.ForzaRefresh = ForzaRefresh;
 
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
@@ -184,7 +211,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void ControlloImmagini(String id, String ForzaRefresh) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
         this.ForzaRefresh = ForzaRefresh;
         if (ForzaRefresh == null) { ForzaRefresh = "S"; }
         ForzaRefresh = "S"; // Mi sono accorto che non serve a nulla prendere la cache
@@ -222,7 +254,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     private boolean DaTasto;
 
     public void RefreshImmagini(String idCategoria, boolean DaTasto) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
 
         this.idCategoria = idCategoria;
         this.DaTasto = DaTasto;
@@ -244,7 +280,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void RefreshImmaginiAltre() {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="RefreshImmagini?" +
                 "idCategoria=41" +
@@ -263,7 +303,12 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void RitornaImmaginiUguali(String Categoria, String ForzaRefresh) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
+
         this.ForzaRefresh = ForzaRefresh;
 
         String Urletto="ImmaginiUgualiMobile?" +
@@ -282,7 +327,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void RinominaImmagine(String idImmagine, String NuovoNome) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="RinominaImmagine?" +
                 "idImmagine=" + idImmagine +
@@ -300,7 +349,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     public void ConverteImmagine(String idImmagine) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="ConverteImmagine?" +
                 "idImmagine=" + idImmagine;
@@ -343,7 +396,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "TrovaNomiSuDbFuoriDallaCategoria":
@@ -408,7 +465,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
 
     private void fControllaVolto(String result) {
         boolean ritorno = ControllaRitorno("Controlla Volto", result);
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                false
+        );
         if (ritorno) {
             // {"Rilevate":[{"idCategoria": 566,"Categoria": "Gina_Pistol","Confidenza": 0.0210}]}
             try {
@@ -454,8 +515,17 @@ public class ChiamateWSUI implements TaskDelegateUI {
     private void fProssimaImmagine(String result) {
         boolean ritorno = ControllaRitorno("Ritorna prossima immagine", result);
 
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                false
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                false
+        );
         VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
         VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
 
@@ -505,7 +575,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     private void fRitornaCategorieDiRicerca(String result) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("RitornaCategorieDiRicerca", result);
         if (!ritorno) {
@@ -529,7 +603,11 @@ public class ChiamateWSUI implements TaskDelegateUI {
     }
 
     private void fControlloImmagini(String result) {
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Controllo Immagini", result);
         if (!ritorno) {

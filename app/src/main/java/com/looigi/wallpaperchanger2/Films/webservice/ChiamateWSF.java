@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.Films.webservice;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.Films.UtilityFilms;
@@ -12,8 +13,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class ChiamateWSF implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Films";
@@ -26,13 +25,13 @@ public class ChiamateWSF implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
 
     public ChiamateWSF(Context context) {
         this.context = context;
     }
 
-    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+    public void ImpostaImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 

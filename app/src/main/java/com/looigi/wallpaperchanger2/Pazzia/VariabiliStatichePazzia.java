@@ -1,5 +1,6 @@
 package com.looigi.wallpaperchanger2.Pazzia;
 
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -10,8 +11,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.ProportionalVideoView;
 
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStatichePazzia {
     private static VariabiliStatichePazzia instance = null;
@@ -31,9 +30,9 @@ public class VariabiliStatichePazzia {
     private ImmagineZoomabile imgPennetta;
     private ImmagineZoomabile imgImmagini;
     private ProportionalVideoView videoView;
-    private GifImageView imgCaricamentoPEN;
-    private GifImageView imgCaricamentoIMM;
-    private GifImageView imgCaricamentoVID;
+    private ImageView imgCaricamentoPEN;
+    private ImageView imgCaricamentoIMM;
+    private ImageView imgCaricamentoVID;
     private boolean SlideShowAttivoPEN = true;
     private boolean SlideShowAttivoIMM = true;
     private MediaController mediaController;
@@ -236,27 +235,27 @@ public class VariabiliStatichePazzia {
         SlideShowAttivoPEN = slideShowAttivo;
     }
 
-    public GifImageView getImgCaricamentoPEN() {
+    public ImageView getImgCaricamentoPEN() {
         return imgCaricamentoPEN;
     }
 
-    public void setImgCaricamentoPEN(GifImageView imgCaricamentoPEN) {
+    public void setImgCaricamentoPEN(ImageView imgCaricamentoPEN) {
         this.imgCaricamentoPEN = imgCaricamentoPEN;
     }
 
-    public GifImageView getImgCaricamentoIMM() {
+    public ImageView getImgCaricamentoIMM() {
         return imgCaricamentoIMM;
     }
 
-    public void setImgCaricamentoIMM(GifImageView imgCaricamentoIMM) {
+    public void setImgCaricamentoIMM(ImageView imgCaricamentoIMM) {
         this.imgCaricamentoIMM = imgCaricamentoIMM;
     }
 
-    public GifImageView getImgCaricamentoVID() {
+    public ImageView getImgCaricamentoVID() {
         return imgCaricamentoVID;
     }
 
-    public void setImgCaricamentoVID(GifImageView imgCaricamentoVID) {
+    public void setImgCaricamentoVID(ImageView imgCaricamentoVID) {
         this.imgCaricamentoVID = imgCaricamentoVID;
     }
 

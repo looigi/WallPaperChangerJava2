@@ -55,7 +55,7 @@ public class UtilityGPS {
         return instance;
     }
 
-    public void ImpostaAttesa(boolean come) {
+    /* public void ImpostaAttesa(boolean come) {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
@@ -69,7 +69,7 @@ public class UtilityGPS {
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
-    }
+    } */
 
     public void ScriveLog(Context context, String Maschera, String Log) {
         /* if (VariabiliStaticheStart.getInstance().getPercorsoDIRLog().isEmpty()) {

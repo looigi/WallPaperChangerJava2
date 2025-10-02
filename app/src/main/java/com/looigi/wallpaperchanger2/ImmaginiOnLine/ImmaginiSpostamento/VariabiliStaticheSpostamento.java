@@ -17,8 +17,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheSpostamento {
     private static VariabiliStaticheSpostamento instance = null;
 
@@ -33,7 +31,7 @@ public class VariabiliStaticheSpostamento {
         return instance;
     }
 
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private Spinner spnCategorie;
     private String filtroCategoriaSpostamento = "";
     private List<StrutturaCategorieSpostamento> listaCategorie = new ArrayList<>();
@@ -188,15 +186,15 @@ public class VariabiliStaticheSpostamento {
         this.spnCategorie = spnCategorie;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
-    public void Attesa(boolean Acceso) {
+    /* public void Attesa(boolean Acceso) {
         if (imgCaricamento == null) {
             return;
         }
@@ -211,7 +209,7 @@ public class VariabiliStaticheSpostamento {
                 }
             }
         }, 50);
-    }
+    } */
 
     public void AggiornaCategorieSpostamento(Context context) {
         List<StrutturaCategorieSpostamento> l1 = new ArrayList<>();

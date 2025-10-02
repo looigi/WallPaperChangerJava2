@@ -67,7 +67,12 @@ public class MainPreview extends Activity {
 
         VariabiliStatichePreview.getInstance().setTxtDescrizione(findViewById(R.id.txtDescrizione));
         VariabiliStatichePreview.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoPreview));
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                false
+        );
+
 
         VariabiliStatichePreview.getInstance().setImgPreview(findViewById(R.id.imgPreview));
 
@@ -150,7 +155,11 @@ public class MainPreview extends Activity {
         VariabiliStatichePreview.getInstance().getImgPrecedente().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (VariabiliStatichePreview.getInstance().getQualeImmagine() > 0) {
-                    UtilitiesPreview.getInstance().Attesa(true);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            true
+                    );
                     VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.GONE);
                     VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.GONE);
 
@@ -167,7 +176,11 @@ public class MainPreview extends Activity {
                         UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);
                     }
 
-                    UtilitiesPreview.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            false
+                    );
                     VariabiliStatichePreview.getInstance().getImgProssima().setVisibility(LinearLayout.VISIBLE);
                     VariabiliStatichePreview.getInstance().getImgPrecedente().setVisibility(LinearLayout.VISIBLE);
 
@@ -211,7 +224,11 @@ public class MainPreview extends Activity {
         ImageView imgShare = findViewById(R.id.imgShareWallpaper);
         imgShare.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilitiesPreview.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
                 VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
@@ -322,7 +339,11 @@ public class MainPreview extends Activity {
         ImageView imgImposta = findViewById(R.id.imgImpostaWallpaper);
         imgImposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilitiesPreview.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                        true
+                );
 
                 VariabiliStatichePreview.getInstance().getImgPreview().setDrawingCacheEnabled(true);
                 VariabiliStatichePreview.getInstance().getImgPreview().buildDrawingCache();
@@ -362,7 +383,11 @@ public class MainPreview extends Activity {
                     ChangeWallpaper c = new ChangeWallpaper(context,  "IMMAGINI", src);
                     c.setWallpaperLocale(context, src);
 
-                    UtilitiesPreview.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            false
+                    );
                 } catch (IOException ignored) {
                 }
             }
@@ -371,7 +396,11 @@ public class MainPreview extends Activity {
         ImageView imgCopiaSuSfondi = act.findViewById(R.id.imgCopiaSuSfondi);
         imgCopiaSuSfondi.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UtilitiesPreview.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                        true
+                );
                 StrutturaImmaginiLibrary s = VariabiliStatichePreview.getInstance().getStrutturaImmagine();
 
                 String Path = context.getFilesDir() + "/Immagini/";
@@ -408,7 +437,11 @@ public class MainPreview extends Activity {
                     ChiamateWsWPRefresh ws = new ChiamateWsWPRefresh(context);
                     ws.ScriveImmagineSuSfondiLocale("DaImmagini/" + s.getNomeFile(), result);
                 } catch (Exception e) {
-                    UtilitiesPreview.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            false
+                    );
                 }
             }
         });

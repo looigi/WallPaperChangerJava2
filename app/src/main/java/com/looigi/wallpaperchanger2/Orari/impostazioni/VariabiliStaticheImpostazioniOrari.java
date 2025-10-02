@@ -1,6 +1,7 @@
 package com.looigi.wallpaperchanger2.Orari.impostazioni;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -15,8 +16,6 @@ import com.looigi.wallpaperchanger2.Orari.strutture.StrutturaMezzi;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheImpostazioniOrari {
     private static VariabiliStaticheImpostazioniOrari instance = null;
@@ -33,7 +32,7 @@ public class VariabiliStaticheImpostazioniOrari {
     }
 
     public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaOrari + "/"; // "http://www.wsorari.looigi.it/"; // "http://looigi.no-ip.biz:1071/";
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private LinearLayout layGestione;
     private String Modalita;
     private EditText edtRicercaTestoNuovo;
@@ -375,11 +374,11 @@ public class VariabiliStaticheImpostazioniOrari {
         this.layGestione = layGestione;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

@@ -16,8 +16,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.ImmagineZoomabile;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheGPS {
     private static VariabiliStaticheGPS instance = null;
     // private db_dati_gps db;
@@ -60,7 +58,7 @@ public class VariabiliStaticheGPS {
     private boolean accuracyAttiva = true;
     // private boolean bloccoPerWifi = true;
     private boolean MappeAperte = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     private ListView lstFilesRemoti;
     private TextView txtMappa;
     private boolean primoPassaggio = true;
@@ -189,11 +187,11 @@ public class VariabiliStaticheGPS {
         this.lstFilesRemoti = lstFilesRemoti;
     }
 
-    public GifImageView getImgAttesa() {
+    public ImageView getImgAttesa() {
         return imgAttesa;
     }
 
-    public void setImgAttesa(GifImageView imgAttesa) {
+    public void setImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 

@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.Player.UtilityPlayer;
 import com.looigi.wallpaperchanger2.Player.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
@@ -107,7 +108,12 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
         TipoOperazione = "ScriveImmagineSuLocale";
 
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
+
         Esegue(
                 RadiceWS_Locale + ws_Locale + Urletto,
                 TipoOperazione,
@@ -184,7 +190,12 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
         TipoOperazione = "ScriveImmagineSuIoNos";
 
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
+
         Esegue(
                 RadiceWS_IoNos + ws_IoNos + Urletto,
                 TipoOperazione,
@@ -414,7 +425,11 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
 
     private void fScriveImmagineSuIoNos(String result) {
         UtilityPlayer.getInstance().AttesaSI(false);
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityWallpaper.getInstance().VisualizzaErrore(context, result);
@@ -424,8 +439,16 @@ public class ChiamateWsWPRefresh implements TaskDelegate {
     }
 
     private void fScriveImmagineSuLocale(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
-        UtilitiesPreview.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                false
+        );
         if (result.contains("ERROR:") || result.toUpperCase().contains("ANYTYPE")) {
             UtilityPlayer.getInstance().AttesaSI(false);
 

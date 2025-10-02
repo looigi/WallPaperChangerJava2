@@ -88,7 +88,11 @@ public class ChiamateWSMIU implements TaskDelegate {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
-        VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso().setVisibility(LinearLayout.VISIBLE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -125,7 +129,11 @@ public class ChiamateWSMIU implements TaskDelegate {
             public void run() {
                 UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-                UtilityImmagini.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmagini.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "ImmaginiUgualiMobile":
@@ -139,7 +147,11 @@ public class ChiamateWSMIU implements TaskDelegate {
                         break;
                 }
 
-                VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso().setVisibility(LinearLayout.GONE);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliImmaginiUguali.getInstance().getImgCaricamentoInCorso(),
+                        false
+                );
             }
         };
         handlerTimer.postDelayed(rTimer, 100);

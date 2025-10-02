@@ -13,8 +13,6 @@ import com.looigi.wallpaperchanger2.utilities.ImmagineZoomabile;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheVolti {
     private static VariabiliStaticheVolti instance = null;
 

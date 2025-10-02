@@ -380,14 +380,17 @@ public class MainPazzia extends Activity {
             VariabiliStatichePazzia.getInstance().setGiaPartito(true);
 
             UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    context,
                     VariabiliStatichePazzia.getInstance().getImgCaricamentoPEN(),
                     false
             );
             UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    context,
                     VariabiliStatichePazzia.getInstance().getImgCaricamentoIMM(),
                     false
             );
             UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                    context,
                     VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
                     false
             );

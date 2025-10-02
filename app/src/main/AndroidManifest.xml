@@ -155,7 +155,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".Notifiche.notificaTasti.ActivityDiStart"
+            android:name=".UtilitiesVarie.ActivityDiStart"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize" />
@@ -214,7 +214,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ImmaginiOnLine.ImmaginiUtility.classeControllo.MainControlloImmagini"
+            android:name=".ImmaginiOnLine.ImmaginiControllo.MainControlloImmagini"
             android:excludeFromRecents="true"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize" />

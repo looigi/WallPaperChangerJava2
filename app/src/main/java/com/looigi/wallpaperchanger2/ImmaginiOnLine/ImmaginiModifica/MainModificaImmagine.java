@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.canhub.cropper.CropImageView;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Detector.UtilityDetector;
 import com.looigi.wallpaperchanger2.Detector.VariabiliStaticheDetector;
@@ -367,7 +368,11 @@ public class MainModificaImmagine extends Activity {
         txtAngolo.setText(Integer.toString(Angolo));
         txtInformazioni = act.findViewById(R.id.txtImmagineDati);
         VariabiliStaticheModificaImmagine.getInstance().setImgAttendere(act.findViewById(R.id.imgAttendere));
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         impostaCrop();
 

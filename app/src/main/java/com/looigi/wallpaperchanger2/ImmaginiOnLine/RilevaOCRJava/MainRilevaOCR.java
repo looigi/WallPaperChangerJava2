@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.webService.ChiamateWSRilevaOCR;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 public class MainRilevaOCR extends Activity {
     private Context context;
@@ -42,12 +43,24 @@ public class MainRilevaOCR extends Activity {
 
         VariabiliStaticheRilevaOCRJava.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOCR));
         if (!VariabiliStaticheRilevaOCRJava.getInstance().isGiaEntrato()) {
-            UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                    false
+            );
         } else {
             if (VariabiliStaticheRilevaOCRJava.getInstance().isStaElaborando()) {
-                UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                        true
+                );
             } else {
-                UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                        false
+                );
             }
         }
 
@@ -168,6 +181,12 @@ public class MainRilevaOCR extends Activity {
             stoChiudendo = true;
             GestioneNotificheOCR.getInstance().RimuoviNotifica();
             VariabiliStaticheRilevaOCRJava.getInstance().setGiaEntrato(false);
+
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            if (wakeLock != null && wakeLock.isHeld()) {
+                wakeLock.release();
+            }
+
             act.finish();
         // } else {
         //     showNotification();
@@ -181,10 +200,6 @@ public class MainRilevaOCR extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 VariabiliStaticheRilevaOCRJava.getInstance().setStaElaborando(false);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                if (wakeLock != null && wakeLock.isHeld()) {
-                    wakeLock.release();
-                }
                 this.finish();
 
                 return true;

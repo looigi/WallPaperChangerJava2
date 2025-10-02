@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.UtilitiesOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
@@ -122,7 +123,11 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
 
-        UtilitiesOCR.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheOCR.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -146,7 +151,11 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilitiesOCR.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheOCR.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "RitornaDestinazioni":

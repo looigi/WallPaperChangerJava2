@@ -29,8 +29,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheLazio {
     private static VariabiliStaticheLazio instance = null;
 
@@ -47,7 +45,7 @@ public class VariabiliStaticheLazio {
 
     public static final String UrlWS = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaLazio + "/"; // "http://www.wslazio.looigi.it/";
     // public static final String UrlMedia = "http://www.totomiomedia.looigi.it/StemmiSquadre/";
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private List<StrutturaAnni> Anni = new ArrayList<>();
     private Spinner spnAnni;
     private String PathLazio;
@@ -904,11 +902,11 @@ public class VariabiliStaticheLazio {
         Anni = anni;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

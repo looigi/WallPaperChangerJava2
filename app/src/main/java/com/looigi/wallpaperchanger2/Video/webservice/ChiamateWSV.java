@@ -3,6 +3,7 @@ package com.looigi.wallpaperchanger2.Video.webservice;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.Pazzia.UtilityPazzia;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class ChiamateWSV implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Video";
     //private LetturaWSAsincrona bckAsyncTask;
@@ -30,14 +29,14 @@ public class ChiamateWSV implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
     private String daDove;
 
     public ChiamateWSV(Context context) {
         this.context = context;
     }
 
-    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+    public void ImpostaImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 
@@ -61,6 +60,7 @@ public class ChiamateWSV implements TaskDelegate {
                 break;
             case "PAZZIA":
                 UtilityPazzia.getInstance().ImpostaAttesaPazzia(
+                        context,
                         VariabiliStatichePazzia.getInstance().getImgCaricamentoVID(),
                         true
                 );

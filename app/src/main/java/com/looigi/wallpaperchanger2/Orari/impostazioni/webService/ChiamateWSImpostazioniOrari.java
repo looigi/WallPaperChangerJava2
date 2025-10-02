@@ -247,7 +247,11 @@ public class ChiamateWSImpostazioniOrari implements TaskDelegateImpostazioniOrar
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
-        UtilityImpostazioniOrari.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheImpostazioniOrari.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -271,7 +275,11 @@ public class ChiamateWSImpostazioniOrari implements TaskDelegateImpostazioniOrar
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilityImpostazioniOrari.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheImpostazioniOrari.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "GestionePortata":
@@ -309,7 +317,11 @@ public class ChiamateWSImpostazioniOrari implements TaskDelegateImpostazioniOrar
                         break;
                 }
 
-                VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheOrari.getInstance().getImgCaricamento(),
+                        false
+                );
             }
         };
         handlerTimer.postDelayed(rTimer, 100);

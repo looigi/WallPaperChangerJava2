@@ -39,7 +39,11 @@ public class DownloadImmagineFET {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        UtilityFetekkie.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                true
+        );
 
         PercorsoDIR = context.getFilesDir() + "/Immagini";
 
@@ -95,7 +99,11 @@ public class DownloadImmagineFET {
                         }
                         in = null;
                     }
-                    UtilityFetekkie.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {
@@ -186,7 +194,12 @@ public class DownloadImmagineFET {
     }
 
     private void TermineEsecuzione() {
-        UtilityFetekkie.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                false
+        );
+
     }
 
     public void BloccaEsecuzione() {

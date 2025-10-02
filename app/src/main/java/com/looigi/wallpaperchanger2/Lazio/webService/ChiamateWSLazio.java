@@ -174,8 +174,16 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void ScriveRisultati() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="ScriveRisultati?" +
             "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato();
@@ -194,8 +202,18 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     private CheckBox chkFatta;
 
     public void RitornaFatte(CheckBox chkFatta, String Squadra) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+        );
+
+
         this.chkFatta = chkFatta;
 
         String Urletto="RitornaFatte?" +
@@ -214,8 +232,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void AggiungeModificaGiocatore() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Cognome = VariabiliStaticheLazio.getInstance().getEdtCognome().getText().toString();
         String Nome = VariabiliStaticheLazio.getInstance().getEdtNome().getText().toString();
@@ -293,8 +322,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaGiocatoriPerSalvataggio(int Dove) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         DovePerSalvataggioGiocatori = Dove;
 
@@ -377,8 +417,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaGiocatori() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Urletto="RitornaGiocatori?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -396,8 +447,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaRuoli(boolean RefreshDati) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -405,8 +467,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             if (Files.getInstance().EsisteFile(PathFile + "/" + NomeFile)) {
                 String Dati = Files.getInstance().LeggeFile(PathFile, NomeFile);
                 if (!Dati.isEmpty()) {
-                    UtilityLazio.getInstance().ImpostaAttesa(false);
-                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
 
                     fRitornaRuoli(Dati);
                     return;
@@ -428,8 +501,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaStati(boolean RefreshDati) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -440,8 +524,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 if (!Dati.isEmpty()) {
                     fRitornaStati(Dati);
 
-                    UtilityLazio.getInstance().ImpostaAttesa(false);
-                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
                     return;
                 }
             }
@@ -461,8 +556,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaFonti(boolean RefreshDati) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -473,8 +579,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 if (!Dati.isEmpty()) {
                     fRitornaFonti(Dati);
 
-                    UtilityLazio.getInstance().ImpostaAttesa(false);
-                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
                     return;
                 }
             }
@@ -494,8 +611,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void GestioneFonte() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idFonte = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         String Fonte = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
@@ -517,8 +645,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void EliminaFonte() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idFonte = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
@@ -538,8 +677,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void GestioneStato() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idStato = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         String Stato = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
@@ -561,8 +711,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void EliminaStato() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idStato = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
@@ -582,8 +743,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void GestioneRuolo() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idRuolo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         String Ruolo = UtilitiesGlobali.getInstance().MetteMaiuscole(VariabiliStaticheLazio.getInstance().getEdtValore1().getText().toString());
@@ -605,8 +777,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void EliminaRuolo() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String idRuolo = String.valueOf(VariabiliStaticheLazio.getInstance().getIdOggettoModificato());
         VariabiliStaticheLazio.getInstance().setIdOggettoModificato(-1);
@@ -626,8 +809,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaMercato() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Urletto="RitornaMercato?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -646,8 +840,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaCalendario() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Urletto="RitornaCalendario?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -666,8 +871,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaClassifica() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Urletto="RitornaClassifica?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -686,8 +902,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void AggiungeTuttiGliAllenatori() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         Allenatori allenatori = VariabiliStaticheApiFootball.getInstance().getAllenatoriSquadraScelta();
         String Cognomi = "";
@@ -777,8 +1004,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     10000,
                     ApriDialog); */
         } else {
-            UtilityLazio.getInstance().ImpostaAttesa(false);
-            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
 
             UtilitiesGlobali.getInstance().ApreToast(context, "Squadra non rilevata: " +
                     VariabiliStaticheApiFootball.getInstance().getNomeSquadraScelta());
@@ -786,8 +1024,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaSquadre() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Urletto="RitornaSquadre?" +
                 "idAnno=" + VariabiliStaticheLazio.getInstance().getIdAnnoSelezionato() +
@@ -805,8 +1054,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaCompetizioni(boolean RefreshDati) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -816,8 +1076,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 if (!Dati.isEmpty()) {
                     fRitornaCompetizioni(Dati);
 
-                    UtilityLazio.getInstance().ImpostaAttesa(false);
-                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
                     return;
                 }
             }
@@ -855,8 +1126,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
 
 
     public void ControllaSeEsistePartita(Partita p) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String Casa = p.response.get(0).teams.home.name;
         String Fuori = p.response.get(0).teams.away.name;
@@ -884,8 +1166,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void AggiungeSquadra(int Anno, String Squadra, int idTipologia) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         String NomeSquadra = Squadra; // .replace("AC ", "").replace("AS ", "")
                 // .replace("Ac ", "").replace("As ", "");
@@ -908,8 +1201,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaAnni(boolean RefreshDati) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         if (!RefreshDati) {
             String PathFile = VariabiliStaticheLazio.getInstance().getPathLazio();
@@ -919,8 +1223,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 if (!Dati.isEmpty()) {
                     fRitornaAnni(Dati);
 
-                    UtilityLazio.getInstance().ImpostaAttesa(false);
-                    VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                            UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
                     return;
                 }
             }
@@ -940,8 +1255,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void AggiungeModificaCalendario(String idPartita) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         FixtureData datiPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                 VariabiliStaticheApiFootball.getInstance().getIdPartitaDaSalvare()
@@ -1037,8 +1363,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     private String AggiuntaGiocatori = "";
 
     public void AggiungeGiocatori(int Dove) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         DovePerSalvataggioGiocatori = Dove;
 
@@ -1121,8 +1458,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                         ApriDialog);
             }
         } else {
-            UtilityLazio.getInstance().ImpostaAttesa(false);
-            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
 
             if (Dove == 0) {
                 Handler handlerTimer = new Handler(Looper.getMainLooper());
@@ -1189,8 +1537,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void SalvaDettaglio() {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+);
+
+
 
         FixtureData datiPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
                 VariabiliStaticheApiFootball.getInstance().getIdPartitaDaSalvare()
@@ -1419,8 +1778,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
-        UtilityLazio.getInstance().ImpostaAttesa(true);
-        VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                true
+        );
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    true
+        );
+
+
 
         long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = Long.toString(tsLong);
@@ -1543,8 +1913,19 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                         break;
                 }
 
-                UtilityLazio.getInstance().ImpostaAttesa(false);
-                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
+                UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
@@ -1680,7 +2061,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 u.AggiornaFileFatti(VariabiliStaticheApiFootball.getInstance().getNomeSquadraScelta(), attuale, true);
                 u.SalvaTutteLePartite(context);
             } else {
-                VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
 
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoTutteLePartite(false);
                 VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(false);
@@ -1704,7 +2091,13 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                 handlerTimer.postDelayed(rTimer, 5000);
             }
         } else {
-            VariabiliStaticheApiFootball.getInstance().ImpostaAttesa(false);
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
+                    false
+);
+
+
 
             VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(false);
 

@@ -409,13 +409,11 @@
         android:background="@drawable/bordo_arrotondato_bianco_non_sfumato_molto_trasp"
         android:layout_height="wrap_content">
 
-        <pl.droidsonroids.gif.GifImageView
+        <ImageView
             android:id="@+id/imgCaricamentoPlayer"
             android:src="@drawable/loading"
             android:layout_width="150dp"
-            android:layout_height="150dp">
-
-        </pl.droidsonroids.gif.GifImageView>
+            android:layout_height="150dp" />
 
         <TextView
             android:id="@+id/txtOperazionePlayer"

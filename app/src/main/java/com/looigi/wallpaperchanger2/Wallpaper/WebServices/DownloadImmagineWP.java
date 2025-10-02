@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.MainModificaImmagine;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.Pennetta.UtilityPennetta;
+import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.Wallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.Wallpaper.StrutturaImmagine;
 import com.looigi.wallpaperchanger2.Wallpaper.UtilityWallpaper;
@@ -113,7 +114,11 @@ public class DownloadImmagineWP {
                         }
                         in = null;
                     }
-                    UtilityPennetta.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {

@@ -17,8 +17,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 import java.util.Date;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheOrari {
     private static VariabiliStaticheOrari instance = null;
 
@@ -38,7 +36,7 @@ public class VariabiliStaticheOrari {
 
     private Date dataAttuale;
     private int idUtente = 1;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private StrutturaDatiGiornata datiGiornata;
 
     private LinearLayout layContenitore;
@@ -319,11 +317,11 @@ public class VariabiliStaticheOrari {
         this.datiGiornata = datiGiornata;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 

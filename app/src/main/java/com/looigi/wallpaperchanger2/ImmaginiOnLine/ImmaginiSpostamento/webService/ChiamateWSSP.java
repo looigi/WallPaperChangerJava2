@@ -32,7 +32,11 @@ public class ChiamateWSSP implements TaskDelegateSP {
     }
 
     public void TornaInformazioniImmagineDaID(String idImmagine) {
-        VariabiliStaticheSpostamento.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                true
+        );
 
         String Urletto="TornaInfoImmaginiDaId?idImmagine=" + idImmagine;
 
@@ -49,7 +53,11 @@ public class ChiamateWSSP implements TaskDelegateSP {
     }
 
     public void TornaCategoriePerImmaginiContenute(boolean Refresh) {
-        VariabiliStaticheSpostamento.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                true
+        );
 
         if (!Refresh) {
             db_dati_spostamento db = new db_dati_spostamento(context);
@@ -111,7 +119,11 @@ public class ChiamateWSSP implements TaskDelegateSP {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                VariabiliStaticheSpostamento.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheSpostamento.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "TornaCategoriePerImmaginiContenute":

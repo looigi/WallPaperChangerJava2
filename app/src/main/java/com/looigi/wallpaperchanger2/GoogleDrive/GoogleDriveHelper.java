@@ -105,7 +105,7 @@ public class GoogleDriveHelper {
     public String uploadFile(Context context, String localFilePath, String fileName, String folderId) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return "";
         }
 
@@ -150,7 +150,7 @@ public class GoogleDriveHelper {
     public void downloadFile(String fileId, String destinationPath) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return;
         }
 
@@ -203,7 +203,7 @@ public class GoogleDriveHelper {
     public void listFolders(FoldersListCallback callback, String folderId) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return;
         }
 
@@ -254,7 +254,7 @@ public class GoogleDriveHelper {
     public void listFilesInFolder(String folderId, FilesListCallback callback) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return;
         }
 
@@ -297,7 +297,7 @@ public class GoogleDriveHelper {
     public void createFolder(String parentFolderId, String folderName, FolderCreationCallback callback) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return;
         }
 
@@ -348,7 +348,7 @@ public class GoogleDriveHelper {
     public void getFolderIdByName(String parentFolderId, String folderName, FolderIdCallback callback) {
         if (driveService == null) {
             UtilitiesGlobali.getInstance().ApreToast(context, "Servizio Drive non inizializzato");
-            UtilityGoogleDrive.getInstance().ImpostaAttesa(false, false);
+            UtilityGoogleDrive.getInstance().ImpostaAttesa(context, false, false);
             return;
         }
 

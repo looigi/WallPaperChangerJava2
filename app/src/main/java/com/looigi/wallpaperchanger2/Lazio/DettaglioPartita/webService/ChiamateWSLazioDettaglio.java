@@ -18,6 +18,7 @@ import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.adapters.AdapterListe
 import com.looigi.wallpaperchanger2.Lazio.DettaglioPartita.adapters.AdapterListenerMarcatoriD;
 import com.looigi.wallpaperchanger2.Lazio.Strutture.StrutturaGiocatori;
 import com.looigi.wallpaperchanger2.Lazio.VariabiliStaticheLazio;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +131,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
     public void Esegue(String Urletto, String tOperazione,
                        String NS, String SOAP_ACTION, int Timeout,
                        boolean ApriDialog) {
-        UtilityLazioDettaglio.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazioDettaglio.getInstance().getImgCaricamento(),
+                true
+        );
 
         long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = Long.toString(tsLong);
@@ -154,7 +159,11 @@ public class ChiamateWSLazioDettaglio implements TaskDelegateLazioDettaglio {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
         Runnable rTimer = new Runnable() {
             public void run() {
-                UtilityLazioDettaglio.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheLazioDettaglio.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "RitornaDettaglio":

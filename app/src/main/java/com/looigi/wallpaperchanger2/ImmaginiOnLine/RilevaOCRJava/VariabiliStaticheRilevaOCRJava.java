@@ -6,8 +6,6 @@ import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.strutture.StrutturaRilevaOCR;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class VariabiliStaticheRilevaOCRJava {
     private static VariabiliStaticheRilevaOCRJava instance = null;
 
@@ -23,7 +21,7 @@ public class VariabiliStaticheRilevaOCRJava {
     }
 
     private Context context;
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private StrutturaRilevaOCR immagineAttuale;
     private ImageView imgImmagine;
     private boolean StaElaborando = false;
@@ -108,11 +106,11 @@ public class VariabiliStaticheRilevaOCRJava {
         this.immagineAttuale = immagineAttuale;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 }

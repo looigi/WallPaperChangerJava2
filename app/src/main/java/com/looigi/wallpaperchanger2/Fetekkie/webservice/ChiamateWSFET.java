@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.looigi.wallpaperchanger2.Fetekkie.db_dati_fetekkie;
@@ -18,8 +19,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
-
 public class ChiamateWSFET implements TaskDelegate {
     private static final String NomeMaschera = "Chiamate_WS_Immagini_FET";
     // private LetturaWSAsincrona bckAsyncTask;
@@ -31,13 +30,13 @@ public class ChiamateWSFET implements TaskDelegate {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
-    private GifImageView imgAttesa;
+    private ImageView imgAttesa;
 
     public ChiamateWSFET(Context context) {
         this.context = context;
     }
 
-    public void ImpostaImgAttesa(GifImageView imgAttesa) {
+    public void ImpostaImgAttesa(ImageView imgAttesa) {
         this.imgAttesa = imgAttesa;
     }
 
@@ -98,7 +97,11 @@ public class ChiamateWSFET implements TaskDelegate {
     }
 
     public void ModificaImmagine(StrutturaImmaginiLibraryFE s, String stringaBase64, boolean Sovrascrive) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                true
+        );
 
         String Urletto="ModificaImmagineFetekkie?" +
                 "Categoria=" + s.getCategoria() +
@@ -185,7 +188,11 @@ public class ChiamateWSFET implements TaskDelegate {
                        boolean ApriDialog) {
 
         UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera, "Chiamata WS " + TipoOperazione + ". OK");
-        UtilityFetekkie.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                true
+        );
 
         Long tsLong = System.currentTimeMillis()/1000;
         String TimeStampAttuale = tsLong.toString();
@@ -222,7 +229,11 @@ public class ChiamateWSFET implements TaskDelegate {
             public void run() {
                 UtilityFetekkie.getInstance().ScriveLog(context, NomeMaschera, "Ritorno WS " + TipoOperazione + ". OK");
 
-                UtilityFetekkie.getInstance().Attesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheMostraImmaginiFetekkie.getInstance().getImgCaricamento(),
+                        false
+                );
 
                 switch (TipoOperazione) {
                     case "ProssimaImmagine":
@@ -291,7 +302,11 @@ public class ChiamateWSFET implements TaskDelegate {
     }
 
     private void fModificaImmagine(String result) {
-        VariabiliStaticheModificaImmagine.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificaImmagine.getInstance().getImgAttendere(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Modifica Immagine", result);
         if (ritorno) {

@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.VariabiliStaticheUtilityImmagini;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Lazio.Strutture.StrutturaFonti;
 import com.looigi.wallpaperchanger2.Lazio.Strutture.StrutturaRuoli;
@@ -25,6 +26,7 @@ import com.looigi.wallpaperchanger2.Lazio.api_football.MainApiFootball;
 import com.looigi.wallpaperchanger2.Lazio.api_football.VariabiliStaticheApiFootball;
 import com.looigi.wallpaperchanger2.Lazio.webService.ChiamateWSLazio;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Files;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.io.File;
 import java.util.Calendar;
@@ -45,7 +47,12 @@ public class MainLazio extends Activity {
         VariabiliStaticheLazio.getInstance().setPathLazio(context.getFilesDir() + "/Lazio");
 
         VariabiliStaticheLazio.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoLazio));
-        VariabiliStaticheLazio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
+
         VariabiliStaticheLazio.getInstance().setSpnAnni(findViewById(R.id.spnAnni));
         VariabiliStaticheLazio.getInstance().setSpnCompetizioni(findViewById(R.id.spnCompetizione));
 
@@ -601,7 +608,11 @@ public class MainLazio extends Activity {
 
         UtilityLazio.getInstance().VisualizzaMaschera();
 
-        UtilityLazio.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheLazio.getInstance().getImgCaricamento(),
+                false
+        );
 
         ChiamateWSLazio ws1 = new ChiamateWSLazio(context);
         ws1.RitornaCompetizioni(false);

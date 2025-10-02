@@ -102,13 +102,11 @@
     </LinearLayout>
     -->
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoMIU"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
-        android:layout_height="100dp">
-
-    </pl.droidsonroids.gif.GifImageView>
+        android:layout_height="100dp" />
 
 </RelativeLayout>

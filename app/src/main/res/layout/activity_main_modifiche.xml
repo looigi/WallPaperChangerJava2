@@ -546,7 +546,7 @@
         </LinearLayout>
     </LinearLayout> -->
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/imgCaricamentoModifiche"
         android:src="@drawable/loading"
         android:layout_centerInParent="true"

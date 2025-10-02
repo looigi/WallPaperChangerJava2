@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.MainStart;
 import com.looigi.wallpaperchanger2.Backup.UtilityBackup;
 import com.looigi.wallpaperchanger2.Mappe.MappeEGps.adapters.AdapterListenerFilesRemoti;
@@ -152,7 +153,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         return Ritorno;
     }
     public void SalvaTuttiIDati() {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Riga = VariabiliStaticheModificheCodice.getInstance().getListaAppoggioDaSalvare().get(
                 VariabiliStaticheModificheCodice.getInstance().getQualeIdDaSalvare()
@@ -201,7 +206,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaNumeroModificheTotali(String idProgetto, String idModulo, String idSezione) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaNumeroModificheTotali?" +
                 "idProgetto=" + idProgetto +
@@ -220,7 +229,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaConteggi() {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaConteggi";
 
@@ -236,7 +249,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void InserisceModificaStato(String idStato, String Stato, boolean DaGestioneStati) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
         this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="InserisceModificaStato?" +
@@ -255,7 +272,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void InserisceModificaProgetto(String idProgetto, String Valore) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="InserisceModificaProgetto?" +
                 "idProgetto=" + idProgetto +
@@ -273,7 +294,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void InserisceModificaModulo(String idProgetto, String idModulo, String Valore) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="InserisceModificaModulo?" +
                 "idProgetto=" + idProgetto +
@@ -292,7 +317,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void InserisceModificaSezione(String idProgetto, String idModulo, String idSezione, String Valore) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="InserisceModificaSezione?" +
                 "idProgetto=" + idProgetto +
@@ -312,7 +341,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void InserisceModificaModifica(String idProgetto, String idModulo, String idSezione, String idModifica, String Valore, String idStato) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="InserisceModificaModifica?" +
                 "idProgetto=" + idProgetto +
@@ -334,7 +367,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaStato(String idStato, boolean DaGestioneStati) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
         this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="EliminaStato?idStato=" + idStato;
@@ -351,7 +388,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaProgetto(String idProgetto) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="EliminaProgetto?idProgetto=" + idProgetto;
 
@@ -367,7 +408,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaModulo(String idProgetto, String idModulo) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="EliminaModulo?idProgetto=" + idProgetto + "&idModulo=" + idModulo;
 
@@ -383,7 +428,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaSezione(String idProgetto, String idModulo, String idSezione) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="EliminaSezione?idProgetto=" + idProgetto + "&idModulo=" + idModulo + "&idSezione=" + idSezione;
 
@@ -399,7 +448,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaModifica(String idProgetto, String idModulo, String idSezione, String idModifica) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="EliminaModifica?idProgetto=" + idProgetto + "&idModulo=" + idModulo + "&idSezione=" + idSezione + "&idModifica=" + idModifica;
 
@@ -417,7 +470,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     private boolean DaGestioneStati = false;
 
     public void RitornaStati(boolean DaGestioneStati) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
         this.DaGestioneStati = DaGestioneStati;
 
         String Urletto="RitornaStati";
@@ -434,7 +491,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaProgetti() {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaProgetti";
 
@@ -450,7 +511,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaModuli(String idProgetto) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaModuli?" +
                 "idProgetto=" + idProgetto;
@@ -467,7 +532,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaSezioni(String idProgetto, String idModulo) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaSezioni?" +
                 "idProgetto=" + idProgetto +
@@ -485,7 +554,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaModifiche(String idProgetto, String idModulo, String idSezione) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaModifiche?" +
                 "idProgetto=" + idProgetto +
@@ -504,7 +577,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void RitornaFilesRemoti() {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="RitornaFilesGPS";
 
@@ -520,7 +597,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void EliminaFileRemoto(String QualeFile, String NomeFile) {
-        UtilityGPS.getInstance().ImpostaAttesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                true
+        );
 
         String Urletto="EliminaFile?" +
                 "&TipoFile=" + QualeFile +
@@ -550,17 +631,29 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
         switch (QualeFile) {
             case "MODIFICHE":
-                VariabiliStaticheModificheCodice.getInstance().Attende(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheModificheCodice.getInstance().getImgCaricamento(),
+                        true
+                );
                 PathModifiche = context.getFilesDir() + "/DB/dati_modifiche.db";
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
             case "BACKUP":
-                UtilityBackup.getInstance().Attende(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        UtilityBackup.getInstance().getImgCaricamento(),
+                        true
+                );
                 PathModifiche = NomeFile;
                 b64 = ConvertFileToBase64(PathModifiche);
                 break;
             case "GPS":
-                UtilityGPS.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                        false
+                );
                 PathModifiche = NomeFile;
                 String[] n = NomeFile.split("/", -1);
                 sNomeFile = n[n.length - 1];
@@ -589,13 +682,25 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
 
         switch (TipoFile) {
             case "MODIFICHE":
-                VariabiliStaticheModificheCodice.getInstance().Attende(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheModificheCodice.getInstance().getImgCaricamento(),
+                        true
+                );
                 break;
             case "BACKUP":
-                UtilityBackup.getInstance().Attende(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        UtilityBackup.getInstance().getImgCaricamento(),
+                        true
+                );
                 break;
             case "GPS":
-                UtilityGPS.getInstance().ImpostaAttesa(true);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                        true
+                );
                 break;
         }
 
@@ -742,7 +847,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     public void fRitornaNumeroModificheTotali(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna numero modifiche", result);
         if (!ritorno) {
@@ -755,7 +864,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaConteggi(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna conteggi", result);
         if (!ritorno) {
@@ -828,7 +941,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaStati(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna stati", result);
         if (!ritorno) {
@@ -883,7 +1000,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaProgetti(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna progetti", result);
         if (!ritorno) {
@@ -992,7 +1113,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaModuli(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna moduli", result);
         if (!ritorno) {
@@ -1116,7 +1241,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaSezioni(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna sezioni", result);
         if (!ritorno) {
@@ -1227,7 +1356,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaModifiche(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna modifiche", result);
         if (!ritorno) {
@@ -1315,7 +1448,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaStato(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina stato", result);
         if (!ritorno) {
@@ -1336,7 +1473,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaProgetto(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina progetto", result);
         if (!ritorno) {
@@ -1357,7 +1498,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaModulo(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina modulo", result);
         if (!ritorno) {
@@ -1380,7 +1525,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaSezione(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina sezione", result);
         if (!ritorno) {
@@ -1404,7 +1553,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaModifica(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina modifica", result);
         if (!ritorno) {
@@ -1429,7 +1582,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fInserisceModificaStato(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Inserisce modifica stato", result);
         if (!ritorno) {
@@ -1456,7 +1613,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fInserisceModificaProgetto(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Inserisce modifica progetto", result);
         if (!ritorno) {
@@ -1479,7 +1640,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fInserisceModificaModulo(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Inserisce modifica modulo", result);
         if (!ritorno) {
@@ -1504,7 +1669,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fInserisceModificaSezione(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Inserisce modifica sezione", result);
         if (!ritorno) {
@@ -1530,7 +1699,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fInserisceModificaModifica(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Inserisce modifica modifica", result);
         if (!ritorno) {
@@ -1557,7 +1730,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fEliminaFileRemoto(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Elimina file GPS", result);
         if (!ritorno) {
@@ -1576,7 +1753,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
     }
 
     private void fRitornaFilesGPS(String result) {
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
 
         boolean ritorno = ControllaRitorno("Ritorna files GPS", result);
         if (!ritorno) {
@@ -1635,7 +1816,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                         UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
                     }
 
-                    VariabiliStaticheModificheCodice.getInstance().Attende(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStaticheModificheCodice.getInstance().getImgCaricamento(),
+                            false
+                    );
                     break;
                 case "BACKUP":
                     Files.getInstance().CreaCartelle(context.getFilesDir() + "/Appoggio/Backup");
@@ -1688,7 +1873,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                         UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
                     }
 
-                    UtilityBackup.getInstance().Attende(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            UtilityBackup.getInstance().getImgCaricamento(),
+                            false
+                    );
                     break;
                 case "GPS":
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -1784,7 +1973,11 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         } catch (IOException e) {
             UtilitiesGlobali.getInstance().ApreToast(context, "ERROR: " + e.getMessage());
         }
-        UtilityGPS.getInstance().ImpostaAttesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                false
+        );
     }
 
     private void fEsporta(String result) {
@@ -1797,15 +1990,27 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
         switch (this.TipoFile) {
             case "MODIFICHE":
                 UtilitiesGlobali.getInstance().ApreToast(context, "DB esportato");
-                VariabiliStaticheModificheCodice.getInstance().Attende(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheModificheCodice.getInstance().getImgCaricamento(),
+                        false
+                );
                 break;
             case "BACKUP":
                 UtilitiesGlobali.getInstance().ApreToast(context, "DB esportato");
-                UtilityBackup.getInstance().Attende(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        UtilityBackup.getInstance().getImgCaricamento(),
+                        false
+                );
                 break;
             case "GPS":
                 UtilitiesGlobali.getInstance().ApreToast(context, "Files GPS esportato");
-                UtilityGPS.getInstance().ImpostaAttesa(false);
+                UtilitiesGlobali.getInstance().AttesaGif(
+                        context,
+                        VariabiliStaticheGPS.getInstance().getImgAttesa(),
+                        false
+                );
                 break;
         }
 

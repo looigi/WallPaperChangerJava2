@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ModificheCodice.GestioneStati.GestioneStati;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 public class MainModificheCodice extends Activity {
     private Context context;
@@ -37,7 +39,11 @@ public class MainModificheCodice extends Activity {
         VariabiliStaticheModificheCodice.getInstance().ScriveConteggi(context);
 
         VariabiliStaticheModificheCodice.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoModifiche));
-        VariabiliStaticheModificheCodice.getInstance().Attende(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheModificheCodice.getInstance().getImgCaricamento(),
+                false
+        );
 
         VariabiliStaticheModificheCodice.getInstance().setLayTipologia(findViewById(R.id.layTipologia));
         VariabiliStaticheModificheCodice.getInstance().setTxtTipologia(findViewById(R.id.txtTipologia));

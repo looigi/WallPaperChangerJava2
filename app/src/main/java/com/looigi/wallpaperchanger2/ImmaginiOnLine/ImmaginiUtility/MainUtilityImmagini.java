@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.Fetekkie.VariabiliStaticheMostraImmaginiFetekkie;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
@@ -62,7 +63,12 @@ public class MainUtilityImmagini extends Activity {
         db.ChiudeDB();
 
         VariabiliStaticheUtilityImmagini.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoUI));
-        VariabiliStaticheUtilityImmagini.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheUtilityImmagini.getInstance().getImgCaricamento(),
+                false
+        );
+
         VariabiliStaticheUtilityImmagini.getInstance().setLstImmagini(findViewById(R.id.lstUtilityImmagini));
 
         ChiamateWSMI c = new ChiamateWSMI(context);

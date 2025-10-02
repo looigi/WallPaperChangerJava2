@@ -16,11 +16,11 @@ public class UtilityLazioDettaglio {
         return instance;
     }
 
-    public void ImpostaAttesa(boolean Come) {
+    /* public void ImpostaAttesa(boolean Come) {
         if (Come) {
             VariabiliStaticheLazioDettaglio.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
         } else {
             VariabiliStaticheLazioDettaglio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
         }
-    }
+    } */
 }

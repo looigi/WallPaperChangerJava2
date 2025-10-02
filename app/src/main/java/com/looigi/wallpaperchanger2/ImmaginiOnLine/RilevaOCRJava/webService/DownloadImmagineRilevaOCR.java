@@ -8,6 +8,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
@@ -40,7 +42,11 @@ public class DownloadImmagineRilevaOCR {
         this.immagine = immagine;
         this.Url = UrlImmagine;
 
-        UtilitiesRilevaOCRJava.getInstance().Attesa(true);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                true
+        );
 
         AttivaTimer();
 
@@ -92,7 +98,11 @@ public class DownloadImmagineRilevaOCR {
                         }
                         in = null;
                     }
-                    UtilitiesPreview.getInstance().Attesa(false);
+                    UtilitiesGlobali.getInstance().AttesaGif(
+                            context,
+                            VariabiliStatichePreview.getInstance().getImgCaricamento(),
+                            false
+                    );
                     BloccaTimer();
                     BloccaEsecuzione();
 
@@ -173,7 +183,11 @@ public class DownloadImmagineRilevaOCR {
         }
 
         // if (immagine == null) {
-        UtilitiesRilevaOCRJava.getInstance().Attesa(false);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                false
+        );
         // }
     }
 

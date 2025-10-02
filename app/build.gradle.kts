@@ -88,7 +88,9 @@ dependencies {
 
     implementation(libs.ksoap2.android)
 
-    implementation(libs.android.gif.drawable)
+    implementation("com.github.bumptech.glide:glide:5.0.5")
+    annotationProcessor("com.github.bumptech.glide:compiler:5.0.5")
+
     implementation(libs.photoview)
     implementation(libs.play.services.maps)
 

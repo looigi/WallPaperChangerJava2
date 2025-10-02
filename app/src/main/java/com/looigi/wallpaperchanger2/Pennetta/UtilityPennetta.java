@@ -46,7 +46,7 @@ public class UtilityPennetta {
         return instance;
     }
 
-    public void Attesa(boolean Acceso) {
+    /* public void Attesa(boolean Acceso) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +68,7 @@ public class UtilityPennetta {
                 }
             }
         }, 50);
-    }
+    } */
 
     public void VisualizzaErrore(Context context, String Errore) {
         // VariabiliStaticheServizio.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);

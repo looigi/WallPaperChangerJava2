@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Orari.adapters.AdapterListenerMezzi;
 import com.looigi.wallpaperchanger2.Orari.adapters.AdapterListenerPortate;
@@ -78,7 +79,11 @@ public class MainOrari extends Activity {
         TextView txtData = findViewById(R.id.txtData);
         TextView txtNomeGiorno = findViewById(R.id.txtNomeGiorno);
         VariabiliStaticheOrari.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoOrari));
-        VariabiliStaticheOrari.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheOrari.getInstance().getImgCaricamento(),
+                false
+        );
 
         VariabiliStaticheOrari.getInstance().setLayContenitore(findViewById(R.id.layContenitore));
         VariabiliStaticheOrari.getInstance().setTxtTipoLavoro(findViewById(R.id.txtTipoLavoro));

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -15,8 +16,6 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class VariabiliStaticheMostraImmaginiFetekkie {
     private static VariabiliStaticheMostraImmaginiFetekkie instance = null;
@@ -49,7 +48,7 @@ public class VariabiliStaticheMostraImmaginiFetekkie {
     private TextView txtCate;
     private TextView txtInfo;
     private List<StrutturaImmaginiLibraryFE> immaginiCaricate = new ArrayList<>();
-    private GifImageView imgCaricamento;
+    private ImageView imgCaricamento;
     private List<StrutturaImmagine> listaImmagini = new ArrayList<>();
     private boolean slideShowAttivo = false;
     private int secondiAttesa = 5000;
@@ -175,11 +174,11 @@ public class VariabiliStaticheMostraImmaginiFetekkie {
         this.listaImmagini = listaImmagini;
     }
 
-    public GifImageView getImgCaricamento() {
+    public ImageView getImgCaricamento() {
         return imgCaricamento;
     }
 
-    public void setImgCaricamento(GifImageView imgCaricamento) {
+    public void setImgCaricamento(ImageView imgCaricamento) {
         this.imgCaricamento = imgCaricamento;
     }
 
