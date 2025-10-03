@@ -10,6 +10,42 @@ public class StrutturaRilevaOCR {
     private String NomeFile;
     private String TestoJava;
     private String Tags;
+    private String Inizio;
+    private String QualeEmulatore;
+    private String Emulatori;
+    private String ID;
+
+    public String getInizio() {
+        return Inizio;
+    }
+
+    public void setInizio(String inizio) {
+        Inizio = inizio;
+    }
+
+    public String getQualeEmulatore() {
+        return QualeEmulatore;
+    }
+
+    public void setQualeEmulatore(String qualeEmulatore) {
+        QualeEmulatore = qualeEmulatore;
+    }
+
+    public String getEmulatori() {
+        return Emulatori;
+    }
+
+    public void setEmulatori(String emulatori) {
+        Emulatori = emulatori;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getTestoJava() {
         return TestoJava;

@@ -112,8 +112,9 @@ public class OCRPreprocessor {
     public Bitmap preprocess(Bitmap original) {
         Bitmap gray = toGrayscale(original);
         Bitmap contrast = enhanceContrast(gray);
-        Bitmap denoise = denoise(contrast);
+        // Bitmap denoise = denoise(contrast);
         // Bitmap binarized = binarize(contrast);
-        return denoise;
+
+        return contrast;
     }
 }
