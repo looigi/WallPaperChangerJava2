@@ -160,7 +160,6 @@ public class DownloadImmagineRilevaOCR {
         }
     }
 
-
     private void TermineEsecuzione() {
         if (!Errore && !isCancelled) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {

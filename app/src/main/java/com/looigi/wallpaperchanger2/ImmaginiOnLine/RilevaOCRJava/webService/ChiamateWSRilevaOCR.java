@@ -233,12 +233,20 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 s.setEmulatori(c[10]);
                 s.setID(c[11]);
 
+                int fatte = VariabiliStaticheRilevaOCRJava.getInstance().getFatte();
+                fatte += 1;
+                VariabiliStaticheRilevaOCRJava.getInstance().setFatte(fatte);
+
                 VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
-                        "Rimanenti: " + c[2] + " - " + c[5] + " (" + c[3] + ")\nIn. " + c[8] + " Em. " + c[9] + "/" + c[10] + " (" + c[11] + ")"
+                        "Fatte: " + fatte + " Rim.: " + c[2] +
+                        "\n " + c[5] + " (" + c[3] + ")" +
+                        "\nIn. " + c[8] + " Imm. " + c[0] +
+                        "\n" + "Em. " + c[9] + "/" + c[10] //  + " (" + c[11] + ")"
                 );
 
                 VariabiliStaticheRilevaOCRJava.getInstance().setMessaggioNotifica(
-                        "Rim.: " + c[2] + " In.  " + c[8] + " Em. " + c[9] + "/" + c[10] + " (" + c[11] + ")"
+                        "Fatte: " + fatte + " Rim.: " + c[2] +
+                        " Imm. " + c[0] + " Em. " + c[9] + "/" + c[10] // + " (" + c[11] + ")"
                 );
                 int conta = VariabiliStaticheRilevaOCRJava.getInstance().getContatore();
                 conta++;

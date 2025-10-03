@@ -171,8 +171,11 @@ public class UtilitiesRilevaOCRJava {
 
                         StrutturaRilevaOCR s = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale();
                         VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
-                                "Rimanenti: " + s.getQuante() + " - " + s.getNomeFile() + " (" + s.getCategoria() + ")\n" +
-                                        ScrittaRilevata
+                                "Fatte: " + VariabiliStaticheRilevaOCRJava.getInstance().getFatte() + " " +  "Rim: " + s.getQuante() +
+                                "\n" + s.getNomeFile() + "(" + s.getCategoria() + ")" +
+                                "\nIn. " + s.getInizio() + " Imm. " + s.getIdImmagine() +
+                                "\nEm. " + s.getQualeEmulatore() + "/" + s.getEmulatori() +
+                                "\n" + (ScrittaRilevata.isEmpty() ? ";" : ScrittaRilevata)
                         );
 
                         if (!ScrittaRilevata.isEmpty()) {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -176,7 +177,7 @@ public class UtilitiesLetturaInfoImmagine {
                     if (nnn.contains(".")) {
                         nnn = nnn.substring(0, nnn.indexOf("."));
                     }
-                    addDynamicText(context, nnn);
+                    addDynamicText(context, nnn, false);
                     ok = true;
 
                     String Categoria = RitornaDistanza(nnn, listaCategorie);
@@ -215,6 +216,8 @@ public class UtilitiesLetturaInfoImmagine {
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
+
+            addDynamicText(context, "", true);
         }
         // }
     }
@@ -248,7 +251,7 @@ public class UtilitiesLetturaInfoImmagine {
                     if (nnn.contains(".")) {
                         nnn = nnn.substring(0, nnn.indexOf("."));
                     }
-                    addDynamicText(context, nnn);
+                    addDynamicText(context, nnn, false);
                     ok = true;
 
                     CategorieMesse.add(nnn);
@@ -286,6 +289,8 @@ public class UtilitiesLetturaInfoImmagine {
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
+
+                addDynamicText(context, "", true);
             }
         // }
     }
@@ -405,53 +410,53 @@ public class UtilitiesLetturaInfoImmagine {
 
         // if (s != null) {
         //     if (s.getTestoJava().isEmpty()) {
-                if (immagine.getExif() != null && !immagine.getExif().isEmpty() && immagine.getExif().length() > 3) {
-                    // 68.media.tumblr.com;3a919c1d2dc25de338973cb3388743fa;§picDROP§17/01/2017 20:44:51§
-                    String Exif = immagine.getExif();
-                    List<String> a1 = new ArrayList<>();
-                    String[] appo1 = Exif.split("§");
-                    for (String a12 : appo1) {
-                        String[] a13 = a12.split(";");
-                        for (String a14 : a13) {
-                            if (a14.contains(".")) {
-                                String[] aa = a14.split("\\.", -1);
-                                for (String aaa : aa) {
-                                    if (aaa.length() > 3 && !isNumeric(aaa)) {
-                                        a1.add(aaa);
-                                    }
-                                }
-                            } else {
-                                a1.add(a14);
+        if (immagine.getExif() != null && !immagine.getExif().isEmpty() && immagine.getExif().length() > 3) {
+            // 68.media.tumblr.com;3a919c1d2dc25de338973cb3388743fa;§picDROP§17/01/2017 20:44:51§
+            String Exif = immagine.getExif();
+            List<String> a1 = new ArrayList<>();
+            String[] appo1 = Exif.split("§");
+            for (String a12 : appo1) {
+                String[] a13 = a12.split(";");
+                for (String a14 : a13) {
+                    if (a14.contains(".")) {
+                        String[] aa = a14.split("\\.", -1);
+                        for (String aaa : aa) {
+                            if (aaa.length() > 3 && !isNumeric(aaa)) {
+                                a1.add(aaa);
                             }
                         }
+                    } else {
+                        a1.add(a14);
                     }
+                }
+            }
 
-                    for (String ee : a1) {
-                        sCategorieMesse += ee + ";";
-                        String Categoria = RitornaDistanza(ee, listaCategorie);
+            for (String ee : a1) {
+                sCategorieMesse += ee + ";";
+                String Categoria = RitornaDistanza(ee, listaCategorie);
 
-                        addDynamicText(context, ee);
+                addDynamicText(context, ee, false);
 
-                        if (!Categoria.isEmpty() && !Categoria.trim().replace("\n", "").isEmpty()) {
-                            String[] c;
+                if (!Categoria.isEmpty() && !Categoria.trim().replace("\n", "").isEmpty()) {
+                    String[] c;
 
-                            if (Categoria.contains(";")) {
-                                c = Categoria.split(";");
-                            } else {
-                                c = new String[]{Categoria};
-                            }
-                            for (String cc : c) {
-                                if (!CategorieMesse.contains(cc)) {
-                                    addDynamicButton(context, cc);
-                                    layCategorie.setVisibility(LinearLayout.VISIBLE);
-                                    layTasti.setVisibility(LinearLayout.VISIBLE);
-                                    CategorieMesse.add(cc);
-                                    ok = true;
-                                }
-                            }
+                    if (Categoria.contains(";")) {
+                        c = Categoria.split(";");
+                    } else {
+                        c = new String[]{Categoria};
+                    }
+                    for (String cc : c) {
+                        if (!CategorieMesse.contains(cc)) {
+                            addDynamicButton(context, cc);
+                            layCategorie.setVisibility(LinearLayout.VISIBLE);
+                            layTasti.setVisibility(LinearLayout.VISIBLE);
+                            CategorieMesse.add(cc);
+                            ok = true;
                         }
                     }
                 }
+            }
+        }
         /*    } else {
                 if (!s.getTestoJava().equals(";")) {
                     CategorieMesse.add(s.getTestoJava());
@@ -468,6 +473,8 @@ public class UtilitiesLetturaInfoImmagine {
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
+
+            addDynamicText(context, "", true);
         }
         // }
     }
@@ -479,7 +486,7 @@ public class UtilitiesLetturaInfoImmagine {
             String[] c = Cate.split(";", -1);
             for (String cc: c) {
                 if (!cc.isEmpty() && !CategorieMesse.contains(cc)) {
-                    addDynamicText(context, cc);
+                    addDynamicText(context, cc, false);
                     CategorieMesse.add(cc);
 
                     sCategorieMesse += cc + ";";
@@ -508,6 +515,8 @@ public class UtilitiesLetturaInfoImmagine {
             if (layScritte != null && layTasti != null) {
                 layScritte.setVisibility(LinearLayout.VISIBLE);
                 layTasti.setVisibility(LinearLayout.VISIBLE);
+
+                addDynamicText(context, "", true);
             }
             StaLeggendoTesto = false;
             return;
@@ -520,6 +529,7 @@ public class UtilitiesLetturaInfoImmagine {
             recognizer.process(image)
                     .addOnSuccessListener(visionText -> {
                         // Tutto il testo rilevato
+                        boolean Trovata = false;
                         String fullText = visionText.getText();
                         // Log.d("OCR", "Testo trovato: " + fullText);
 
@@ -532,7 +542,7 @@ public class UtilitiesLetturaInfoImmagine {
                                 // Log.d("OCR", "Linea: " + line.getText());
                                 String Nome2 = line.getText().toUpperCase().trim();
                                 if (!Nome2.trim().replace("\n", "").isEmpty() && Nome2.length() > 3) {
-                                    addDynamicText(context, Nome2);
+                                    addDynamicText(context, Nome2, false);
                                     if (layScritte != null && layTasti != null) {
                                         layScritte.setVisibility(LinearLayout.VISIBLE);
                                         layTasti.setVisibility(LinearLayout.VISIBLE);
@@ -553,12 +563,17 @@ public class UtilitiesLetturaInfoImmagine {
                                             for (String cc : c) {
                                                 if (!CategorieMesse.contains(cc) && !CategorieGiaMesse.contains(cc) && cc.length() > 3) {
                                                     addDynamicButton(context, cc);
+                                                    Trovata = true;
                                                     if (layScritte != null && layTasti != null) {
                                                         layCategorie.setVisibility(LinearLayout.VISIBLE);
                                                         layTasti.setVisibility(LinearLayout.VISIBLE);
                                                     }
                                                     CategorieMesse.add(cc);
                                                 }
+                                            }
+
+                                            if (Trovata) {
+                                                addDynamicText(context, "-1-", true);
                                             }
                                         }
                                     }
@@ -623,17 +638,35 @@ public class UtilitiesLetturaInfoImmagine {
         return ritorno;
     }
 
-    private void addDynamicText(Context context, String text) {
+    private void addDynamicText(Context context, String text, boolean rigaVuota) {
+        if (text.isEmpty() || isNumeric(text)) {
+            return;
+        }
+
         TextView textView = new TextView(context);
         textView.setText(text);
         textView.setTextColor(Color.BLACK);
         textView.setTextSize(14);
         textView.setPadding(3, 3, 3, 3);
 
-        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
-                FlexboxLayout.LayoutParams.WRAP_CONTENT,
-                FlexboxLayout.LayoutParams.WRAP_CONTENT
-        );
+        FlexboxLayout.LayoutParams params;
+        if (rigaVuota) {
+            int altezzaPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    1,
+                    context.getResources().getDisplayMetrics()
+            );
+            params = new FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.MATCH_PARENT,
+                    altezzaPx
+            );
+            // textView.setBackgroundColor(Color.RED);
+        } else {
+            params = new FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+            );
+        }
         params.setMargins(1, 1, 1, 1);
 
         textView.setLayoutParams(params);

@@ -33,6 +33,15 @@ public class VariabiliStaticheRilevaOCRJava {
     public static int NOTIFICATION_CHANNEL_ID = 17;
     private String MessaggioNotifica = "";
     private int Contatore;
+    private int Fatte = 0;
+
+    public int getFatte() {
+        return Fatte;
+    }
+
+    public void setFatte(int fatte) {
+        Fatte = fatte;
+    }
 
     public Context getContext() {
         return context;

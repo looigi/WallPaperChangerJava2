@@ -8,6 +8,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
@@ -155,27 +156,29 @@ public class DownloadImmaginePreview {
 
                                 // Lettura e aggiornamento testojava e tags per singola immagine
                                 if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() != null) {
-                                    UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
                                     String TestoJava = VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTestoJava();
-                                    if (TestoJava == null) {
-                                        TestoJava = "";
-                                        VariabiliStatichePreview.getInstance().getStrutturaImmagine().setTestoJava("");
-                                    }
-                                    if (VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTags() == null) {
-                                        VariabiliStatichePreview.getInstance().getStrutturaImmagine().setTags("");
-                                    }
-                                    u.setImmagine(VariabiliStatichePreview.getInstance().getStrutturaImmagine());
-                                    u.ImpostaCategorieGiaMesse(
-                                            TestoJava.toUpperCase().trim()
-                                    );
-                                    u.ImpostaListaCategorie(VariabiliStatichePreview.getInstance().getListaCategorie());
-                                    u.ImpostaLayCategorie(VariabiliStatichePreview.getInstance().getLayCategorieRilevate());
-                                    u.ImpostaLayScritte(VariabiliStatichePreview.getInstance().getLayScritteRilevate());
-                                    u.ImpostaLayTasti(VariabiliStatichePreview.getInstance().getLayTasti());
-                                    u.setUrl(finalUrldisplay);
-                                    u.setBitmap(finalMIcon1);
+                                    if (TestoJava != null && !TestoJava.isEmpty()) {
+                                        UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
+                                        if (VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTags() == null) {
+                                            VariabiliStatichePreview.getInstance().getStrutturaImmagine().setTags("");
+                                        }
+                                        u.setImmagine(VariabiliStatichePreview.getInstance().getStrutturaImmagine());
+                                        u.ImpostaCategorieGiaMesse(
+                                                TestoJava.toUpperCase().trim()
+                                        );
+                                        u.ImpostaListaCategorie(VariabiliStatichePreview.getInstance().getListaCategorie());
+                                        u.ImpostaLayCategorie(VariabiliStatichePreview.getInstance().getLayCategorieRilevate());
+                                        u.ImpostaLayScritte(VariabiliStatichePreview.getInstance().getLayScritteRilevate());
+                                        u.ImpostaLayTasti(VariabiliStatichePreview.getInstance().getLayTasti());
+                                        u.setUrl(finalUrldisplay);
 
-                                    u.AvviaControllo();
+                                        OCRPreprocessor ocrpp = new OCRPreprocessor();
+                                        Bitmap preprocessedBitmap = ocrpp.preprocess(finalMIcon1);
+
+                                        u.setBitmap(preprocessedBitmap);
+
+                                        u.AvviaControllo();
+                                    }
                                 }
                                 // Lettura e aggiornamento testojava e tags per singola immagine
 
