@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
@@ -165,10 +166,10 @@ public class DownloadImmagineRilevaOCR {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    // OCRPreprocessor ocrpp = new OCRPreprocessor();
-                    // Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
+                    OCRPreprocessor ocrpp = new OCRPreprocessor();
+                    Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
 
-                    UtilitiesRilevaOCRJava.getInstance().setBitmap(mIcon11);
+                    UtilitiesRilevaOCRJava.getInstance().setBitmap(preprocessedBitmap);
                     UtilitiesRilevaOCRJava.getInstance().LeggeTestoSuImmagine(context);
                 }
             }, 10);
