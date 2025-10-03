@@ -35,7 +35,8 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
     }
 
     public void RitornaProssimaImmagineDaLeggereInJava() {
-        String Urletto="RitornaProssimaImmagineDaLeggereInJava";
+        String Urletto="RitornaProssimaImmagineDaLeggereInJava?" +
+                "ID=" + VariabiliStaticheStart.getInstance().getModelloTelefono().getANDROID_ID();
 
         TipoOperazione = "RitornaProssimaImmagineDaLeggereInJava";
         // ControllaTempoEsecuzione = false;

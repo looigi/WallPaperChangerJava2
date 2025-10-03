@@ -38,6 +38,7 @@ import com.looigi.wallpaperchanger2.Player.MainPlayer;
 import com.looigi.wallpaperchanger2.Player.UtilityPlayer;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.MainRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.MainUtilityImmagini;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.Video.MainMostraVideo;
 import com.looigi.wallpaperchanger2.Wallpaper.MainWallpaper;
 

@@ -31,7 +31,7 @@ import com.looigi.wallpaperchanger2.Impostazioni.MainImpostazioni;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.Files;
 import com.looigi.wallpaperchanger2.Detector.widgets.Video;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.PrendeModelloTelefono;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.TestMemory.DatiMemoria;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.TestMemory.TestMemory;
 import com.looigi.wallpaperchanger2.Wallpaper.UtilityWallpaper;

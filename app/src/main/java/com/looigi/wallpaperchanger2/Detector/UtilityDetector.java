@@ -37,7 +37,7 @@ import com.looigi.wallpaperchanger2.Pennetta.MainMostraPennetta;
 import com.looigi.wallpaperchanger2.Video.MainMostraVideo;
 import com.looigi.wallpaperchanger2.Notifiche.notificaTasti.GestioneNotificheTasti;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.BiometricManagerSingleton;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.PrendeModelloTelefono;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.log.LogInterno;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.RichiestaPath;
 import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;

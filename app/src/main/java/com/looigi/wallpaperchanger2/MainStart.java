@@ -33,6 +33,7 @@ import com.looigi.wallpaperchanger2.Onomastici.MainOnomastici;
 import com.looigi.wallpaperchanger2.Orari.MainOrari;
 import com.looigi.wallpaperchanger2.Player.GestioneNotifichePlayer;
 import com.looigi.wallpaperchanger2.Player.MainPlayer;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.EmulatorUtils;
 import com.looigi.wallpaperchanger2.Wallpaper.InizializzaMascheraWallpaper;
 import com.looigi.wallpaperchanger2.Wallpaper.MainWallpaper;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.ActivityDiStart;
@@ -45,7 +46,7 @@ import com.looigi.wallpaperchanger2.Wallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.Mappe.MappeEGps.VariabiliStaticheGPS;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.CaricaSettaggi;
-import com.looigi.wallpaperchanger2.UtilitiesVarie.PrendeModelloTelefono;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.PrendeModelloTelefono;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
@@ -750,6 +751,10 @@ public class MainStart extends Activity {
 
         PrendeModelloTelefono p = new PrendeModelloTelefono();
         String modello = p.getDeviceName();
+
+        EmulatorUtils e = new EmulatorUtils();
+        VariabiliStaticheStart.getInstance().setModelloTelefono(e.getDeviceIdentifier(this));
+
         if (!modello.contains("sdk_gphone64")) {
             String FileControllo = context.getFilesDir() + "/Controllo.txt";
             if (Files.getInstance().EsisteFile(FileControllo)) {

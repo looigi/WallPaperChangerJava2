@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.UtilitiesVarie;
+package com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono;
 
 import android.os.Build;
 import android.text.TextUtils;

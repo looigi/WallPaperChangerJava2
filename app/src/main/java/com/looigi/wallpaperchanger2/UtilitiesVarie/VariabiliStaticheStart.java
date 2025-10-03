@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.looigi.wallpaperchanger2.UtilitiesVarie.InformazioniTelefono.Strutture.StrutturaModelloTelefono;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.log.LogInterno;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.meteo.struttura.StrutturaMeteo;
 
@@ -63,8 +64,17 @@ public class VariabiliStaticheStart {
     private boolean haPresoMeteo;
     private StrutturaMeteo meteo;
     private Intent intentGPS;
+    private StrutturaModelloTelefono ModelloTelefono;
 
-    /* private boolean AllarmeAttivo = false;
+    public StrutturaModelloTelefono getModelloTelefono() {
+        return ModelloTelefono;
+    }
+
+    public void setModelloTelefono(StrutturaModelloTelefono modelloTelefono) {
+        ModelloTelefono = modelloTelefono;
+    }
+
+/* private boolean AllarmeAttivo = false;
     private Activity actAllarme;
     private boolean AllarmeInCorso = false;
     private TextView txtAllarme;
