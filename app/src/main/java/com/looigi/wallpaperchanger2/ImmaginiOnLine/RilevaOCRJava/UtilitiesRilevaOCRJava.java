@@ -87,20 +87,24 @@ public class UtilitiesRilevaOCRJava {
 
     private String ScrittaRilevata = "";
     private String TagsRilevati = "";
-    private Bitmap bitmap;
+    private Bitmap bitmap1;
+    private Bitmap bitmapOrignale;
+    private int giro;
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setBitmap(Bitmap bitmap1, Bitmap bitmapOriginale) {
+        this.bitmap1 = bitmap1;
+        this.bitmapOrignale = bitmapOriginale;
     }
 
     public void LeggeTestoSuImmagine(Context context) {
+        giro = 1;
         LeggeTagsSuImmagine(context);
     }
 
     private void LeggeTagsSuImmagine(Context context) {
         TagsRilevati = "";
 
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
+        InputImage image = InputImage.fromBitmap(bitmap1, 0);
         if (VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale().getTags().isEmpty()) {
             PrendeTags(image).addOnSuccessListener(labels -> {
                 String Tags = "";
@@ -118,7 +122,7 @@ public class UtilitiesRilevaOCRJava {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        LeggeTestoSuImmagine2(context);
+                        LeggeTestoSuImmagine2(context, bitmap1);
                     }
                 }, 50);
             });
@@ -128,108 +132,125 @@ public class UtilitiesRilevaOCRJava {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LeggeTestoSuImmagine2(context);
+                    LeggeTestoSuImmagine2(context, bitmap1);
                 }
             }, 50);
         }
     }
 
-    private void LeggeTestoSuImmagine2(Context context) {
-        if (VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale().getTestoJava().isEmpty()) {
-            ScrittaRilevata = "";
-
-            InputImage image = InputImage.fromBitmap(bitmap, 0);
-            TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-
-            recognizer.process(image)
-                    .addOnSuccessListener(visionText -> {
-                        // Tutto il testo rilevato
-                        // String fullText = visionText.getText();
-                        // Log.d("OCR", "Testo trovato: " + fullText);
-
-                        // Analizzare per blocchi/parole
-                        for (Text.TextBlock block : visionText.getTextBlocks()) {
-                            String blockText = block.getText();
-                            // Log.d("OCR", "Blocco: " + blockText);
-
-                            for (Text.Line line : block.getLines()) {
-                                // Log.d("OCR", "Linea: " + line.getText());
-                                String Nome2 = line.getText().toUpperCase().trim();
-                                if (!Nome2.trim().replace("\n", "").isEmpty() && Nome2.length() > 3) {
-                                    if (!ScrittaRilevata.contains(Nome2)) {
-                                        ScrittaRilevata += Nome2 + ";";
-                                    }
-                                }
-                            }
-                        }
-
-                        if (ScrittaRilevata.length() > 1000) {
-                            ScrittaRilevata = ScrittaRilevata.substring(0, 995) + "...";
-                        }
-
-                        StrutturaRilevaOCR s = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale();
-                        VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
-                                "Fatte: " + VariabiliStaticheRilevaOCRJava.getInstance().getFatte() + " " +  "Rim: " + s.getQuante() +
-                                "\n" + s.getNomeFile() + "(" + s.getCategoria() + ")" +
-                                "\nIn. " + s.getInizio() + " Imm. " + s.getIdImmagine() +
-                                "\nEm. " + s.getQualeEmulatore() + "/" + s.getEmulatori() +
-                                "\n" + (ScrittaRilevata.isEmpty() ? ";" : ScrittaRilevata)
-                        );
-
-                        if (!ScrittaRilevata.isEmpty()) {
-                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                    ws.aggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
-                                }
-                            }, 10);
-                        } else {
-                            ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                            ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
-                        }
-                    })
-                    .addOnFailureListener(e -> {
+    private void LeggeTestoSuImmagine2(Context context, Bitmap bitmap) {
+        leggeTestoSuImmagine2(context, bitmap, new OCRCallback() {
+            @Override
+            public void onOCRCompleted(String testoRilevato) {
+                if (VariabiliStaticheRilevaOCRJava.getInstance().getScrittaTrovata().isEmpty()) {
+                    if (giro == 1) {
+                        giro = 2;
+                        LeggeTestoSuImmagine2(context, bitmapOrignale);
+                    } else {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                // Qui sei sicuro che l’OCR è completato
                                 ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                                 ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                             }
-                        }, 10);
-                    });
-        } else {
-            StrutturaRilevaOCR s = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale();
-            VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
-                    "Rimanenti: " + s.getQuante() + " - " + s.getNomeFile() + " (" + s.getCategoria() + ")\n" +
-                            s.getTestoJava()
-            );
-            ScrittaRilevata = s.getTestoJava();
-
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.aggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
+                        }, 50);
+                    }
+                } else {
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Qui sei sicuro che l’OCR è completato
+                            ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                            ws.aggiornaTestoOcrDaJava(testoRilevato, TagsRilevati, "OCR");
+                        }
+                    }, 50);
                 }
-            }, 50);
-        }
+            }
+
+            @Override
+            public void onOCRFailed() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Qui sei sicuro che l’OCR è completato
+                        ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                        ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
+                    }
+                }, 50);
+            }
+        });
     }
 
-    /* public void Attesa(boolean Acceso) {
-        if (VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento() == null) {
+    public interface OCRCallback {
+        void onOCRCompleted(String testoRilevato);
+        void onOCRFailed();
+    }
+
+    public void leggeTestoSuImmagine2(Context context, Bitmap bitmap, OCRCallback callback) {
+        // Se abbiamo già testo salvato, usiamolo subito
+        StrutturaRilevaOCR s = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale();
+        if (!s.getTestoJava().isEmpty()) {
+            String testo = s.getTestoJava();
+            ScrittaRilevata = testo;
+
+            // Aggiorna UI
+            VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
+                    "Rimanenti: " + s.getQuante() + " - " + s.getNomeFile() + " (" + s.getCategoria() + ")\n" +
+                            testo
+            );
+
+            // Chiama callback subito
+            if (callback != null) {
+                callback.onOCRCompleted(testo);
+            }
             return;
         }
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (Acceso) {
-                    VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento().setVisibility(LinearLayout.VISIBLE);
-                } else {
-                    VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento().setVisibility(LinearLayout.GONE);
-                }
-            }
-        }, 50);
-    } */
+        // Altrimenti esegui OCR
+        ScrittaRilevata = "";
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+
+        recognizer.process(image)
+                .addOnSuccessListener(visionText -> {
+                    StringBuilder sb = new StringBuilder();
+
+                    for (Text.TextBlock block : visionText.getTextBlocks()) {
+                        for (Text.Line line : block.getLines()) {
+                            String Nome2 = line.getText().toUpperCase().trim();
+                            if (!Nome2.replace("\n", "").isEmpty() && Nome2.length() > 3 && sb.indexOf(Nome2) == -1) {
+                                sb.append(Nome2).append(";");
+                            }
+                        }
+                    }
+
+                    ScrittaRilevata = sb.toString();
+                    if (ScrittaRilevata.length() > 1000) {
+                        ScrittaRilevata = ScrittaRilevata.substring(0, 995) + "...";
+                    }
+                    VariabiliStaticheRilevaOCRJava.getInstance().setScrittaTrovata(ScrittaRilevata);
+
+                    // Aggiorna UI
+                    VariabiliStaticheRilevaOCRJava.getInstance().getTxtAvanzamento().setText(
+                            "Fatte: " + VariabiliStaticheRilevaOCRJava.getInstance().getFatte() + " " +
+                                    "Rim: " + s.getQuante() +
+                                    "\n" + s.getNomeFile() + "(" + s.getCategoria() + ")" +
+                                    "\nIn. " + s.getInizio() + " Imm. " + s.getIdImmagine() +
+                                    "\nEm. " + s.getQualeEmulatore() + "/" + s.getEmulatori() +
+                                    "\n" + (ScrittaRilevata.isEmpty() ? ";" : ScrittaRilevata)
+                    );
+
+                    // Chiamata WS
+                    if (callback != null) {
+                        callback.onOCRCompleted(ScrittaRilevata.isEmpty() ? ";" : ScrittaRilevata);
+                    }
+
+                })
+                .addOnFailureListener(e -> {
+                    if (callback != null) {
+                        callback.onOCRFailed();
+                    }
+                });
+    }
 }

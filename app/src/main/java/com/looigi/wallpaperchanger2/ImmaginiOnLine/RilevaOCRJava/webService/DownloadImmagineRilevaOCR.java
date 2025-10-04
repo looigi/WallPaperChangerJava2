@@ -167,7 +167,7 @@ public class DownloadImmagineRilevaOCR {
                     OCRPreprocessor ocrpp = new OCRPreprocessor();
                      Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
 
-                    UtilitiesRilevaOCRJava.getInstance().setBitmap(preprocessedBitmap);
+                    UtilitiesRilevaOCRJava.getInstance().setBitmap(preprocessedBitmap, mIcon11);
                     UtilitiesRilevaOCRJava.getInstance().LeggeTestoSuImmagine(context);
                 }
             }, 10);

@@ -34,6 +34,15 @@ public class VariabiliStaticheRilevaOCRJava {
     private String MessaggioNotifica = "";
     private int Contatore;
     private int Fatte = 0;
+    private String ScrittaTrovata;
+
+    public String getScrittaTrovata() {
+        return ScrittaTrovata;
+    }
+
+    public void setScrittaTrovata(String scrittaTrovata) {
+        ScrittaTrovata = scrittaTrovata;
+    }
 
     public int getFatte() {
         return Fatte;
