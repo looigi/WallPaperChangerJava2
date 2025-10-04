@@ -13,7 +13,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.UtilitiesRilevaOCRJava;
 import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
@@ -166,7 +165,7 @@ public class DownloadImmagineRilevaOCR {
                 @Override
                 public void run() {
                     OCRPreprocessor ocrpp = new OCRPreprocessor();
-                    Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
+                     Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
 
                     UtilitiesRilevaOCRJava.getInstance().setBitmap(preprocessedBitmap);
                     UtilitiesRilevaOCRJava.getInstance().LeggeTestoSuImmagine(context);
@@ -177,7 +176,7 @@ public class DownloadImmagineRilevaOCR {
                 @Override
                 public void run() {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava("ERROR;", ";", "OCR");
+                    ws.aggiornaTestoOcrDaJava("ERROR;", ";", "OCR");
                 }
             }, 10);
         }

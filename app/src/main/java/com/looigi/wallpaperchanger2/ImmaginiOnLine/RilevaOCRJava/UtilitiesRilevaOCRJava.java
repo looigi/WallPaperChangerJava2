@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
@@ -16,7 +15,6 @@ import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.strutture.StrutturaRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.webService.ChiamateWSRilevaOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.webService.DownloadImmagineRilevaOCR;
@@ -183,12 +181,12 @@ public class UtilitiesRilevaOCRJava {
                                 @Override
                                 public void run() {
                                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
+                                    ws.aggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
                                 }
                             }, 10);
                         } else {
                             ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                            ws.AggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
+                            ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -196,7 +194,7 @@ public class UtilitiesRilevaOCRJava {
                             @Override
                             public void run() {
                                 ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                ws.AggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
+                                ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                             }
                         }, 10);
                     });
@@ -212,7 +210,7 @@ public class UtilitiesRilevaOCRJava {
                 @Override
                 public void run() {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
+                    ws.aggiornaTestoOcrDaJava(ScrittaRilevata, TagsRilevati, "OCR");
                 }
             }, 50);
         }

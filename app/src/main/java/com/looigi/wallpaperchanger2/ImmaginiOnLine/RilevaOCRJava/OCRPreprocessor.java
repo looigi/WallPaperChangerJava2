@@ -1,120 +1,163 @@
 package com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+
+import java.util.Arrays;
 
 public class OCRPreprocessor {
     // Converti in scala di grigi
     public Bitmap toGrayscale(Bitmap bmpOriginal) {
+        Bitmap resize = resizeIfNeeded(bmpOriginal);
+
+        return toGrayscale2(resize);
+    }
+
+    private Bitmap resizeIfNeeded(Bitmap bmpOriginal) {
         int width = bmpOriginal.getWidth();
         int height = bmpOriginal.getHeight();
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = bmpOriginal.getPixel(x, y);
-                int gray = (int)(0.299 * Color.red(pixel) + 0.587 * Color.green(pixel) + 0.114 * Color.blue(pixel));
-                bmpGrayscale.setPixel(x, y, Color.rgb(gray, gray, gray));
-            }
+        int maxWidth = 1024;
+        int maxHeight = 768;
+
+        if (width > maxWidth || height > maxHeight) {
+            float ratioWidth = (float) maxWidth / width;
+            float ratioHeight = (float) maxHeight / height;
+            float ratio = Math.min(ratioWidth, ratioHeight);
+
+            int newWidth = Math.round(width * ratio);
+            int newHeight = Math.round(height * ratio);
+
+            return Bitmap.createScaledBitmap(bmpOriginal, newWidth, newHeight, true);
+        } else {
+            return bmpOriginal; // già entro i limiti, restituisce l’originale
         }
+    }
+
+    private Bitmap toGrayscale2(Bitmap bmpOriginal) {
+        int width = bmpOriginal.getWidth();
+        int height = bmpOriginal.getHeight();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0); // rimuove la saturazione → bianco e nero
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(filter);
+
+        canvas.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
     }
 
-    // Aumenta il contrasto
-    public Bitmap enhanceContrast(Bitmap bmp) {
-        int width = bmp.getWidth();
-        int height = bmp.getHeight();
-        Bitmap bmpContrast = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    public static Bitmap enhanceContrastForOCR(Bitmap bmp, float contrast, float brightness) {
+        // contrast: 1.0 = nessun cambiamento, >1 aumenta contrasto
+        // brightness: 0 = nessun cambiamento, >0 più luminoso, <0 più scuro
 
-        float contrast = 1.5f; // 1.0 = nessun cambiamento
-        float translate = (-0.5f * contrast + 0.5f) * 255f;
+        Bitmap bmpOut = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = bmp.getPixel(x, y);
-                int r = (int)(Color.red(pixel) * contrast + translate);
-                int g = (int)(Color.green(pixel) * contrast + translate);
-                int b = (int)(Color.blue(pixel) * contrast + translate);
+        float translateContrast = (-0.5f * contrast + 0.5f) * 255f;
+        float translateBrightness = brightness * 255f;
 
-                r = Math.min(255, Math.max(0, r));
-                g = Math.min(255, Math.max(0, g));
-                b = Math.min(255, Math.max(0, b));
+        // Matrice combinata contrasto + luminosità
+        ColorMatrix cm = new ColorMatrix(new float[]{
+                contrast, 0, 0, 0, translateContrast + translateBrightness,
+                0, contrast, 0, 0, translateContrast + translateBrightness,
+                0, 0, contrast, 0, translateContrast + translateBrightness,
+                0, 0, 0, 1, 0
+        });
 
-                bmpContrast.setPixel(x, y, Color.rgb(r, g, b));
-            }
-        }
-        return bmpContrast;
+        Canvas canvas = new Canvas(bmpOut);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(bmp, 0, 0, paint);
+
+        return bmpOut;
     }
 
     // Binarizzazione automatica (Otsu-like semplice)
-    public Bitmap binarize(Bitmap bmp) {
+    public static Bitmap binarize(Bitmap bmp) {
         int width = bmp.getWidth();
         int height = bmp.getHeight();
         Bitmap binarized = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        int sum = 0;
         int total = width * height;
+        int[] pixels = new int[total];
+        int[] output = new int[total];
+
+        bmp.getPixels(pixels, 0, width, 0, 0, width, height);
 
         // Calcolo media
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = bmp.getPixel(x, y);
-                int gray = Color.red(pixel);
-                sum += gray;
-            }
+        long sum = 0; // usa long per evitare overflow
+        for (int i = 0; i < total; i++) {
+            int gray = (pixels[i] >> 16) & 0xFF; // canale rosso (RGB=grayscale)
+            sum += gray;
         }
-        int threshold = sum / total;
+        int threshold = (int)(sum / total);
 
         // Applica soglia
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = bmp.getPixel(x, y);
-                int gray = Color.red(pixel);
-                int color = (gray > threshold) ? 255 : 0;
-                binarized.setPixel(x, y, Color.rgb(color, color, color));
-            }
+        for (int i = 0; i < total; i++) {
+            int gray = (pixels[i] >> 16) & 0xFF;
+            int color = (gray > threshold) ? 255 : 0;
+            output[i] = 0xFF000000 | (color << 16) | (color << 8) | color; // ARGB
         }
+
+        binarized.setPixels(output, 0, width, 0, 0, width, height);
         return binarized;
     }
 
-    public Bitmap denoise(Bitmap bmp) {
+    public static Bitmap denoise(Bitmap bmp) {
+        // LENTISSIMA !!!
         int width = bmp.getWidth();
         int height = bmp.getHeight();
-        Bitmap filtered = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap bmpOut = Bitmap.createBitmap(width, height, bmp.getConfig());
 
+        int[] pixels = new int[width * height];
+        int[] output = new int[width * height];
+
+        bmp.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        // Filtra con finestra 3x3
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
-                int sum = 0;
-                for (int ky = -1; ky <= 1; ky++) {
-                    for (int kx = -1; kx <= 1; kx++) {
-                        int pixel = bmp.getPixel(x + kx, y + ky);
-                        sum += Color.red(pixel);
+                int[] neighbors = new int[9];
+                int k = 0;
+                for (int j = -1; j <= 1; j++) {
+                    for (int i = -1; i <= 1; i++) {
+                        neighbors[k++] = pixels[(y + j) * width + (x + i)];
                     }
                 }
-                int avg = sum / 9;
-                filtered.setPixel(x, y, Color.rgb(avg, avg, avg));
+                Arrays.sort(neighbors);
+                output[y * width + x] = neighbors[4]; // mediana
             }
         }
+
         // Copia bordi senza modifiche
         for (int x = 0; x < width; x++) {
-            filtered.setPixel(x, 0, bmp.getPixel(x, 0));
-            filtered.setPixel(x, height - 1, bmp.getPixel(x, height - 1));
+            output[x] = pixels[x]; // top
+            output[(height - 1) * width + x] = pixels[(height - 1) * width + x]; // bottom
         }
         for (int y = 0; y < height; y++) {
-            filtered.setPixel(0, y, bmp.getPixel(0, y));
-            filtered.setPixel(width - 1, y, bmp.getPixel(width - 1, y));
+            output[y * width] = pixels[y * width]; // left
+            output[y * width + (width - 1)] = pixels[y * width + (width - 1)]; // right
         }
 
-        return filtered;
+        bmpOut.setPixels(output, 0, width, 0, 0, width, height);
+        return bmpOut;
     }
 
     // Preprocessing completo
     public Bitmap preprocess(Bitmap original) {
         Bitmap gray = toGrayscale(original);
-        // Bitmap contrast = enhanceContrast(gray);
+        Bitmap contrast = enhanceContrastForOCR(gray, 1, 0);
         // Bitmap denoise = denoise(contrast);
         // Bitmap binarized = binarize(contrast);
 
-        return gray;
+        return contrast;
     }
 }

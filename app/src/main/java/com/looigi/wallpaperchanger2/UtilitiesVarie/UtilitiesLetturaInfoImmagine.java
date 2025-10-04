@@ -353,7 +353,7 @@ public class UtilitiesLetturaInfoImmagine {
             }
 
             ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-            ws.AggiornaTestoOcrDaJava(sCategorieMesse, TagsRilevati, "IMMAGINI");
+            ws.aggiornaTestoOcrDaJava(sCategorieMesse, TagsRilevati, "IMMAGINI");
         }
     }
 

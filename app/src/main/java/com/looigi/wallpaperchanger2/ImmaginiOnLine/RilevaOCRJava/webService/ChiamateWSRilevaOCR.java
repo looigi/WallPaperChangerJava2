@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.looigi.wallpaperchanger2.GoogleDrive.VariabiliStaticheGoogleDrive;
 import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.GestioneNotificheOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.UtilitiesRilevaOCRJava;
@@ -18,7 +17,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
-    private static final String NomeMaschera = "Chiamate_WS_RILEVA_OCR";
     // private LetturaWSAsincrona bckAsyncTask;
 
     private final String RadiceWS = VariabiliStaticheMostraImmaginiPennetta.UrlWS;
@@ -28,7 +26,6 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
     private String TipoOperazione = "";
     private final Context context;
     private final boolean ApriDialog = false;
-    private String daDove;
 
     public ChiamateWSRilevaOCR(Context context) {
         this.context = context;
@@ -52,7 +49,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
 
     private String DaDove;
 
-    public void AggiornaTestoOcrDaJava(String CategorieMesse, String Tags, String daDove) {
+    public void aggiornaTestoOcrDaJava(String CategorieMesse, String Tags, String daDove) {
         DaDove = daDove;
 
         if (CategorieMesse == null || CategorieMesse.isEmpty()) {
@@ -62,8 +59,8 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
             Tags = ";";
         }
 
-        String encoded = null;
-        String encodedTags = null;
+        String encoded;
+        String encodedTags;
 
         try {
             if (CategorieMesse.equals(";") || CategorieMesse.length() < 3) {
@@ -93,12 +90,9 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                     100000,
                     ApriDialog);
         } catch (UnsupportedEncodingException e) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                    ws.AggiornaTestoOcrDaJava("ERRORE NELL'ENCODING;", ";", DaDove);
-                }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                ws.aggiornaTestoOcrDaJava("ERRORE NELL'ENCODING;", ";", DaDove);
             }, 10);
         }
     }
@@ -113,8 +107,8 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                 true
         );
 
-        Long tsLong = System.currentTimeMillis()/1000;
-        String TimeStampAttuale = tsLong.toString();
+        long tsLong = System.currentTimeMillis()/1000;
+        String TimeStampAttuale = Long.toString(tsLong);
 
         InterrogazioneWSRilevaOCR i = new InterrogazioneWSRilevaOCR();
         i.EsegueChiamata(
@@ -133,22 +127,20 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
     @Override
     public void TaskCompletionResult(String result) {
         Handler handlerTimer = new Handler(Looper.getMainLooper());
-        Runnable rTimer = new Runnable() {
-            public void run() {
-                UtilitiesGlobali.getInstance().AttesaGif(
-                        context,
-                        VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
-                        false
-                );
+        Runnable rTimer = () -> {
+            UtilitiesGlobali.getInstance().AttesaGif(
+                    context,
+                    VariabiliStaticheRilevaOCRJava.getInstance().getImgCaricamento(),
+                    false
+            );
 
-                switch (TipoOperazione) {
-                    case "RitornaProssimaImmagineDaLeggereInJava":
-                        fRitornaProssimaImmagineDaLeggereInJava(result);
-                        break;
-                    case "AggiornaTestoOcrDaJava":
-                        fAggiornaTestoOcrDaJava(result);
-                        break;
-                }
+            switch (TipoOperazione) {
+                case "RitornaProssimaImmagineDaLeggereInJava":
+                    fRitornaProssimaImmagineDaLeggereInJava(result);
+                    break;
+                case "AggiornaTestoOcrDaJava":
+                    fAggiornaTestoOcrDaJava(result);
+                    break;
             }
         };
         handlerTimer.postDelayed(rTimer, 100);
@@ -165,11 +157,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
 
             return false;
         } else {
-            if (result.contains("anyType{}")) {
-                return false;
-            } else {
-                return true;
-            }
+            return !result.contains("anyType{}");
         }
     }
 
@@ -246,7 +234,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
 
                 VariabiliStaticheRilevaOCRJava.getInstance().setMessaggioNotifica(
                         "Fatte: " + fatte + " Rim.: " + c[2] +
-                        " Imm. " + c[0] + " Em. " + c[9] + "/" + c[10] // + " (" + c[11] + ")"
+                        " Emul. " + c[9] + "/" + c[10] // + " (" + c[11] + ")"
                 );
                 int conta = VariabiliStaticheRilevaOCRJava.getInstance().getContatore();
                 conta++;
