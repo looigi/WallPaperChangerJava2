@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
@@ -155,31 +154,16 @@ public class DownloadImmaginePreview {
                                 );
 
                                 // Lettura e aggiornamento testojava e tags per singola immagine
-                                if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() != null) {
-                                    String TestoJava = VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTestoJava();
-                                    if (TestoJava != null && !TestoJava.isEmpty()) {
-                                        UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
-                                        if (VariabiliStatichePreview.getInstance().getStrutturaImmagine().getTags() == null) {
-                                            VariabiliStatichePreview.getInstance().getStrutturaImmagine().setTags("");
-                                        }
-                                        u.setImmagine(VariabiliStatichePreview.getInstance().getStrutturaImmagine());
-                                        u.ImpostaCategorieGiaMesse(
-                                                TestoJava.toUpperCase().trim()
-                                        );
-                                        u.ImpostaListaCategorie(VariabiliStatichePreview.getInstance().getListaCategorie());
-                                        u.ImpostaLayCategorie(VariabiliStatichePreview.getInstance().getLayCategorieRilevate());
-                                        u.ImpostaLayScritte(VariabiliStatichePreview.getInstance().getLayScritteRilevate());
-                                        u.ImpostaLayTasti(VariabiliStatichePreview.getInstance().getLayTasti());
-                                        u.setUrl(finalUrldisplay);
-
-                                        OCRPreprocessor ocrpp = new OCRPreprocessor();
-                                        Bitmap preprocessedBitmap = ocrpp.preprocess(finalMIcon1);
-
-                                        u.setBitmap(preprocessedBitmap);
-
-                                        u.AvviaControllo();
-                                    }
-                                }
+                                UtilitiesGlobali.getInstance().RiconoscimentoTesti(
+                                        context,
+                                        VariabiliStatichePreview.getInstance().getStrutturaImmagine(),
+                                        finalUrldisplay,
+                                        finalMIcon1,
+                                        VariabiliStatichePreview.getInstance().getListaCategorie(),
+                                        VariabiliStatichePreview.getInstance().getLayCategorieRilevate(),
+                                        VariabiliStatichePreview.getInstance().getLayScritteRilevate(),
+                                        VariabiliStatichePreview.getInstance().getLayTasti()
+                                );
                                 // Lettura e aggiornamento testojava e tags per singola immagine
 
                                 UtilitiesGlobali.getInstance().AttesaGif(

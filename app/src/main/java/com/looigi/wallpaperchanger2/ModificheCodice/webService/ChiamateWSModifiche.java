@@ -1942,23 +1942,28 @@ public class ChiamateWSModifiche implements TaskDelegateModifiche {
                     for (String r : righe) {
                         String[] c = r.split(";", -1);
 
-                        StrutturaGps s = new StrutturaGps();
-                        s.setData(c[0]);
-                        s.setOra(c[1]);
-                        s.setLat(Double.parseDouble(c[2]));
-                        s.setLon(Double.parseDouble(c[3]));
-                        s.setSpeed(Float.parseFloat(c[4]));
-                        s.setAltitude(Double.parseDouble(c[5]));
-                        s.setAccuracy(Float.parseFloat(c[6]));
-                        s.setDistanza(Float.parseFloat(c[7]));
-                        s.setWifi(c[8].equals("S"));
-                        s.setLivelloSegnale(Integer.parseInt(c[9]));
-                        s.setTipoSegnale(c[10]);
-                        s.setLevel(Integer.parseInt(c[11]));
-                        s.setDirezione(Float.parseFloat(c[12]));
+                        try {
+                            StrutturaGps s = new StrutturaGps();
+                            s.setData(c[0]);
+                            s.setOra(c[1]);
+                            s.setLat(Double.parseDouble(c[2]));
+                            s.setLon(Double.parseDouble(c[3]));
+                            s.setSpeed(Float.parseFloat(c[4]));
+                            s.setAltitude(Double.parseDouble(c[5]));
+                            s.setAccuracy(Float.parseFloat(c[6]));
+                            s.setDistanza(Float.parseFloat(c[7]));
+                            s.setWifi(c[8].equals("S"));
+                            s.setLivelloSegnale(Integer.parseInt(c[9]));
+                            s.setTipoSegnale(c[10]);
+                            s.setLevel(Integer.parseInt(c[11]));
+                            s.setDirezione(Float.parseFloat(c[12]));
 
-                        db.AggiungePosizione(s);
-                        posizioniAggiunte++;
+                            db.AggiungePosizione(s);
+                            posizioniAggiunte++;
+                        } catch (Exception ignored) {
+
+                        }
+
                     }
 
                     Files.getInstance().EliminaFileUnico(Filetto);

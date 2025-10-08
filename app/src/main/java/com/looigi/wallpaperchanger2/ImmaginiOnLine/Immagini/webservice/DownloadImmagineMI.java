@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.Wallpaper.ChangeWallpaper;
 import com.looigi.wallpaperchanger2.Wallpaper.RefreshImmagini.ChiamateWsWPRefresh;
@@ -294,33 +295,16 @@ public class DownloadImmagineMI {
                             );
 
                             // Lettura e aggiornamento testojava e tags per singola immagine
-                            if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() != null) {
-                                String TestoJava = VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().getTestoJava();
-                                if (TestoJava != null && !TestoJava.isEmpty()) {
-                                    UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
-                                    if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale() == null) {
-                                        VariabiliStaticheMostraImmagini.getInstance().setStrutturaImmagineAttuale(new StrutturaImmaginiLibrary());
-                                        VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTestoJava("");
-                                    }
-                                    if (VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().getTags() == null) {
-                                        VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale().setTags("");
-                                    }
-                                    u.setImmagine(VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale());
-                                    u.ImpostaCategorieGiaMesse(TestoJava.toUpperCase().trim());
-                                    u.ImpostaListaCategorie(VariabiliStaticheMostraImmagini.getInstance().getListaCategorie());
-                                    u.ImpostaLayCategorie(VariabiliStaticheMostraImmagini.getInstance().getLayCategorieRilevate());
-                                    u.ImpostaLayScritte(VariabiliStaticheMostraImmagini.getInstance().getLayScritteRilevate());
-                                    u.ImpostaLayTasti(VariabiliStaticheMostraImmagini.getInstance().getLayTasti());
-                                    u.setUrl(urldisplay);
-
-                                    OCRPreprocessor ocrpp = new OCRPreprocessor();
-                                    Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
-
-                                    u.setBitmap(preprocessedBitmap);
-
-                                    u.AvviaControllo();
-                                }
-                            }
+                            UtilitiesGlobali.getInstance().RiconoscimentoTesti(
+                                    context,
+                                    VariabiliStaticheMostraImmagini.getInstance().getStrutturaImmagineAttuale(),
+                                    urldisplay,
+                                    mIcon11,
+                                    VariabiliStaticheMostraImmagini.getInstance().getListaCategorie(),
+                                    VariabiliStaticheMostraImmagini.getInstance().getLayCategorieRilevate(),
+                                    VariabiliStaticheMostraImmagini.getInstance().getLayScritteRilevate(),
+                                    VariabiliStaticheMostraImmagini.getInstance().getLayTasti()
+                            );
                             // Lettura e aggiornamento testojava e tags per singola immagine
 
                             UtilitiesGlobali.getInstance().AttesaGif(

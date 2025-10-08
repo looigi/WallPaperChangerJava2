@@ -20,6 +20,33 @@ public class StrutturaImmaginiLibrary {
     private String Exif;
     private String TestoJava;
     private String Tags;
+    private String Luoghi;
+    private String Oggetti;
+    private String Volti;
+
+    public String getVolti() {
+        return Volti;
+    }
+
+    public void setVolti(String volti) {
+        Volti = volti;
+    }
+
+    public String getOggetti() {
+        return Oggetti;
+    }
+
+    public void setOggetti(String oggetti) {
+        Oggetti = oggetti;
+    }
+
+    public String getLuoghi() {
+        return Luoghi;
+    }
+
+    public void setLuoghi(String luoghi) {
+        Luoghi = luoghi;
+    }
 
     public String getTags() {
         return Tags;

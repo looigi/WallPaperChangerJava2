@@ -260,6 +260,9 @@ public class UtilityImmagini {
                 si.setExif(j.getString("Exif"));
                 si.setTestoJava(j.getString("Testo"));
                 si.setTags(j.getString("Tags"));
+                si.setLuoghi(j.getString("Luoghi"));
+                si.setOggetti(j.getString("Oggetti"));
+                si.setVolti(j.getString("Volti"));
 
                 return si;
             } catch (JSONException e) {

@@ -38,6 +38,11 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.flexbox.FlexboxLayout;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.GoogleDrive.GoogleDrive;
 import com.looigi.wallpaperchanger2.GoogleDrive.VariabiliStaticheGoogleDrive;
@@ -918,5 +923,71 @@ public class UtilitiesGlobali {
                         }
                     });
         }, 10);
+    }
+
+    public void RiconoscimentoTesti(Context context, StrutturaImmaginiLibrary struttura, String Url,
+                                    Bitmap immagine, List<StrutturaImmaginiCategorie> listaCategorie,
+                                    FlexboxLayout layCategorieRilevate, FlexboxLayout layScritteRilevate,
+                                    LinearLayout layTasti) {
+        // Lettura e aggiornamento testojava e tags per singola immagine
+        UtilitiesLetturaInfoImmagine u = new UtilitiesLetturaInfoImmagine(context);
+        u.ImpostaListaCategorie(listaCategorie);
+        u.ImpostaLayCategorie(layCategorieRilevate);
+        u.ImpostaLayScritte(layScritteRilevate);
+        u.ImpostaLayTasti(layTasti);
+
+        if (struttura != null) {
+            if (struttura.getTestoJava() == null) {
+                struttura.setTestoJava("");
+            }
+            if (struttura.getTags() == null) {
+                struttura.setTags("");
+            }
+            if (struttura.getLuoghi() == null) {
+                struttura.setLuoghi("");
+            }
+            if (struttura.getOggetti() == null) {
+                struttura.setOggetti("");
+            }
+            if (struttura.getVolti() == null) {
+                struttura.setVolti("");
+            }
+
+            String TestoJava = struttura.getTestoJava();
+            if (TestoJava == null) { TestoJava = ""; }
+            if (TestoJava.isEmpty()) {
+                u.setImmagine(struttura);
+                u.ImpostaCategorieGiaMesse(
+                        TestoJava.toUpperCase().trim()
+                );
+                u.setLuoghiImpostati(
+                        struttura.getLuoghi()
+                );
+                u.setOggettiImpostati(
+                        struttura.getOggetti()
+                );
+                u.setVoltiImpostati(
+                        struttura.getVolti()
+                );
+                u.setUrl(Url);
+
+                OCRPreprocessor ocrpp = new OCRPreprocessor();
+                Bitmap preprocessedBitmap = ocrpp.preprocess(immagine);
+
+                u.setBitmapModificata(preprocessedBitmap);
+                u.setBitmapOriginale(immagine);
+
+                u.AvviaControllo();
+            } else {
+                String Testo = TestoJava + "\n" +
+                        "Tags: " + struttura.getTags() + "\n" +
+                        "Luoghi: " + struttura.getLuoghi() + "\n" +
+                        "Oggetti: " + struttura.getOggetti() + "\n" +
+                        "Somiglianze: " + struttura.getVolti();
+                u.ScriveValori(Testo);
+            }
+        } else {
+            u.ScriveValori("");
+        }
     }
 }

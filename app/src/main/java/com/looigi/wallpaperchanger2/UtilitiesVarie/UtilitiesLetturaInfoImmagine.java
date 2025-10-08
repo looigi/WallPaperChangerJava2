@@ -46,20 +46,33 @@ public class UtilitiesLetturaInfoImmagine {
     private FlexboxLayout layCategorie;
     private List<StrutturaImmaginiCategorie> listaCategorie;
     private String CategorieGiaMesse = "";
+    private String LuoghiImpostati;
+    private String OggettiImpostati;
+    private String VoltiImpostati;
     private static final int soglia = 2;
     private StrutturaImmaginiLibrary immagine;
     private final Context context;
     private String Url;
     private boolean StaLeggendoTesto = false;
-    private Bitmap bitmap;
+    private Bitmap bitmapModificata;
+    private Bitmap bitmapOriginale;
     private String sCategorieMesse = "";
     private boolean StaLeggendoTags = false;
     private String TagsRilevati = "";
+    private Integer Giro;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
 
     private Handler handler2 = new Handler(Looper.getMainLooper());
     private Runnable runnable2;
+
+    public void setVoltiImpostati(String voltiImpostati) {
+        VoltiImpostati = voltiImpostati;
+    }
+
+    public void setOggettiImpostati(String oggettiImpostati) {
+        OggettiImpostati = oggettiImpostati;
+    }
 
     private Task<List<String>> PrendeTags(InputImage image) {
         ImageLabeler labeler = ImageLabeling.getClient(
@@ -101,6 +114,7 @@ public class UtilitiesLetturaInfoImmagine {
         sCategorieMesse = "";
         TagsRilevati = "";
         Url = "";
+        Giro = 1;
 
         if (layScritte != null && layCategorie != null) {
             layScritte.removeAllViews();
@@ -111,14 +125,45 @@ public class UtilitiesLetturaInfoImmagine {
 
         CercaCategoriaDaNome();
         CercaCategoriaSuExif();
-        LeggeTestoSuImmagine();
+        LeggeTestoSuImmagine(bitmapModificata);
         LeggeTagsSuImmagine();
 
         FaseFinale();
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void ScriveValori(String Testo) {
+        if (layScritte != null && layCategorie != null) {
+            layScritte.removeAllViews();
+            layCategorie.removeAllViews();
+
+            if (!Testo.isEmpty()) {
+                layScritte.setVisibility(LinearLayout.VISIBLE);
+                layCategorie.setVisibility(LinearLayout.VISIBLE);
+
+                String[] righe = Testo.split("\n");
+                for (String r: righe) {
+                    if (!r.isEmpty()) {
+                        addDynamicText(context, "", true);
+                        addDynamicText(context, r.toUpperCase().trim(), false);
+                    }
+                }
+            } else {
+                layScritte.setVisibility(LinearLayout.GONE);
+                layCategorie.setVisibility(LinearLayout.GONE);
+            }
+        }
+    }
+
+    public void setLuoghiImpostati(String luoghiImpostati) {
+        LuoghiImpostati = luoghiImpostati;
+    }
+
+    public void setBitmapOriginale(Bitmap bitmapOriginale) {
+        this.bitmapOriginale = bitmapOriginale;
+    }
+
+    public void setBitmapModificata(Bitmap bitmap) {
+        this.bitmapModificata = bitmap;
     }
 
     public void setUrl(String url) {
@@ -210,14 +255,28 @@ public class UtilitiesLetturaInfoImmagine {
 
         // if (layTasti != null && layCategorie != null) {
         if (ok) {
-            layCategorie.setVisibility(LinearLayout.VISIBLE);
-            layTasti.setVisibility(LinearLayout.VISIBLE);
-            layScritte.setVisibility(LinearLayout.VISIBLE);
+            if (layCategorie != null) { layCategorie.setVisibility(LinearLayout.VISIBLE); }
+            if (layTasti != null) { layTasti.setVisibility(LinearLayout.VISIBLE); }
+            if (layScritte != null) { layScritte.setVisibility(LinearLayout.VISIBLE); }
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
 
-            addDynamicText(context, "", true);
+            if (!LuoghiImpostati.isEmpty()) {
+                addDynamicText(context, "", true);
+
+                addDynamicText(context, LuoghiImpostati, false);
+            }
+            if (!OggettiImpostati.isEmpty()) {
+                addDynamicText(context, "", true);
+
+                addDynamicText(context, OggettiImpostati, false);
+            }
+            if (!VoltiImpostati.isEmpty()) {
+                addDynamicText(context, "", true);
+
+                addDynamicText(context, VoltiImpostati, false);
+            }
         }
         // }
     }
@@ -283,9 +342,9 @@ public class UtilitiesLetturaInfoImmagine {
 
         // if (layTasti != null && layCategorie != null) {
             if (ok) {
-                layCategorie.setVisibility(LinearLayout.VISIBLE);
-                layTasti.setVisibility(LinearLayout.VISIBLE);
-                layScritte.setVisibility(LinearLayout.VISIBLE);
+                if (layCategorie != null) { layCategorie.setVisibility(LinearLayout.VISIBLE); }
+                if (layTasti != null) { layTasti.setVisibility(LinearLayout.VISIBLE); }
+                if (layScritte != null) { layScritte.setVisibility(LinearLayout.VISIBLE); }
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
@@ -385,7 +444,7 @@ public class UtilitiesLetturaInfoImmagine {
 
         // if (s.getTags().isEmpty()) {
             StaLeggendoTags = true;
-            InputImage image = InputImage.fromBitmap(bitmap, 0);
+            InputImage image = InputImage.fromBitmap(bitmapModificata, 0);
             PrendeTags(image).addOnSuccessListener(labels -> {
                 String Tags = "";
                 // Qui ricevi tutte le etichette
@@ -448,8 +507,8 @@ public class UtilitiesLetturaInfoImmagine {
                     for (String cc : c) {
                         if (!CategorieMesse.contains(cc)) {
                             addDynamicButton(context, cc);
-                            layCategorie.setVisibility(LinearLayout.VISIBLE);
-                            layTasti.setVisibility(LinearLayout.VISIBLE);
+                            if (layCategorie != null) { layCategorie.setVisibility(LinearLayout.VISIBLE); }
+                            if (layTasti != null) { layTasti.setVisibility(LinearLayout.VISIBLE); }
                             CategorieMesse.add(cc);
                             ok = true;
                         }
@@ -467,9 +526,9 @@ public class UtilitiesLetturaInfoImmagine {
 
         // if (layTasti != null && layCategorie != null) {
         if (ok) {
-            layCategorie.setVisibility(LinearLayout.VISIBLE);
-            layTasti.setVisibility(LinearLayout.VISIBLE);
-            layScritte.setVisibility(LinearLayout.VISIBLE);
+            if (layCategorie != null) { layCategorie.setVisibility(LinearLayout.VISIBLE); }
+            if (layTasti != null) { layTasti.setVisibility(LinearLayout.VISIBLE); }
+            if (layScritte != null) { layScritte.setVisibility(LinearLayout.VISIBLE); }
             // } else {
             //     layCategorie.setVisibility(LinearLayout.GONE);
             //     layTasti.setVisibility(LinearLayout.VISIBLE);
@@ -479,7 +538,7 @@ public class UtilitiesLetturaInfoImmagine {
         // }
     }
 
-    public void LeggeTestoSuImmagine() {
+    public void LeggeTestoSuImmagine(Bitmap bitmap) {
         if (!immagine.getTestoJava().isEmpty() && !immagine.getTestoJava().equals(";")) {
             StaLeggendoTesto = true;
             String Cate = immagine.getTestoJava();
@@ -522,71 +581,83 @@ public class UtilitiesLetturaInfoImmagine {
             return;
         }
 
-        // if (s.getTestoJava().isEmpty()) {
-            StaLeggendoTesto = true;
-            InputImage image = InputImage.fromBitmap(bitmap, 0);
-            TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-            recognizer.process(image)
-                    .addOnSuccessListener(visionText -> {
-                        // Tutto il testo rilevato
-                        boolean Trovata = false;
-                        String fullText = visionText.getText();
-                        // Log.d("OCR", "Testo trovato: " + fullText);
+    // if (s.getTestoJava().isEmpty()) {
+        StaLeggendoTesto = true;
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        recognizer.process(image)
+                .addOnSuccessListener(visionText -> {
+                    // Tutto il testo rilevato
+                    boolean Trovata = false;
+                    String fullText = visionText.getText();
+                    // Log.d("OCR", "Testo trovato: " + fullText);
 
-                        // Analizzare per blocchi/parole
-                        for (Text.TextBlock block : visionText.getTextBlocks()) {
-                            String blockText = block.getText();
-                            // Log.d("OCR", "Blocco: " + blockText);
+                    // Analizzare per blocchi/parole
+                    for (Text.TextBlock block : visionText.getTextBlocks()) {
+                        String blockText = block.getText();
+                        // Log.d("OCR", "Blocco: " + blockText);
 
-                            for (Text.Line line : block.getLines()) {
-                                // Log.d("OCR", "Linea: " + line.getText());
-                                String Nome2 = line.getText().toUpperCase().trim();
-                                if (!Nome2.trim().replace("\n", "").isEmpty() && Nome2.length() > 3) {
-                                    addDynamicText(context, Nome2, false);
-                                    if (layScritte != null && layTasti != null) {
-                                        layScritte.setVisibility(LinearLayout.VISIBLE);
-                                        layTasti.setVisibility(LinearLayout.VISIBLE);
-                                    }
-                                    if (!CategorieMesse.contains(Nome2) && !CategorieGiaMesse.contains(Nome2)) {
-                                        CategorieMesse.add(Nome2);
+                        for (Text.Line line : block.getLines()) {
+                            // Log.d("OCR", "Linea: " + line.getText());
+                            String Nome2 = line.getText().toUpperCase().trim();
+                            if (!Nome2.trim().replace("\n", "").isEmpty() && Nome2.length() > 3) {
+                                addDynamicText(context, Nome2, false);
+                                if (layScritte != null && layTasti != null) {
+                                    layScritte.setVisibility(LinearLayout.VISIBLE);
+                                    layTasti.setVisibility(LinearLayout.VISIBLE);
+                                }
+                                if (!CategorieMesse.contains(Nome2) && !CategorieGiaMesse.contains(Nome2)) {
+                                    CategorieMesse.add(Nome2);
 
-                                        sCategorieMesse += Nome2 + ";";
-                                        String Categoria = RitornaDistanza(Nome2, listaCategorie);
-                                        if (!Categoria.isEmpty()) {
-                                            String[] c;
+                                    sCategorieMesse += Nome2 + ";";
+                                    String Categoria = RitornaDistanza(Nome2, listaCategorie);
+                                    if (!Categoria.isEmpty()) {
+                                        String[] c;
 
-                                            if (Categoria.contains(";")) {
-                                                c = Categoria.split(";");
-                                            } else {
-                                                c = new String[]{Categoria};
-                                            }
-                                            for (String cc : c) {
-                                                if (!CategorieMesse.contains(cc) && !CategorieGiaMesse.contains(cc) && cc.length() > 3) {
-                                                    addDynamicButton(context, cc);
-                                                    Trovata = true;
-                                                    if (layScritte != null && layTasti != null) {
-                                                        layCategorie.setVisibility(LinearLayout.VISIBLE);
-                                                        layTasti.setVisibility(LinearLayout.VISIBLE);
-                                                    }
-                                                    CategorieMesse.add(cc);
+                                        if (Categoria.contains(";")) {
+                                            c = Categoria.split(";");
+                                        } else {
+                                            c = new String[]{Categoria};
+                                        }
+                                        for (String cc : c) {
+                                            if (!CategorieMesse.contains(cc) && !CategorieGiaMesse.contains(cc) && cc.length() > 3) {
+                                                addDynamicButton(context, cc);
+                                                Trovata = true;
+                                                if (layScritte != null && layTasti != null) {
+                                                    layCategorie.setVisibility(LinearLayout.VISIBLE);
+                                                    layTasti.setVisibility(LinearLayout.VISIBLE);
                                                 }
+                                                CategorieMesse.add(cc);
                                             }
+                                        }
 
-                                            if (Trovata) {
-                                                addDynamicText(context, "-1-", true);
+                                        if (Trovata) {
+                                            addDynamicText(context, "-1-", true);
+
+                                            StaLeggendoTesto = false;
+                                        } else {
+                                            if (Giro == 1) {
+                                                Giro = 2;
+                                                LeggeTestoSuImmagine(bitmapOriginale);
+                                            } else {
+                                                StaLeggendoTesto = false;
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Log.e("OCR", "Errore OCR", e);
+                    if (Giro == 1) {
+                        Giro = 2;
+                        LeggeTestoSuImmagine(bitmapOriginale);
+                    } else {
                         StaLeggendoTesto = false;
-                    })
-                    .addOnFailureListener(e -> {
-                        // Log.e("OCR", "Errore OCR", e);
-                        StaLeggendoTesto = false;
-                    });
+                    }
+                });
         /* } else {
             if (!s.getTestoJava().equals(";")) {
                 CategorieMesse.add(s.getTestoJava());
