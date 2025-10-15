@@ -86,9 +86,36 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                 ApriDialog);
     }
 
+    private String RitornaFiltroSplittato(String Filtro) {
+        String FiltroFinale = "";
+
+        if (!Filtro.isEmpty()) {
+            if (Filtro.contains("§")) {
+                String[] s = Filtro.split("§", -1);
+                for (String ss : s) {
+                    if (ss.contains(";")) {
+                        String[] s2 = ss.split(";", -1);
+                        FiltroFinale += s2[1] + ";";
+                    } else {
+                        FiltroFinale += ss + ";";
+                    }
+                }
+            } else {
+                FiltroFinale = Filtro.replace(";", "");
+            }
+        }
+        FiltroFinale = FiltroFinale.replace(";;", ";");
+        if (FiltroFinale.endsWith(";")) {
+            FiltroFinale = FiltroFinale.substring(0, FiltroFinale.length() - 1);
+        }
+
+        return FiltroFinale;
+    }
+
     public void RitornaImmagini(String Filtro) {
+
         String Urletto="RitornaImmaginiOCR?" +
-                "Filtro=" + Filtro +
+                "Filtro=" + RitornaFiltroSplittato(Filtro) +
                 "&AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
 
         TipoOperazione = "RitornaImmaginiOCR";
@@ -105,7 +132,7 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
 
     public void RitornaImmaginiFiltro(String Filtro) {
         String Urletto="RitornaImmaginiOCRDaFiltro?" +
-                "Filtro=" + Filtro;
+                "Filtro=" + RitornaFiltroSplittato(Filtro);
 
         TipoOperazione = "RitornaImmaginiOCR";
         // ControllaTempoEsecuzione = false;
@@ -227,10 +254,13 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                     JSONObject obj2 = jObjectImm.getJSONObject(i);
 
                     StrutturaDestinazioni sic = new StrutturaDestinazioni();
-                    sic.setDestinazione(obj2.getString("Categoria"));
-                    sic.setQuante(obj2.getInt("Quante"));
+                    String Dest = ConverteCaratteriStrani(obj2.getString("Categoria"));
+                    if (!Dest.equals(";")) {
+                        sic.setDestinazione(RitornaFiltroSplittato(Dest));
+                        sic.setQuante(obj2.getInt("Quante"));
 
-                    lista.add(sic);
+                        lista.add(sic);
+                    }
                 }
 
                 VariabiliStaticheOCR.getInstance().setFiltroPremuto("");
@@ -270,13 +300,13 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
 
                     StrutturaImmaginiOCR sic = new StrutturaImmaginiOCR();
                     sic.setIdImmagine(Integer.parseInt(obj2.getString("idImmagine")));
-                    String url = obj2.getString("URL");
+                    String url = ConverteCaratteriStrani(obj2.getString("URL"));
                     url = VariabiliStaticheStart.UrlWSGlobale + ":" + VariabiliStaticheStart.PortaDiscoPublic + "/Materiale/newPLibrary/" + url;
                     sic.setURL(url);
-                    sic.setTesto(obj2.getString("Testo"));
+                    sic.setTesto(ConverteCaratteriStrani(obj2.getString("Testo")));
                     sic.setIdCategoriaOrigine(Integer.parseInt(obj2.getString("idCategoriaOrigine")));
-                    sic.setCategoriaOrigine(obj2.getString("CategoriaOrigine"));
-                    sic.setCategorieDestinazione(obj2.getString("idCategoriaDestinazione"));
+                    sic.setCategoriaOrigine(ConverteCaratteriStrani(obj2.getString("CategoriaOrigine")));
+                    sic.setCategorieDestinazione(ConverteCaratteriStrani(obj2.getString("idCategoriaDestinazione")));
 
                     lista.add(sic);
                 }
@@ -294,5 +324,21 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
         } else {
             UtilitiesGlobali.getInstance().ApreToast(context, result);
         }
+    }
+
+    private String ConverteCaratteriStrani(String Stringa) {
+        String Ritorno = Stringa;
+
+        if (!Ritorno.isEmpty()) {
+            Ritorno = Ritorno.replace("*2V*", "\"");
+            Ritorno = Ritorno.replace("*GA*", "{");
+            Ritorno = Ritorno.replace("*GC*", "}");
+            Ritorno = Ritorno.replace("*QA*", "[");
+            Ritorno = Ritorno.replace("*QC*", "]");
+            Ritorno = Ritorno.replace("*2P*", ":");
+            Ritorno = Ritorno.replace("*V*", ",");
+        }
+
+        return Ritorno;
     }
 }
