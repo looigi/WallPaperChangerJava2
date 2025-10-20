@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
@@ -90,15 +91,29 @@ public class UtilitiesRilevaOCRJava {
     private Bitmap bitmap1;
     private Bitmap bitmapOrignale;
     private int giro;
+    private ImageView imgDest;
+    private final int tempoDiAttesa = 500;
 
-    public void setBitmap(Bitmap bitmap1, Bitmap bitmapOriginale) {
+    public void setBitmaps(Bitmap bitmap1, Bitmap bitmapOriginale) {
         this.bitmap1 = bitmap1;
         this.bitmapOrignale = bitmapOriginale;
     }
 
+    public void setImmagine(ImageView img) {
+        this.imgDest = img;
+    }
+
     public void LeggeTestoSuImmagine(Context context) {
         giro = 1;
-        LeggeTagsSuImmagine(context);
+        VariabiliStaticheRilevaOCRJava.getInstance().setScrittaTrovata("");
+        imgDest.setImageBitmap(this.bitmap1);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LeggeTagsSuImmagine(context);
+            }
+        }, tempoDiAttesa);
     }
 
     private void LeggeTagsSuImmagine(Context context) {
@@ -124,7 +139,7 @@ public class UtilitiesRilevaOCRJava {
                     public void run() {
                         LeggeTestoSuImmagine2(context, bitmap1);
                     }
-                }, 50);
+                }, tempoDiAttesa);
             });
         } else {
             TagsRilevati = VariabiliStaticheRilevaOCRJava.getInstance().getImmagineAttuale().getTags();
@@ -134,7 +149,7 @@ public class UtilitiesRilevaOCRJava {
                 public void run() {
                     LeggeTestoSuImmagine2(context, bitmap1);
                 }
-            }, 50);
+            }, tempoDiAttesa);
         }
     }
 
@@ -146,7 +161,13 @@ public class UtilitiesRilevaOCRJava {
                     if (VariabiliStaticheRilevaOCRJava.getInstance().getScrittaTrovata().isEmpty()) {
                         if (giro == 1) {
                             giro = 2;
-                            LeggeTestoSuImmagine2(context, bitmapOrignale);
+                            imgDest.setImageBitmap(bitmapOrignale);
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LeggeTestoSuImmagine2(context, bitmapOrignale);
+                                }
+                            }, tempoDiAttesa);
                         } else {
                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                 @Override
@@ -155,7 +176,7 @@ public class UtilitiesRilevaOCRJava {
                                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                                     ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                                 }
-                            }, 50);
+                            }, tempoDiAttesa);
                         }
                     } else {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -165,12 +186,18 @@ public class UtilitiesRilevaOCRJava {
                                 ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                                 ws.aggiornaTestoOcrDaJava(testoRilevato, TagsRilevati, "OCR");
                             }
-                        }, 50);
+                        }, tempoDiAttesa);
                     }
                 } else {
                     if (giro == 1) {
                         giro = 2;
-                        LeggeTestoSuImmagine2(context, bitmapOrignale);
+                        imgDest.setImageBitmap(bitmapOrignale);
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                LeggeTestoSuImmagine2(context, bitmapOrignale);
+                            }
+                        }, tempoDiAttesa);
                     } else {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
@@ -179,7 +206,7 @@ public class UtilitiesRilevaOCRJava {
                                 ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                                 ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                             }
-                        }, 50);
+                        }, tempoDiAttesa);
                     }
                 }
             }
@@ -193,7 +220,7 @@ public class UtilitiesRilevaOCRJava {
                         ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                         ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
                     }
-                }, 50);
+                }, tempoDiAttesa);
             }
         });
     }

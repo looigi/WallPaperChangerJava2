@@ -16,6 +16,60 @@ public class StrutturaImmagineFuoriCategoria {
     private String PathImmagine;
     private boolean EsisteImmagine;
     private boolean Selezionata = false;
+    private String Tags;
+    private String Luoghi;
+    private String Oggetti;
+    private String Volti;
+    private String Descrizione;
+    private String Testo;
+
+    public String getTesto() {
+        return Testo;
+    }
+
+    public void setTesto(String testo) {
+        Testo = testo;
+    }
+
+    public String getTags() {
+        return Tags;
+    }
+
+    public void setTags(String tags) {
+        Tags = tags;
+    }
+
+    public String getLuoghi() {
+        return Luoghi;
+    }
+
+    public void setLuoghi(String luoghi) {
+        Luoghi = luoghi;
+    }
+
+    public String getOggetti() {
+        return Oggetti;
+    }
+
+    public void setOggetti(String oggetti) {
+        Oggetti = oggetti;
+    }
+
+    public String getVolti() {
+        return Volti;
+    }
+
+    public void setVolti(String volti) {
+        Volti = volti;
+    }
+
+    public String getDescrizione() {
+        return Descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        Descrizione = descrizione;
+    }
 
     public boolean isSelezionata() {
         return Selezionata;

@@ -54,6 +54,15 @@ public class VariabiliImmaginiFuoriCategoria {
     private EditText edtAlias2;
     private EditText edtTag;
     private String CategoriaInserita = "";
+    private String TestoRicercato;
+
+    public String getTestoRicercato() {
+        return TestoRicercato;
+    }
+
+    public void setTestoRicercato(String testoRicercato) {
+        TestoRicercato = testoRicercato;
+    }
 
     public String getRicerca() {
         return Ricerca;

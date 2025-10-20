@@ -294,6 +294,15 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                 jObject = new JSONArray("[" + result + "]");
                 JSONObject obj = jObject.getJSONObject(0);
                 String dati = obj.getString("Immagini");
+                String Ridotte = obj.getString("Ridotte");
+                if (!Ridotte.equals("0")) {
+                    UtilitiesGlobali.getInstance().VisualizzaMessaggio(
+                            context,
+                            "Immagini OCR",
+                            "Troppe immagini: Visualizzate " + Ridotte
+                    );
+                }
+
                 JSONArray jObjectImm = new JSONArray(dati);
                 for(int i = 0; i < jObjectImm.length(); i++){
                     JSONObject obj2 = jObjectImm.getJSONObject(i);

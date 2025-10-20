@@ -140,12 +140,12 @@ public class DownloadImmagineRilevaOCR {
                 mIcon11 = BitmapFactory.decodeStream(in);
 
                 if (!isCancelled && mIcon11.getHeight() > 100 && mIcon11.getWidth() > 100) {
-                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    /* new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            immagine.setImageBitmap(mIcon11);
+                             immagine.setImageBitmap(mIcon11);
                         }
-                    }, 100);
+                    }, 100); */
                 } else {
                     ImpostaLogo();
                 }
@@ -165,12 +165,13 @@ public class DownloadImmagineRilevaOCR {
                 @Override
                 public void run() {
                     OCRPreprocessor ocrpp = new OCRPreprocessor();
-                     Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
+                    Bitmap preprocessedBitmap = ocrpp.preprocess(mIcon11);
 
-                    UtilitiesRilevaOCRJava.getInstance().setBitmap(preprocessedBitmap, mIcon11);
+                    UtilitiesRilevaOCRJava.getInstance().setImmagine(immagine);
+                    UtilitiesRilevaOCRJava.getInstance().setBitmaps(preprocessedBitmap, mIcon11);
                     UtilitiesRilevaOCRJava.getInstance().LeggeTestoSuImmagine(context);
                 }
-            }, 10);
+            }, 50);
         } else {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
@@ -178,7 +179,7 @@ public class DownloadImmagineRilevaOCR {
                     ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
                     ws.aggiornaTestoOcrDaJava("ERROR;", ";", "OCR");
                 }
-            }, 10);
+            }, 50);
         }
 
         // if (immagine == null) {

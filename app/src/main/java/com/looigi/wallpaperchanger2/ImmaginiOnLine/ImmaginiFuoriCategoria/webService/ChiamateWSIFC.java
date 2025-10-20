@@ -47,6 +47,8 @@ public class ChiamateWSIFC implements TaskDelegate {
             idCategoria = "1";
         }
 
+        VariabiliImmaginiFuoriCategoria.getInstance().setTestoRicercato(Alias1 + ";" + Alias2);
+
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
                 "idCategoria=" + idCategoria +
                 "&Aliases1=" + Alias1 +
@@ -154,7 +156,14 @@ public class ChiamateWSIFC implements TaskDelegate {
                 String dati = obj.getString("Immagini");
                 VariabiliImmaginiFuoriCategoria.getInstance().getTxtQuanteImmaginiRilevate().setText("Immagini rilevate: " +
                         obj.getInt("Rilevate"));
-
+                String Ridotte = obj.getString("Ridotte");
+                if (!Ridotte.equals("0")) {
+                    UtilitiesGlobali.getInstance().VisualizzaMessaggio(
+                            context,
+                            "Immagini fuori categoria",
+                            "Troppe immagini: Visualizzate " + Ridotte
+                    );
+                }
                 JSONArray jObjectImm = new JSONArray(dati);
                 for(int i = 0; i < jObjectImm.length(); i++){
                     JSONObject obj2 = jObjectImm.getJSONObject(i);
@@ -175,6 +184,12 @@ public class ChiamateWSIFC implements TaskDelegate {
                     sic.setPathImmagine(obj2.getString("PathImmagine"));
                     sic.setEsisteImmagine(obj2.getBoolean("EsisteImmagine"));
                     sic.setSelezionata(false);
+                    sic.setTags(obj2.getString("Tags"));
+                    sic.setLuoghi(obj2.getString("Luoghi"));
+                    sic.setOggetti(obj2.getString("Oggetti"));
+                    sic.setVolti(obj2.getString("Volti"));
+                    sic.setDescrizione(obj2.getString("Descrizione"));
+                    sic.setTesto(obj2.getString("Testo"));
 
                     lista.add(sic);
                 }

@@ -214,6 +214,14 @@ public class ChiamateWSIR implements TaskDelegateIR {
             jObject = new JSONArray("[" + result + "]");
             JSONObject obj = jObject.getJSONObject(0);
             String dati = obj.getString("Immagini");
+            String Ridotte = obj.getString("Ridotte");
+            if (!Ridotte.equals("0")) {
+                UtilitiesGlobali.getInstance().VisualizzaMessaggio(
+                        context,
+                        "Immagini OCR",
+                        "Troppe immagini: Visualizzate " + Ridotte
+                );
+            }
 
             JSONArray jObjectImm = new JSONArray(dati);
             for(int i = 0; i < jObjectImm.length(); i++){
@@ -236,6 +244,12 @@ public class ChiamateWSIR implements TaskDelegateIR {
                 sic.setEsisteImmagine(obj2.getBoolean("EsisteImmagine"));
                 sic.setUrlImmagine(obj2.getString("UrlImmagine"));
                 sic.setSelezionata(false);
+                sic.setTags(obj2.getString("Tags"));
+                sic.setLuoghi(obj2.getString("Luoghi"));
+                sic.setOggetti(obj2.getString("Oggetti"));
+                sic.setVolti(obj2.getString("Volti"));
+                sic.setDescrizione(obj2.getString("Descrizione"));
+                sic.setTesto(obj2.getString("Testo"));
 
                 lista.add(sic);
             }
