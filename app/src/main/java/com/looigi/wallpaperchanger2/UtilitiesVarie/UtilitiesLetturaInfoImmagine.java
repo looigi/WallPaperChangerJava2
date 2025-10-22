@@ -144,7 +144,7 @@ public class UtilitiesLetturaInfoImmagine {
                 for (String r: righe) {
                     if (!r.isEmpty()) {
                         addDynamicText(context, "", true);
-                        addDynamicText(context, r.toUpperCase().trim(), false);
+                        addDynamicText(context, r.trim(), false);
                     }
                 }
             } else {

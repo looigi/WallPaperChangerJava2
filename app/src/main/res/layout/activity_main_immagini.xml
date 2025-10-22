@@ -41,11 +41,11 @@
                     android:textColor="@color/Blue"
                     android:layout_height="40dp" />
 
-                <ImageView
+                <!-- <ImageView
                     android:id="@+id/imgFiltraCombo"
                     android:src="@drawable/icona_salva"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp" /> -->
             </LinearLayout>
 
             <Spinner

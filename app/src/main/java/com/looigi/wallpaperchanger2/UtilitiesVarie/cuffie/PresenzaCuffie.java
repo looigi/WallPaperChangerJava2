@@ -14,12 +14,17 @@ import androidx.core.app.ActivityCompat;
 import com.looigi.wallpaperchanger2.Player.UtilityPlayer;
 import com.looigi.wallpaperchanger2.Player.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.VariabiliStaticheStart;
 
 public class PresenzaCuffie extends BroadcastReceiver {
     private int StavaSuonando = -1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!VariabiliStaticheStart.getInstance().isPlayerAperto()) {
+            return;
+        }
+
         String action = intent.getAction();
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 

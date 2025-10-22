@@ -23,6 +23,15 @@ public class StrutturaImmaginiLibrary {
     private String Luoghi;
     private String Oggetti;
     private String Volti;
+    private String Descrizione;
+
+    public String getDescrizione() {
+        return Descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        Descrizione = descrizione;
+    }
 
     public String getVolti() {
         return Volti;

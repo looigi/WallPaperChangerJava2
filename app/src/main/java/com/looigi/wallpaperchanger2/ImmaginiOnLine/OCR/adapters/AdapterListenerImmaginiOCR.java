@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
@@ -24,6 +27,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.strutture.StrutturaImmaginiOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.webService.DownloadImmagineOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
+import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.List;
 
@@ -58,6 +62,16 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
         return 0;
     }
 
+    private SpannableString TornaDettaglio(StrutturaImmaginiOCR s) {
+        String Testo = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Testo:", s.getTesto());
+        String Luoghi = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Luoghi:", s.getLuoghi());
+        String Oggetti = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Oggetti:", s.getOggetti());
+        String Volti = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Volti:", s.getVolti());
+        String Desc = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Descr.:", s.getDescrizione());
+
+        return UtilitiesGlobali.getInstance().EvidenziaTesto(Testo + Luoghi + Oggetti + Volti + Desc, VariabiliStaticheOCR.getInstance().getFiltroPremuto());
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         // if (view != null) return view;
@@ -68,7 +82,7 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
             ImageView imgOrigine = view.findViewById(R.id.imgOrigine);
             TextView txtNomeFile = view.findViewById(R.id.txtNomeImmagine);
             TextView txtTesto = view.findViewById(R.id.txtTesto);
-            txtTesto.setText(Immagini.get(i).getTesto());
+            txtTesto.setText(TornaDettaglio(Immagini.get(i)));
             TextView txtCategoria = view.findViewById(R.id.txtCategoria);
             TextView txtDestinazione = view.findViewById(R.id.txtDestinazione);
 
@@ -80,7 +94,7 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
                     Immagini.get(i).getURL()
             );
 
-            txtCategoria.setText(Immagini.get(i).getCategoriaOrigine());
+            txtCategoria.setText(UtilitiesGlobali.getInstance().EvidenziaTesto(Immagini.get(i).getCategoriaOrigine(), VariabiliStaticheOCR.getInstance().getFiltroPremuto()));
             String Destinazione = Immagini.get(i).getCategorieDestinazione();
             String Destinazione2 = "";
             int quanteDestinazioni = 0;
@@ -225,7 +239,7 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
                 String[] n = NomeFile.split("/");
                 NomeFile = n[n.length - 1];
             }
-            txtNomeFile.setText(NomeFile);
+            txtNomeFile.setText(UtilitiesGlobali.getInstance().EvidenziaTesto(NomeFile, VariabiliStaticheOCR.getInstance().getFiltroPremuto()));
 
             String finalNomeFile = NomeFile;
             imgOrigine.setOnClickListener(new View.OnClickListener() {

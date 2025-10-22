@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +19,17 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.webService.ChiamateWSSP;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class MainSpostamento extends Activity {
     private Context context;
@@ -59,13 +65,31 @@ public class MainSpostamento extends Activity {
         );
 
         EditText edtFiltroSpostamento = findViewById(R.id.edtSpostaFiltroCategoria);
+        edtFiltroSpostamento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Non serve implementare
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheSpostamento.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
+                VariabiliStaticheSpostamento.getInstance().AggiornaCategorieSpostamento(context);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Non serve implementare
+            }
+        });
+
         /* edtFiltroSpostamento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 VariabiliStaticheSpostamento.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
                 VariabiliStaticheSpostamento.getInstance().AggiornaCategorieSpostamento(context);
             }
-        }); */
+        });
 
         ImageView imgRefreshCat = findViewById(R.id.imgRefreshCat);
         imgRefreshCat.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +97,7 @@ public class MainSpostamento extends Activity {
                 VariabiliStaticheSpostamento.getInstance().setFiltroCategoriaSpostamento(edtFiltroSpostamento.getText().toString());
                 VariabiliStaticheSpostamento.getInstance().AggiornaCategorieSpostamento(context);
             }
-        });
+        }); */
 
         ChiamateWSSP c = new ChiamateWSSP(context);
         c.TornaCategoriePerImmaginiContenute(false);

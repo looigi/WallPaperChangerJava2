@@ -184,21 +184,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:layout_gravity="bottom"
                 android:layout_height="wrap_content"
                 android:weightSum="10">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:text="Categorie" />
+
+                <EditText
+                    android:id="@+id/edtFiltroCategorie"
+                    android:textColor="@color/Blue"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
 
                 <Spinner
                     android:id="@+id/spnCategorie"
                     android:layout_width="0dp"
                     android:theme="@style/spinnerTheme"
-                    android:layout_weight="6"
+                    android:layout_weight="4"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>

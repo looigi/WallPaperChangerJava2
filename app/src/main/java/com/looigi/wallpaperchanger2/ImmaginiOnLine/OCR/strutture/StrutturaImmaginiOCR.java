@@ -7,6 +7,51 @@ public class StrutturaImmaginiOCR {
     private int idCategoriaOrigine;
     private String CategoriaOrigine;
     private String CategorieDestinazione;
+    private String Luoghi;
+    private String Oggetti;
+    private String Volti;
+    private String Descrizione;
+    private String SitiRilevati;
+
+    public String getLuoghi() {
+        return Luoghi;
+    }
+
+    public void setLuoghi(String luoghi) {
+        Luoghi = luoghi;
+    }
+
+    public String getOggetti() {
+        return Oggetti;
+    }
+
+    public void setOggetti(String oggetti) {
+        Oggetti = oggetti;
+    }
+
+    public String getVolti() {
+        return Volti;
+    }
+
+    public void setVolti(String volti) {
+        Volti = volti;
+    }
+
+    public String getDescrizione() {
+        return Descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        Descrizione = descrizione;
+    }
+
+    public String getSitiRilevati() {
+        return SitiRilevati;
+    }
+
+    public void setSitiRilevati(String sitiRilevati) {
+        SitiRilevati = sitiRilevati;
+    }
 
     public String getURL() {
         return URL;

@@ -263,6 +263,7 @@ public class UtilityImmagini {
                 si.setLuoghi(j.getString("Luoghi"));
                 si.setOggetti(j.getString("Oggetti"));
                 si.setVolti(j.getString("Volti"));
+                si.setDescrizione(j.getString("Descrizione"));
 
                 return si;
             } catch (JSONException e) {

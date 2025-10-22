@@ -71,6 +71,15 @@ public class VariabiliStaticheMostraImmagini {
     private FlexboxLayout layCategorieRilevate;
     private FlexboxLayout layScritteRilevate;
     private LinearLayout layTasti;
+    private boolean staCambiandocategoria = false;
+
+    public boolean isStaCambiandocategoria() {
+        return staCambiandocategoria;
+    }
+
+    public void setStaCambiandocategoria(boolean staCambiandocategoria) {
+        this.staCambiandocategoria = staCambiandocategoria;
+    }
 
     public FlexboxLayout getLayCategorieRilevate() {
         return layCategorieRilevate;

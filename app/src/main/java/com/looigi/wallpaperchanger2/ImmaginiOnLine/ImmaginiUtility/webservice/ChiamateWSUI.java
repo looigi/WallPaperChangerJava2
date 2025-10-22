@@ -83,6 +83,8 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     "&Preview=N";
         }
 
+        //  ProssimaImmagine?idCategoria=3&Filtro=&idImmagine=679&Random=N&OrdinaPerVisualizzato=S&Operatore=Or&Preview=S
+
         TipoOperazione = "ProssimaImmagine";
         // ControllaTempoEsecuzione = false;
 

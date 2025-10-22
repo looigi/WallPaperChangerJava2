@@ -8,8 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
@@ -45,6 +49,7 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiScarica.VariabiliScar
 import com.looigi.wallpaperchanger2.Wallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
+import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -505,6 +510,35 @@ public class MainMostraImmagini extends Activity {
 
         EditText txtFiltroCate = findViewById(R.id.edtFiltroCategoriaMI);
         txtFiltroCate.setText(VariabiliStaticheMostraImmagini.getInstance().getFiltroCategoria());
+        txtFiltroCate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                VariabiliStaticheMostraImmagini.getInstance().setStaCambiandocategoria(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                VariabiliStaticheMostraImmagini.getInstance().setFiltroCategoria(txtFiltroCate.getText().toString());
+
+                UtilityImmagini.getInstance().AggiornaCategorie(context);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                UtilityImmagini.getInstance().RitornaProssimaImmagine(context);
+
+                Handler handlerTimer = new Handler(Looper.getMainLooper());
+                Runnable rTimer = new Runnable() {
+                    public void run() {
+                        db_dati_immagini db = new db_dati_immagini(context);
+                        db.ScriveImpostazioni();
+
+                        VariabiliStaticheMostraImmagini.getInstance().setStaCambiandocategoria(false);
+                    }
+                };
+                handlerTimer.postDelayed(rTimer, 1000);
+            }
+        });
         /* txtFiltroCate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -517,7 +551,7 @@ public class MainMostraImmagini extends Activity {
                     UtilityImmagini.getInstance().AggiornaCategorie(context);
                 // }
             }
-        }); */
+        });
 
         ImageView imgFiltraCombo = findViewById(R.id.imgFiltraCombo);
         imgFiltraCombo.setOnClickListener(new View.OnClickListener() {
@@ -529,7 +563,7 @@ public class MainMostraImmagini extends Activity {
 
                 UtilityImmagini.getInstance().AggiornaCategorie(context);
             }
-        });
+        }); */
 
         VariabiliStaticheMostraImmagini.getInstance().setTxtInfoSotto(findViewById(R.id.txtInfoSotto));
         VariabiliStaticheMostraImmagini.getInstance().getTxtInfoSotto().setText("");

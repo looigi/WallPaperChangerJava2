@@ -16,6 +16,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.telephony.CellSignalStrength;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +39,11 @@ import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.GoogleDrive.GoogleDrive;
@@ -958,7 +960,7 @@ public class UtilitiesGlobali {
             if (TestoJava.isEmpty()) {
                 u.setImmagine(struttura);
                 u.ImpostaCategorieGiaMesse(
-                        TestoJava.toUpperCase().trim()
+                        TestoJava.trim()
                 );
                 u.setLuoghiImpostati(
                         struttura.getLuoghi()
@@ -979,15 +981,125 @@ public class UtilitiesGlobali {
 
                 u.AvviaControllo();
             } else {
-                String Testo = TestoJava + "\n" +
-                        "Tags: " + struttura.getTags() + "\n" +
-                        "Luoghi: " + struttura.getLuoghi() + "\n" +
-                        "Oggetti: " + struttura.getOggetti() + "\n" +
-                        "Somiglianze: " + struttura.getVolti();
+                String Tags = RitornaTestoDescrizioniSistemato("Tags:", struttura.getTags());
+                String Luoghi = RitornaTestoDescrizioniSistemato("Luoghi:", struttura.getLuoghi());
+                String Oggetti = RitornaTestoDescrizioniSistemato("Oggetti:", struttura.getOggetti());
+                String Volti = RitornaTestoDescrizioniSistemato("Volti:", struttura.getVolti());
+                String TestoJ = RitornaTestoDescrizioniSistemato("Testo:", TestoJava);
+                String Descr = RitornaTestoDescrizioniSistemato("Descr.:", struttura.getDescrizione());
+                String Testo = TestoJ +
+                        Tags +
+                        Luoghi +
+                        Oggetti +
+                        Volti +
+                        Descr;
                 u.ScriveValori(Testo);
             }
         } else {
             u.ScriveValori("");
         }
+    }
+
+    public String capitalizeAfterSpaces(String input) {
+        String[] words = input.split(" ");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 0) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return result.toString().trim();
+    }
+
+    public String formatCamelCase(String input) {
+        String step0 = input.replace("*PV*", " ").replace(";", " ");
+
+        // 1️⃣ Inserisce uno spazio prima di una maiuscola seguita da una minuscola
+        String step1 = step0.replaceAll("(?<!^)(?=[A-Z][a-z])", " ");
+
+        // 2️⃣ Gestisce le sequenze di maiuscole seguite da minuscole (es: "HTTPServer" → "HTTP Server")
+        String step2 = step1.replaceAll("([A-Z]+)([A-Z][a-z])", "$1 $2");
+
+        // 3️⃣ Mette solo la prima lettera maiuscola, il resto minuscolo, in ogni parola
+        StringBuilder result = new StringBuilder();
+        for (String word : step2.split(" ")) {
+            if (!word.isEmpty()) {
+                if (word.length() > 1 && word.equals(word.toUpperCase())) {
+                    // parola tutta maiuscola → lascia com'è (es. "HTTP")
+                    result.append(word);
+                } else {
+                    // parola normale → prima maiuscola, resto minuscolo
+                    result.append(word.substring(0, 1).toUpperCase())
+                            .append(word.substring(1).toLowerCase());
+                }
+                result.append(" ");
+            }
+        }
+
+        return result.toString().trim();
+    }
+
+    public SpannableString EvidenziaTesto(String text, String DaEvidenziare) {
+        String testoDaEvidenziare1 = "";
+        String testoDaEvidenziare2 = "";
+        if (DaEvidenziare.contains(";")) {
+            String[] testo = DaEvidenziare.split(";", -1);
+            testoDaEvidenziare1 = testo[0];
+            testoDaEvidenziare2 = testo[1];
+        } else {
+            testoDaEvidenziare1 = DaEvidenziare;
+        }
+
+        // Evita errori se il testo da evidenziare è nullo o vuoto
+        if (testoDaEvidenziare1 == null || testoDaEvidenziare1.isEmpty()) {
+            return new SpannableString(text);
+        }
+
+        SpannableString spannable = new SpannableString(text);
+
+        // Usa indexOf in un ciclo per trovare tutte le occorrenze
+        int start = text.toLowerCase().indexOf(testoDaEvidenziare1.toLowerCase());
+        while (start >= 0) {
+            int end = start + testoDaEvidenziare1.length();
+
+            // Applica l'evidenziazione
+            spannable.setSpan(
+                    new BackgroundColorSpan(Color.YELLOW),
+                    start,
+                    end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+
+            // Cerca la prossima occorrenza
+            start = text.toLowerCase().indexOf(testoDaEvidenziare1.toLowerCase(), end);
+        }
+
+        return spannable;
+    }
+
+    public String RitornaTestoDescrizioniSistemato(String Cosa, String Testo) {
+        if (Testo == null) {
+            return "";
+        }
+
+        String step2 = "";
+        String step = Testo.replace("*PV*", ";");
+        step = step.replace(";;", ";");
+        if (step.isEmpty() || step.equals(";")) {
+            step2 = "";
+        } else {
+            step = step.replace(";", " ");
+            if (step.contains("(")) {
+                step = step.substring(0, step.indexOf("("));
+            }
+            step = formatCamelCase(step);
+            step2 = Cosa.toUpperCase().trim() + " " + capitalizeAfterSpaces(step) + "\n";
+        }
+
+        return step2;
     }
 }

@@ -317,6 +317,12 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                     sic.setCategoriaOrigine(ConverteCaratteriStrani(obj2.getString("CategoriaOrigine")));
                     sic.setCategorieDestinazione(ConverteCaratteriStrani(obj2.getString("idCategoriaDestinazione")));
 
+                    sic.setLuoghi(ConverteCaratteriStrani(obj2.getString("Luoghi")));
+                    sic.setOggetti(ConverteCaratteriStrani(obj2.getString("Oggetti")));
+                    sic.setVolti(ConverteCaratteriStrani(obj2.getString("Volti")));
+                    sic.setDescrizione(ConverteCaratteriStrani(obj2.getString("Descrizione")));
+                    sic.setSitiRilevati(ConverteCaratteriStrani(obj2.getString("SitiRilevati")));
+
                     lista.add(sic);
                 }
 

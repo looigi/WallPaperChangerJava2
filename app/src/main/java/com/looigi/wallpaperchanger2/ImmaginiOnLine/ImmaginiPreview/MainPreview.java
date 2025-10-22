@@ -514,12 +514,16 @@ public class MainPreview extends Activity {
         ImageView imgSposta = findViewById(R.id.imgSpostaACategoria);
         imgSposta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // laySposta.setVisibility(LinearLayout.VISIBLE);
-                Intent i = new Intent(context, MainSpostamento.class);
-                i.putExtra("Modalita", "Preview");
-                i.putExtra("idImmagine", Integer.toString(VariabiliStatichePreview.getInstance().getStrutturaImmagine().getIdImmagine()));
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                if (VariabiliStatichePreview.getInstance().getStrutturaImmagine() != null) {
+                    // laySposta.setVisibility(LinearLayout.VISIBLE);
+                    Intent i = new Intent(context, MainSpostamento.class);
+                    i.putExtra("Modalita", "Preview");
+                    i.putExtra("idImmagine", Integer.toString(VariabiliStatichePreview.getInstance().getStrutturaImmagine().getIdImmagine()));
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna immagine visualizzata");
+                }
             }
         });
 

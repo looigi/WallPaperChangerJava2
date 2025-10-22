@@ -29,6 +29,8 @@ import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.List;
 
+import okhttp3.internal.Util;
+
 public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
     private Context context;
     private List<StrutturaImmagineFuoriCategoria> Immagini;
@@ -78,9 +80,9 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
             TextView txtDettaglio = view.findViewById(R.id.txtDettaglio);
 
             txtIdImmagine.setText("Id Immagine: " + Immagini.get(i).getIdImmagine());
-            txtCategoria.setText("Categoria: " + EvidenziaTesto(Immagini.get(i).getCategoria()));
+            txtCategoria.setText("Categoria: " + UtilitiesGlobali.getInstance().EvidenziaTesto(Immagini.get(i).getCategoria(), VariabiliImmaginiFuoriCategoria.getInstance().getTestoRicercato()));
             txtCartella.setText("Cartella: " + Immagini.get(i).getCartella());
-            txtNomeFile.setText(EvidenziaTesto(Immagini.get(i).getNomeFile()));
+            txtNomeFile.setText(UtilitiesGlobali.getInstance().EvidenziaTesto(Immagini.get(i).getNomeFile(), VariabiliImmaginiFuoriCategoria.getInstance().getTestoRicercato()));
             txtDimeFile.setText("Size: " + Immagini.get(i).getDimensioneFile());
             txtDimeImm.setText("Dim.: " + Immagini.get(i).getDimensioniImmagine());
 
@@ -190,103 +192,14 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
         return view;
     }
 
-    private String ControllaValiditaTesto(String Testo, String Cosa) {
-        String Testo2 = Testo.trim();
-
-        if (!Testo2.equals(";") && !Testo2.isEmpty()) {
-            if (Testo2.contains("(")) {
-                Testo2 = Testo2.substring(0, Testo2.indexOf("(")).trim();
-            }
-            Testo2 = Testo2.replace(";", " ");
-            Testo2 = formatCamelCase(Testo2);
-
-            Testo2 = Cosa + Testo2.trim();
-        } else {
-            Testo2 = "";
-        }
-
-        return Testo2;
-    }
-
-    private String formatCamelCase(String input) {
-        // 1️⃣ Inserisce uno spazio prima di una maiuscola seguita da una minuscola
-        String step1 = input.replaceAll("(?<!^)(?=[A-Z][a-z])", " ");
-
-        // 2️⃣ Gestisce le sequenze di maiuscole seguite da minuscole (es: "HTTPServer" → "HTTP Server")
-        String step2 = step1.replaceAll("([A-Z]+)([A-Z][a-z])", "$1 $2");
-
-        // 3️⃣ Mette solo la prima lettera maiuscola, il resto minuscolo, in ogni parola
-        StringBuilder result = new StringBuilder();
-        for (String word : step2.split(" ")) {
-            if (!word.isEmpty()) {
-                if (word.length() > 1 && word.equals(word.toUpperCase())) {
-                    // parola tutta maiuscola → lascia com'è (es. "HTTP")
-                    result.append(word);
-                } else {
-                    // parola normale → prima maiuscola, resto minuscolo
-                    result.append(word.substring(0, 1).toUpperCase())
-                            .append(word.substring(1).toLowerCase());
-                }
-                result.append(" ");
-            }
-        }
-
-        return result.toString().trim();
-    }
-
-    private SpannableString EvidenziaTesto(String text) {
-        String testoDaEvidenziare1 = "";
-        String testoDaEvidenziare2 = "";
-        String[] testo = VariabiliImmaginiFuoriCategoria.getInstance().getTestoRicercato().split(";", -1);
-        testoDaEvidenziare1 = testo[0];
-        testoDaEvidenziare2 = testo[1];
-
-        // Evita errori se il testo da evidenziare è nullo o vuoto
-        if (testoDaEvidenziare1 == null || testoDaEvidenziare1.isEmpty()) {
-            return new SpannableString(text);
-        }
-
-        SpannableString spannable = new SpannableString(text);
-
-        // Usa indexOf in un ciclo per trovare tutte le occorrenze
-        int start = text.toLowerCase().indexOf(testoDaEvidenziare1.toLowerCase());
-        while (start >= 0) {
-            int end = start + testoDaEvidenziare1.length();
-
-            // Applica l'evidenziazione
-            spannable.setSpan(
-                    new BackgroundColorSpan(Color.YELLOW),
-                    start,
-                    end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-
-            // Cerca la prossima occorrenza
-            start = text.toLowerCase().indexOf(testoDaEvidenziare1.toLowerCase(), end);
-        }
-
-        return spannable;
-    }
-
     private SpannableString TornaDettaglio(StrutturaImmagineFuoriCategoria s) {
-        String Testo = ControllaValiditaTesto(s.getTesto(), "TESTO: ");
-        if (!Testo.isEmpty()) { Testo += "\n"; }
+        String Testo = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Testo:", s.getTesto());
+        String Luoghi = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Luoghi:", s.getLuoghi());
+        String Oggetti = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Oggetti:", s.getOggetti());
+        String Tags = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Tags:", s.getTags());
+        String Volti = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Volti:", s.getVolti());
+        String Desc = UtilitiesGlobali.getInstance().RitornaTestoDescrizioniSistemato("Descr.:", s.getDescrizione());
 
-        String Luoghi = ControllaValiditaTesto(s.getLuoghi(), "LUOGHI: ");
-        if (!Luoghi.isEmpty()) { Luoghi += "\n"; }
-
-        String Oggetti = ControllaValiditaTesto(s.getOggetti(), "OGGETTI: ");
-        if (!Oggetti.isEmpty()) { Oggetti += "\n"; }
-
-        String Tags = ControllaValiditaTesto(s.getTags(), "TAGS: ");
-        if (!Tags.isEmpty()) { Tags += "\n"; }
-
-        String Volti = ControllaValiditaTesto(s.getVolti(), "VOLTI: ");
-        if (!Volti.isEmpty()) { Volti += "\n"; }
-
-        String Desc = ControllaValiditaTesto(s.getDescrizione(), "DESCR.: ");
-        if (!Desc.isEmpty()) { Desc += "\n"; }
-
-        return EvidenziaTesto(Testo + Luoghi + Oggetti + Tags + Volti + Desc);
+        return UtilitiesGlobali.getInstance().EvidenziaTesto(Testo + Luoghi + Oggetti + Tags + Volti + Desc, VariabiliImmaginiFuoriCategoria.getInstance().getTestoRicercato());
     }
 }

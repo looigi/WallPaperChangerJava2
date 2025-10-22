@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -153,6 +155,48 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
                     // Mostra il dialog
                     builder.show();
+                }
+            });
+
+            EditText edtFiltro = findViewById(R.id.edtFiltroCategorie);
+            edtFiltro.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Non serve implementare
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    List<StrutturaImmaginiCategorie> lista = new ArrayList<>();
+                    if (s.toString().isEmpty()) {
+                        lista = VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM();
+                    } else {
+                        for (StrutturaImmaginiCategorie s2 : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                            if (s2.getCategoria().toUpperCase().contains(s.toString().toUpperCase())) {
+                                lista.add(s2);
+                            }
+                        }
+                    }
+
+                    String[] ll2 = new String[lista.size()];
+                    int i = 0;
+                    for (StrutturaImmaginiCategorie lll: lista) {
+                        ll2[i] = lll.getCategoria();
+                        i++;
+                    }
+                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(ll2[0]);
+                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(ll2[0]);
+                    UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
+                            ll2,
+                            ll2[0]
+                    );
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Non serve implementare
                 }
             });
 
