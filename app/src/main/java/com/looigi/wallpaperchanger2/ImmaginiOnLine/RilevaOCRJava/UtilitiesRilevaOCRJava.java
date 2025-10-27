@@ -90,24 +90,17 @@ public class UtilitiesRilevaOCRJava {
     private String TagsRilevati = "";
     private Bitmap bitmap1;
     private Bitmap bitmapOriginale;
+    private Bitmap bitmapOriginale2;
     private int giro;
     private ImageView imgDest;
     private final int tempoDiAttesa = 500;
 
-    public void setBitmaps(Bitmap bitmap1, Bitmap bitmapOriginale) {
-        this.bitmap1 = riduceImmagine(bitmap1);
-        this.bitmapOriginale = riduceImmagine(bitmapOriginale);
-    }
-
-    public void setImmagine(ImageView img) {
-        this.imgDest = img;
-    }
-
-    public static Bitmap riduceImmagine(Bitmap original) {
+    public Bitmap riduceImmagine(Bitmap original) {
         if (original == null) return null;
+
         int newWidth = 800;
         int newHeight = 600;
-        Boolean keepAspectRatio = true;
+        boolean keepAspectRatio = true;
 
         if (keepAspectRatio) {
             // Calcola il rapporto originale
@@ -134,6 +127,15 @@ public class UtilitiesRilevaOCRJava {
         return Bitmap.createScaledBitmap(original, newWidth, newHeight, true);
     }
 
+    public void setBitmaps(Bitmap bitmap1, Bitmap bitmapOriginale, Bitmap bitmapOriginale2) {
+        this.bitmap1 = bitmap1;
+        this.bitmapOriginale = bitmapOriginale;
+        this.bitmapOriginale2 = bitmapOriginale2;
+    }
+
+    public void setImmagine(ImageView img) {
+        this.imgDest = img;
+    }
 
     public void LeggeTestoSuImmagine(Context context) {
         giro = 1;
@@ -201,14 +203,25 @@ public class UtilitiesRilevaOCRJava {
                                 }
                             }, tempoDiAttesa);
                         } else {
-                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Qui sei sicuro che l’OCR è completato
-                                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                    ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
-                                }
-                            }, tempoDiAttesa);
+                            if (giro == 2) {
+                                giro = 3;
+                                imgDest.setImageBitmap(bitmapOriginale2);
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LeggeTestoSuImmagine2(context, bitmapOriginale2);
+                                    }
+                                }, tempoDiAttesa);
+                            } else {
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Qui sei sicuro che l’OCR è completato
+                                        ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                                        ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
+                                    }
+                                }, tempoDiAttesa);
+                            }
                         }
                     } else {
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -231,14 +244,25 @@ public class UtilitiesRilevaOCRJava {
                             }
                         }, tempoDiAttesa);
                     } else {
-                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Qui sei sicuro che l’OCR è completato
-                                ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
-                                ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
-                            }
-                        }, tempoDiAttesa);
+                        if (giro == 2) {
+                            giro = 3;
+                            imgDest.setImageBitmap(bitmapOriginale2);
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LeggeTestoSuImmagine2(context, bitmapOriginale2);
+                                }
+                            }, tempoDiAttesa);
+                        } else {
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Qui sei sicuro che l’OCR è completato
+                                    ChiamateWSRilevaOCR ws = new ChiamateWSRilevaOCR(context);
+                                    ws.aggiornaTestoOcrDaJava(";", TagsRilevati, "OCR");
+                                }
+                            }, tempoDiAttesa);
+                        }
                     }
                 }
             }
