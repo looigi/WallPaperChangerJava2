@@ -52,7 +52,7 @@ public class VariabiliImmaginiFuoriCategoria {
     private List<StrutturaImmaginiCategorie> listaCategorieIMM;
     private EditText edtAlias1;
     private EditText edtAlias2;
-    private EditText edtTag;
+    // private EditText edtTag;
     private String CategoriaInserita = "";
     private String TestoRicercato;
 
@@ -96,6 +96,7 @@ public class VariabiliImmaginiFuoriCategoria {
         this.edtAlias2 = edtAlias2;
     }
 
+    /*
     public EditText getEdtTag() {
         return edtTag;
     }
@@ -103,6 +104,7 @@ public class VariabiliImmaginiFuoriCategoria {
     public void setEdtTag(EditText edtTag) {
         this.edtTag = edtTag;
     }
+    */
 
     public List<StrutturaImmaginiCategorie> getListaCategorieIMM() {
         return listaCategorieIMM;

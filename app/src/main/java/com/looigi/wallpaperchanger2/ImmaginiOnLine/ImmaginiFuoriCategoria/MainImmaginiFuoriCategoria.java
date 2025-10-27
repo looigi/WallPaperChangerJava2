@@ -37,6 +37,7 @@ import java.util.List;
 public class MainImmaginiFuoriCategoria extends Activity {
     private Context context;
     private Activity act;
+    private String txtNuovaCategoria;
 
     public MainImmaginiFuoriCategoria() {
     }
@@ -56,8 +57,8 @@ public class MainImmaginiFuoriCategoria extends Activity {
         if (Ricerca == null) { Ricerca = ""; }
         VariabiliImmaginiFuoriCategoria.getInstance().setRicerca(Ricerca);
 
-        TextView txtNuovaCategoria = findViewById(R.id.txtNuovaCategoria);
-        txtNuovaCategoria.setText("");
+        // TextView txtNuovaCategoria = findViewById(R.id.txtNuovaCategoria);
+        // txtNuovaCategoria.setText("");
 
         VariabiliImmaginiFuoriCategoria.getInstance().setImgCaricamento(findViewById(R.id.imgCaricamentoIFC));
         UtilitiesGlobali.getInstance().AttesaGif(
@@ -239,7 +240,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
                 String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
-                txtNuovaCategoria.setText(Alias1 + " " + Alias2);
+                txtNuovaCategoria = Alias1 + " " + Alias2;
             }
         });
 
@@ -250,7 +251,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
             public void onFocusChange(View v, boolean hasFocus) {
                 String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
                 String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
-                txtNuovaCategoria.setText(Alias1 + " " + Alias2);
+                txtNuovaCategoria = Alias1 + " " + Alias2;
             }
         });
 
@@ -284,7 +285,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
             }
         }); */
 
-        VariabiliImmaginiFuoriCategoria.getInstance().setEdtTag(findViewById(R.id.edtTag));
+        // VariabiliImmaginiFuoriCategoria.getInstance().setEdtTag(findViewById(R.id.edtTag));
         /* edtTag.setText(VariabiliImmaginiFuoriCategoria.getInstance().getTag());
         edtTag.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

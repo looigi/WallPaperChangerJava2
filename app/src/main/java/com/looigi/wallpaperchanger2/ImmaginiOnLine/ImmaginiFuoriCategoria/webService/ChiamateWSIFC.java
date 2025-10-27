@@ -41,7 +41,7 @@ public class ChiamateWSIFC implements TaskDelegate {
     public void RitornaImmaginiFuoriCategoria(String ForzaRefrsh) {
         String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
         String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
-        String Tag = VariabiliImmaginiFuoriCategoria.getInstance().getEdtTag().getText().toString();
+        String Tag = ""; // VariabiliImmaginiFuoriCategoria.getInstance().getEdtTag().getText().toString();
         String idCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria();
         if (!VariabiliImmaginiFuoriCategoria.getInstance().getRicerca().isEmpty()) {
             idCategoria = "1";

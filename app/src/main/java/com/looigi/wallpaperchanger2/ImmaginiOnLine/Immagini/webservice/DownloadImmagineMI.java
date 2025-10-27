@@ -67,6 +67,13 @@ public class DownloadImmagineMI {
             PercorsoDIR = context.getFilesDir() + "/Immagini";
         }
 
+        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                "URL: " + Url);
+        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                "Percorso: " + PercorsoDIR);
+        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                "Immagine: " + NomeImmagine);
+
         UtilityWallpaper.getInstance().CreaCartelle(PercorsoDIR);
 
         AttivaTimer();
@@ -178,26 +185,31 @@ public class DownloadImmagineMI {
                         outStream.close();
 
                         // if (immagine == null) {
-                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Immagine Scaricata");
+                        UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                                "Immagine Scaricata");
                         // }
                     }
                 } catch (FileNotFoundException e) {
                     // if (immagine == null) {
-                    UtilitiesGlobali.getInstance().ApreToast(context, "File non esistente per il download");
+                    UtilitiesGlobali.getInstance().ApreToast(context,
+                            "File non esistente per il download");
 
-                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                            "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     // }
                     Errore = true;
                 } catch (IOException e) {
                     // if (immagine == null) {
                     UtilitiesGlobali.getInstance().ApreToast(context, "Errore nel salvataggio su download Immagine");
 
-                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
+                    UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                            "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     // }
                     Errore = true;
                 }
             } else {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Struttura non esistente per il download");
+                UtilitiesGlobali.getInstance().ApreToast(context,
+                        "Struttura non esistente per il download");
             }
 
             // } else {
@@ -222,9 +234,11 @@ public class DownloadImmagineMI {
             // }
         } catch (Exception e) {
             if (immagine == null) {
-                UtilitiesGlobali.getInstance().ApreToast(context, "Errore sul download Immagine");
+                UtilitiesGlobali.getInstance().ApreToast(context,
+                        "Errore sul download Immagine");
 
-                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,"Errore sul download immagine: " + e.getMessage());
+                UtilityImmagini.getInstance().ScriveLog(context, NomeMaschera,
+                        "Errore sul download immagine: " + e.getMessage());
             }
 
             // e.printStackTrace();

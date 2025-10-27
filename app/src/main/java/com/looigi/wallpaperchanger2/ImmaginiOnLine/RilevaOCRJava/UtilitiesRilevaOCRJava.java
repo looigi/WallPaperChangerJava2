@@ -89,19 +89,51 @@ public class UtilitiesRilevaOCRJava {
     private String ScrittaRilevata = "";
     private String TagsRilevati = "";
     private Bitmap bitmap1;
-    private Bitmap bitmapOrignale;
+    private Bitmap bitmapOriginale;
     private int giro;
     private ImageView imgDest;
     private final int tempoDiAttesa = 500;
 
     public void setBitmaps(Bitmap bitmap1, Bitmap bitmapOriginale) {
-        this.bitmap1 = bitmap1;
-        this.bitmapOrignale = bitmapOriginale;
+        this.bitmap1 = riduceImmagine(bitmap1);
+        this.bitmapOriginale = riduceImmagine(bitmapOriginale);
     }
 
     public void setImmagine(ImageView img) {
         this.imgDest = img;
     }
+
+    public static Bitmap riduceImmagine(Bitmap original) {
+        if (original == null) return null;
+        int newWidth = 800;
+        int newHeight = 600;
+        Boolean keepAspectRatio = true;
+
+        if (keepAspectRatio) {
+            // Calcola il rapporto originale
+            float ratio = (float) original.getWidth() / original.getHeight();
+
+            if (newWidth > 0 && newHeight > 0) {
+                // Adatta entrambe le dimensioni senza deformare
+                if (newWidth / (float)newHeight > ratio) {
+                    newWidth = (int)(newHeight * ratio);
+                } else {
+                    newHeight = (int)(newWidth / ratio);
+                }
+            } else if (newWidth > 0) {
+                newHeight = (int)(newWidth / ratio);
+            } else if (newHeight > 0) {
+                newWidth = (int)(newHeight * ratio);
+            } else {
+                // Se non viene passato nulla, ritorna originale
+                return original;
+            }
+        }
+
+        // Crea la bitmap scalata
+        return Bitmap.createScaledBitmap(original, newWidth, newHeight, true);
+    }
+
 
     public void LeggeTestoSuImmagine(Context context) {
         giro = 1;
@@ -161,11 +193,11 @@ public class UtilitiesRilevaOCRJava {
                     if (VariabiliStaticheRilevaOCRJava.getInstance().getScrittaTrovata().isEmpty()) {
                         if (giro == 1) {
                             giro = 2;
-                            imgDest.setImageBitmap(bitmapOrignale);
+                            imgDest.setImageBitmap(bitmapOriginale);
                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    LeggeTestoSuImmagine2(context, bitmapOrignale);
+                                    LeggeTestoSuImmagine2(context, bitmapOriginale);
                                 }
                             }, tempoDiAttesa);
                         } else {
@@ -191,11 +223,11 @@ public class UtilitiesRilevaOCRJava {
                 } else {
                     if (giro == 1) {
                         giro = 2;
-                        imgDest.setImageBitmap(bitmapOrignale);
+                        imgDest.setImageBitmap(bitmapOriginale);
                         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                LeggeTestoSuImmagine2(context, bitmapOrignale);
+                                LeggeTestoSuImmagine2(context, bitmapOriginale);
                             }
                         }, tempoDiAttesa);
                     } else {

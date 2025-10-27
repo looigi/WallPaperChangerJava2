@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:textColor="@color/Blue"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:textColor="@color/Blue"
                 android:layout_weight="6"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:textColor="@color/Blue"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,7 +115,7 @@
             android:text="Cerca anche su exif"
             android:layout_height="30dp" />
 
-        <LinearLayout
+       <!--  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -135,7 +135,7 @@
                 android:layout_weight="6"
                 android:textColor="@color/Blue"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </LinearLayout> -->
 
         <LinearLayout
             android:id="@+id/layCategorie"
@@ -147,7 +147,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <LinearLayout
+            <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
@@ -179,18 +179,18 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp" />
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout> -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
                 android:layout_height="wrap_content"
-                android:weightSum="10">
+                android:weightSum="11">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:text="Categorie" />
@@ -208,6 +208,19 @@
                     android:theme="@style/spinnerTheme"
                     android:layout_weight="4"
                     android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical|end"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imgNuova"
+                        android:src="@drawable/icona_aggiunge"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
