@@ -543,11 +543,23 @@ public class ChiamateWSUI implements TaskDelegateUI {
                     VariabiliStatichePreview.getInstance().AggiungeImmagineAVisualizzate(si);
 
                     VariabiliStatichePreview.getInstance().setStrutturaImmagine(si);
+                    if (VariabiliStatichePreview.getInstance().getTxtElaborate() != null) {
+                        int diff = si.getImmaginiCategoria() - si.getImmaginiElaborate();
+                        String Elaborate = "Elab.: " + si.getImmaginiElaborate() + "/" +
+                                si.getImmaginiCategoria() + " - Manc.: " + diff;
+                        VariabiliStatichePreview.getInstance().getTxtElaborate().setText(Elaborate);
+                    }
+
                     if (VariabiliStatichePreview.getInstance().getTxtDescrizione() != null) {
                         String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
                                 " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
                                 " - Bytes: " + si.getDimensioneFile();
-                        VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                        VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(
+                                UtilitiesGlobali.getInstance().EvidenziaTesto(
+                                        Descrizione,
+                                        VariabiliStatichePreview.getInstance().getCategoria()
+                                )
+                        );
                     }
 
                     SharedPreferences prefs = context.getSharedPreferences("PREVIEW", MODE_PRIVATE);

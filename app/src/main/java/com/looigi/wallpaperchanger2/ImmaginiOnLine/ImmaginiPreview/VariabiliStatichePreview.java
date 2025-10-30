@@ -55,6 +55,24 @@ public class VariabiliStatichePreview {
     private FlexboxLayout layScritteRilevate;
     private LinearLayout layTasti;
     private LinearLayout layTastiDestra;
+    private TextView txtElaborate;
+    private String Categoria;
+
+    public String getCategoria() {
+        return Categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        Categoria = categoria;
+    }
+
+    public TextView getTxtElaborate() {
+        return txtElaborate;
+    }
+
+    public void setTxtElaborate(TextView txtElaborate) {
+        this.txtElaborate = txtElaborate;
+    }
 
     public LinearLayout getLayTastiDestra() {
         return layTastiDestra;

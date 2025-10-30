@@ -94,21 +94,26 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
                     Immagini.get(i).getURL()
             );
 
-            txtCategoria.setText(UtilitiesGlobali.getInstance().EvidenziaTesto(Immagini.get(i).getCategoriaOrigine(), VariabiliStaticheOCR.getInstance().getFiltroPremuto()));
+            txtCategoria.setText(UtilitiesGlobali.getInstance().EvidenziaTesto(Immagini.get(i).getCategoriaOrigine(),
+                    VariabiliStaticheOCR.getInstance().getFiltroPremuto()));
             String Destinazione = Immagini.get(i).getCategorieDestinazione();
             String Destinazione2 = "";
             int quanteDestinazioni = 0;
-            if (!Destinazione.isEmpty()) {
+            if (!Destinazione.isEmpty() && !Destinazione.equals(";")) {
                 String[] d = Destinazione.split("§");
+                Destinazione2 += VariabiliStaticheOCR.getInstance().getFiltroPremuto() + "\n";
+                quanteDestinazioni++;
                 for (String dd: d) {
                     if (!dd.isEmpty()) {
                         String[] ddd = dd.split(";");
-                        if (ddd.length > 0) {
+                        if (ddd.length > 0 && !Destinazione2.contains(VariabiliStaticheOCR.getInstance().getFiltroPremuto())) {
                             Destinazione2 += ddd[1] + "\n";
                             quanteDestinazioni++;
                         }
                     }
                 }
+            } else {
+                Destinazione2 = VariabiliStaticheOCR.getInstance().getFiltroPremuto();
             }
             txtDestinazione.setText(Destinazione2);
 
@@ -188,48 +193,77 @@ public class AdapterListenerImmaginiOCR extends BaseAdapter {
 
                     String[] d = Destinazione.split("§");
                     final String[] idCategoria = {""};
-                    if (finalQuanteDestinazioni == 1) {
-                        String Dest = d[0];
-                        String[] dd = Dest.split(";");
-                        idCategoria[0] = dd[0];
-
-                        VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(Integer.parseInt(idCategoria[0]));
-                        StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
-                        s.setIdImmagine(Immagini.get(i).getIdImmagine());
-                        ChiamateWSMI c = new ChiamateWSMI(context);
-                        c.SpostaImmagine(s, "OCR");
-
-                        imgOrigine.setImageBitmap(null);
-                    } else {
-                        String[] items = new String[d.length];
-                        String[] id = new String[d.length];
-                        int i2 = 0;
-                        for (String dd: d) {
-                            if (dd.contains(";")) {
-                                String[] ddd = dd.split(";");
-                                items[i2] = ddd[1];
-                                id[i2] = ddd[0];
-                                i2++;
+                    if (finalQuanteDestinazioni == 0) {
+                        String Dest = VariabiliStaticheOCR.getInstance().getFiltroPremuto();
+                        boolean ok = false;
+                        for (StrutturaImmaginiCategorie c: VariabiliStaticheOCR.getInstance().getListaCategorie()) {
+                            if (c.getCategoria().toUpperCase().trim().equals(Dest.toUpperCase().trim())) {
+                                idCategoria[0] = String.valueOf(c.getIdCategoria());
+                                ok = true;
+                                break;
                             }
                         }
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Scegli una destinazione")
-                            .setItems(items, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    idCategoria[0] = id[which];
+                        if (ok) {
+                            VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(Integer.parseInt(idCategoria[0]));
+                            StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
+                            s.setIdImmagine(Immagini.get(i).getIdImmagine());
+                            ChiamateWSMI c = new ChiamateWSMI(context);
+                            c.SpostaImmagine(s, "OCR");
 
-                                    VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(Integer.parseInt(idCategoria[0]));
-                                    StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
-                                    s.setIdImmagine(Immagini.get(i).getIdImmagine());
-                                    ChiamateWSMI c = new ChiamateWSMI(context);
-                                    c.SpostaImmagine(s, "OCR");
+                            imgOrigine.setImageBitmap(null);
+                        } else {
+                            UtilitiesGlobali.getInstance().ApreToast(context, "Nessuna categoria individuata: " +
+                                    VariabiliStaticheOCR.getInstance().getFiltroPremuto());
+                        }
+                    } else {
+                        if (finalQuanteDestinazioni == 1) {
+                            String Dest = d[0];
+                            String[] dd = Dest.split(";");
+                            idCategoria[0] = dd[0];
 
-                                    imgOrigine.setImageBitmap(null);
+                            VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(Integer.parseInt(idCategoria[0]));
+                            StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
+                            s.setIdImmagine(Immagini.get(i).getIdImmagine());
+                            ChiamateWSMI c = new ChiamateWSMI(context);
+                            c.SpostaImmagine(s, "OCR");
+
+                            imgOrigine.setImageBitmap(null);
+                        } else {
+                            String[] items = new String[d.length];
+                            String[] id = new String[d.length];
+                            int i2 = 0;
+                            for (String dd : d) {
+                                if (dd.contains(";")) {
+                                    String[] ddd = dd.split(";");
+                                    try {
+                                        items[i2] = ddd[1];
+                                        id[i2] = ddd[0];
+                                        i2++;
+                                    } catch (Exception ignored) {
+
+                                    }
                                 }
-                            });
+                            }
 
-                        builder.create().show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Scegli una destinazione")
+                                    .setItems(items, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            idCategoria[0] = id[which];
+
+                                            VariabiliStaticheSpostamento.getInstance().setIdCategoriaSpostamento(Integer.parseInt(idCategoria[0]));
+                                            StrutturaImmaginiLibrary s = new StrutturaImmaginiLibrary(); // CREARE LA STRUTTURA PER LO SPOSTAMENTO
+                                            s.setIdImmagine(Immagini.get(i).getIdImmagine());
+                                            ChiamateWSMI c = new ChiamateWSMI(context);
+                                            c.SpostaImmagine(s, "OCR");
+
+                                            imgOrigine.setImageBitmap(null);
+                                        }
+                                    });
+
+                            builder.create().show();
+                        }
                     }
                 }
             });

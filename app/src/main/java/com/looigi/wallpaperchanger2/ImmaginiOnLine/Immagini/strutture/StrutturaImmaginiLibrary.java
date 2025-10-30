@@ -24,6 +24,15 @@ public class StrutturaImmaginiLibrary {
     private String Oggetti;
     private String Volti;
     private String Descrizione;
+    private int ImmaginiElaborate = 0;
+
+    public int getImmaginiElaborate() {
+        return ImmaginiElaborate;
+    }
+
+    public void setImmaginiElaborate(int immaginiElaborate) {
+        ImmaginiElaborate = immaginiElaborate;
+    }
 
     public String getDescrizione() {
         return Descrizione;

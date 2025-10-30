@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
@@ -75,6 +76,8 @@ public class MainPreview extends Activity {
 
 
         VariabiliStatichePreview.getInstance().setImgPreview(findViewById(R.id.imgPreview));
+
+        VariabiliStatichePreview.getInstance().setTxtElaborate(findViewById(R.id.txtElaborate));
 
         VariabiliStatichePreview.getInstance().setImgProssima(findViewById(R.id.imgProssima));
         VariabiliStatichePreview.getInstance().setImgPrecedente(findViewById(R.id.imgPrecedente));
@@ -170,7 +173,12 @@ public class MainPreview extends Activity {
                             String Descrizione = "Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
                                     " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
                                     " - Bytes: " + si.getDimensioneFile();
-                            VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                            VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(
+                                    UtilitiesGlobali.getInstance().EvidenziaTesto(
+                                            Descrizione,
+                                            VariabiliStatichePreview.getInstance().getCategoria()
+                                    )
+                            );
                         }
 
                         UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);

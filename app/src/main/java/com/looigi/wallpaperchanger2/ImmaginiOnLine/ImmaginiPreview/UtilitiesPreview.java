@@ -113,7 +113,12 @@ public class UtilitiesPreview {
                     String Descrizione = "idImmagine: " + si.getIdImmagine() + " - Immagine: " + si.getNomeFile() + " - Categoria: " + si.getCategoria() +
                             " - Cartella: " + si.getCartella() + " - Dimensioni: " + si.getDimensioniImmagine() +
                             " - Bytes: " + si.getDimensioneFile();
-                    VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(Descrizione);
+                    VariabiliStatichePreview.getInstance().getTxtDescrizione().setText(
+                            UtilitiesGlobali.getInstance().EvidenziaTesto(
+                                    Descrizione,
+                                    VariabiliStatichePreview.getInstance().getCategoria()
+                            )
+                    );
                 }
 
                 UtilitiesPreview.getInstance().RitornoProssimaImmagine(context, si);

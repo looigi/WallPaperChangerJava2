@@ -542,6 +542,15 @@ public class ChiamateWSMI implements TaskDelegate {
                                 ll22,
                                 ""
                         );
+
+                        String Categoria = "";
+                        for (StrutturaImmaginiCategorie c: VariabiliStatichePreview.getInstance().getListaCategorie()) {
+                            if (c.getIdCategoria() == VariabiliStatichePreview.getInstance().getIdCategoria()) {
+                                Categoria = c.getCategoria();
+                            }
+                        }
+                        VariabiliStatichePreview.getInstance().setCategoria(Categoria);
+
                         break;
                     case "OCR":
                         VariabiliStaticheOCR.getInstance().setListaCategorie(lista);
@@ -1376,6 +1385,15 @@ public class ChiamateWSMI implements TaskDelegate {
                                 ll22,
                                 ""
                         );
+
+                        String Categoria = "";
+                        for (StrutturaImmaginiCategorie c2: VariabiliStatichePreview.getInstance().getListaCategorie()) {
+                            if (c2.getIdCategoria() == VariabiliStatichePreview.getInstance().getIdCategoria()) {
+                                Categoria = c2.getCategoria();
+                            }
+                        }
+                        VariabiliStatichePreview.getInstance().setCategoria(Categoria);
+
                         break;
                 }
             } catch (JSONException e) {

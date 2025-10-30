@@ -430,32 +430,66 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/bordato_colorato"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/imgPrecedente"
-        android:src="@drawable/indietro"
-        android:layout_margin="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal|center_vertical"
+        android:weightSum="10">
 
-    <ImageView
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/imgProssima"
-        android:src="@drawable/avanti"
-        android:layout_margin="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgPrecedente"
+                android:src="@drawable/indietro"
+                android:layout_margin="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <TextView
+            android:padding="3dp"
+            android:id="@+id/txtElaborate"
+            android:textSize="16sp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/Blue"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgProssima"
+                android:src="@drawable/avanti"
+                android:layout_margin="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layTastiDestra"
-        android:padding="3dp"
+        android:paddingTop="25dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="3dp"
         android:background="@drawable/bordo_arrotondato_bianco_sfumato_trasp"
         android:orientation="vertical"
         android:layout_marginStart="2dp"
         android:layout_marginTop="132dp"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 

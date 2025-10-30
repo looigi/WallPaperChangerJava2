@@ -238,6 +238,7 @@ public class UtilityImmagini {
                 si.setDimensioneFile(j.getInt("DimensioneFile"));
                 si.setDataCreazione(j.getString("DataCreazione"));
                 si.setDataModifica(j.getString("DataModifica"));
+                si.setImmaginiElaborate(j.getInt("ImmaginiElaborate"));
                 si.setDimensioniImmagine(j.getString("DimensioniImmagine"));
 
                 String urlImmagine = j.getString("UrlImmagine");

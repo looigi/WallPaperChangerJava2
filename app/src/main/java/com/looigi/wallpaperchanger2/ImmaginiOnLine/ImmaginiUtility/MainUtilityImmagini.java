@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -24,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.looigi.wallpaperchanger2.Fetekkie.VariabiliStaticheMostraImmaginiFetekkie;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
@@ -201,9 +204,28 @@ public class MainUtilityImmagini extends Activity {
 
         EditText edtFiltro = findViewById(R.id.edtFiltro);
         edtFiltro.setText("");
+        edtFiltro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Non serve implementare
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String Filtro = edtFiltro.getText().toString();
+                VariabiliStaticheUtilityImmagini.getInstance().setFiltroCategorie(Filtro);
+
+                VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Non serve implementare
+            }
+        });
         VariabiliStaticheUtilityImmagini.getInstance().setFiltroCategorie("");
 
-        ImageView imgFiltro = findViewById(R.id.imgFiltro);
+        /* ImageView imgFiltro = findViewById(R.id.imgFiltro);
         imgFiltro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String Filtro = edtFiltro.getText().toString();
@@ -211,7 +233,7 @@ public class MainUtilityImmagini extends Activity {
 
                 VariabiliStaticheUtilityImmagini.getInstance().getAdapter().aggiornaListaConFiltro();
             }
-        });
+        }); */
 
         VariabiliStaticheUtilityImmagini.getInstance().setEsegueAncheRefresh(false);
         chkRefresh.setChecked(false);
