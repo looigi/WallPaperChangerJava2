@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.InputType;
@@ -26,10 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
 import com.looigi.wallpaperchanger2.R;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.MainImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.MainImmaginiUguali;
 import com.looigi.wallpaperchanger2.Impostazioni.MainImpostazioni;
@@ -49,7 +46,6 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiScarica.VariabiliScar
 import com.looigi.wallpaperchanger2.Wallpaper.UtilityWallpaper;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.OnSwipeTouchListener;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
-import com.looigi.wallpaperchanger2.Wallpaper.VariabiliStaticheWallpaper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

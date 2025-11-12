@@ -18,18 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.flexbox.FlexboxLayout;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.webService.ChiamateWSSP;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MainSpostamento extends Activity {
     private Context context;

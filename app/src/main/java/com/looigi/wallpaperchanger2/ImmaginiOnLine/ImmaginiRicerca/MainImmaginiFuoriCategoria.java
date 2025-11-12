@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,17 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiModifica.VariabiliStaticheModificaImmagine;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.webService.ChiamateWSIFC;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.ArrayList;
@@ -142,6 +140,11 @@ public class MainImmaginiFuoriCategoria extends Activity {
                                         ll2,
                                         VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
                                 );
+                                UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                        VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                                        ll2,
+                                        VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca()
+                                );
                             }
                         }
                     });
@@ -187,12 +190,53 @@ public class MainImmaginiFuoriCategoria extends Activity {
                     }
                     VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(ll2[0]);
                     VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaInserita(ll2[0]);
-                    UtilitiesGlobali.getInstance().ImpostaSpinner(context,
-                            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
-                            ll2,
-                            ll2[0]
-                    );
 
+                    UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                            ll2,
+                            VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
+                    );
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Non serve implementare
+                }
+            });
+
+            EditText edtFiltroRicerca = findViewById(R.id.edtFiltroCategorieRicerca);
+            edtFiltroRicerca.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Non serve implementare
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    List<StrutturaImmaginiCategorie> lista = new ArrayList<>();
+                    if (s.toString().isEmpty()) {
+                        lista = VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM();
+                    } else {
+                        for (StrutturaImmaginiCategorie s2 : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                            if (s2.getCategoria().toUpperCase().contains(s.toString().toUpperCase())) {
+                                lista.add(s2);
+                            }
+                        }
+                    }
+
+                    String[] ll2 = new String[lista.size()];
+                    int i = 0;
+                    for (StrutturaImmaginiCategorie lll: lista) {
+                        ll2[i] = lll.getCategoria();
+                        i++;
+                    }
+                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaRicerca(ll2[0]);
+
+                    UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                            ll2,
+                            VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca()
+                    );
                 }
 
                 @Override
@@ -202,19 +246,50 @@ public class MainImmaginiFuoriCategoria extends Activity {
             });
 
             VariabiliImmaginiFuoriCategoria.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
-            final boolean[] primoIngresso = {true};
+
+            final boolean[] primoIngressoGen = {true};
             VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view,
                                            int position, long id) {
-                    if (primoIngresso[0]) {
-                        primoIngresso[0] = false;
+                    if (primoIngressoGen[0]) {
+                        primoIngressoGen[0] = false;
                         return;
                     }
 
                     String Categoria = adapterView.getItemAtPosition(position).toString();
                     // VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaImpostata(Categoria);
                     VariabiliImmaginiFuoriCategoria.getInstance().setCategoria(Categoria);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapter) {  }
+            });
+
+            VariabiliImmaginiFuoriCategoria.getInstance().setSpnCategorieRicerca(findViewById(R.id.spnCategoriaRicerca));
+            final boolean[] primoIngressoCat = {true};
+            VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view,
+                                           int position, long id) {
+                    if (primoIngressoCat[0]) {
+                        primoIngressoCat[0] = false;
+                        return;
+                    }
+
+                    String Categoria = adapterView.getItemAtPosition(position).toString();
+                    // VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaImpostata(Categoria);
+                    VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaRicerca(Categoria);
+
+                    VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoriaRicerca(null);
+
+                    for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                        if (s.getCategoria().toUpperCase().trim().equals(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca().toUpperCase().trim())) {
+                            VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoriaRicerca(
+                                    Integer.toString(s.getIdCategoria())
+                            );
+                            break;
+                        }
+                    }
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapter) {  }
@@ -331,11 +406,23 @@ public class MainImmaginiFuoriCategoria extends Activity {
             public void onNothingSelected(AdapterView<?> adapter) {  }
         });
 
+        LinearLayout layCategoriaRicerca = findViewById(R.id.layCategoriaRicerca);
+
         SwitchCompat swcSoloAltro = findViewById(R.id.switchSoloSuAltro);
         swcSoloAltro.setChecked(VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro());
+        if (VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro()) {
+            layCategoriaRicerca.setVisibility(LinearLayout.GONE);
+        } else {
+            layCategoriaRicerca.setVisibility(LinearLayout.VISIBLE);
+        }
         swcSoloAltro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VariabiliImmaginiFuoriCategoria.getInstance().setSoloSuAltro(isChecked);
+                if (isChecked) {
+                    layCategoriaRicerca.setVisibility(LinearLayout.GONE);
+                } else {
+                    layCategoriaRicerca.setVisibility(LinearLayout.VISIBLE);
+                }
             }
         });
 
@@ -365,7 +452,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
         imgCerca.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ChiamateWSIFC ws = new ChiamateWSIFC(context);
-                ws.RitornaImmaginiFuoriCategoria("N");
+                ws.RitornaImmaginiFuoriCategoria();
             }
         });
 
@@ -382,6 +469,37 @@ public class MainImmaginiFuoriCategoria extends Activity {
                 VariabiliImmaginiFuoriCategoria.getInstance().getLaypreview().setVisibility(LinearLayout.GONE);
             }
         }); */
+
+        ImageView imgPulisceCat = findViewById(R.id.imgPulisceCat);
+        imgPulisceCat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoriaRicerca(null);
+                VariabiliImmaginiFuoriCategoria.getInstance().setCategoriaRicerca("");
+                EditText edtFiltroRicerca = findViewById(R.id.edtFiltroCategorieRicerca);
+                edtFiltroRicerca.setText("");
+
+                String[] ll2 = new String[VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM().size() + 1];
+                int i2 = 0;
+                for (StrutturaImmaginiCategorie l2: VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                    if (l2.getCategoria() != null) {
+                        ll2[i2] = l2.getCategoria();
+                    }
+                    i2++;
+                }
+                int i = 0;
+                for (String lll: ll2) {
+                    if (lll == null || lll.isEmpty()) {
+                        ll2[i] = "**NULL**";
+                    }
+                    i++;
+                }
+                UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                        VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                        ll2,
+                        ""
+                );
+            }
+        });
 
         ImageView imgSpostaTutte = findViewById(R.id.imgSpostaTutte);
         imgSpostaTutte.setOnClickListener(new View.OnClickListener() {
@@ -449,7 +567,7 @@ public class MainImmaginiFuoriCategoria extends Activity {
 
         if (!VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria().equals("-1")) {
             ChiamateWSIFC ws = new ChiamateWSIFC(context);
-            ws.RitornaImmaginiFuoriCategoria("N");
+            ws.RitornaImmaginiFuoriCategoria();
         }
     }
 

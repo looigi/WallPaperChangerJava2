@@ -16,7 +16,7 @@ import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.strutture.StrutturaGruppi;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.webService.ChiamateWSIR;

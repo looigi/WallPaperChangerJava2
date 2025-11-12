@@ -1,6 +1,6 @@
 package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture;
 
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.StrutturaImmaginiUguali;
 
 import java.util.List;

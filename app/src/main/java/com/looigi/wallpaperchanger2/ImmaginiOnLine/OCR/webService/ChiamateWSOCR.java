@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.UtilitiesRilevaOCRJava;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.Pennetta.VariabiliStaticheMostraImmaginiPennetta;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.UtilitiesOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
@@ -71,8 +73,26 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
     }
 
     public void RitornaDestinazioni() {
-        String Urletto="RitornaDestinazioni?" +
-                "AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
+        String Urletto="";
+
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheOCR.getInstance().getImgCaricamento(),
+                true
+        );
+
+        if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 1) {
+            Urletto = "TrovaImmaginiConDateUgualiSulNomeFile?" +
+                    "SoloCategorieDiRicerca=S";
+        } else {
+            if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 2) {
+                Urletto = "RitornaDestinazioni?" +
+                        "AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
+            } else {
+                Urletto = "TrovaTagSulNomeFile?" +
+                        "SoloCategorieDiRicerca=S";
+            }
+        }
 
         TipoOperazione = "RitornaDestinazioni";
         // ControllaTempoEsecuzione = false;
@@ -113,10 +133,29 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
     }
 
     public void RitornaImmagini(String Filtro) {
+        UtilitiesGlobali.getInstance().AttesaGif(
+                context,
+                VariabiliStaticheOCR.getInstance().getImgCaricamento(),
+                true
+        );
 
-        String Urletto="RitornaImmaginiOCR?" +
-                "Filtro=" + RitornaFiltroSplittato(Filtro) +
-                "&AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
+        String Urletto="";
+
+        if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 1) {
+            Urletto = "RitornaImmaginiConDateUgualiSulNomeFile?" +
+                    "Filtro=" + RitornaFiltroSplittato(Filtro) +
+                    "&SoloCategorieDiRicerca=S";
+        } else {
+            if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 2) {
+                Urletto = "RitornaImmaginiOCR?" +
+                        "Filtro=" + RitornaFiltroSplittato(Filtro) +
+                        "&AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
+            } else {
+                Urletto = "RitornaImmaginiConTagSulNomeFile?" +
+                        "Filtro=" + RitornaFiltroSplittato(Filtro) +
+                        "&SoloCategorieDiRicerca=S";
+            }
+        }
 
         TipoOperazione = "RitornaImmaginiOCR";
         // ControllaTempoEsecuzione = false;

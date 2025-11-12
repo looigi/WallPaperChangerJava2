@@ -43,7 +43,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.OCRPreprocessor;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.GoogleDrive.GoogleDrive;

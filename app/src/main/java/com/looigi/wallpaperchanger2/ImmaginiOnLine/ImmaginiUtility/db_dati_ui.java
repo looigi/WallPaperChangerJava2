@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.looigi.wallpaperchanger2.Detector.UtilityDetector;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.UtilityImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.StrutturaImmagineFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.StrutturaImmaginiUguali;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.strutture.StrutturaControlloImmagini;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;

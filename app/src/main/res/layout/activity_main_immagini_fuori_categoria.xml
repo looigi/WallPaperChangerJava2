@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:textColor="@color/Blue"
-                android:layout_height="30dp" />
+                android:layout_height="40dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:textColor="@color/Blue"
                 android:layout_weight="6"
-                android:layout_height="30dp" />
+                android:layout_height="40dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="6"
                 android:textColor="@color/Blue"
-                android:layout_height="30dp" />
+                android:layout_height="40dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,11 +101,54 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layCategoriaRicerca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Categoria" />
+
+            <EditText
+                android:id="@+id/edtFiltroCategorieRicerca"
+                android:textColor="@color/Blue"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spnCategoriaRicerca"
+                android:layout_width="0dp"
+                android:theme="@style/spinnerTheme"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/imgPulisceCat"
+                    android:src="@drawable/elimina_quadrato"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+            </LinearLayout>
+        </LinearLayout>
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchSoloSuAltro"
             android:layout_width="match_parent"
             android:textColor="#0000CC"
-            android:text="Solo su categorie Altre"
+            android:text="Solo su categorie di ricerca"
             android:layout_height="30dp" />
 
         <androidx.appcompat.widget.SwitchCompat

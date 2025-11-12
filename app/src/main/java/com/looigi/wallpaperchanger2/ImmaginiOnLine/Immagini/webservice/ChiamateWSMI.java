@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiControllo.VariabiliStaticheControlloImmagini;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Detector.UtilityDetector;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.db_dati_immagini;
@@ -17,8 +16,8 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaI
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.webService.ChiamateWSIFC;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.VariabiliImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.webService.ChiamateWSIFC;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.VariabiliStaticheImmaginiRaggruppate;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.strutture.StrutturaImmagineRaggruppata;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRaggruppate.webService.ChiamateWSIR;
@@ -31,7 +30,6 @@ import com.looigi.wallpaperchanger2.Player.UtilityPlayer;
 import com.looigi.wallpaperchanger2.Player.VariabiliStatichePlayer;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.UtilitiesPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.UtilitiesOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.VariabiliStaticheOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.webService.ChiamateWSOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiScarica.adapters.AdapterListenerImmaginiDaScaricare;
@@ -518,6 +516,11 @@ public class ChiamateWSMI implements TaskDelegate {
                                     VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorie(),
                                     ll2,
                                     VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
+                            );
+                            UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                    VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                                    ll2,
+                                    VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca()
                             );
                         } else {
                             UtilitiesGlobali.getInstance().ImpostaSpinner(context,
@@ -1140,7 +1143,7 @@ public class ChiamateWSMI implements TaskDelegate {
                             @Override
                             public void run() {
                                 ChiamateWSIFC ws = new ChiamateWSIFC(context);
-                                ws.RitornaImmaginiFuoriCategoria("S");
+                                ws.RitornaImmaginiFuoriCategoria();
                             }
                         }, 500);
                     }
@@ -1151,7 +1154,7 @@ public class ChiamateWSMI implements TaskDelegate {
                         @Override
                         public void run() {
                             ChiamateWSIFC ws = new ChiamateWSIFC(context);
-                            ws.RitornaImmaginiFuoriCategoria("S");
+                            ws.RitornaImmaginiFuoriCategoria();
                         }
                     }, 500);
                 }
@@ -1360,10 +1363,24 @@ public class ChiamateWSMI implements TaskDelegate {
                                 ll2,
                                 VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita()
                         );
+                        UtilitiesGlobali.getInstance().ImpostaSpinner(context,
+                                VariabiliImmaginiFuoriCategoria.getInstance().getSpnCategorieRicerca(),
+                                ll2,
+                                VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca()
+                        );
 
                         for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
-                            if (s.getCategoria().toUpperCase().trim().equals(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita())) {
+                            if (s.getCategoria().toUpperCase().trim().equals(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaInserita().toUpperCase().trim())) {
                                 VariabiliStaticheMostraImmagini.getInstance().setIdCategoriaSpostamento(
+                                        Integer.toString(s.getIdCategoria())
+                                );
+                                break;
+                            }
+                        }
+
+                        for (StrutturaImmaginiCategorie s : VariabiliImmaginiFuoriCategoria.getInstance().getListaCategorieIMM()) {
+                            if (s.getCategoria().toUpperCase().trim().equals(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca().toUpperCase().trim())) {
+                                VariabiliImmaginiFuoriCategoria.getInstance().setIdCategoriaRicerca(
                                         Integer.toString(s.getIdCategoria())
                                 );
                                 break;

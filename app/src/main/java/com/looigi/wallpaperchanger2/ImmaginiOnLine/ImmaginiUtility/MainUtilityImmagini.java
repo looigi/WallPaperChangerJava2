@@ -25,11 +25,9 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.looigi.wallpaperchanger2.Fetekkie.VariabiliStaticheMostraImmaginiFetekkie;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiSpostamento.VariabiliStaticheSpostamento;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.MainImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.MainImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.MainOCR;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUtility.adapters.AdapterListenerUI;
 // import com.looigi.wallpaperchanger2.classeUtilityImmagini.classeVolti.MainVolti;

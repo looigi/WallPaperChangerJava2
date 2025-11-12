@@ -1,18 +1,16 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.adapters;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.looigi.wallpaperchanger2.R;
@@ -20,16 +18,14 @@ import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMos
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiUguali.webService.DownloadImmagineUguali;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.MainPreview;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiPreview.VariabiliStatichePreview;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import java.util.List;
-
-import okhttp3.internal.Util;
 
 public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
     private Context context;
@@ -93,6 +89,28 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
 
             CheckBox chkSeleziona = view.findViewById(R.id.chkScelta);
             chkSeleziona.setChecked(Immagini.get(i).isSelezionata());
+
+            chkSeleziona.setVisibility(LinearLayout.VISIBLE);
+            imgSposta.setVisibility(LinearLayout.VISIBLE);
+            if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca() != null) {
+                if (Immagini.get(i).getCategoria().toUpperCase().trim().contains(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca().toUpperCase().trim())) {
+                    chkSeleziona.setChecked(false);
+                    chkSeleziona.setVisibility(LinearLayout.GONE);
+                    imgSposta.setVisibility(LinearLayout.GONE);
+                    int i2 = 0;
+                    for (StrutturaImmagineFuoriCategoria s : VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini()) {
+                        if (s.getIdImmagine() == Immagini.get(i).getIdImmagine()) {
+                            StrutturaImmagineFuoriCategoria s2 = s;
+                            s2.setSelezionata(false);
+                            VariabiliImmaginiFuoriCategoria.getInstance().getListaImmagini().set(i2, s2);
+                            Immagini.get(i).setSelezionata(false);
+                            break;
+                        }
+                        i2++;
+                    }
+                }
+            }
+
             chkSeleziona.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     int i2 = 0;

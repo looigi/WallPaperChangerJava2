@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca;
 
 public class StrutturaImmagineFuoriCategoria {
     private int idImmagine;

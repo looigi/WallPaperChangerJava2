@@ -1,7 +1,7 @@
 [versions]
 acraVersion = "5.11.2"
 afAndroidSdk = "6.15.1"
-agp = "8.13.0"
+agp = "8.13.1"
 androidGifDrawable = "1.2.22"
 androidImageCropper = "4.6.0"
 androidMailVersion = "1.6.2"

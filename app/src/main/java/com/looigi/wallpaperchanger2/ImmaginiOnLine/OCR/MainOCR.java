@@ -8,13 +8,18 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.looigi.wallpaperchanger2.Detector.Impostazioni;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.RilevaOCRJava.VariabiliStaticheRilevaOCRJava;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.OCR.webService.ChiamateWSOCR;
@@ -46,7 +51,69 @@ public class MainOCR extends Activity {
         ChiamateWSMI ws2 = new ChiamateWSMI(context);
         ws2.RitornaCategorie(false, "OCR");
 
+        RadioButton optDate = findViewById(R.id.optDate);
+        RadioButton optNomi = findViewById(R.id.optNomi);
+        RadioButton optTags = findViewById(R.id.optTags);
         SwitchCompat swcAncheVuote = findViewById(R.id.swtAncheVuote);
+
+        if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 1) {
+            optDate.setChecked(true);
+            optTags.setChecked(false);
+            optNomi.setChecked(false);
+            swcAncheVuote.setVisibility(LinearLayout.GONE);
+        } else {
+            if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 2) {
+                optDate.setChecked(false);
+                optTags.setChecked(false);
+                optNomi.setChecked(true);
+                swcAncheVuote.setVisibility(LinearLayout.VISIBLE);
+            } else {
+                optDate.setChecked(false);
+                optTags.setChecked(true);
+                optNomi.setChecked(false);
+                swcAncheVuote.setVisibility(LinearLayout.GONE);
+            }
+        }
+
+        optDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheRilevaOCRJava.getInstance().setModalita(1);
+
+                optDate.setChecked(true);
+                optNomi.setChecked(false);
+                optTags.setChecked(false);
+                swcAncheVuote.setVisibility(LinearLayout.GONE);
+
+                ws.RitornaDestinazioni();
+            }
+        });
+
+        optNomi.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheRilevaOCRJava.getInstance().setModalita(2);
+
+                optDate.setChecked(false);
+                optNomi.setChecked(true);
+                optTags.setChecked(false);
+                swcAncheVuote.setVisibility(LinearLayout.VISIBLE);
+
+                ws.RitornaDestinazioni();
+            }
+        });
+
+        optTags.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheRilevaOCRJava.getInstance().setModalita(3);
+
+                optDate.setChecked(false);
+                optNomi.setChecked(false);
+                optTags.setChecked(true);
+                swcAncheVuote.setVisibility(LinearLayout.GONE);
+
+                ws.RitornaDestinazioni();
+            }
+        });
+
         swcAncheVuote.setChecked(VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote());
         swcAncheVuote.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

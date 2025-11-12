@@ -1,17 +1,16 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.webService;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.webService;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.UtilityImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.VariabiliStaticheMostraImmagini;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.InterrogazioneWSMI;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.TaskDelegate;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.StrutturaImmagineFuoriCategoria;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.VariabiliImmaginiFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.adapters.AdapterListenerImmaginiFuoricategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.StrutturaImmagineFuoriCategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.VariabiliImmaginiFuoriCategoria;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
 import org.json.JSONArray;
@@ -38,19 +37,28 @@ public class ChiamateWSIFC implements TaskDelegate {
         this.context = context;
     }
 
-    public void RitornaImmaginiFuoriCategoria(String ForzaRefrsh) {
+    public void RitornaImmaginiFuoriCategoria() {
         String Alias1 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias1().getText().toString();
         String Alias2 = VariabiliImmaginiFuoriCategoria.getInstance().getEdtAlias2().getText().toString();
         String Tag = ""; // VariabiliImmaginiFuoriCategoria.getInstance().getEdtTag().getText().toString();
+
         String idCategoria = VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoria();
         if (!VariabiliImmaginiFuoriCategoria.getInstance().getRicerca().isEmpty()) {
             idCategoria = "1";
+        }
+
+        String idCategoriaRicerca = "";
+        if (VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoriaRicerca() != null) {
+            if (!VariabiliImmaginiFuoriCategoria.getInstance().isSoloSuAltro()) {
+                idCategoriaRicerca = VariabiliImmaginiFuoriCategoria.getInstance().getIdCategoriaRicerca();
+            }
         }
 
         VariabiliImmaginiFuoriCategoria.getInstance().setTestoRicercato(Alias1 + ";" + Alias2);
 
         String Urletto="TrovaNomiSuDbFuoriDallaCategoria?" +
                 "idCategoria=" + idCategoria +
+                "&idCategoriaRicerca=" + idCategoriaRicerca +
                 "&Aliases1=" + Alias1 +
                 "&Aliases2=" + Alias2 +
                 "&QuantiCaratteri=" + VariabiliImmaginiFuoriCategoria.getInstance().getQuantiCaratteri().getText().toString() +

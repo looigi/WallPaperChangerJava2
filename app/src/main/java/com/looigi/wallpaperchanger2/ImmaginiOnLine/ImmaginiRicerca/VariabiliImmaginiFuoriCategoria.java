@@ -1,4 +1,4 @@
-package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria;
+package com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca;
 
 import android.content.Context;
 import android.widget.EditText;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.strutture.StrutturaImmaginiLibrary;
 import com.looigi.wallpaperchanger2.ImmaginiOnLine.Immagini.webservice.ChiamateWSMI;
-import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiFuoriCategoria.adapters.AdapterListenerImmaginiFuoricategoria;
+import com.looigi.wallpaperchanger2.ImmaginiOnLine.ImmaginiRicerca.adapters.AdapterListenerImmaginiFuoricategoria;
 
 import java.util.List;
 
@@ -29,7 +29,9 @@ public class VariabiliImmaginiFuoriCategoria {
     }
 
     private String idCategoria = "";
+    private String idCategoriaRicerca;
     private String Categoria = "";
+    private String CategoriaRicerca = "";
     private String Ricerca = "";
     /* private String Alias1 = "";
     private String Alias2 = "";
@@ -49,12 +51,37 @@ public class VariabiliImmaginiFuoriCategoria {
     private List<StrutturaImmagineFuoriCategoria> listaDaSpostare;
     private AdapterListenerImmaginiFuoricategoria adapter;
     private Spinner spnCategorie;
+    private Spinner spnCategorieRicerca;
     private List<StrutturaImmaginiCategorie> listaCategorieIMM;
     private EditText edtAlias1;
     private EditText edtAlias2;
     // private EditText edtTag;
     private String CategoriaInserita = "";
     private String TestoRicercato;
+
+    public String getIdCategoriaRicerca() {
+        return idCategoriaRicerca;
+    }
+
+    public void setIdCategoriaRicerca(String idCategoriaRicerca) {
+        this.idCategoriaRicerca = idCategoriaRicerca;
+    }
+
+    public String getCategoriaRicerca() {
+        return CategoriaRicerca;
+    }
+
+    public void setCategoriaRicerca(String categoriaRicerca) {
+        CategoriaRicerca = categoriaRicerca;
+    }
+
+    public Spinner getSpnCategorieRicerca() {
+        return spnCategorieRicerca;
+    }
+
+    public void setSpnCategorieRicerca(Spinner spnCategorieRicerca) {
+        this.spnCategorieRicerca = spnCategorieRicerca;
+    }
 
     public String getTestoRicercato() {
         return TestoRicercato;
