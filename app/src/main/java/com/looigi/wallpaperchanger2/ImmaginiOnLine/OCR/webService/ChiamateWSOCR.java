@@ -89,8 +89,13 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                 Urletto = "RitornaDestinazioni?" +
                         "AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
             } else {
-                Urletto = "TrovaTagSulNomeFile?" +
-                        "SoloCategorieDiRicerca=S";
+                if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 3) {
+                    Urletto = "TrovaTagSulNomeFile?" +
+                            "SoloCategorieDiRicerca=S";
+                } else {
+                    Urletto = "TrovaVoltiSuFile?" +
+                            "SoloCategorieDiRicerca=S";
+                }
             }
         }
 
@@ -151,9 +156,15 @@ public class ChiamateWSOCR implements TaskDelegateOCR {
                         "Filtro=" + RitornaFiltroSplittato(Filtro) +
                         "&AncheVuote=" + (VariabiliStaticheOCR.getInstance().isAncheDestinazioniVuote() ? "S" : "");
             } else {
-                Urletto = "RitornaImmaginiConTagSulNomeFile?" +
-                        "Filtro=" + RitornaFiltroSplittato(Filtro) +
-                        "&SoloCategorieDiRicerca=S";
+                if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 2) {
+                    Urletto = "RitornaImmaginiConTagSulNomeFile?" +
+                            "Filtro=" + RitornaFiltroSplittato(Filtro) +
+                            "&SoloCategorieDiRicerca=S";
+                } else {
+                    Urletto = "RitornaImmaginiConVoltiSulNomeFile?" +
+                            "Filtro=" + RitornaFiltroSplittato(Filtro) +
+                            "&SoloCategorieDiRicerca=S";
+                }
             }
         }
 

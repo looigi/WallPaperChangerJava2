@@ -54,24 +54,36 @@ public class MainOCR extends Activity {
         RadioButton optDate = findViewById(R.id.optDate);
         RadioButton optNomi = findViewById(R.id.optNomi);
         RadioButton optTags = findViewById(R.id.optTags);
+        RadioButton optVolti = findViewById(R.id.optVolti);
         SwitchCompat swcAncheVuote = findViewById(R.id.swtAncheVuote);
 
         if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 1) {
             optDate.setChecked(true);
             optTags.setChecked(false);
             optNomi.setChecked(false);
+            optVolti.setChecked(false);
             swcAncheVuote.setVisibility(LinearLayout.GONE);
         } else {
             if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 2) {
                 optDate.setChecked(false);
                 optTags.setChecked(false);
                 optNomi.setChecked(true);
+                optVolti.setChecked(false);
                 swcAncheVuote.setVisibility(LinearLayout.VISIBLE);
             } else {
-                optDate.setChecked(false);
-                optTags.setChecked(true);
-                optNomi.setChecked(false);
-                swcAncheVuote.setVisibility(LinearLayout.GONE);
+                if (VariabiliStaticheRilevaOCRJava.getInstance().getModalita() == 3) {
+                    optDate.setChecked(false);
+                    optTags.setChecked(true);
+                    optNomi.setChecked(false);
+                    optVolti.setChecked(false);
+                    swcAncheVuote.setVisibility(LinearLayout.GONE);
+                } else {
+                    optDate.setChecked(false);
+                    optTags.setChecked(false);
+                    optNomi.setChecked(false);
+                    optVolti.setChecked(true);
+                    swcAncheVuote.setVisibility(LinearLayout.GONE);
+                }
             }
         }
 
@@ -82,6 +94,7 @@ public class MainOCR extends Activity {
                 optDate.setChecked(true);
                 optNomi.setChecked(false);
                 optTags.setChecked(false);
+                optVolti.setChecked(false);
                 swcAncheVuote.setVisibility(LinearLayout.GONE);
 
                 ws.RitornaDestinazioni();
@@ -95,6 +108,7 @@ public class MainOCR extends Activity {
                 optDate.setChecked(false);
                 optNomi.setChecked(true);
                 optTags.setChecked(false);
+                optVolti.setChecked(false);
                 swcAncheVuote.setVisibility(LinearLayout.VISIBLE);
 
                 ws.RitornaDestinazioni();
@@ -108,6 +122,21 @@ public class MainOCR extends Activity {
                 optDate.setChecked(false);
                 optNomi.setChecked(false);
                 optTags.setChecked(true);
+                optVolti.setChecked(false);
+                swcAncheVuote.setVisibility(LinearLayout.GONE);
+
+                ws.RitornaDestinazioni();
+            }
+        });
+
+        optVolti.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VariabiliStaticheRilevaOCRJava.getInstance().setModalita(4);
+
+                optDate.setChecked(false);
+                optNomi.setChecked(false);
+                optTags.setChecked(false);
+                optVolti.setChecked(true);
                 swcAncheVuote.setVisibility(LinearLayout.GONE);
 
                 ws.RitornaDestinazioni();
