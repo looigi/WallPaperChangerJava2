@@ -32,24 +32,28 @@
                     <RadioButton
                         android:id="@+id/optDate"
                         android:text="Date"
+                        android:textColor="@color/Nero"
                         android:layout_width="match_parent"
                         android:layout_height="25dp" />
 
                     <RadioButton
                         android:id="@+id/optNomi"
                         android:text="Nomi"
+                        android:textColor="@color/Nero"
                         android:layout_width="match_parent"
                         android:layout_height="25dp" />
 
                     <RadioButton
                         android:id="@+id/optTags"
                         android:text="Tags"
+                        android:textColor="@color/Nero"
                         android:layout_width="match_parent"
                         android:layout_height="25dp" />
 
                     <RadioButton
                         android:id="@+id/optVolti"
                         android:text="Volti"
+                        android:textColor="@color/Nero"
                         android:layout_width="match_parent"
                         android:layout_height="25dp" />
                 </RadioGroup>
