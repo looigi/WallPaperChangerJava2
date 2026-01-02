@@ -501,7 +501,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
     }
 
     public void RitornaStati(boolean RefreshDati) {
-                UtilitiesGlobali.getInstance().AttesaGif(
+        UtilitiesGlobali.getInstance().AttesaGif(
                 context,
                 VariabiliStaticheLazio.getInstance().getImgCaricamento(),
                 true
@@ -511,7 +511,7 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
                     context,
                     VariabiliStaticheApiFootball.getInstance().getImgCaricamento(),
                     true
-);
+        );
 
 
 
@@ -2566,6 +2566,10 @@ public class ChiamateWSLazio implements TaskDelegateLazio {
             VariabiliStaticheLazio.getInstance().getSpnStati().setSelection(spinnerPosition); */
 
             VariabiliStaticheLazio.getInstance().setStati(lista);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                     (context, android.R.layout.simple_spinner_item, righePerSpinner);
+            VariabiliStaticheLazio.getInstance().setAdapterStati(adapter);
 
             AdapterListenerStati cstmAdptStati = new AdapterListenerStati(context, lista);
             VariabiliStaticheLazio.getInstance().getLstStati().setAdapter(cstmAdptStati);

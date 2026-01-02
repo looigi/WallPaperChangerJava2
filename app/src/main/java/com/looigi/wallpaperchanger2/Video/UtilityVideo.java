@@ -386,16 +386,18 @@ public class UtilityVideo {
         updateRunnableAB = new Runnable() {
             @Override
             public void run() {
-                if (VariabiliStaticheVideo.getInstance().getVideoView().isPlaying()) {
-                    int currentPosition = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
-                    VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(currentPosition);
-                    VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(currentPosition);
-                    VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(currentPosition));
-                    VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText(
-                            formatTime(VariabiliStaticheVideo.getInstance().getVideoView().getDuration())
-                    );
+                if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
+                    if (VariabiliStaticheVideo.getInstance().getVideoView().isPlaying()) {
+                        int currentPosition = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
+                        VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(currentPosition);
+                        VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(currentPosition);
+                        VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(currentPosition));
+                        VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText(
+                                formatTime(VariabiliStaticheVideo.getInstance().getVideoView().getDuration())
+                        );
 
-                    GestioneBarra();
+                        GestioneBarra();
+                    }
                 }
 
                 handlerAvanzamentoBarra.postDelayed(this, 500);

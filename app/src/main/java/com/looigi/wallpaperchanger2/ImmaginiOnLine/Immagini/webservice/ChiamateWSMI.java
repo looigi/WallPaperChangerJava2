@@ -1040,7 +1040,7 @@ public class ChiamateWSMI implements TaskDelegate {
 
                 if (daDove.equals("SPOSTAMENTO")) {
                     if (VariabiliStatichePreview.getInstance().getLayTasti() != null) {
-                        VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
+                        // VariabiliStatichePreview.getInstance().getLayTasti().setVisibility(LinearLayout.GONE);
                         VariabiliStatichePreview.getInstance().getImgPreview().setImageBitmap(null);
                         VariabiliStatichePreview.getInstance().getTxtDescrizione().setText("Eliminata");
                         UtilitiesGlobali.getInstance().AttesaGif(

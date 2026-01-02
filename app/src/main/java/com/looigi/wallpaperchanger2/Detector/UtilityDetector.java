@@ -1202,7 +1202,6 @@ public class UtilityDetector {
         return Path;
     }
 
-
     private BiometricManagerSingleton bioManager;
     private String Cosa;
 

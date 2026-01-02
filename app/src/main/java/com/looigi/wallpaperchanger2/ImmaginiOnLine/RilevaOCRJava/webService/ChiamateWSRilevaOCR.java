@@ -229,7 +229,7 @@ public class ChiamateWSRilevaOCR implements TaskDelegateRilevaOCR {
                         "Fatte: " + fatte + " Rim.: " + c[2] +
                         "\n " + c[5] + " (" + c[3] + ")" +
                         "\nIn. " + c[8] + " Imm. " + c[0] +
-                        "\n" + "Em. " + c[9] + "/" + c[10] //  + " (" + c[11] + ")"
+                        "\n" + "/" + c[10] //  + "Em. " + c[9] + " (" + c[11] + ")"
                 );
 
                 VariabiliStaticheRilevaOCRJava.getInstance().setMessaggioNotifica(

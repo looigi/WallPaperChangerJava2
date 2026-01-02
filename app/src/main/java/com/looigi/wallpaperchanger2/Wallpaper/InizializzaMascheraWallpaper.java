@@ -89,15 +89,15 @@ public class InizializzaMascheraWallpaper {
             } else {
                 switch (VariabiliStaticheWallpaper.getInstance().getModoRicercaImmagine()) {
                     case 0:
-                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini online");
-                        break;
-                    case 1:
                         int q = VariabiliStaticheWallpaper.getInstance().getListaImmagini().size();
                         VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText(
                                 "Immagini rilevate su disco: " + q
                         );
                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
                                 "Immagini rilevate su disco: " + q);
+                        break;
+                    case 1:
+                        VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini online");
                         break;
                     case 2:
                         VariabiliStaticheWallpaper.getInstance().getTxtQuanteImmagini().setText("Immagini da immagini");

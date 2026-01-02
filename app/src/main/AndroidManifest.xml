@@ -334,12 +334,6 @@
         <service android:name = ".Mappe.MappeEGps.GestioneGPS"
             android:foregroundServiceType="location" />
 
-        <service
-            android:name=".classeAntifurto.ShakeService"
-            android:foregroundServiceType="specialUse"
-            android:enabled="true"
-            android:exported="false" />
-
         <service android:name=".UtilitiesVarie.cuffie.GestioneTastiCuffieNuovo"
             android:foregroundServiceType="specialUse">
             <!-- <intent-filter android:priority="99999">

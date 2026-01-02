@@ -336,7 +336,7 @@ public class UtilitiesRilevaOCRJava {
                                     "Rim: " + s.getQuante() +
                                     "\n" + s.getNomeFile() + "(" + s.getCategoria() + ")" +
                                     "\nIn. " + s.getInizio() + " Imm. " + s.getIdImmagine() +
-                                    "\nEm. " + s.getQualeEmulatore() + "/" + s.getEmulatori() +
+                                    // "\nEm. " + s.getQualeEmulatore() + "/" + s.getEmulatori() +
                                     "\n" + (ScrittaRilevata.isEmpty() ? ";" : ScrittaRilevata)
                     );
 

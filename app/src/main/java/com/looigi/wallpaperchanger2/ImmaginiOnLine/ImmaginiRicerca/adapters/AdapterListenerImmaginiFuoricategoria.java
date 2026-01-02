@@ -92,7 +92,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
 
             chkSeleziona.setVisibility(LinearLayout.VISIBLE);
             imgSposta.setVisibility(LinearLayout.VISIBLE);
-            if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca() != null) {
+            /* if (VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca() != null) {
                 if (Immagini.get(i).getCategoria().toUpperCase().trim().contains(VariabiliImmaginiFuoriCategoria.getInstance().getCategoriaRicerca().toUpperCase().trim())) {
                     chkSeleziona.setChecked(false);
                     chkSeleziona.setVisibility(LinearLayout.GONE);
@@ -109,7 +109,7 @@ public class AdapterListenerImmaginiFuoricategoria extends BaseAdapter {
                         i2++;
                     }
                 }
-            }
+            } */
 
             chkSeleziona.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
