@@ -256,7 +256,7 @@ public class UtilityApiFootball {
                     context,
                     "Api Football",
                     "Errore nel download: " + Operazione + "\n" + Contenuto
-                    );
+            );
         }
 
         Files.getInstance().EliminaFileUnico(VariabiliStaticheApiFootball.getInstance().getPathApiFootball() + "/" +
@@ -556,17 +556,21 @@ public class UtilityApiFootball {
                         false
                 );
 
-                int idPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
-                        VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()
-                ).fixture.id;
+                if (VariabiliStaticheApiFootball.getInstance().getPartiteSquadra() != null) {
+                    int idPartita = VariabiliStaticheApiFootball.getInstance().getPartiteSquadra().response.get(
+                            VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()
+                    ).fixture.id;
 
-                VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(true);
+                    VariabiliStaticheApiFootball.getInstance().setStaSalvandoPartita(true);
 
-                VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
-                VariabiliStaticheApiFootball.getInstance().setIdPartitaDaSalvare(
-                        VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()
-                );
-                CaricaPartita(context, idPartita);
+                    VariabiliStaticheApiFootball.getInstance().setIdPartita(idPartita);
+                    VariabiliStaticheApiFootball.getInstance().setIdPartitaDaSalvare(
+                            VariabiliStaticheApiFootball.getInstance().getIndiceSalvataggioTutteLePartite()
+                    );
+                    CaricaPartita(context, idPartita);
+                } else {
+                    UtilitiesGlobali.getInstance().ApreToast(context, "Partite non rilevate");
+                }
             };
         };
         handlerTimer.postDelayed(rTimer, 10000);

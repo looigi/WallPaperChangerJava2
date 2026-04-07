@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -27,6 +28,7 @@ import com.looigi.wallpaperchanger2.Pazzia.GestioneCategorie.GestioneCategorie;
 import com.looigi.wallpaperchanger2.Pazzia.GestioneCategorie.StrutturaCategorieFinali;
 import com.looigi.wallpaperchanger2.Pennetta.strutture.StrutturaImmaginiCategorie;
 import com.looigi.wallpaperchanger2.Pennetta.webservice.ChiamateWSPEN;
+import com.looigi.wallpaperchanger2.Video.VariabiliStaticheVideo;
 import com.looigi.wallpaperchanger2.Video.webservice.ChiamateWSV;
 import com.looigi.wallpaperchanger2.UtilitiesVarie.UtilitiesGlobali;
 
@@ -138,8 +140,23 @@ public class MainPazzia extends Activity {
         VariabiliStatichePazzia.getInstance().setImgPennetta(findViewById(R.id.imgPennetta));
         VariabiliStatichePazzia.getInstance().setImgImmagini(findViewById(R.id.imgImmagini));
         VariabiliStatichePazzia.getInstance().setVideoView(findViewById(R.id.videoView));
-
         VariabiliStatichePazzia.getInstance().setSeekBar(findViewById(R.id.imgScorri2));
+
+        LinearLayout layScorrimento = findViewById(R.id.layScorrimento);
+        layScorrimento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                UtilitiesGlobali.getInstance().AvanzamentoVideoTramiteSwipe(
+                        v,
+                        event,
+                        VariabiliStatichePazzia.getInstance().getVideoView(),
+                        VariabiliStatichePazzia.getInstance().getSeekBar(),
+                        2
+                );
+                return true;
+            }
+        });
+
         VariabiliStatichePazzia.getInstance().getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             boolean userTouch = false;
 

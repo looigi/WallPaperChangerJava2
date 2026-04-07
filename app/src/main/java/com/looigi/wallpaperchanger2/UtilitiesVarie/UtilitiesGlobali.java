@@ -1,5 +1,7 @@
 package com.looigi.wallpaperchanger2.UtilitiesVarie;
 
+import static android.content.Context.WINDOW_SERVICE;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -20,12 +23,16 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.util.Base64;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -757,18 +764,38 @@ public class UtilitiesGlobali {
         }).start();
     }
 
-    public void VisualizzaMessaggio(Context context, String Titolo, String Messaggio) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(Titolo);
-        builder.setMessage(Messaggio);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+    public boolean ControllaSeSchermoAperto(Context context) {
+        if (VariabiliStaticheStart.getInstance().isBloccoCambioImmagineSuSchermoAperto()) {
+            WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
 
-        builder.show();
+            int width = size.x;
+            int height = size.y;
+
+            // Questi valori cambiano in base al dispositivo
+            // Per Galaxy Fold5: unfolded ~1840x2208, folded ~1080x2316
+            return width > 1200; // soglia approssimativa, da testare sul dispositivo reale
+        } else {
+            return false;
+        }
+    }
+
+    public void VisualizzaMessaggio(Context context, String Titolo, String Messaggio) {
+        if (context != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(Titolo);
+            builder.setMessage(Messaggio);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
     }
 
     public void ControllaNuovaVersione(Context ctx) {
@@ -1100,5 +1127,48 @@ public class UtilitiesGlobali {
         }
 
         return step2;
+    }
+
+    private final float[] startX = new float[5];
+    private final int[] startPosition = new int[5];
+
+    public void AvanzamentoVideoTramiteSwipe(View v, MotionEvent event, ProportionalVideoView video, SeekBar barra, int Numero) {
+        if (video == null) {
+            return;
+        }
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX[Numero] = event.getX();
+                startPosition[Numero] = video.getCurrentPosition();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                float deltaX = event.getX() - startX[Numero];
+
+                int videoDuration = video.getDuration();
+                int viewWidth = v.getWidth();
+
+                // percentuale di movimento rispetto alla larghezza
+                float percentuale = deltaX / viewWidth;
+
+                // movimento proporzionale alla durata del video
+                int seekDelta = (int) (videoDuration * percentuale);
+                // Movimento meno aggressivo
+                // float sensibilita = 0.5f; // prova tra 0.3 e 1.0
+                // int seekDelta = (int) (videoDuration * percentuale * sensibilita);
+
+                int nuovaPosizione = startPosition[Numero] + seekDelta;
+
+                // limiti (0 - durata)
+                if (nuovaPosizione < 0) nuovaPosizione = 0;
+                if (nuovaPosizione > videoDuration) nuovaPosizione = videoDuration;
+
+                video.seekTo(nuovaPosizione);
+                if (barra != null) {
+                    barra.setProgress(nuovaPosizione);
+                }
+                break;
+        }
     }
 }

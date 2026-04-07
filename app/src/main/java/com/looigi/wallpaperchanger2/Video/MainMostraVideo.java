@@ -9,7 +9,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -114,6 +116,22 @@ public class MainMostraVideo extends Activity {
         });
 
         VariabiliStaticheVideo.getInstance().setVideoView(findViewById(R.id.videoView));
+
+        LinearLayout layScorrimento = findViewById(R.id.layScorrimento);
+        layScorrimento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                UtilitiesGlobali.getInstance().AvanzamentoVideoTramiteSwipe(
+                        v,
+                        event,
+                        VariabiliStaticheVideo.getInstance().getVideoView(),
+                        VariabiliStaticheVideo.getInstance().getSeekScorri2(),
+                        1
+                );
+                return true;
+            }
+        });
+
         VariabiliStaticheVideo.getInstance().setPbLoading(findViewById(R.id.pbVideoLoading));
         // VariabiliStaticheVideo.getInstance().setTxtId(findViewById(R.id.txtIdVideo));
         // VariabiliStaticheVideo.getInstance().setTxtCate(findViewById(R.id.txtCategoriaVideo));
@@ -323,7 +341,7 @@ public class MainMostraVideo extends Activity {
             }
         }); */
 
-        VariabiliStaticheVideo.getInstance().setSeekScorri(findViewById(R.id.imgScorri));
+        /* VariabiliStaticheVideo.getInstance().setSeekScorri(findViewById(R.id.imgScorri));
         VariabiliStaticheVideo.getInstance().getSeekScorri().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             boolean userTouch = false;
 
@@ -344,7 +362,8 @@ public class MainMostraVideo extends Activity {
                 userTouch = false;
                 VariabiliStaticheVideo.getInstance().getVideoView().seekTo(seekBar.getProgress());
             }
-        });
+        }); */
+
         VariabiliStaticheVideo.getInstance().setSeekScorri2(findViewById(R.id.imgScorri2));
         VariabiliStaticheVideo.getInstance().getSeekScorri2().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             boolean userTouch = false;

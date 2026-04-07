@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.looigi.wallpaperchanger2.Pazzia.VariabiliStatichePazzia;
 import com.looigi.wallpaperchanger2.R;
 import com.looigi.wallpaperchanger2.Films.webservice.ChiamateWSF;
 import com.looigi.wallpaperchanger2.Impostazioni.MainImpostazioni;
@@ -114,6 +116,21 @@ public class MainMostraFilms extends Activity {
         VariabiliStaticheFilms.getInstance().setTxtTitolo(findViewById(R.id.txtTitoloFilms));
         VariabiliStaticheFilms.getInstance().getPbLoading().setVisibility(View.GONE);
         VariabiliStaticheFilms.getInstance().setSpnCategorie(findViewById(R.id.spnCategorie));
+
+        LinearLayout layScorrimento = findViewById(R.id.layScorrimento);
+        layScorrimento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                UtilitiesGlobali.getInstance().AvanzamentoVideoTramiteSwipe(
+                        v,
+                        event,
+                        VariabiliStaticheFilms.getInstance().getFilmsView(),
+                        null,
+                        3
+                );
+                return true;
+            }
+        });
 
         EditText txtFiltro = findViewById(R.id.edtFiltroFilms);
         txtFiltro.setText(VariabiliStaticheFilms.getInstance().getFiltro());

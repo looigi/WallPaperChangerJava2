@@ -41,12 +41,18 @@ public class ChangeWallpaper {
 	private int SchermoY = -1;
 
 	public ChangeWallpaper(Context context, String daDove, StrutturaImmagine UltimaImmagine) {
+		if (UtilitiesGlobali.getInstance().ControllaSeSchermoAperto(context)) {
+			UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Cambio immagine eliminato. Schermo aperto");
+
+			return;
+		}
+
 		UtilityWallpaper.getInstance().Attesa(true);
 		VariabiliStaticheWallpaper.getInstance().setImmagineImpostataDaChi(daDove);
 
-		if (SchermoX == -1 || SchermoY == -1) {
+		// if (SchermoX == -1 || SchermoY == -1) {
 			PrendeDimensioniSchermo(context);
-		}
+		// }
 
 		/* Activity act = UtilitiesGlobali.getInstance().tornaActivityValida();
 		if (act != null) {

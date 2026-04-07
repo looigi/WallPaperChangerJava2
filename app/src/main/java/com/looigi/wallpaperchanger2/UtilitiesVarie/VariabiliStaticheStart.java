@@ -65,6 +65,7 @@ public class VariabiliStaticheStart {
     private StrutturaMeteo meteo;
     private Intent intentGPS;
     private StrutturaModelloTelefono ModelloTelefono;
+    private boolean bloccoCambioImmagineSuSchermoAperto = true;
 
     public StrutturaModelloTelefono getModelloTelefono() {
         return ModelloTelefono;
@@ -74,6 +75,13 @@ public class VariabiliStaticheStart {
         ModelloTelefono = modelloTelefono;
     }
 
+    public boolean isBloccoCambioImmagineSuSchermoAperto() {
+        return bloccoCambioImmagineSuSchermoAperto;
+    }
+
+    public void setBloccoCambioImmagineSuSchermoAperto(boolean bloccoCambioImmagineSuSchermoAperto) {
+        this.bloccoCambioImmagineSuSchermoAperto = bloccoCambioImmagineSuSchermoAperto;
+    }
 /* private boolean AllarmeAttivo = false;
     private Activity actAllarme;
     private boolean AllarmeInCorso = false;

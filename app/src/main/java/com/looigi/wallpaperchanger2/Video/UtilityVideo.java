@@ -294,8 +294,8 @@ public class UtilityVideo {
                                 Attesa(false);
 
                                 BloccaTimerAvanzamento();
-                                VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
-                                VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(0);
+                                // VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
+                                // VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(0);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(0);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri2().setMax(0);
 
@@ -316,10 +316,10 @@ public class UtilityVideo {
                                 VariabiliStaticheVideo.getInstance().getVideoView().setVideoSize(videoWidth, videoHeight);
 
                                 VariabiliStaticheVideo.getInstance().getVideoView().setMediaController(null);
-                                VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
+                                /* VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(0);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri().setMax(
                                         VariabiliStaticheVideo.getInstance().getVideoView().getDuration()
-                                );
+                                ); */
                                 VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(0);
                                 VariabiliStaticheVideo.getInstance().getSeekScorri2().setMax(
                                         VariabiliStaticheVideo.getInstance().getVideoView().getDuration()
@@ -389,7 +389,7 @@ public class UtilityVideo {
                 if (VariabiliStaticheVideo.getInstance().getVideoView() != null) {
                     if (VariabiliStaticheVideo.getInstance().getVideoView().isPlaying()) {
                         int currentPosition = VariabiliStaticheVideo.getInstance().getVideoView().getCurrentPosition();
-                        VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(currentPosition);
+                        // VariabiliStaticheVideo.getInstance().getSeekScorri().setProgress(currentPosition);
                         VariabiliStaticheVideo.getInstance().getSeekScorri2().setProgress(currentPosition);
                         VariabiliStaticheVideo.getInstance().getTxtAvanzamento().setText(formatTime(currentPosition));
                         VariabiliStaticheVideo.getInstance().getTxtMaxSeek().setText(

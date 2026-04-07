@@ -294,6 +294,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layBarraTasti"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -351,4 +352,12 @@
                     android:layout_height="35dp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout></RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layScorrimento"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_above="@id/layBarraTasti"
+        android:layout_height="75dp" />
+</RelativeLayout>

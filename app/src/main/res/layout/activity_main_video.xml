@@ -423,7 +423,7 @@
         android:layout_below="@+id/laySettaggiVideo"
         android:src="@drawable/linguetta1" />
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_below="@+id/laySettaggiVideo"
@@ -441,7 +441,7 @@
             android:progressBackgroundTint="#00FFFFFF"
             android:thumbTint="#00FFFFFF"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </LinearLayout> -->
 
     <TextView
         android:id="@+id/txtInfoSotto"
@@ -547,4 +547,11 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layScorrimento"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_above="@id/layBarraTasti"
+        android:layout_height="75dp" />
 </RelativeLayout>

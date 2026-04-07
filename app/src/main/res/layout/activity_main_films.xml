@@ -294,13 +294,16 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <VideoView
+        <!-- <VideoView
             android:id="@+id/videoViewFilms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
-
-        </VideoView>
+            android:layout_centerVertical="true" /> -->
+        <com.looigi.wallpaperchanger2.UtilitiesVarie.ProportionalVideoView
+            android:id="@+id/videoViewFilms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -402,9 +405,7 @@
         android:layout_centerInParent="true"
         android:id="@+id/pbFilmsLoading"
         android:layout_width="150dp"
-        android:layout_height="150dp">
-
-    </ProgressBar>
+        android:layout_height="150dp" />
 
     <ImageView
         android:id="@+id/imgLinguettaFilms"
@@ -412,7 +413,12 @@
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/laySettaggiFilms"
-        android:src="@drawable/linguetta1">
+        android:src="@drawable/linguetta1" />
 
-    </ImageView>
+    <LinearLayout
+        android:id="@+id/layScorrimento"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="75dp" />
 </RelativeLayout>

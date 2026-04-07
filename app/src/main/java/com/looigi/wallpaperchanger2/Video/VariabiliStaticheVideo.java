@@ -57,7 +57,7 @@ public class VariabiliStaticheVideo {
     private String idCategoriaSpostamento;
     private boolean ricercaPerVisua = true;
     private boolean AggiornamentoCompleto = false;
-    private SeekBar seekScorri;
+    // private SeekBar seekScorri;
     private SeekBar seekScorri2;
     private boolean staVedendo = false;
     private TextView txtAvanzamentoSeek;
@@ -140,6 +140,7 @@ public class VariabiliStaticheVideo {
         this.staVedendo = staVedendo;
     }
 
+    /*
     public SeekBar getSeekScorri() {
         return seekScorri;
     }
@@ -147,6 +148,7 @@ public class VariabiliStaticheVideo {
     public void setSeekScorri(SeekBar seekScorri) {
         this.seekScorri = seekScorri;
     }
+    */
 
     public boolean isAggiornamentoCompleto() {
         return AggiornamentoCompleto;
