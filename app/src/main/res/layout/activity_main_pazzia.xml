@@ -58,8 +58,8 @@
             <com.looigi.wallpaperchanger2.UtilitiesVarie.ProportionalVideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -359,5 +359,5 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_above="@id/layBarraTasti"
-        android:layout_height="75dp" />
+        android:layout_height="125dp" />
 </RelativeLayout>

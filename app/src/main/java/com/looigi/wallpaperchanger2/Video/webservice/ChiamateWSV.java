@@ -31,6 +31,7 @@ public class ChiamateWSV implements TaskDelegate {
     private final boolean ApriDialog = false;
     private ImageView imgAttesa;
     private String daDove;
+    private String CategoriaDiControllo;
 
     public ChiamateWSV(Context context) {
         this.context = context;
@@ -50,6 +51,7 @@ public class ChiamateWSV implements TaskDelegate {
             case "VIDEO":
                 String Filtro = VariabiliStaticheVideo.getInstance().getFiltro();
                 Categoria = VariabiliStaticheVideo.getInstance().getCategoria();
+                CategoriaDiControllo = Categoria;
 
                 Urletto = "RitornaProssimoVideo?" +
                         "Categoria=" + Categoria.replace("\\", "§") +
@@ -321,6 +323,7 @@ public class ChiamateWSV implements TaskDelegate {
 
     private void fRitornaProssimoVideo(String result) {
         boolean ritorno = ControllaRitorno("Ritorna prossimo video", result);
+
         if (ritorno) {
             String url ="";
             int videoFiltrati = -1;
@@ -378,7 +381,7 @@ public class ChiamateWSV implements TaskDelegate {
                     break;
             }
         } else {
-            UtilitiesGlobali.getInstance().ApreToast(context, result);
+            UtilitiesGlobali.getInstance().ApreToast(context, result + "\n\nCategoria letta: " + CategoriaDiControllo);
         }
     }
 }

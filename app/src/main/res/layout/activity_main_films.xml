@@ -420,5 +420,5 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="75dp" />
+        android:layout_height="125dp" />
 </RelativeLayout>

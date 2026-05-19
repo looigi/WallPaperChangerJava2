@@ -64,6 +64,9 @@ public class MainImpostazioniOrari extends Activity {
 
         VariabiliStaticheImpostazioniOrari.getInstance().setEdtRicercaTestoNuovo(findViewById(R.id.edtTestoRicerca));
 
+        ChiamateWSOrari ws = new ChiamateWSOrari(context);
+        ws.RitornaDatiPerModifica(true, false);
+
         ImageView imgCercaTestoNuovo = findViewById(R.id.imgCercaTesto);
         imgCercaTestoNuovo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -881,12 +881,17 @@ public class UtilitiesGlobali {
     }
 
     public ArrayAdapter<String> ImpostaSpinner(Context context, Spinner spinner, String[] lista, String stringaDefault) {
+        for (int i = 0; i < lista.length; i++) {
+            if (lista[i] == null) {
+                lista[i] = "";
+            }
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context,
                 R.layout.spinner_item_selected,
                 lista
         ) {
-
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 // Inflating custom layout for dropdown

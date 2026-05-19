@@ -76,6 +76,7 @@ public class DownloadImmagineWP {
                 Esecuzione();
                 BloccaTimer();
                 TermineEsecuzione();
+                executor.shutdown();
 
                 handler.post(new Runnable() {
                     @Override
@@ -86,10 +87,12 @@ public class DownloadImmagineWP {
             }
         });
     }
+
     private Handler handler;
     private Runnable r;
     private HandlerThread handlerThread;
     private int secondiPassati = 0;
+    private volatile boolean annullaDownload = false;
 
     private void AttivaTimer() {
         secondiPassati = 0;
@@ -103,22 +106,26 @@ public class DownloadImmagineWP {
             public void run() {
                 secondiPassati++;
                 if (secondiPassati > VariabiliStaticheWallpaper.TimeoutImmagine) {
+                    annullaDownload = true;
+                    isCancelled = true;
+
                     UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera,
                             "Timeout per Immagine Scaricata");
 
-                    if (in != null) {
+                    /* if (in != null) {
                         try {
                             in.close();
                         } catch (IOException ignored) {
 
                         }
                         in = null;
-                    }
+                    } */
                     UtilitiesGlobali.getInstance().AttesaGif(
                             context,
                             VariabiliStaticheMostraImmaginiPennetta.getInstance().getImgCaricamento(),
                             false
                     );
+
                     BloccaTimer();
                     BloccaEsecuzione();
                 } else {
@@ -149,8 +156,11 @@ public class DownloadImmagineWP {
         Bitmap mIcon11 = null;
         try {
             in = new java.net.URL(urldisplay).openStream();
-            if (in != null) {
+            if (!annullaDownload && in != null) {
                 mIcon11 = BitmapFactory.decodeStream(in);
+            }
+            if (annullaDownload || isCancelled) {
+                return;
             }
             if (immagine == null) {
                 String NomeFile = "";
@@ -186,6 +196,16 @@ public class DownloadImmagineWP {
                         UtilityWallpaper.getInstance().ScriveLog(context, NomeMaschera, "Errore nel salvataggio su download Immagine: " + e.getMessage());
                     }
                     Errore = true;
+                } finally {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (Exception ignored) {
+
+                        }
+
+                        in = null;
+                    }
                 }
             } else {
                 Bitmap finalMIcon1 = mIcon11;
